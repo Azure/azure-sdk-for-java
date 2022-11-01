@@ -37,6 +37,10 @@ public final class VpnClientParameters {
     @JsonProperty(value = "clientRootCertificates")
     private List<String> clientRootCertificates;
 
+    /** Creates an instance of VpnClientParameters class. */
+    public VpnClientParameters() {
+    }
+
     /**
      * Get the processorArchitecture property: VPN client Processor Architecture.
      *

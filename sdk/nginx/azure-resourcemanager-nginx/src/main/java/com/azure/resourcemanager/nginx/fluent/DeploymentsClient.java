@@ -21,19 +21,6 @@ public interface DeploymentsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxDeploymentInner getByResourceGroup(String resourceGroupName, String deploymentName);
-
-    /**
-     * Get the Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,19 +32,31 @@ public interface DeploymentsClient {
         String resourceGroupName, String deploymentName, Context context);
 
     /**
+     * Get the Nginx deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted Nginx deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Nginx deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NginxDeploymentInner getByResourceGroup(String resourceGroupName, String deploymentName);
+
+    /**
      * Create or update the Nginx deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
-     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginCreate(
-        String resourceGroupName, String deploymentName, NginxDeploymentInner body);
+    SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName);
 
     /**
      * Create or update the Nginx deployment.
@@ -72,7 +71,7 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginCreate(
+    SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String deploymentName, NginxDeploymentInner body, Context context);
 
     /**
@@ -80,27 +79,13 @@ public interface DeploymentsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
-     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxDeploymentInner create(String resourceGroupName, String deploymentName, NginxDeploymentInner body);
-
-    /**
-     * Create or update the Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxDeploymentInner create(String resourceGroupName, String deploymentName);
+    NginxDeploymentInner createOrUpdate(String resourceGroupName, String deploymentName);
 
     /**
      * Create or update the Nginx deployment.
@@ -115,7 +100,7 @@ public interface DeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxDeploymentInner create(
+    NginxDeploymentInner createOrUpdate(
         String resourceGroupName, String deploymentName, NginxDeploymentInner body, Context context);
 
     /**
@@ -123,7 +108,6 @@ public interface DeploymentsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
-     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -131,7 +115,7 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginUpdate(
-        String resourceGroupName, String deploymentName, NginxDeploymentUpdateParameters body);
+        String resourceGroupName, String deploymentName);
 
     /**
      * Update the Nginx deployment.
@@ -148,20 +132,6 @@ public interface DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginUpdate(
         String resourceGroupName, String deploymentName, NginxDeploymentUpdateParameters body, Context context);
-
-    /**
-     * Update the Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxDeploymentInner update(String resourceGroupName, String deploymentName, NginxDeploymentUpdateParameters body);
 
     /**
      * Update the Nginx deployment.

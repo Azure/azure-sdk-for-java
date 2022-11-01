@@ -25,6 +25,10 @@ public final class PrivateEndpointConnectionListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PrivateEndpointConnectionListResponse class. */
+    public PrivateEndpointConnectionListResponse() {
+    }
+
     /**
      * Get the value property: List of Private Endpoint Connections.
      *

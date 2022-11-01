@@ -8,5 +8,4 @@ import com.azure.core.annotation.Fluent;
 /** The RecognizeCanceled model. */
 @Fluent
 public final class RecognizeCanceled extends CallAutomationEventBase {
-
 }

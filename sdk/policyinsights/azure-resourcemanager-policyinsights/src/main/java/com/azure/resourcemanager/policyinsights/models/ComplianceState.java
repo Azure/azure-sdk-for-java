@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ComplianceState. */
+/** The compliance state that should be set on the resource. */
 public final class ComplianceState extends ExpandableStringEnum<ComplianceState> {
     /** Static value Compliant for ComplianceState. */
     public static final ComplianceState COMPLIANT = fromString("Compliant");
@@ -30,7 +30,11 @@ public final class ComplianceState extends ExpandableStringEnum<ComplianceState>
         return fromString(name, ComplianceState.class);
     }
 
-    /** @return known ComplianceState values. */
+    /**
+     * Gets known ComplianceState values.
+     *
+     * @return known ComplianceState values.
+     */
     public static Collection<ComplianceState> values() {
         return values(ComplianceState.class);
     }

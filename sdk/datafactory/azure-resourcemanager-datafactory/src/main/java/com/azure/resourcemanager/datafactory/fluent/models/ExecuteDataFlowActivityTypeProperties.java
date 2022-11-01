@@ -67,6 +67,10 @@ public class ExecuteDataFlowActivityTypeProperties {
     @JsonProperty(value = "sourceStagingConcurrency")
     private Object sourceStagingConcurrency;
 
+    /** Creates an instance of ExecuteDataFlowActivityTypeProperties class. */
+    public ExecuteDataFlowActivityTypeProperties() {
+    }
+
     /**
      * Get the dataFlow property: Data flow reference.
      *

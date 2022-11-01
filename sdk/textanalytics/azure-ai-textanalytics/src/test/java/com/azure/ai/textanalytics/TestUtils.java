@@ -113,7 +113,7 @@ final class TestUtils {
     static final OffsetDateTime TIME_NOW = OffsetDateTime.now();
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
-    static final String FAKE_API_KEY = "1234567890";
+    static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
     static final String CUSTOM_ACTION_NAME = "customActionName";
 

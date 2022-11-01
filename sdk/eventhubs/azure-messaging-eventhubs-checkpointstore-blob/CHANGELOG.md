@@ -1,6 +1,6 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.16.0 (2022-10-13)
+
+### Breaking Changes
+
+- Remove `com.azure.messaging.eventhubs.checkpointstore.blob.Messages` from public API.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.14.0`.
+- Update `azure-storage-blob` dependency to `12.20.0`.
 
 ## 1.15.1 (2022-09-11)
 

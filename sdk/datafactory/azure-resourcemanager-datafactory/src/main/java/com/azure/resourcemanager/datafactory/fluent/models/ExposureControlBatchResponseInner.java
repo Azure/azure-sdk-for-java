@@ -18,6 +18,10 @@ public final class ExposureControlBatchResponseInner {
     @JsonProperty(value = "exposureControlResponses", required = true)
     private List<ExposureControlResponseInner> exposureControlResponses;
 
+    /** Creates an instance of ExposureControlBatchResponseInner class. */
+    public ExposureControlBatchResponseInner() {
+    }
+
     /**
      * Get the exposureControlResponses property: List of exposure control feature values.
      *

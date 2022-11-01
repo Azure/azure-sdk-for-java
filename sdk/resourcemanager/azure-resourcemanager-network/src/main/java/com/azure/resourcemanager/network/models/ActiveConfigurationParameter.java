@@ -24,6 +24,10 @@ public final class ActiveConfigurationParameter {
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
+    /** Creates an instance of ActiveConfigurationParameter class. */
+    public ActiveConfigurationParameter() {
+    }
+
     /**
      * Get the regions property: List of regions.
      *

@@ -28,6 +28,10 @@ public final class HopLinkProperties {
     @JsonProperty(value = "roundTripTimeMax", access = JsonProperty.Access.WRITE_ONLY)
     private Long roundTripTimeMax;
 
+    /** Creates an instance of HopLinkProperties class. */
+    public HopLinkProperties() {
+    }
+
     /**
      * Get the roundTripTimeMin property: Minimum roundtrip time in milliseconds.
      *

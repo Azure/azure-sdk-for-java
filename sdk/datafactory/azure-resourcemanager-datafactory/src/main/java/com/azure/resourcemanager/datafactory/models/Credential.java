@@ -50,6 +50,10 @@ public class Credential {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of Credential class. */
+    public Credential() {
+    }
+
     /**
      * Get the description property: Credential description.
      *

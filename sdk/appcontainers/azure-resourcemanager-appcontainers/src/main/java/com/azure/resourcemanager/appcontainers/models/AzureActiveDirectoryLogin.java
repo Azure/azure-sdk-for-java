@@ -12,19 +12,22 @@ import java.util.List;
 @Fluent
 public final class AzureActiveDirectoryLogin {
     /*
-     * Login parameters to send to the OpenID Connect authorization endpoint
-     * when
+     * Login parameters to send to the OpenID Connect authorization endpoint when
      * a user logs in. Each parameter must be in the form "key=value".
      */
     @JsonProperty(value = "loginParameters")
     private List<String> loginParameters;
 
     /*
-     * <code>true</code> if the www-authenticate provider should be omitted
-     * from the request; otherwise, <code>false</code>.
+     * <code>true</code> if the www-authenticate provider should be omitted from the request; otherwise,
+     * <code>false</code>.
      */
     @JsonProperty(value = "disableWWWAuthenticate")
     private Boolean disableWwwAuthenticate;
+
+    /** Creates an instance of AzureActiveDirectoryLogin class. */
+    public AzureActiveDirectoryLogin() {
+    }
 
     /**
      * Get the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when a

@@ -35,11 +35,14 @@ public final class OpenIdConnectConfig {
     private String certificationUri;
 
     /*
-     * The endpoint that contains all the configuration endpoints for the
-     * provider.
+     * The endpoint that contains all the configuration endpoints for the provider.
      */
     @JsonProperty(value = "wellKnownOpenIdConfiguration")
     private String wellKnownOpenIdConfiguration;
+
+    /** Creates an instance of OpenIdConnectConfig class. */
+    public OpenIdConnectConfig() {
+    }
 
     /**
      * Get the authorizationEndpoint property: The endpoint to be used to make an authorization request.

@@ -13,6 +13,12 @@ import java.util.List;
 @Fluent
 public final class VnetRoute {
     /*
+     * Configuration for static routes on this HubVnetConnection.
+     */
+    @JsonProperty(value = "staticRoutesConfig")
+    private StaticRoutesConfig staticRoutesConfig;
+
+    /*
      * List of all Static Routes.
      */
     @JsonProperty(value = "staticRoutes")
@@ -23,6 +29,30 @@ public final class VnetRoute {
      */
     @JsonProperty(value = "bgpConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> bgpConnections;
+
+    /** Creates an instance of VnetRoute class. */
+    public VnetRoute() {
+    }
+
+    /**
+     * Get the staticRoutesConfig property: Configuration for static routes on this HubVnetConnection.
+     *
+     * @return the staticRoutesConfig value.
+     */
+    public StaticRoutesConfig staticRoutesConfig() {
+        return this.staticRoutesConfig;
+    }
+
+    /**
+     * Set the staticRoutesConfig property: Configuration for static routes on this HubVnetConnection.
+     *
+     * @param staticRoutesConfig the staticRoutesConfig value to set.
+     * @return the VnetRoute object itself.
+     */
+    public VnetRoute withStaticRoutesConfig(StaticRoutesConfig staticRoutesConfig) {
+        this.staticRoutesConfig = staticRoutesConfig;
+        return this;
+    }
 
     /**
      * Get the staticRoutes property: List of all Static Routes.
@@ -59,6 +89,9 @@ public final class VnetRoute {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (staticRoutesConfig() != null) {
+            staticRoutesConfig().validate();
+        }
         if (staticRoutes() != null) {
             staticRoutes().forEach(e -> e.validate());
         }

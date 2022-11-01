@@ -31,6 +31,10 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of FirewallPolicyRuleCollectionGroupProperties class. */
+    public FirewallPolicyRuleCollectionGroupProperties() {
+    }
+
     /**
      * Get the priority property: Priority of the Firewall Policy Rule Collection Group resource.
      *

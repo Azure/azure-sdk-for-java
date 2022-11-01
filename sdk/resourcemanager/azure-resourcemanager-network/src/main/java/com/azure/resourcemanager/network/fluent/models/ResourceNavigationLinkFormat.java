@@ -29,6 +29,10 @@ public final class ResourceNavigationLinkFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ResourceNavigationLinkFormat class. */
+    public ResourceNavigationLinkFormat() {
+    }
+
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
      *

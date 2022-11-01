@@ -47,6 +47,10 @@ public class ManagedClusterPodIdentity {
     @JsonProperty(value = "provisioningInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedClusterPodIdentityProvisioningInfo provisioningInfo;
 
+    /** Creates an instance of ManagedClusterPodIdentity class. */
+    public ManagedClusterPodIdentity() {
+    }
+
     /**
      * Get the name property: The name of the pod identity.
      *

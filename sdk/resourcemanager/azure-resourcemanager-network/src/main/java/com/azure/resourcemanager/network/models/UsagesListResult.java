@@ -24,6 +24,10 @@ public final class UsagesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of UsagesListResult class. */
+    public UsagesListResult() {
+    }
+
     /**
      * Get the value property: The list network resource usages.
      *

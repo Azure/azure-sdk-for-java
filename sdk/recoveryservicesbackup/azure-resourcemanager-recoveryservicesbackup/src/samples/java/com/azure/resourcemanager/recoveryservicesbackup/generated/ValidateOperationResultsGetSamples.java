@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ValidateOperationResults Get. */
 public final class ValidateOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/ValidateOperationResults.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperationResults.json
      */
     /**
      * Sample code: Get Operation Results of Validate Operation.

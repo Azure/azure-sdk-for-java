@@ -84,21 +84,6 @@ public interface NetworkWatchersClient
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkWatcherInner createOrUpdate(
-        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters);
-
-    /**
-     * Creates or updates a network watcher in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the network watcher resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,6 +93,21 @@ public interface NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkWatcherInner> createOrUpdateWithResponse(
         String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters, Context context);
+
+    /**
+     * Creates or updates a network watcher in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the network watcher resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network watcher in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkWatcherInner createOrUpdate(
+        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters);
 
     /**
      * Gets the specified network watcher by resource group.
@@ -142,19 +142,6 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network watcher by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkWatcherInner getByResourceGroup(String resourceGroupName, String networkWatcherName);
-
-    /**
-     * Gets the specified network watcher by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -164,6 +151,19 @@ public interface NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkWatcherInner> getByResourceGroupWithResponse(
         String resourceGroupName, String networkWatcherName, Context context);
+
+    /**
+     * Gets the specified network watcher by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network watcher by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkWatcherInner getByResourceGroup(String resourceGroupName, String networkWatcherName);
 
     /**
      * Deletes the specified network watcher resource.
@@ -293,20 +293,6 @@ public interface NetworkWatchersClient
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkWatcherInner updateTags(String resourceGroupName, String networkWatcherName, TagsObject parameters);
-
-    /**
-     * Updates a network watcher tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters supplied to update network watcher tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -316,6 +302,20 @@ public interface NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkWatcherInner> updateTagsWithResponse(
         String resourceGroupName, String networkWatcherName, TagsObject parameters, Context context);
+
+    /**
+     * Updates a network watcher tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters supplied to update network watcher tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network watcher in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkWatcherInner updateTags(String resourceGroupName, String networkWatcherName, TagsObject parameters);
 
     /**
      * Gets all network watchers by resource group.
@@ -423,20 +423,6 @@ public interface NetworkWatchersClient
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current network topology by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TopologyInner getTopology(String resourceGroupName, String networkWatcherName, TopologyParameters parameters);
-
-    /**
-     * Gets the current network topology by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the representation of topology.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -446,6 +432,20 @@ public interface NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TopologyInner> getTopologyWithResponse(
         String resourceGroupName, String networkWatcherName, TopologyParameters parameters, Context context);
+
+    /**
+     * Gets the current network topology by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the representation of topology.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current network topology by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TopologyInner getTopology(String resourceGroupName, String networkWatcherName, TopologyParameters parameters);
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.

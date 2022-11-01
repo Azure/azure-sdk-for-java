@@ -11,15 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Google {
     /*
-     * <code>false</code> if the Google provider should not be enabled despite
-     * the set registration; otherwise, <code>true</code>.
+     * <code>false</code> if the Google provider should not be enabled despite the set registration; otherwise,
+     * <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The configuration settings of the app registration for the Google
-     * provider.
+     * The configuration settings of the app registration for the Google provider.
      */
     @JsonProperty(value = "registration")
     private ClientRegistration registration;
@@ -31,11 +30,14 @@ public final class Google {
     private LoginScopes login;
 
     /*
-     * The configuration settings of the Azure Active Directory token
-     * validation flow.
+     * The configuration settings of the Azure Active Directory token validation flow.
      */
     @JsonProperty(value = "validation")
     private AllowedAudiencesValidation validation;
+
+    /** Creates an instance of Google class. */
+    public Google() {
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Google provider should not be enabled despite the

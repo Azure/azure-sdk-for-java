@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/queue-5?api-version=2021-05",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "Content-Type" : "application/atom+xml"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "ETag" : "638025851373030000",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "Body" : "<Error><Code>409</Code><Detail>SubCode=40900. Conflict. You're requesting an operation that isn't allowed in the resource's current state. To know more visit https://aka.ms/sbResourceMgrExceptions. . TrackingId:2a92d276-d88b-4420-b40f-1a27db574bae_G2S3, SystemTracker:foo.servicebus.windows.net:queue-5, Timestamp:2022-10-29T04:50:45</Detail></Error>",
+      "Date" : "Sat, 29 Oct 2022 04:50:44 GMT",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

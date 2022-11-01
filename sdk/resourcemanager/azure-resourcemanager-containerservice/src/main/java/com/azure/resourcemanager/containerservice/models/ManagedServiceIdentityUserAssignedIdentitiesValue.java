@@ -22,6 +22,10 @@ public final class ManagedServiceIdentityUserAssignedIdentitiesValue {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
+    /** Creates an instance of ManagedServiceIdentityUserAssignedIdentitiesValue class. */
+    public ManagedServiceIdentityUserAssignedIdentitiesValue() {
+    }
+
     /**
      * Get the principalId property: The principal id of user assigned identity.
      *

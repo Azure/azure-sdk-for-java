@@ -24,6 +24,10 @@ public final class GoogleSheetsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private GoogleSheetsLinkedServiceTypeProperties innerTypeProperties = new GoogleSheetsLinkedServiceTypeProperties();
 
+    /** Creates an instance of GoogleSheetsLinkedService class. */
+    public GoogleSheetsLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: GoogleSheets linked service properties.
      *

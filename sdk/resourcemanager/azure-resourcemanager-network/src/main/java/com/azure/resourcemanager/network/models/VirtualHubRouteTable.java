@@ -17,6 +17,10 @@ public final class VirtualHubRouteTable {
     @JsonProperty(value = "routes")
     private List<VirtualHubRoute> routes;
 
+    /** Creates an instance of VirtualHubRouteTable class. */
+    public VirtualHubRouteTable() {
+    }
+
     /**
      * Get the routes property: List of all routes.
      *

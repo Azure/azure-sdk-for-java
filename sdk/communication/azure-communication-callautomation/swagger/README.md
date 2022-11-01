@@ -33,9 +33,9 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2022-04-07-preview
 require:
-    - https://github.com/richardcho-msft/azure-rest-api-specs/blob/dev-communication-CallingServer-2022-04-07-preview/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ac4677cd31042657c21bf40e0506c7c2752bbe70/specification/communication/data-plane/CallAutomation/readme.md
 java: true
-output-folder: ..\
+output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callautomation
 custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType

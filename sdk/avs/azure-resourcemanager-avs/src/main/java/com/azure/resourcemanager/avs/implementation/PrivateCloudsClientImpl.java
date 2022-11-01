@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateCloudsClient. */
 public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateCloudsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateCloudsService service;
 
@@ -229,7 +226,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -281,7 +278,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listByResourceGroupSinglePageAsync(
@@ -330,7 +327,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateCloudInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -346,7 +343,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateCloudInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -362,7 +359,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> listByResourceGroup(String resourceGroupName) {
@@ -377,7 +374,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -389,7 +386,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listSinglePageAsync() {
@@ -435,7 +432,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listSinglePageAsync(Context context) {
@@ -476,7 +473,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateCloudInner> listAsync() {
@@ -491,7 +488,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateCloudInner> listAsync(Context context) {
@@ -504,7 +501,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> list() {
@@ -518,7 +515,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> list(Context context) {
@@ -533,7 +530,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud.
+     * @return a private cloud along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateCloudInner>> getByResourceGroupWithResponseAsync(
@@ -583,7 +580,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud.
+     * @return a private cloud along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateCloudInner>> getByResourceGroupWithResponseAsync(
@@ -629,19 +626,29 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud.
+     * @return a private cloud on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateCloudInner> getByResourceGroupAsync(String resourceGroupName, String privateCloudName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, privateCloudName)
-            .flatMap(
-                (Response<PrivateCloudInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PrivateCloudInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String privateCloudName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, privateCloudName, context).block();
     }
 
     /**
@@ -656,24 +663,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateCloudInner getByResourceGroup(String resourceGroupName, String privateCloudName) {
-        return getByResourceGroupAsync(resourceGroupName, privateCloudName).block();
-    }
-
-    /**
-     * Get a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateCloudInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String privateCloudName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, privateCloudName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
     }
 
     /**
@@ -685,7 +675,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return a private cloud resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -742,7 +732,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return a private cloud resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -795,7 +785,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link PollerFlux} for polling of a private cloud resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdateAsync(
@@ -805,7 +795,11 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         return this
             .client
             .<PrivateCloudInner, PrivateCloudInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PrivateCloudInner.class, PrivateCloudInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateCloudInner.class,
+                PrivateCloudInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -818,7 +812,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link PollerFlux} for polling of a private cloud resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdateAsync(
@@ -841,7 +835,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link SyncPoller} for polling of a private cloud resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
@@ -859,7 +853,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link SyncPoller} for polling of a private cloud resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
@@ -876,7 +870,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return a private cloud resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateCloudInner> createOrUpdateAsync(
@@ -896,7 +890,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return a private cloud resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateCloudInner> createOrUpdateAsync(
@@ -950,7 +944,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return a private cloud resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1008,7 +1002,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return a private cloud resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1062,7 +1056,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link PollerFlux} for polling of a private cloud resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdateAsync(
@@ -1072,7 +1066,11 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         return this
             .client
             .<PrivateCloudInner, PrivateCloudInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PrivateCloudInner.class, PrivateCloudInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateCloudInner.class,
+                PrivateCloudInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1085,7 +1083,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link PollerFlux} for polling of a private cloud resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdateAsync(
@@ -1108,7 +1106,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link SyncPoller} for polling of a private cloud resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
@@ -1126,7 +1124,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link SyncPoller} for polling of a private cloud resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
@@ -1143,7 +1141,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return a private cloud resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateCloudInner> updateAsync(
@@ -1163,7 +1161,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return a private cloud resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateCloudInner> updateAsync(
@@ -1216,7 +1214,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1266,7 +1264,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1312,14 +1310,15 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateCloudName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1331,7 +1330,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1351,7 +1350,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName) {
@@ -1367,7 +1366,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1383,7 +1382,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName) {
@@ -1401,7 +1400,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName, Context context) {
@@ -1447,7 +1446,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rotateVcenterPasswordWithResponseAsync(
@@ -1497,7 +1496,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rotateVcenterPasswordWithResponseAsync(
@@ -1543,7 +1542,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateVcenterPasswordAsync(
@@ -1552,7 +1551,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             rotateVcenterPasswordWithResponseAsync(resourceGroupName, privateCloudName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1564,7 +1564,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateVcenterPasswordAsync(
@@ -1585,7 +1585,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
@@ -1602,7 +1602,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
@@ -1618,7 +1618,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> rotateVcenterPasswordAsync(String resourceGroupName, String privateCloudName) {
@@ -1636,7 +1636,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> rotateVcenterPasswordAsync(String resourceGroupName, String privateCloudName, Context context) {
@@ -1682,7 +1682,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rotateNsxtPasswordWithResponseAsync(
@@ -1732,7 +1732,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rotateNsxtPasswordWithResponseAsync(
@@ -1778,7 +1778,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateNsxtPasswordAsync(
@@ -1787,7 +1787,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             rotateNsxtPasswordWithResponseAsync(resourceGroupName, privateCloudName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1799,7 +1800,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateNsxtPasswordAsync(
@@ -1820,7 +1821,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
@@ -1837,7 +1838,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
@@ -1853,7 +1854,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> rotateNsxtPasswordAsync(String resourceGroupName, String privateCloudName) {
@@ -1871,7 +1872,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> rotateNsxtPasswordAsync(String resourceGroupName, String privateCloudName, Context context) {
@@ -1917,7 +1918,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return administrative credentials for accessing vCenter and NSX-T.
+     * @return administrative credentials for accessing vCenter and NSX-T along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdminCredentialsInner>> listAdminCredentialsWithResponseAsync(
@@ -1967,7 +1969,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return administrative credentials for accessing vCenter and NSX-T.
+     * @return administrative credentials for accessing vCenter and NSX-T along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdminCredentialsInner>> listAdminCredentialsWithResponseAsync(
@@ -2013,19 +2016,29 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return administrative credentials for accessing vCenter and NSX-T.
+     * @return administrative credentials for accessing vCenter and NSX-T on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AdminCredentialsInner> listAdminCredentialsAsync(String resourceGroupName, String privateCloudName) {
         return listAdminCredentialsWithResponseAsync(resourceGroupName, privateCloudName)
-            .flatMap(
-                (Response<AdminCredentialsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List the admin credentials for the private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return administrative credentials for accessing vCenter and NSX-T along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AdminCredentialsInner> listAdminCredentialsWithResponse(
+        String resourceGroupName, String privateCloudName, Context context) {
+        return listAdminCredentialsWithResponseAsync(resourceGroupName, privateCloudName, context).block();
     }
 
     /**
@@ -2040,34 +2053,18 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdminCredentialsInner listAdminCredentials(String resourceGroupName, String privateCloudName) {
-        return listAdminCredentialsAsync(resourceGroupName, privateCloudName).block();
-    }
-
-    /**
-     * List the admin credentials for the private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return administrative credentials for accessing vCenter and NSX-T.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AdminCredentialsInner> listAdminCredentialsWithResponse(
-        String resourceGroupName, String privateCloudName, Context context) {
-        return listAdminCredentialsWithResponseAsync(resourceGroupName, privateCloudName, context).block();
+        return listAdminCredentialsWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listNextSinglePageAsync(String nextLink) {
@@ -2098,12 +2095,13 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2134,11 +2132,12 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listInSubscriptionNextSinglePageAsync(String nextLink) {
@@ -2170,12 +2169,13 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listInSubscriptionNextSinglePageAsync(

@@ -41,8 +41,8 @@ public class ProxyOptionsTests {
     private static final String HTTP = "http";
 
     private static final String PROXY_HOST = "localhost";
-    private static final String PROXY_USER = "user";
-    private static final String PROXY_PASSWORD = "pass";
+    private static final String FAKE_PROXY_USER_PLACEHOLDER = "fakeProxyUserPlaceholder";
+    private static final String FAKE_PROXY_PASSWORD_PLACEHOLDER = "fakeProxyPasswordPlaceholder";
     private static final String NON_PROXY_HOSTS = "notlocalhost";
 
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
@@ -61,15 +61,15 @@ public class ProxyOptionsTests {
     private static final String AZURE_HTTPS_PROXY_HOST_ONLY = String.format("%s://%s", HTTPS, PROXY_HOST);
     private static final String AZURE_HTTP_PROXY_HOST_ONLY = String.format("%s://%s", HTTP, PROXY_HOST);
 
-    private static final String AZURE_HTTPS_PROXY_WITH_USERNAME = String.format("%s://%s@%s", HTTPS, PROXY_USER,
+    private static final String AZURE_HTTPS_PROXY_WITH_USERNAME = String.format("%s://%s@%s", HTTPS, FAKE_PROXY_USER_PLACEHOLDER,
         PROXY_HOST);
-    private static final String AZURE_HTTP_PROXY_WITH_USERNAME = String.format("%s://%s@%s", HTTP, PROXY_USER,
+    private static final String AZURE_HTTP_PROXY_WITH_USERNAME = String.format("%s://%s@%s", HTTP, FAKE_PROXY_USER_PLACEHOLDER,
         PROXY_HOST);
 
-    private static final String AZURE_HTTPS_PROXY_WITH_USER_AND_PASS = String.format("%s://%s:%s@%s", HTTPS, PROXY_USER,
-        PROXY_PASSWORD, PROXY_HOST);
-    private static final String AZURE_HTTP_PROXY_WITH_USER_AND_PASS = String.format("%s://%s:%s@%s", HTTP, PROXY_USER,
-        PROXY_PASSWORD, PROXY_HOST);
+    private static final String AZURE_HTTPS_PROXY_WITH_USER_AND_PASS = String.format("%s://%s:%s@%s", HTTPS, FAKE_PROXY_USER_PLACEHOLDER,
+        FAKE_PROXY_PASSWORD_PLACEHOLDER, PROXY_HOST);
+    private static final String AZURE_HTTP_PROXY_WITH_USER_AND_PASS = String.format("%s://%s:%s@%s", HTTP, FAKE_PROXY_USER_PLACEHOLDER,
+        FAKE_PROXY_PASSWORD_PLACEHOLDER, PROXY_HOST);
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
     /**
      * Tests that loading a basic configuration from the environment works.
@@ -145,8 +145,8 @@ public class ProxyOptionsTests {
             .put("https.proxyPort", "42");
 
         Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, systemProps, EMPTY_SOURCE)
-            .putProperty("foo.http.proxy.username", PROXY_USER)
-            .putProperty("http.proxy.password", PROXY_PASSWORD)
+            .putProperty("foo.http.proxy.username", FAKE_PROXY_USER_PLACEHOLDER)
+            .putProperty("http.proxy.password", FAKE_PROXY_PASSWORD_PLACEHOLDER)
             .putProperty("foo.http.proxy.hostname", PROXY_HOST)
             .buildSection("foo");
 
@@ -157,8 +157,8 @@ public class ProxyOptionsTests {
         assertEquals(Proxy.Type.HTTP, proxyOptions.getType().toProxyType());
         assertEquals(PROXY_HOST, proxyOptions.getAddress().getHostName());
         assertEquals(443, proxyOptions.getAddress().getPort());
-        assertEquals(PROXY_USER, proxyOptions.getUsername());
-        assertEquals(PROXY_PASSWORD, proxyOptions.getPassword());
+        assertEquals(FAKE_PROXY_USER_PLACEHOLDER, proxyOptions.getUsername());
+        assertEquals(FAKE_PROXY_PASSWORD_PLACEHOLDER, proxyOptions.getPassword());
     }
 
     @Test
@@ -166,8 +166,8 @@ public class ProxyOptionsTests {
         Configuration configuration = new ConfigurationBuilder()
             .putProperty("https.proxyHost", PROXY_HOST)
             .putProperty("https.proxyPort", "8080")
-            .putProperty("http.proxy.username", PROXY_USER)
-            .putProperty("http.proxy.password", PROXY_PASSWORD)
+            .putProperty("http.proxy.username", FAKE_PROXY_USER_PLACEHOLDER)
+            .putProperty("http.proxy.password", FAKE_PROXY_PASSWORD_PLACEHOLDER)
             .buildSection("foo");
 
         ProxyOptions proxyOptions = fromConfiguration(configuration, true);
@@ -180,8 +180,8 @@ public class ProxyOptionsTests {
     public void defaultHttpPortNull(String port) {
         ConfigurationBuilder configBuilder = new ConfigurationBuilder()
             .putProperty("http.proxy.hostname", PROXY_HOST)
-            .putProperty("http.proxy.username", PROXY_USER)
-            .putProperty("http.proxy.password", PROXY_PASSWORD);
+            .putProperty("http.proxy.username", FAKE_PROXY_USER_PLACEHOLDER)
+            .putProperty("http.proxy.password", FAKE_PROXY_PASSWORD_PLACEHOLDER);
 
         if (port != null) {
             configBuilder.putProperty("http.proxy.port", port);
@@ -198,8 +198,8 @@ public class ProxyOptionsTests {
     public void invalidHttpPortExplicitConfigThrows(String port) {
         Configuration configuration = new ConfigurationBuilder()
             .putProperty("http.proxy.hostname", PROXY_HOST)
-            .putProperty("http.proxy.username", PROXY_USER)
-            .putProperty("http.proxy.password", PROXY_PASSWORD)
+            .putProperty("http.proxy.username", FAKE_PROXY_USER_PLACEHOLDER)
+            .putProperty("http.proxy.password", FAKE_PROXY_PASSWORD_PLACEHOLDER)
             .putProperty("http.proxy.port", port)
             .build();
 
@@ -252,7 +252,7 @@ public class ProxyOptionsTests {
             // Complete Azure HTTPS proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
                     new TestConfigurationSource().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_WITH_USER_AND_PASS)),
-                PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
+                PROXY_HOST, 443, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null),
 
             // Azure HTTPS proxy with non-proxying hosts.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
@@ -274,7 +274,7 @@ public class ProxyOptionsTests {
             // Complete Azure HTTP proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
                     new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_WITH_USER_AND_PASS)),
-                PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, null),
+                PROXY_HOST, 80, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null),
 
             // Azure HTTP proxy with non-proxying hosts.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
@@ -295,12 +295,12 @@ public class ProxyOptionsTests {
                 PROXY_HOST, 443, null, null, null),
 
             // Username only Java HTTPS proxy.
-            Arguments.of(createJavaEnvConfiguration(443, PROXY_USER, null, null, true),
+            Arguments.of(createJavaEnvConfiguration(443, FAKE_PROXY_USER_PLACEHOLDER, null, null, true),
                 PROXY_HOST, 443, null, null, null),
 
             // Complete Java HTTPS proxy.
-            Arguments.of(createJavaEnvConfiguration(443, PROXY_USER, PROXY_PASSWORD, null, true),
-                PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
+            Arguments.of(createJavaEnvConfiguration(443, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null, true),
+                PROXY_HOST, 443, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null),
 
             // Java HTTPS proxy with non-proxying hosts.
             Arguments.of(createJavaEnvConfiguration(443, null, null, NON_PROXY_HOSTS, true),
@@ -311,12 +311,12 @@ public class ProxyOptionsTests {
                 PROXY_HOST, 80, null, null, null),
 
             // Username only Java HTTP proxy.
-            Arguments.of(createJavaEnvConfiguration(80, PROXY_USER, null, null, false),
+            Arguments.of(createJavaEnvConfiguration(80, FAKE_PROXY_USER_PLACEHOLDER, null, null, false),
                 PROXY_HOST, 80, null, null, null),
 
             // Complete Java HTTP proxy.
-            Arguments.of(createJavaEnvConfiguration(80, PROXY_USER, PROXY_PASSWORD, null, false),
-                PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, null),
+            Arguments.of(createJavaEnvConfiguration(80, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null, false),
+                PROXY_HOST, 80, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null),
 
             // Java HTTP proxy with non-proxying hosts.
             Arguments.of(createJavaEnvConfiguration(80, null, null, NON_PROXY_HOSTS, false),
@@ -338,12 +338,12 @@ public class ProxyOptionsTests {
                 PROXY_HOST, 443, null, null, null),
 
             // Username only Java HTTPS proxy.
-            Arguments.of(createExplicitConfiguration(443, PROXY_USER, null, null),
+            Arguments.of(createExplicitConfiguration(443, FAKE_PROXY_USER_PLACEHOLDER, null, null),
                 PROXY_HOST, 443, null, null, null),
 
             // Complete Java HTTPS proxy.
-            Arguments.of(createExplicitConfiguration(443, PROXY_USER, PROXY_PASSWORD, null),
-                PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
+            Arguments.of(createExplicitConfiguration(443, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null),
+                PROXY_HOST, 443, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null),
 
             // Java HTTPS proxy with non-proxying hosts.
             Arguments.of(createExplicitConfiguration(443, null, null, NON_PROXY_HOSTS),

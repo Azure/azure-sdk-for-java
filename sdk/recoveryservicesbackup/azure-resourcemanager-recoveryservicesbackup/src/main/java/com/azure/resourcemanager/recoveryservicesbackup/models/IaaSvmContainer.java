@@ -26,15 +26,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class IaaSvmContainer extends ProtectionContainer {
     /*
-     * Fully qualified ARM url of the virtual machine represented by this Azure
-     * IaaS VM container.
+     * Fully qualified ARM url of the virtual machine represented by this Azure IaaS VM container.
      */
     @JsonProperty(value = "virtualMachineId")
     private String virtualMachineId;
 
     /*
-     * Specifies whether the container represents a Classic or an Azure
-     * Resource Manager VM.
+     * Specifies whether the container represents a Classic or an Azure Resource Manager VM.
      */
     @JsonProperty(value = "virtualMachineVersion")
     private String virtualMachineVersion;
@@ -44,6 +42,10 @@ public class IaaSvmContainer extends ProtectionContainer {
      */
     @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
+
+    /** Creates an instance of IaaSvmContainer class. */
+    public IaaSvmContainer() {
+    }
 
     /**
      * Get the virtualMachineId property: Fully qualified ARM url of the virtual machine represented by this Azure IaaS

@@ -17,6 +17,10 @@ public final class GenerateExpressRoutePortsLoaRequest {
     @JsonProperty(value = "customerName", required = true)
     private String customerName;
 
+    /** Creates an instance of GenerateExpressRoutePortsLoaRequest class. */
+    public GenerateExpressRoutePortsLoaRequest() {
+    }
+
     /**
      * Get the customerName property: The customer name.
      *
