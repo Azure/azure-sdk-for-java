@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -80,8 +81,10 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         new ConcurrentHashMap<>();
     private final AmqpRetryOptions retryOptions;
 
+    private final Tracer tracer;
+
     EventHubBufferedProducerAsyncClient(EventHubClientBuilder builder, BufferedProducerClientOptions clientOptions,
-        PartitionResolver partitionResolver, AmqpRetryOptions retryOptions) {
+        PartitionResolver partitionResolver, AmqpRetryOptions retryOptions, Tracer tracer) {
         this.client = builder.buildAsyncProducerClient();
         this.clientOptions = clientOptions;
         this.partitionResolver = partitionResolver;
@@ -101,6 +104,8 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         this.partitionIdsMono = initialisationMono.then(Mono.fromCallable(() -> {
             return new ArrayList<>(partitionProducers.keySet()).toArray(new String[0]);
         })).cache();
+
+        this.tracer = tracer;
     }
 
     /**
@@ -368,7 +373,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         final Sinks.Many<EventData> eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
 
         return new EventHubBufferedPartitionProducer(client, partitionId, clientOptions, retryOptions,
-            eventSink, eventQueue);
+            eventSink, eventQueue, tracer);
     }
 
     /**

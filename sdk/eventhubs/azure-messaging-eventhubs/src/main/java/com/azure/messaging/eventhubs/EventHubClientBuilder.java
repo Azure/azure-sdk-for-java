@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
@@ -17,7 +16,6 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
@@ -36,25 +34,22 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
-import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.ServiceLoader;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -727,7 +722,7 @@ public class EventHubClientBuilder implements
                 + "string. using EventHubClientBuilder.consumerGroup(String)"));
         }
 
-        return buildAsyncClient().createConsumer(consumerGroup, prefetchCount);
+        return buildAsyncClient().createConsumer(consumerGroup, prefetchCount, false);
     }
 
     /**
@@ -808,6 +803,7 @@ public class EventHubClientBuilder implements
 
         final Meter meter = MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
             clientOptions == null ? null : clientOptions.getMetricsOptions());
+
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final EventHubConnectionProcessor processor;
@@ -826,8 +822,6 @@ public class EventHubClientBuilder implements
             processor = buildConnectionProcessor(messageSerializer, meter);
         }
 
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
         String identifier;
         if (clientOptions instanceof AmqpClientOptions) {
             String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
@@ -836,8 +830,8 @@ public class EventHubClientBuilder implements
             identifier = UUID.randomUUID().toString();
         }
 
-        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, identifier, meter);
+        return new EventHubAsyncClient(processor, messageSerializer, scheduler,
+            isSharedConnection.get(), this::onClientClose, identifier, meter, EventHubsTracer.getDefaultTracer());
     }
 
     /**
@@ -897,6 +891,11 @@ public class EventHubClientBuilder implements
         }
     }
 
+    Meter createMeter() {
+        return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+            clientOptions == null ? null : clientOptions.getMetricsOptions());
+    }
+
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
@@ -952,7 +951,7 @@ public class EventHubClientBuilder implements
         }
 
         if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(buildConfiguration);
+            proxyOptions = ProxyOptions.fromConfiguration(buildConfiguration);
         }
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
@@ -983,51 +982,6 @@ public class EventHubClientBuilder implements
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
                 options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
                 customEndpointAddress.getPort());
-        }
-    }
-
-    private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
-        ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
-        if (proxyOptions != null) {
-            authentication = proxyOptions.getAuthentication();
-        }
-
-        String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
-
-        if (CoreUtils.isNullOrEmpty(proxyAddress)) {
-            return ProxyOptions.SYSTEM_DEFAULTS;
-        }
-
-        return getProxyOptions(authentication, proxyAddress, configuration,
-            Boolean.parseBoolean(configuration.get("java.net.useSystemProxies")));
-    }
-
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
-                                         Configuration configuration, boolean useSystemProxies) {
-        String host;
-        int port;
-        if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
-            final String[] hostPort = proxyAddress.split(":");
-            host = hostPort[0];
-            port = Integer.parseInt(hostPort[1]);
-            final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-            final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
-            final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
-            return new ProxyOptions(authentication, proxy, username, password);
-        } else if (useSystemProxies) {
-            // java.net.useSystemProxies needs to be set to true in this scenario.
-            // If it is set to false 'ProxyOptions' in azure-core will return null.
-            com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
-                .fromConfiguration(configuration);
-            Proxy.Type proxyType = coreProxyOptions.getType().toProxyType();
-            InetSocketAddress coreProxyAddress = coreProxyOptions.getAddress();
-            String username = coreProxyOptions.getUsername();
-            String password = coreProxyOptions.getPassword();
-            return new ProxyOptions(authentication, new Proxy(proxyType, coreProxyAddress), username, password);
-        } else {
-            LOGGER.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
-                + "set or was false.");
-            return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }
 }
