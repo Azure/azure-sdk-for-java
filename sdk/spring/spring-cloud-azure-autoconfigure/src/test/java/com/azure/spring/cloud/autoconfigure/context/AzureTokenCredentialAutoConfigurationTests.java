@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.AzureCliCredential;
+import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.DefaultAzureCredential;
@@ -144,20 +146,40 @@ class AzureTokenCredentialAutoConfigurationTests {
 
 
     @Test
-    void emptyPropertiesShouldResolveDAC() {
+    void emptyPropertiesShouldResolveDefaultTokenCredentialDac() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
 
         contextRunner
             .withBean(AzureGlobalProperties.class, () -> properties)
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                    assertThat(context).hasBean(AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME);
+                    Assertions.assertEquals(DefaultAzureCredential.class, context.getBean(AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME).getClass());
                     AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
                     Assertions.assertEquals(DefaultAzureCredential.class, resolver.resolve(properties).getClass());
                 });
     }
 
     @Test
-    void shouldResolveClientSecretTokenCredential() {
+    void emptyPropertiesShouldResolveDefaultTokenCredential() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        AzureCliCredential azureCliCredential = new AzureCliCredentialBuilder().build();
+
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+            .withBean(AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class, () -> azureCliCredential)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                assertThat(context).hasBean(AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME);
+                Assertions.assertEquals(AzureCliCredential.class, context.getBean(AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME).getClass());
+
+                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+                Assertions.assertEquals(AzureCliCredential.class, resolver.resolve(properties).getClass());
+            });
+    }
+
+    @Test
+    void shouldResolveClientSecretTokenCredentialCli() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
         properties.getCredential().setClientId("test-client-id");
         properties.getCredential().setClientSecret("test-client-secret");
