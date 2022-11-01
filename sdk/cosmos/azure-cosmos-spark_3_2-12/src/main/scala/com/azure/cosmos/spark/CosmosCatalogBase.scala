@@ -15,7 +15,7 @@ import com.azure.cosmos.models._
 import com.azure.cosmos.CosmosException
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
-import org.apache.spark.sql.connector.catalog._
+import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, Table, TableCatalog, TableChange}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 import org.apache.spark.sql.types.StructType
@@ -249,21 +249,13 @@ class CosmosCatalogBase
     }
 
     /**
-     * Drop a namespace from the catalog.
+     * Drop a namespace from the catalog, recursively dropping all objects within the namespace.
      *
      * @param namespace - a multi-part namespace
-     * @param cascade - Flag to indicate whether recursively dropping all objects within the namespace
      * @return true if the namespace was dropped
      */
     @throws(classOf[NoSuchNamespaceException])
-    @throws(classOf[IllegalStateException])
-    def dropNamespaceBase(namespace: Array[String], cascade: Boolean): Boolean = {
-        if (!cascade) {
-            if (this.listTables(namespace).length > 0) {
-                throw new IllegalStateException(s"Namespace $namespace is not empty")
-            }
-        }
-
+    def dropNamespaceBase(namespace: Array[String]): Boolean = {
         TransientErrorsRetryPolicy.executeWithRetry(() => dropNamespaceImpl(namespace))
     }
 

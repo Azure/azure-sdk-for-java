@@ -42,7 +42,7 @@ class CosmosCatalog
 
     @throws(classOf[NoSuchNamespaceException])
     override def dropNamespace(namespace: Array[String]): Boolean = {
-        super.dropNamespaceBase(namespace, true)
+        super.dropNamespaceBase(namespace)
     }
 
 }

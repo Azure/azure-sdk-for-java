@@ -42,14 +42,8 @@ class CosmosCatalog
 
     @throws(classOf[NoSuchNamespaceException])
     override def dropNamespace(namespace: Array[String]): Boolean = {
-        super.dropNamespaceBase(namespace, true)
+        super.dropNamespaceBase(namespace)
     }
-
-    /*    @throws(classOf[NoSuchNamespaceException])
-        override def dropNamespace(namespace: isCascade): Boolean = {
-            TransientErrorsRetryPolicy.executeWithRetry(() => dropNamespaceImpl(namespace))
-        }*/
-
 }
 // scalastyle:on multiple.string.literals
 // scalastyle:on number.of.methods
