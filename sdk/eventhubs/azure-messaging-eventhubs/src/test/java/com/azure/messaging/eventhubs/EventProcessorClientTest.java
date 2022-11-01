@@ -680,9 +680,7 @@ public class EventProcessorClientTest {
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         // Use 200 milliseconds to process per event/eventBatch.
-        final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(200);
-        CountDownLatch countDownLatch = new CountDownLatch(3);
-        testPartitionProcessor.countDownLatch = countDownLatch;
+        final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(200, 3);
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
@@ -690,7 +688,7 @@ public class EventProcessorClientTest {
 
         // Act
         eventProcessorClient.start();
-        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
+        boolean completed = testPartitionProcessor.awaitForEvents(10);
         eventProcessorClient.stop();
 
         // Assert
@@ -730,9 +728,7 @@ public class EventProcessorClientTest {
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         // Use 5000 milliseconds to process per event/eventBatch.
-        final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(5000);
-        CountDownLatch countDownLatch = new CountDownLatch(3);
-        testPartitionProcessor.countDownLatch = countDownLatch;
+        final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(5000, 3);
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
@@ -740,7 +736,7 @@ public class EventProcessorClientTest {
 
         // Act
         eventProcessorClient.start();
-        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
+        boolean completed = testPartitionProcessor.awaitForEvents(10);
         eventProcessorClient.stop();
 
         // Assert
@@ -750,23 +746,25 @@ public class EventProcessorClientTest {
     }
 
     private static final class MonitorPartitionProcessor extends PartitionProcessor {
-        CountDownLatch countDownLatch;
+        private final CountDownLatch countDownLatch;
         boolean isInterrupted = false;
-        long sleepTime;
+        private final long sleepTime;
 
-        MonitorPartitionProcessor(long sleepTimeInMills) {
+        MonitorPartitionProcessor(long sleepTimeInMills, int eventsCount) {
             super();
             sleepTime = sleepTimeInMills;
+            countDownLatch = new CountDownLatch(eventsCount);
         }
 
+        public boolean awaitForEvents(int timeoutInSec) throws InterruptedException {
+            return countDownLatch.await(timeoutInSec, TimeUnit.SECONDS);
+        }
 
         @Override
         public void processEvent(EventContext eventContext) {
             if (eventContext.getEventData() != null) {
-                if (countDownLatch != null) {
-                    countDownLatch.countDown();
-                    eventContext.updateCheckpoint();
-                }
+                countDownLatch.countDown();
+                eventContext.updateCheckpoint();
             }
             try {
                 TimeUnit.MILLISECONDS.sleep(sleepTime);
@@ -778,9 +776,7 @@ public class EventProcessorClientTest {
         @Override
         public void processEventBatch(EventBatchContext eventBatchContext) {
             eventBatchContext.getEvents().forEach(eventContext -> {
-                if (countDownLatch != null) {
-                    countDownLatch.countDown();
-                }
+                countDownLatch.countDown();
             });
             eventBatchContext.updateCheckpoint();
             try {

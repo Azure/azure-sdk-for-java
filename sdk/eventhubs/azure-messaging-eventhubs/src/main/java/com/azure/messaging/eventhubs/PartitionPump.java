@@ -24,6 +24,8 @@ class PartitionPump implements AutoCloseable {
     private final Scheduler scheduler;
     private LastEnqueuedEventProperties lastEnqueuedEventProperties;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    // Period for scheduler to be disposed of gracefully. In normal times, it won't take this long time to dispose the scheduler.
+    private final Duration disposedPeriod = Duration.ofSeconds(1);
 
     /**
      * Creates an instance with the given client and scheduler.
@@ -79,8 +81,10 @@ class PartitionPump implements AutoCloseable {
                 .log("Exception occurred disposing of consumer client.", error);
         } finally {
             try {
-                ReactorShim.disposeGracefully(scheduler).block(Duration.ofSeconds(1));
+                ReactorShim.disposeGracefully(scheduler).block(disposedPeriod);
             } catch (IllegalStateException e) {
+                // If the scheduler cannot be disposed of gracefully within the grace period,
+                // then an IllegalStateException is thrown, on which we do eager disposal.
                 scheduler.dispose();
             }
         }
