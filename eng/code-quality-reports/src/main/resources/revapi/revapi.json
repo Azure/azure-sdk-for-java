@@ -520,6 +520,43 @@
           "justification": "Bean configuration will not be used by customer in java code."
         },
         {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter()",
+          "new": "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration"
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.added",
+          "old": "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter()",
+          "new": "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
+          "annotation": "@org.springframework.boot.autoconfigure.condition.ConditionalOnClass({com.fasterxml.jackson.databind.ObjectMapper.class})",
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter()",
+          "new": "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration"
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.added",
+          "old": "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter()",
+          "new": "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
+          "annotation": "@org.springframework.boot.autoconfigure.condition.ConditionalOnClass({com.fasterxml.jackson.databind.ObjectMapper.class})",
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::messageConverter()",
+          "new": "method com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::messageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration "
+        },
+        {
           "regex": true,
           "code": "java.annotation.added",
           "new": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentField|DocumentLine)",
