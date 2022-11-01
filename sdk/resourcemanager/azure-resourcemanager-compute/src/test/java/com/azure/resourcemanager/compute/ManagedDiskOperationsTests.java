@@ -298,6 +298,13 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
                 .withIncremental(true)
                 .create();
 
+        Assertions.assertTrue(snapshotSameRegion.incremental());
+        Assertions.assertEquals(CreationSourceType.COPIED_FROM_SNAPSHOT, snapshotSameRegion.source().type());
+        Assertions.assertEquals(DiskCreateOption.COPY_START, snapshotSameRegion.creationMethod());
+        Assertions.assertNull(snapshotSameRegion.copyCompletionError());
+        // we don't wait for CopyStart to finish, so it should be in progress
+        Assertions.assertNotEquals(100, snapshotSameRegion.copyCompletionPercent());
+
         computeManager
             .snapshots()
             .deleteById(snapshotSameRegion.id());
@@ -315,13 +322,6 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
                 .withIncremental(true)
                 .create();
         });
-
-        Assertions.assertTrue(snapshotSameRegion.incremental());
-        Assertions.assertEquals(CreationSourceType.COPIED_FROM_SNAPSHOT, snapshotSameRegion.source().type());
-        Assertions.assertEquals(DiskCreateOption.COPY_START, snapshotSameRegion.creationMethod());
-        Assertions.assertNull(snapshotSameRegion.copyCompletionError());
-        // we don't wait for CopyStart to finish, so it should be in progress
-        Assertions.assertNotEquals(100, snapshotSameRegion.copyCompletionPercent());
 
         // copy the snapshot to a new region
         Snapshot snapshotNewRegion =
