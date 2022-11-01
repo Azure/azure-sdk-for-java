@@ -60,6 +60,9 @@ import com.azure.cosmos.implementation.apachecommons.codec.binary.StringUtils;
  *      Apache Hive Murmer3</a>
  * @since 1.13
  */
+/**
+ * This class is shaded from version 1.14 of apache commons-codec library
+ */
 public final class MurmurHash3 {
 
     /**

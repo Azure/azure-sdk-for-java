@@ -33,6 +33,9 @@ package com.azure.cosmos.implementation.apachecommons.codec.binary;
  * @see CharSequence
  * @since 1.10
  */
+/**
+ * This class is shaded from version 1.14 of apache commons-codec library
+ */
 public class CharSequenceUtils {
 
     /**
