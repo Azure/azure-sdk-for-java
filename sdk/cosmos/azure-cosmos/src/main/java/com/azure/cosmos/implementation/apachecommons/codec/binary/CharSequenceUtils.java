@@ -1,5 +1,3 @@
-package com.azure.cosmos.implementation.apachecommons.codec.binary;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -16,6 +14,13 @@ package com.azure.cosmos.implementation.apachecommons.codec.binary;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
+package com.azure.cosmos.implementation.apachecommons.codec.binary;
+
 
 /**
  * <p>

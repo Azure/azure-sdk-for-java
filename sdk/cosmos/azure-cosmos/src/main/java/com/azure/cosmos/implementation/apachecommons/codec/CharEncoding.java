@@ -1,5 +1,3 @@
-package com.azure.cosmos.implementation.apachecommons.codec;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,6 +15,11 @@ package com.azure.cosmos.implementation.apachecommons.codec;
  * limitations under the License.
  */
 
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
+package com.azure.cosmos.implementation.apachecommons.codec;
 
 /**
  * Character encoding names required of every implementation of the Java platform.
