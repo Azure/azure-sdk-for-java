@@ -43,7 +43,7 @@ class CosmosCatalog
 
     @throws(classOf[NoSuchNamespaceException])
     override def dropNamespace(namespace: Array[String], cascade: Boolean): Boolean = {
-        super.dropNamespaceBase(namespace)
+        super.dropNamespaceBase(namespace, cascade)
     }
 }
 // scalastyle:on multiple.string.literals

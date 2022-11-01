@@ -249,13 +249,21 @@ class CosmosCatalogBase
     }
 
     /**
-     * Drop a namespace from the catalog, recursively dropping all objects within the namespace.
+     * Drop a namespace from the catalog.
      *
      * @param namespace - a multi-part namespace
+     * @param cascade - Flag to indicate whether recursively dropping all objects within the namespace
      * @return true if the namespace was dropped
      */
     @throws(classOf[NoSuchNamespaceException])
-    def dropNamespaceBase(namespace: Array[String]): Boolean = {
+    @throws(classOf[IllegalStateException])
+    def dropNamespaceBase(namespace: Array[String], cascade: Boolean): Boolean = {
+        if (!cascade) {
+            if (this.listTables(namespace).length > 0) {
+                throw new IllegalStateException(s"Namespace $namespace is not empty")
+            }
+        }
+
         TransientErrorsRetryPolicy.executeWithRetry(() => dropNamespaceImpl(namespace))
     }
 
