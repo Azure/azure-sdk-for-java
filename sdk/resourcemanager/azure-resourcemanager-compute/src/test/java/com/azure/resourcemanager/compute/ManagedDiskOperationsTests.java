@@ -5,7 +5,8 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.CreationSourceType;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
@@ -14,8 +15,6 @@ import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -294,7 +293,6 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
                 .withExistingResourceGroup(resourceGroup)
                 .withDataFromSnapshot(snapshot)
                 .withCopyStart()
-                .withoutWaitForCompletion()
                 .withIncremental(true)
                 .create();
 
@@ -309,19 +307,17 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
             .snapshots()
             .deleteById(snapshotSameRegion.id());
 
-        Assertions.assertThrows(ManagementException.class, () -> {
-            computeManager
-                .snapshots()
-                .define(snapshotName2)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withDataFromSnapshot(snapshot)
-                .withCopyStart()
-                // timeout is sure to be reached, so that exception can be thrown
-                .withWaitForCompletion(Duration.ofMillis(1), true)
-                .withIncremental(true)
-                .create();
-        });
+        Snapshot snapshotSameRegion2 = computeManager
+            .snapshots()
+            .define(snapshotName2)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withDataFromSnapshot(snapshot)
+            .withCopyStart()
+            .withIncremental(true)
+            .create();
+        Assertions.assertFalse(snapshotSameRegion2.awaitCopyStartCompletion(Duration.ofMillis(1)));
+        Assertions.assertTrue(snapshotSameRegion2.awaitCopyStartCompletion(Duration.ofHours(24)));
 
         // copy the snapshot to a new region
         Snapshot snapshotNewRegion =
@@ -332,9 +328,9 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
                 .withExistingResourceGroup(resourceGroup2)
                 .withDataFromSnapshot(snapshot)
                 .withCopyStart()
-                .withWaitForCompletion()
                 .withIncremental(true)
                 .create();
+        snapshotNewRegion.awaitCopyStartCompletion();
 
         Assertions.assertTrue(snapshotNewRegion.incremental());
         Assertions.assertEquals(CreationSourceType.COPIED_FROM_SNAPSHOT, snapshotNewRegion.source().type());

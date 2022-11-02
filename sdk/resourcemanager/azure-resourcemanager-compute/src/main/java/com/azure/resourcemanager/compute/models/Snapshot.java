@@ -42,7 +42,7 @@ public interface Snapshot
      * Gets the percentage complete for the background copy when a resource is created via the CopyStart operation.
      * <p>For latest progress,{@link Snapshot#refresh()} or {@link Snapshot#refreshAsync()} should be called prior to this method.</p>
      *
-     * @return the percentage complete, ranging from 0 to 100
+     * @return the percentage complete, ranging from 0 to 100, or null if {@link Snapshot#creationMethod()} is not {@link DiskCreateOption#COPY_START}
      */
     Float copyCompletionPercent();
 
@@ -81,6 +81,27 @@ public interface Snapshot
      */
     Mono<Void> revokeAccessAsync();
 
+    /**
+     * Await CopyStart completion indefinitely unless errors are encountered.
+     */
+    void awaitCopyStartCompletion();
+
+    /**
+     * Await CopyStart completion for a specified timeout.
+     *
+     * @param maxWaitTime max timeout to wait for completion
+     * @return true if CopyStart complete successfully, false if timeout
+     * @throws com.azure.core.management.exception.ManagementException if exceptions are encountered
+     */
+    Boolean awaitCopyStartCompletion(Duration maxWaitTime);
+
+    /**
+     * Await CopyStart completion in async manner.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> awaitCopyStartCompletionAsync();
+
     /** The entirety of the managed snapshot definition. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -92,7 +113,6 @@ public interface Snapshot
             DefinitionStages.WithDataSnapshotFromVhd,
             DefinitionStages.WithDataSnapshotFromDisk,
             DefinitionStages.WithDataSnapshotFromSnapshot,
-        DefinitionStages.WithWaitForCopyStartCompletion,
             DefinitionStages.WithCreate {
     }
 
@@ -286,59 +306,14 @@ public interface Snapshot
              * There are important scenarios (copying across zones, copying from main region to edge location and other way around)
              * where it is necessary to use CopyStart within the same region. </p>
              * <p>Note: For now, CopyStart is only supported for creating an incremental snapshot from an incremental snapshot.</p>
+             * <p>Before you can use the copied snapshot for future use (e.g. create disk), you should wait for the CopyStart
+             * completion by calling {@link Snapshot#awaitCopyStartCompletion()} or {@link Snapshot#awaitCopyStartCompletion(Duration)}
+             * to wait synchronously, or {@link Snapshot#awaitCopyStartCompletionAsync()} to wait asynchronously.</p>
              *
              * @see DiskCreateOption
              * @return the next stage of the definition
              */
-            WithWaitForCopyStartCompletion withCopyStart();
-        }
-
-        /** The stage of the managed snapshot definition allowing to wait for CopyStart completion.*/
-        interface WithWaitForCopyStartCompletion {
-            /**
-             * Specifies to wait for CopyStart completion indefinitely unless errors are encountered.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate withWaitForCompletion();
-
-            /**
-             * Specifies to wait for CopyStart completion for a specified timeout. If the operation is not complete when
-             * the timeout is reached, simply stop waiting and proceed without throwing exceptions.
-             * <p>Operation progress can be retrieved through {@link Snapshot#copyCompletionPercent()} and any errors through
-             * {@link Snapshot#copyCompletionError()}.
-             * <p>Note: Before you can use the copied snapshot for future use (e.g. create disk), you should wait for
-             * the CopyStart completion.</p>
-             *
-             * @param maxWaitTime max timeout to wait for the CopyStart operation to finish
-             * @return the next stage of the definition
-             */
-            WithCreate withWaitForCompletion(Duration maxWaitTime);
-
-            /**
-             * Specifies to wait for CopyStart completion for a specified timeout. If the operation is not complete when
-             * the timeout is reached, stop waiting and proceed with or without exception by specified parameter.
-             * <p>Operation progress can be retrieved through {@link Snapshot#copyCompletionPercent()} and any errors through
-             * {@link Snapshot#copyCompletionError()}.
-             * <p>Note: Before you can use the copied snapshot for future use (e.g. create disk), you should wait for
-             * the CopyStart completion.</p>
-             *
-             * @param maxWaitTime max timeout to wait for the CopyStart operation to finish
-             * @param exceptionOnTimeout whether to throw exception if the operation is not complete when max wait time is reached.
-             * @return the next stage of the definition
-             */
-            WithCreate withWaitForCompletion(Duration maxWaitTime, boolean exceptionOnTimeout);
-
-            /**
-             * Specifies not to wait for the CopyStart completion.
-             * <p>Operation progress can be retrieved through {@link Snapshot#copyCompletionPercent()} and any errors through
-             * {@link Snapshot#copyCompletionError()}.
-             * <p>Note: Before you can use the copied snapshot for future use (e.g. create disk), you should wait for
-             * the CopyStart completion.</p>
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate withoutWaitForCompletion();
+            WithCreate withCopyStart();
         }
 
         /** The stage of the managed disk definition allowing to choose a source operating system image. */

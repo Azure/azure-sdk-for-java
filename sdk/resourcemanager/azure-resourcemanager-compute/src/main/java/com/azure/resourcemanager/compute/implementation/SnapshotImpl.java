@@ -32,11 +32,8 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     private final ClientLogger logger = new ClientLogger(SnapshotImpl.class);
 
-    private final CopyStartOptions copyStartOptions;
-
     SnapshotImpl(String name, SnapshotInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
-        this.copyStartOptions = new CopyStartOptions();
     }
 
     @Override
@@ -107,6 +104,47 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     @Override
     public Mono<Void> revokeAccessAsync() {
         return this.manager().serviceClient().getSnapshots().revokeAccessAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void awaitCopyStartCompletion() {
+        awaitCopyStartCompletionAsync().block();
+    }
+
+    @Override
+    public Boolean awaitCopyStartCompletion(Duration maxWaitTime) {
+        Objects.requireNonNull(maxWaitTime);
+        if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
+            throw new IllegalArgumentException(String.format("Max wait time is non-positive: %dms", maxWaitTime.toMillis()));
+        }
+        return this.awaitCopyStartCompletionAsync()
+            .then(Mono.just(Boolean.TRUE))
+            .timeout(maxWaitTime, Mono.just(Boolean.FALSE))
+            .block();
+    }
+
+    @Override
+    public Mono<Void> awaitCopyStartCompletionAsync() {
+        return getInnerAsync()
+            .flatMap(inner -> {
+                setInner(inner);
+                Mono<SnapshotInner> result = Mono.just(inner);
+                if (inner.copyCompletionError() != null) { // service error
+                    result = Mono.error(new ManagementException(inner.copyCompletionError().errorMessage(), null));
+                } else if (inner.completionPercent() == null || inner.completionPercent() != 100) { // in progress
+                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.",
+                        inner.name(), inner.completionPercent());
+                    result = Mono.empty();
+                }
+                return result;
+            })
+            .repeatWhenEmpty(longFlux ->
+                longFlux
+                    .flatMap(
+                        index ->
+                            Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
+                                manager().serviceClient().getDefaultPollInterval()))))
+            .then();
     }
 
     @Override
@@ -319,44 +357,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
             .serviceClient()
             .getSnapshots()
             .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
-            .map(innerToFluentMap(this))
-            .flatMap(snapshot -> {
-                if (snapshot.creationMethod() == DiskCreateOption.COPY_START && copyStartOptions.waitForCompletion) {
-                    return waitCopyStartToFinish();
-                } else {
-                    return Mono.just(snapshot);
-                }
-            });
-    }
-
-    @Override
-    public SnapshotImpl withWaitForCompletion() {
-        this.copyStartOptions.waitForCompletion = true;
-        this.copyStartOptions.timeout = Duration.ofMillis(Long.MAX_VALUE);
-        return this;
-    }
-
-    @Override
-    public SnapshotImpl withWaitForCompletion(Duration maxWaitTime) {
-        return withWaitForCompletion(maxWaitTime, false);
-    }
-
-    @Override
-    public SnapshotImpl withWaitForCompletion(Duration maxWaitTime, boolean exceptionOnTimeout) {
-        Objects.requireNonNull(maxWaitTime);
-        if (maxWaitTime.isNegative()) {
-            throw new IllegalArgumentException(String.format("Max wait time is negative: %dms", maxWaitTime.toMillis()));
-        }
-        this.copyStartOptions.waitForCompletion = true;
-        this.copyStartOptions.timeout = maxWaitTime;
-        this.copyStartOptions.exceptionOnTimeout = exceptionOnTimeout;
-        return this;
-    }
-
-    @Override
-    public SnapshotImpl withoutWaitForCompletion() {
-        this.copyStartOptions.waitForCompletion = false;
-        return this;
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -382,58 +383,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
-        }
-    }
-
-    private Mono<Snapshot> waitCopyStartToFinish() {
-        final long startTime = System.currentTimeMillis();
-        return getInnerAsync()
-            .flatMap(inner -> {
-                setInner(inner);
-                Mono<SnapshotInner> result = Mono.just(inner);
-                if (inner.copyCompletionError() != null) { // service error
-                    result = Mono.error(new ManagementException(inner.copyCompletionError().errorMessage(), null));
-                } else if (Duration.ofMillis(System.currentTimeMillis() - startTime)
-                    .compareTo(copyStartOptions.timeout) > 0) { // timeout
-                    if (copyStartOptions.exceptionOnTimeout) {
-                        result = Mono.error(
-                            new ManagementException(
-                                String.format("Timeout waiting for CopyStart end for snapshot: %s, maxWaitTime: %s.",
-                                    inner.name(), copyStartOptions.timeout), null));
-                    } else {
-                        logger.warning("Timeout waiting for CopyStart end for snapshot: {}, maxWaitTime: {}.",
-                            inner.name(), copyStartOptions.timeout);
-                    }
-                } else if (inner.completionPercent() == null || inner.completionPercent() != 100) { // in progress
-                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.",
-                        inner.name(), inner.completionPercent());
-                    result = Mono.empty();
-                }
-                return result;
-            })
-            .repeatWhenEmpty(longFlux ->
-                longFlux
-                    .flatMap(
-                        index ->
-                            Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
-                                manager().serviceClient().getDefaultPollInterval()))))
-            .map(innerToFluentMap(SnapshotImpl.this));
-    }
-
-    private static class CopyStartOptions {
-
-        private Duration timeout;
-        private boolean waitForCompletion;
-        private boolean exceptionOnTimeout;
-
-        CopyStartOptions() {
-            reset();
-        }
-
-        private void reset() {
-            this.timeout = Duration.ofMillis(Long.MAX_VALUE);
-            this.waitForCompletion = true;
-            this.exceptionOnTimeout = false;
         }
     }
 }
