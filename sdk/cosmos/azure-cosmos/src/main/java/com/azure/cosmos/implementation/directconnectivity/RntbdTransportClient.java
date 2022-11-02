@@ -234,29 +234,34 @@ public class RntbdTransportClient extends TransportClient {
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 
-        record.whenComplete((response, throwable) -> {
+        return Mono.fromFuture(record).map(storeResponse -> {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
             if (request.requestContext.cosmosDiagnostics == null) {
                 request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
             }
 
-            if (response != null) {
-                RequestTimeline timeline = record.takeTimelineSnapshot();
-                response.setRequestTimeline(timeline);
-                response.setEndpointStatistics(record.serviceEndpointStatistics());
-                response.setRntbdResponseLength(record.responseLength());
-                response.setRntbdRequestLength(record.requestLength());
-                response.setRequestPayloadLength(request.getContentLength());
-                response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
-                response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
-                if(this.channelAcquisitionContextEnabled) {
-                    response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
-                }
+            RequestTimeline timeline = record.takeTimelineSnapshot();
+            storeResponse.setRequestTimeline(timeline);
+            storeResponse.setEndpointStatistics(record.serviceEndpointStatistics());
+            storeResponse.setRntbdResponseLength(record.responseLength());
+            storeResponse.setRntbdRequestLength(record.requestLength());
+            storeResponse.setRequestPayloadLength(request.getContentLength());
+            storeResponse.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
+            storeResponse.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
+            if(this.channelAcquisitionContextEnabled) {
+                storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
-        });
 
-        return Mono.fromFuture(record).onErrorMap(throwable -> {
+            return storeResponse;
+
+        }).onErrorMap(throwable -> {
+
+            record.stage(RntbdRequestRecord.Stage.COMPLETED);
+
+            if (request.requestContext.cosmosDiagnostics == null) {
+                request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
+            }
 
             Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
