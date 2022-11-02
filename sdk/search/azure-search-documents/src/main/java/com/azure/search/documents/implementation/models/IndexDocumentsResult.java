@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,17 +19,8 @@ public final class IndexDocumentsResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<IndexingResult> results;
 
-    /**
-     * Creates an instance of IndexDocumentsResult class.
-     *
-     * @param results the results value to set.
-     */
-    @JsonCreator
-    public IndexDocumentsResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<IndexingResult> results) {
-        this.results = results;
-    }
+    /** Creates an instance of IndexDocumentsResult class. */
+    public IndexDocumentsResult() {}
 
     /**
      * Get the results property: The list of status information for each document in the indexing request.

@@ -10,7 +10,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.models.CaptionResult;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -52,17 +51,8 @@ public final class SearchResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of SearchResult class.
-     *
-     * @param score the score value to set.
-     */
-    @JsonCreator
-    public SearchResult(
-            @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    double score) {
-        this.score = score;
-    }
+    /** Creates an instance of SearchResult class. */
+    public SearchResult() {}
 
     /**
      * Get the score property: The relevance score of the document compared to other documents returned by the query.

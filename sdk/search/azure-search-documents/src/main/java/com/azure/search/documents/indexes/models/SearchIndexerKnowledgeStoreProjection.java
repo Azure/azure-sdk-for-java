@@ -31,6 +31,9 @@ public final class SearchIndexerKnowledgeStoreProjection {
     @JsonProperty(value = "files")
     private List<SearchIndexerKnowledgeStoreFileProjectionSelector> files;
 
+    /** Creates an instance of SearchIndexerKnowledgeStoreProjection class. */
+    public SearchIndexerKnowledgeStoreProjection() {}
+
     /**
      * Get the tables property: Projections to Azure Table storage.
      *

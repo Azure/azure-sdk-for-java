@@ -27,4 +27,7 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
     @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.DataNoneIdentity";
+
+    /** Creates an instance of SearchIndexerDataNoneIdentity class. */
+    public SearchIndexerDataNoneIdentity() {}
 }

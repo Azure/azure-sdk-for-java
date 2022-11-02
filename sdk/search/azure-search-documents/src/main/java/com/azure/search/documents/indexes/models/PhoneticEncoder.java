@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PhoneticEncoder. */
+/** Identifies the type of phonetic encoder to use with a PhoneticTokenFilter. */
 public enum PhoneticEncoder {
     /** Enum value metaphone. */
     METAPHONE("metaphone"),
@@ -71,6 +71,7 @@ public enum PhoneticEncoder {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

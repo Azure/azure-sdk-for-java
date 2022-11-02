@@ -24,4 +24,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             value = SoftDeleteColumnDeletionDetectionPolicy.class)
 })
 @Immutable
-public abstract class DataDeletionDetectionPolicy {}
+public abstract class DataDeletionDetectionPolicy {
+
+    /** Creates an instance of DataDeletionDetectionPolicy class. */
+    public DataDeletionDetectionPolicy() {}
+}

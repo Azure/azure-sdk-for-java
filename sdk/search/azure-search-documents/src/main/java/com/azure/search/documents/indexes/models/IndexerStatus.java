@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IndexerStatus. */
+/** Represents the overall indexer status. */
 public enum IndexerStatus {
     /** Enum value unknown. */
     UNKNOWN("unknown"),
@@ -47,6 +47,7 @@ public enum IndexerStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

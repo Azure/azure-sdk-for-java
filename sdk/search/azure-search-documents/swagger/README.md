@@ -119,6 +119,7 @@ service-interface-as-public: true
 required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
+enable-sync-stack: true
 require-x-ms-flattened-to-flatten: true
 pass-discriminator-to-child-deserialization: true
 ```

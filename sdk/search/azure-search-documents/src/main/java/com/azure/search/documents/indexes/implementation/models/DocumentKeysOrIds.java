@@ -25,6 +25,9 @@ public final class DocumentKeysOrIds {
     @JsonProperty(value = "datasourceDocumentIds")
     private List<String> datasourceDocumentIds;
 
+    /** Creates an instance of DocumentKeysOrIds class. */
+    public DocumentKeysOrIds() {}
+
     /**
      * Get the documentKeys property: document keys to be reset.
      *

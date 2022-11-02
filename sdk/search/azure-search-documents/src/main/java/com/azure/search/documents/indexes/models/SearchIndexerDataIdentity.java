@@ -25,4 +25,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             value = SearchIndexerDataUserAssignedIdentity.class)
 })
 @Immutable
-public abstract class SearchIndexerDataIdentity {}
+public abstract class SearchIndexerDataIdentity {
+
+    /** Creates an instance of SearchIndexerDataIdentity class. */
+    public SearchIndexerDataIdentity() {}
+}

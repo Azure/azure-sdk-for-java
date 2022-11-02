@@ -19,6 +19,9 @@ public final class SkillNames {
     @JsonProperty(value = "skillNames")
     private List<String> skillNames;
 
+    /** Creates an instance of SkillNames class. */
+    public SkillNames() {}
+
     /**
      * Get the skillNames property: the names of skills to be reset.
      *

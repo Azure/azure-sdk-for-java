@@ -27,4 +27,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 @JsonTypeName("Similarity")
-public abstract class SimilarityAlgorithm {}
+public abstract class SimilarityAlgorithm {
+
+    /** Creates an instance of SimilarityAlgorithm class. */
+    public SimilarityAlgorithm() {}
+}

@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TextTranslationSkillLanguage. */
+/** The language codes supported for input text by TextTranslationSkill. */
 public final class TextTranslationSkillLanguage extends ExpandableStringEnum<TextTranslationSkillLanguage> {
     /** Static value af for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage AF = fromString("af");

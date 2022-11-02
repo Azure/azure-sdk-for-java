@@ -86,6 +86,9 @@ public final class SearchIndexerDataSource {
     @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
+    /** Creates an instance of SearchIndexerDataSource class. */
+    public SearchIndexerDataSource() {}
+
     /**
      * Get the name property: The name of the datasource.
      *

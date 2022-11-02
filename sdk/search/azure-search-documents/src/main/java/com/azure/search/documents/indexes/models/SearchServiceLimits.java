@@ -37,6 +37,9 @@ public final class SearchServiceLimits {
     @JsonProperty(value = "maxComplexObjectsInCollectionsPerDocument")
     private Integer maxComplexObjectsInCollectionsPerDocument;
 
+    /** Creates an instance of SearchServiceLimits class. */
+    public SearchServiceLimits() {}
+
     /**
      * Get the maxFieldsPerIndex property: The maximum allowed fields per index.
      *

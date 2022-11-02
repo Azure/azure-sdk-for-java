@@ -36,6 +36,9 @@ public abstract class CognitiveServicesAccount {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of CognitiveServicesAccount class. */
+    public CognitiveServicesAccount() {}
+
     /**
      * Get the description property: Description of the cognitive service resource attached to a skillset.
      *

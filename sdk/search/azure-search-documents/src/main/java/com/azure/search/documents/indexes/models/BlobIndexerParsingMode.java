@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobIndexerParsingMode. */
+/** Represents the parsing mode for indexing from an Azure blob data source. */
 public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndexerParsingMode> {
     /** Static value default for BlobIndexerParsingMode. */
     public static final BlobIndexerParsingMode DEFAULT = fromString("default");

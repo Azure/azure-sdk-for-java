@@ -6,13 +6,13 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Definition of additional projections to azure blob, table, or files, of enriched data. */
-@Fluent
+@Immutable
 public final class SearchIndexerKnowledgeStore {
     /*
      * The connection string to the storage account projections will be stored in.

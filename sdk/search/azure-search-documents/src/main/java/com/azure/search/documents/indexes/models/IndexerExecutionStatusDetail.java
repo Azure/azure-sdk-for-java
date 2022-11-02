@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IndexerExecutionStatusDetail. */
+/** Details the status of an individual indexer execution. */
 public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<IndexerExecutionStatusDetail> {
     /** Static value resetDocs for IndexerExecutionStatusDetail. */
     public static final IndexerExecutionStatusDetail RESET_DOCS = fromString("resetDocs");

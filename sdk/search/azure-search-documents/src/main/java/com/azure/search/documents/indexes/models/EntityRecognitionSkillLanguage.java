@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntityRecognitionSkillLanguage. */
+/** The language codes supported for input text by EntityRecognitionSkill. */
 public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<EntityRecognitionSkillLanguage> {
     /** Static value ar for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage AR = fromString("ar");

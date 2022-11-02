@@ -1199,7 +1199,7 @@ public final class SearchAsyncClient {
         return String.join(",", elements);
     }
 
-    private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
+    static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         List<IndexAction<T>> actions = new ArrayList<>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)

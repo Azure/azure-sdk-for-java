@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IndexerExecutionStatus. */
+/** Represents the status of an individual indexer execution. */
 public enum IndexerExecutionStatus {
     /** Enum value transientFailure. */
     TRANSIENT_FAILURE("transientFailure"),
@@ -50,6 +50,7 @@ public enum IndexerExecutionStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

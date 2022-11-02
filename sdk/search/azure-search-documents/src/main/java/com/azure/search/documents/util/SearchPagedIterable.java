@@ -5,13 +5,17 @@ package com.azure.search.documents.util;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.paging.ContinuablePagedIterable;
+import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Implementation of {@link ContinuablePagedIterable} where the continuation token type is {@link SearchRequest}, the
@@ -19,6 +23,8 @@ import java.util.Map;
  */
 public final class SearchPagedIterable extends PagedIterableBase<SearchResult, SearchPagedResponse> {
     private final SearchPagedFlux pagedFlux;
+    private final Supplier<SearchFirstPageResponseWrapper> metadataSupplier;
+
 
     /**
      * Creates an instance of {@link SearchPagedIterable}.
@@ -28,6 +34,31 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
     public SearchPagedIterable(SearchPagedFlux pagedFlux) {
         super(pagedFlux);
         this.pagedFlux = pagedFlux;
+        this.metadataSupplier = null;
+    }
+
+    /**
+     * Creates an instance of {@link SearchPagedFlux}.
+     *
+     * @param firstPageRetriever Supplied that handles retrieving {@link SearchPagedResponse SearchPagedResponses}.
+     */
+    public SearchPagedIterable(Supplier<SearchPagedResponse> firstPageRetriever) {
+        super(firstPageRetriever);
+        metadataSupplier = () -> new SearchFirstPageResponseWrapper().setFirstPageResponse(firstPageRetriever.get());
+    }
+
+    /**
+     * Creates an instance of {@link SearchPagedFlux}.
+     *
+     * @param firstPageRetriever Supplied that handles retrieving {@link SearchPagedResponse SearchPagedResponses}.
+     * @param nextPageRetriever Function that retrieves the next {@link SearchPagedResponse SearchPagedResponses} given
+     * a continuation token.
+     */
+    public SearchPagedIterable(Supplier<Mono<SearchPagedResponse>> firstPageRetriever,
+                           Function<String, Mono<SearchPagedResponse>> nextPageRetriever) {
+        super(firstPageRetriever, nextPageRetriever);
+        metadataSupplier = () -> firstPageRetriever.get().map(response ->
+            new SearchFirstPageResponseWrapper().setFirstPageResponse(response));
     }
 
     /**

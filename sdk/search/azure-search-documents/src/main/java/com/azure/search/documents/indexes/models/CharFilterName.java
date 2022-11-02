@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CharFilterName. */
+/** Defines the names of all character filters supported by Azure Cognitive Search. */
 public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
     /** Static value html_strip for CharFilterName. */
     public static final CharFilterName HTML_STRIP = fromString("html_strip");
