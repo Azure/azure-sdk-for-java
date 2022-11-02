@@ -147,13 +147,13 @@ This picture shows how the jdbc authentication plugin for MySQL authenticating w
 
 ![mysql_design.png](img/mysql_design.png)
 
-1. The JDBC auth plugin will get an accesstoken from Azure AD.
+1. The JDBC auth plugin will get an access token from Azure AD.
 2. The JDBC driver will take the token obtained from step 1 as the password ( `token as password`) to connect with the MySQL server.
-3. The MySQL server will check the accesstoken and authenticate internally.
+3. The MySQL server will check the access token and authenticate internally.
 
 ### Token as password
 
-Instead of using a password directly, using a token as the password is recommended. Access tokens can have restricted permissions and expiration times. From a security point of view, using shorter-lived access tokens is much safer than using a password.
+Instead of using a password directly, using a token as the password is recommended. Access tokens can have restricted permissions and expiration time. From a security point of view, using shorter-lived access tokens is much safer than using a password.
 
 ## Examples
 
@@ -224,7 +224,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 ### Customize Credential
 
-By default, the JDBC authentication plugin will authenticate with built-in credentials, but users can also authenticate with their customized credentials by providing customized TokenCredentialProvider.
+By default, the JDBC authentication plugin will authenticate with built-in credentials, but users can also authenticate with their credentials by providing customized TokenCredentialProvider.
 
 #### Customize CredentialProvider
 
@@ -275,7 +275,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 |azure.tenantId|Tenant ID for Azure resources.|
 |azure.claims|Claims for Azure resources.|
 |azure.scopes|Scopes for Azure resources.|
-|azure.accessTokenTimeoutInSeconds|Max time to get an access token.|
+|azure.access tokenTimeoutInSeconds|Max time to get an access token.|
 |azure.tokenCredentialProviderClassName|The canonical class name of a class that implements 'TokenCredentialProvider'.|
 |azure.tokenCredentialBeanName|The given bean name of a TokenCredential bean in the Spring context.|
 
