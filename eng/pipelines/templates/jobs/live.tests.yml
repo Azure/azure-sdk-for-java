@@ -22,6 +22,7 @@ parameters:
   TestOptions: $(TestOptions)
   TestParallelization: '1'
   TestVersionSupport: $(TestVersionSupport)
+  LatestJdk: $(LatestJdk)
 
 jobs:
   - job:
@@ -98,6 +99,7 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           TestVersionSupport: ${{ parameters.TestVersionSupport }}
+          LatestJdk: ${{ parameters.LatestJdk }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
             AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}

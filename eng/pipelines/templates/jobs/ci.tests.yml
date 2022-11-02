@@ -46,6 +46,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: LatestJdk
+    type: boolean
+    default: $(LatestJdk)
 
 jobs:
   - job: 'Test'
@@ -95,3 +98,4 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          LatestJdk: ${{ parameters.LatestJdk }}
