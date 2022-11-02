@@ -20,14 +20,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class ClientEncryptionPolicy {
 
+    private JsonSerializable jsonSerializable;
+
     /**
      * Paths of the item that need encryption along with path-specific settings.
      */
     @JsonProperty("includedPaths")
-    private final List<ClientEncryptionIncludedPath> includedPaths;
+    private List<ClientEncryptionIncludedPath> includedPaths;
 
     @JsonProperty("policyFormatVersion")
-    private final int policyFormatVersion;
+    private int policyFormatVersion;
 
     /**
      * Constructor.
@@ -43,6 +45,13 @@ public final class ClientEncryptionPolicy {
         this.policyFormatVersion = policyFormatVersion;
         validateIncludedPaths(paths, policyFormatVersion);
         this.includedPaths = paths;
+    }
+
+    /**
+     * Constructor.
+     */
+    public ClientEncryptionPolicy() {
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
