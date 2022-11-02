@@ -222,7 +222,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 ### Customize Credential
 
-By default, the JDBC authentication plugin will authenticate with built-in credentials, but users can also authenticate with their credentials by providing customized TokenCredentialProvider.
+By default, the JDBC authentication plugin will authenticate with built-in credentials, but users can also authenticate with their credentials by providing customized `TokenCredentialProvider`.
 
 #### Customize CredentialProvider
 
