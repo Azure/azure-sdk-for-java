@@ -22,7 +22,6 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
     private Iterable<SingleLabelClassifyAction> singleLabelClassifyActions;
     private Iterable<MultiLabelClassifyAction> multiLabelClassifyActions;
-
     private Iterable<ExtractSummaryAction> extractSummaryActions;
 
     /**

@@ -11,6 +11,7 @@ features for understanding and analyzing text, and includes the following main f
 - Extractive Text Summarization
 - Custom Named Entity Recognition
 - Custom Text Classification
+- Dynamic Text Classification
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -237,6 +238,7 @@ The following sections provide several code snippets covering some of the most c
 * [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 * [Custom Entities Recognition](#custom-entities-recognition "Custom entities recognition")
 * [Custom Text Classification](#custom-text-classification "Custom text classification")
+* [Dynamic Text Classification][dynamic_classification_sample]
 
 ### Text Analytics Client
 Language service supports both synchronous and asynchronous client creation by using
@@ -694,5 +696,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
 [recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
-
+[dynamic_classification_sample]:  https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DynamicClassificationBatchDocuments.java
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

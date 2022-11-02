@@ -652,23 +652,49 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
-                                                            TextAnalyticsServiceVersion serviceVersion);
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeExtractSummaryActionSortedByRankScore(HttpClient httpClient,
-                                                               TextAnalyticsServiceVersion serviceVersion);
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(HttpClient httpClient,
-                                                                               TextAnalyticsServiceVersion serviceVersion);
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeExtractSummaryActionWithNonDefaultSentenceCount(HttpClient httpClient,
-                                                                         TextAnalyticsServiceVersion serviceVersion);
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
-                                                                                   TextAnalyticsServiceVersion serviceVersion);
+        TextAnalyticsServiceVersion serviceVersion);
+
+
+    // Dynamic Classification
+    @Test
+    abstract void dynamicClassificationDuplicateIdInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void dynamicClassificationEmptyIdInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void dynamicClassificationMaxOverload(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void dynamicClassificationStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void dynamicClassificationBatchWarning(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void dynamicClassificationBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -1273,6 +1299,46 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME));
     }
 
+    // Dynamic classification
+    void dynamicClassificationRunner(BiConsumer<List<TextDocumentInput>, DynamicClassificationOptions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", DYNAMIC_CLASSIFICATION.get(0)),
+                new TextDocumentInput("1", DYNAMIC_CLASSIFICATION.get(1))),
+            new DynamicClassificationOptions()
+                .setCategories("Health", "Politics", "Music", "Sports")
+                .setClassificationType(ClassificationType.MULTI)
+                .setIncludeStatistics(true));
+    }
+
+    void dynamicClassificationStringInputRunner(BiConsumer<List<String>, DynamicClassificationOptions> testRunner) {
+        testRunner.accept(
+            DYNAMIC_CLASSIFICATION,
+            new DynamicClassificationOptions()
+                .setCategories("Health", "Politics", "Music", "Sports")
+                .setClassificationType(ClassificationType.MULTI)
+                .setIncludeStatistics(true));
+    }
+
+    void dynamicClassificationDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
+        testRunner.accept(getDuplicateTextDocumentInputs());
+    }
+
+    void dynamicClassificationWarningRunner(Consumer<String> testRunner) {
+        testRunner.accept(TOO_LONG_INPUT);
+    }
+
+    void dynamicClassificationBatchWarningRunner(
+        BiConsumer<List<TextDocumentInput>, DynamicClassificationOptions> testRunner) {
+        testRunner.accept(
+            getWarningsTextDocumentInputs(),
+            new DynamicClassificationOptions()
+                .setCategories("Health", "Politics", "Music", "Sports")
+                .setClassificationType(ClassificationType.MULTI)
+                .setIncludeStatistics(true)
+        );
+    }
+
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
@@ -1392,6 +1458,44 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateExtractKeyPhrasesResultCollection(showStatistics, expected, response.getValue());
+    }
+
+    static void validateDynamicClassifyDocumentResultCollectionWithResponse(boolean showStatistics,
+        DynamicClassifyDocumentResultCollection expected, int expectedStatusCode,
+        Response<DynamicClassifyDocumentResultCollection> response) {
+        assertNotNull(response);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateDynamicClassifyDocumentResultCollection(showStatistics, expected, response.getValue());
+    }
+
+    static void validateDynamicClassifyDocumentResultCollection(boolean showStatistics,
+        DynamicClassifyDocumentResultCollection expected, DynamicClassifyDocumentResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
+            validateClassifyDocumentResult(expectedItem, actualItem);
+        });
+    }
+
+    static void validateClassifyDocumentResult(ClassifyDocumentResult expect, ClassifyDocumentResult actual) {
+        assertEquals(expect.getId(), actual.getId());
+
+        if (expect.isError()) {
+            assertNotNull(actual.isError());
+        } else {
+            assertNull(actual.getError());
+            List<ClassificationCategory> actualClassifications =
+                actual.getClassifications().stream().collect(Collectors.toList());
+            List<ClassificationCategory> expectClassifications =
+                expect.getClassifications().stream().collect(Collectors.toList());
+            assertEquals(expectClassifications.size(), actualClassifications.size());
+            for (int i = 0; i < expectClassifications.size(); i++) {
+                validateClassificationCategory(expectClassifications.get(i), actualClassifications.get(i));
+            }
+        }
+    }
+
+    static void validateClassificationCategory(ClassificationCategory expect, ClassificationCategory actual) {
+        assertEquals(expect.getCategory(), actual.getCategory());
+        assertNotNull(actual.getConfidenceScore());
     }
 
     static void validateExtractKeyPhrasesResultCollection(boolean showStatistics,
@@ -1961,36 +2065,63 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expected.size(), actual.size());
 
         if (showStatistics) {
-            if (expectedResults instanceof AnalyzeSentimentResultCollection) {
+            if (expectedResults instanceof AnalyzeHealthcareEntitiesResultCollection) {
+                validateBatchStatistics(((AnalyzeHealthcareEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((AnalyzeHealthcareEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof AnalyzeSentimentResultCollection) {
                 validateBatchStatistics(((AnalyzeSentimentResultCollection) expectedResults).getStatistics(),
                     ((AnalyzeSentimentResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ClassifyDocumentResultCollection) {
+                validateBatchStatistics(((ClassifyDocumentResultCollection) expectedResults).getStatistics(),
+                    ((ClassifyDocumentResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof DetectLanguageResultCollection) {
                 validateBatchStatistics(((DetectLanguageResultCollection) expectedResults).getStatistics(),
                     ((DetectLanguageResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof DynamicClassifyDocumentResultCollection) {
+                validateBatchStatistics(((DynamicClassifyDocumentResultCollection) expectedResults).getStatistics(),
+                    ((DynamicClassifyDocumentResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof ExtractKeyPhrasesResultCollection) {
                 validateBatchStatistics(((ExtractKeyPhrasesResultCollection) expectedResults).getStatistics(),
                     ((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ExtractSummaryResultCollection) {
+                validateBatchStatistics(((ExtractSummaryResultCollection) expectedResults).getStatistics(),
+                    ((ExtractSummaryResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeCustomEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizeCustomEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizeCustomEntitiesResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof RecognizeEntitiesResultCollection) {
                 validateBatchStatistics(((RecognizeEntitiesResultCollection) expectedResults).getStatistics(),
                     ((RecognizeEntitiesResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof RecognizeLinkedEntitiesResultCollection) {
                 validateBatchStatistics(((RecognizeLinkedEntitiesResultCollection) expectedResults).getStatistics(),
                     ((RecognizeLinkedEntitiesResultCollection) actualResults).getStatistics());
-            } else if (expectedResults instanceof AnalyzeHealthcareEntitiesResultCollection) {
-                validateBatchStatistics(((AnalyzeHealthcareEntitiesResultCollection) expectedResults).getStatistics(),
-                    ((AnalyzeHealthcareEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizePiiEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizePiiEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizePiiEntitiesResultCollection) actualResults).getStatistics());
             }
         } else {
-            if (expectedResults instanceof AnalyzeSentimentResultCollection) {
+            if (expectedResults instanceof AnalyzeHealthcareEntitiesResultCollection) {
+                assertNull(((AnalyzeHealthcareEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof AnalyzeSentimentResultCollection) {
                 assertNull(((AnalyzeSentimentResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ClassifyDocumentResultCollection) {
+                assertNull(((ClassifyDocumentResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof DetectLanguageResultCollection) {
                 assertNull(((DetectLanguageResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof DynamicClassifyDocumentResultCollection) {
+                assertNull(((DynamicClassifyDocumentResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof ExtractKeyPhrasesResultCollection) {
                 assertNull(((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ExtractSummaryResultCollection) {
+                assertNull(((ExtractSummaryResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeCustomEntitiesResultCollection) {
+                assertNull(((RecognizeCustomEntitiesResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof RecognizeEntitiesResultCollection) {
                 assertNull(((RecognizeEntitiesResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof RecognizeLinkedEntitiesResultCollection) {
                 assertNull(((RecognizeLinkedEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizePiiEntitiesResultCollection) {
+                assertNull(((RecognizePiiEntitiesResultCollection) actualResults).getStatistics());
             }
         }
 

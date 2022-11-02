@@ -15,6 +15,16 @@
   `TemporalSpanResolution`, `VolumeResolution`, `WeightResolution`, `AgeUnit`, `AreaUnit`, `TemporalModifier`,
   `InformationUnit`, `LengthUnit`, `NumberKind`, `RangeKind`, `RelativeTo`, `SpeedUnit`, `TemperatureUnit`,
   `VolumeUnit`, and `WeightUnit`.
+- Added the dynamic text classification on documents without needing to train a model. The feature can be used by calling:
+    -`DynamicClassifyDocumentResultCollection dynamicClassificationBatch(Iterable<String> documents,
+      String language, DynamicClassificationOptions options)`    
+    - `Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(
+      Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context)`
+    - `Mono<DynamicClassifyDocumentResultCollection> dynamicClassificationBatch(
+        Iterable<String> documents, String language, DynamicClassificationOptions options)`
+    - `Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(
+        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options)`.
+    - new models: `ClassificationType`, `DynamicClassificationOptions` and `DynamicClassifyDocumentResultCollection`.
 
 ### Breaking Changes
 

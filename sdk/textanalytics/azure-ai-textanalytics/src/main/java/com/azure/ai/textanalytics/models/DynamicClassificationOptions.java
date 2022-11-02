@@ -5,14 +5,14 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * The {@link DynamicClassificationOptions} model.
  */
 @Fluent
 public final class DynamicClassificationOptions extends TextAnalyticsRequestOptions {
-    private List<String> categories;
+    private Iterable<String> categories;
     private ClassificationType classificationType;
     /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
@@ -65,7 +65,7 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
      *
      * @return The value of {@code categories}.
      */
-    public List<String> getCategories() {
+    public Iterable<String> getCategories() {
         return categories;
     }
 
@@ -76,8 +76,8 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
      *
      * @return The DynamicClassificationOptions object itself.
      */
-    public DynamicClassificationOptions setCategories(List<String> categories) {
-        this.categories = categories;
+    public DynamicClassificationOptions setCategories(String... categories) {
+        this.categories = categories == null ? null : Arrays.asList(categories);
         return this;
     }
 

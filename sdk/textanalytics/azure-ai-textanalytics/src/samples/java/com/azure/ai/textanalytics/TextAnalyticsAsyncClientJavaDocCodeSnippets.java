@@ -16,6 +16,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
@@ -38,6 +39,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -1393,6 +1395,65 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
                 () -> System.out.println("Successfully listed all pages"));
         // END: AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions
+    }
+
+    // Dynamic classification
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassificationBatch(Iterable, String, DynamicClassificationOptions)}
+     */
+    public void dynamicClassificationStringInputWithLanguage() {
+        // BEGIN: AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+        List<String> documents = new ArrayList<>();
+        documents.add("The WHO is issuing a warning about Monkey Pox.");
+        documents.add("Mo Salah plays in Liverpool FC in England.");
+        DynamicClassificationOptions options = new DynamicClassificationOptions()
+            .setCategories("Health", "Politics", "Music", "Sport");
+        textAnalyticsAsyncClient.dynamicClassificationBatch(documents,  "en", options)
+            .subscribe(
+                resultCollection -> resultCollection.forEach(documentResult -> {
+                    System.out.println("Document ID: " + documentResult.getId());
+                    for (ClassificationCategory classification : documentResult.getClassifications()) {
+                        System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                            classification.getCategory(), classification.getConfidenceScore());
+                    }
+                }),
+                error -> System.err.println("There was an error analyzing dynamic classification of the documents. " + error),
+                () -> System.out.println("End of analyzing dynamic classification."));
+        // END: AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassificationBatchWithResponse(Iterable, DynamicClassificationOptions)}
+     */
+    public void dynamicClassificationMaxOverload() {
+        // BEGIN: AsyncClient.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions
+        List<TextDocumentInput> documents = new ArrayList<>();
+        documents.add(new TextDocumentInput("1", "The WHO is issuing a warning about Monkey Pox."));
+        documents.add(new TextDocumentInput("2", "Mo Salah plays in Liverpool FC in England."));
+        DynamicClassificationOptions options = new DynamicClassificationOptions()
+            .setCategories("Health", "Politics", "Music", "Sport");
+        textAnalyticsAsyncClient.dynamicClassificationBatchWithResponse(documents, options)
+            .subscribe(
+                response -> {
+                    // Response's status code
+                    System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                    DynamicClassifyDocumentResultCollection resultCollection = response.getValue();
+                    // Batch statistics
+                    TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+                    System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                        batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+                    resultCollection.forEach(documentResult -> {
+                        System.out.println("Document ID: " + documentResult.getId());
+                        for (ClassificationCategory classification : documentResult.getClassifications()) {
+                            System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                                classification.getCategory(), classification.getConfidenceScore());
+                        }
+                    });
+                },
+                error -> System.err.println(
+                    "There was an error analyzing dynamic classification of the documents. " + error),
+                () -> System.out.println("End of analyzing dynamic classification."));
+        // END: AsyncClient.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions
     }
 
     // Analyze actions

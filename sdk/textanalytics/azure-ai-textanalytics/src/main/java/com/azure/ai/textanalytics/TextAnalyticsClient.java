@@ -16,7 +16,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
-import com.azure.ai.textanalytics.models.DynamicClassifyDocumentResultCollection;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -1579,33 +1579,67 @@ public final class TextAnalyticsClient {
         return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
     }
 
-
     /**
-     * a
+     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
+     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
+     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
      *
-     * @param documents a
-     * @param language a
-     * @param options a
-     * @return a
+     * <p><strong>Code Sample</strong></p>
+     * <p>Dynamic classification of each document in a list of {@link String document} with provided
+     * {@link DynamicClassificationOptions} options.
+     *
+     * <!-- src_embed Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
+     * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
+     * DynamicClassificationOptions options = new DynamicClassificationOptions&#40;&#41;
+     *     .setCategories&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;;
+     *
+     * &#47;&#47; Analyzing dynamic classification
+     * DynamicClassifyDocumentResultCollection resultCollection =
+     *     textAnalyticsClient.dynamicClassificationBatch&#40;documents, &quot;en&quot;, options&#41;;
+     *
+     * &#47;&#47; Result of dynamic classification
+     * resultCollection.forEach&#40;documentResult -&gt; &#123;
+     *     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
+     * analyzing dynamic classification.
+     *
+     * @return A {@link DynamicClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicClassifyDocumentResultCollection dynamicClassifyBatch(Iterable<String> documents,
+    public DynamicClassifyDocumentResultCollection dynamicClassificationBatch(Iterable<String> documents,
         String language, DynamicClassificationOptions options) {
-        return client.dynamicClassifyBatch(documents, language, options).block();
+        return client.dynamicClassificationBatch(documents, language, options).block();
     }
 
     /**
-     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
-     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
-     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
-     * opinions of a sentence and conducts more granular analysis around the aspects in the text
-     * (also known as aspect-based sentiment analysis).
+     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
+     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
+     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze sentiment and mine the opinions for each sentence in a list of
-     * {@link TextDocumentInput document} with provided {@link AnalyzeSentimentOptions} options.</p>
+     * <p>Dynamic classification of each document in a list of {@link TextDocumentInput document} with provided
+     * {@link DynamicClassificationOptions} options.
      *
-     * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions-Context -->
+     * <!-- Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
      * <pre>
      * List&lt;TextDocumentInput&gt; textDocumentInputs = Arrays.asList&#40;
      *     new TextDocumentInput&#40;&quot;1&quot;, &quot;The hotel was dark and unclean. The restaurant had amazing gnocchi.&quot;&#41;
@@ -1649,31 +1683,26 @@ public final class TextAnalyticsClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions-Context -->
+     * <!-- end Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
-     * analyzing sentiments.
+     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
+     * analyzing dynamic classification.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
+     * @return A {@link Response} that contains a {@link DynamicClassifyDocumentResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
-     * @throws UnsupportedOperationException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
-     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
-     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
-     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DynamicClassifyDocumentResultCollection> dynamicClassifyBatchWithResponse(
+    public Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(
         Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
         return client.dynamicClassificationAsyncClient.getDynamicClassifyDocumentResultCollectionResponse(
             documents, options, context).block();
     }
-
 
     /**
      * Analyze healthcare entities, entity data sources, and entity relations in a list of {@link String documents}.

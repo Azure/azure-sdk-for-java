@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.DynamicClassifyDocumentResultCollection;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 
 /**

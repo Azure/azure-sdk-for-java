@@ -10,14 +10,16 @@ import com.azure.ai.textanalytics.implementation.models.ClassificationType;
 import com.azure.ai.textanalytics.implementation.models.DynamicClassificationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
-import com.azure.ai.textanalytics.models.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
@@ -55,9 +57,10 @@ class DynamicClassificationAsyncClient {
     Mono<Response<DynamicClassifyDocumentResultCollection>> getDynamicClassifyDocumentResultCollectionResponse(
         Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
         throwIfTargetServiceVersionFound(this.serviceVersion,
-            Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-            getUnsupportedServiceApiVersionMessage("analyzeDynamicClassification", serviceVersion,
-                TextAnalyticsServiceVersion.V2022_05_01));
+            Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1,
+                TextAnalyticsServiceVersion.V2022_05_01),
+            getUnsupportedServiceApiVersionMessage("Dynamic Classification", serviceVersion,
+                TextAnalyticsServiceVersion.V2022_10_01_PREVIEW));
         inputDocumentsValidation(documents);
         options = getNotNullDynamicClassificationOptions(options);
 
@@ -67,7 +70,7 @@ class DynamicClassificationAsyncClient {
             new AnalyzeTextDynamicClassificationInput()
                 .setParameters(
                     new DynamicClassificationTaskParameters()
-                        .setCategories(options.getCategories())
+                        .setCategories(IterableStream.of(options.getCategories()).stream().collect(Collectors.toList()))
                         .setClassificationType(finalClassificationType == null ? null
                             : ClassificationType.fromString(finalClassificationType.toString()))
                         .setModelVersion(options.getModelVersion())

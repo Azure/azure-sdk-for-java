@@ -94,7 +94,7 @@ import com.azure.ai.textanalytics.models.DateTimeSubKind;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DynamicClassifyDocumentResultCollection;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.EntityAssociation;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.EntityCertainty;
