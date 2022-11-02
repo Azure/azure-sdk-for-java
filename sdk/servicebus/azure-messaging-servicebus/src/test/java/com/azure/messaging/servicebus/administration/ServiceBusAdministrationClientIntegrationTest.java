@@ -147,7 +147,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void createQueue() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = interceptorManager.isPlaybackMode() ? "queue-729" : queueToCreate;
+        final String queueName = interceptorManager.isPlaybackMode() ? "queue-144" : queueToCreate;
         final String forwardToEntityName = interceptorManager.isPlaybackMode() ? "queue-1729" : forwardToQueue;
 
         final String keyName = "test-rule";
