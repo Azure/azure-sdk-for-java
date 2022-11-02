@@ -108,9 +108,26 @@ def version_bigger_than(source_version, target_version):
 
     if sv == tv:
         return True
+    elif sv < tv:
+        # Spring milestone comparison ('3.0.0-M4', '3.0.0-M5')
+        if is_invalid_version(source_version) and is_invalid_version(target_version):
+            return False
 
-    if is_invalid_version(source_version) or is_invalid_version(target_version):
-        return special_version_bigger_than(source_version, target_version)
+        # ('1.0-RELEASE','1.1') ('1.1-RELEASE','1') ('1.1-RELEASE','1.0')
+        if is_invalid_version(source_version) or is_invalid_version(target_version):
+            return special_version_bigger_than(source_version, target_version)
+    else:
+        # Spring RC version should be bigger than milestone version ('3.0.0-RC1', '3.0.0-M5')
+        if not is_invalid_version(source_version) and sv.is_prerelease and is_invalid_version(target_version):
+            return True
+
+        # ('1.1-RELEASE','1.0.1-RELEASE')
+        if is_invalid_version(source_version) and is_invalid_version(target_version):
+            return True
+
+        # ('2.7.4', '3.0.0-M5')
+        if is_invalid_version(source_version) or is_invalid_version(target_version):
+            return special_version_bigger_than(source_version, target_version)
 
     if sv.major != tv.major:
         return sv.major > tv.major
@@ -159,6 +176,12 @@ class Tests(unittest.TestCase):
         self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0.1'), True)
         self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0.1-RELEASE'), True)
         self.assertEqual(version_bigger_than('1.1-RELEASE', '1.1.1-RELEASE'), False)
+        self.assertEqual(version_bigger_than('2.7.4', '3.0.0-M5'), False)
+        self.assertEqual(version_bigger_than('3.0.0-M5', '2.7.4'), True)
+        self.assertEqual(version_bigger_than('3.0.0-M4', '3.0.0-M5'), False)
+        self.assertEqual(version_bigger_than('3.0.0-M5', '3.0.0-M4'), True)
+        self.assertEqual(version_bigger_than('3.0.0-M5', '3.0.0-RC1'), False)
+        self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-M5'), True)
 
 
 if __name__ == '__main__':

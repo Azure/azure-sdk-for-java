@@ -12,7 +12,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -57,7 +57,7 @@ public class AadWebApplicationConfiguration {
      * The default security configuration of the web application, user can write another configuration bean to override it.
      */
     @EnableWebSecurity
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    @EnableMethodSecurity
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadWebSecurityConfiguration {
@@ -73,8 +73,8 @@ public class AadWebApplicationConfiguration {
             http
                 .apply(aadWebApplication())
                     .and()
-                .authorizeRequests()
-                    .antMatchers("/login").permitAll()
+                .authorizeHttpRequests()
+                    .requestMatchers("/login").permitAll()
                     .anyRequest().authenticated();
             return http.build();
         }
