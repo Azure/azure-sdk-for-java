@@ -79,7 +79,8 @@
     <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
 
     <!-- Enables fail on deprecated API usage. -->
-    <compiler.failondeprecatedstatus/>
+    <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
+    <failOnWarning>false</failOnWarning>
   </properties>
 
   <developers>
