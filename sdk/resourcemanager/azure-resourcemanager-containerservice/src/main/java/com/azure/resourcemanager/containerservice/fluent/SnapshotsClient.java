@@ -120,19 +120,6 @@ public interface SnapshotsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Gets a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -142,6 +129,19 @@ public interface SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SnapshotInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a snapshot.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Creates or updates a snapshot.
@@ -178,20 +178,6 @@ public interface SnapshotsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a node pool snapshot resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner createOrUpdate(String resourceGroupName, String resourceName, SnapshotInner parameters);
-
-    /**
-     * Creates or updates a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param parameters The snapshot to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -201,6 +187,20 @@ public interface SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SnapshotInner> createOrUpdateWithResponse(
         String resourceGroupName, String resourceName, SnapshotInner parameters, Context context);
+
+    /**
+     * Creates or updates a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The snapshot to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a node pool snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotInner createOrUpdate(String resourceGroupName, String resourceName, SnapshotInner parameters);
 
     /**
      * Updates tags on a snapshot.
@@ -237,20 +237,6 @@ public interface SnapshotsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a node pool snapshot resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters);
-
-    /**
-     * Updates tags on a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -260,6 +246,20 @@ public interface SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SnapshotInner> updateTagsWithResponse(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context);
+
+    /**
+     * Updates tags on a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters supplied to the Update snapshot Tags operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a node pool snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters);
 
     /**
      * Deletes a snapshot.
@@ -292,18 +292,6 @@ public interface SnapshotsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName);
-
-    /**
-     * Deletes a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -312,4 +300,16 @@ public interface SnapshotsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Deletes a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String resourceName);
 }

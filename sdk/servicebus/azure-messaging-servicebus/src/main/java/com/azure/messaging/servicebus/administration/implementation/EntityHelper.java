@@ -150,7 +150,9 @@ public final class EntityHelper {
             .setMaxDeliveryCount(options.getMaxDeliveryCount())
             .setRequiresSession(options.isSessionRequired())
             .setStatus(options.getStatus())
-            .setUserMetadata(options.getUserMetadata());
+            .setUserMetadata(options.getUserMetadata())
+            .setDefaultRule(options.getDefaultRule() != null
+                ? EntityHelper.toImplementation(options.getDefaultRule()) : null);
     }
 
     public static TopicDescription getTopicDescription(CreateTopicOptions options) {
@@ -313,7 +315,7 @@ public final class EntityHelper {
      * Gets a new rule action based on the existing rule description.
      *
      * @param description The implementation type.
-     * @return A new {@link RuleProperties} with the set options.
+     * @return A new {@link RuleAction} with the set options.
      */
     public static RuleAction toModel(RuleActionImpl description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
@@ -327,10 +329,10 @@ public final class EntityHelper {
     }
 
     /**
-     * Gets a new rule action based on the existing rule description.
+     * Gets a new rule filter based on the existing rule description.
      *
      * @param description The implementation type.
-     * @return A new {@link RuleProperties} with the set options.
+     * @return A new {@link RuleFilter} with the set options.
      */
     public static RuleFilter toModel(RuleFilterImpl description) {
         Objects.requireNonNull(description, "'description' cannot be null.");

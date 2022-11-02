@@ -23,6 +23,10 @@ public final class ManagedClusterSecurityProfile {
     @JsonProperty(value = "azureKeyVaultKms")
     private AzureKeyVaultKms azureKeyVaultKms;
 
+    /** Creates an instance of ManagedClusterSecurityProfile class. */
+    public ManagedClusterSecurityProfile() {
+    }
+
     /**
      * Get the defender property: Microsoft Defender settings for the security profile.
      *

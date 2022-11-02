@@ -115,6 +115,10 @@ public final class ContainerServiceNetworkProfile {
     @JsonProperty(value = "ipFamilies")
     private List<IpFamily> ipFamilies;
 
+    /** Creates an instance of ContainerServiceNetworkProfile class. */
+    public ContainerServiceNetworkProfile() {
+    }
+
     /**
      * Get the networkPlugin property: Network plugin used for building the Kubernetes network.
      *

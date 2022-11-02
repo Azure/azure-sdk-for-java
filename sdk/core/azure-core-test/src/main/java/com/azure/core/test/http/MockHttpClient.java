@@ -181,6 +181,8 @@ public class MockHttpClient extends NoOpHttpClient {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
                     final int statusCode = Integer.parseInt(statusCodeString);
                     response = new MockHttpResponse(request, statusCode);
+                } else if (requestPathLower.startsWith("/voideagerreadoom")) {
+                    response = new MockHttpResponse(request, 200);
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
                 return FluxUtil.collectBytesInByteBufferStream(request.getBody())

@@ -7,13 +7,15 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Fixed incorrect proxy configuration using environment variables. ([24230](https://github.com/Azure/azure-sdk-for-java/issues/24230)) 
 ### Other Changes
 
 ## 5.14.0 (2022-10-13)
 
 ### Features Added
 
+- Enabled metrics for sent events, consumer lag, checkpointing. ([#31024](https://github.com/Azure/azure-sdk-for-java/pull/31024))
+- Enabled distributed tracing for consumer and batch processor. ([#31197](https://github.com/Azure/azure-sdk-for-java/pull/31197)) 
 - Added algorithm for mapping partition keys to partition ids.
 - Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
 

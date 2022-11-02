@@ -4,7 +4,7 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       SupportedClouds: 'Public,UsGov,China'
-      Clouds: 'Public,UsGov,China'
+      Clouds: 'Public'
       CloudConfig:
         Public:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
@@ -14,12 +14,15 @@ stages:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           Location: 'chinanorth3'
       TestResourceDirectories:
+        - spring/spring-cloud-azure-integration-tests/test-resources/common
+        - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
         - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
         - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
-        - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
-        - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
         - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
+        - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
         - spring/spring-cloud-azure-integration-tests/test-resources/storage
+        - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
+        - spring/spring-cloud-azure-integration-tests/test-resources/dummy
       Artifacts:
         - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring

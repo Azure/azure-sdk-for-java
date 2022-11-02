@@ -37,7 +37,7 @@ public final class SqlVirtualMachineInnerTests {
         SqlVirtualMachineInner model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"type\":\"SystemAssigned\"},\"properties\":{\"virtualMachineResourceId\":\"scxaq\",\"provisioningState\":\"ochcbonqvpkvl\",\"sqlImageOffer\":\"njeaseipheofloke\",\"sqlServerLicenseType\":\"PAYG\",\"sqlManagement\":\"NoAgent\",\"leastPrivilegeMode\":\"Enabled\",\"sqlImageSku\":\"Express\",\"sqlVirtualMachineGroupResourceId\":\"tgrhpdjpjumas\",\"wsfcDomainCredentials\":{\"clusterBootstrapAccountPassword\":\"jpqyegu\",\"clusterOperatorAccountPassword\":\"hb\",\"sqlServiceAccountPassword\":\"hejjz\"},\"wsfcStaticIp\":\"dudgwdslfhot\",\"autoPatchingSettings\":{\"enable\":false,\"dayOfWeek\":\"Wednesday\",\"maintenanceWindowStartingHour\":1733107709,\"maintenanceWindowDuration\":991937495},\"autoBackupSettings\":{\"enable\":true,\"enableEncryption\":false,\"retentionPeriod\":1625524147,\"storageAccountUrl\":\"dehxnltyfsoppu\",\"storageContainerName\":\"esnzwde\",\"storageAccessKey\":\"avo\",\"password\":\"zdmohctbqvu\",\"backupSystemDbs\":false,\"backupScheduleType\":\"Manual\",\"fullBackupFrequency\":\"Weekly\",\"daysOfWeek\":[\"Sunday\",\"Saturday\",\"Friday\",\"Wednesday\"],\"fullBackupStartTime\":766815263,\"fullBackupWindowHours\":247911704,\"logBackupFrequency\":175400299},\"keyVaultCredentialSettings\":{\"enable\":true,\"credentialName\":\"slazjdyg\",\"azureKeyVaultUrl\":\"tjixhbkuofqweyk\",\"servicePrincipalName\":\"enevfyexfwhybci\",\"servicePrincipalSecret\":\"yvdcsitynnaa\"},\"serverConfigurationsManagementSettings\":{},\"storageConfigurationSettings\":{\"sqlSystemDbOnDataDisk\":false,\"diskConfigurationType\":\"NEW\",\"storageWorkloadType\":\"DW\"},\"assessmentSettings\":{\"enable\":true,\"runImmediately\":true},\"enableAutomaticUpgrade\":true},\"location\":\"jrefovgmkqsle\",\"tags\":{\"k\":\"xyqj\",\"jh\":\"attpngjcrcczsq\",\"ysou\":\"mdajv\",\"canoaeupf\":\"q\"},\"id\":\"yhltrpmopjmcm\",\"name\":\"tuo\",\"type\":\"thfuiuaodsfcpkvx\"}")
+                    "{\"identity\":{\"type\":\"SystemAssigned\"},\"properties\":{\"virtualMachineResourceId\":\"scxaq\",\"provisioningState\":\"ochcbonqvpkvl\",\"sqlImageOffer\":\"njeaseipheofloke\",\"sqlServerLicenseType\":\"PAYG\",\"sqlManagement\":\"NoAgent\",\"leastPrivilegeMode\":\"Enabled\",\"sqlImageSku\":\"Express\",\"sqlVirtualMachineGroupResourceId\":\"tgrhpdjpjumas\",\"wsfcDomainCredentials\":{\"clusterBootstrapAccountPassword\":\"fakeClusterBootstrapAccountPasswordPlaceholder\",\"clusterOperatorAccountPassword\":\"fakeClusterOperatorAccountPasswordPlaceholder\",\"sqlServiceAccountPassword\":\"fakeSqlServiceAccountPasswordPlaceholder\"},\"wsfcStaticIp\":\"dudgwdslfhot\",\"autoPatchingSettings\":{\"enable\":false,\"dayOfWeek\":\"Wednesday\",\"maintenanceWindowStartingHour\":1733107709,\"maintenanceWindowDuration\":991937495},\"autoBackupSettings\":{\"enable\":true,\"enableEncryption\":false,\"retentionPeriod\":1625524147,\"storageAccountUrl\":\"dehxnltyfsoppu\",\"storageContainerName\":\"esnzwde\",\"storageAccessKey\":\"fakeStorageAccessKeyPlaceholder\",\"password\":\"fakeAutoBackupPasswordPlaceholder\",\"backupSystemDbs\":false,\"backupScheduleType\":\"Manual\",\"fullBackupFrequency\":\"Weekly\",\"daysOfWeek\":[\"Sunday\",\"Saturday\",\"Friday\",\"Wednesday\"],\"fullBackupStartTime\":766815263,\"fullBackupWindowHours\":247911704,\"logBackupFrequency\":175400299},\"keyVaultCredentialSettings\":{\"enable\":true,\"credentialName\":\"slazjdyg\",\"azureKeyVaultUrl\":\"tjixhbkuofqweyk\",\"servicePrincipalName\":\"enevfyexfwhybci\",\"servicePrincipalSecret\":\"fakeSecretPlaceholder\"},\"serverConfigurationsManagementSettings\":{},\"storageConfigurationSettings\":{\"sqlSystemDbOnDataDisk\":false,\"diskConfigurationType\":\"NEW\",\"storageWorkloadType\":\"DW\"},\"assessmentSettings\":{\"enable\":true,\"runImmediately\":true},\"enableAutomaticUpgrade\":true},\"location\":\"jrefovgmkqsle\",\"tags\":{\"k\":\"xyqj\",\"jh\":\"attpngjcrcczsq\",\"ysou\":\"mdajv\",\"canoaeupf\":\"q\"},\"id\":\"yhltrpmopjmcm\",\"name\":\"tuo\",\"type\":\"thfuiuaodsfcpkvx\"}")
                 .toObject(SqlVirtualMachineInner.class);
         Assertions.assertEquals("jrefovgmkqsle", model.location());
         Assertions.assertEquals("xyqj", model.tags().get("k"));
@@ -49,9 +49,12 @@ public final class SqlVirtualMachineInnerTests {
         Assertions.assertEquals(LeastPrivilegeMode.ENABLED, model.leastPrivilegeMode());
         Assertions.assertEquals(SqlImageSku.EXPRESS, model.sqlImageSku());
         Assertions.assertEquals("tgrhpdjpjumas", model.sqlVirtualMachineGroupResourceId());
-        Assertions.assertEquals("jpqyegu", model.wsfcDomainCredentials().clusterBootstrapAccountPassword());
-        Assertions.assertEquals("hb", model.wsfcDomainCredentials().clusterOperatorAccountPassword());
-        Assertions.assertEquals("hejjz", model.wsfcDomainCredentials().sqlServiceAccountPassword());
+        Assertions.assertEquals("fakeClusterBootstrapAccountPasswordPlaceholder",
+            model.wsfcDomainCredentials().clusterBootstrapAccountPassword());
+        Assertions.assertEquals("fakeClusterOperatorAccountPasswordPlaceholder",
+            model.wsfcDomainCredentials().clusterOperatorAccountPassword());
+        Assertions.assertEquals("fakeSqlServiceAccountPasswordPlaceholder",
+            model.wsfcDomainCredentials().sqlServiceAccountPassword());
         Assertions.assertEquals("dudgwdslfhot", model.wsfcStaticIp());
         Assertions.assertEquals(false, model.autoPatchingSettings().enable());
         Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.autoPatchingSettings().dayOfWeek());
@@ -62,8 +65,8 @@ public final class SqlVirtualMachineInnerTests {
         Assertions.assertEquals(1625524147, model.autoBackupSettings().retentionPeriod());
         Assertions.assertEquals("dehxnltyfsoppu", model.autoBackupSettings().storageAccountUrl());
         Assertions.assertEquals("esnzwde", model.autoBackupSettings().storageContainerName());
-        Assertions.assertEquals("avo", model.autoBackupSettings().storageAccessKey());
-        Assertions.assertEquals("zdmohctbqvu", model.autoBackupSettings().password());
+        Assertions.assertEquals("fakeStorageAccessKeyPlaceholder", model.autoBackupSettings().storageAccessKey());
+        Assertions.assertEquals("fakeAutoBackupPasswordPlaceholder", model.autoBackupSettings().password());
         Assertions.assertEquals(false, model.autoBackupSettings().backupSystemDbs());
         Assertions.assertEquals(BackupScheduleType.MANUAL, model.autoBackupSettings().backupScheduleType());
         Assertions.assertEquals(FullBackupFrequencyType.WEEKLY, model.autoBackupSettings().fullBackupFrequency());
@@ -75,7 +78,7 @@ public final class SqlVirtualMachineInnerTests {
         Assertions.assertEquals("slazjdyg", model.keyVaultCredentialSettings().credentialName());
         Assertions.assertEquals("tjixhbkuofqweyk", model.keyVaultCredentialSettings().azureKeyVaultUrl());
         Assertions.assertEquals("enevfyexfwhybci", model.keyVaultCredentialSettings().servicePrincipalName());
-        Assertions.assertEquals("yvdcsitynnaa", model.keyVaultCredentialSettings().servicePrincipalSecret());
+        Assertions.assertEquals("fakeSecretPlaceholder", model.keyVaultCredentialSettings().servicePrincipalSecret());
         Assertions.assertEquals(false, model.storageConfigurationSettings().sqlSystemDbOnDataDisk());
         Assertions
             .assertEquals(DiskConfigurationType.NEW, model.storageConfigurationSettings().diskConfigurationType());
@@ -101,9 +104,9 @@ public final class SqlVirtualMachineInnerTests {
                 .withSqlVirtualMachineGroupResourceId("tgrhpdjpjumas")
                 .withWsfcDomainCredentials(
                     new WsfcDomainCredentials()
-                        .withClusterBootstrapAccountPassword("jpqyegu")
-                        .withClusterOperatorAccountPassword("hb")
-                        .withSqlServiceAccountPassword("hejjz"))
+                        .withClusterBootstrapAccountPassword("fakeClusterBootstrapAccountPasswordPlaceholder")
+                        .withClusterOperatorAccountPassword("fakeClusterOperatorAccountPasswordPlaceholder")
+                        .withSqlServiceAccountPassword("fakeSqlServiceAccountPasswordPlaceholder"))
                 .withWsfcStaticIp("dudgwdslfhot")
                 .withAutoPatchingSettings(
                     new AutoPatchingSettings()
@@ -118,8 +121,8 @@ public final class SqlVirtualMachineInnerTests {
                         .withRetentionPeriod(1625524147)
                         .withStorageAccountUrl("dehxnltyfsoppu")
                         .withStorageContainerName("esnzwde")
-                        .withStorageAccessKey("avo")
-                        .withPassword("zdmohctbqvu")
+                        .withStorageAccessKey("fakeStorageAccessKeyPlaceholder")
+                        .withPassword("fakeAutoBackupPasswordPlaceholder")
                         .withBackupSystemDbs(false)
                         .withBackupScheduleType(BackupScheduleType.MANUAL)
                         .withFullBackupFrequency(FullBackupFrequencyType.WEEKLY)
@@ -139,7 +142,7 @@ public final class SqlVirtualMachineInnerTests {
                         .withCredentialName("slazjdyg")
                         .withAzureKeyVaultUrl("tjixhbkuofqweyk")
                         .withServicePrincipalName("enevfyexfwhybci")
-                        .withServicePrincipalSecret("yvdcsitynnaa"))
+                        .withServicePrincipalSecret("fakeSecretPlaceholder"))
                 .withServerConfigurationsManagementSettings(new ServerConfigurationsManagementSettings())
                 .withStorageConfigurationSettings(
                     new StorageConfigurationSettings()
@@ -159,9 +162,12 @@ public final class SqlVirtualMachineInnerTests {
         Assertions.assertEquals(LeastPrivilegeMode.ENABLED, model.leastPrivilegeMode());
         Assertions.assertEquals(SqlImageSku.EXPRESS, model.sqlImageSku());
         Assertions.assertEquals("tgrhpdjpjumas", model.sqlVirtualMachineGroupResourceId());
-        Assertions.assertEquals("jpqyegu", model.wsfcDomainCredentials().clusterBootstrapAccountPassword());
-        Assertions.assertEquals("hb", model.wsfcDomainCredentials().clusterOperatorAccountPassword());
-        Assertions.assertEquals("hejjz", model.wsfcDomainCredentials().sqlServiceAccountPassword());
+        Assertions.assertEquals("fakeClusterBootstrapAccountPasswordPlaceholder",
+            model.wsfcDomainCredentials().clusterBootstrapAccountPassword());
+        Assertions.assertEquals("fakeClusterOperatorAccountPasswordPlaceholder",
+            model.wsfcDomainCredentials().clusterOperatorAccountPassword());
+        Assertions.assertEquals("fakeSqlServiceAccountPasswordPlaceholder",
+            model.wsfcDomainCredentials().sqlServiceAccountPassword());
         Assertions.assertEquals("dudgwdslfhot", model.wsfcStaticIp());
         Assertions.assertEquals(false, model.autoPatchingSettings().enable());
         Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.autoPatchingSettings().dayOfWeek());
@@ -172,8 +178,8 @@ public final class SqlVirtualMachineInnerTests {
         Assertions.assertEquals(1625524147, model.autoBackupSettings().retentionPeriod());
         Assertions.assertEquals("dehxnltyfsoppu", model.autoBackupSettings().storageAccountUrl());
         Assertions.assertEquals("esnzwde", model.autoBackupSettings().storageContainerName());
-        Assertions.assertEquals("avo", model.autoBackupSettings().storageAccessKey());
-        Assertions.assertEquals("zdmohctbqvu", model.autoBackupSettings().password());
+        Assertions.assertEquals("fakeStorageAccessKeyPlaceholder", model.autoBackupSettings().storageAccessKey());
+        Assertions.assertEquals("fakeAutoBackupPasswordPlaceholder", model.autoBackupSettings().password());
         Assertions.assertEquals(false, model.autoBackupSettings().backupSystemDbs());
         Assertions.assertEquals(BackupScheduleType.MANUAL, model.autoBackupSettings().backupScheduleType());
         Assertions.assertEquals(FullBackupFrequencyType.WEEKLY, model.autoBackupSettings().fullBackupFrequency());
@@ -185,7 +191,7 @@ public final class SqlVirtualMachineInnerTests {
         Assertions.assertEquals("slazjdyg", model.keyVaultCredentialSettings().credentialName());
         Assertions.assertEquals("tjixhbkuofqweyk", model.keyVaultCredentialSettings().azureKeyVaultUrl());
         Assertions.assertEquals("enevfyexfwhybci", model.keyVaultCredentialSettings().servicePrincipalName());
-        Assertions.assertEquals("yvdcsitynnaa", model.keyVaultCredentialSettings().servicePrincipalSecret());
+        Assertions.assertEquals("fakeSecretPlaceholder", model.keyVaultCredentialSettings().servicePrincipalSecret());
         Assertions.assertEquals(false, model.storageConfigurationSettings().sqlSystemDbOnDataDisk());
         Assertions
             .assertEquals(DiskConfigurationType.NEW, model.storageConfigurationSettings().diskConfigurationType());
