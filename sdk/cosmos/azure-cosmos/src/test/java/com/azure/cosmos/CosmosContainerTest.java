@@ -174,7 +174,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             fail("createContainer should fail as mypk which is part of the partition key cannot be encrypted with " +
                 "PolicyFormatVersion 1.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1");
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1. Please use PolicyFormatVersion 2.");
         }
 
 
@@ -187,7 +187,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             fail("createContainer should fail as mypk which is part of the partition key cannot be encrypted with " +
                 "PolicyFormatVersion 1.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1");
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1. Please use PolicyFormatVersion 2.");
         }
 
 
@@ -205,7 +205,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             fail("createContainer should fail as mypk which is part of the partition key cannot be encrypted with " +
                 "PolicyFormatVersion 1.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1");
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1. Please use PolicyFormatVersion 2.");
         }
 
         //This should pass as we check only the first key of the composite key.
