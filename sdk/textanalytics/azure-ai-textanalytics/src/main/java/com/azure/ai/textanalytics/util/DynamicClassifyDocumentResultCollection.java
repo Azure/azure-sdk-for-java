@@ -10,8 +10,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link ClassifyDocumentResult} along with project name,
- * deployment name and batch's statistics.
+ * A collection model that contains a list of {@link ClassifyDocumentResult} along with model version
+ * and batch's statistics.
  */
 @Immutable
 public final class DynamicClassifyDocumentResultCollection extends IterableStream<ClassifyDocumentResult> {

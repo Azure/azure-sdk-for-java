@@ -46,7 +46,7 @@ public class DynamicClassificationBatchDocumentsAsync {
             .setIncludeStatistics(true)
             .setModelVersion("latest");
 
-        // Detecting language for each document in a batch of documents
+        // Dynamic classification for each document in a batch of documents
         client.dynamicClassificationBatchWithResponse(documents, requestOptions).subscribe(
             response -> {
                 // Response's status code

@@ -1704,8 +1704,25 @@ public final class TextAnalyticsAsyncClient {
      * {@link DynamicClassificationOptions} options. Subscribes to the call asynchronously and prints out the
      * dynamic classification details when a response is received.</p>
      *
-     * <!-- src_embed  AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
-     *
+     * <!-- src_embed AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
+     * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
+     * DynamicClassificationOptions options = new DynamicClassificationOptions&#40;&#41;
+     *     .setCategories&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;;
+     * textAnalyticsAsyncClient.dynamicClassificationBatch&#40;documents,  &quot;en&quot;, options&#41;
+     *     .subscribe&#40;
+     *         resultCollection -&gt; resultCollection.forEach&#40;documentResult -&gt; &#123;
+     *             System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *             for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                     classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;,
+     *         error -&gt; System.err.println&#40;&quot;There was an error analyzing dynamic classification of the documents. &quot; + error&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;End of analyzing dynamic classification.&quot;&#41;&#41;;
+     * </pre>
      * <!-- end AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
      *
      * @param documents A list of documents to be analyzed.
@@ -1720,6 +1737,11 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code dynamicClassificationBatch} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * 2022-10-01-preview and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DynamicClassifyDocumentResultCollection> dynamicClassificationBatch(
@@ -1788,6 +1810,11 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code dynamicClassificationBatchWithResponse} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * 2022-10-01-preview and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(

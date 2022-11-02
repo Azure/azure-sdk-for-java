@@ -32,6 +32,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
+/**
+ * Helper class for managing dynamic classification endpoints.
+ */
 class DynamicClassificationAsyncClient {
     private final ClientLogger logger = new ClientLogger(DynamicClassificationAsyncClient.class);
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
@@ -80,8 +83,8 @@ class DynamicClassificationAsyncClient {
                 getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
 
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}", getDocumentCount(documents)))
-            .doOnSuccess(response -> logger.info("Dynamic classify for a batch of documents - {}", response))
-            .doOnError(error -> logger.warning("Failed to dynamic classify - {}", error))
+            .doOnSuccess(response -> logger.info("Analyze dynamic classification for a batch of documents - {}", response))
+            .doOnError(error -> logger.warning("Failed to analyze dynamic classification - {}", error))
             .map(Utility::toDynamicClassifyDocumentResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }

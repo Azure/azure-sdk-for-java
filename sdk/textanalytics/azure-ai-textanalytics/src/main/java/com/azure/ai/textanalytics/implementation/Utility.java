@@ -563,23 +563,24 @@ public final class Utility {
     // Dynamic Classification
     public static DynamicClassifyDocumentResultCollection toDynamicClassificationResultCollection(
         DynamicClassificationResult classificationResult) {
-
         List<ClassifyDocumentResult> dynamicClassificationResults = new ArrayList<>();
 
+        // A list of document results
         for (DynamicClassificationResultDocumentsItem documentItem: classificationResult.getDocuments()) {
             dynamicClassificationResults.add(toDynamicClassificationResult(documentItem));
+        }
+        // Document errors
+        for (InputError documentError : classificationResult.getErrors()) {
+            dynamicClassificationResults.add(new ClassifyDocumentResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError())));
         }
 
         DynamicClassifyDocumentResultCollection resultCollection =
             new DynamicClassifyDocumentResultCollection(dynamicClassificationResults);
         DynamicClassifyDocumentResultCollectionPropertiesHelper.setStatistics(resultCollection,
             toBatchStatistics(classificationResult.getStatistics()));
-
         DynamicClassifyDocumentResultCollectionPropertiesHelper.setModelVersion(resultCollection,
             classificationResult.getModelVersion());
-
-        // TODO: add this property
-//        classificationResult.getErrors();
 
         return resultCollection;
     }

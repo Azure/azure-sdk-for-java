@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for ClassificationType. */
@@ -21,7 +21,6 @@ public final class ClassificationType extends ExpandableStringEnum<Classificatio
      * @param name a name to look for.
      * @return the corresponding ClassificationType.
      */
-    @JsonCreator
     public static ClassificationType fromString(String name) {
         return fromString(name, ClassificationType.class);
     }

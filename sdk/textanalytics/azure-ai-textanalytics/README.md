@@ -241,8 +241,8 @@ The following sections provide several code snippets covering some of the most c
 * [Custom Entities Recognition](#custom-entities-recognition "Custom entities recognition")
 * [Custom Text Classification](#custom-text-classification "Custom text classification")
 * [Dynamic Text Classification][dynamic_classification_sample]
-* [Abstractive Text Summarization][extractive_summary_action_sample]
-* [Extractive Text Summarization][abstractive_summary_action_sample]
+* [Abstractive Text Summarization][abstractive_summary_action_sample]
+* [Extractive Text Summarization][extractive_summary_action_sample]
 
 ### Text Analytics Client
 Language service supports both synchronous and asynchronous client creation by using
