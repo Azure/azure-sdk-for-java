@@ -513,7 +513,7 @@ the License.
 Openkeepass License Link: https://github.com/cternes/openkeepass/blob/master/LICENSE.txt
 -------------------------------------------------------------------------------------------------
 
-License notice for Apache Commons Codec
+License notice for Apache Commons
 ------------------------------------------------------------------------------
 
 Copyright 2002-2019 The Apache Software Foundation
