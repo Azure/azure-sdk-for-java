@@ -17,15 +17,15 @@ public final class NetworkConnectionUpdateTests {
         NetworkConnectionUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"subnetId\":\"o\",\"domainName\":\"ttpkiwkkbnujrywv\",\"organizationUnit\":\"lbfpncurd\",\"domainUsername\":\"wiithtywub\",\"domainPassword\":\"bihwqknfdnt\"},\"tags\":{\"dzjlu\":\"hrdgoihxumwcto\",\"wtovvtgsein\":\"dfdlwggyts\",\"knpirgnepttwq\":\"fiufx\",\"mqnrojlpijnkr\":\"sniffc\"},\"location\":\"rddh\"}")
+                    "{\"properties\":{\"subnetId\":\"o\",\"domainName\":\"ttpkiwkkbnujrywv\",\"organizationUnit\":\"lbfpncurd\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"tags\":{\"dzjlu\":\"hrdgoihxumwcto\",\"wtovvtgsein\":\"dfdlwggyts\",\"knpirgnepttwq\":\"fiufx\",\"mqnrojlpijnkr\":\"sniffc\"},\"location\":\"rddh\"}")
                 .toObject(NetworkConnectionUpdate.class);
         Assertions.assertEquals("hrdgoihxumwcto", model.tags().get("dzjlu"));
         Assertions.assertEquals("rddh", model.location());
         Assertions.assertEquals("o", model.subnetId());
         Assertions.assertEquals("ttpkiwkkbnujrywv", model.domainName());
         Assertions.assertEquals("lbfpncurd", model.organizationUnit());
-        Assertions.assertEquals("wiithtywub", model.domainUsername());
-        Assertions.assertEquals("bihwqknfdnt", model.domainPassword());
+        Assertions.assertEquals("fakeNamePlaceholder", model.domainUsername());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.domainPassword());
     }
 
     @Test
@@ -46,16 +46,16 @@ public final class NetworkConnectionUpdateTests {
                 .withSubnetId("o")
                 .withDomainName("ttpkiwkkbnujrywv")
                 .withOrganizationUnit("lbfpncurd")
-                .withDomainUsername("wiithtywub")
-                .withDomainPassword("bihwqknfdnt");
+                .withDomainUsername("fakeNamePlaceholder")
+                .withDomainPassword("fakePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(NetworkConnectionUpdate.class);
         Assertions.assertEquals("hrdgoihxumwcto", model.tags().get("dzjlu"));
         Assertions.assertEquals("rddh", model.location());
         Assertions.assertEquals("o", model.subnetId());
         Assertions.assertEquals("ttpkiwkkbnujrywv", model.domainName());
         Assertions.assertEquals("lbfpncurd", model.organizationUnit());
-        Assertions.assertEquals("wiithtywub", model.domainUsername());
-        Assertions.assertEquals("bihwqknfdnt", model.domainPassword());
+        Assertions.assertEquals("fakeNamePlaceholder", model.domainUsername());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.domainPassword());
     }
 
     @SuppressWarnings("unchecked")

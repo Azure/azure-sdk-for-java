@@ -34,7 +34,7 @@ public final class NetworkConnectionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"ddjib\",\"healthCheckStatus\":\"Failed\",\"networkingResourceGroupName\":\"ititvtzeexavoxt\",\"domainJoinType\":\"AzureADJoin\",\"subnetId\":\"ecdmdqbwpy\",\"domainName\":\"tgsfja\",\"organizationUnit\":\"slhhxudbxv\",\"domainUsername\":\"htnsi\",\"domainPassword\":\"dhzmmesckdlp\"},\"location\":\"zrcxfailcfxwmdbo\",\"tags\":{\"ckknhxkizvy\":\"gsftufqobrjlnacg\",\"nok\":\"nrzvuljraaer\",\"a\":\"gukkjqnvbroy\"},\"id\":\"xulcdisdos\",\"name\":\"jbjsvgjrwh\",\"type\":\"yvycytdclxgcckn\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"ddjib\",\"healthCheckStatus\":\"Failed\",\"networkingResourceGroupName\":\"ititvtzeexavoxt\",\"domainJoinType\":\"AzureADJoin\",\"subnetId\":\"ecdmdqbwpy\",\"domainName\":\"tgsfja\",\"organizationUnit\":\"slhhxudbxv\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"location\":\"zrcxfailcfxwmdbo\",\"tags\":{\"ckknhxkizvy\":\"gsftufqobrjlnacg\",\"nok\":\"nrzvuljraaer\",\"a\":\"gukkjqnvbroy\"},\"id\":\"xulcdisdos\",\"name\":\"jbjsvgjrwh\",\"type\":\"yvycytdclxgcckn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -71,7 +71,7 @@ public final class NetworkConnectionsListMockTests {
         Assertions.assertEquals("ecdmdqbwpy", response.iterator().next().subnetId());
         Assertions.assertEquals("tgsfja", response.iterator().next().domainName());
         Assertions.assertEquals("slhhxudbxv", response.iterator().next().organizationUnit());
-        Assertions.assertEquals("htnsi", response.iterator().next().domainUsername());
-        Assertions.assertEquals("dhzmmesckdlp", response.iterator().next().domainPassword());
+        Assertions.assertEquals("fakeNamePlaceholder", response.iterator().next().domainUsername());
+        Assertions.assertEquals("fakePasswordPlaceholder", response.iterator().next().domainPassword());
     }
 }

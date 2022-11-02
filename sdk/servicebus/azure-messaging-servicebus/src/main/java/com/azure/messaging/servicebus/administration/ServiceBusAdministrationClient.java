@@ -39,6 +39,8 @@ import com.azure.messaging.servicebus.administration.implementation.models.Subsc
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -59,7 +61,6 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.NUMBER_OF_ELEMENTS;
@@ -255,7 +256,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleProperties createRule(String topicName, String subscriptionName, String ruleName) {
-        return createRule(topicName, subscriptionName, ruleName, null);
+        return createRule(topicName, ruleName, subscriptionName, new CreateRuleOptions());
     }
 
     /**
@@ -330,11 +331,11 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionProperties createSubscription(String topicName, String subscriptionName) {
-        return createSubscription(topicName, subscriptionName, null);
+        return createSubscription(topicName, subscriptionName, new CreateSubscriptionOptions());
     }
 
     /**
-     * Creates a subscription with the {@link SubscriptionProperties}.
+     * Creates a subscription with the {@link CreateSubscriptionOptions}.
      *
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
@@ -356,7 +357,35 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Creates a queue and returns the created queue in addition to the HTTP response.
+     * Creates a subscription with default rule using the {@link CreateSubscriptionOptions} and
+     * {@link CreateRuleOptions}.
+     *
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param ruleName Name of the default rule the subscription should be created with.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
+     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
+     *                    If null, then pass-through filter will be created.
+     *
+     * @return Information about the created subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     * processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionProperties createSubscription(String topicName, String subscriptionName, String ruleName,
+                                                     CreateSubscriptionOptions subscriptionOptions,
+                                                     CreateRuleOptions ruleOptions) {
+        return createSubscriptionWithResponse(topicName, subscriptionName, ruleName, subscriptionOptions,
+            ruleOptions, null).getValue();
+    }
+
+    /**
+     * Creates a subscription and returns the created subscription in addition to the HTTP response.
      *
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
@@ -398,6 +427,46 @@ public final class ServiceBusAdministrationClient {
         return deserializeSubscription(topicName,
             managementClient.getSubscriptions().putSyncWithResponse(topicName, subscriptionName, createEntity,
                 null, contextWithHeaders));
+
+    }
+
+    /**
+     * Creates a subscription with default rule configured and returns the created subscription
+     * in addition to the HTTP response.
+     *
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param ruleName Name of the default rule the subscription should be created with.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
+     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
+     *                    If null, then pass-through filter will be created.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The created subscription in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     * processing the request.
+     * @throws NullPointerException if {@code subscriptionOptions} is null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SubscriptionProperties> createSubscriptionWithResponse(String topicName, String subscriptionName,
+                                                                           String ruleName,
+                                                                           CreateSubscriptionOptions subscriptionOptions,
+                                                                           CreateRuleOptions ruleOptions,
+                                                                           Context context) {
+        if (ruleOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'CreateRuleOptions' cannot be null."));
+        }
+        Objects.requireNonNull(ruleOptions.getFilter(), "'RuleFilter' cannot be null.");
+        final RuleDescription rule = new RuleDescription()
+            .setAction(ruleOptions.getAction() != null ? EntityHelper.toImplementation(ruleOptions.getAction()) : null)
+            .setFilter(EntityHelper.toImplementation(ruleOptions.getFilter()))
+            .setName(ruleName);
+        subscriptionOptions.setDefaultRule(EntityHelper.toModel(rule));
+        return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions, context);
 
     }
 
@@ -664,28 +733,22 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> getQueueWithResponse(String queueName, Context context) {
-        return getQueueWithResponse(queueName, context, Function.identity());
-    }
-
-    private <T> Response<T> getQueueWithResponse(String queueName, Context context,
-                                                 Function<QueueProperties, T> mapper) {
-        validateQueueName(queueName);
-        final Response<Object> response = entityClient.getSyncWithResponse(queueName, true,
-            enableSyncContext(context));
-        final Response<QueueProperties> deserialize = deserializeQueue(response);
-
-        // if this is null, then the queue could not be found.
-        if (deserialize.getValue() == null) {
+        final Response<QueueProperties> response = getQueueInternal(queueName, context);
+        if (response.getValue() == null) {
             final HttpResponse
-                notFoundResponse = new EntityHelper.EntityNotFoundHttpResponse<>(deserialize);
+                notFoundResponse = new EntityHelper.EntityNotFoundHttpResponse<>(response);
             throw LOGGER.logExceptionAsError(
                 new ResourceNotFoundException(String.format("Queue '%s' does not exist.", queueName),
                     notFoundResponse));
-        } else {
-            final T mapped = mapper.apply(deserialize.getValue());
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), mapped);
         }
+        return response;
+    }
+
+    private Response<QueueProperties> getQueueInternal(String queueName, Context context) {
+        validateQueueName(queueName);
+        final Response<Object> response = entityClient.getSyncWithResponse(queueName, true,
+            enableSyncContext(context));
+        return deserializeQueue(response);
     }
 
     /**
@@ -717,16 +780,8 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getQueueExistsWithResponse(String queueName, Context context) {
-        final Response<QueueProperties> queueWithResponse =
-            getQueueWithResponse(queueName, context, Function.identity());
+        final Response<QueueProperties> queueWithResponse = getQueueInternal(queueName, context);
         return getEntityExistsWithResponse(queueWithResponse);
-    }
-
-    private <T> Response<Boolean> getEntityExistsWithResponse(Response<T> getEntityOperation) {
-        // When an entity does not exist, it does not have any description object in it.
-        final boolean exists = getEntityOperation.getValue() != null;
-        return new SimpleResponse<>(getEntityOperation.getRequest(), getEntityOperation.getStatusCode(),
-            getEntityOperation.getHeaders(), exists);
     }
 
     /**
@@ -761,7 +816,9 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueRuntimeProperties> getQueueRuntimePropertiesWithResponse(String queueName, Context context) {
-        return getQueueWithResponse(queueName, context, QueueRuntimeProperties::new);
+        final Response<QueueProperties> response = getQueueWithResponse(queueName, context);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), new QueueRuntimeProperties(response.getValue()));
     }
 
     /**
@@ -863,40 +920,25 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName Name of subscription to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Information about the subscription and the associated HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
+
+     * @throws ServiceBusManagementErrorException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
-     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> getSubscriptionWithResponse(String topicName,
                                                                         String subscriptionName, Context context) {
-        return getSubscriptionWithResponse(topicName, subscriptionName, context, Function.identity());
+        return getSubscriptionInternal(topicName, subscriptionName, context);
     }
 
-    private <T> Response<T> getSubscriptionWithResponse(String topicName, String subscriptionName, Context context,
-                                                        Function<SubscriptionProperties, T> mapper) {
+    private Response<SubscriptionProperties> getSubscriptionInternal(String topicName,
+                                                                     String subscriptionName, Context context) {
         validateTopicName(topicName);
         validateSubscriptionName(subscriptionName);
 
-        final Response<Object> response =
-            managementClient.getSubscriptions().getSyncWithResponse(topicName, subscriptionName, true,
-                enableSyncContext(context));
-        final Response<SubscriptionProperties> deserialize = deserializeSubscription(topicName, response);
-        // if this is null, then the queue could not be found.
-        if (deserialize.getValue() == null) {
-            final HttpResponse notFoundResponse
-                = new EntityHelper.EntityNotFoundHttpResponse<>(deserialize);
-            throw LOGGER.logExceptionAsError(new ResourceNotFoundException(String.format(
-                "Subscription '%s' in topic '%s' does not exist.", topicName, subscriptionName),
-                notFoundResponse));
-        } else {
-            final T mapped = mapper.apply(deserialize.getValue());
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), mapped);
-        }
+        final Response<Object> response = managementClient.getSubscriptions()
+            .getSyncWithResponse(topicName, subscriptionName, true, enableSyncContext(context));
+        return deserializeSubscription(topicName, response);
     }
 
     /**
@@ -905,9 +947,8 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @return {@code true} if the subscription exists.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
+     *
+     * @throws ServiceBusManagementErrorException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code subscriptionName} is null or an empty string.
      * @throws NullPointerException if {@code subscriptionName} is null.
      */
@@ -933,7 +974,7 @@ public final class ServiceBusAdministrationClient {
     public Response<Boolean> getSubscriptionExistsWithResponse(String topicName, String subscriptionName,
                                                                Context context) {
         final Response<SubscriptionProperties> subscriptionWithResponse =
-            getSubscriptionWithResponse(topicName, subscriptionName, context, Function.identity());
+            getSubscriptionInternal(topicName, subscriptionName, context);
         return getEntityExistsWithResponse(subscriptionWithResponse);
     }
 
@@ -973,7 +1014,16 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionRuntimeProperties> getSubscriptionRuntimePropertiesWithResponse(
         String topicName, String subscriptionName, Context context) {
-        return getSubscriptionWithResponse(topicName, subscriptionName, context, SubscriptionRuntimeProperties::new);
+        final Response<SubscriptionProperties> response = getSubscriptionWithResponse(topicName, subscriptionName, context);
+        if (response.getValue() == null) {
+            final HttpResponse notFoundResponse
+                = new EntityHelper.EntityNotFoundHttpResponse<>(response);
+            throw LOGGER.logExceptionAsError(new ResourceNotFoundException(String.format(
+                "Subscription '%s' in topic '%s' does not exist.", topicName, subscriptionName),
+                notFoundResponse));
+        }
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), new SubscriptionRuntimeProperties(response.getValue()));
     }
 
     /**
@@ -999,38 +1049,30 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Information about the topic and the associated HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
+     *
+     * @throws ServiceBusManagementErrorException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicProperties> getTopicWithResponse(String topicName, Context context) {
-        return getTopicWithResponse(topicName, context,
-            Function.identity());
-    }
-
-    <T> Response<T> getTopicWithResponse(String topicName, Context context,
-                                         Function<TopicProperties, T> mapper) {
-        validateTopicName(topicName);
-
-        final Response<Object> response = entityClient.getSyncWithResponse(topicName, true, enableSyncContext(context));
-        final Response<TopicProperties> deserialize = deserializeTopic(response);
-
-        // if this is null, then the queue could not be found.
-        if (deserialize.getValue() == null) {
+        final Response<TopicProperties> response = getTopicInternal(topicName, context);
+        if (response.getValue() == null) {
             final HttpResponse notFoundResponse =
-                new EntityHelper.EntityNotFoundHttpResponse<>(deserialize);
+                new EntityHelper.EntityNotFoundHttpResponse<>(response);
             throw LOGGER.logExceptionAsError(
                 new ResourceNotFoundException(String.format("Topic '%s' does not exist.", topicName),
                     notFoundResponse));
-        } else {
-            final T mapped = mapper.apply(deserialize.getValue());
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), mapped);
         }
+        return response;
+    }
+
+    private Response<TopicProperties> getTopicInternal(String topicName, Context context) {
+        validateTopicName(topicName);
+        final Response<Object> response = entityClient.getSyncWithResponse(topicName,
+            true, enableSyncContext(context));
+        return deserializeTopic(response);
     }
 
     /**
@@ -1062,8 +1104,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getTopicExistsWithResponse(String topicName, Context context) {
-        final Response<TopicProperties> topicWithResponse =
-            getTopicWithResponse(topicName, context, Function.identity());
+        final Response<TopicProperties> topicWithResponse = getTopicInternal(topicName, context);
         return getEntityExistsWithResponse(topicWithResponse);
     }
 
@@ -1090,16 +1131,31 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Runtime properties about the topic and the associated HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
+     *
+     * @throws ServiceBusManagementErrorException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or  an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicRuntimeProperties> getTopicRuntimePropertiesWithResponse(String topicName, Context context) {
-        return getTopicWithResponse(topicName, context, TopicRuntimeProperties::new);
+        final Response<TopicProperties> response = getTopicWithResponse(topicName, context);
+        if (response.getValue() == null) {
+            final HttpResponse notFoundResponse =
+                new EntityHelper.EntityNotFoundHttpResponse<>(response);
+            throw LOGGER.logExceptionAsError(
+                new ResourceNotFoundException(String.format("Topic '%s' does not exist.", topicName),
+                    notFoundResponse));
+        }
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), new TopicRuntimeProperties(response.getValue()));
+    }
+
+    private <T> Response<Boolean> getEntityExistsWithResponse(Response<T> getEntityOperation) {
+        // When an entity does not exist, it does not have any description object in it.
+        final boolean exists = getEntityOperation.getValue() != null;
+        return new SimpleResponse<>(getEntityOperation.getRequest(), getEntityOperation.getStatusCode(),
+            getEntityOperation.getHeaders(), exists);
     }
 
     /**

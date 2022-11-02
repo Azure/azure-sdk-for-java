@@ -273,7 +273,7 @@ com.azure.resourcemanager:azure-resourcemanager-datadog;1.0.0-beta.3;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-communication;1.0.0;1.1.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-apimanagement;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.0.0-beta.3;1.0.0-beta.4
-com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.6;1.0.0-beta.7
@@ -397,6 +397,7 @@ unreleased_com.azure:azure-identity;1.7.0-beta.2
 unreleased_com.azure:azure-identity-providers-core;1.0.0-beta.2
 unreleased_com.azure:azure-identity-providers-jdbc-mysql;1.0.0-beta.2
 unreleased_com.azure:azure-identity-providers-jdbc-postgresql;1.0.0-beta.2
+unreleased_com.azure:azure-core-amqp;2.8.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

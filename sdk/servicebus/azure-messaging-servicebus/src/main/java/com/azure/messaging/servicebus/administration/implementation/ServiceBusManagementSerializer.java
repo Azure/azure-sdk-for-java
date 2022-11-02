@@ -63,7 +63,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
             .replaceAll(namespace + ":", "")
             .replace("xmlns:" + namespace + "=", "xmlns=");
 
-        if (!CreateRuleBody.class.equals(clazz)) {
+        if (!CreateRuleBody.class.equals(clazz) && !CreateSubscriptionBody.class.equals(clazz)) {
             return replaced;
         }
 
