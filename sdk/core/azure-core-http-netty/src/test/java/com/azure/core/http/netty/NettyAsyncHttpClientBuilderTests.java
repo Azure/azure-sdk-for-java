@@ -576,6 +576,7 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     @Test
+    @SuppressWarnings("deprecated") // maxChunkSize is deprecated in a future version of Reactor Netty
     public void preconfiguredHttpResponseDecoderIsMaintained() {
         HttpClient nettyHttpClient = HttpClient.create()
             .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxChunkSize(64 * 1024)
