@@ -35,7 +35,7 @@ public final class DscCompilationJobsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"configuration\":{\"name\":\"mxitpfinzcpd\"},\"startedBy\":\"krlgjm\",\"creationTime\":\"2021-10-17T16:04:29Z\",\"provisioningState\":\"Succeeded\",\"runOn\":\"guefz\",\"status\":\"Activating\",\"statusDetails\":\"heqdurelyujlfyou\",\"startTime\":\"2021-07-26T21:57:47Z\",\"endTime\":\"2021-06-04T02:57:44Z\",\"exception\":\"clcdigptajbrzmq\",\"lastModifiedTime\":\"2021-06-01T07:57:22Z\",\"lastStatusModifiedTime\":\"2021-10-08T19:51:54Z\",\"parameters\":{\"jc\":\"oclxiut\",\"zjd\":\"z\",\"jb\":\"r\",\"w\":\"xjeaoqaqbzgyh\"}},\"id\":\"v\",\"name\":\"atbwbqam\",\"type\":\"e\"}]}";
+            "{\"value\":[{\"properties\":{\"configuration\":{\"name\":\"mxitpfinzcpd\"},\"startedBy\":\"krlgjm\",\"jobId\":\"1d047154-875a-4674-92f0-4c269222c505\",\"creationTime\":\"2021-10-17T16:04:29Z\",\"provisioningState\":\"Succeeded\",\"runOn\":\"guefz\",\"status\":\"Activating\",\"statusDetails\":\"heqdurelyujlfyou\",\"startTime\":\"2021-07-26T21:57:47Z\",\"endTime\":\"2021-06-04T02:57:44Z\",\"exception\":\"clcdigptajbrzmq\",\"lastModifiedTime\":\"2021-06-01T07:57:22Z\",\"lastStatusModifiedTime\":\"2021-10-08T19:51:54Z\",\"parameters\":{\"jc\":\"oclxiut\",\"zjd\":\"z\",\"jb\":\"r\",\"w\":\"xjeaoqaqbzgyh\"}},\"id\":\"v\",\"name\":\"atbwbqam\",\"type\":\"e\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

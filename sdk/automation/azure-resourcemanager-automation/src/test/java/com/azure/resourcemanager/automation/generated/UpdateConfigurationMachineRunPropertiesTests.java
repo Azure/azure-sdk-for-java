@@ -16,7 +16,7 @@ public final class UpdateConfigurationMachineRunPropertiesTests {
         UpdateConfigurationMachineRunProperties model =
             BinaryData
                 .fromString(
-                    "{\"targetComputer\":\"cmsp\",\"targetComputerType\":\"yrrueqth\",\"softwareUpdateConfiguration\":{\"name\":\"nmbscbbx\"},\"status\":\"dhxiidlopedbwd\",\"osType\":\"qyybxubmdnafcbq\",\"startTime\":\"2021-05-10T01:39:14Z\",\"endTime\":\"2021-11-29T04:51:36Z\",\"configuredDuration\":\"qacigeleo\",\"job\":{\"id\":\"vqvwzkjopwbe\"},\"creationTime\":\"2021-04-01T02:46:57Z\",\"createdBy\":\"kwzdqybxcea\",\"lastModifiedTime\":\"2021-09-28T09:02:15Z\",\"lastModifiedBy\":\"tsoqfyiaseqchk\"}")
+                    "{\"targetComputer\":\"cmsp\",\"targetComputerType\":\"yrrueqth\",\"softwareUpdateConfiguration\":{\"name\":\"nmbscbbx\"},\"status\":\"dhxiidlopedbwd\",\"osType\":\"qyybxubmdnafcbq\",\"correlationId\":\"d1b0c707-b079-4e75-bb26-cd6987735e7c\",\"sourceComputerId\":\"a7421209-118a-4211-b0c6-144da0e4ee05\",\"startTime\":\"2021-05-10T01:39:14Z\",\"endTime\":\"2021-11-29T04:51:36Z\",\"configuredDuration\":\"qacigeleo\",\"job\":{\"id\":\"vqvwzkjopwbe\"},\"creationTime\":\"2021-04-01T02:46:57Z\",\"createdBy\":\"kwzdqybxcea\",\"lastModifiedTime\":\"2021-09-28T09:02:15Z\",\"lastModifiedBy\":\"tsoqfyiaseqchk\"}")
                 .toObject(UpdateConfigurationMachineRunProperties.class);
     }
 

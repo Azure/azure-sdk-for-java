@@ -20,7 +20,7 @@ public final class DscCompilationJobInnerTests {
         DscCompilationJobInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"configuration\":{\"name\":\"x\"},\"startedBy\":\"feiithlvmez\",\"creationTime\":\"2021-08-05T17:04:54Z\",\"provisioningState\":\"Failed\",\"runOn\":\"sbbzo\",\"status\":\"Blocked\",\"statusDetails\":\"rxwburv\",\"startTime\":\"2021-03-14T20:20:37Z\",\"endTime\":\"2021-11-08T09:59:37Z\",\"exception\":\"pydptko\",\"lastModifiedTime\":\"2021-12-01T07:03:23Z\",\"lastStatusModifiedTime\":\"2021-08-24T09:48:52Z\",\"parameters\":{\"pocipazyxoegu\":\"vudwtiukbldng\",\"npiucgygevqznty\":\"g\",\"dpydn\":\"mrbpizcdrqj\"}},\"id\":\"yhxdeoejzicwi\",\"name\":\"sjttgzfbish\",\"type\":\"bkh\"}")
+                    "{\"properties\":{\"configuration\":{\"name\":\"x\"},\"startedBy\":\"feiithlvmez\",\"jobId\":\"237f0211-6173-49e2-8dee-bc2d03e9940c\",\"creationTime\":\"2021-08-05T17:04:54Z\",\"provisioningState\":\"Failed\",\"runOn\":\"sbbzo\",\"status\":\"Blocked\",\"statusDetails\":\"rxwburv\",\"startTime\":\"2021-03-14T20:20:37Z\",\"endTime\":\"2021-11-08T09:59:37Z\",\"exception\":\"pydptko\",\"lastModifiedTime\":\"2021-12-01T07:03:23Z\",\"lastStatusModifiedTime\":\"2021-08-24T09:48:52Z\",\"parameters\":{\"pocipazyxoegu\":\"vudwtiukbldng\",\"npiucgygevqznty\":\"g\",\"dpydn\":\"mrbpizcdrqj\"}},\"id\":\"yhxdeoejzicwi\",\"name\":\"sjttgzfbish\",\"type\":\"bkh\"}")
                 .toObject(DscCompilationJobInner.class);
         Assertions.assertEquals("x", model.configuration().name());
         Assertions.assertEquals(JobProvisioningState.FAILED, model.provisioningState());

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,11 +22,12 @@ public final class JobPropertiesTests {
         JobProperties model =
             BinaryData
                 .fromString(
-                    "{\"runbook\":{\"name\":\"zejnhl\"},\"startedBy\":\"pbzpcpiljhahz\",\"runOn\":\"chndbnwie\",\"creationTime\":\"2021-06-15T06:42:17Z\",\"status\":\"Suspending\",\"statusDetails\":\"iuubwefqsf\",\"startTime\":\"2021-07-20T22:39:45Z\",\"endTime\":\"2021-07-28T10:18:32Z\",\"exception\":\"e\",\"lastModifiedTime\":\"2021-10-23T06:58:11Z\",\"lastStatusModifiedTime\":\"2021-05-25T15:13:52Z\",\"parameters\":{\"pjwogqqno\":\"kmfx\",\"dabtqwp\":\"pud\",\"ljgkyex\":\"yawbzasqbu\"},\"provisioningState\":\"Succeeded\"}")
+                    "{\"runbook\":{\"name\":\"zejnhl\"},\"startedBy\":\"pbzpcpiljhahz\",\"runOn\":\"chndbnwie\",\"jobId\":\"23a8998e-260d-43ac-9eff-d046f8bb9aa0\",\"creationTime\":\"2021-06-15T06:42:17Z\",\"status\":\"Suspending\",\"statusDetails\":\"iuubwefqsf\",\"startTime\":\"2021-07-20T22:39:45Z\",\"endTime\":\"2021-07-28T10:18:32Z\",\"exception\":\"e\",\"lastModifiedTime\":\"2021-10-23T06:58:11Z\",\"lastStatusModifiedTime\":\"2021-05-25T15:13:52Z\",\"parameters\":{\"pjwogqqno\":\"kmfx\",\"dabtqwp\":\"pud\",\"ljgkyex\":\"yawbzasqbu\"},\"provisioningState\":\"Succeeded\"}")
                 .toObject(JobProperties.class);
         Assertions.assertEquals("zejnhl", model.runbook().name());
         Assertions.assertEquals("pbzpcpiljhahz", model.startedBy());
         Assertions.assertEquals("chndbnwie", model.runOn());
+        Assertions.assertEquals(UUID.fromString("23a8998e-260d-43ac-9eff-d046f8bb9aa0"), model.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T06:42:17Z"), model.creationTime());
         Assertions.assertEquals(JobStatus.SUSPENDING, model.status());
         Assertions.assertEquals("iuubwefqsf", model.statusDetails());
@@ -45,6 +47,7 @@ public final class JobPropertiesTests {
                 .withRunbook(new RunbookAssociationProperty().withName("zejnhl"))
                 .withStartedBy("pbzpcpiljhahz")
                 .withRunOn("chndbnwie")
+                .withJobId(UUID.fromString("23a8998e-260d-43ac-9eff-d046f8bb9aa0"))
                 .withCreationTime(OffsetDateTime.parse("2021-06-15T06:42:17Z"))
                 .withStatus(JobStatus.SUSPENDING)
                 .withStatusDetails("iuubwefqsf")
@@ -59,6 +62,7 @@ public final class JobPropertiesTests {
         Assertions.assertEquals("zejnhl", model.runbook().name());
         Assertions.assertEquals("pbzpcpiljhahz", model.startedBy());
         Assertions.assertEquals("chndbnwie", model.runOn());
+        Assertions.assertEquals(UUID.fromString("23a8998e-260d-43ac-9eff-d046f8bb9aa0"), model.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T06:42:17Z"), model.creationTime());
         Assertions.assertEquals(JobStatus.SUSPENDING, model.status());
         Assertions.assertEquals("iuubwefqsf", model.statusDetails());

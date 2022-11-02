@@ -31,7 +31,7 @@ public final class SourceControlCreateOrUpdateSamples {
             .withSourceType(SourceType.VSO_GIT)
             .withSecurityToken(
                 new SourceControlSecurityTokenProperties()
-                    .withAccessToken("3a326f7a0dcd343ea58fee21f2fd5fb4c1234567")
+                    .withAccessToken("fakeTokenPlaceholder")
                     .withTokenType(TokenType.PERSONAL_ACCESS_TOKEN))
             .withDescription("my description")
             .create();

@@ -36,7 +36,7 @@ public final class RunbooksListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"runbookType\":\"PowerShellWorkflow\",\"publishContentLink\":{\"uri\":\"vpi\",\"version\":\"jpnqnoowsbeden\"},\"state\":\"Edit\",\"logVerbose\":true,\"logProgress\":false,\"logActivityTrace\":527936002,\"jobCount\":1196671076,\"parameters\":{},\"outputTypes\":[\"mnhjevdyzn\",\"ajsvk\"],\"draft\":{\"inEdit\":true,\"creationTime\":\"2021-08-05T06:45:09Z\",\"lastModifiedTime\":\"2021-10-14T14:24:06Z\",\"parameters\":{},\"outputTypes\":[]},\"provisioningState\":\"Succeeded\",\"lastModifiedBy\":\"liizjixlqfhef\",\"creationTime\":\"2021-11-30T11:31:10Z\",\"lastModifiedTime\":\"2021-05-01T14:38:31Z\",\"description\":\"lronqqlmg\"},\"etag\":\"qxsjxte\",\"location\":\"exhvuqbozoolz\",\"tags\":{\"cnn\":\"arkuzl\",\"nx\":\"t\"},\"id\":\"wqy\",\"name\":\"llhdyzm\",\"type\":\"ckze\"}]}";
+            "{\"value\":[{\"properties\":{\"runbookType\":\"PowerShellWorkflow\",\"publishContentLink\":{\"uri\":\"dj\",\"version\":\"cadwvpsozjii\"},\"state\":\"Edit\",\"logVerbose\":true,\"logProgress\":false,\"logActivityTrace\":315942102,\"jobCount\":1343990313,\"parameters\":{},\"outputTypes\":[\"dvwnjkgvfnmxa\",\"rsqftib\",\"yibuyvpirfqjpnqn\",\"owsbedenrexkxbh\"],\"draft\":{\"inEdit\":true,\"creationTime\":\"2021-12-01T17:44:04Z\",\"lastModifiedTime\":\"2021-02-13T23:06:36Z\",\"parameters\":{},\"outputTypes\":[]},\"provisioningState\":\"Succeeded\",\"lastModifiedBy\":\"dyznfajsvks\",\"creationTime\":\"2021-06-29T16:28:10Z\",\"lastModifiedTime\":\"2021-08-31T23:00:14Z\",\"description\":\"kivy\"},\"etag\":\"rl\",\"location\":\"izjixlq\",\"tags\":{\"solronqqlm\":\"fkwa\"},\"id\":\"nlqxsjxtele\",\"name\":\"hvuqbo\",\"type\":\"oolzqocarkuzl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,33 +64,34 @@ public final class RunbooksListByAutomationAccountMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Runbook> response = manager.runbooks().listByAutomationAccount("fnmxa", "rsqftib", Context.NONE);
+        PagedIterable<Runbook> response =
+            manager.runbooks().listByAutomationAccount("wpfsuqtaaz", "qbxyxoyfpuqqi", Context.NONE);
 
-        Assertions.assertEquals("exhvuqbozoolz", response.iterator().next().location());
-        Assertions.assertEquals("arkuzl", response.iterator().next().tags().get("cnn"));
-        Assertions.assertEquals("qxsjxte", response.iterator().next().etag());
+        Assertions.assertEquals("izjixlq", response.iterator().next().location());
+        Assertions.assertEquals("fkwa", response.iterator().next().tags().get("solronqqlm"));
+        Assertions.assertEquals("rl", response.iterator().next().etag());
         Assertions.assertEquals(RunbookTypeEnum.POWER_SHELL_WORKFLOW, response.iterator().next().runbookType());
-        Assertions.assertEquals("vpi", response.iterator().next().publishContentLink().uri());
-        Assertions.assertEquals("jpnqnoowsbeden", response.iterator().next().publishContentLink().version());
+        Assertions.assertEquals("dj", response.iterator().next().publishContentLink().uri());
+        Assertions.assertEquals("cadwvpsozjii", response.iterator().next().publishContentLink().version());
         Assertions.assertEquals(RunbookState.EDIT, response.iterator().next().state());
         Assertions.assertEquals(true, response.iterator().next().logVerbose());
         Assertions.assertEquals(false, response.iterator().next().logProgress());
-        Assertions.assertEquals(527936002, response.iterator().next().logActivityTrace());
-        Assertions.assertEquals(1196671076, response.iterator().next().jobCount());
-        Assertions.assertEquals("mnhjevdyzn", response.iterator().next().outputTypes().get(0));
+        Assertions.assertEquals(315942102, response.iterator().next().logActivityTrace());
+        Assertions.assertEquals(1343990313, response.iterator().next().jobCount());
+        Assertions.assertEquals("dvwnjkgvfnmxa", response.iterator().next().outputTypes().get(0));
         Assertions.assertEquals(true, response.iterator().next().draft().inEdit());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-05T06:45:09Z"), response.iterator().next().draft().creationTime());
+                OffsetDateTime.parse("2021-12-01T17:44:04Z"), response.iterator().next().draft().creationTime());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-10-14T14:24:06Z"), response.iterator().next().draft().lastModifiedTime());
+                OffsetDateTime.parse("2021-02-13T23:06:36Z"), response.iterator().next().draft().lastModifiedTime());
         Assertions.assertEquals(RunbookProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions.assertEquals("liizjixlqfhef", response.iterator().next().lastModifiedBy());
+        Assertions.assertEquals("dyznfajsvks", response.iterator().next().lastModifiedBy());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-11-30T11:31:10Z"), response.iterator().next().creationTime());
+            .assertEquals(OffsetDateTime.parse("2021-06-29T16:28:10Z"), response.iterator().next().creationTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-05-01T14:38:31Z"), response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals("lronqqlmg", response.iterator().next().description());
+            .assertEquals(OffsetDateTime.parse("2021-08-31T23:00:14Z"), response.iterator().next().lastModifiedTime());
+        Assertions.assertEquals("kivy", response.iterator().next().description());
     }
 }

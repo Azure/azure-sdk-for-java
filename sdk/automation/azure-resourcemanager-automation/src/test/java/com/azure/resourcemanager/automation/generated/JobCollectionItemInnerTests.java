@@ -15,7 +15,7 @@ public final class JobCollectionItemInnerTests {
         JobCollectionItemInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"runbook\":{\"name\":\"rvxcush\"},\"creationTime\":\"2021-07-14T13:30:43Z\",\"status\":\"Disconnected\",\"startTime\":\"2021-08-02T22:27:38Z\",\"endTime\":\"2021-07-02T00:03:58Z\",\"lastModifiedTime\":\"2021-10-14T10:17:02Z\",\"provisioningState\":\"vgsgzwywakoihkn\",\"runOn\":\"jblmljhlnymz\"},\"id\":\"tqyryuzcbmqqv\",\"name\":\"mv\",\"type\":\"fgtayxonsup\"}")
+                    "{\"properties\":{\"runbook\":{\"name\":\"rvxcush\"},\"jobId\":\"19039622-fba0-4c5b-ac7e-d3d8cbcca29b\",\"creationTime\":\"2021-07-14T13:30:43Z\",\"status\":\"Disconnected\",\"startTime\":\"2021-08-02T22:27:38Z\",\"endTime\":\"2021-07-02T00:03:58Z\",\"lastModifiedTime\":\"2021-10-14T10:17:02Z\",\"provisioningState\":\"vgsgzwywakoihkn\",\"runOn\":\"jblmljhlnymz\"},\"id\":\"tqyryuzcbmqqv\",\"name\":\"mv\",\"type\":\"fgtayxonsup\"}")
                 .toObject(JobCollectionItemInner.class);
         Assertions.assertEquals("jblmljhlnymz", model.runOn());
     }

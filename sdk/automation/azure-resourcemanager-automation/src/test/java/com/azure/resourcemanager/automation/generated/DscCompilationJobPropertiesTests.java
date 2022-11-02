@@ -20,7 +20,7 @@ public final class DscCompilationJobPropertiesTests {
         DscCompilationJobProperties model =
             BinaryData
                 .fromString(
-                    "{\"configuration\":{\"name\":\"eyeam\"},\"startedBy\":\"hagalpbuxwgipwh\",\"creationTime\":\"2021-10-05T07:08:38Z\",\"provisioningState\":\"Suspended\",\"runOn\":\"hwankixzbinjepu\",\"status\":\"Blocked\",\"statusDetails\":\"ywnuzoq\",\"startTime\":\"2021-01-24T22:43:39Z\",\"endTime\":\"2021-10-11T21:17:46Z\",\"exception\":\"rnkcqvyxlw\",\"lastModifiedTime\":\"2021-01-23T07:25:21Z\",\"lastStatusModifiedTime\":\"2021-07-23T19:47:42Z\",\"parameters\":{\"avwhheunm\":\"hoqqnwvlr\",\"yaxuconuqszfkb\":\"qhgyxzkonocukok\",\"xsenhwlr\":\"ypewrmjmwvvjekt\",\"ihkaetcktvfc\":\"ffrzpwvlqdqgbiqy\"}}")
+                    "{\"configuration\":{\"name\":\"eyeam\"},\"startedBy\":\"hagalpbuxwgipwh\",\"jobId\":\"247dc350-b80a-4d94-8639-4635c58ee34e\",\"creationTime\":\"2021-10-05T07:08:38Z\",\"provisioningState\":\"Suspended\",\"runOn\":\"hwankixzbinjepu\",\"status\":\"Blocked\",\"statusDetails\":\"ywnuzoq\",\"startTime\":\"2021-01-24T22:43:39Z\",\"endTime\":\"2021-10-11T21:17:46Z\",\"exception\":\"rnkcqvyxlw\",\"lastModifiedTime\":\"2021-01-23T07:25:21Z\",\"lastStatusModifiedTime\":\"2021-07-23T19:47:42Z\",\"parameters\":{\"avwhheunm\":\"hoqqnwvlr\",\"yaxuconuqszfkb\":\"qhgyxzkonocukok\",\"xsenhwlr\":\"ypewrmjmwvvjekt\",\"ihkaetcktvfc\":\"ffrzpwvlqdqgbiqy\"}}")
                 .toObject(DscCompilationJobProperties.class);
         Assertions.assertEquals("eyeam", model.configuration().name());
         Assertions.assertEquals(JobProvisioningState.SUSPENDED, model.provisioningState());

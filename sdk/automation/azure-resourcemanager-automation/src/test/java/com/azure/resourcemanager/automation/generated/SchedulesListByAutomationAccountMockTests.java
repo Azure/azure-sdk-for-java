@@ -34,7 +34,7 @@ public final class SchedulesListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"startTime\":\"2021-01-17T14:17:36Z\",\"startTimeOffsetMinutes\":78.58990467745774,\"expiryTime\":\"2021-11-20T08:23:17Z\",\"expiryTimeOffsetMinutes\":13.374159088505632,\"isEnabled\":true,\"nextRun\":\"2021-08-21T18:37:30Z\",\"nextRunOffsetMinutes\":73.06932809892884,\"frequency\":\"OneTime\",\"timeZone\":\"eexahvmywhsbrc\",\"advancedSchedule\":{\"weekDays\":[],\"monthDays\":[],\"monthlyOccurrences\":[]},\"creationTime\":\"2021-02-12T21:58:29Z\",\"lastModifiedTime\":\"2021-04-26T06:04:11Z\",\"description\":\"oaqa\"},\"id\":\"uvehzptd\",\"name\":\"krrbhmpful\",\"type\":\"be\"}]}";
+            "{\"value\":[{\"properties\":{\"startTime\":\"2021-06-18T15:14:05Z\",\"startTimeOffsetMinutes\":71.9437925634148,\"expiryTime\":\"2021-08-10T23:27:56Z\",\"expiryTimeOffsetMinutes\":17.06872981990356,\"isEnabled\":false,\"nextRun\":\"2021-06-14T06:48:06Z\",\"nextRunOffsetMinutes\":89.44876547506966,\"frequency\":\"Hour\",\"timeZone\":\"yrilkfb\",\"advancedSchedule\":{\"weekDays\":[],\"monthDays\":[],\"monthlyOccurrences\":[]},\"creationTime\":\"2021-05-12T00:07:13Z\",\"lastModifiedTime\":\"2021-05-04T22:29:31Z\",\"description\":\"nfnqtxjtomals\"},\"id\":\"bnfddep\",\"name\":\"dwq\",\"type\":\"ns\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,20 +63,20 @@ public final class SchedulesListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Schedule> response =
-            manager.schedules().listByAutomationAccount("qxvztpbnfnqtxjt", "m", Context.NONE);
+            manager.schedules().listByAutomationAccount("crraueekcsu", "h", Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-17T14:17:36Z"), response.iterator().next().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-20T08:23:17Z"), response.iterator().next().expiryTime());
-        Assertions.assertEquals(13.374159088505632D, response.iterator().next().expiryTimeOffsetMinutes());
-        Assertions.assertEquals(true, response.iterator().next().isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T18:37:30Z"), response.iterator().next().nextRun());
-        Assertions.assertEquals(73.06932809892884D, response.iterator().next().nextRunOffsetMinutes());
-        Assertions.assertEquals(ScheduleFrequency.ONE_TIME, response.iterator().next().frequency());
-        Assertions.assertEquals("eexahvmywhsbrc", response.iterator().next().timeZone());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T15:14:05Z"), response.iterator().next().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T23:27:56Z"), response.iterator().next().expiryTime());
+        Assertions.assertEquals(17.06872981990356D, response.iterator().next().expiryTimeOffsetMinutes());
+        Assertions.assertEquals(false, response.iterator().next().isEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-14T06:48:06Z"), response.iterator().next().nextRun());
+        Assertions.assertEquals(89.44876547506966D, response.iterator().next().nextRunOffsetMinutes());
+        Assertions.assertEquals(ScheduleFrequency.HOUR, response.iterator().next().frequency());
+        Assertions.assertEquals("yrilkfb", response.iterator().next().timeZone());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-02-12T21:58:29Z"), response.iterator().next().creationTime());
+            .assertEquals(OffsetDateTime.parse("2021-05-12T00:07:13Z"), response.iterator().next().creationTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-26T06:04:11Z"), response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals("oaqa", response.iterator().next().description());
+            .assertEquals(OffsetDateTime.parse("2021-05-04T22:29:31Z"), response.iterator().next().lastModifiedTime());
+        Assertions.assertEquals("nfnqtxjtomals", response.iterator().next().description());
     }
 }

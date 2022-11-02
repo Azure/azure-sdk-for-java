@@ -33,7 +33,7 @@ public final class JobsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"runbook\":{\"name\":\"s\"},\"creationTime\":\"2021-09-19T00:53:33Z\",\"status\":\"Suspended\",\"startTime\":\"2021-07-19T17:29:22Z\",\"endTime\":\"2021-03-07T12:59:46Z\",\"lastModifiedTime\":\"2021-08-20T06:08Z\",\"provisioningState\":\"jolgjyyxpvels\",\"runOn\":\"rqz\"},\"id\":\"vxoqe\",\"name\":\"ntxwaljglzob\",\"type\":\"qwaafrqulhm\"}]}";
+            "{\"value\":[{\"properties\":{\"runbook\":{\"name\":\"s\"},\"jobId\":\"4d9d38fd-adb1-4341-8b09-b1b3f0a66a8e\",\"creationTime\":\"2021-09-19T00:53:33Z\",\"status\":\"Suspended\",\"startTime\":\"2021-07-19T17:29:22Z\",\"endTime\":\"2021-03-07T12:59:46Z\",\"lastModifiedTime\":\"2021-08-20T06:08Z\",\"provisioningState\":\"jolgjyyxpvels\",\"runOn\":\"rqz\"},\"id\":\"vxoqe\",\"name\":\"ntxwaljglzob\",\"type\":\"qwaafrqulhm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

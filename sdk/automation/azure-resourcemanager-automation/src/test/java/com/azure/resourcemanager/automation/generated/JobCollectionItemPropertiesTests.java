@@ -15,7 +15,7 @@ public final class JobCollectionItemPropertiesTests {
         JobCollectionItemProperties model =
             BinaryData
                 .fromString(
-                    "{\"runbook\":{\"name\":\"lzqnhcvs\"},\"creationTime\":\"2021-02-22T08:57:17Z\",\"status\":\"Removing\",\"startTime\":\"2021-11-16T18:26:44Z\",\"endTime\":\"2021-06-05T23:35:12Z\",\"lastModifiedTime\":\"2021-02-11T13:30:21Z\",\"provisioningState\":\"xfyqonmpqoxwdo\",\"runOn\":\"bxiqxeiiqbimht\"}")
+                    "{\"runbook\":{\"name\":\"lzqnhcvs\"},\"jobId\":\"e74a2a02-3744-45e8-b383-f24da769d91f\",\"creationTime\":\"2021-02-22T08:57:17Z\",\"status\":\"Removing\",\"startTime\":\"2021-11-16T18:26:44Z\",\"endTime\":\"2021-06-05T23:35:12Z\",\"lastModifiedTime\":\"2021-02-11T13:30:21Z\",\"provisioningState\":\"xfyqonmpqoxwdo\",\"runOn\":\"bxiqxeiiqbimht\"}")
                 .toObject(JobCollectionItemProperties.class);
         Assertions.assertEquals("bxiqxeiiqbimht", model.runOn());
     }

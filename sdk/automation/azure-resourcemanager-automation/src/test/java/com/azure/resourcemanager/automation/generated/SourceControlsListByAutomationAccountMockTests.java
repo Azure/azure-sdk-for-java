@@ -34,7 +34,7 @@ public final class SourceControlsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"repoUrl\":\"schlzvfictnkj\",\"branch\":\"gcwn\",\"folderPath\":\"bkgfyrtogmhmjpjs\",\"autoSync\":false,\"publishRunbook\":false,\"sourceType\":\"VsoGit\",\"description\":\"ygevgwmseharx\",\"creationTime\":\"2021-09-06T15:13:07Z\",\"lastModifiedTime\":\"2021-02-01T22:31:16Z\"},\"id\":\"rxtmbpjptnvw\",\"name\":\"hrsidq\",\"type\":\"xlbtp\"}]}";
+            "{\"value\":[{\"properties\":{\"repoUrl\":\"dmkrrb\",\"branch\":\"pfulube\",\"folderPath\":\"ybpmf\",\"autoSync\":false,\"publishRunbook\":true,\"sourceType\":\"VsoGit\",\"description\":\"zkrvfyi\",\"creationTime\":\"2021-05-06T22:44:52Z\",\"lastModifiedTime\":\"2021-02-18T19:59:42Z\"},\"id\":\"hlzvfictnkjj\",\"name\":\"gcwn\",\"type\":\"hbkgfyrt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,18 +63,20 @@ public final class SourceControlsListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SourceControl> response =
-            manager.sourceControls().listByAutomationAccount("gybpmfb", "ununm", "zkrvfyi", Context.NONE);
+            manager
+                .sourceControls()
+                .listByAutomationAccount("zygleexahvm", "whsbrcary", "sjjzyvoaqajuveh", Context.NONE);
 
-        Assertions.assertEquals("schlzvfictnkj", response.iterator().next().repoUrl());
-        Assertions.assertEquals("gcwn", response.iterator().next().branch());
-        Assertions.assertEquals("bkgfyrtogmhmjpjs", response.iterator().next().folderPath());
+        Assertions.assertEquals("dmkrrb", response.iterator().next().repoUrl());
+        Assertions.assertEquals("pfulube", response.iterator().next().branch());
+        Assertions.assertEquals("ybpmf", response.iterator().next().folderPath());
         Assertions.assertEquals(false, response.iterator().next().autoSync());
-        Assertions.assertEquals(false, response.iterator().next().publishRunbook());
+        Assertions.assertEquals(true, response.iterator().next().publishRunbook());
         Assertions.assertEquals(SourceType.VSO_GIT, response.iterator().next().sourceType());
-        Assertions.assertEquals("ygevgwmseharx", response.iterator().next().description());
+        Assertions.assertEquals("zkrvfyi", response.iterator().next().description());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-09-06T15:13:07Z"), response.iterator().next().creationTime());
+            .assertEquals(OffsetDateTime.parse("2021-05-06T22:44:52Z"), response.iterator().next().creationTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-02-01T22:31:16Z"), response.iterator().next().lastModifiedTime());
+            .assertEquals(OffsetDateTime.parse("2021-02-18T19:59:42Z"), response.iterator().next().lastModifiedTime());
     }
 }

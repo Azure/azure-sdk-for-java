@@ -196,7 +196,7 @@ def generate(
     # shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
-    shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
+    shutil.rmtree(os.path.join(output_dir, 'src/test/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
     if readme:

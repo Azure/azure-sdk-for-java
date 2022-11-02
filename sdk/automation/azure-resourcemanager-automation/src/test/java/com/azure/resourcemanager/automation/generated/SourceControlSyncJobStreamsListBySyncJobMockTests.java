@@ -19,6 +19,7 @@ import com.azure.resourcemanager.automation.models.StreamType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,7 +35,7 @@ public final class SourceControlSyncJobStreamsListBySyncJobMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"mdskjhhxdlajfoxc\",\"properties\":{\"sourceControlSyncJobStreamId\":\"vslxlh\",\"summary\":\"vkrmukmyjmkx\",\"time\":\"2021-02-20T21:50:49Z\",\"streamType\":\"Output\"}}]}";
+            "{\"value\":[{\"id\":\"efyihduyeuyl\",\"properties\":{\"sourceControlSyncJobStreamId\":\"mtybkcgsu\",\"summary\":\"hllnmwynefxe\",\"time\":\"2021-08-05T19:39:29Z\",\"streamType\":\"Error\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,10 +66,16 @@ public final class SourceControlSyncJobStreamsListBySyncJobMockTests {
         PagedIterable<SourceControlSyncJobStream> response =
             manager
                 .sourceControlSyncJobStreams()
-                .listBySyncJob("thhllnmwyne", "x", "x", null, "fciatxtjrr", Context.NONE);
+                .listBySyncJob(
+                    "cvjqdv",
+                    "wkqp",
+                    "drlefgnaavuag",
+                    UUID.fromString("d06ad439-eb2d-430b-a3aa-ae341f4f39f9"),
+                    "tetaoutnpdctuhs",
+                    Context.NONE);
 
-        Assertions.assertEquals("vslxlh", response.iterator().next().sourceControlSyncJobStreamId());
-        Assertions.assertEquals("vkrmukmyjmkx", response.iterator().next().summary());
-        Assertions.assertEquals(StreamType.OUTPUT, response.iterator().next().streamType());
+        Assertions.assertEquals("mtybkcgsu", response.iterator().next().sourceControlSyncJobStreamId());
+        Assertions.assertEquals("hllnmwynefxe", response.iterator().next().summary());
+        Assertions.assertEquals(StreamType.ERROR, response.iterator().next().streamType());
     }
 }

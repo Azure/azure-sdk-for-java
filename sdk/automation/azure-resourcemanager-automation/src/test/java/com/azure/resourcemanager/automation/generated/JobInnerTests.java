@@ -12,6 +12,7 @@ import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,11 +22,12 @@ public final class JobInnerTests {
         JobInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"runbook\":{\"name\":\"bgbzbowxeqoclj\"},\"startedBy\":\"gvkzqkjjeokbze\",\"runOn\":\"zrxcczurt\",\"creationTime\":\"2021-06-04T04:58:20Z\",\"status\":\"Completed\",\"statusDetails\":\"kwv\",\"startTime\":\"2021-05-04T05:26Z\",\"endTime\":\"2021-10-11T16:58:27Z\",\"exception\":\"fbzdixzmqpnoda\",\"lastModifiedTime\":\"2021-03-28T06:43:22Z\",\"lastStatusModifiedTime\":\"2021-04-29T16:57Z\",\"parameters\":{\"eln\":\"jptmcgsbost\",\"utmzlbiojlvfhrbb\":\"la\"},\"provisioningState\":\"Processing\"},\"id\":\"qvcww\",\"name\":\"yurmochpprprs\",\"type\":\"mo\"}")
+                    "{\"properties\":{\"runbook\":{\"name\":\"bgbzbowxeqoclj\"},\"startedBy\":\"gvkzqkjjeokbze\",\"runOn\":\"zrxcczurt\",\"jobId\":\"274ff580-70fb-4a2b-8a06-407dae2a6ee8\",\"creationTime\":\"2021-06-04T04:58:20Z\",\"status\":\"Completed\",\"statusDetails\":\"kwv\",\"startTime\":\"2021-05-04T05:26Z\",\"endTime\":\"2021-10-11T16:58:27Z\",\"exception\":\"fbzdixzmqpnoda\",\"lastModifiedTime\":\"2021-03-28T06:43:22Z\",\"lastStatusModifiedTime\":\"2021-04-29T16:57Z\",\"parameters\":{\"eln\":\"jptmcgsbost\",\"utmzlbiojlvfhrbb\":\"la\"},\"provisioningState\":\"Processing\"},\"id\":\"qvcww\",\"name\":\"yurmochpprprs\",\"type\":\"mo\"}")
                 .toObject(JobInner.class);
         Assertions.assertEquals("bgbzbowxeqoclj", model.runbook().name());
         Assertions.assertEquals("gvkzqkjjeokbze", model.startedBy());
         Assertions.assertEquals("zrxcczurt", model.runOn());
+        Assertions.assertEquals(UUID.fromString("274ff580-70fb-4a2b-8a06-407dae2a6ee8"), model.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T04:58:20Z"), model.creationTime());
         Assertions.assertEquals(JobStatus.COMPLETED, model.status());
         Assertions.assertEquals("kwv", model.statusDetails());
@@ -45,6 +47,7 @@ public final class JobInnerTests {
                 .withRunbook(new RunbookAssociationProperty().withName("bgbzbowxeqoclj"))
                 .withStartedBy("gvkzqkjjeokbze")
                 .withRunOn("zrxcczurt")
+                .withJobId(UUID.fromString("274ff580-70fb-4a2b-8a06-407dae2a6ee8"))
                 .withCreationTime(OffsetDateTime.parse("2021-06-04T04:58:20Z"))
                 .withStatus(JobStatus.COMPLETED)
                 .withStatusDetails("kwv")
@@ -59,6 +62,7 @@ public final class JobInnerTests {
         Assertions.assertEquals("bgbzbowxeqoclj", model.runbook().name());
         Assertions.assertEquals("gvkzqkjjeokbze", model.startedBy());
         Assertions.assertEquals("zrxcczurt", model.runOn());
+        Assertions.assertEquals(UUID.fromString("274ff580-70fb-4a2b-8a06-407dae2a6ee8"), model.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T04:58:20Z"), model.creationTime());
         Assertions.assertEquals(JobStatus.COMPLETED, model.status());
         Assertions.assertEquals("kwv", model.statusDetails());

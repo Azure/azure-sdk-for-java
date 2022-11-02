@@ -34,7 +34,7 @@ public final class TestJobStreamsListByTestJobMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"raueekcsueh\",\"properties\":{\"jobStreamId\":\"dac\",\"time\":\"2021-08-10T23:27:56Z\",\"streamType\":\"Any\",\"streamText\":\"lqidywmhm\",\"summary\":\"yrilkfb\",\"value\":{}}}]}";
+            "{\"value\":[{\"id\":\"lhdyzmyckzex\",\"properties\":{\"jobStreamId\":\"kck\",\"time\":\"2021-10-15T13:09:12Z\",\"streamType\":\"Error\",\"streamText\":\"aabjkdtfohfao\",\"summary\":\"vkiwrsiwdyjqu\",\"value\":{}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +63,13 @@ public final class TestJobStreamsListByTestJobMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JobStream> response =
-            manager
-                .testJobStreams()
-                .listByTestJob("nxakckyw", "mxgaabjkdtfohfao", "zvkiwrsiwdy", "quryk", Context.NONE);
+            manager.testJobStreams().listByTestJob("cnn", "t", "nx", "wqy", Context.NONE);
 
-        Assertions.assertEquals("raueekcsueh", response.iterator().next().id());
-        Assertions.assertEquals("dac", response.iterator().next().jobStreamId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T23:27:56Z"), response.iterator().next().time());
-        Assertions.assertEquals(JobStreamType.ANY, response.iterator().next().streamType());
-        Assertions.assertEquals("lqidywmhm", response.iterator().next().streamText());
-        Assertions.assertEquals("yrilkfb", response.iterator().next().summary());
+        Assertions.assertEquals("lhdyzmyckzex", response.iterator().next().id());
+        Assertions.assertEquals("kck", response.iterator().next().jobStreamId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T13:09:12Z"), response.iterator().next().time());
+        Assertions.assertEquals(JobStreamType.ERROR, response.iterator().next().streamType());
+        Assertions.assertEquals("aabjkdtfohfao", response.iterator().next().streamText());
+        Assertions.assertEquals("vkiwrsiwdyjqu", response.iterator().next().summary());
     }
 }
