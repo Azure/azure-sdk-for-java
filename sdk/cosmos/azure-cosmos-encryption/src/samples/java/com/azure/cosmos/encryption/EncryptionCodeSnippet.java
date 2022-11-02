@@ -124,7 +124,7 @@ public class EncryptionCodeSnippet {
         paths.add(includedPath6);
         paths.add(includedPath7);
 
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 1);
         String containerId = "myCol";
         CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
         properties.setClientEncryptionPolicy(clientEncryptionPolicy);

@@ -164,7 +164,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         paths.add(path1);
         paths.add(path2);
 
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 1);
         CosmosContainerResponse containerResponse = null;
 
         //Verify partition key in CosmosContainerProperties constructor with encrypted field.
@@ -239,7 +239,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         paths.add(path2);
 
         try {
-            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
+            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 1);
             fail("clientEncryptionPolicy should fail as id which is part of the partition key cannot be encrypted with " +
                 "PolicyFormatVersion 1.");
         } catch (IllegalArgumentException ex) {

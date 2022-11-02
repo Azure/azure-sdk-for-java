@@ -20,35 +20,20 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class ClientEncryptionPolicy {
 
-    private JsonSerializable jsonSerializable;
-
     /**
      * Paths of the item that need encryption along with path-specific settings.
      */
     @JsonProperty("includedPaths")
-    private List<ClientEncryptionIncludedPath> includedPaths;
+    private final List<ClientEncryptionIncludedPath> includedPaths;
 
     @JsonProperty("policyFormatVersion")
-    private int policyFormatVersion;
+    private final int policyFormatVersion;
 
     /**
      * Constructor.
      *
      * @param paths list of path of the item that need encryption along with path-specific settings.
-     *              the PolicyFormatVersion will be set to 1 which is the default value.
-     *              Note: If you need to include partition key or id field paths as part of the ClientEncryptionPolicy, please set PolicyFormatVersion to 2.
-     */
-    public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
-        this.policyFormatVersion = 1;
-        validateIncludedPaths(paths, policyFormatVersion);
-        this.includedPaths = paths;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param paths list of path of the item that need encryption along with path-specific settings.
-     * @param policyFormatVersion version of the client encryption policy definition. Current supported versions are 1 and 2. Default version is 1.
+     * @param policyFormatVersion version of the client encryption policy definition. Current supported versions are 1 and 2.
      *                            Note: If you need to include partition key or id field paths as part of the ClientEncryptionPolicy, please set PolicyFormatVersion to 2.
      */
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths, int policyFormatVersion) {
@@ -58,31 +43,6 @@ public final class ClientEncryptionPolicy {
         this.policyFormatVersion = policyFormatVersion;
         validateIncludedPaths(paths, policyFormatVersion);
         this.includedPaths = paths;
-    }
-
-    /**
-     * Constructor.
-     */
-    public ClientEncryptionPolicy() {
-        this.jsonSerializable = new JsonSerializable();
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonString the json string that represents the client encryption policy.
-     */
-    ClientEncryptionPolicy(String jsonString) {
-        this.jsonSerializable = new JsonSerializable(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param objectNode the object node that represents the client encryption policy.
-     */
-    ClientEncryptionPolicy(ObjectNode objectNode) {
-        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**

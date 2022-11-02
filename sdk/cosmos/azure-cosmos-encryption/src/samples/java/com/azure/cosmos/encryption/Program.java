@@ -155,7 +155,7 @@ public class Program {
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(Program.containerId,
             "/purchaseOrderNumber");
-        containerProperties.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths));
+        containerProperties.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths, 1));
 
         cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(containerProperties,
             ThroughputProperties.createManualThroughput(1000)).block();

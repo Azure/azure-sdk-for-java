@@ -371,7 +371,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                 cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(asyncClient.getDatabase(databaseId));
 
             String containerId = UUID.randomUUID().toString();
-            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(false));
+            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(false), 1);
             createEncryptionContainer(cosmosEncryptionAsyncDatabase, clientEncryptionPolicy, containerId);
             CosmosEncryptionAsyncContainer encryptionAsyncContainerOriginal =
                 cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
@@ -404,7 +404,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
             //Deleting and creating container
             encryptionAsyncContainerOriginal.getCosmosAsyncContainer().delete().block();
-            ClientEncryptionPolicy policyWithOneEncryptionPolicy = new ClientEncryptionPolicy(getPathWithOneEncryptionField());
+            ClientEncryptionPolicy policyWithOneEncryptionPolicy = new ClientEncryptionPolicy(getPathWithOneEncryptionField(), 1);
             createEncryptionContainer(cosmosEncryptionAsyncDatabase, policyWithOneEncryptionPolicy, containerId);
             CosmosEncryptionAsyncContainer encryptionAsyncContainerNew = getNewEncryptionContainerProxyObject(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId(), containerId);
             encryptionAsyncContainerNew.createItem(encryptionPojo,

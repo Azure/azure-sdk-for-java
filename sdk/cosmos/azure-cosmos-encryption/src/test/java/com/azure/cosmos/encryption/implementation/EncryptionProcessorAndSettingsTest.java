@@ -206,7 +206,7 @@ public class EncryptionProcessorAndSettingsTest {
         includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
-        return new ClientEncryptionPolicy(paths);
+        return new ClientEncryptionPolicy(paths, 1);
     }
 
     private CosmosContainerProperties generateContainerWithCosmosEncryptionPolicy() {
@@ -219,7 +219,7 @@ public class EncryptionProcessorAndSettingsTest {
         includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
-        return containerProperties.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths));
+        return containerProperties.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths, 1));
     }
 
     private CosmosClientEncryptionKeyProperties generateClientEncryptionKeyProperties() throws JsonProcessingException {
