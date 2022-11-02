@@ -50,6 +50,10 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AmazonRedshiftLinkedServiceTypeProperties class. */
+    public AmazonRedshiftLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
      * string).

@@ -228,36 +228,35 @@ public class BinaryDataTest {
         assertArrayEquals(expected, data.toBytes());
     }
 
-    @Test
-    public void createFromFluxEagerly() {
-        // Arrange
+    @ParameterizedTest
+    @MethodSource("createFromFluxEagerlySupplier")
+    public void createFromFluxEagerly(Mono<BinaryData> binaryDataMono, byte[] expectedBytes, int expectedCount) {
+        StepVerifier.create(binaryDataMono)
+            .assertNext(actual -> {
+                assertArrayEquals(expectedBytes, actual.toBytes());
+                assertEquals(expectedBytes.length, actual.getLength());
+            })
+            .verifyComplete();
+
+        // Verify that the data got buffered.
+        StepVerifier.create(binaryDataMono.flatMapMany(BinaryData::toFluxByteBuffer).count())
+            .assertNext(actualCount -> assertEquals(expectedCount, actualCount))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> createFromFluxEagerlySupplier() {
         final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
         final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
         final long length = expected.length;
 
-        Arrays.asList(
-            BinaryData.fromFlux(dataFlux),
-            BinaryData.fromFlux(dataFlux, null),
-            BinaryData.fromFlux(dataFlux, length),
-            BinaryData.fromFlux(dataFlux, null, true),
-            BinaryData.fromFlux(dataFlux, length, true)
-        ).forEach(binaryDataMono -> {
-            // Act & Assert
-            StepVerifier.create(binaryDataMono)
-                .assertNext(actual -> {
-                    assertArrayEquals(expected, actual.toBytes());
-                    assertEquals(expected.length, actual.getLength());
-                })
-                .verifyComplete();
-
-            // Verify that data got buffered
-            StepVerifier.create(binaryDataMono
-                    .flatMapMany(BinaryData::toFluxByteBuffer)
-                    .count())
-                .assertNext(actual -> assertEquals(1, actual))
-                .verifyComplete();
-        });
+        return Stream.of(
+            Arguments.of(BinaryData.fromFlux(dataFlux), expected, 2),
+            Arguments.of(BinaryData.fromFlux(dataFlux, null), expected, 2),
+            Arguments.of(BinaryData.fromFlux(dataFlux, length), expected, 2),
+            Arguments.of(BinaryData.fromFlux(dataFlux, null, true), expected, 2),
+            Arguments.of(BinaryData.fromFlux(dataFlux, length, true), expected, 2)
+        );
     }
 
     @Test
@@ -294,25 +293,35 @@ public class BinaryDataTest {
         );
     }
 
-    @Test
-    public void createFromFluxValidations() {
-        Stream.of(
-            BinaryData.fromFlux(null),
-            BinaryData.fromFlux(null, null),
-            BinaryData.fromFlux(null, null, false),
-            BinaryData.fromFlux(null, null, true)
-        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
-            .expectError(NullPointerException.class)
-            .verify());
+    @ParameterizedTest
+    @MethodSource("createFromFluxValidationsSupplier")
+    public void createFromFluxValidations(Flux<ByteBuffer> flux, Long length, Boolean buffer,
+        Class<? extends Throwable> expectedException) {
+        if (length == null && buffer == null) {
+            StepVerifier.create(BinaryData.fromFlux(flux))
+                .expectError(expectedException)
+                .verify();
+        } else if (buffer == null) {
+            StepVerifier.create(BinaryData.fromFlux(flux, length))
+                .expectError(expectedException)
+                .verify();
+        } else {
+            StepVerifier.create(BinaryData.fromFlux(flux, length, buffer))
+                .expectError(expectedException)
+                .verify();
+        }
+    }
 
-        Stream.of(
-            BinaryData.fromFlux(Flux.empty(), -1L),
-            BinaryData.fromFlux(Flux.empty(), -1L, false),
-            BinaryData.fromFlux(Flux.empty(), -1L, true),
-            BinaryData.fromFlux(Flux.empty(), Integer.MAX_VALUE - 7L, true)
-        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
-            .expectError(IllegalArgumentException.class)
-            .verify());
+    private static Stream<Arguments> createFromFluxValidationsSupplier() {
+        return Stream.of(
+            Arguments.of(null, null, null, RuntimeException.class),
+            Arguments.of(null, null, false, RuntimeException.class),
+            Arguments.of(null, null, true, RuntimeException.class),
+
+            Arguments.of(Flux.empty(), -1L, null, IllegalArgumentException.class),
+            Arguments.of(Flux.empty(), -1L, false, IllegalArgumentException.class),
+            Arguments.of(Flux.empty(), -1L, true, IllegalArgumentException.class)
+        );
     }
 
     @Test

@@ -54,8 +54,8 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.common to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.implementation.changefeed.incremental to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.implementation.changefeed.fullfidelity to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.changefeed.pkversion to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.changefeed.epkversion to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.feedranges to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.exceptions to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.directconnectivity to com.fasterxml.jackson.databind;
@@ -67,10 +67,10 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.clienttelemetry to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl.controller.group.global to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.models to com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;

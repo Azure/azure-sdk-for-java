@@ -3,19 +3,21 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.events.AddParticipantsFailedEvent;
-import com.azure.communication.callautomation.models.events.AddParticipantsSucceededEvent;
+import com.azure.communication.callautomation.models.events.AddParticipantsFailed;
+import com.azure.communication.callautomation.models.events.AddParticipantsSucceeded;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
-import com.azure.communication.callautomation.models.events.CallDisconnectedEvent;
-import com.azure.communication.callautomation.models.events.CallTransferAcceptedEvent;
-import com.azure.communication.callautomation.models.events.CallTransferFailedEvent;
-import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallDisconnected;
+import com.azure.communication.callautomation.models.events.CallTransferAccepted;
+import com.azure.communication.callautomation.models.events.CallTransferFailed;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
+import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.events.RecognizeFailed;
-import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
-import com.azure.communication.callautomation.models.events.PlayFailedEvent;
-import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -92,29 +94,33 @@ public final class EventHandler {
             JsonNode eventData = mapper.readTree(data);
 
             if (Objects.equals(eventType, "Microsoft.Communication.CallConnected")) {
-                ret = mapper.convertValue(eventData, CallConnectedEvent.class);
+                ret = mapper.convertValue(eventData, CallConnected.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallDisconnected")) {
-                ret = mapper.convertValue(eventData, CallDisconnectedEvent.class);
+                ret = mapper.convertValue(eventData, CallDisconnected.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsFailed")) {
-                ret = mapper.convertValue(eventData, AddParticipantsFailedEvent.class);
+                ret = mapper.convertValue(eventData, AddParticipantsFailed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsSucceeded")) {
-                ret = mapper.convertValue(eventData, AddParticipantsSucceededEvent.class);
+                ret = mapper.convertValue(eventData, AddParticipantsSucceeded.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferAccepted")) {
-                ret = mapper.convertValue(eventData, CallTransferAcceptedEvent.class);
+                ret = mapper.convertValue(eventData, CallTransferAccepted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferFailed")) {
-                ret = mapper.convertValue(eventData, CallTransferFailedEvent.class);
+                ret = mapper.convertValue(eventData, CallTransferFailed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ParticipantsUpdated")) {
-                ret = mapper.convertValue(eventData, ParticipantsUpdatedEvent.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.CallRecordingStateChanged")) {
-                ret = mapper.convertValue(eventData, RecordingStateChangedEvent.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompletedEvent")) {
-                ret = mapper.convertValue(eventData, PlayCompletedEvent.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailedEvent")) {
-                ret = mapper.convertValue(eventData, PlayFailedEvent.class);
+                ret = mapper.convertValue(eventData, ParticipantsUpdated.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecordingStateChanged")) {
+                ret = mapper.convertValue(eventData, RecordingStateChanged.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
+                ret = mapper.convertValue(eventData, PlayCompleted.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
+                ret = mapper.convertValue(eventData, PlayFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCanceled")) {
+                ret = mapper.convertValue(eventData, PlayCanceled.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCompleted")) {
                 ret = mapper.convertValue(eventData, RecognizeCompleted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeFailed")) {
                 ret = mapper.convertValue(eventData, RecognizeFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCanceled")) {
+                ret = mapper.convertValue(eventData, RecognizeCanceled.class);
             }
 
             return ret;

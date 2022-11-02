@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachines InstallPatches. */
 public final class VirtualMachinesInstallPatchesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
      */
     /**
      * Sample code: Install patch state of a virtual machine.

@@ -23,6 +23,10 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private SynapseSparkJobActivityTypeProperties innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
 
+    /** Creates an instance of SynapseSparkJobDefinitionActivity class. */
+    public SynapseSparkJobDefinitionActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Execute spark job activity properties.
      *
@@ -173,8 +177,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the files property: Additional files used for reference in the main definition file, which will override the
-     * 'files' of the spark job definition you provide.
+     * Get the files property: (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for
+     * reference in the main definition file, which will override the 'files' of the spark job definition you provide.
      *
      * @return the files value.
      */
@@ -183,8 +187,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the files property: Additional files used for reference in the main definition file, which will override the
-     * 'files' of the spark job definition you provide.
+     * Set the files property: (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for
+     * reference in the main definition file, which will override the 'files' of the spark job definition you provide.
      *
      * @param files the files value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
@@ -194,6 +198,56 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
             this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
         }
         this.innerTypeProperties().withFiles(files);
+        return this;
+    }
+
+    /**
+     * Get the pythonCodeReference property: Additional python code files used for reference in the main definition
+     * file, which will override the 'pyFiles' of the spark job definition you provide.
+     *
+     * @return the pythonCodeReference value.
+     */
+    public List<Object> pythonCodeReference() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().pythonCodeReference();
+    }
+
+    /**
+     * Set the pythonCodeReference property: Additional python code files used for reference in the main definition
+     * file, which will override the 'pyFiles' of the spark job definition you provide.
+     *
+     * @param pythonCodeReference the pythonCodeReference value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity withPythonCodeReference(List<Object> pythonCodeReference) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+        }
+        this.innerTypeProperties().withPythonCodeReference(pythonCodeReference);
+        return this;
+    }
+
+    /**
+     * Get the filesV2 property: Additional files used for reference in the main definition file, which will override
+     * the 'jars' and 'files' of the spark job definition you provide.
+     *
+     * @return the filesV2 value.
+     */
+    public List<Object> filesV2() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().filesV2();
+    }
+
+    /**
+     * Set the filesV2 property: Additional files used for reference in the main definition file, which will override
+     * the 'jars' and 'files' of the spark job definition you provide.
+     *
+     * @param filesV2 the filesV2 value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity withFilesV2(List<Object> filesV2) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+        }
+        this.innerTypeProperties().withFilesV2(filesV2);
         return this;
     }
 

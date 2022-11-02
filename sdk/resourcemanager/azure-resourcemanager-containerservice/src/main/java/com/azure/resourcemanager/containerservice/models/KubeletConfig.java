@@ -99,6 +99,10 @@ public final class KubeletConfig {
     @JsonProperty(value = "podMaxPids")
     private Integer podMaxPids;
 
+    /** Creates an instance of KubeletConfig class. */
+    public KubeletConfig() {
+    }
+
     /**
      * Get the cpuManagerPolicy property: The CPU Manager policy to use.
      *

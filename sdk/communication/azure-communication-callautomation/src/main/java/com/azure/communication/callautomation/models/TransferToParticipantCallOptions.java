@@ -7,6 +7,9 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * The options for adding participants.
  */
@@ -33,12 +36,18 @@ public class TransferToParticipantCallOptions {
     private String userToUserInformation;
 
     /**
+     * Repeatability Headers Configuration
+     */
+    private RepeatabilityHeaders repeatabilityHeaders;
+
+    /**
      * Constructor
      *
      * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
      */
     public TransferToParticipantCallOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -78,6 +87,15 @@ public class TransferToParticipantCallOptions {
     }
 
     /**
+     * Get the Repeatability headers configuration.
+     *
+     * @return the repeatabilityHeaders
+     */
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
+    }
+
+    /**
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
@@ -108,6 +126,17 @@ public class TransferToParticipantCallOptions {
      */
     public TransferToParticipantCallOptions setUserToUserInformation(String userToUserInformation) {
         this.userToUserInformation = userToUserInformation;
+        return this;
+    }
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the TransferToParticipantCallOptions object itself.
+     */
+    public TransferToParticipantCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 }

@@ -66,6 +66,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     Tag tag();
 
+    Tag clientMetricTag();
+
     long usedDirectMemory();
 
     long usedHeapMemory();
@@ -239,6 +241,11 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         @JsonProperty
         public boolean preferTcpNative() { return this.options.preferTcpNative(); }
+
+        @JsonProperty
+        public long sslHandshakeTimeoutInMillis() {
+            return this.options.sslHandshakeTimeoutInMillis();
+        }
 
         @Override
         public String toString() {

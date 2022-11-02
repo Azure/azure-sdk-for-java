@@ -99,6 +99,9 @@ private[spark] object CosmosConfigNames {
     "spark.cosmos.serialization.inclusionMode"
   val SerializationDateTimeConversionMode =
     "spark.cosmos.serialization.dateTimeConversionMode"
+  val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
+  val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
+  val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -158,7 +161,10 @@ private[spark] object CosmosConfigNames {
     ThroughputControlGlobalControlRenewalIntervalInMS,
     ThroughputControlGlobalControlExpireIntervalInMS,
     SerializationInclusionMode,
-    SerializationDateTimeConversionMode
+    SerializationDateTimeConversionMode,
+    MetricsEnabledForSlf4j,
+    MetricsIntervalInSeconds,
+    MetricsAzureMonitorConnectionString
   )
 
   def validateConfigName(name: String): Unit = {
@@ -1072,6 +1078,8 @@ private object ChangeFeedModes extends Enumeration {
 
   val Incremental: ChangeFeedModes.Value = Value("Incremental")
   val FullFidelity: ChangeFeedModes.Value = Value("FullFidelity")
+  val LatestVersion: ChangeFeedModes.Value = Value("LatestVersion")
+  val AllVersionsAndDeletes: ChangeFeedModes.Value = Value("AllVersionsAndDeletes")
 }
 
 private object ChangeFeedStartFromModes extends Enumeration {
@@ -1102,8 +1110,8 @@ private case class CosmosChangeFeedConfig
     }
 
     this.changeFeedMode match {
-      case ChangeFeedModes.Incremental => options
-      case ChangeFeedModes.FullFidelity => options.fullFidelity()
+      case ChangeFeedModes.Incremental | ChangeFeedModes.LatestVersion => options
+      case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes => options.allVersionsAndDeletes()
     }
   }
 
@@ -1142,7 +1150,7 @@ private object CosmosChangeFeedConfig {
     mandatory = false,
     defaultValue = Some(ChangeFeedModes.Incremental),
     parseFromStringFunction = changeFeedModeString => CosmosConfigEntry.parseEnumeration(changeFeedModeString, ChangeFeedModes),
-    helpMessage = "ChangeFeed mode (Incremental or FullFidelity)")
+    helpMessage = "ChangeFeed mode (Incremental/LatestVersion or FullFidelity/AllVersionsAndDeletes)")
 
   private val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
     key = CosmosConfigNames.ChangeFeedItemCountPerTriggerHint,

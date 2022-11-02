@@ -116,7 +116,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(100000))
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
             .block();
 
         try {
@@ -161,7 +161,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(100000))
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
             .block();
 
         try {
@@ -377,7 +377,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(100000))
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
             .block();
 
         try {
@@ -435,7 +435,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(100000))
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
             .block();
 
         try {

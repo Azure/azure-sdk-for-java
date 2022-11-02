@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/loadtestservice/ci.yml
       - sdk/loadtestservice/azure-resourcemanager-loadtestservice/
+      - sdk/loadtestservice/azure-developer-loadtesting
     exclude:
       - sdk/loadtestservice/pom.xml
       - sdk/loadtestservice/azure-resourcemanager-loadtestservice/pom.xml
+      - sdk/loadtestservice/azure-developer-loadtesting/pom.xml
 
 pr:
   branches:
@@ -25,9 +27,22 @@ pr:
     include:
       - sdk/loadtestservice/ci.yml
       - sdk/loadtestservice/azure-resourcemanager-loadtestservice/
+      - sdk/loadtestservice/azure-developer-loadtesting
     exclude:
       - sdk/loadtestservice/pom.xml
       - sdk/loadtestservice/azure-resourcemanager-loadtestservice/pom.xml
+      - sdk/loadtestservice/azure-developer-loadtesting/pom.xml
+
+parameters:
+  - name: release_azuredeveloperloadtesting
+    displayName: azure-developer-loadtesting
+    type: boolean
+    default: true
+    
+  - name: release_azureresourcemanagerloadtestservice
+    displayName: azure-resourcemanager-loadtestservice
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -38,3 +53,8 @@ extends:
       - name: azure-resourcemanager-loadtestservice
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerloadtestservice
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerloadtestservice }}
+      - name: azure-developer-loadtesting
+        groupId: com.azure
+        safeName: azuredeveloperloadtesting
+        releaseInBatch: ${{ parameters.release_azuredeveloperloadtesting }}

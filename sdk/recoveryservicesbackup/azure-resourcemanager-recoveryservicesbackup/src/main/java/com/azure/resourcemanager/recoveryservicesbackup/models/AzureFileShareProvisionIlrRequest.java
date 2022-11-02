@@ -26,6 +26,10 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
+    /** Creates an instance of AzureFileShareProvisionIlrRequest class. */
+    public AzureFileShareProvisionIlrRequest() {
+    }
+
     /**
      * Get the recoveryPointId property: Recovery point ID.
      *

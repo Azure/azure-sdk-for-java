@@ -9,6 +9,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
+import com.azure.messaging.eventhubs.implementation.MessageUtils;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -210,17 +211,7 @@ class EventHubMessageSerializer implements MessageSerializer {
                 "enqueuedTime: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
         }
 
-        final Object enqueuedTimeObject = messageAnnotations.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-        final Instant enqueuedTime;
-        if (enqueuedTimeObject instanceof Date) {
-            enqueuedTime = ((Date) enqueuedTimeObject).toInstant();
-        } else if (enqueuedTimeObject instanceof Instant) {
-            enqueuedTime = (Instant) enqueuedTimeObject;
-        } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(new IllegalStateException(
-                String.format(Locale.US, "enqueuedTime is not a known type. Value: %s. Type: %s",
-                    enqueuedTimeObject, enqueuedTimeObject.getClass()))));
-        }
+        final Instant enqueuedTime = MessageUtils.getEnqueuedTime(messageAnnotations, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
 
         final String partitionKey = (String) messageAnnotations.get(PARTITION_KEY_ANNOTATION_NAME.getValue());
         final long offset = getAsLong(messageAnnotations, OFFSET_ANNOTATION_NAME.getValue());

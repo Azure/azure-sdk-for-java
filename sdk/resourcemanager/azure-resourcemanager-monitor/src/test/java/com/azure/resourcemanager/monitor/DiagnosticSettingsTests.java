@@ -5,12 +5,15 @@ package com.azure.resourcemanager.monitor;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
+import com.azure.resourcemanager.monitor.models.LogSettings;
+import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -129,6 +132,68 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Assertions.assertTrue(dsList.isEmpty());
     }
 
+    @Test
+    public void canCRUDDiagnosticSettingsForSubscription() {
+        Region region = Region.US_WEST;
+        StorageAccount sa = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withTag("tag1", "value1")
+            .create();
+
+        String resourceId = "subscriptions/" + monitorManager.subscriptionId();
+
+        DiagnosticSetting setting = monitorManager.diagnosticSettings()
+            .define(dsName)
+            .withResource(resourceId)
+            .withStorageAccount(sa.id())
+            .withLog("Security", 7)
+            .create();
+
+        try {
+            Assertions.assertTrue(resourceId.equalsIgnoreCase(setting.resourceId()));
+            Assertions.assertTrue(sa.id().equalsIgnoreCase(setting.storageAccountId()));
+
+            Assertions.assertFalse(setting.logs().isEmpty());
+            Assertions.assertTrue(setting.metrics().isEmpty());
+
+            DiagnosticSetting ds1 = monitorManager.diagnosticSettings().get(setting.resourceId(), setting.name());
+            checkDiagnosticSettingValues(setting, ds1);
+
+            DiagnosticSetting ds2 = monitorManager.diagnosticSettings().getById(setting.id());
+            checkDiagnosticSettingValues(setting, ds2);
+
+            // removing all metrics and logs from a diagnostic setting, is equivalent to deleting the setting itself
+            setting.update()
+                .withoutLog("Security")
+                .apply();
+
+            // "get" will throw 404 since the setting is deleted
+            Assertions.assertThrows(ManagementException.class, setting::refresh);
+
+            Assertions.assertFalse(
+                monitorManager.diagnosticSettings()
+                    .listByResource(resourceId)
+                    .stream()
+                    .anyMatch(s -> s.name().equals(dsName)));
+
+            setting.update()
+                .withLog("Security", 7)
+                .apply();
+
+            setting.refresh();
+
+            Assertions.assertTrue(
+                monitorManager.diagnosticSettings()
+                    .listByResource(resourceId)
+                    .stream()
+                    .anyMatch(s -> s.name().equals(dsName)));
+        } finally {
+            monitorManager.diagnosticSettings().deleteById(setting.id());
+        }
+    }
+
     private void checkDiagnosticSettingValues(DiagnosticSetting expected, DiagnosticSetting actual) {
         Assertions.assertTrue(expected.resourceId().equalsIgnoreCase(actual.resourceId()));
         Assertions.assertTrue(expected.name().equalsIgnoreCase(actual.name()));
@@ -159,12 +224,16 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         if (expected.logs() == null) {
             Assertions.assertNull(actual.logs());
         } else {
-            Assertions.assertEquals(expected.logs().size(), actual.logs().size());
+            Assertions.assertEquals(
+                expected.logs().stream().filter(LogSettings::enabled).count(),
+                actual.logs().stream().filter(LogSettings::enabled).count());
         }
         if (expected.metrics() == null) {
             Assertions.assertNull(actual.metrics());
         } else {
-            Assertions.assertEquals(expected.metrics().size(), actual.metrics().size());
+            Assertions.assertEquals(
+                expected.metrics().stream().filter(MetricSettings::enabled).count(),
+                actual.metrics().stream().filter(MetricSettings::enabled).count());
         }
     }
 }

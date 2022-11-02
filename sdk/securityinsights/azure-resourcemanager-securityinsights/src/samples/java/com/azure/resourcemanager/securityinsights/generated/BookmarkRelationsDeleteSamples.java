@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BookmarkRelations Delete. */
 public final class BookmarkRelationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/bookmarks/relations/DeleteBookmarkRelation.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/relations/DeleteBookmarkRelation.json
      */
     /**
      * Sample code: Delete the bookmark relation.

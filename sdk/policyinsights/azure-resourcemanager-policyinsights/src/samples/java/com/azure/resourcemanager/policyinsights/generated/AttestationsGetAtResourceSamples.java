@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Attestations GetAtResource. */
 public final class AttestationsGetAtResourceSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_GetResourceScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_GetResourceScope.json
      */
     /**
      * Sample code: Get attestation at individual resource scope.

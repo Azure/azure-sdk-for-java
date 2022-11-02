@@ -22,6 +22,10 @@ public final class FactoryRepoUpdate {
     @JsonProperty(value = "repoConfiguration")
     private FactoryRepoConfiguration repoConfiguration;
 
+    /** Creates an instance of FactoryRepoUpdate class. */
+    public FactoryRepoUpdate() {
+    }
+
     /**
      * Get the factoryResourceId property: The factory resource id.
      *

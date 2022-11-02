@@ -18,6 +18,9 @@ public final class JsonTextConfiguration {
     @JsonProperty(value = "RecordSeparator")
     private String recordSeparator;
 
+    /** Creates an instance of JsonTextConfiguration class. */
+    public JsonTextConfiguration() {}
+
     /**
      * Get the recordSeparator property: The string used to separate records.
      *

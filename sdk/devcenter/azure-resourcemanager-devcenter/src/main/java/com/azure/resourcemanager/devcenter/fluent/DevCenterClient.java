@@ -102,6 +102,13 @@ public interface DevCenterClient {
     EnvironmentTypesClient getEnvironmentTypes();
 
     /**
+     * Gets the ProjectAllowedEnvironmentTypesClient object to access its operations.
+     *
+     * @return the ProjectAllowedEnvironmentTypesClient object.
+     */
+    ProjectAllowedEnvironmentTypesClient getProjectAllowedEnvironmentTypes();
+
+    /**
      * Gets the ProjectEnvironmentTypesClient object to access its operations.
      *
      * @return the ProjectEnvironmentTypesClient object.

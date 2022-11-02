@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTier
 /** Samples for ResourceProvider MoveRecoveryPoint. */
 public final class ResourceProviderMoveRecoveryPointSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/TriggerRecoveryPointMove_Post.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/TriggerRecoveryPointMove_Post.json
      */
     /**
      * Sample code: Trigger RP Move Operation.

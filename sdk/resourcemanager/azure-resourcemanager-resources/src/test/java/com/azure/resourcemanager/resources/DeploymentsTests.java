@@ -248,7 +248,7 @@ public class DeploymentsTests extends ResourceManagementTest {
     public void canDeployVirtualNetworkSyncPoll() throws Exception {
         final long defaultDelayInMillis = 10 * 1000;
 
-        final String dp = "dpD" + testId;
+        String dp = "dpD" + testId;
 
         // Begin create
         Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
@@ -277,6 +277,24 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
+
+        // with a new resource group
+        final String newRgName = generateRandomResourceName("rg", 10);
+        dp = generateRandomResourceName("dp", 10);
+        try {
+            acceptedDeployment = resourceClient.deployments()
+                .define(dp)
+                .withNewResourceGroup(resourceClient.resourceGroups().define(newRgName).withRegion(Region.US_EAST2))
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+
+            deployment = acceptedDeployment.getFinalResult();
+            Assertions.assertEquals("Succeeded", deployment.provisioningState());
+        } finally {
+            resourceClient.resourceGroups().beginDeleteByName(newRgName);
+        }
     }
 
     @Test

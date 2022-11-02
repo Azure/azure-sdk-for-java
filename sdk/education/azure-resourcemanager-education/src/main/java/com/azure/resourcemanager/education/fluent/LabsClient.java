@@ -97,22 +97,6 @@ public interface LabsClient {
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LabDetailsInner get(String billingAccountName, String billingProfileName, String invoiceSectionName);
-
-    /**
-     * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
-     * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
      * @param includeBudget May be used to include budget information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,8 +114,8 @@ public interface LabsClient {
         Context context);
 
     /**
-     * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
-     * section name. Note all students must be removed from the lab in order to delete the lab.
+     * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
+     * invoice section name.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
@@ -139,9 +123,11 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details for a specific lab associated with the provided billing account name, billing profile name,
+     *     and invoice section name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String billingAccountName, String billingProfileName, String invoiceSectionName);
+    LabDetailsInner get(String billingAccountName, String billingProfileName, String invoiceSectionName);
 
     /**
      * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
@@ -161,20 +147,18 @@ public interface LabsClient {
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
 
     /**
-     * Create a new lab or update a previously created lab.
+     * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
+     * section name. Note all students must be removed from the lab in order to delete the lab.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
-     * @param parameters Request parameters that are provided to create lab resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LabDetailsInner createOrUpdate(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters);
+    void delete(String billingAccountName, String billingProfileName, String invoiceSectionName);
 
     /**
      * Create a new lab or update a previously created lab.
@@ -198,23 +182,20 @@ public interface LabsClient {
         Context context);
 
     /**
-     * Generate invite code for a lab.
+     * Create a new lab or update a previously created lab.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
-     * @param parameters Request parameters that are provided to generate invite code.
+     * @param parameters Request parameters that are provided to create lab resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lab details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LabDetailsInner generateInviteCode(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters);
+    LabDetailsInner createOrUpdate(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters);
 
     /**
      * Generate invite code for a lab.
@@ -239,4 +220,23 @@ public interface LabsClient {
         InviteCodeGenerateRequest parameters,
         Boolean onlyUpdateStudentCountParameter,
         Context context);
+
+    /**
+     * Generate invite code for a lab.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @param invoiceSectionName Invoice section name.
+     * @param parameters Request parameters that are provided to generate invite code.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lab details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LabDetailsInner generateInviteCode(
+        String billingAccountName,
+        String billingProfileName,
+        String invoiceSectionName,
+        InviteCodeGenerateRequest parameters);
 }

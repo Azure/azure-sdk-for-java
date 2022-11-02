@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Jobs Export. */
 public final class JobsExportSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/TriggerExportJobs.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerExportJobs.json
      */
     /**
      * Sample code: Export Jobs.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ScriptExecutions List. */
 public final class ScriptExecutionsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptExecutions_List.json
      */
     /**
      * Sample code: ScriptExecutions_List.

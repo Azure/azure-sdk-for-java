@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HealthStatus. */
+/** Health status of protected item. */
 public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
     /** Static value Passed for HealthStatus. */
     public static final HealthStatus PASSED = fromString("Passed");

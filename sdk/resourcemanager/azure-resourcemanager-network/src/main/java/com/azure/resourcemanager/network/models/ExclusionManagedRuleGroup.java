@@ -24,6 +24,10 @@ public final class ExclusionManagedRuleGroup {
     @JsonProperty(value = "rules")
     private List<ExclusionManagedRule> rules;
 
+    /** Creates an instance of ExclusionManagedRuleGroup class. */
+    public ExclusionManagedRuleGroup() {
+    }
+
     /**
      * Get the ruleGroupName property: The managed rule group for exclusion.
      *

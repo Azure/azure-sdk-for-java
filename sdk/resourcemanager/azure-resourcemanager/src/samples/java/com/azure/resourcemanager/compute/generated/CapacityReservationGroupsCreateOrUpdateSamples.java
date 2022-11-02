@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for CapacityReservationGroups CreateOrUpdate. */
 public final class CapacityReservationGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a capacity reservation group.

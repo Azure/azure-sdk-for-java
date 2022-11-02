@@ -24,6 +24,9 @@ public final class FileRange {
     @JsonProperty(value = "End", required = true)
     private long end;
 
+    /** Creates an instance of FileRange class. */
+    public FileRange() {}
+
     /**
      * Get the start property: Start of the range.
      *

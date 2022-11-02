@@ -25,6 +25,10 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
     private SalesforceMarketingCloudLinkedServiceTypeProperties innerTypeProperties =
         new SalesforceMarketingCloudLinkedServiceTypeProperties();
 
+    /** Creates an instance of SalesforceMarketingCloudLinkedService class. */
+    public SalesforceMarketingCloudLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Salesforce Marketing Cloud linked service properties.
      *

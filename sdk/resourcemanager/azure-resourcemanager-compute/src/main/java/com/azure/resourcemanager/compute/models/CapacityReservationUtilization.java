@@ -12,10 +12,27 @@ import java.util.List;
 @Immutable
 public final class CapacityReservationUtilization {
     /*
+     * The value provides the current capacity of the VM size which was reserved successfully and for which the
+     * customer is getting billed.<br><br>Minimum api-version: 2022-08-01.
+     */
+    @JsonProperty(value = "currentCapacity", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer currentCapacity;
+
+    /*
      * A list of all virtual machines resource ids allocated against the capacity reservation.
      */
     @JsonProperty(value = "virtualMachinesAllocated", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> virtualMachinesAllocated;
+
+    /**
+     * Get the currentCapacity property: The value provides the current capacity of the VM size which was reserved
+     * successfully and for which the customer is getting billed.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-08-01.
+     *
+     * @return the currentCapacity value.
+     */
+    public Integer currentCapacity() {
+        return this.currentCapacity;
+    }
 
     /**
      * Get the virtualMachinesAllocated property: A list of all virtual machines resource ids allocated against the

@@ -60,10 +60,10 @@ parameters:
   displayName: 'azure-core-http-okhttp'
   type: boolean
   default: true
-#- name: release_azurecorehttpvertx
-#  displayName: 'azure-core-http-vertx'
-#  type: boolean
-#  default: false
+- name: release_azurecorehttpvertx
+  displayName: 'azure-core-http-vertx'
+  type: boolean
+  default: false
 - name: release_azurecoremanagement
   displayName: 'azure-core-management'
   type: boolean
@@ -98,6 +98,10 @@ parameters:
   default: false
 - name: release_azurejsongson
   displayName: 'azure-json-gson'
+  type: boolean
+  default: false
+- name: release_azurejsonreflect
+  displayName: 'azure-json-reflect'
   type: boolean
   default: false
 - name: release_azurexml
@@ -140,10 +144,10 @@ extends:
         groupId: com.azure
         safeName: azurecorehttpokhttp
         releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
-#      - name: azure-core-http-vertx
-#        groupId: com.azure
-#        safeName: azurecorehttpvertx
-#        releaseInBatch: ${{ parameters.release_azurecorehttpvertx }}
+      - name: azure-core-http-vertx
+        groupId: com.azure
+        safeName: azurecorehttpvertx
+        releaseInBatch: ${{ parameters.release_azurecorehttpvertx }}
       - name: azure-core-management
         groupId: com.azure
         safeName: azurecoremanagement
@@ -180,6 +184,10 @@ extends:
         groupId: com.azure
         safeName: azurejsongson
         releaseInBatch: ${{ parameters.release_azurejsongson }}
+      - name: azure-json-reflect
+        groupId: com.azure
+        safeName: azurejsonreflect
+        releaseInBatch: ${{ parameters.release_azurejsonreflect }}
       - name: azure-xml
         groupId: com.azure
         safeName: azurexml
@@ -228,6 +236,27 @@ extends:
                     groupId: com.azure
                     safeName: azurecoreserializerjsonjackson
                     releaseInBatch: ${{ parameters.release_azurecoreserializerjsonjackson }}
+      -   stage: AzureJsonReflectVersionSupport
+          displayName: 'azure-json-reflect Version Support'
+          dependsOn: [ ]
+          jobs:
+              -   template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+                  parameters:
+                      JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+                      MatrixConfigs:
+                          -   Name: azure_json_reflect_version_support
+                              Path: sdk/core/azure-json-reflect-version-support-matrix.json
+                              Selection: all
+                              GenerateVMJobs: true
+                      AdditionalParameters:
+                          ServiceDirectory: core
+
+
+                          Artifacts:
+                              -   name: azure-json-reflect
+                                  groupId: com.azure
+                                  safeName: azurejsonreflect
+
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
@@ -281,6 +310,9 @@ extends:
             - name: azure-json-gson
               groupId: com.azure
               safeName: azurejsongson
+            - name: azure-json-reflect
+              groupId: com.azure
+              safeName: azurejsonreflect
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
       - template: /sdk/storage/tests-template.yml

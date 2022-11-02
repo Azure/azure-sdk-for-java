@@ -102,6 +102,10 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
     }
   }
 
+  def clearCache(): Unit = {
+    this.cache.clear()
+  }
+
   private[this] def getOrCreate
   (
     key: String,

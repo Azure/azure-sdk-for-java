@@ -24,6 +24,10 @@ public final class OpenShiftManagedClusterListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of OpenShiftManagedClusterListResult class. */
+    public OpenShiftManagedClusterListResult() {
+    }
+
     /**
      * Get the value property: The list of OpenShift managed clusters.
      *

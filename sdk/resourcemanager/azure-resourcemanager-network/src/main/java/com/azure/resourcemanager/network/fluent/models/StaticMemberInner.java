@@ -25,6 +25,10 @@ public final class StaticMemberInner extends ChildResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of StaticMemberInner class. */
+    public StaticMemberInner() {
+    }
+
     /**
      * Get the innerProperties property: The Static Member properties.
      *

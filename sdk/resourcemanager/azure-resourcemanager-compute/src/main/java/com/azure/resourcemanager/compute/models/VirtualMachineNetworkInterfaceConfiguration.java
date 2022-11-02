@@ -130,6 +130,31 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
     }
 
     /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableTcpStateTracking();
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
+     */
+    public VirtualMachineNetworkInterfaceConfiguration withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.innerProperties().withDisableTcpStateTracking(disableTcpStateTracking);
+        return this;
+    }
+
+    /**
      * Get the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
      *
      * @return the enableFpga value.

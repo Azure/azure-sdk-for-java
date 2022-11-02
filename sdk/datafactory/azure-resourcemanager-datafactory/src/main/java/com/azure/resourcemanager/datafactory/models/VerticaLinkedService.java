@@ -24,6 +24,10 @@ public final class VerticaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private VerticaLinkedServiceTypeProperties innerTypeProperties = new VerticaLinkedServiceTypeProperties();
 
+    /** Creates an instance of VerticaLinkedService class. */
+    public VerticaLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Vertica linked service properties.
      *

@@ -47,8 +47,7 @@ public final class ActivityEntityQueriesProperties {
     private EntityType inputEntityType;
 
     /*
-     * List of the fields of the source entity that are required to run the
-     * query
+     * List of the fields of the source entity that are required to run the query
      */
     @JsonProperty(value = "requiredInputFieldsSets")
     private List<List<String>> requiredInputFieldsSets;

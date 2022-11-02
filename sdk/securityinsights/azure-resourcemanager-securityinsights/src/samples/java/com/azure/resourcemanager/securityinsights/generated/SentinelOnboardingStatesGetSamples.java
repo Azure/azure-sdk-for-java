@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SentinelOnboardingStates Get. */
 public final class SentinelOnboardingStatesGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/onboardingStates/GetSentinelOnboardingState.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/onboardingStates/GetSentinelOnboardingState.json
      */
     /**
      * Sample code: Get Sentinel onboarding state.

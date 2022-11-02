@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperatingSystemTypes. */
+/** The OS type. */
 public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSystemTypes> {
     /** Static value Unknown for OperatingSystemTypes. */
     public static final OperatingSystemTypes UNKNOWN = fromString("Unknown");
@@ -30,7 +30,11 @@ public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSy
         return fromString(name, OperatingSystemTypes.class);
     }
 
-    /** @return known OperatingSystemTypes values. */
+    /**
+     * Gets known OperatingSystemTypes values.
+     *
+     * @return known OperatingSystemTypes values.
+     */
     public static Collection<OperatingSystemTypes> values() {
         return values(OperatingSystemTypes.class);
     }

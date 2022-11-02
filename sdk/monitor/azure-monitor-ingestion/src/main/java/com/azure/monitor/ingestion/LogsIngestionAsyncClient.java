@@ -88,17 +88,17 @@ public final class LogsIngestionAsyncClient {
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
      *
-     * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.
+     * @param ruleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @return the result of the logs upload request.
-     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadLogsResult> upload(String dataCollectionRuleId, String streamName, List<Object> logs) {
-        return upload(dataCollectionRuleId, streamName, logs, new UploadLogsOptions());
+    public Mono<UploadLogsResult> upload(String ruleId, String streamName, List<Object> logs) {
+        return upload(ruleId, streamName, logs, new UploadLogsOptions());
     }
 
     /**
@@ -116,19 +116,19 @@ public final class LogsIngestionAsyncClient {
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
      *
-     * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.
+     * @param ruleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @param options the options to configure the upload request.
      * @return the result of the logs upload request.
-     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadLogsResult> upload(String dataCollectionRuleId, String streamName,
+    public Mono<UploadLogsResult> upload(String ruleId, String streamName,
                                          List<Object> logs, UploadLogsOptions options) {
-        return withContext(context -> upload(dataCollectionRuleId, streamName, logs, options, context));
+        return withContext(context -> upload(ruleId, streamName, logs, options, context));
     }
 
     /**
@@ -151,7 +151,7 @@ public final class LogsIngestionAsyncClient {
      * ]
      * }</pre>
      *
-     * @param dataCollectionRuleId The immutable Id of the Data Collection Rule resource.
+     * @param ruleId The immutable Id of the Data Collection Rule resource.
      * @param streamName The streamDeclaration name as defined in the Data Collection Rule.
      * @param logs An array of objects matching the schema defined by the provided stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -163,10 +163,10 @@ public final class LogsIngestionAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadWithResponse(
-            String dataCollectionRuleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
-        Objects.requireNonNull(dataCollectionRuleId, "'dataCollectionRuleId' cannot be null.");
-        Objects.requireNonNull(dataCollectionRuleId, "'streamName' cannot be null.");
-        Objects.requireNonNull(dataCollectionRuleId, "'logs' cannot be null.");
+            String ruleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
+        Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
+        Objects.requireNonNull(streamName, "'streamName' cannot be null.");
+        Objects.requireNonNull(logs, "'logs' cannot be null.");
 
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
@@ -179,20 +179,20 @@ public final class LogsIngestionAsyncClient {
                 request.setHeader(CONTENT_ENCODING, GZIP);
             }
         });
-        return service.uploadWithResponse(dataCollectionRuleId, streamName, logs, requestOptions);
+        return service.uploadWithResponse(ruleId, streamName, logs, requestOptions);
     }
 
-    Mono<UploadLogsResult> upload(String dataCollectionRuleId, String streamName,
+    Mono<UploadLogsResult> upload(String ruleId, String streamName,
                                   List<Object> logs, UploadLogsOptions options,
                                   Context context) {
-        return Mono.defer(() -> splitAndUpload(dataCollectionRuleId, streamName, logs, options, context));
+        return Mono.defer(() -> splitAndUpload(ruleId, streamName, logs, options, context));
     }
 
-    private Mono<UploadLogsResult> splitAndUpload(String dataCollectionRuleId, String streamName, List<Object> logs, UploadLogsOptions options, Context context) {
+    private Mono<UploadLogsResult> splitAndUpload(String ruleId, String streamName, List<Object> logs, UploadLogsOptions options, Context context) {
         try {
-            Objects.requireNonNull(dataCollectionRuleId, "'dataCollectionRuleId' cannot be null.");
-            Objects.requireNonNull(dataCollectionRuleId, "'streamName' cannot be null.");
-            Objects.requireNonNull(dataCollectionRuleId, "'logs' cannot be null.");
+            Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
+            Objects.requireNonNull(streamName, "'streamName' cannot be null.");
+            Objects.requireNonNull(logs, "'logs' cannot be null.");
 
             if (logs.isEmpty()) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("'logs' cannot be empty."));
@@ -222,7 +222,7 @@ public final class LogsIngestionAsyncClient {
             Iterator<List<Object>> logBatchesIterator = logBatches.iterator();
             return Flux.fromIterable(requests)
                     .flatMapSequential(bytes ->
-                            uploadToService(dataCollectionRuleId, streamName, requestOptions, bytes), concurrency)
+                            uploadToService(ruleId, streamName, requestOptions, bytes), concurrency)
                     .map(responseHolder -> mapResult(logBatchesIterator, responseHolder))
                     .collectList()
                     .map(this::createResponse);
@@ -240,8 +240,8 @@ public final class LogsIngestionAsyncClient {
         return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
     }
 
-    private Mono<UploadLogsResponseHolder> uploadToService(String dataCollectionRuleId, String streamName, RequestOptions requestOptions, byte[] bytes) {
-        return service.uploadWithResponse(dataCollectionRuleId, streamName,
+    private Mono<UploadLogsResponseHolder> uploadToService(String ruleId, String streamName, RequestOptions requestOptions, byte[] bytes) {
+        return service.uploadWithResponse(ruleId, streamName,
                         BinaryData.fromBytes(bytes), requestOptions)
                 .map(response -> new UploadLogsResponseHolder(UploadLogsStatus.SUCCESS, null))
                 .onErrorResume(HttpResponseException.class,
@@ -278,18 +278,15 @@ public final class LogsIngestionAsyncClient {
 
     private UploadLogsResult createResponse(List<UploadLogsResult> results) {
         int failureCount = 0;
-        List<UploadLogsError> errors = null;
+        List<UploadLogsError> errors =  new ArrayList<>();
         for (UploadLogsResult result : results) {
             if (result.getStatus() != UploadLogsStatus.SUCCESS) {
                 failureCount++;
-                if (errors == null) {
-                    errors = new ArrayList<>();
-                }
                 errors.addAll(result.getErrors());
             }
         }
         if (failureCount == 0) {
-            return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
+            return new UploadLogsResult(UploadLogsStatus.SUCCESS, errors);
         }
         if (failureCount < results.size()) {
             return new UploadLogsResult(UploadLogsStatus.PARTIAL_FAILURE, errors);

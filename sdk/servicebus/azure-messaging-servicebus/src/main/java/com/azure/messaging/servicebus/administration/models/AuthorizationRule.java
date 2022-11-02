@@ -45,7 +45,7 @@ public interface AuthorizationRule {
     /**
      * Gets the name of the authorization rule.
      *
-     * @return name of the authoriation rule.
+     * @return name of the authorization rule.
      */
     String getKeyName();
 

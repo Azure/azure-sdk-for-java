@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network function role configuration. */
 @Fluent
 public final class NetworkFunctionRoleConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionRoleConfiguration.class);
-
     /*
      * The name of the network function role.
      */
@@ -34,22 +30,22 @@ public final class NetworkFunctionRoleConfiguration {
     private VirtualMachineSizeTypes virtualMachineSize;
 
     /*
-     * Specifies the operating system settings for the role instance. This
-     * value can be updated during the deployment of network function.
+     * Specifies the operating system settings for the role instance. This value can be updated during the deployment
+     * of network function.
      */
     @JsonProperty(value = "osProfile")
     private OsProfile osProfile;
 
     /*
-     * The user data template for customers. This is a json schema template
-     * describing the format and data type of user data parameters.
+     * The user data template for customers. This is a json schema template describing the format and data type of user
+     * data parameters.
      */
     @JsonProperty(value = "userDataTemplate")
     private Object userDataTemplate;
 
     /*
-     * The user parameters for customers. The format of user data parameters
-     * has to be matched with the provided user data template.
+     * The user parameters for customers. The format of user data parameters has to be matched with the provided user
+     * data template.
      */
     @JsonProperty(value = "userDataParameters")
     private Object userDataParameters;
@@ -71,6 +67,10 @@ public final class NetworkFunctionRoleConfiguration {
      */
     @JsonProperty(value = "customProfile")
     private CustomProfile customProfile;
+
+    /** Creates an instance of NetworkFunctionRoleConfiguration class. */
+    public NetworkFunctionRoleConfiguration() {
+    }
 
     /**
      * Get the roleName property: The name of the network function role.

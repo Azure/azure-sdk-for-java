@@ -1,6 +1,6 @@
 # Release History
 
-## 2.19.0-beta.1 (Unreleased)
+## 2.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.20.0 (2022-10-26)
+
+### Bugs Fixed
+
+- Fixed bug where `getInstanceView()` in `VirtualMachineExtension` throws NPE if the VM is in deallocated state.
+
+## 2.19.0 (2022-09-23)
+
+### Breaking Changes
+
+- Property `protectedSettingsFromKeyVault` in `VirtualMachineExtensionUpdate` changed from `Object` to `KeyVaultSecretReference`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-08-01`.
 
 ## 2.18.0 (2022-08-26)
 
