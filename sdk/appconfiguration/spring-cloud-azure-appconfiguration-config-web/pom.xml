@@ -123,8 +123,8 @@
 					<rules>
 						<bannedDependencies>
 							<includes>
-								<include>org.springframework.boot:spring-boot-starter-actuator:[2.7.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-								<include>org.springframework.boot:spring-boot-starter-web:[2.7.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+								<include>org.springframework.boot:spring-boot-starter-actuator:[2.7.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+								<include>org.springframework.boot:spring-boot-starter-web:[2.7.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
 								<include>org.springframework.cloud:spring-cloud-bus:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
 							</includes>
 						</bannedDependencies>
