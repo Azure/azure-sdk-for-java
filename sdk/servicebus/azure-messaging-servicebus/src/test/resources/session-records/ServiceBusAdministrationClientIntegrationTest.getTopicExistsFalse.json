@@ -11,8 +11,8 @@
       "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "<feed xmlns=\"http://www.w3.org/2005/Atom\"><title type=\"text\">Publicly Listed Services</title><subtitle type=\"text\">This is the list of publicly-listed services currently available.</subtitle><id>uuid:014b6c25-aa23-4def-ae91-f99fc2b0463e;id=683</id><updated>2022-10-29T04:50:46Z</updated><generator>Service Bus 1.1</generator></feed>",
-      "Date" : "Sat, 29 Oct 2022 04:50:45 GMT",
+      "Body" : "<feed xmlns=\"http://www.w3.org/2005/Atom\"><title type=\"text\">Publicly Listed Services</title><subtitle type=\"text\">This is the list of publicly-listed services currently available.</subtitle><id>uuid:e6d372e2-a303-47fa-8be0-ff9820a1fa30;id=65</id><updated>2022-11-02T22:15:00Z</updated><generator>Service Bus 1.1</generator></feed>",
+      "Date" : "Wed, 02 Nov 2022 22:15:00 GMT",
       "Content-Type" : "application/atom+xml;type=feed;charset=utf-8"
     },
     "Exception" : null

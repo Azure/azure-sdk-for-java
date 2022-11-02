@@ -10,8 +10,8 @@
       "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://ServiceBusTest.servicebus.windows.net/$namespaceinfo?api-version=2021-05</id><title type=\"text\">foo</title><updated>2022-10-29T04:50:46Z</updated><author><name>foo</name></author><link rel=\"self\" href=\"https://foo.servicebus.windows.net/$namespaceinfo?api-version=2021-05\"></link><content type=\"application/xml\"><NamespaceInfo xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><CreatedTime>2022-08-23T18:47:01.663Z</CreatedTime><MessagingSKU>Premium</MessagingSKU><MessagingUnits>2</MessagingUnits><ModifiedTime>2022-08-23T18:47:01.663Z</ModifiedTime><Name>ServiceBusTest</Name><NamespaceType>Messaging</NamespaceType></NamespaceInfo></content></entry>",
-      "Date" : "Sat, 29 Oct 2022 04:50:46 GMT",
+      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://foo.servicebus.windows.net/$namespaceinfo?api-version=2021-05</id><title type=\"text\">foo</title><updated>2022-11-02T22:15:01Z</updated><author><name>foo</name></author><link rel=\"self\" href=\"https://foo.servicebus.windows.net/$namespaceinfo?api-version=2021-05\"></link><content type=\"application/xml\"><NamespaceInfo xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><CreatedTime>2022-08-23T18:47:01.663Z</CreatedTime><MessagingSKU>Premium</MessagingSKU><MessagingUnits>2</MessagingUnits><ModifiedTime>2022-11-01T22:37:13.217Z</ModifiedTime><Name>ServiceBusTest</Name><NamespaceType>Messaging</NamespaceType></NamespaceInfo></content></entry>",
+      "Date" : "Wed, 02 Nov 2022 22:15:00 GMT",
       "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
     },
     "Exception" : null
