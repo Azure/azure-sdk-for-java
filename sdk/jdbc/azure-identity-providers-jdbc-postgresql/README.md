@@ -271,7 +271,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 |azure.tenantId|Tenant ID for Azure resources.|
 |azure.claims|Claims for Azure resources.|
 |azure.scopes|Scopes for Azure resources.|
-|azure.access tokenTimeoutInSeconds|Max time to get an access token.|
+|azure.accesstokenTimeoutInSeconds|Max time to get an access token.|
 |azure.tokenCredentialProviderClassName|The canonical class name of a class that implements 'TokenCredentialProvider'.|
 |azure.tokenCredentialBeanName|The given bean name of a TokenCredential bean in the Spring context.|
 
