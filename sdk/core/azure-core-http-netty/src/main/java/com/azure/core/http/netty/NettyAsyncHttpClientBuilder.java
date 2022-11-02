@@ -149,7 +149,7 @@ public class NettyAsyncHttpClientBuilder {
                 DEFAULT_CONNECT_TIMEOUT))
             // TODO (alzimmer): What does validating HTTP response headers get us?
             .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.validateHeaders(false)
-                .maxChunkSize(256 * 1024));
+                .maxChunkSize(128 * 1024));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
