@@ -102,7 +102,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private static Flux<ByteBuffer> createResponseFlux(StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
         return FluxUtil.createRetriableDownloadFlux(sourceResponse::getValue,
-                (throwable, position) -> onErrorResume.apply(throwable, position).flatMapMany(Response::getValue),
+                (throwable, position) -> onErrorResume.apply(throwable, position).flatMapMany(StreamResponse::getValue),
                 retryOptions.getMaxRetryRequests())
             .defaultIfEmpty(EMPTY_BUFFER);
     }
