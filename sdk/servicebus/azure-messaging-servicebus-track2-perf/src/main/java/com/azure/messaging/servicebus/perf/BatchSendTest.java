@@ -26,7 +26,6 @@ public class BatchSendTest extends ServiceBatchTest<ServiceBusStressOptions> {
      */
     public BatchSendTest(ServiceBusStressOptions options) {
         super(options);
-
     }
 
     @Override
