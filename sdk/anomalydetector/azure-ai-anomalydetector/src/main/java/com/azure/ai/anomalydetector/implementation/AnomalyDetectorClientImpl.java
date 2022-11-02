@@ -5,6 +5,7 @@
 
 package com.azure.ai.anomalydetector.implementation;
 
+import com.azure.ai.anomalydetector.AnomalyDetectorServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -70,16 +71,16 @@ public final class AnomalyDetectorClientImpl {
         return this.endpoint;
     }
 
-    /** Anomaly Detector API version (for example, v1.1). */
-    private final String apiVersion;
+    /** Service version. */
+    private final AnomalyDetectorServiceVersion serviceVersion;
 
     /**
-     * Gets Anomaly Detector API version (for example, v1.1).
+     * Gets Service version.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public AnomalyDetectorServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -111,16 +112,16 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Anomaly Detector API version (for example, v1.1).
+     * @param serviceVersion Service version.
      */
-    public AnomalyDetectorClientImpl(String endpoint, String apiVersion) {
+    public AnomalyDetectorClientImpl(String endpoint, AnomalyDetectorServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
-                apiVersion);
+                serviceVersion);
     }
 
     /**
@@ -129,10 +130,11 @@ public final class AnomalyDetectorClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Anomaly Detector API version (for example, v1.1).
+     * @param serviceVersion Service version.
      */
-    public AnomalyDetectorClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+    public AnomalyDetectorClientImpl(
+            HttpPipeline httpPipeline, String endpoint, AnomalyDetectorServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -142,14 +144,17 @@ public final class AnomalyDetectorClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Anomaly Detector API version (for example, v1.1).
+     * @param serviceVersion Service version.
      */
     public AnomalyDetectorClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            AnomalyDetectorServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
+        this.serviceVersion = serviceVersion;
         this.service =
                 RestProxy.create(AnomalyDetectorClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -173,7 +178,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detectEntireSeries(
+        Mono<Response<BinaryData>> detectUnivariateEntireSeries(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -193,7 +198,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detectLastPoint(
+        Mono<Response<BinaryData>> detectUnivariateLastPoint(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -213,7 +218,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detectChangePoint(
+        Mono<Response<BinaryData>> detectUnivariateChangePoint(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -233,7 +238,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getBatchDetectionResult(
+        Mono<Response<BinaryData>> getMultivariateBatchDetectionResult(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") String resultId,
@@ -253,7 +258,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createMultivariateModel(
+        Mono<Response<BinaryData>> createAndTrainMultivariateModel(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -273,7 +278,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMultivariateModel(
+        Mono<Response<BinaryData>> listMultivariateModels(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -332,7 +337,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> batchDetectAnomaly(
+        Mono<Response<BinaryData>> detectMultivariateBatchAnomaly(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
@@ -353,7 +358,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> lastDetectAnomaly(
+        Mono<Response<BinaryData>> detectMultivariateLastAnomaly(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
@@ -374,7 +379,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMultivariateModelNext(
+        Mono<Response<BinaryData>> listMultivariateModelsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
@@ -449,13 +454,18 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectEntireSeriesWithResponseAsync(
+    public Mono<Response<BinaryData>> detectUnivariateEntireSeriesWithResponseAsync(
             BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.detectEntireSeries(
-                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
+                        service.detectUnivariateEntireSeries(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -523,8 +533,9 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of entire anomaly detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectEntireSeriesWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return detectEntireSeriesWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateEntireSeriesWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return detectUnivariateEntireSeriesWithResponseAsync(body, requestOptions).block();
     }
 
     /**
@@ -579,12 +590,18 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectLastPointWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> detectUnivariateLastPointWithResponseAsync(
+            BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.detectLastPoint(
-                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
+                        service.detectUnivariateLastPoint(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -638,8 +655,8 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of last anomaly detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectLastPointWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return detectLastPointWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateLastPointWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return detectUnivariateLastPointWithResponseAsync(body, requestOptions).block();
     }
 
     /**
@@ -690,13 +707,18 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectChangePointWithResponseAsync(
+    public Mono<Response<BinaryData>> detectUnivariateChangePointWithResponseAsync(
             BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.detectChangePoint(
-                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
+                        service.detectUnivariateChangePoint(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -746,8 +768,9 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of change point detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectChangePointWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return detectChangePointWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateChangePointWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return detectUnivariateChangePointWithResponseAsync(body, requestOptions).block();
     }
 
     /**
@@ -822,13 +845,18 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBatchDetectionResultWithResponseAsync(
+    public Mono<Response<BinaryData>> getMultivariateBatchDetectionResultWithResponseAsync(
             String resultId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getBatchDetectionResult(
-                                this.getEndpoint(), this.getApiVersion(), resultId, accept, requestOptions, context));
+                        service.getMultivariateBatchDetectionResult(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                resultId,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -902,8 +930,9 @@ public final class AnomalyDetectorClientImpl {
      * @return detection results for the given resultId along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBatchDetectionResultWithResponse(String resultId, RequestOptions requestOptions) {
-        return getBatchDetectionResultWithResponseAsync(resultId, requestOptions).block();
+    public Response<BinaryData> getMultivariateBatchDetectionResultWithResponse(
+            String resultId, RequestOptions requestOptions) {
+        return getMultivariateBatchDetectionResultWithResponseAsync(resultId, requestOptions).block();
     }
 
     /**
@@ -1029,13 +1058,18 @@ public final class AnomalyDetectorClientImpl {
      * @return response of getting a model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createMultivariateModelWithResponseAsync(
+    public Mono<Response<BinaryData>> createAndTrainMultivariateModelWithResponseAsync(
             BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createMultivariateModel(
-                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
+                        service.createAndTrainMultivariateModel(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1161,8 +1195,9 @@ public final class AnomalyDetectorClientImpl {
      * @return response of getting a model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createMultivariateModelWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return createMultivariateModelWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> createAndTrainMultivariateModelWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return createAndTrainMultivariateModelWithResponseAsync(body, requestOptions).block();
     }
 
     /**
@@ -1185,61 +1220,54 @@ public final class AnomalyDetectorClientImpl {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -1251,12 +1279,16 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listMultivariateModelSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listMultivariateModelsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listMultivariateModel(
-                                        this.getEndpoint(), this.getApiVersion(), accept, requestOptions, context))
+                                service.listMultivariateModels(
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1288,61 +1320,54 @@ public final class AnomalyDetectorClientImpl {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -1354,15 +1379,15 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listMultivariateModelAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listMultivariateModelsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listMultivariateModelSinglePageAsync(requestOptions),
-                nextLink -> listMultivariateModelNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listMultivariateModelsSinglePageAsync(requestOptions),
+                nextLink -> listMultivariateModelsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1385,61 +1410,54 @@ public final class AnomalyDetectorClientImpl {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -1451,8 +1469,8 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMultivariateModel(RequestOptions requestOptions) {
-        return new PagedIterable<>(listMultivariateModelAsync(requestOptions));
+    public PagedIterable<BinaryData> listMultivariateModels(RequestOptions requestOptions) {
+        return new PagedIterable<>(listMultivariateModelsAsync(requestOptions));
     }
 
     /**
@@ -1475,7 +1493,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteMultivariateModel(
-                                this.getEndpoint(), this.getApiVersion(), modelId, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                modelId,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1572,7 +1595,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getMultivariateModel(
-                                this.getEndpoint(), this.getApiVersion(), modelId, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                modelId,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1736,21 +1764,20 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchDetectAnomalyWithResponseAsync(
+    private Mono<Response<BinaryData>> detectMultivariateBatchAnomalyWithResponseAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.batchDetectAnomaly(
+                        service.detectMultivariateBatchAnomaly(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                this.getServiceVersion().getVersion(),
                                 modelId,
                                 body,
                                 accept,
                                 requestOptions,
                                 context));
     }
-
 
     /**
      * Detect Multivariate Anomaly
@@ -1835,12 +1862,116 @@ public final class AnomalyDetectorClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} of getting detection results for the given modelId.
+     * @return the {@link PollerFlux} for polling of detection results for the given resultId.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchDetectAnomalyWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginDetectMultivariateBatchAnomalyAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.batchDetectAnomalyWithResponseAsync(modelId, body, requestOptions).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.detectMultivariateBatchAnomalyWithResponseAsync(modelId, body, requestOptions),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{Endpoint}/anomalydetector/{ApiVersion}"
+                                .replace("{Endpoint}", this.getEndpoint())
+                                .replace("{ApiVersion}", this.getServiceVersion().getVersion()),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Detect Multivariate Anomaly
+     *
+     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, the input
+     * schema should be the same with the training request. The request will complete asynchronously and return a
+     * resultId to query the detection result.The request should be a source link to indicate an externally accessible
+     * Azure storage Uri, either pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob
+     * storage.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     dataSource: String (Required)
+     *     topContributorCount: int (Required)
+     *     startTime: OffsetDateTime (Required)
+     *     endTime: OffsetDateTime (Required)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resultId: String (Required)
+     *     summary (Required): {
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Required)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         variableStates (Optional): [
+     *              (Optional){
+     *                 variable: String (Optional)
+     *                 filledNARatio: Float (Optional)
+     *                 effectiveCount: Integer (Optional)
+     *                 firstTimestamp: OffsetDateTime (Optional)
+     *                 lastTimestamp: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         setupInfo (Required): {
+     *             dataSource: String (Required)
+     *             topContributorCount: int (Required)
+     *             startTime: OffsetDateTime (Required)
+     *             endTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     results (Required): [
+     *          (Required){
+     *             timestamp: OffsetDateTime (Required)
+     *             value (Optional): {
+     *                 isAnomaly: boolean (Required)
+     *                 severity: float (Required)
+     *                 score: float (Required)
+     *                 interpretation (Optional): [
+     *                      (Optional){
+     *                         variable: String (Optional)
+     *                         contributionScore: Float (Optional)
+     *                         correlationChanges (Optional): {
+     *                             changedVariables (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *             errors (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param modelId Model identifier.
+     * @param body Detect anomaly request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of detection results for the given resultId.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginDetectMultivariateBatchAnomaly(
+            String modelId, BinaryData body, RequestOptions requestOptions) {
+        return this.beginDetectMultivariateBatchAnomalyAsync(modelId, body, requestOptions).getSyncPoller();
     }
 
     /**
@@ -1922,14 +2053,14 @@ public final class AnomalyDetectorClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> lastDetectAnomalyWithResponseAsync(
+    public Mono<Response<BinaryData>> detectMultivariateLastAnomalyWithResponseAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.lastDetectAnomaly(
+                        service.detectMultivariateLastAnomaly(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                this.getServiceVersion().getVersion(),
                                 modelId,
                                 body,
                                 accept,
@@ -2016,9 +2147,9 @@ public final class AnomalyDetectorClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> lastDetectAnomalyWithResponse(
+    public Response<BinaryData> detectMultivariateLastAnomalyWithResponse(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return lastDetectAnomalyWithResponseAsync(modelId, body, requestOptions).block();
+        return detectMultivariateLastAnomalyWithResponseAsync(modelId, body, requestOptions).block();
     }
 
     /**
@@ -2028,61 +2159,54 @@ public final class AnomalyDetectorClientImpl {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -2096,15 +2220,15 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listMultivariateModelNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listMultivariateModelsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listMultivariateModelNext(
+                                service.listMultivariateModelsNext(
                                         nextLink,
                                         this.getEndpoint(),
-                                        this.getApiVersion(),
+                                        this.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
                                         context))

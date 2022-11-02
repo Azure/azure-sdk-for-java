@@ -18,7 +18,7 @@ public final class GetDetectionResultTests extends AnomalyDetectorClientTestBase
     public void testGetDetectionResultTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                anomalyDetectorClient.getBatchDetectionResultWithResponse(
+                anomalyDetectorClient.getMultivariateBatchDetectionResultWithResponse(
                         "663884e6-b117-11ea-b3de-0242ac130004", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
