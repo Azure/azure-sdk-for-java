@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import reactor.core.publisher.Mono;
 
+import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.function.BiFunction;
 
@@ -42,10 +43,11 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
          * Synchronously writes the response body to the {@link WritableByteChannel}.
          *
          * @param response The response.
-         * @param writableByteChannel Where the response is being written.
+         * @param fileChannel Where the response is being written.
+         * @param position Position in the channel to write.
          * @param progressReporter Reports progress of writing to the channel.
          */
-        Mono<Void> writeTo(BlobDownloadAsyncResponse response, WritableByteChannel writableByteChannel,
+        Mono<Void> writeToFile(BlobDownloadAsyncResponse response, FileChannel fileChannel, long position,
             ProgressReporter progressReporter);
     }
 
@@ -85,11 +87,12 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
      * Synchronously writes the response body to the {@link WritableByteChannel}.
      *
      * @param response The response.
-     * @param writableByteChannel Where the response is being written.
+     * @param fileChannel Where the response is being written.
+     * @param position Position in the channel to write.
      * @param progressReporter Reports progress of writing to the channel.
      */
-    public static Mono<Void> writeTo(BlobDownloadAsyncResponse response, WritableByteChannel writableByteChannel,
+    public static Mono<Void> writeToFile(BlobDownloadAsyncResponse response, FileChannel fileChannel, long position,
         ProgressReporter progressReporter) {
-        return accessor.writeTo(response, writableByteChannel, progressReporter);
+        return accessor.writeToFile(response, fileChannel, position, progressReporter);
     }
 }

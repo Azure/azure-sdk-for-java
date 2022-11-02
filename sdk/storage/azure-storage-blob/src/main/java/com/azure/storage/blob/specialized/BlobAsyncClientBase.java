@@ -17,7 +17,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -95,7 +94,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -1535,22 +1534,22 @@ public class BlobAsyncClientBase {
             openOptions.add(StandardOpenOption.READ);
         }
 
-        AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
+        FileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
                 options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
-    private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath, Set<OpenOption> openOptions) {
+    private FileChannel downloadToFileResourceSupplier(String filePath, Set<OpenOption> openOptions) {
         try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), openOptions, null);
+            return FileChannel.open(Paths.get(filePath), openOptions);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
-    private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
+    private Mono<Response<BlobProperties>> downloadToFileImpl(FileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
         Context context) {
@@ -1591,15 +1590,15 @@ public class BlobAsyncClientBase {
             });
     }
 
-    private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
+    private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, FileChannel file,
         long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         ProgressReporter progressReporter) {
 
         long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
-        return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
+        return BlobDownloadAsyncResponseConstructorProxy.writeToFile(response, file, position, progressReporter);
     }
 
-    private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
+    private void downloadToFileCleanup(FileChannel channel, String filePath, SignalType signalType) {
         try {
             channel.close();
             if (!signalType.equals(SignalType.ON_COMPLETE)) {

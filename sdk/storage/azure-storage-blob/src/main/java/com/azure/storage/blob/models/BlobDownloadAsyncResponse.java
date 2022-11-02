@@ -11,27 +11,32 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.io.IOUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 import java.util.function.BiFunction;
+
+import static com.azure.core.util.FluxUtil.addProgressReporting;
 
 /**
  * This class contains the response information returned from the server when downloading a blob.
  */
 public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>>
     implements Closeable {
+    private static final ClientLogger LOGGER = new ClientLogger(BlobDownloadAsyncResponse.class);
 
     static {
         BlobDownloadAsyncResponseConstructorProxy.setAccessor(
@@ -44,9 +49,9 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 }
 
                 @Override
-                public Mono<Void> writeTo(BlobDownloadAsyncResponse response, WritableByteChannel writableByteChannel,
-                    ProgressReporter progressReporter) {
-                    return response.writeValueTo(writableByteChannel, progressReporter);
+                public Mono<Void> writeToFile(BlobDownloadAsyncResponse response, FileChannel fileChannel,
+                    long position, ProgressReporter progressReporter) {
+                    return response.writeValueToFile(fileChannel, position, progressReporter);
                 }
             });
     }
@@ -102,27 +107,108 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
             .defaultIfEmpty(EMPTY_BUFFER);
     }
 
-    Mono<Void> writeValueTo(WritableByteChannel writableByteChannel, ProgressReporter progressReporter) {
+    Mono<Void> writeValueToFile(FileChannel fileChannel, long position, ProgressReporter progressReporter) {
         if (sourceResponse != null) {
-            sourceResponse.writeValueTo(Channels.newChannel());
+            return transferStreamResponseToWritableByteChannelHelper(
+                new BufferedFileChannel(fileChannel, position, progressReporter), sourceResponse, onErrorResume,
+                retryOptions.getMaxRetryRequests(), 0);
         } else if (super.getValue() != null) {
-            return FluxUtil.writeToOutputStream(FluxUtil.addProgressReporting(super.getValue(), progressReporter),
-                new BufferedOutputStream(Channels.newOutputStream(writableByteChannel), 64 * 1024));
+            OutputStream stream = Channels.newOutputStream(new BufferedFileChannel(fileChannel, position,
+                progressReporter));
+            return FluxUtil.writeToOutputStream(addProgressReporting(super.getValue(), progressReporter), stream)
+                .then(Mono.fromCallable(() -> {
+                    stream.flush();
+                    return null;
+                }));
         } else {
             return Mono.empty();
         }
     }
 
-    private static final class BufferedWritableByteChannel implements WritableByteChannel {
-        private final WritableByteChannel innerChannel;
+    private static Mono<Void> transferStreamResponseToWritableByteChannelHelper(
+        BufferedFileChannel bufferedFileChannel, StreamResponse response,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, int maxRetries, int retryCount) {
+        return Mono.fromRunnable(() -> response.writeValueTo(bufferedFileChannel))
+            .onErrorResume(Exception.class, exception -> {
+                response.close();
 
-        private BufferedWritableByteChannel(WritableByteChannel innerChannel) {
+                int updatedRetryCount = retryCount + 1;
+
+                if (updatedRetryCount > maxRetries) {
+                    LOGGER.atError().addKeyValue("tryCount", retryCount)
+                        .log(() -> "Retry attempts have been exhausted.", exception);
+                    return Mono.error(exception);
+                }
+
+                return onErrorResume.apply(exception, bufferedFileChannel.getBytesWritten())
+                    .flatMap(newResponse -> transferStreamResponseToWritableByteChannelHelper(bufferedFileChannel,
+                        newResponse, onErrorResume, maxRetries, updatedRetryCount));
+            })
+            .then(Mono.fromCallable(() -> {
+                bufferedFileChannel.flush();
+                response.close();
+                return null;
+            }));
+    }
+
+    private static final class BufferedFileChannel implements WritableByteChannel {
+        private final FileChannel innerChannel;
+        private final long position;
+        private final ProgressReporter progressReporter;
+
+        private ByteBuffer buffer;
+        private long bytesWritten = 0L;
+
+        private BufferedFileChannel(FileChannel innerChannel, long position, ProgressReporter progressReporter) {
             this.innerChannel = innerChannel;
+            this.position = position;
+            this.progressReporter = progressReporter;
+        }
+
+        long getBytesWritten() {
+            return bytesWritten;
         }
 
         @Override
         public int write(ByteBuffer src) throws IOException {
-            return 0;
+            if (buffer == null) {
+                buffer = ByteBuffer.allocate(64 * 1024);
+            }
+
+            if (buffer.remaining() >= src.remaining()) {
+                buffer.put(src);
+                return 0;
+            }
+
+            ByteBuffer send = buffer;
+            send.flip();
+            buffer = ByteBuffer.allocate(64 * 1024);
+            buffer.put(src);
+
+            return writeInternal(send);
+        }
+
+        void flush() throws IOException {
+            if (buffer.position() > 0) {
+                buffer.flip();
+
+                writeInternal(buffer);
+            }
+        }
+
+        private int writeInternal(ByteBuffer send) throws IOException {
+            int totalWritten = 0;
+
+            while (send.hasRemaining()) {
+                int written = innerChannel.write(send, position + totalWritten);
+                if (progressReporter != null) {
+                    progressReporter.reportProgress(written);
+                }
+                bytesWritten += written;
+                totalWritten += written;
+            }
+
+            return totalWritten;
         }
 
         @Override
@@ -150,7 +236,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 sourceResponse, onErrorResume, progressReporter, retryOptions.getMaxRetryRequests());
         } else if (super.getValue() != null) {
             return FluxUtil.writeToAsynchronousByteChannel(
-                FluxUtil.addProgressReporting(super.getValue(), progressReporter), channel);
+                addProgressReporting(super.getValue(), progressReporter), channel);
         } else {
             return Mono.empty();
         }
