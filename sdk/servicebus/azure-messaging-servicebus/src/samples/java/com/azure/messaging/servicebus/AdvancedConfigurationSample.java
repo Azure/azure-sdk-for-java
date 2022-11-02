@@ -40,16 +40,4 @@ public class AdvancedConfigurationSample {
             .prefetchCount(100)
             .buildAsyncClient();
     }
-
-    /**
-     * Creates a session-enabled receiver that prefetch 100 messages.
-     */
-    public void createSessionReceiverWithPrefetch() {
-        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-            .sessionReceiver()
-            .queueName("<< QUEUE NAME >>")
-            .prefetchCount(100)
-            .buildAsyncClient();
-    }
 }
