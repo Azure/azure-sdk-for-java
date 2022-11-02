@@ -5,7 +5,6 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FluxUtil;
