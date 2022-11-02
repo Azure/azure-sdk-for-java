@@ -4,6 +4,8 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.TextAnalyticsServiceVersion;
+import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarizationResult;
+import com.azure.ai.textanalytics.implementation.models.AbstractiveSummaryDocumentResultWithDetectedLanguage;
 import com.azure.ai.textanalytics.implementation.models.AgeResolution;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextTaskResult;
 import com.azure.ai.textanalytics.implementation.models.AreaResolution;
@@ -40,7 +42,7 @@ import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.ExtractedSummarySentence;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
-import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResultDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.ExtractedSummaryDocumentResultWithDetectedLanguage;
 import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
@@ -81,6 +83,8 @@ import com.azure.ai.textanalytics.implementation.models.TemporalSpanResolution;
 import com.azure.ai.textanalytics.implementation.models.VolumeResolution;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.implementation.models.WeightResolution;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -127,6 +131,7 @@ import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.SpeedUnit;
+import com.azure.ai.textanalytics.models.SummaryContext;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -143,6 +148,7 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.VolumeUnit;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.models.WeightUnit;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
@@ -1477,6 +1483,72 @@ public final class Utility {
         return classifications;
     }
 
+    public static AbstractiveSummaryResultCollection toAbstractiveSummaryResultCollection(
+        AbstractiveSummarizationResult abstractiveSummarizationResult) {
+        List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documentResults = abstractiveSummarizationResult.getDocuments();
+        List<AbstractiveSummaryResult> summaryResults = new ArrayList<>();
+        for (AbstractiveSummaryDocumentResultWithDetectedLanguage documentResult : documentResults) {
+            summaryResults.add(toAbstractiveSummaryResult(documentResult));
+        }
+
+        // Document errors
+        for (InputError documentError : abstractiveSummarizationResult.getErrors()) {
+            summaryResults.add(new AbstractiveSummaryResult(documentError.getId(), null,
+                    toTextAnalyticsError(documentError.getError())));
+        }
+
+        return new AbstractiveSummaryResultCollection(summaryResults, abstractiveSummarizationResult.getModelVersion(),
+            abstractiveSummarizationResult.getStatistics() == null ? null
+                : toBatchStatistics(abstractiveSummarizationResult.getStatistics()));
+    }
+
+    public static AbstractiveSummaryResult toAbstractiveSummaryResult(
+        AbstractiveSummaryDocumentResultWithDetectedLanguage documentResult) {
+        AbstractiveSummaryResult summaryResult = new AbstractiveSummaryResult(
+            documentResult.getId(),
+            documentResult.getStatistics() == null ? null : toTextDocumentStatistics(documentResult.getStatistics()),
+            null
+        );
+
+        AbstractiveSummaryResultPropertiesHelper.setSummaries(summaryResult,
+            new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries())));
+
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
+                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+        AbstractiveSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
+
+        return summaryResult;
+    }
+
+    public static List<AbstractiveSummary> toAbstractiveSummaries(
+        List<com.azure.ai.textanalytics.implementation.models.AbstractiveSummary> abstractiveSummariesImpl) {
+        List<AbstractiveSummary> summaries = new ArrayList<>();
+        abstractiveSummariesImpl.forEach(summaryImpl -> summaries.add(toAbstractiveSummary(summaryImpl)));
+        return summaries;
+    }
+
+    public static AbstractiveSummary toAbstractiveSummary(
+        com.azure.ai.textanalytics.implementation.models.AbstractiveSummary summary) {
+        AbstractiveSummary abstractiveSummary = new AbstractiveSummary();
+        AbstractiveSummaryPropertiesHelper.setText(abstractiveSummary, summary.getText());
+        AbstractiveSummaryPropertiesHelper.setSummaryContexts(abstractiveSummary,
+            toSummaryContexts(summary.getContexts()));
+        return abstractiveSummary;
+    }
+
+    public static IterableStream<SummaryContext> toSummaryContexts(
+        List<com.azure.ai.textanalytics.implementation.models.SummaryContext> contexts) {
+        List<SummaryContext> summaryContexts = new ArrayList<>();
+        contexts.forEach(context -> {
+            SummaryContext summaryContext = new SummaryContext();
+            SummaryContextPropertiesHelper.setOffset(summaryContext, context.getOffset());
+            SummaryContextPropertiesHelper.setLength(summaryContext, context.getLength());
+            summaryContexts.add(summaryContext);
+        });
+        return IterableStream.of(summaryContexts);
+    }
+
     /**
      * Helper method to convert {@link ExtractiveSummarizationResult} to {@link ExtractSummaryResultCollection}.
      *
@@ -1487,9 +1559,9 @@ public final class Utility {
     public static ExtractSummaryResultCollection toExtractSummaryResultCollection(
         ExtractiveSummarizationResult extractiveSummarizationResult) {
         final List<ExtractSummaryResult> extractSummaryResults = new ArrayList<>();
-        final List<ExtractiveSummarizationResultDocumentsItem> extractedDocumentSummaries = extractiveSummarizationResult.getDocuments();
+        final List<ExtractedSummaryDocumentResultWithDetectedLanguage> extractedDocumentSummaries = extractiveSummarizationResult.getDocuments();
 
-        for (ExtractiveSummarizationResultDocumentsItem documentSummary : extractedDocumentSummaries) {
+        for (ExtractedSummaryDocumentResultWithDetectedLanguage documentSummary : extractedDocumentSummaries) {
             extractSummaryResults.add(toExtractSummaryResult(documentSummary));
         }
         for (InputError documentError : extractiveSummarizationResult.getErrors()) {
@@ -1503,7 +1575,7 @@ public final class Utility {
     }
 
     private static ExtractSummaryResult toExtractSummaryResult(
-        ExtractiveSummarizationResultDocumentsItem documentSummary) {
+        ExtractedSummaryDocumentResultWithDetectedLanguage documentSummary) {
         final List<ExtractedSummarySentence> sentences = documentSummary.getSentences();
         final List<SummarySentence> summarySentences = sentences.stream().map(sentence -> {
             final SummarySentence summarySentence = new SummarySentence();

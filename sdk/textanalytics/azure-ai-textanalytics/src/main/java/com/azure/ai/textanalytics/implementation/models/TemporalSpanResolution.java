@@ -40,6 +40,13 @@ public final class TemporalSpanResolution extends BaseResolution {
     @JsonProperty(value = "modifier")
     private TemporalModifier modifier;
 
+    /*
+     * An optional triplet containing the beginning, the end, and the duration all stated as ISO 8601 formatted
+     * strings.
+     */
+    @JsonProperty(value = "timex")
+    private String timex;
+
     /**
      * Get the begin property: An extended ISO 8601 date/time representation as described in
      * (https://github.com/Microsoft/Recognizers-Text/blob/master/Patterns/English/English-DateTime.yaml).
@@ -123,6 +130,28 @@ public final class TemporalSpanResolution extends BaseResolution {
      */
     public TemporalSpanResolution setModifier(TemporalModifier modifier) {
         this.modifier = modifier;
+        return this;
+    }
+
+    /**
+     * Get the timex property: An optional triplet containing the beginning, the end, and the duration all stated as ISO
+     * 8601 formatted strings.
+     *
+     * @return the timex value.
+     */
+    public String getTimex() {
+        return this.timex;
+    }
+
+    /**
+     * Set the timex property: An optional triplet containing the beginning, the end, and the duration all stated as ISO
+     * 8601 formatted strings.
+     *
+     * @param timex the timex value to set.
+     * @return the TemporalSpanResolution object itself.
+     */
+    public TemporalSpanResolution setTimex(String timex) {
+        this.timex = timex;
         return this;
     }
 }

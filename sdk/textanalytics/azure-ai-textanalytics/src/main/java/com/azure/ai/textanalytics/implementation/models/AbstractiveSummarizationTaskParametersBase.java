@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Supported parameters for an Abstractive Summarization task. */
 @Fluent
@@ -23,12 +22,6 @@ public class AbstractiveSummarizationTaskParametersBase {
      */
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
-
-    /*
-     * Control the phrases to be used in the summary.
-     */
-    @JsonProperty(value = "phraseControls")
-    private List<PhraseControl> phraseControls;
 
     /**
      * Get the sentenceCount property: It controls the approximate number of sentences in the output summaries.
@@ -71,26 +64,6 @@ public class AbstractiveSummarizationTaskParametersBase {
      */
     public AbstractiveSummarizationTaskParametersBase setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
-        return this;
-    }
-
-    /**
-     * Get the phraseControls property: Control the phrases to be used in the summary.
-     *
-     * @return the phraseControls value.
-     */
-    public List<PhraseControl> getPhraseControls() {
-        return this.phraseControls;
-    }
-
-    /**
-     * Set the phraseControls property: Control the phrases to be used in the summary.
-     *
-     * @param phraseControls the phraseControls value to set.
-     * @return the AbstractiveSummarizationTaskParametersBase object itself.
-     */
-    public AbstractiveSummarizationTaskParametersBase setPhraseControls(List<PhraseControl> phraseControls) {
-        this.phraseControls = phraseControls;
         return this;
     }
 }

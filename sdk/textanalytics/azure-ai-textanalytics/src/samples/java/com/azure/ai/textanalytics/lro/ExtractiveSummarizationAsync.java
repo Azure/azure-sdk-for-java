@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to asynchronously execute an "Extractive Summarization" action in a batch of documents.
  */
-public class AnalyzeExtractiveSummarizationAsync {
+public class ExtractiveSummarizationAsync {
     /**
      * Main method to invoke this demo about how to analyze an "Extractive Summarization" action.
      *

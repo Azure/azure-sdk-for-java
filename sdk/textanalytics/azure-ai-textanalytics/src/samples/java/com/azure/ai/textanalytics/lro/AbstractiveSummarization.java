@@ -5,13 +5,13 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.ExtractSummaryAction;
-import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
-import com.azure.ai.textanalytics.models.SummarySentence;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
+import com.azure.ai.textanalytics.models.SummaryContext;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
@@ -19,10 +19,11 @@ import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- * Sample demonstrates how to synchronously execute an "Extractive Summarization" action in a batch of documents.
+ * Sample demonstrates how to synchronously execute an "Abstractive Summarization" action in a batch of documents.
  */
-public class AnalyzeExtractiveSummarization {
+public class AbstractiveSummarization {
     /**
      * Main method to invoke this demo about how to analyze an "Extractive Summarization" action.
      *
@@ -57,34 +58,35 @@ public class AnalyzeExtractiveSummarization {
 
         SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
-                new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setExtractSummaryActions(
-                        new ExtractSummaryAction().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK)),
+                new TextAnalyticsActions()
+                    .setDisplayName("{tasks_display_name}")
+                    .setAbstractiveSummaryActions(new AbstractiveSummaryAction().setMaxSentenceCount(3)),
                 "en",
                 new AnalyzeActionsOptions());
 
         syncPoller.waitForCompletion();
 
         syncPoller.getFinalResult().forEach(actionsResult -> {
-            System.out.println("Extractive Summarization action results:");
-            for (ExtractSummaryActionResult actionResult : actionsResult.getExtractSummaryResults()) {
+            System.out.println("Abstractive summarization action results:");
+            for (AbstractiveSummaryActionResult actionResult : actionsResult.getAbstractiveSummaryResults()) {
                 if (!actionResult.isError()) {
-                    for (ExtractSummaryResult documentResult : actionResult.getDocumentsResults()) {
+                    for (AbstractiveSummaryResult documentResult : actionResult.getDocumentsResults()) {
                         if (!documentResult.isError()) {
-                            System.out.println("\tExtracted summary sentences:");
-                            for (SummarySentence summarySentence : documentResult.getSentences()) {
-                                System.out.printf(
-                                    "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                                    summarySentence.getText(), summarySentence.getLength(),
-                                    summarySentence.getOffset(), summarySentence.getRankScore());
+                            System.out.println("\tAbstract summary sentences:");
+                            for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
+                                System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
+                                for (SummaryContext summaryContext : summarySentence.getSummaryContexts()) {
+                                    System.out.printf("\t\t offset: %d, length: %d%n",
+                                        summaryContext.getOffset(), summaryContext.getLength());
+                                }
                             }
                         } else {
-                            System.out.printf("\tCannot extract summary sentences. Error: %s%n",
+                            System.out.printf("\tCannot get abstract summary. Error: %s%n",
                                 documentResult.getError().getMessage());
                         }
                     }
                 } else {
-                    System.out.printf("\tCannot execute Extractive Summarization action. Error: %s%n",
+                    System.out.printf("\tCannot get Abstractive Summarization action. Error: %s%n",
                         actionResult.getError().getMessage());
                 }
             }

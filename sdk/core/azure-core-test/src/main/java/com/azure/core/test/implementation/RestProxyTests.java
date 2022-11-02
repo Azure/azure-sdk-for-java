@@ -76,6 +76,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -2033,6 +2034,61 @@ public abstract class RestProxyTests {
         assertTrue(response.data() instanceof String);
         assertEquals("42", response.data());
         assertEquals("randomValue2", response.getHeaderValue("randomHeader"));
+    }
+
+    @Host("http://localhost")
+    @ServiceInterface(name = "Service28")
+    interface Service28 {
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        void headvoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Void headVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Response<Void> headResponseVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        ResponseBase<Void, Void> headResponseBaseVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Mono<Void> headMonoVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Mono<Response<Void>> headMonoResponseVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Flux<Void> headFluxVoid();
+    }
+
+    @ParameterizedTest
+    @MethodSource("voidDoesNotEagerlyReadResponseSupplier")
+    public void voidDoesNotEagerlyReadResponse(Consumer<Service28> executable) {
+        assertDoesNotThrow(() -> executable.accept(createService(Service28.class)));
+    }
+
+    private static Stream<Consumer<Service28>> voidDoesNotEagerlyReadResponseSupplier() {
+        return Stream.of(
+            Service28::headvoid,
+            Service28::headVoid,
+            Service28::headResponseVoid,
+            Service28::headResponseBaseVoid,
+            Service28::headMonoVoid,
+            Service28::headMonoResponseVoid,
+            Service28::headMonoResponseBaseVoid,
+            Service28::headFluxVoid
+        );
     }
 
     // Helpers

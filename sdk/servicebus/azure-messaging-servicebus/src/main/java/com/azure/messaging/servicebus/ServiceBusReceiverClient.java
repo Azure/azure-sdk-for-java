@@ -749,7 +749,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param transactionContext The transaction to be rollback.
      *
-     * @throws IllegalStateException if the receiver is alread disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
      * @throws ServiceBusException if the transaction could not be rolled back.
      */

@@ -27,6 +27,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
@@ -60,9 +61,11 @@ import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
+import static com.azure.ai.textanalytics.TestUtils.getAbstractSummaryActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getAnalyzeSentimentResultCollectionForActions;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAbstractiveSummaryResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeActionsResultListForMultiplePages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeBatchActionsResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesActionResult;
@@ -1167,7 +1170,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Key Phrases
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1213,7 +1216,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 }));
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1225,7 +1228,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1236,7 +1239,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1247,7 +1250,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1258,7 +1261,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1925,6 +1928,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareStringInputWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1951,6 +1955,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1976,6 +1981,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2309,6 +2315,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
@@ -2341,6 +2348,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
@@ -2449,6 +2457,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList())
                     )),
                     result.toStream().collect(Collectors.toList()));
@@ -2499,6 +2508,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList())
                     )),
                     result.toStream().collect(Collectors.toList()));
@@ -2527,6 +2537,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                             TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
+                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
@@ -2560,6 +2571,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
@@ -2588,6 +2600,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
@@ -2615,6 +2628,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getExpectedBatchTextSentiment(), null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
@@ -2642,6 +2656,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                                 getRecognizeHealthcareEntitiesResultWithFhir1("0"),
                                 getRecognizeHealthcareEntitiesResultWithFhir2())),
                             null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
@@ -2849,7 +2864,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(asList(getExtractSummaryActionResult(false, null,
                         TIME_NOW,
                         getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
-                        null))))),
+                        null))),
+                    IterableStream.of(Collections.emptyList())
+                )),
                 result.toStream().collect(Collectors.toList()));
         }, null, null);
     }
@@ -2960,6 +2977,38 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         ((TextAnalyticsError) exception.getValue()).getErrorCode());
                 }, invalidCount, null);
         }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeAbstractiveSummaryActionWithDefaultParameterValues(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        abstractSummaryRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+
+            validateAnalyzeBatchActionsResultList(false, false,
+                asList(getExpectedAnalyzeBatchActionsResult(
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(asList(getAbstractSummaryActionResult(false, null,
+                        TIME_NOW,
+                        new AbstractiveSummaryResultCollection(
+                                asList(getExpectedAbstractiveSummaryResult()), null, null),
+                        null
+                    )))
+                )),
+                result.toStream().collect(Collectors.toList()));
+        }, null);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
