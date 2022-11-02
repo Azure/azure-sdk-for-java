@@ -210,14 +210,17 @@ public final class CosmosEncryptionAsyncContainer {
         return container.deleteItem(itemId, partitionKey, requestOptions);
     }
 
-    private String checkAndGetEncryptedId(String itemId, EncryptionSettings encryptionSettings) throws MicrosoftDataEncryptionException {
-        if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().anyMatch(includedPath -> includedPath.getPath().substring(1).equals(Constants.PROPERTY_NAME_ID))) {
+    private String checkAndGetEncryptedId(String itemId, EncryptionSettings encryptionSettings)
+        throws MicrosoftDataEncryptionException {
+        if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().
+            anyMatch(includedPath -> includedPath.getPath().substring(1).equals(Constants.PROPERTY_NAME_ID))) {
             return itemId;
         }
         return this.encryptionProcessor.encryptAndSerializeValue(encryptionSettings, itemId, Constants.PROPERTY_NAME_ID);
     }
 
-    private PartitionKey checkAndGetEncryptedPartitionKey(PartitionKey partitionKey, EncryptionSettings encryptionSettings) throws JsonProcessingException, MicrosoftDataEncryptionException {
+    private PartitionKey checkAndGetEncryptedPartitionKey(PartitionKey partitionKey, EncryptionSettings encryptionSettings)
+        throws JsonProcessingException, MicrosoftDataEncryptionException {
         if (encryptionSettings.getPartitionKeyPaths().isEmpty() || partitionKey == null) {
             return partitionKey;
         }
@@ -228,15 +231,18 @@ public final class CosmosEncryptionAsyncContainer {
 
             for (String path : encryptionSettings.getPartitionKeyPaths()) {
                 // case: partition key path is /a/b/c and the client encryption policy has /a in path.
-                // hence encrypt the partition key value with using its top level path /a since /c would have been encrypted in the document using /a's policy.
+                // hence encrypt the partition key value with using its top level path /a since
+                // /c would have been encrypted in the document using /a's policy.
                 String partitionKeyPath = path.split("/")[0];
 
                 String childPartitionKey = arrayNode.elements().next().toString();
-                if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().anyMatch(includedPath -> includedPath.getPath().substring(1).equals(partitionKeyPath))) {
+                if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().
+                    anyMatch(includedPath -> includedPath.getPath().substring(1).equals(partitionKeyPath))) {
                     partitionKeyBuilder.add(childPartitionKey);
                     continue;
                 }
-                partitionKeyBuilder.add(this.encryptionProcessor.encryptAndSerializeValue(encryptionSettings, childPartitionKey, partitionKeyPath));
+                partitionKeyBuilder.add(this.encryptionProcessor.
+                    encryptAndSerializeValue(encryptionSettings, childPartitionKey, partitionKeyPath));
             }
             return partitionKeyBuilder.build();
         }
@@ -246,10 +252,12 @@ public final class CosmosEncryptionAsyncContainer {
                 throw new MicrosoftDataEncryptionException("There should only be 1 PartitionKeyPath.");
             }
             String partitionKeyPath = encryptionSettings.getPartitionKeyPaths().get(0);
-            if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().anyMatch(includedPath -> includedPath.getPath().substring(1).equals(partitionKeyPath))) {
+            if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().
+                anyMatch(includedPath -> includedPath.getPath().substring(1).equals(partitionKeyPath))) {
                 return partitionKey;
             }
-            return new PartitionKey(this.encryptionProcessor.encryptAndSerializeValue(encryptionSettings, partitionKey.toString(), partitionKeyPath));
+            return new PartitionKey(this.encryptionProcessor.
+                encryptAndSerializeValue(encryptionSettings, partitionKey.toString(), partitionKeyPath));
         }
     }
 

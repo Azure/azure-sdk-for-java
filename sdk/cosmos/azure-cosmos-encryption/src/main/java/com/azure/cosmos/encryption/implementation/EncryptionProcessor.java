@@ -664,17 +664,32 @@ public class EncryptionProcessor {
     }
 
     private String convertToBase64UriSafeString(byte[] bytesToProcess) {
-        String base64String = new String(Base64.getDecoder().decode(bytesToProcess));
+        StringBuilder base64String = new StringBuilder(new String(Base64.getDecoder().decode(bytesToProcess)));
 
         // Base 64 Encoding with URL and Filename Safe Alphabet  https://datatracker.ietf.org/doc/html/rfc4648#section-5
         // https://docs.microsoft.com/en-us/azure/cosmos-db/concepts-limits#per-item-limits, due to base64 conversion and encryption
         // the permissible size of the property will further reduce.
-        return base64String.replaceAll("/","_").replaceAll("\\+","-");
+        replaceString(base64String, "/", "_");
+        replaceString(base64String, "\\+", "-");
+        return base64String.toString();
     }
 
     private byte[] convertFromBase64UriSafeString(String base64UriSafeString) {
-        base64UriSafeString.replaceAll("_", "/").replaceAll("-", "\\+");
-        return Base64.getEncoder().encode(base64UriSafeString.getBytes());
+        StringBuilder base64String = new StringBuilder(base64UriSafeString);
+
+        replaceString(base64String, "_", "/");
+        replaceString(base64String, "-", "\\+");
+        return Base64.getEncoder().encode(base64String.toString().getBytes());
+    }
+
+    private StringBuilder replaceString(StringBuilder sb,
+                                     String toReplace,
+                                     String replacement) {
+        int index = -1;
+        while ((index = sb.lastIndexOf(toReplace)) != -1) {
+            sb.replace(index, index + toReplace.length(), replacement);
+        }
+        return sb;
     }
 
     public enum TypeMarker {
