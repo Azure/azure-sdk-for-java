@@ -4,7 +4,7 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       SupportedClouds: 'Public,UsGov,China'
-      Clouds: 'Public,UsGov,China'
+      Clouds: 'Public'
       CloudConfig:
         Public:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
