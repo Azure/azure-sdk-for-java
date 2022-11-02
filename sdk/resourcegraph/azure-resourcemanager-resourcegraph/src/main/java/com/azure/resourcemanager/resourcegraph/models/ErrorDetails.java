@@ -33,6 +33,10 @@ public final class ErrorDetails {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ErrorDetails class. */
+    public ErrorDetails() {
+    }
+
     /**
      * Get the code property: Error code identifying the specific error.
      *
