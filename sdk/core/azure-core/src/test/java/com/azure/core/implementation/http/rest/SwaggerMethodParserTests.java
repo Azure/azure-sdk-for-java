@@ -35,6 +35,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Base64Url;
@@ -692,7 +693,7 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> isReturnTypeDecodeableSupplier() {
-        return returnTypeSupplierForDecodeableAndEagerReading(false);
+        return returnTypeSupplierForDecodeableAndEagerReading(true, false, false);
     }
 
     @ParameterizedTest
@@ -703,143 +704,156 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> isResponseEagerlyReadSupplier() {
-        return returnTypeSupplierForDecodeableAndEagerReading(true);
+        return returnTypeSupplierForDecodeableAndEagerReading(true, false, false);
     }
 
-    private static Stream<Arguments> returnTypeSupplierForDecodeableAndEagerReading(boolean voidTypeStatus) {
+    @ParameterizedTest
+    @MethodSource("isResponseBodyIgnoredSupplier")
+    public void isResponseBodyIgnored(Type returnType, boolean expected) {
+        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
+        assertEquals(expected, SwaggerMethodParser.isResponseBodyIgnored(unwrappedReturnType));
+    }
+
+    private static Stream<Arguments> isResponseBodyIgnoredSupplier() {
+        return returnTypeSupplierForDecodeableAndEagerReading(false, false, true);
+    }
+
+    private static Stream<Arguments> returnTypeSupplierForDecodeableAndEagerReading(boolean nonBinaryTypeStatus,
+        boolean binaryTypeStatus, boolean voidTypeStatus) {
         return Stream.of(
             // Unknown response type can't be determined to be decode-able.
             Arguments.of(null, false),
 
             // BinaryData, Byte arrays, ByteBuffers, InputStream, and voids aren't decode-able.
-            Arguments.of(BinaryData.class, false),
+            Arguments.of(BinaryData.class, binaryTypeStatus),
 
-            Arguments.of(byte[].class, false),
+            Arguments.of(byte[].class, binaryTypeStatus),
 
             // Both ByteBuffer and sub-types shouldn't be decode-able.
-            Arguments.of(ByteBuffer.class, false),
-            Arguments.of(MappedByteBuffer.class, false),
+            Arguments.of(ByteBuffer.class, binaryTypeStatus),
+            Arguments.of(MappedByteBuffer.class, binaryTypeStatus),
 
             // Both InputSteam and sub-types shouldn't be decode-able.
-            Arguments.of(InputStream.class, false),
-            Arguments.of(FileInputStream.class, false),
+            Arguments.of(InputStream.class, binaryTypeStatus),
+            Arguments.of(FileInputStream.class, binaryTypeStatus),
 
             Arguments.of(void.class, voidTypeStatus),
             Arguments.of(Void.class, voidTypeStatus),
             Arguments.of(Void.TYPE, voidTypeStatus),
 
             // Other POJO types are decode-able.
-            Arguments.of(JsonPatchDocument.class, true),
+            Arguments.of(JsonPatchDocument.class, nonBinaryTypeStatus),
 
             // In addition to the direct types, reactive and Response generic types should be handled.
 
             // Reactive generics.
             // Mono generics.
-            Arguments.of(createParameterizedMono(BinaryData.class), false),
-            Arguments.of(createParameterizedMono(byte[].class), false),
-            Arguments.of(createParameterizedMono(ByteBuffer.class), false),
-            Arguments.of(createParameterizedMono(MappedByteBuffer.class), false),
-            Arguments.of(createParameterizedMono(InputStream.class), false),
-            Arguments.of(createParameterizedMono(FileInputStream.class), false),
+            Arguments.of(createParameterizedMono(BinaryData.class), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(byte[].class), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(ByteBuffer.class), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(MappedByteBuffer.class), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(InputStream.class), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(FileInputStream.class), binaryTypeStatus),
             Arguments.of(createParameterizedMono(void.class), voidTypeStatus),
             Arguments.of(createParameterizedMono(Void.class), voidTypeStatus),
             Arguments.of(createParameterizedMono(Void.TYPE), voidTypeStatus),
-            Arguments.of(createParameterizedMono(JsonPatchDocument.class), true),
+            Arguments.of(createParameterizedMono(JsonPatchDocument.class), nonBinaryTypeStatus),
 
             // Flux generics.
-            Arguments.of(createParameterizedFlux(BinaryData.class), false),
-            Arguments.of(createParameterizedFlux(byte[].class), false),
-            Arguments.of(createParameterizedFlux(ByteBuffer.class), false),
-            Arguments.of(createParameterizedFlux(MappedByteBuffer.class), false),
-            Arguments.of(createParameterizedFlux(InputStream.class), false),
-            Arguments.of(createParameterizedFlux(FileInputStream.class), false),
+            Arguments.of(createParameterizedFlux(BinaryData.class), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(byte[].class), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(ByteBuffer.class), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(MappedByteBuffer.class), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(InputStream.class), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(FileInputStream.class), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(void.class), voidTypeStatus),
             Arguments.of(createParameterizedFlux(Void.class), voidTypeStatus),
             Arguments.of(createParameterizedFlux(Void.TYPE), voidTypeStatus),
-            Arguments.of(createParameterizedFlux(JsonPatchDocument.class), true),
+            Arguments.of(createParameterizedFlux(JsonPatchDocument.class), nonBinaryTypeStatus),
 
 
             // Response generics.
             // If the raw type is Response it should check the first, and only, generic type.
-            Arguments.of(createParameterizedResponse(BinaryData.class), false),
-            Arguments.of(createParameterizedResponse(byte[].class), false),
-            Arguments.of(createParameterizedResponse(ByteBuffer.class), false),
-            Arguments.of(createParameterizedResponse(MappedByteBuffer.class), false),
-            Arguments.of(createParameterizedResponse(InputStream.class), false),
-            Arguments.of(createParameterizedResponse(FileInputStream.class), false),
+            Arguments.of(createParameterizedResponse(BinaryData.class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponse(byte[].class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponse(ByteBuffer.class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponse(MappedByteBuffer.class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponse(InputStream.class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponse(FileInputStream.class), binaryTypeStatus),
             Arguments.of(createParameterizedResponse(void.class), voidTypeStatus),
             Arguments.of(createParameterizedResponse(Void.class), voidTypeStatus),
             Arguments.of(createParameterizedResponse(Void.TYPE), voidTypeStatus),
-            Arguments.of(createParameterizedResponse(JsonPatchDocument.class), true),
+            Arguments.of(createParameterizedResponse(JsonPatchDocument.class), nonBinaryTypeStatus),
 
             // If the raw type is ResponseBase it should check the second generic type, the first is deserialized
             // headers.
-            Arguments.of(createParameterizedResponseBase(BinaryData.class), false),
-            Arguments.of(createParameterizedResponseBase(byte[].class), false),
-            Arguments.of(createParameterizedResponseBase(ByteBuffer.class), false),
-            Arguments.of(createParameterizedResponseBase(MappedByteBuffer.class), false),
-            Arguments.of(createParameterizedResponseBase(InputStream.class), false),
-            Arguments.of(createParameterizedResponseBase(FileInputStream.class), false),
+            Arguments.of(createParameterizedResponseBase(BinaryData.class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponseBase(byte[].class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponseBase(ByteBuffer.class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponseBase(MappedByteBuffer.class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponseBase(InputStream.class), binaryTypeStatus),
+            Arguments.of(createParameterizedResponseBase(FileInputStream.class), binaryTypeStatus),
             Arguments.of(createParameterizedResponseBase(void.class), voidTypeStatus),
             Arguments.of(createParameterizedResponseBase(Void.class), voidTypeStatus),
             Arguments.of(createParameterizedResponseBase(Void.TYPE), voidTypeStatus),
-            Arguments.of(createParameterizedResponseBase(JsonPatchDocument.class), true),
+            Arguments.of(createParameterizedResponseBase(JsonPatchDocument.class), nonBinaryTypeStatus),
 
             // Reactive generics containing response generics.
             // Mono of Response
-            Arguments.of(createParameterizedMono(createParameterizedResponse(BinaryData.class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(byte[].class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(ByteBuffer.class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(MappedByteBuffer.class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(InputStream.class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(FileInputStream.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(BinaryData.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(byte[].class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(ByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(InputStream.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(JsonPatchDocument.class)), true),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(JsonPatchDocument.class)), nonBinaryTypeStatus),
 
             // Mono of ResponseBase
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(BinaryData.class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(byte[].class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(ByteBuffer.class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(MappedByteBuffer.class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(InputStream.class)), false),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(FileInputStream.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(BinaryData.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(byte[].class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(ByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(InputStream.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(JsonPatchDocument.class)), true),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(JsonPatchDocument.class)), nonBinaryTypeStatus),
 
             // Flux of Response
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(BinaryData.class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(byte[].class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(ByteBuffer.class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(MappedByteBuffer.class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(InputStream.class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(FileInputStream.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(BinaryData.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(byte[].class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(ByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(InputStream.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(JsonPatchDocument.class)), true),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(JsonPatchDocument.class)), nonBinaryTypeStatus),
 
             // Flux of ResponseBase
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(BinaryData.class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(byte[].class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(ByteBuffer.class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(MappedByteBuffer.class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(InputStream.class)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(FileInputStream.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(BinaryData.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(byte[].class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(ByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(InputStream.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)), true),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)), nonBinaryTypeStatus),
 
             // Custom implementations of Response and ResponseBase.
             Arguments.of(VoidResponse.class, voidTypeStatus),
-            Arguments.of(StringResponse.class, true),
+            Arguments.of(StringResponse.class, nonBinaryTypeStatus),
+            Arguments.of(StreamResponse.class, binaryTypeStatus),
 
             Arguments.of(VoidResponseWithDeserializedHeaders.class, voidTypeStatus),
-            Arguments.of(StringResponseWithDeserializedHeaders.class, true)
+            Arguments.of(StringResponseWithDeserializedHeaders.class, nonBinaryTypeStatus)
         );
     }
 

@@ -28,6 +28,10 @@ public final class BackupStatusRequest {
     @JsonProperty(value = "poLogicalName")
     private String poLogicalName;
 
+    /** Creates an instance of BackupStatusRequest class. */
+    public BackupStatusRequest() {
+    }
+
     /**
      * Get the resourceType property: Container Type - VM, SQLPaaS, DPM, AzureFileShare...
      *

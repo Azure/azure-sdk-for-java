@@ -219,6 +219,22 @@ public class JacksonAdapterTests {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("quoteRemovalSupplier")
+    public void quoteRemoval(String str, String expected) {
+        assertEquals(expected, JacksonAdapter.removeLeadingAndTrailingQuotes(str));
+    }
+
+    private static Stream<Arguments> quoteRemovalSupplier() {
+        return Stream.of(
+            Arguments.of("", ""),
+            Arguments.of("\"\"", ""),
+            Arguments.of("\"\"\"\"\"\"\"\"", ""),
+            Arguments.of("\"\"hello\"\"", "hello"),
+            Arguments.of("\"\"they said \"hello\" to you\"\"", "they said \"hello\" to you")
+        );
+    }
+
     public static final class StronglyTypedHeaders {
         private final DateTimeRfc1123 date;
 

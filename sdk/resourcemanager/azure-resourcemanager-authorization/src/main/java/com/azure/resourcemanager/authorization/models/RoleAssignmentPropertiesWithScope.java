@@ -37,6 +37,9 @@ public final class RoleAssignmentPropertiesWithScope {
     @JsonProperty(value = "condition")
     private String condition;
 
+    @JsonProperty(value = "description")
+    private String description;
+
     /*
      * Version of the condition. Currently accepted value is '2.0'
      */
@@ -134,6 +137,15 @@ public final class RoleAssignmentPropertiesWithScope {
      */
     public String conditionVersion() {
         return this.conditionVersion;
+    }
+
+    /**
+     * Get the description property: Description of role assignment.
+     *
+     * @return the description value
+     */
+    public String description() {
+        return description;
     }
 
     /**

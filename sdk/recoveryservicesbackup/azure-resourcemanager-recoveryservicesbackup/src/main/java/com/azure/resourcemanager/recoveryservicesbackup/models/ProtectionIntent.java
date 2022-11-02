@@ -39,8 +39,7 @@ public class ProtectionIntent {
     private String sourceResourceId;
 
     /*
-     * ID of the item which is getting protected, In case of Azure Vm , it is
-     * ProtectedItemId
+     * ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
      */
     @JsonProperty(value = "itemId")
     private String itemId;
@@ -56,6 +55,10 @@ public class ProtectionIntent {
      */
     @JsonProperty(value = "protectionState")
     private ProtectionStatus protectionState;
+
+    /** Creates an instance of ProtectionIntent class. */
+    public ProtectionIntent() {
+    }
 
     /**
      * Get the backupManagementType property: Type of backup management for the backed up item.

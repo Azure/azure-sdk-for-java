@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtectionIntentItemType. */
+/** backup protectionIntent type. */
 public final class ProtectionIntentItemType extends ExpandableStringEnum<ProtectionIntentItemType> {
     /** Static value Invalid for ProtectionIntentItemType. */
     public static final ProtectionIntentItemType INVALID = fromString("Invalid");

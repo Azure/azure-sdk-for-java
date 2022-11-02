@@ -17,6 +17,7 @@ import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
+import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -25,6 +26,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
+import org.apache.qpid.proton.engine.impl.TransportImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +35,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
@@ -47,7 +50,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -57,6 +62,7 @@ import static org.mockito.Mockito.when;
 public class WebSocketsProxyConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-connection-id";
     private static final String HOSTNAME = "event-hubs.windows.core.net";
+    private static final int AMQP_PORT = 5671;
     private static final InetSocketAddress PROXY_ADDRESS = InetSocketAddress.createUnresolved("foo.proxy.com", 3138);
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
     private static final String USERNAME = "test-user";
@@ -186,6 +192,71 @@ public class WebSocketsProxyConnectionHandlerTest {
         Assertions.assertEquals(address.getPort(), handler.getProtocolPort());
 
         verifyNoInteractions(proxySelector);
+    }
+
+    /**
+     * Verifies that the hostname:port for Proxy CONNECT created from
+     * the FQDN host field in {@link ConnectionOptions}.
+     */
+    @Test
+    public void proxyConfigureConnectHostnameAndPortDerivesFromFqdn() {
+        // Arrange
+        final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
+        final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
+        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME,
+            PASSWORD);
+
+        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions,
+            proxyOptions, peerDetails, AmqpMetricsProvider.noop());
+
+        // Act and Assert
+        try (MockedConstruction<ProxyImpl> mockConstruction = mockConstruction(ProxyImpl.class)) {
+            this.handler.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
+                mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+
+            final List<ProxyImpl> constructed = mockConstruction.constructed();
+            assertEquals(1, constructed.size());
+            // The ProxyImpl object constructed inside addTransportLayer method.
+            final ProxyImpl proxyImpl = constructed.get(0);
+            final String expectedConnectHostnameAndPort = HOSTNAME + ":" + AMQP_PORT;
+            verify(proxyImpl).configure(eq(expectedConnectHostnameAndPort), any(), any(), any());
+        }
+    }
+
+    /**
+     * Verifies that the hostname:port for Proxy CONNECT created from
+     * the Custom host fields in {@link ConnectionOptions}.
+     */
+    @Test
+    public void proxyConfigureConnectHostnameAndPortDerivesFromCustomEndpoint() {
+        // Arrange
+        final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
+        final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
+        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME,
+            PASSWORD);
+        final String customEndpointHostname = "order-events.contoso.com";
+        final int customEndpointPort = 200;
+
+        final ConnectionOptions connectionOptionsWithCustomEndpoint = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION, customEndpointHostname, customEndpointPort);
+
+        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptionsWithCustomEndpoint,
+            proxyOptions, peerDetails, AmqpMetricsProvider.noop());
+
+        // Act and Assert
+        try (MockedConstruction<ProxyImpl> mockConstruction = mockConstruction(ProxyImpl.class)) {
+            this.handler.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
+                mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+
+            final List<ProxyImpl> constructed = mockConstruction.constructed();
+            assertEquals(1, constructed.size());
+            // The ProxyImpl object constructed inside addTransportLayer method.
+            final ProxyImpl proxyImpl = constructed.get(0);
+            final String expectedConnectHostnameAndPort = customEndpointHostname + ":" + customEndpointPort;
+            verify(proxyImpl).configure(eq(expectedConnectHostnameAndPort), any(), any(), any());
+        }
     }
 
     @Test

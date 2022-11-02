@@ -23,6 +23,10 @@ public final class JwtClaimChecks {
     @JsonProperty(value = "allowedClientApplications")
     private List<String> allowedClientApplications;
 
+    /** Creates an instance of JwtClaimChecks class. */
+    public JwtClaimChecks() {
+    }
+
     /**
      * Get the allowedGroups property: The list of the allowed groups.
      *

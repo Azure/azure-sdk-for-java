@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.avs.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ScriptParameter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A cmdlet available for script execution. */
-@Fluent
+@Immutable
 public final class ScriptCmdletInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptCmdletInner.class);
-
     /*
      * The properties of a script cmdlet resource
      */
     @JsonProperty(value = "properties")
     private ScriptCmdletProperties innerProperties;
+
+    /** Creates an instance of ScriptCmdletInner class. */
+    public ScriptCmdletInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a script cmdlet resource.

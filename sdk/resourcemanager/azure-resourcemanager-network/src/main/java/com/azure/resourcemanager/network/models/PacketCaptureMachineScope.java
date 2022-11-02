@@ -26,6 +26,10 @@ public final class PacketCaptureMachineScope {
     @JsonProperty(value = "exclude")
     private List<String> exclude;
 
+    /** Creates an instance of PacketCaptureMachineScope class. */
+    public PacketCaptureMachineScope() {
+    }
+
     /**
      * Get the include property: List of AzureVMSS instances to run packet capture on.
      *

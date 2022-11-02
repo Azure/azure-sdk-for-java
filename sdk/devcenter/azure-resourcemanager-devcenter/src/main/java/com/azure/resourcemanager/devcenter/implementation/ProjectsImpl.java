@@ -47,15 +47,6 @@ public final class ProjectsImpl implements Projects {
         return Utils.mapPage(inner, inner1 -> new ProjectImpl(inner1, this.manager()));
     }
 
-    public Project getByResourceGroup(String resourceGroupName, String projectName) {
-        ProjectInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, projectName);
-        if (inner != null) {
-            return new ProjectImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Project> getByResourceGroupWithResponse(
         String resourceGroupName, String projectName, Context context) {
         Response<ProjectInner> inner =
@@ -66,6 +57,15 @@ public final class ProjectsImpl implements Projects {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ProjectImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Project getByResourceGroup(String resourceGroupName, String projectName) {
+        ProjectInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, projectName);
+        if (inner != null) {
+            return new ProjectImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -168,22 +168,6 @@ public final class JobsClientImpl implements JobsClient {
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param filter OData filter options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> exportAsync(String vaultName, String resourceGroupName, String filter) {
-        return exportWithResponseAsync(vaultName, resourceGroupName, filter).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Triggers export of jobs specified by filters and returns an OperationID to track.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -193,21 +177,6 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<Void> exportAsync(String vaultName, String resourceGroupName) {
         final String filter = null;
         return exportWithResponseAsync(vaultName, resourceGroupName, filter).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Triggers export of jobs specified by filters and returns an OperationID to track.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void export(String vaultName, String resourceGroupName) {
-        final String filter = null;
-        exportAsync(vaultName, resourceGroupName, filter).block();
     }
 
     /**
@@ -226,5 +195,20 @@ public final class JobsClientImpl implements JobsClient {
     public Response<Void> exportWithResponse(
         String vaultName, String resourceGroupName, String filter, Context context) {
         return exportWithResponseAsync(vaultName, resourceGroupName, filter, context).block();
+    }
+
+    /**
+     * Triggers export of jobs specified by filters and returns an OperationID to track.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void export(String vaultName, String resourceGroupName) {
+        final String filter = null;
+        exportWithResponse(vaultName, resourceGroupName, filter, Context.NONE);
     }
 }

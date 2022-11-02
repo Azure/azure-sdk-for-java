@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Policy assignment summary. */
 @Fluent
 public final class PolicyAssignmentSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyAssignmentSummary.class);
-
     /*
      * Policy assignment ID.
      */
@@ -44,6 +40,10 @@ public final class PolicyAssignmentSummary {
      */
     @JsonProperty(value = "policyGroups")
     private List<PolicyGroupSummary> policyGroups;
+
+    /** Creates an instance of PolicyAssignmentSummary class. */
+    public PolicyAssignmentSummary() {
+    }
 
     /**
      * Get the policyAssignmentId property: Policy assignment ID.

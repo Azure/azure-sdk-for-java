@@ -36,6 +36,10 @@ public final class ApplicationGatewayRewriteRule {
     @JsonProperty(value = "actionSet")
     private ApplicationGatewayRewriteRuleActionSet actionSet;
 
+    /** Creates an instance of ApplicationGatewayRewriteRule class. */
+    public ApplicationGatewayRewriteRule() {
+    }
+
     /**
      * Get the name property: Name of the rewrite rule that is unique within an Application Gateway.
      *

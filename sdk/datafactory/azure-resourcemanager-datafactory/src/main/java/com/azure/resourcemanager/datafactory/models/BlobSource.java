@@ -33,6 +33,10 @@ public final class BlobSource extends CopySource {
     @JsonProperty(value = "recursive")
     private Object recursive;
 
+    /** Creates an instance of BlobSource class. */
+    public BlobSource() {
+    }
+
     /**
      * Get the treatEmptyAsNull property: Treat empty as null. Type: boolean (or Expression with resultType boolean).
      *

@@ -29,6 +29,10 @@ public final class NetworkManagerPropertiesNetworkManagerScopes {
     @JsonProperty(value = "crossTenantScopes", access = JsonProperty.Access.WRITE_ONLY)
     private List<CrossTenantScopes> crossTenantScopes;
 
+    /** Creates an instance of NetworkManagerPropertiesNetworkManagerScopes class. */
+    public NetworkManagerPropertiesNetworkManagerScopes() {
+    }
+
     /**
      * Get the managementGroups property: List of management groups.
      *

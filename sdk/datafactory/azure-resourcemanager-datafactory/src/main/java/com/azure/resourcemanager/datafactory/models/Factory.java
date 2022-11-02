@@ -393,17 +393,6 @@ public interface Factory {
      * Get GitHub Access Token.
      *
      * @param gitHubAccessTokenRequest Get GitHub access token request definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Access Token.
-     */
-    GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest);
-
-    /**
-     * Get GitHub Access Token.
-     *
-     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -414,15 +403,15 @@ public interface Factory {
         GitHubAccessTokenRequest gitHubAccessTokenRequest, Context context);
 
     /**
-     * Get Data Plane access.
+     * Get GitHub Access Token.
      *
-     * @param policy Data Plane user access policy definition.
+     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Plane access.
+     * @return gitHub Access Token.
      */
-    AccessPolicyResponse getDataPlaneAccess(UserAccessPolicy policy);
+    GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest);
 
     /**
      * Get Data Plane access.
@@ -435,4 +424,15 @@ public interface Factory {
      * @return data Plane access along with {@link Response}.
      */
     Response<AccessPolicyResponse> getDataPlaneAccessWithResponse(UserAccessPolicy policy, Context context);
+
+    /**
+     * Get Data Plane access.
+     *
+     * @param policy Data Plane user access policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Plane access.
+     */
+    AccessPolicyResponse getDataPlaneAccess(UserAccessPolicy policy);
 }

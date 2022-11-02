@@ -60,18 +60,6 @@ public interface DevCenters {
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a devcenter.
-     */
-    DevCenter getByResourceGroup(String resourceGroupName, String devCenterName);
-
-    /**
-     * Gets a devcenter.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,6 +67,18 @@ public interface DevCenters {
      * @return a devcenter along with {@link Response}.
      */
     Response<DevCenter> getByResourceGroupWithResponse(String resourceGroupName, String devCenterName, Context context);
+
+    /**
+     * Gets a devcenter.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a devcenter.
+     */
+    DevCenter getByResourceGroup(String resourceGroupName, String devCenterName);
 
     /**
      * Deletes a devcenter.

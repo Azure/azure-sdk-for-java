@@ -6,7 +6,9 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The options for creating a call.
@@ -35,9 +37,9 @@ public class CreateCallOptions {
     private String sourceCallerId;
 
     /**
-     * The subject
+     * A customer set value used to track the answering of a call.
      */
-    private String subject;
+    private String operationContext;
 
     /**
      * Media Streaming Configuration.
@@ -60,6 +62,7 @@ public class CreateCallOptions {
         this.source = source;
         this.targets = targets;
         this.callbackUrl = callbackUrl;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -90,12 +93,12 @@ public class CreateCallOptions {
     }
 
     /**
-     * Get the subject.
+     * Get the operationContext: A customer set value used to track the answering of a call.
      *
-     * @return the subject value.
+     * @return the operationContext value.
      */
-    public String getSubject() {
-        return subject;
+    public String getOperationContext() {
+        return operationContext;
     }
 
     /**
@@ -126,13 +129,13 @@ public class CreateCallOptions {
     }
 
     /**
-     * Set the subject.
+     * Set the operationContext: A customer set value used to track the answering of a call.
      *
-     * @param subject the subject.
+     * @param operationContext A customer set value used to track the answering of a call.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setSubject(String subject) {
-        this.subject = subject;
+    public CreateCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 

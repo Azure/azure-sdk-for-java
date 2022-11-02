@@ -27,6 +27,10 @@ public final class NetworkManagerListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NetworkManagerListResult class. */
+    public NetworkManagerListResult() {
+    }
+
     /**
      * Get the value property: Gets a page of NetworkManager.
      *

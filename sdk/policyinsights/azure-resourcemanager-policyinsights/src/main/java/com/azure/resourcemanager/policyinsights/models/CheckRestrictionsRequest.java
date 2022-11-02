@@ -6,15 +6,12 @@ package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The check policy restrictions parameters describing the resource that is being evaluated. */
 @Fluent
 public final class CheckRestrictionsRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckRestrictionsRequest.class);
-
     /*
      * The information about the resource that will be evaluated.
      */
@@ -22,11 +19,14 @@ public final class CheckRestrictionsRequest {
     private CheckRestrictionsResourceDetails resourceDetails;
 
     /*
-     * The list of fields and values that should be evaluated for potential
-     * restrictions.
+     * The list of fields and values that should be evaluated for potential restrictions.
      */
     @JsonProperty(value = "pendingFields")
     private List<PendingField> pendingFields;
+
+    /** Creates an instance of CheckRestrictionsRequest class. */
+    public CheckRestrictionsRequest() {
+    }
 
     /**
      * Get the resourceDetails property: The information about the resource that will be evaluated.
@@ -77,7 +77,7 @@ public final class CheckRestrictionsRequest {
      */
     public void validate() {
         if (resourceDetails() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceDetails in model CheckRestrictionsRequest"));
@@ -88,4 +88,6 @@ public final class CheckRestrictionsRequest {
             pendingFields().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckRestrictionsRequest.class);
 }

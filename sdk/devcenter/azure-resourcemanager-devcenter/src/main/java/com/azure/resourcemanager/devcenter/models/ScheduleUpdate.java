@@ -18,6 +18,10 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "properties")
     private ScheduleUpdateProperties innerProperties;
 
+    /** Creates an instance of ScheduleUpdate class. */
+    public ScheduleUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a schedule resource to be updated.
      *

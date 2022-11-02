@@ -17,6 +17,10 @@ public final class SapHanaPartitionSettings {
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
+    /** Creates an instance of SapHanaPartitionSettings class. */
+    public SapHanaPartitionSettings() {
+    }
+
     /**
      * Get the partitionColumnName property: The name of the column that will be used for proceeding range partitioning.
      * Type: string (or Expression with resultType string).

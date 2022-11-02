@@ -221,24 +221,6 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
      * @param filterParameters Parameters to filter the activity runs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActivityRunsQueryResponseInner queryByPipelineRun(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
-        return queryByPipelineRunAsync(resourceGroupName, factoryName, runId, filterParameters).block();
-    }
-
-    /**
-     * Query activity runs based on input filter conditions.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param runId The pipeline run identifier.
-     * @param filterParameters Parameters to filter the activity runs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,5 +236,24 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
         Context context) {
         return queryByPipelineRunWithResponseAsync(resourceGroupName, factoryName, runId, filterParameters, context)
             .block();
+    }
+
+    /**
+     * Query activity runs based on input filter conditions.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @param filterParameters Parameters to filter the activity runs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list activity runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityRunsQueryResponseInner queryByPipelineRun(
+        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
+        return queryByPipelineRunWithResponse(resourceGroupName, factoryName, runId, filterParameters, Context.NONE)
+            .getValue();
     }
 }

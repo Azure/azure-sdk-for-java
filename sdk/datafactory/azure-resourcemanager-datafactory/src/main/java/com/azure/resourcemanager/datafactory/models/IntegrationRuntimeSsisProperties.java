@@ -69,6 +69,10 @@ public final class IntegrationRuntimeSsisProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IntegrationRuntimeSsisProperties class. */
+    public IntegrationRuntimeSsisProperties() {
+    }
+
     /**
      * Get the catalogInfo property: Catalog information for managed dedicated integration runtime.
      *

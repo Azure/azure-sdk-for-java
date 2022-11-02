@@ -33,13 +33,13 @@ public class ProtectedItem {
     /*
      * Type of backup management for the backed up item.
      */
-    @JsonProperty(value = "backupManagementType")
+    @JsonProperty(value = "backupManagementType", access = JsonProperty.Access.WRITE_ONLY)
     private BackupManagementType backupManagementType;
 
     /*
      * Type of workload this item represents.
      */
-    @JsonProperty(value = "workloadType")
+    @JsonProperty(value = "workloadType", access = JsonProperty.Access.WRITE_ONLY)
     private DataSourceType workloadType;
 
     /*
@@ -61,8 +61,7 @@ public class ProtectedItem {
     private String policyId;
 
     /*
-     * Timestamp when the last (latest) backup copy was created for this backup
-     * item.
+     * Timestamp when the last (latest) backup copy was created for this backup item.
      */
     @JsonProperty(value = "lastRecoveryPoint")
     private OffsetDateTime lastRecoveryPoint;
@@ -74,8 +73,7 @@ public class ProtectedItem {
     private String backupSetName;
 
     /*
-     * Create mode to indicate recovery of existing soft deleted data source or
-     * creation of new data source.
+     * Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
      */
     @JsonProperty(value = "createMode")
     private CreateMode createMode;
@@ -93,8 +91,7 @@ public class ProtectedItem {
     private Boolean isScheduledForDeferredDelete;
 
     /*
-     * Time remaining before the DS marked for deferred delete is permanently
-     * deleted
+     * Time remaining before the DS marked for deferred delete is permanently deleted
      */
     @JsonProperty(value = "deferredDeleteTimeRemaining")
     private String deferredDeleteTimeRemaining;
@@ -106,8 +103,7 @@ public class ProtectedItem {
     private Boolean isDeferredDeleteScheduleUpcoming;
 
     /*
-     * Flag to identify that deferred deleted DS is to be moved into Pause
-     * state
+     * Flag to identify that deferred deleted DS is to be moved into Pause state
      */
     @JsonProperty(value = "isRehydrate")
     private Boolean isRehydrate;
@@ -130,6 +126,16 @@ public class ProtectedItem {
     @JsonProperty(value = "policyName")
     private String policyName;
 
+    /*
+     * Soft delete retention period in days
+     */
+    @JsonProperty(value = "softDeleteRetentionPeriod")
+    private Integer softDeleteRetentionPeriod;
+
+    /** Creates an instance of ProtectedItem class. */
+    public ProtectedItem() {
+    }
+
     /**
      * Get the backupManagementType property: Type of backup management for the backed up item.
      *
@@ -140,34 +146,12 @@ public class ProtectedItem {
     }
 
     /**
-     * Set the backupManagementType property: Type of backup management for the backed up item.
-     *
-     * @param backupManagementType the backupManagementType value to set.
-     * @return the ProtectedItem object itself.
-     */
-    public ProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        this.backupManagementType = backupManagementType;
-        return this;
-    }
-
-    /**
      * Get the workloadType property: Type of workload this item represents.
      *
      * @return the workloadType value.
      */
     public DataSourceType workloadType() {
         return this.workloadType;
-    }
-
-    /**
-     * Set the workloadType property: Type of workload this item represents.
-     *
-     * @param workloadType the workloadType value to set.
-     * @return the ProtectedItem object itself.
-     */
-    public ProtectedItem withWorkloadType(DataSourceType workloadType) {
-        this.workloadType = workloadType;
-        return this;
     }
 
     /**
@@ -457,6 +441,26 @@ public class ProtectedItem {
      */
     public ProtectedItem withPolicyName(String policyName) {
         this.policyName = policyName;
+        return this;
+    }
+
+    /**
+     * Get the softDeleteRetentionPeriod property: Soft delete retention period in days.
+     *
+     * @return the softDeleteRetentionPeriod value.
+     */
+    public Integer softDeleteRetentionPeriod() {
+        return this.softDeleteRetentionPeriod;
+    }
+
+    /**
+     * Set the softDeleteRetentionPeriod property: Soft delete retention period in days.
+     *
+     * @param softDeleteRetentionPeriod the softDeleteRetentionPeriod value to set.
+     * @return the ProtectedItem object itself.
+     */
+    public ProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        this.softDeleteRetentionPeriod = softDeleteRetentionPeriod;
         return this;
     }
 

@@ -27,6 +27,10 @@ public final class WebApplicationFirewallPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of WebApplicationFirewallPolicyListResult class. */
+    public WebApplicationFirewallPolicyListResult() {
+    }
+
     /**
      * Get the value property: List of WebApplicationFirewallPolicies within a resource group.
      *

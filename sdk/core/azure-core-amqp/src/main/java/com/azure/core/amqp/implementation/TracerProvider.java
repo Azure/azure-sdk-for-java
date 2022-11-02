@@ -11,6 +11,10 @@ import reactor.core.publisher.Signal;
 
 import java.util.Objects;
 
+@Deprecated
+/**
+ * @deprecated use EventHubs*Tracer and ServiceBus*Tracer instead.
+ */
 public class TracerProvider {
     private static final ClientLogger LOGGER = new ClientLogger(TracerProvider.class);
     private Tracer tracer;

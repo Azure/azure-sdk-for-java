@@ -62,7 +62,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.2.0</version>
+    <version>5.2.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -164,7 +164,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.5</version>
+    <version>1.6.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

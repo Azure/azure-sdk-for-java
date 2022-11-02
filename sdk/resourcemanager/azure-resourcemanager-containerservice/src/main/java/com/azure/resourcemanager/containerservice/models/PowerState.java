@@ -16,6 +16,10 @@ public final class PowerState {
     @JsonProperty(value = "code")
     private Code code;
 
+    /** Creates an instance of PowerState class. */
+    public PowerState() {
+    }
+
     /**
      * Get the code property: Tells whether the cluster is Running or Stopped.
      *

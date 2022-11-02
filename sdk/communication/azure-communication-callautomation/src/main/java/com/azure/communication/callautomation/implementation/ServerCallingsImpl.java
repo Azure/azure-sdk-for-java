@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.implementation;
 
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
+import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
@@ -20,11 +21,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.net.URL;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -56,9 +57,9 @@ public final class ServerCallingsImpl {
     public interface ServerCallingsService {
         @Post("/calling/callConnections")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CallConnectionPropertiesInternal>> createCall(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
@@ -68,9 +69,9 @@ public final class ServerCallingsImpl {
 
         @Post("/calling/callConnections:answer")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CallConnectionPropertiesInternal>> answerCall(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
@@ -80,24 +81,26 @@ public final class ServerCallingsImpl {
 
         @Post("/calling/callConnections:redirect")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> redirectCall(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") RedirectCallRequestInternal redirectCallRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/calling/callConnections:reject")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> rejectCall(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") RejectCallRequestInternal rejectCallRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -114,9 +117,9 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
@@ -148,9 +151,9 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
@@ -182,9 +185,9 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> createCallAsync(
@@ -214,9 +217,9 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> createCallAsync(
@@ -248,9 +251,9 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnectionPropertiesInternal createCall(
@@ -272,9 +275,9 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnectionPropertiesInternal> createCallWithResponse(
@@ -299,9 +302,9 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
@@ -333,9 +336,9 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
@@ -367,9 +370,9 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> answerCallAsync(
@@ -399,9 +402,9 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> answerCallAsync(
@@ -433,9 +436,9 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnectionPropertiesInternal answerCall(
@@ -457,9 +460,9 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return properties of a call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnectionPropertiesInternal> answerCallWithResponse(
@@ -474,7 +477,7 @@ public final class ServerCallingsImpl {
     /**
      * Redirect a call.
      *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * @param redirectCallRequest The redirect call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -484,7 +487,7 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -493,6 +496,7 @@ public final class ServerCallingsImpl {
             RedirectCallRequestInternal redirectCallRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.redirectCall(
@@ -501,13 +505,14 @@ public final class ServerCallingsImpl {
                                 repeatabilityRequestID,
                                 repeatabilityFirstSent,
                                 redirectCallRequest,
+                                accept,
                                 context));
     }
 
     /**
      * Redirect a call.
      *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * @param redirectCallRequest The redirect call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -518,7 +523,7 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -528,19 +533,21 @@ public final class ServerCallingsImpl {
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
+        final String accept = "application/json";
         return service.redirectCall(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 repeatabilityRequestID,
                 repeatabilityFirstSent,
                 redirectCallRequest,
+                accept,
                 context);
     }
 
     /**
      * Redirect a call.
      *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * @param redirectCallRequest The redirect call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -550,7 +557,7 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -566,7 +573,7 @@ public final class ServerCallingsImpl {
     /**
      * Redirect a call.
      *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * @param redirectCallRequest The redirect call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -577,7 +584,7 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -595,7 +602,7 @@ public final class ServerCallingsImpl {
     /**
      * Redirect a call.
      *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * @param redirectCallRequest The redirect call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -605,7 +612,7 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -619,7 +626,7 @@ public final class ServerCallingsImpl {
     /**
      * Redirect a call.
      *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * @param redirectCallRequest The redirect call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -630,7 +637,7 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -658,13 +665,14 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rejectCallWithResponseAsync(
             RejectCallRequestInternal rejectCallRequest, UUID repeatabilityRequestID, String repeatabilityFirstSent) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.rejectCall(
@@ -673,6 +681,7 @@ public final class ServerCallingsImpl {
                                 repeatabilityRequestID,
                                 repeatabilityFirstSent,
                                 rejectCallRequest,
+                                accept,
                                 context));
     }
 
@@ -690,7 +699,7 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -700,12 +709,14 @@ public final class ServerCallingsImpl {
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
+        final String accept = "application/json";
         return service.rejectCall(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 repeatabilityRequestID,
                 repeatabilityFirstSent,
                 rejectCallRequest,
+                accept,
                 context);
     }
 
@@ -722,7 +733,7 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -747,7 +758,7 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -774,7 +785,7 @@ public final class ServerCallingsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -797,7 +808,7 @@ public final class ServerCallingsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */

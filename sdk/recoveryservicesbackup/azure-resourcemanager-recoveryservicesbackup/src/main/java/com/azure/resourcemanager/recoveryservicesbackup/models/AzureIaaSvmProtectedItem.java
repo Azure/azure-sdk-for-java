@@ -32,13 +32,13 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     /*
      * Friendly name of the VM represented by this backup item.
      */
-    @JsonProperty(value = "friendlyName")
+    @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;
 
     /*
      * Fully qualified ARM ID of the virtual machine represented by this item.
      */
-    @JsonProperty(value = "virtualMachineId")
+    @JsonProperty(value = "virtualMachineId", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualMachineId;
 
     /*
@@ -56,7 +56,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     /*
      * Health status of protected item.
      */
-    @JsonProperty(value = "healthStatus")
+    @JsonProperty(value = "healthStatus", access = JsonProperty.Access.WRITE_ONLY)
     private HealthStatus healthStatus;
 
     /*
@@ -81,13 +81,13 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     /*
      * Timestamp of the last backup operation on this backup item.
      */
-    @JsonProperty(value = "lastBackupTime")
+    @JsonProperty(value = "lastBackupTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastBackupTime;
 
     /*
      * Data ID of the protected item.
      */
-    @JsonProperty(value = "protectedItemDataId")
+    @JsonProperty(value = "protectedItemDataId", access = JsonProperty.Access.WRITE_ONLY)
     private String protectedItemDataId;
 
     /*
@@ -102,6 +102,10 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     @JsonProperty(value = "extendedProperties")
     private ExtendedProperties extendedProperties;
 
+    /** Creates an instance of AzureIaaSvmProtectedItem class. */
+    public AzureIaaSvmProtectedItem() {
+    }
+
     /**
      * Get the friendlyName property: Friendly name of the VM represented by this backup item.
      *
@@ -112,34 +116,12 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     }
 
     /**
-     * Set the friendlyName property: Friendly name of the VM represented by this backup item.
-     *
-     * @param friendlyName the friendlyName value to set.
-     * @return the AzureIaaSvmProtectedItem object itself.
-     */
-    public AzureIaaSvmProtectedItem withFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-        return this;
-    }
-
-    /**
      * Get the virtualMachineId property: Fully qualified ARM ID of the virtual machine represented by this item.
      *
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
         return this.virtualMachineId;
-    }
-
-    /**
-     * Set the virtualMachineId property: Fully qualified ARM ID of the virtual machine represented by this item.
-     *
-     * @param virtualMachineId the virtualMachineId value to set.
-     * @return the AzureIaaSvmProtectedItem object itself.
-     */
-    public AzureIaaSvmProtectedItem withVirtualMachineId(String virtualMachineId) {
-        this.virtualMachineId = virtualMachineId;
-        return this;
     }
 
     /**
@@ -189,17 +171,6 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
      */
     public HealthStatus healthStatus() {
         return this.healthStatus;
-    }
-
-    /**
-     * Set the healthStatus property: Health status of protected item.
-     *
-     * @param healthStatus the healthStatus value to set.
-     * @return the AzureIaaSvmProtectedItem object itself.
-     */
-    public AzureIaaSvmProtectedItem withHealthStatus(HealthStatus healthStatus) {
-        this.healthStatus = healthStatus;
-        return this;
     }
 
     /**
@@ -272,34 +243,12 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     }
 
     /**
-     * Set the lastBackupTime property: Timestamp of the last backup operation on this backup item.
-     *
-     * @param lastBackupTime the lastBackupTime value to set.
-     * @return the AzureIaaSvmProtectedItem object itself.
-     */
-    public AzureIaaSvmProtectedItem withLastBackupTime(OffsetDateTime lastBackupTime) {
-        this.lastBackupTime = lastBackupTime;
-        return this;
-    }
-
-    /**
      * Get the protectedItemDataId property: Data ID of the protected item.
      *
      * @return the protectedItemDataId value.
      */
     public String protectedItemDataId() {
         return this.protectedItemDataId;
-    }
-
-    /**
-     * Set the protectedItemDataId property: Data ID of the protected item.
-     *
-     * @param protectedItemDataId the protectedItemDataId value to set.
-     * @return the AzureIaaSvmProtectedItem object itself.
-     */
-    public AzureIaaSvmProtectedItem withProtectedItemDataId(String protectedItemDataId) {
-        this.protectedItemDataId = protectedItemDataId;
-        return this;
     }
 
     /**
@@ -339,20 +288,6 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
      */
     public AzureIaaSvmProtectedItem withExtendedProperties(ExtendedProperties extendedProperties) {
         this.extendedProperties = extendedProperties;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureIaaSvmProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureIaaSvmProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
         return this;
     }
 
@@ -451,6 +386,13 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     @Override
     public AzureIaaSvmProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSvmProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

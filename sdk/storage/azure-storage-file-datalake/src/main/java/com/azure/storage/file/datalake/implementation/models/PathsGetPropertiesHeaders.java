@@ -67,7 +67,7 @@ public final class PathsGetPropertiesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-resource-type property.
@@ -166,12 +166,14 @@ public final class PathsGetPropertiesHeaders {
         this.contentRange = rawHeaders.getValue("Content-Range");
         this.xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
         this.xMsAcl = rawHeaders.getValue("x-ms-acl");
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsProperties = rawHeaders.getValue("x-ms-properties");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
         }
         this.xMsResourceType = rawHeaders.getValue("x-ms-resource-type");
         this.contentMD5 = rawHeaders.getValue("Content-MD5");
@@ -182,8 +184,9 @@ public final class PathsGetPropertiesHeaders {
         this.contentEncoding = rawHeaders.getValue("Content-Encoding");
         this.xMsPermissions = rawHeaders.getValue("x-ms-permissions");
         this.xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
-        if (rawHeaders.getValue("Content-Length") != null) {
-            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
+        String contentLength = rawHeaders.getValue("Content-Length");
+        if (contentLength != null) {
+            this.contentLength = Long.parseLong(contentLength);
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.contentLanguage = rawHeaders.getValue("Content-Language");
@@ -359,28 +362,28 @@ public final class PathsGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
-    public PathsGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public PathsGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

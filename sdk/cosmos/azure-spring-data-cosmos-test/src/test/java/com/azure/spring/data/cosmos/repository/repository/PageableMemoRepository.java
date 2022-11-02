@@ -4,12 +4,12 @@ package com.azure.spring.data.cosmos.repository.repository;
 
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.PageableMemo;
+import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PageableMemoRepository extends PagingAndSortingRepository<PageableMemo, String> {
+public interface PageableMemoRepository extends CosmosRepository<PageableMemo, String> {
     Slice<PageableMemo> findByImportance(Importance importance, Pageable pageable);
 }

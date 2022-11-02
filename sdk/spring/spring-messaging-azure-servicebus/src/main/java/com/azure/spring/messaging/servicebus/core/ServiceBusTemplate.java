@@ -44,8 +44,7 @@ public class ServiceBusTemplate implements SendOperation {
         ServiceBusSenderAsyncClient senderAsyncClient =
                      this.producerFactory.createProducer(destination, defaultEntityType);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
-        return senderAsyncClient.sendMessage(serviceBusMessage)
-                .doFinally(t -> senderAsyncClient.close());
+        return senderAsyncClient.sendMessage(serviceBusMessage);
     }
 
     /**
