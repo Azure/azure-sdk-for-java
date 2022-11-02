@@ -10,7 +10,9 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.CosmosResponseFactory;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
+import com.azure.cosmos.encryption.implementation.EncryptionSettings;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -22,6 +24,7 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
 import com.azure.cosmos.implementation.query.Transformer;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -39,13 +42,16 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -59,7 +65,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
+import static com.azure.cosmos.implementation.Utils.isEmpty;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkElementIndex;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -193,8 +201,61 @@ public final class CosmosEncryptionAsyncContainer {
                                                        PartitionKey partitionKey,
                                                        CosmosItemRequestOptions requestOptions) {
 
+        this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync();
+        EncryptionSettings encryptionSettings = this.encryptionProcessor.getEncryptionSettings();
+
+        try {
+            itemId = checkAndGetEncryptedId(itemId, encryptionSettings);
+            partitionKey = checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings);
+        } catch (JsonProcessingException | MicrosoftDataEncryptionException e) {
+            return Mono.error(e);
+        }
         return container.deleteItem(itemId, partitionKey, requestOptions);
     }
+
+    private String checkAndGetEncryptedId(String itemId, EncryptionSettings encryptionSettings) throws MicrosoftDataEncryptionException {
+        if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().filter(includedPath -> includedPath.getPath().substring(1).equals(Constants.PROPERTY_NAME_ID)).findFirst().isEmpty()) {
+            return itemId;
+        }
+        return this.encryptionProcessor.encryptAndSerializeValue(encryptionSettings, itemId, Constants.PROPERTY_NAME_ID);
+    }
+
+    private PartitionKey checkAndGetEncryptedPartitionKey(PartitionKey partitionKey, EncryptionSettings encryptionSettings) throws JsonProcessingException, MicrosoftDataEncryptionException {
+        if (encryptionSettings.getPartitionKeyPaths().isEmpty() || partitionKey == null) {
+            return partitionKey;
+        }
+        JsonNode partitionKeyNode = EncryptionUtils.getSimpleObjectMapper().readTree(partitionKey.toString());
+        if (partitionKeyNode.isArray()) {
+            ArrayNode arrayNode = (ArrayNode) partitionKeyNode;
+            PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
+
+            for (String path : encryptionSettings.getPartitionKeyPaths()) {
+                // case: partition key path is /a/b/c and the client encryption policy has /a in path.
+                // hence encrypt the partition key value with using its top level path /a since /c would have been encrypted in the document using /a's policy.
+                String partitionKeyPath = path.split("/")[0];
+
+                String childPartitionKey = arrayNode.elements().next().toString();
+                if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().filter(includedPath -> includedPath.getPath().substring(1).equals(partitionKeyPath)).findFirst().isEmpty()) {
+                    partitionKeyBuilder.add(childPartitionKey);
+                    continue;
+                }
+                partitionKeyBuilder.add(this.encryptionProcessor.encryptAndSerializeValue(encryptionSettings, childPartitionKey, partitionKeyPath));
+            }
+            return partitionKeyBuilder.build();
+        }
+
+        else {
+            if (encryptionSettings.getPartitionKeyPaths().size() > 1) {
+                throw new MicrosoftDataEncryptionException("There should only be 1 PartitionKeyPath.");
+            }
+            String partitionKeyPath = encryptionSettings.getPartitionKeyPaths().get(0);
+            if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().filter(includedPath -> includedPath.getPath().substring(1).equals(partitionKeyPath)).findFirst().isEmpty()) {
+                return partitionKey;
+            }
+            return new PartitionKey(this.encryptionProcessor.encryptAndSerializeValue(encryptionSettings, partitionKey.toString(), partitionKeyPath));
+        }
+    }
+
 
     /**
      * Deletes the item.
@@ -227,6 +288,15 @@ public final class CosmosEncryptionAsyncContainer {
     Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new CosmosItemRequestOptions();
+        }
+
+        this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync();
+        EncryptionSettings encryptionSettings = this.encryptionProcessor.getEncryptionSettings();
+
+        try {
+            partitionKey = checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings);
+        } catch (JsonProcessingException | MicrosoftDataEncryptionException e) {
+            return Mono.error(e);
         }
         return container.deleteAllItemsByPartitionKey(partitionKey, requestOptions);
     }

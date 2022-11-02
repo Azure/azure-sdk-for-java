@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.ByteBuffer;
+import java.util.Base64;
 
 public class EncryptionUtils {
     private static final ObjectMapper simpleObjectMapper = new ObjectMapper();

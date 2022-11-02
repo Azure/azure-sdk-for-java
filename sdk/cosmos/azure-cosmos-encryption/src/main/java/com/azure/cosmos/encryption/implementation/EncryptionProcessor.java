@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -41,6 +42,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +50,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
 public class EncryptionProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
@@ -58,6 +61,7 @@ public class EncryptionProcessor {
     private ClientEncryptionPolicy clientEncryptionPolicy;
     private String containerRid;
     private String databaseRid;
+    private List<String> partitionKeyPaths;
     private CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties;
     private final EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
     private final static ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor cosmosContainerPropertiesAccessor = ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.getCosmosContainerPropertiesAccessor();
@@ -99,7 +103,15 @@ public class EncryptionProcessor {
         {
             this.containerRid = cosmosContainerProperties.getResourceId();
             this.databaseRid = cosmosContainerPropertiesAccessor.getSelfLink(cosmosContainerProperties).split("/")[1];
+
+            if (cosmosContainerProperties.getPartitionKeyDefinition().getPaths().isEmpty()) {
+                this.partitionKeyPaths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
+            } else {
+                this.partitionKeyPaths = new ArrayList<>();
+            }
+
             this.encryptionSettings.setDatabaseRid(this.databaseRid);
+            this.encryptionSettings.setPartitionKeyPaths(partitionKeyPaths);
             if (cosmosContainerProperties.getClientEncryptionPolicy() == null) {
                 this.isEncryptionSettingsInitDone.set(true);
                 return Mono.empty();
@@ -206,7 +218,7 @@ public class EncryptionProcessor {
         return Mono.empty();
     }
 
-    ClientEncryptionPolicy getClientEncryptionPolicy() {
+    public ClientEncryptionPolicy getClientEncryptionPolicy() {
         return clientEncryptionPolicy;
     }
 
@@ -438,16 +450,33 @@ public class EncryptionProcessor {
         }
     }
 
+    public String encryptAndSerializeValue(EncryptionSettings encryptionSettings, String propertyValue, String propertyName) throws MicrosoftDataEncryptionException {
+        JsonNode propertyValueHolder = toJsonNode(propertyValue.getBytes(), TypeMarker.STRING);
+        return convertToBase64UriSafeString(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName));
+    }
+
     public byte[] encryptAndSerializeValue(EncryptionSettings encryptionSettings, ObjectNode objectNode,
                                            JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException {
         byte[] cipherText;
         byte[] cipherTextWithTypeMarker;
+        if (propertyName.equals(Constants.PROPERTY_NAME_ID)) {
+            if (propertyValueHolder.getNodeType() != JsonNodeType.STRING) {
+                throw new IllegalArgumentException("Unsupported argument type. The value to escape has to be string " +
+                    "type. Please refer to https://aka.ms/CosmosClientEncryption for more details.");
+            }
+        }
         Pair<TypeMarker, byte[]> typeMarkerPair = toByteArray(propertyValueHolder);
         cipherText =
             encryptionSettings.getAeadAes256CbcHmac256EncryptionAlgorithm().encrypt(typeMarkerPair.getRight());
         cipherTextWithTypeMarker = new byte[cipherText.length + 1];
         cipherTextWithTypeMarker[0] = (byte) typeMarkerPair.getLeft().getValue();
         System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
+
+        if (propertyName.equals(Constants.PROPERTY_NAME_ID)) {
+            // case: id does not support '/','\','?','#'. Convert Base64 string to Uri safe string
+            cipherTextWithTypeMarker =  convertToBase64UriSafeString(cipherTextWithTypeMarker).getBytes();
+        }
+
         if (objectNode != null && !objectNode.isNull()) {
             objectNode.put(propertyName, cipherTextWithTypeMarker);
         }
@@ -567,7 +596,15 @@ public class EncryptionProcessor {
                                              JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, IOException {
         byte[] cipherText;
         byte[] cipherTextWithTypeMarker;
-        cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
+        if (propertyName.equals(Constants.PROPERTY_NAME_ID)) {
+            if (propertyValueHolder.getNodeType() == JsonNodeType.NULL) {
+                return null;
+            }
+            cipherTextWithTypeMarker = convertFromBase64UriSafeString(propertyValueHolder.toString());
+        } else {
+            cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
+        }
+
         cipherText = new byte[cipherTextWithTypeMarker.length - 1];
         System.arraycopy(cipherTextWithTypeMarker, 1, cipherText, 0,
             cipherTextWithTypeMarker.length - 1);
@@ -625,6 +662,20 @@ public class EncryptionProcessor {
             throw BridgeInternal.createCosmosException("Unable to convert byte[] to JSON", ex, null, 0, null);
         }
         throw BridgeInternal.createCosmosException(0, "Invalid or Unsupported Data Type Passed " + typeMarker);
+    }
+
+    private String convertToBase64UriSafeString(byte[] bytesToProcess) {
+        String base64String = new String(Base64.getDecoder().decode(bytesToProcess));
+
+        // Base 64 Encoding with URL and Filename Safe Alphabet  https://datatracker.ietf.org/doc/html/rfc4648#section-5
+        // https://docs.microsoft.com/en-us/azure/cosmos-db/concepts-limits#per-item-limits, due to base64 conversion and encryption
+        // the permissible size of the property will further reduce.
+        return base64String.replaceAll("/","_").replaceAll("\\+","-");
+    }
+
+    private byte[] convertFromBase64UriSafeString(String base64UriSafeString) {
+        base64UriSafeString.replaceAll("_", "/").replaceAll("-", "\\+");
+        return Base64.getEncoder().encode(base64UriSafeString.getBytes());
     }
 
     public enum TypeMarker {

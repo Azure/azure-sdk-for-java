@@ -15,4 +15,6 @@ public class Constants {
     public static final String ALLOW_CACHED_READS_HEADER = "x-ms-cosmos-allow-cachedreads";
 
     public static final String DATABASE_RID_HEADER = "x-ms-cosmos-database-rid";
+
+    public static final String PROPERTY_NAME_ID = "id";
 }
