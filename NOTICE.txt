@@ -519,6 +519,9 @@ License notice for Apache Commons Codec
 Copyright 2002-2019 The Apache Software Foundation
 
 commons-codec (https://github.com/apache/commons-codec)
+commons-text (https://github.com/apache/commons-text)
+commons-lang (https://github.com/apache/commons-lang)
+commons-collections (https://github.com/apache/commons-collections)
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 in compliance with the License. You may obtain a copy of the License at
