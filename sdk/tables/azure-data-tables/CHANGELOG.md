@@ -1,6 +1,6 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
+## 12.3.6
 
 ### Features Added
 
@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 
+- Fixed bug that disallowed empty strings as partition and row keys
 ### Other Changes
 
 ## 12.3.5 (2022-10-12)
