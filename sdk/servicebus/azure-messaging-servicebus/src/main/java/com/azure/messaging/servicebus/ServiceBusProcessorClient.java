@@ -331,7 +331,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     /**
      *  Gets the Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
      *
-     * @return  The Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
+     * @return The Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
      */
     public String getEntityPath() {
         return this.entityPath;
