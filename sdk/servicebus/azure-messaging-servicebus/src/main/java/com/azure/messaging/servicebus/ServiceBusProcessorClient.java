@@ -158,6 +158,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final String queueName;
     private final String topicName;
     private final String subscriptionName;
+    private final String fullyQualifiedNamespace;
+    private final String entityPath;
     private Disposable monitorDisposable;
 
     /**
@@ -187,6 +189,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
+        entityPath = asyncClient.get().getEntityPath();
+        fullyQualifiedNamespace = asyncClient.get().getFullyQualifiedNamespace();
     }
 
     /**
@@ -213,6 +217,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
+        entityPath = asyncClient.get().getEntityPath();
+        fullyQualifiedNamespace = asyncClient.get().getFullyQualifiedNamespace();
     }
 
     /**
@@ -320,6 +326,26 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public String getSubscriptionName() {
         return this.subscriptionName;
+    }
+
+    /**
+     *  Gets the Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
+     *
+     * @return  The Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
+     */
+    public String getEntityPath() {
+        return this.entityPath;
+    }
+
+    /**
+     * Gets the fully qualified Service Bus namespace that this instance of {@link ServiceBusProcessorClient}
+     * is associated with. This is likely similar to {@code {yournamespace}.servicebus.windows.net}.
+     *
+     * @return The fully qualified Service Bus namespace that this instance of {@link ServiceBusProcessorClient}
+     * is associated with.
+     */
+    public String getFullyQualifiedNamespace() {
+        return this.fullyQualifiedNamespace;
     }
 
     /**
