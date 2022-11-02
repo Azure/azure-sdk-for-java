@@ -3,7 +3,7 @@
 ```yaml
 azure-arm: false
 
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/feature/cognitiveservices/anomalydetector/mvad/specification/cognitiveservices/data-plane/AnomalyDetector/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/cognitiveservices/data-plane/AnomalyDetector/readme.md
 output-folder: ../
 java: true
 regenerate-pom: false

@@ -59,43 +59,6 @@ You will also need to [register a new AAD application][register_aad_app] and [gr
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
-##### Async client
-```java readme-sample-createAnomalyDetectorAsyncClient
-String endpoint = "<anomaly-detector-resource-endpoint>";
-HttpHeaders headers = new HttpHeaders()
-    .put("Accept", ContentType.APPLICATION_JSON);
-
-String defaultScope = "https://cognitiveservices.azure.com/.default";
-HttpPipelinePolicy authPolicy = new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(),
-    defaultScope);
-AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
-HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
-    .policies(authPolicy, addHeadersPolicy).build();
-AnomalyDetectorAsyncClient anomalyDetectorAsyncClient = new AnomalyDetectorClientBuilder()
-    .pipeline(httpPipeline)
-    .endpoint(endpoint)
-    .buildAsyncClient();
-```
-
-##### Sync client
-```java readme-sample-createAnomalyDetectorClient
-String endpoint = "<anomaly-detector-resource-endpoint>";
-HttpHeaders headers = new HttpHeaders()
-    .put("Accept", ContentType.APPLICATION_JSON);
-
-String defaultScope = "https://cognitiveservices.azure.com/.default";
-HttpPipelinePolicy authPolicy = new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(),
-    defaultScope);
-AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
-HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
-    .policies(authPolicy, addHeadersPolicy).build();
-AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
-    .pipeline(httpPipeline)
-    .endpoint(endpoint)
-    .buildClient();
-```
 
 ## Key concepts
 
