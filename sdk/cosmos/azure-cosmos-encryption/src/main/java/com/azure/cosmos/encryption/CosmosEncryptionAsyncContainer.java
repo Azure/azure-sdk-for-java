@@ -24,7 +24,6 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
 import com.azure.cosmos.implementation.query.Transformer;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -65,9 +64,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
-import static com.azure.cosmos.implementation.Utils.isEmpty;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkElementIndex;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**

@@ -6,7 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -164,7 +163,7 @@ public final class ClientEncryptionPolicy {
             throw new IllegalArgumentException("Invalid path " + clientEncryptionIncludedPath.getPath());
         }
 
-        if (clientEncryptionIncludedPath.getPath().substring(1).equals("id")) {
+        if (clientEncryptionIncludedPath.getPath().substring(1).equals(Constants.Properties.ID)) {
             if (policyFormatVersion < 2) {
                 throw new IllegalArgumentException(String.format("Path %s cannot be encrypted with policyFormatVersion %s.", clientEncryptionIncludedPath.getPath(), policyFormatVersion));
             }
