@@ -137,15 +137,15 @@ public class AzureEventHubsMessagingAutoConfiguration {
          * Creates an Event Hubs template.
          *
          * @param producerFactory An Event Hubs producer factory.
-         * @param messageConverters Event Hubs objectProvider message converters.
+         * @param messageConverter An Event Hubs objectProvider message converter.
          * @return An Event Hubs template.
          */
         @Bean
         @ConditionalOnMissingBean
         public EventHubsTemplate eventHubsTemplate(EventHubsProducerFactory producerFactory,
-                                                   ObjectProvider<EventHubsMessageConverter> messageConverters) {
+                                                   ObjectProvider<EventHubsMessageConverter> messageConverter) {
             EventHubsTemplate eventHubsTemplate = new EventHubsTemplate(producerFactory);
-            eventHubsTemplate.setMessageConverter(messageConverters.getIfAvailable());
+            eventHubsTemplate.setMessageConverter(messageConverter.getIfAvailable());
             return eventHubsTemplate;
         }
 

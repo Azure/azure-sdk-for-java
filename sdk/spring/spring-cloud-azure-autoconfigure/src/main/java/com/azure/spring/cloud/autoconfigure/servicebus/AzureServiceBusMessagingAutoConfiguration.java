@@ -131,16 +131,16 @@ public class AzureServiceBusMessagingAutoConfiguration {
          * Creates a Service Bus template.
          *
          * @param senderClientfactory A Service Bus producer factory.
-         * @param messageConverters Service Bus objectProvider message converters.
+         * @param messageConverter A Service Bus objectMapper message converter.
          * @return A Service Bus template.
          */
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
         public ServiceBusTemplate serviceBusTemplate(ServiceBusProducerFactory senderClientfactory,
-                                                     ObjectProvider<ServiceBusMessageConverter> messageConverters) {
+                                                     ObjectProvider<ServiceBusMessageConverter> messageConverter) {
             ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(senderClientfactory);
-            serviceBusTemplate.setMessageConverter(messageConverters.getIfAvailable());
+            serviceBusTemplate.setMessageConverter(messageConverter.getIfAvailable());
             return serviceBusTemplate;
         }
     }

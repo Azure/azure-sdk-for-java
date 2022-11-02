@@ -48,15 +48,15 @@ public class AzureStorageQueueMessagingAutoConfiguration {
     /**
      * Autoconfigure the {@link StorageQueueTemplate} instance.
      * @param storageQueueClientFactory the storage queue client factory to create the storage queue clients for the template.
-     * @param messageConverters the objectProvider message converters used by the template.
+     * @param messageConverter the objectProvider message converter used by the template.
      * @return the storage queue template.
      */
     @Bean
     @ConditionalOnMissingBean
     public StorageQueueTemplate storageQueueTemplate(StorageQueueClientFactory storageQueueClientFactory,
-                                                     ObjectProvider<StorageQueueMessageConverter> messageConverters) {
+                                                     ObjectProvider<StorageQueueMessageConverter> messageConverter) {
         StorageQueueTemplate storageQueueTemplate = new StorageQueueTemplate(storageQueueClientFactory);
-        storageQueueTemplate.setMessageConverter(messageConverters.getIfAvailable());
+        storageQueueTemplate.setMessageConverter(messageConverter.getIfAvailable());
         return storageQueueTemplate;
     }
 
