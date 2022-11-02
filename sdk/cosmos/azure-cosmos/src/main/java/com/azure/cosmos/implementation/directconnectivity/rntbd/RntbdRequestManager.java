@@ -66,6 +66,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -586,7 +587,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     this.timestamps.channelWriteCompleted();
                 }
             });
-
             return;
         }
 
@@ -661,30 +661,33 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     private RntbdRequestRecord addPendingRequestRecord(final ChannelHandlerContext context, final RntbdRequestRecord record) {
 
-        return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
+        AtomicReference<Timeout> pendingRequestTimeout = new AtomicReference<>();
+        this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
             record.pendingRequestQueueSize(pendingRequests.size());
 
-            final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
+            pendingRequestTimeout.set(record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
                 requestExpirationExecutor.execute(record::expire);
-            });
-
-            record.whenComplete((response, error) -> {
-                this.pendingRequests.remove(id);
-                pendingRequestTimeout.cancel();
-            });
+            }));
 
             return record;
-
         });
+
+        record.whenComplete((response, error) -> {
+            this.pendingRequests.remove(record.transportRequestId());
+            if (pendingRequestTimeout.get() != null) {
+                pendingRequestTimeout.get().cancel();
+            }
+        });
+
+        return record;
     }
 
     private void completeAllPendingRequestsExceptionally(
-        final ChannelHandlerContext context, final Throwable throwable
-    ) {
+        final ChannelHandlerContext context, final Throwable throwable) {
 
         reportIssueUnless(!this.closingExceptionally, context, "", throwable);
         this.closingExceptionally = true;

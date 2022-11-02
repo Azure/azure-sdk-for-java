@@ -234,7 +234,7 @@ public class RntbdTransportClient extends TransportClient {
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 
-        final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
+        record.whenComplete((response, throwable) -> {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
             if (request.requestContext.cosmosDiagnostics == null) {
@@ -254,8 +254,9 @@ public class RntbdTransportClient extends TransportClient {
                     response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
                 }
             }
+        });
 
-        })).onErrorMap(throwable -> {
+        return Mono.fromFuture(record).onErrorMap(throwable -> {
 
             Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
@@ -291,62 +292,6 @@ public class RntbdTransportClient extends TransportClient {
             }
 
             return cosmosException;
-        });
-
-        return result.doFinally(signalType -> {
-
-            // This lambda ensures that a pending Direct TCP request in a reactive stream dropped by an end user or the
-            // HA layer completes without bubbling up to reactor.core.publisher.Hooks#onErrorDropped as a
-            // CompletionException error. Pending requests may be left outstanding when, for example, an end user calls
-            // CosmosAsyncClient#close or the HA layer detects that a partition split has occurred. This code guarantees
-            // that each pending Mono<StoreResponse> in the stream will run to completion with a new subscriber.
-            // Consequently the default Hooks#onErrorDropped method will not be called thus preventing distracting error
-            // messages.
-            //
-            // This lambda does not prevent requests that complete exceptionally before the call to this lambda from
-            // bubbling up to Hooks#onErrorDropped as CompletionException errors. We will still see some onErrorDropped
-            // messages due to CompletionException errors. Anecdotal evidence shows that this is more likely to be seen
-            // in low latency environments on Azure cloud. To avoid the onErrorDropped events to get logged in the
-            // default hook (which logs with level ERROR) we inject a local hook in the Reactor Context to just log it
-            // as DEBUG level for the lifecycle of this Mono (safe here because we know the onErrorDropped doesn't have
-            // any functional issues.
-            //
-            // One might be tempted to complete a pending request here, but that is ill advised. Testing and
-            // inspection of the reactor code shows that this does not prevent errors from bubbling up to
-            // reactor.core.publisher.Hooks#onErrorDropped. Worse than this it has been seen to cause failures in
-            // the HA layer:
-            //
-            // * Calling record.cancel or record.completeExceptionally causes failures in (low-latency) cloud
-            //   environments and all errors bubble up Hooks#onErrorDropped.
-            //
-            // * Calling record.complete with a null value causes failures in all environments, depending on the
-            //   operation being performed. In short: many of our tests fail.
-
-            if (signalType != SignalType.CANCEL) {
-                return;
-            }
-
-            result.subscribe(
-                response -> {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
-                                + "\"value\":{}}}}",
-                            RntbdObjectMapper.toJson(record),
-                            response.getClass().getSimpleName(),
-                            RntbdObjectMapper.toJson(response));
-                    }
-                },
-                throwable -> {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
-                                + "\"value\":{}}}",
-                            RntbdObjectMapper.toJson(record),
-                            throwable.getClass().getSimpleName(),
-                            RntbdObjectMapper.toJson(throwable));
-                    }
-                });
         }).contextWrite(reactorContext);
     }
 
