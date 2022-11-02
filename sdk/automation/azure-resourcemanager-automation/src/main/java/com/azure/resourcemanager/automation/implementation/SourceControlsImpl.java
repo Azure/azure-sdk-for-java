@@ -27,10 +27,6 @@ public final class SourceControlsImpl implements SourceControls {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String sourceControlName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, sourceControlName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
         return this
@@ -38,14 +34,8 @@ public final class SourceControlsImpl implements SourceControls {
             .deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, context);
     }
 
-    public SourceControl get(String resourceGroupName, String automationAccountName, String sourceControlName) {
-        SourceControlInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, sourceControlName);
-        if (inner != null) {
-            return new SourceControlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String sourceControlName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, sourceControlName);
     }
 
     public Response<SourceControl> getWithResponse(
@@ -58,6 +48,16 @@ public final class SourceControlsImpl implements SourceControls {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SourceControlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SourceControl get(String resourceGroupName, String automationAccountName, String sourceControlName) {
+        SourceControlInner inner =
+            this.serviceClient().get(resourceGroupName, automationAccountName, sourceControlName);
+        if (inner != null) {
+            return new SourceControlImpl(inner, this.manager());
         } else {
             return null;
         }

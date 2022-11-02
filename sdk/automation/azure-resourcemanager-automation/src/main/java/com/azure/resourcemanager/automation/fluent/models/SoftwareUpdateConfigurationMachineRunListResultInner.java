@@ -23,6 +23,10 @@ public final class SoftwareUpdateConfigurationMachineRunListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SoftwareUpdateConfigurationMachineRunListResultInner class. */
+    public SoftwareUpdateConfigurationMachineRunListResultInner() {
+    }
+
     /**
      * Get the value property: outer object returned when listing all software update configuration machine runs.
      *

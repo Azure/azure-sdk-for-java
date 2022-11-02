@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for TestJob Stop. */
 public final class TestJobStopSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/stopTestJob.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/stopTestJob.json
      */
     /**
      * Sample code: Stop test job.

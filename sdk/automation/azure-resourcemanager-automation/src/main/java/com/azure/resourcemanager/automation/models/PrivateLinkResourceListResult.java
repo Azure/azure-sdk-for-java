@@ -18,6 +18,10 @@ public final class PrivateLinkResourceListResult {
     @JsonProperty(value = "value")
     private List<PrivateLinkResourceInner> value;
 
+    /** Creates an instance of PrivateLinkResourceListResult class. */
+    public PrivateLinkResourceListResult() {
+    }
+
     /**
      * Get the value property: Array of private link resources.
      *

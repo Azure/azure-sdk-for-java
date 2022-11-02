@@ -20,19 +20,6 @@ public interface ConnectionTypesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The name of connection type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String connectionTypeName);
-
-    /**
-     * Delete the connection type.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionTypeName The name of connection type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,7 +31,7 @@ public interface ConnectionTypesClient {
         String resourceGroupName, String automationAccountName, String connectionTypeName, Context context);
 
     /**
-     * Retrieve the connection type identified by connection type name.
+     * Delete the connection type.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -52,10 +39,9 @@ public interface ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionTypeInner get(String resourceGroupName, String automationAccountName, String connectionTypeName);
+    void delete(String resourceGroupName, String automationAccountName, String connectionTypeName);
 
     /**
      * Retrieve the connection type identified by connection type name.
@@ -74,23 +60,18 @@ public interface ConnectionTypesClient {
         String resourceGroupName, String automationAccountName, String connectionTypeName, Context context);
 
     /**
-     * Create a connection type.
+     * Retrieve the connection type identified by connection type name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param connectionTypeName The parameters supplied to the create or update connection type operation.
-     * @param parameters The parameters supplied to the create or update connection type operation.
+     * @param connectionTypeName The name of connection type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the connection type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionTypeInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionTypeName,
-        ConnectionTypeCreateOrUpdateParameters parameters);
+    ConnectionTypeInner get(String resourceGroupName, String automationAccountName, String connectionTypeName);
 
     /**
      * Create a connection type.
@@ -112,6 +93,25 @@ public interface ConnectionTypesClient {
         String connectionTypeName,
         ConnectionTypeCreateOrUpdateParameters parameters,
         Context context);
+
+    /**
+     * Create a connection type.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionTypeName The parameters supplied to the create or update connection type operation.
+     * @param parameters The parameters supplied to the create or update connection type operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the connection type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionTypeInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String connectionTypeName,
+        ConnectionTypeCreateOrUpdateParameters parameters);
 
     /**
      * Retrieve a list of connection types.

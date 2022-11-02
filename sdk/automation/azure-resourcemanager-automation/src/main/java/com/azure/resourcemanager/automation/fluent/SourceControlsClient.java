@@ -22,25 +22,6 @@ public interface SourceControlsClient {
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @param parameters The parameters supplied to the create or update source control operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlCreateOrUpdateParameters parameters);
-
-    /**
-     * Create a source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param parameters The parameters supplied to the create or update source control operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,23 +37,23 @@ public interface SourceControlsClient {
         Context context);
 
     /**
-     * Update a source control.
+     * Create a source control.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
-     * @param parameters The parameters supplied to the update source control operation.
+     * @param parameters The parameters supplied to the create or update source control operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the source control.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlInner update(
+    SourceControlInner createOrUpdate(
         String resourceGroupName,
         String automationAccountName,
         String sourceControlName,
-        SourceControlUpdateParameters parameters);
+        SourceControlCreateOrUpdateParameters parameters);
 
     /**
      * Update a source control.
@@ -96,17 +77,23 @@ public interface SourceControlsClient {
         Context context);
 
     /**
-     * Delete the source control.
+     * Update a source control.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The name of source control.
+     * @param sourceControlName The source control name.
+     * @param parameters The parameters supplied to the update source control operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String sourceControlName);
+    SourceControlInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String sourceControlName,
+        SourceControlUpdateParameters parameters);
 
     /**
      * Delete the source control.
@@ -125,7 +112,7 @@ public interface SourceControlsClient {
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context);
 
     /**
-     * Retrieve the source control identified by source control name.
+     * Delete the source control.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -133,10 +120,9 @@ public interface SourceControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlInner get(String resourceGroupName, String automationAccountName, String sourceControlName);
+    void delete(String resourceGroupName, String automationAccountName, String sourceControlName);
 
     /**
      * Retrieve the source control identified by source control name.
@@ -153,6 +139,20 @@ public interface SourceControlsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SourceControlInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context);
+
+    /**
+     * Retrieve the source control identified by source control name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The name of source control.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SourceControlInner get(String resourceGroupName, String automationAccountName, String sourceControlName);
 
     /**
      * Retrieve a list of source controls.

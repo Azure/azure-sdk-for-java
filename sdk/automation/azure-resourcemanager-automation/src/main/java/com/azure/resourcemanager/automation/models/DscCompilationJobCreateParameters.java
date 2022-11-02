@@ -39,6 +39,10 @@ public final class DscCompilationJobCreateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of DscCompilationJobCreateParameters class. */
+    public DscCompilationJobCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the list of compilation job properties.
      *

@@ -99,7 +99,7 @@ public final class KeysClientImpl implements KeysClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -150,7 +150,7 @@ public final class KeysClientImpl implements KeysClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -186,21 +186,6 @@ public final class KeysClientImpl implements KeysClient {
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyListResultInner listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        return listByAutomationAccountAsync(resourceGroupName, automationAccountName).block();
-    }
-
-    /**
-     * Retrieve the automation keys for an account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -211,5 +196,20 @@ public final class KeysClientImpl implements KeysClient {
     public Response<KeyListResultInner> listByAutomationAccountWithResponse(
         String resourceGroupName, String automationAccountName, Context context) {
         return listByAutomationAccountWithResponseAsync(resourceGroupName, automationAccountName, context).block();
+    }
+
+    /**
+     * Retrieve the automation keys for an account.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyListResultInner listByAutomationAccount(String resourceGroupName, String automationAccountName) {
+        return listByAutomationAccountWithResponse(resourceGroupName, automationAccountName, Context.NONE).getValue();
     }
 }

@@ -27,17 +27,13 @@ public final class WebhooksImpl implements Webhooks {
         this.serviceManager = serviceManager;
     }
 
-    public String generateUri(String resourceGroupName, String automationAccountName) {
-        return this.serviceClient().generateUri(resourceGroupName, automationAccountName);
-    }
-
     public Response<String> generateUriWithResponse(
         String resourceGroupName, String automationAccountName, Context context) {
         return this.serviceClient().generateUriWithResponse(resourceGroupName, automationAccountName, context);
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String webhookName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, webhookName);
+    public String generateUri(String resourceGroupName, String automationAccountName) {
+        return this.serviceClient().generateUri(resourceGroupName, automationAccountName);
     }
 
     public Response<Void> deleteWithResponse(
@@ -45,13 +41,8 @@ public final class WebhooksImpl implements Webhooks {
         return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, webhookName, context);
     }
 
-    public Webhook get(String resourceGroupName, String automationAccountName, String webhookName) {
-        WebhookInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, webhookName);
-        if (inner != null) {
-            return new WebhookImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String webhookName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, webhookName);
     }
 
     public Response<Webhook> getWithResponse(
@@ -64,6 +55,15 @@ public final class WebhooksImpl implements Webhooks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WebhookImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Webhook get(String resourceGroupName, String automationAccountName, String webhookName) {
+        WebhookInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, webhookName);
+        if (inner != null) {
+            return new WebhookImpl(inner, this.manager());
         } else {
             return null;
         }

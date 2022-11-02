@@ -102,6 +102,10 @@ public final class DscCompilationJobProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
+    /** Creates an instance of DscCompilationJobProperties class. */
+    public DscCompilationJobProperties() {
+    }
+
     /**
      * Get the configuration property: Gets or sets the configuration.
      *

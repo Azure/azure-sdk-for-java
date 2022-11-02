@@ -5,28 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
 /** Resource collection API of RunbookDrafts. */
 public interface RunbookDrafts {
-    /**
-     * Retrieve the content of runbook draft identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName);
-
     /**
      * Retrieve the content of runbook draft identified by runbook name.
      *
@@ -43,19 +28,31 @@ public interface RunbookDrafts {
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
 
     /**
-     * Replaces the runbook draft content.
+     * Retrieve the content of runbook draft identified by runbook name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    InputStream replaceContent(
+    Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName);
+
+    /**
+     * Replaces the runbook draft content.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
@@ -68,15 +65,14 @@ public interface RunbookDrafts {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
+     * @param runbookContent The runbook draft content.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    StreamResponse replaceContentWithResponse(
+    void replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
@@ -90,14 +86,13 @@ public interface RunbookDrafts {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
+     * @param runbookContent The runbook draft content.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    InputStream replaceContent(
+    void replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
@@ -110,34 +105,20 @@ public interface RunbookDrafts {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
+     * @param runbookContent The runbook draft content.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    StreamResponse replaceContentWithResponse(
+    void replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
         BinaryData runbookContent,
         long contentLength,
         Context context);
-
-    /**
-     * Retrieve the runbook draft identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    RunbookDraft get(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Retrieve the runbook draft identified by runbook name.
@@ -155,7 +136,7 @@ public interface RunbookDrafts {
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
 
     /**
-     * Undo draft edit to last known published state identified by runbook name.
+     * Retrieve the runbook draft identified by runbook name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -163,9 +144,9 @@ public interface RunbookDrafts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the undo edit runbook operation.
+     * @return the response.
      */
-    RunbookDraftUndoEditResult undoEdit(String resourceGroupName, String automationAccountName, String runbookName);
+    RunbookDraft get(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Undo draft edit to last known published state identified by runbook name.
@@ -177,8 +158,20 @@ public interface RunbookDrafts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the undo edit runbook operation along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<RunbookDraftUndoEditResult> undoEditWithResponse(
+    Response<Void> undoEditWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
+
+    /**
+     * Undo draft edit to last known published state identified by runbook name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void undoEdit(String resourceGroupName, String automationAccountName, String runbookName);
 }

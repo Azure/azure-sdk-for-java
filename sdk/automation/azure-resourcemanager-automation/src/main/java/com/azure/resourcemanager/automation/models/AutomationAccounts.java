@@ -15,36 +15,25 @@ public interface AutomationAccounts {
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteByResourceGroup(String resourceGroupName, String automationAccountName);
-
-    /**
-     * Delete an automation account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String automationAccountName, Context context);
 
     /**
-     * Get information about an Automation Account.
+     * Delete an automation account.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an Automation Account.
      */
-    AutomationAccount getByResourceGroup(String resourceGroupName, String automationAccountName);
+    void deleteByResourceGroup(String resourceGroupName, String automationAccountName);
 
     /**
      * Get information about an Automation Account.
@@ -59,6 +48,18 @@ public interface AutomationAccounts {
      */
     Response<AutomationAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String automationAccountName, Context context);
+
+    /**
+     * Get information about an Automation Account.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about an Automation Account.
+     */
+    AutomationAccount getByResourceGroup(String resourceGroupName, String automationAccountName);
 
     /**
      * Retrieve a list of accounts within a given resource group.

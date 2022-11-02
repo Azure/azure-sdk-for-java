@@ -25,6 +25,10 @@ public final class SourceControlSyncJobByIdInner {
     @JsonProperty(value = "properties")
     private SourceControlSyncJobByIdProperties innerProperties;
 
+    /** Creates an instance of SourceControlSyncJobByIdInner class. */
+    public SourceControlSyncJobByIdInner() {
+    }
+
     /**
      * Get the id property: The id of the job.
      *

@@ -24,6 +24,10 @@ public final class VariableCreateOrUpdateParameters {
     @JsonProperty(value = "properties", required = true)
     private VariableCreateOrUpdateProperties innerProperties = new VariableCreateOrUpdateProperties();
 
+    /** Creates an instance of VariableCreateOrUpdateParameters class. */
+    public VariableCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the variable.
      *

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.automation.generated;
 /** Samples for Credential CreateOrUpdate. */
 public final class CredentialCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateCredential.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createOrUpdateCredential.json
      */
     /**
      * Sample code: Create a credential.

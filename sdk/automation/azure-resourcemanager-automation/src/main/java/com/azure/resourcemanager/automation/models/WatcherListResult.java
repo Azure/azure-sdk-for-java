@@ -24,6 +24,10 @@ public final class WatcherListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of WatcherListResult class. */
+    public WatcherListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of watchers.
      *

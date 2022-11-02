@@ -13,6 +13,8 @@ import com.azure.resourcemanager.automation.fluent.DscConfigurationsClient;
 import com.azure.resourcemanager.automation.fluent.models.DscConfigurationInner;
 import com.azure.resourcemanager.automation.models.DscConfiguration;
 import com.azure.resourcemanager.automation.models.DscConfigurations;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 public final class DscConfigurationsImpl implements DscConfigurations {
     private static final ClientLogger LOGGER = new ClientLogger(DscConfigurationsImpl.class);
@@ -27,10 +29,6 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String configurationName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, configurationName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String configurationName, Context context) {
         return this
@@ -38,14 +36,8 @@ public final class DscConfigurationsImpl implements DscConfigurations {
             .deleteWithResponse(resourceGroupName, automationAccountName, configurationName, context);
     }
 
-    public DscConfiguration get(String resourceGroupName, String automationAccountName, String configurationName) {
-        DscConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, configurationName);
-        if (inner != null) {
-            return new DscConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String configurationName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, configurationName);
     }
 
     public Response<DscConfiguration> getWithResponse(
@@ -63,12 +55,9 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
     }
 
-    public DscConfiguration createOrUpdate(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
+    public DscConfiguration get(String resourceGroupName, String automationAccountName, String configurationName) {
         DscConfigurationInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, automationAccountName, configurationName, parameters);
+            this.serviceClient().get(resourceGroupName, automationAccountName, configurationName);
         if (inner != null) {
             return new DscConfigurationImpl(inner, this.manager());
         } else {
@@ -98,6 +87,19 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
     }
 
+    public DscConfiguration createOrUpdate(
+        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
+        DscConfigurationInner inner =
+            this
+                .serviceClient()
+                .createOrUpdate(resourceGroupName, automationAccountName, configurationName, parameters);
+        if (inner != null) {
+            return new DscConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Response<DscConfiguration> updateWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -119,15 +121,16 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
     }
 
-    public String getContent(String resourceGroupName, String automationAccountName, String configurationName) {
-        return this.serviceClient().getContent(resourceGroupName, automationAccountName, configurationName);
-    }
-
-    public Response<String> getContentWithResponse(
+    public Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String configurationName, Context context) {
         return this
             .serviceClient()
             .getContentWithResponse(resourceGroupName, automationAccountName, configurationName, context);
+    }
+
+    public Flux<ByteBuffer> getContent(
+        String resourceGroupName, String automationAccountName, String configurationName) {
+        return this.serviceClient().getContent(resourceGroupName, automationAccountName, configurationName);
     }
 
     public PagedIterable<DscConfiguration> listByAutomationAccount(

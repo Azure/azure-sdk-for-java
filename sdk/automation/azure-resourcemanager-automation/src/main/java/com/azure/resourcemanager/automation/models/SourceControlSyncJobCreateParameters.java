@@ -18,6 +18,10 @@ public final class SourceControlSyncJobCreateParameters {
     @JsonProperty(value = "properties", required = true)
     private SourceControlSyncJobCreateProperties innerProperties = new SourceControlSyncJobCreateProperties();
 
+    /** Creates an instance of SourceControlSyncJobCreateParameters class. */
+    public SourceControlSyncJobCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the source control sync job.
      *

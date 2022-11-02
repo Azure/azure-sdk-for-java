@@ -38,6 +38,10 @@ public final class ModuleUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ModuleUpdateParameters class. */
+    public ModuleUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the module update properties.
      *

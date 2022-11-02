@@ -15,16 +15,6 @@ public interface DeletedAutomationAccountsClient {
     /**
      * Retrieve deleted automation account.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list deleted automation account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeletedAutomationAccountListResultInner listBySubscription();
-
-    /**
-     * Retrieve deleted automation account.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,4 +23,14 @@ public interface DeletedAutomationAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeletedAutomationAccountListResultInner> listBySubscriptionWithResponse(Context context);
+
+    /**
+     * Retrieve deleted automation account.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for the list deleted automation account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeletedAutomationAccountListResultInner listBySubscription();
 }

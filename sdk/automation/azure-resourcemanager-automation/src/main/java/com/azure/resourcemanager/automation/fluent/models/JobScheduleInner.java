@@ -37,6 +37,10 @@ public final class JobScheduleInner {
     @JsonProperty(value = "properties")
     private JobScheduleProperties innerProperties;
 
+    /** Creates an instance of JobScheduleInner class. */
+    public JobScheduleInner() {
+    }
+
     /**
      * Get the id property: Gets the id of the resource.
      *

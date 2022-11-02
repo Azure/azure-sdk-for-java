@@ -16,18 +16,6 @@ public interface Variables {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param variableName The name of variable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String automationAccountName, String variableName);
-
-    /**
-     * Delete the variable.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param variableName The name of variable.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface Variables {
         String resourceGroupName, String automationAccountName, String variableName, Context context);
 
     /**
-     * Retrieve the variable identified by variable name.
+     * Delete the variable.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -46,9 +34,8 @@ public interface Variables {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
      */
-    Variable get(String resourceGroupName, String automationAccountName, String variableName);
+    void delete(String resourceGroupName, String automationAccountName, String variableName);
 
     /**
      * Retrieve the variable identified by variable name.
@@ -64,6 +51,19 @@ public interface Variables {
      */
     Response<Variable> getWithResponse(
         String resourceGroupName, String automationAccountName, String variableName, Context context);
+
+    /**
+     * Retrieve the variable identified by variable name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param variableName The name of variable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the variable.
+     */
+    Variable get(String resourceGroupName, String automationAccountName, String variableName);
 
     /**
      * Retrieve a list of variables.

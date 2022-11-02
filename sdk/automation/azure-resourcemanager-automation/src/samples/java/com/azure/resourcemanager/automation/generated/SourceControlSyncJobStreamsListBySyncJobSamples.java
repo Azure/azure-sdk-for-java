@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for SourceControlSyncJobStreams ListBySyncJob. */
 public final class SourceControlSyncJobStreamsListBySyncJobSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControlSyncJobStreams/getSourceControlSyncJobStreams.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/sourceControlSyncJobStreams/getSourceControlSyncJobStreams.json
      */
     /**
      * Sample code: Get a list of sync job streams identified by sync job id.

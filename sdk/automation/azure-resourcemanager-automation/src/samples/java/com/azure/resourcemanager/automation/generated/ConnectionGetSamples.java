@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Connection Get. */
 public final class ConnectionGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getConnection.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getConnection.json
      */
     /**
      * Sample code: Get a connection.

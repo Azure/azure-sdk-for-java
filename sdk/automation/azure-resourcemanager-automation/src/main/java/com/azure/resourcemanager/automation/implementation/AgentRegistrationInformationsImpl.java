@@ -28,15 +28,6 @@ public final class AgentRegistrationInformationsImpl implements AgentRegistratio
         this.serviceManager = serviceManager;
     }
 
-    public AgentRegistration get(String resourceGroupName, String automationAccountName) {
-        AgentRegistrationInner inner = this.serviceClient().get(resourceGroupName, automationAccountName);
-        if (inner != null) {
-            return new AgentRegistrationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AgentRegistration> getWithResponse(
         String resourceGroupName, String automationAccountName, Context context) {
         Response<AgentRegistrationInner> inner =
@@ -52,10 +43,8 @@ public final class AgentRegistrationInformationsImpl implements AgentRegistratio
         }
     }
 
-    public AgentRegistration regenerateKey(
-        String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters) {
-        AgentRegistrationInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, automationAccountName, parameters);
+    public AgentRegistration get(String resourceGroupName, String automationAccountName) {
+        AgentRegistrationInner inner = this.serviceClient().get(resourceGroupName, automationAccountName);
         if (inner != null) {
             return new AgentRegistrationImpl(inner, this.manager());
         } else {
@@ -78,6 +67,17 @@ public final class AgentRegistrationInformationsImpl implements AgentRegistratio
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AgentRegistrationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AgentRegistration regenerateKey(
+        String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters) {
+        AgentRegistrationInner inner =
+            this.serviceClient().regenerateKey(resourceGroupName, automationAccountName, parameters);
+        if (inner != null) {
+            return new AgentRegistrationImpl(inner, this.manager());
         } else {
             return null;
         }

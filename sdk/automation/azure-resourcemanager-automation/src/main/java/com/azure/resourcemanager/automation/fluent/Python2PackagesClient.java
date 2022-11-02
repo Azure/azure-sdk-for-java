@@ -21,19 +21,6 @@ public interface Python2PackagesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The python package name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String packageName);
-
-    /**
-     * Delete the python 2 package by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param packageName The python package name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +32,7 @@ public interface Python2PackagesClient {
         String resourceGroupName, String automationAccountName, String packageName, Context context);
 
     /**
-     * Retrieve the python 2 package identified by package name.
+     * Delete the python 2 package by name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -53,10 +40,9 @@ public interface Python2PackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModuleInner get(String resourceGroupName, String automationAccountName, String packageName);
+    void delete(String resourceGroupName, String automationAccountName, String packageName);
 
     /**
      * Retrieve the python 2 package identified by package name.
@@ -75,23 +61,18 @@ public interface Python2PackagesClient {
         String resourceGroupName, String automationAccountName, String packageName, Context context);
 
     /**
-     * Create or Update the python 2 package identified by package name.
+     * Retrieve the python 2 package identified by package name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param packageName The name of python package.
-     * @param parameters The create or update parameters for python package.
+     * @param packageName The python package name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the module type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModuleInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String packageName,
-        PythonPackageCreateParameters parameters);
+    ModuleInner get(String resourceGroupName, String automationAccountName, String packageName);
 
     /**
      * Create or Update the python 2 package identified by package name.
@@ -115,23 +96,23 @@ public interface Python2PackagesClient {
         Context context);
 
     /**
-     * Update the python 2 package identified by package name.
+     * Create or Update the python 2 package identified by package name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The name of python package.
-     * @param parameters The update parameters for python package.
+     * @param parameters The create or update parameters for python package.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the module type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModuleInner update(
+    ModuleInner createOrUpdate(
         String resourceGroupName,
         String automationAccountName,
         String packageName,
-        PythonPackageUpdateParameters parameters);
+        PythonPackageCreateParameters parameters);
 
     /**
      * Update the python 2 package identified by package name.
@@ -153,6 +134,25 @@ public interface Python2PackagesClient {
         String packageName,
         PythonPackageUpdateParameters parameters,
         Context context);
+
+    /**
+     * Update the python 2 package identified by package name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param packageName The name of python package.
+     * @param parameters The update parameters for python package.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the module type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ModuleInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String packageName,
+        PythonPackageUpdateParameters parameters);
 
     /**
      * Retrieve a list of python 2 packages.

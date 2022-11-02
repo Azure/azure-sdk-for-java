@@ -6,17 +6,13 @@ package com.azure.resourcemanager.automation.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.RunbookDraftsClient;
 import com.azure.resourcemanager.automation.fluent.models.RunbookDraftInner;
-import com.azure.resourcemanager.automation.fluent.models.RunbookDraftUndoEditResultInner;
 import com.azure.resourcemanager.automation.models.RunbookDraft;
-import com.azure.resourcemanager.automation.models.RunbookDraftUndoEditResult;
 import com.azure.resourcemanager.automation.models.RunbookDrafts;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
@@ -33,10 +29,6 @@ public final class RunbookDraftsImpl implements RunbookDrafts {
         this.serviceManager = serviceManager;
     }
 
-    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
-        return this.serviceClient().getContent(resourceGroupName, automationAccountName, runbookName);
-    }
-
     public Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return this
@@ -44,61 +36,56 @@ public final class RunbookDraftsImpl implements RunbookDrafts {
             .getContentWithResponse(resourceGroupName, automationAccountName, runbookName, context);
     }
 
-    public InputStream replaceContent(
+    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
+        return this.serviceClient().getContent(resourceGroupName, automationAccountName, runbookName);
+    }
+
+    public void replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
         Flux<ByteBuffer> runbookContent,
         long contentLength) {
-        return this
+        this
             .serviceClient()
             .replaceContent(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength);
     }
 
-    public StreamResponse replaceContentWithResponse(
+    public void replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
         Flux<ByteBuffer> runbookContent,
         long contentLength,
         Context context) {
-        return this
+        this
             .serviceClient()
-            .replaceContentWithResponse(
+            .replaceContent(
                 resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength, context);
     }
 
-    public InputStream replaceContent(
+    public void replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
         BinaryData runbookContent,
         long contentLength) {
-        return this
+        this
             .serviceClient()
             .replaceContent(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength);
     }
 
-    public StreamResponse replaceContentWithResponse(
+    public void replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
         BinaryData runbookContent,
         long contentLength,
         Context context) {
-        return this
+        this
             .serviceClient()
-            .replaceContentWithResponse(
+            .replaceContent(
                 resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength, context);
-    }
-
-    public RunbookDraft get(String resourceGroupName, String automationAccountName, String runbookName) {
-        RunbookDraftInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, runbookName);
-        if (inner != null) {
-            return new RunbookDraftImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<RunbookDraft> getWithResponse(
@@ -116,30 +103,24 @@ public final class RunbookDraftsImpl implements RunbookDrafts {
         }
     }
 
-    public RunbookDraftUndoEditResult undoEdit(
-        String resourceGroupName, String automationAccountName, String runbookName) {
-        RunbookDraftUndoEditResultInner inner =
-            this.serviceClient().undoEdit(resourceGroupName, automationAccountName, runbookName);
+    public RunbookDraft get(String resourceGroupName, String automationAccountName, String runbookName) {
+        RunbookDraftInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, runbookName);
         if (inner != null) {
-            return new RunbookDraftUndoEditResultImpl(inner, this.manager());
+            return new RunbookDraftImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<RunbookDraftUndoEditResult> undoEditWithResponse(
+    public Response<Void> undoEditWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
-        Response<RunbookDraftUndoEditResultInner> inner =
-            this.serviceClient().undoEditWithResponse(resourceGroupName, automationAccountName, runbookName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new RunbookDraftUndoEditResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return this
+            .serviceClient()
+            .undoEditWithResponse(resourceGroupName, automationAccountName, runbookName, context);
+    }
+
+    public void undoEdit(String resourceGroupName, String automationAccountName, String runbookName) {
+        this.serviceClient().undoEdit(resourceGroupName, automationAccountName, runbookName);
     }
 
     private RunbookDraftsClient serviceClient() {

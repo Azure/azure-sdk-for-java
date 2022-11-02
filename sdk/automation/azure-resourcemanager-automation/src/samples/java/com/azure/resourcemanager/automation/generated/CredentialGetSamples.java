@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Credential Get. */
 public final class CredentialGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCredential.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getCredential.json
      */
     /**
      * Sample code: Get a credential.

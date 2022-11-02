@@ -16,6 +16,10 @@ public final class RunbookAssociationProperty {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of RunbookAssociationProperty class. */
+    public RunbookAssociationProperty() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the runbook.
      *

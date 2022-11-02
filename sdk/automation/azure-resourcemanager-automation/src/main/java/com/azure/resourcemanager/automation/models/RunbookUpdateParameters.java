@@ -38,6 +38,10 @@ public final class RunbookUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of RunbookUpdateParameters class. */
+    public RunbookUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the runbook update properties.
      *

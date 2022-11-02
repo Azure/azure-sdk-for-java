@@ -29,6 +29,10 @@ public final class DscConfigurationInner extends Resource {
     @JsonProperty(value = "etag")
     private String etag;
 
+    /** Creates an instance of DscConfigurationInner class. */
+    public DscConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the configuration properties.
      *

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Runbook Get. */
 public final class RunbookGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbook.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getRunbook.json
      */
     /**
      * Sample code: Get runbook.

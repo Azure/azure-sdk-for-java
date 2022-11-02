@@ -36,6 +36,10 @@ public final class WindowsProperties {
     @JsonProperty(value = "rebootSetting")
     private String rebootSetting;
 
+    /** Creates an instance of WindowsProperties class. */
+    public WindowsProperties() {
+    }
+
     /**
      * Get the includedUpdateClassifications property: Update classification included in the software update
      * configuration. A comma separated string with required values.

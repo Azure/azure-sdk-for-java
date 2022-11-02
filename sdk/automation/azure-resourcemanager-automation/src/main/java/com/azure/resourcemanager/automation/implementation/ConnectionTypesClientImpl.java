@@ -173,7 +173,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -230,7 +230,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -268,21 +268,6 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The name of connection type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String connectionTypeName) {
-        deleteAsync(resourceGroupName, automationAccountName, connectionTypeName).block();
-    }
-
-    /**
-     * Delete the connection type.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionTypeName The name of connection type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -293,6 +278,21 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String connectionTypeName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, connectionTypeName, context).block();
+    }
+
+    /**
+     * Delete the connection type.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionTypeName The name of connection type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String connectionTypeName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE);
     }
 
     /**
@@ -333,7 +333,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -390,7 +390,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -429,22 +429,6 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The name of connection type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionTypeInner get(String resourceGroupName, String automationAccountName, String connectionTypeName) {
-        return getAsync(resourceGroupName, automationAccountName, connectionTypeName).block();
-    }
-
-    /**
-     * Retrieve the connection type identified by connection type name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionTypeName The name of connection type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,6 +439,22 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
     public Response<ConnectionTypeInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String connectionTypeName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, connectionTypeName, context).block();
+    }
+
+    /**
+     * Retrieve the connection type identified by connection type name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionTypeName The name of connection type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the connection type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionTypeInner get(String resourceGroupName, String automationAccountName, String connectionTypeName) {
+        return getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE).getValue();
     }
 
     /**
@@ -504,7 +504,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -572,7 +572,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -617,27 +617,6 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The parameters supplied to the create or update connection type operation.
      * @param parameters The parameters supplied to the create or update connection type operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionTypeInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionTypeName,
-        ConnectionTypeCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, connectionTypeName, parameters).block();
-    }
-
-    /**
-     * Create a connection type.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionTypeName The parameters supplied to the create or update connection type operation.
-     * @param parameters The parameters supplied to the create or update connection type operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -654,6 +633,29 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, connectionTypeName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create a connection type.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionTypeName The parameters supplied to the create or update connection type operation.
+     * @param parameters The parameters supplied to the create or update connection type operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the connection type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionTypeInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String connectionTypeName,
+        ConnectionTypeCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, connectionTypeName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -690,7 +692,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -751,7 +753,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

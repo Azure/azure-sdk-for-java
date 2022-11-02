@@ -4,90 +4,80 @@
 
 package com.azure.resourcemanager.automation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Gets or sets the provisioning state of the module. */
-public enum ModuleProvisioningState {
-    /** Enum value Created. */
-    CREATED("Created"),
+public final class ModuleProvisioningState extends ExpandableStringEnum<ModuleProvisioningState> {
+    /** Static value Created for ModuleProvisioningState. */
+    public static final ModuleProvisioningState CREATED = fromString("Created");
 
-    /** Enum value Creating. */
-    CREATING("Creating"),
+    /** Static value Creating for ModuleProvisioningState. */
+    public static final ModuleProvisioningState CREATING = fromString("Creating");
 
-    /** Enum value StartingImportModuleRunbook. */
-    STARTING_IMPORT_MODULE_RUNBOOK("StartingImportModuleRunbook"),
+    /** Static value StartingImportModuleRunbook for ModuleProvisioningState. */
+    public static final ModuleProvisioningState STARTING_IMPORT_MODULE_RUNBOOK =
+        fromString("StartingImportModuleRunbook");
 
-    /** Enum value RunningImportModuleRunbook. */
-    RUNNING_IMPORT_MODULE_RUNBOOK("RunningImportModuleRunbook"),
+    /** Static value RunningImportModuleRunbook for ModuleProvisioningState. */
+    public static final ModuleProvisioningState RUNNING_IMPORT_MODULE_RUNBOOK =
+        fromString("RunningImportModuleRunbook");
 
-    /** Enum value ContentRetrieved. */
-    CONTENT_RETRIEVED("ContentRetrieved"),
+    /** Static value ContentRetrieved for ModuleProvisioningState. */
+    public static final ModuleProvisioningState CONTENT_RETRIEVED = fromString("ContentRetrieved");
 
-    /** Enum value ContentDownloaded. */
-    CONTENT_DOWNLOADED("ContentDownloaded"),
+    /** Static value ContentDownloaded for ModuleProvisioningState. */
+    public static final ModuleProvisioningState CONTENT_DOWNLOADED = fromString("ContentDownloaded");
 
-    /** Enum value ContentValidated. */
-    CONTENT_VALIDATED("ContentValidated"),
+    /** Static value ContentValidated for ModuleProvisioningState. */
+    public static final ModuleProvisioningState CONTENT_VALIDATED = fromString("ContentValidated");
 
-    /** Enum value ConnectionTypeImported. */
-    CONNECTION_TYPE_IMPORTED("ConnectionTypeImported"),
+    /** Static value ConnectionTypeImported for ModuleProvisioningState. */
+    public static final ModuleProvisioningState CONNECTION_TYPE_IMPORTED = fromString("ConnectionTypeImported");
 
-    /** Enum value ContentStored. */
-    CONTENT_STORED("ContentStored"),
+    /** Static value ContentStored for ModuleProvisioningState. */
+    public static final ModuleProvisioningState CONTENT_STORED = fromString("ContentStored");
 
-    /** Enum value ModuleDataStored. */
-    MODULE_DATA_STORED("ModuleDataStored"),
+    /** Static value ModuleDataStored for ModuleProvisioningState. */
+    public static final ModuleProvisioningState MODULE_DATA_STORED = fromString("ModuleDataStored");
 
-    /** Enum value ActivitiesStored. */
-    ACTIVITIES_STORED("ActivitiesStored"),
+    /** Static value ActivitiesStored for ModuleProvisioningState. */
+    public static final ModuleProvisioningState ACTIVITIES_STORED = fromString("ActivitiesStored");
 
-    /** Enum value ModuleImportRunbookComplete. */
-    MODULE_IMPORT_RUNBOOK_COMPLETE("ModuleImportRunbookComplete"),
+    /** Static value ModuleImportRunbookComplete for ModuleProvisioningState. */
+    public static final ModuleProvisioningState MODULE_IMPORT_RUNBOOK_COMPLETE =
+        fromString("ModuleImportRunbookComplete");
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded"),
+    /** Static value Succeeded for ModuleProvisioningState. */
+    public static final ModuleProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Enum value Failed. */
-    FAILED("Failed"),
+    /** Static value Failed for ModuleProvisioningState. */
+    public static final ModuleProvisioningState FAILED = fromString("Failed");
 
-    /** Enum value Cancelled. */
-    CANCELLED("Cancelled"),
+    /** Static value Cancelled for ModuleProvisioningState. */
+    public static final ModuleProvisioningState CANCELLED = fromString("Cancelled");
 
-    /** Enum value Updating. */
-    UPDATING("Updating");
+    /** Static value Updating for ModuleProvisioningState. */
+    public static final ModuleProvisioningState UPDATING = fromString("Updating");
 
-    /** The actual serialized value for a ModuleProvisioningState instance. */
-    private final String value;
-
-    ModuleProvisioningState(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ModuleProvisioningState from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ModuleProvisioningState.
+     */
+    @JsonCreator
+    public static ModuleProvisioningState fromString(String name) {
+        return fromString(name, ModuleProvisioningState.class);
     }
 
     /**
-     * Parses a serialized value to a ModuleProvisioningState instance.
+     * Gets known ModuleProvisioningState values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ModuleProvisioningState object, or null if unable to parse.
+     * @return known ModuleProvisioningState values.
      */
-    @JsonCreator
-    public static ModuleProvisioningState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ModuleProvisioningState[] items = ModuleProvisioningState.values();
-        for (ModuleProvisioningState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ModuleProvisioningState> values() {
+        return values(ModuleProvisioningState.class);
     }
 }

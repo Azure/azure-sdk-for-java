@@ -24,6 +24,10 @@ public final class JobListResultV2 {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of JobListResultV2 class. */
+    public JobListResultV2() {
+    }
+
     /**
      * Get the value property: List of jobs.
      *

@@ -24,6 +24,10 @@ public final class AutomationAccountListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AutomationAccountListResult class. */
+    public AutomationAccountListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets list of accounts.
      *

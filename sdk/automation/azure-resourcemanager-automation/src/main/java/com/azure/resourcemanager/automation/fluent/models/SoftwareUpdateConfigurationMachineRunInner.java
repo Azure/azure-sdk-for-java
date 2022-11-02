@@ -33,6 +33,10 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
     @JsonProperty(value = "properties")
     private UpdateConfigurationMachineRunProperties innerProperties;
 
+    /** Creates an instance of SoftwareUpdateConfigurationMachineRunInner class. */
+    public SoftwareUpdateConfigurationMachineRunInner() {
+    }
+
     /**
      * Get the name property: Name of the software update configuration machine run.
      *

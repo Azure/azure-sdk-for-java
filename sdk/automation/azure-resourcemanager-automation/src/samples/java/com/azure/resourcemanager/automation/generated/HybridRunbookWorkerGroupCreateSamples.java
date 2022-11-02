@@ -9,7 +9,7 @@ import com.azure.resourcemanager.automation.models.RunAsCredentialAssociationPro
 /** Samples for HybridRunbookWorkerGroup Create. */
 public final class HybridRunbookWorkerGroupCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/putHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/putHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Create a hybrid worker group.

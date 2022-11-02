@@ -18,6 +18,10 @@ public final class VariableInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private VariableProperties innerProperties;
 
+    /** Creates an instance of VariableInner class. */
+    public VariableInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the properties of the variable.
      *

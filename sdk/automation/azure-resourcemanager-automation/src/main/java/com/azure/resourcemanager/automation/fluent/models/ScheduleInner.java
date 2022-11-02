@@ -20,6 +20,10 @@ public final class ScheduleInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ScheduleProperties innerProperties;
 
+    /** Creates an instance of ScheduleInner class. */
+    public ScheduleInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the properties of the schedule.
      *

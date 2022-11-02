@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 /** Samples for Schedule CreateOrUpdate. */
 public final class ScheduleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateSchedule.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createOrUpdateSchedule.json
      */
     /**
      * Sample code: Create or update a schedule.

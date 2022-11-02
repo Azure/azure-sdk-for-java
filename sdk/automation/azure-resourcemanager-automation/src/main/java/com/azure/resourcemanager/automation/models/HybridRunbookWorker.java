@@ -171,16 +171,6 @@ public interface HybridRunbookWorker {
      * Move a hybrid worker to a different group.
      *
      * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void move(HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters);
-
-    /**
-     * Move a hybrid worker to a different group.
-     *
-     * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -189,4 +179,14 @@ public interface HybridRunbookWorker {
      */
     Response<Void> moveWithResponse(
         HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters, Context context);
+
+    /**
+     * Move a hybrid worker to a different group.
+     *
+     * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void move(HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters);
 }

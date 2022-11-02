@@ -31,6 +31,10 @@ public final class RunbookInner extends Resource {
     @JsonProperty(value = "etag")
     private String etag;
 
+    /** Creates an instance of RunbookInner class. */
+    public RunbookInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the runbook properties.
      *

@@ -33,6 +33,10 @@ public final class DscCompilationJobCreateProperties {
     @JsonProperty(value = "incrementNodeConfigurationBuild")
     private Boolean incrementNodeConfigurationBuild;
 
+    /** Creates an instance of DscCompilationJobCreateProperties class. */
+    public DscCompilationJobCreateProperties() {
+    }
+
     /**
      * Get the configuration property: Gets or sets the configuration.
      *

@@ -37,10 +37,6 @@ public final class RunbooksImpl implements Runbooks {
         this.serviceClient().publish(resourceGroupName, automationAccountName, runbookName, context);
     }
 
-    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
-        return this.serviceClient().getContent(resourceGroupName, automationAccountName, runbookName);
-    }
-
     public Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return this
@@ -48,13 +44,8 @@ public final class RunbooksImpl implements Runbooks {
             .getContentWithResponse(resourceGroupName, automationAccountName, runbookName, context);
     }
 
-    public Runbook get(String resourceGroupName, String automationAccountName, String runbookName) {
-        RunbookInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, runbookName);
-        if (inner != null) {
-            return new RunbookImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
+        return this.serviceClient().getContent(resourceGroupName, automationAccountName, runbookName);
     }
 
     public Response<Runbook> getWithResponse(
@@ -72,13 +63,22 @@ public final class RunbooksImpl implements Runbooks {
         }
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String runbookName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, runbookName);
+    public Runbook get(String resourceGroupName, String automationAccountName, String runbookName) {
+        RunbookInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, runbookName);
+        if (inner != null) {
+            return new RunbookImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, runbookName, context);
+    }
+
+    public void delete(String resourceGroupName, String automationAccountName, String runbookName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, runbookName);
     }
 
     public PagedIterable<Runbook> listByAutomationAccount(String resourceGroupName, String automationAccountName) {

@@ -19,6 +19,10 @@ public final class DscNodeConfigurationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DscNodeConfigurationProperties innerProperties;
 
+    /** Creates an instance of DscNodeConfigurationInner class. */
+    public DscNodeConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the configuration properties.
      *

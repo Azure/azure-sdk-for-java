@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Certificate Delete. */
 public final class CertificateDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteCertificate.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteCertificate.json
      */
     /**
      * Sample code: Delete a certificate.

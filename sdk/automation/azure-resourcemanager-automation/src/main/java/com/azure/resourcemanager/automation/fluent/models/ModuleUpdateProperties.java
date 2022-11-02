@@ -17,6 +17,10 @@ public final class ModuleUpdateProperties {
     @JsonProperty(value = "contentLink")
     private ContentLink contentLink;
 
+    /** Creates an instance of ModuleUpdateProperties class. */
+    public ModuleUpdateProperties() {
+    }
+
     /**
      * Get the contentLink property: Gets or sets the module content link.
      *

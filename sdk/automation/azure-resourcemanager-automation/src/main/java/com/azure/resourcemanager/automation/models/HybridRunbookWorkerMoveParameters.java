@@ -16,6 +16,10 @@ public final class HybridRunbookWorkerMoveParameters {
     @JsonProperty(value = "hybridRunbookWorkerGroupName")
     private String hybridRunbookWorkerGroupName;
 
+    /** Creates an instance of HybridRunbookWorkerMoveParameters class. */
+    public HybridRunbookWorkerMoveParameters() {
+    }
+
     /**
      * Get the hybridRunbookWorkerGroupName property: Gets or sets the target hybrid runbook worker group.
      *

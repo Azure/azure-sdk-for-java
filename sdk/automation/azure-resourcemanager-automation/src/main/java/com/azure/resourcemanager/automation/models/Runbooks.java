@@ -43,19 +43,6 @@ public interface Runbooks {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName);
-
-    /**
-     * Retrieve the content of runbook identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +53,7 @@ public interface Runbooks {
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
 
     /**
-     * Retrieve the runbook identified by runbook name.
+     * Retrieve the content of runbook identified by runbook name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -74,9 +61,9 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return the response.
      */
-    Runbook get(String resourceGroupName, String automationAccountName, String runbookName);
+    Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Retrieve the runbook identified by runbook name.
@@ -94,7 +81,7 @@ public interface Runbooks {
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
 
     /**
-     * Delete the runbook by name.
+     * Retrieve the runbook identified by runbook name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -102,8 +89,9 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the runbook type.
      */
-    void delete(String resourceGroupName, String automationAccountName, String runbookName);
+    Runbook get(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Delete the runbook by name.
@@ -119,6 +107,18 @@ public interface Runbooks {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
+
+    /**
+     * Delete the runbook by name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Retrieve a list of runbooks.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.automation.models.DscConfigurationAssociationPr
 /** Samples for DscNodeConfiguration CreateOrUpdate. */
 public final class DscNodeConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateDscNodeConfiguration.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createOrUpdateDscNodeConfiguration.json
      */
     /**
      * Sample code: Create node configuration.

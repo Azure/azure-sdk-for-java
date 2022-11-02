@@ -30,6 +30,10 @@ public final class DscConfigurationListResult {
     @JsonProperty(value = "totalCount")
     private Integer totalCount;
 
+    /** Creates an instance of DscConfigurationListResult class. */
+    public DscConfigurationListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of configurations.
      *

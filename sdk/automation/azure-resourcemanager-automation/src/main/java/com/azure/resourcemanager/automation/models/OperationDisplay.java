@@ -28,6 +28,16 @@ public final class OperationDisplay {
     @JsonProperty(value = "operation")
     private String operation;
 
+    /*
+     * Description of the operation.
+     */
+    @JsonProperty(value = "description")
+    private String description;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
+
     /**
      * Get the provider property: Service provider: Microsoft.Automation.
      *
@@ -85,6 +95,26 @@ public final class OperationDisplay {
      */
     public OperationDisplay withOperation(String operation) {
         this.operation = operation;
+        return this;
+    }
+
+    /**
+     * Get the description property: Description of the operation.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Description of the operation.
+     *
+     * @param description the description value to set.
+     * @return the OperationDisplay object itself.
+     */
+    public OperationDisplay withDescription(String description) {
+        this.description = description;
         return this;
     }
 

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Variable Delete. */
 public final class VariableDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteVariable.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteVariable.json
      */
     /**
      * Sample code: Delete a variable.

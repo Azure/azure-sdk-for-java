@@ -26,6 +26,10 @@ public final class TagSettingsProperties {
     @JsonProperty(value = "filterOperator")
     private TagOperators filterOperator;
 
+    /** Creates an instance of TagSettingsProperties class. */
+    public TagSettingsProperties() {
+    }
+
     /**
      * Get the tags property: Dictionary of tags with its list of values.
      *

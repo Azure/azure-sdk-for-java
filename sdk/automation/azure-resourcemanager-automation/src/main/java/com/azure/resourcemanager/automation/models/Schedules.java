@@ -16,19 +16,6 @@ public interface Schedules {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
-     */
-    Schedule get(String resourceGroupName, String automationAccountName, String scheduleName);
-
-    /**
-     * Retrieve the schedule identified by schedule name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param scheduleName The schedule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +26,7 @@ public interface Schedules {
         String resourceGroupName, String automationAccountName, String scheduleName, Context context);
 
     /**
-     * Delete the schedule identified by schedule name.
+     * Retrieve the schedule identified by schedule name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -47,8 +34,9 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the schedule.
      */
-    void delete(String resourceGroupName, String automationAccountName, String scheduleName);
+    Schedule get(String resourceGroupName, String automationAccountName, String scheduleName);
 
     /**
      * Delete the schedule identified by schedule name.
@@ -64,6 +52,18 @@ public interface Schedules {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String scheduleName, Context context);
+
+    /**
+     * Delete the schedule identified by schedule name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param scheduleName The schedule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String automationAccountName, String scheduleName);
 
     /**
      * Retrieve a list of schedules.

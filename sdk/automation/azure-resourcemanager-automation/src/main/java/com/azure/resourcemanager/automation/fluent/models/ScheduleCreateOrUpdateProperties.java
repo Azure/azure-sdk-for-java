@@ -56,6 +56,10 @@ public final class ScheduleCreateOrUpdateProperties {
     @JsonProperty(value = "advancedSchedule")
     private AdvancedSchedule advancedSchedule;
 
+    /** Creates an instance of ScheduleCreateOrUpdateProperties class. */
+    public ScheduleCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the description property: Gets or sets the description of the schedule.
      *

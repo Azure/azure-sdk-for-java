@@ -60,6 +60,10 @@ public final class SourceControlCreateOrUpdateProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of SourceControlCreateOrUpdateProperties class. */
+    public SourceControlCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the repoUrl property: The repo url of the source control.
      *

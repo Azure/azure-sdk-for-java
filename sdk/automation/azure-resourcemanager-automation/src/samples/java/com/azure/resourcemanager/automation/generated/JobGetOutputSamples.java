@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Job GetOutput. */
 public final class JobGetOutputSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJobOutput.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/job/getJobOutput.json
      */
     /**
      * Sample code: Get Job Output.

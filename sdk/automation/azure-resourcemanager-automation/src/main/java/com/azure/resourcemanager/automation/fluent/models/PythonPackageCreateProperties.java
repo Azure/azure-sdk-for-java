@@ -18,6 +18,10 @@ public final class PythonPackageCreateProperties {
     @JsonProperty(value = "contentLink", required = true)
     private ContentLink contentLink;
 
+    /** Creates an instance of PythonPackageCreateProperties class. */
+    public PythonPackageCreateProperties() {
+    }
+
     /**
      * Get the contentLink property: Gets or sets the module content link.
      *

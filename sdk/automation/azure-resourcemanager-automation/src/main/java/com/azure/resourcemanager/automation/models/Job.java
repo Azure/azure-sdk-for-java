@@ -243,14 +243,6 @@ public interface Job {
     /**
      * Suspend the job identified by job name.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void suspend();
-
-    /**
-     * Suspend the job identified by job name.
-     *
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,12 +253,12 @@ public interface Job {
     Response<Void> suspendWithResponse(String clientRequestId, Context context);
 
     /**
-     * Stop the job identified by jobName.
+     * Suspend the job identified by job name.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stop();
+    void suspend();
 
     /**
      * Stop the job identified by jobName.
@@ -281,12 +273,12 @@ public interface Job {
     Response<Void> stopWithResponse(String clientRequestId, Context context);
 
     /**
-     * Resume the job identified by jobName.
+     * Stop the job identified by jobName.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resume();
+    void stop();
 
     /**
      * Resume the job identified by jobName.
@@ -299,4 +291,12 @@ public interface Job {
      * @return the {@link Response}.
      */
     Response<Void> resumeWithResponse(String clientRequestId, Context context);
+
+    /**
+     * Resume the job identified by jobName.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resume();
 }

@@ -23,6 +23,10 @@ public final class PrivateLinkResourceProperties {
     @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredMembers;
 
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
+
     /**
      * Get the groupId property: The private link resource group id.
      *

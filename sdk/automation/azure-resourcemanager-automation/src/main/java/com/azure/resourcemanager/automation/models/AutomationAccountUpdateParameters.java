@@ -44,6 +44,10 @@ public final class AutomationAccountUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of AutomationAccountUpdateParameters class. */
+    public AutomationAccountUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets account update properties.
      *

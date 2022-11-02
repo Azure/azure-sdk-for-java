@@ -27,22 +27,13 @@ public final class VariablesImpl implements Variables {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String variableName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, variableName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String variableName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, variableName, context);
     }
 
-    public Variable get(String resourceGroupName, String automationAccountName, String variableName) {
-        VariableInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, variableName);
-        if (inner != null) {
-            return new VariableImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String variableName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, variableName);
     }
 
     public Response<Variable> getWithResponse(
@@ -55,6 +46,15 @@ public final class VariablesImpl implements Variables {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VariableImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Variable get(String resourceGroupName, String automationAccountName, String variableName) {
+        VariableInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, variableName);
+        if (inner != null) {
+            return new VariableImpl(inner, this.manager());
         } else {
             return null;
         }

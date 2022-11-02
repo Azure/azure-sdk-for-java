@@ -52,6 +52,10 @@ public final class DscMetaConfiguration {
     @JsonProperty(value = "allowModuleOverwrite")
     private Boolean allowModuleOverwrite;
 
+    /** Creates an instance of DscMetaConfiguration class. */
+    public DscMetaConfiguration() {
+    }
+
     /**
      * Get the configurationModeFrequencyMins property: Gets or sets the ConfigurationModeFrequencyMins value of the
      * meta configuration.

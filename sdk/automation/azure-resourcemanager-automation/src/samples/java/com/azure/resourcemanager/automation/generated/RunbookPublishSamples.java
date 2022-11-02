@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Runbook Publish. */
 public final class RunbookPublishSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/publishRunbook.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/publishRunbook.json
      */
     /**
      * Sample code: Publish runbook draft.

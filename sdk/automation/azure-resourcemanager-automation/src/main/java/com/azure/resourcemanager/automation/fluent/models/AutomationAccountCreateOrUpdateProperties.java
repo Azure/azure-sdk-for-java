@@ -36,6 +36,10 @@ public final class AutomationAccountCreateOrUpdateProperties {
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
+    /** Creates an instance of AutomationAccountCreateOrUpdateProperties class. */
+    public AutomationAccountCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the sku property: Gets or sets account SKU.
      *

@@ -202,7 +202,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -270,7 +270,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -315,27 +315,6 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @param parameters The parameters supplied to the create or update source control operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, sourceControlName, parameters).block();
-    }
-
-    /**
-     * Create a source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param parameters The parameters supplied to the create or update source control operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -352,6 +331,29 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, sourceControlName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create a source control.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param parameters The parameters supplied to the create or update source control operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String sourceControlName,
+        SourceControlCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, sourceControlName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -401,7 +403,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -469,7 +471,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -514,27 +516,6 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @param parameters The parameters supplied to the update source control operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, sourceControlName, parameters).block();
-    }
-
-    /**
-     * Update a source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param parameters The parameters supplied to the update source control operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -550,6 +531,28 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update a source control.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param parameters The parameters supplied to the update source control operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String sourceControlName,
+        SourceControlUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, sourceControlName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -590,7 +593,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -647,7 +650,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -685,21 +688,6 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String sourceControlName) {
-        deleteAsync(resourceGroupName, automationAccountName, sourceControlName).block();
-    }
-
-    /**
-     * Delete the source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The name of source control.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -710,6 +698,21 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, context).block();
+    }
+
+    /**
+     * Delete the source control.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The name of source control.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String sourceControlName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE);
     }
 
     /**
@@ -750,7 +753,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -807,7 +810,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -846,22 +849,6 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner get(String resourceGroupName, String automationAccountName, String sourceControlName) {
-        return getAsync(resourceGroupName, automationAccountName, sourceControlName).block();
-    }
-
-    /**
-     * Retrieve the source control identified by source control name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The name of source control.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -872,6 +859,22 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
     public Response<SourceControlInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, context).block();
+    }
+
+    /**
+     * Retrieve the source control identified by source control name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The name of source control.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner get(String resourceGroupName, String automationAccountName, String sourceControlName) {
+        return getWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE).getValue();
     }
 
     /**
@@ -909,7 +912,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -972,7 +975,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

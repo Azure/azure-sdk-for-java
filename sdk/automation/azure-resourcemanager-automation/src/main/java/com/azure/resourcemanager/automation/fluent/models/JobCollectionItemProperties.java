@@ -68,6 +68,10 @@ public final class JobCollectionItemProperties {
     @JsonProperty(value = "runOn")
     private String runOn;
 
+    /** Creates an instance of JobCollectionItemProperties class. */
+    public JobCollectionItemProperties() {
+    }
+
     /**
      * Get the runbook property: The runbook association.
      *

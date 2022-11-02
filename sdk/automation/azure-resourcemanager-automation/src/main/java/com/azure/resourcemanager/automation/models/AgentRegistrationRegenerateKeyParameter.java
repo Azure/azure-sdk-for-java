@@ -17,6 +17,10 @@ public final class AgentRegistrationRegenerateKeyParameter {
     @JsonProperty(value = "keyName", required = true)
     private AgentRegistrationKeyName keyName;
 
+    /** Creates an instance of AgentRegistrationRegenerateKeyParameter class. */
+    public AgentRegistrationRegenerateKeyParameter() {
+    }
+
     /**
      * Get the keyName property: Gets or sets the agent registration key name - primary or secondary.
      *

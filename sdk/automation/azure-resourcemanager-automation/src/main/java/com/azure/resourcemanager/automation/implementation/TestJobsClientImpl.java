@@ -182,7 +182,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -249,7 +249,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -294,27 +294,6 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @param automationAccountName The name of the automation account.
      * @param runbookName The parameters supplied to the create test job operation.
      * @param parameters The parameters supplied to the create test job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestJobInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        TestJobCreateParameters parameters) {
-        return createAsync(resourceGroupName, automationAccountName, runbookName, parameters).block();
-    }
-
-    /**
-     * Create a test job of the runbook.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The parameters supplied to the create test job operation.
-     * @param parameters The parameters supplied to the create test job operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -330,6 +309,28 @@ public final class TestJobsClientImpl implements TestJobsClient {
         Context context) {
         return createWithResponseAsync(resourceGroupName, automationAccountName, runbookName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create a test job of the runbook.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The parameters supplied to the create test job operation.
+     * @param parameters The parameters supplied to the create test job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the test job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestJobInner create(
+        String resourceGroupName,
+        String automationAccountName,
+        String runbookName,
+        TestJobCreateParameters parameters) {
+        return createWithResponse(resourceGroupName, automationAccountName, runbookName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -369,7 +370,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -425,7 +426,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -463,22 +464,6 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestJobInner get(String resourceGroupName, String automationAccountName, String runbookName) {
-        return getAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Retrieve the test job for the specified runbook.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -489,6 +474,22 @@ public final class TestJobsClientImpl implements TestJobsClient {
     public Response<TestJobInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Retrieve the test job for the specified runbook.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the test job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestJobInner get(String resourceGroupName, String automationAccountName, String runbookName) {
+        return getWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE).getValue();
     }
 
     /**
@@ -528,7 +529,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -584,7 +585,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -622,21 +623,6 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resume(String resourceGroupName, String automationAccountName, String runbookName) {
-        resumeAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Resume the test job.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -647,6 +633,21 @@ public final class TestJobsClientImpl implements TestJobsClient {
     public Response<Void> resumeWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return resumeWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Resume the test job.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resume(String resourceGroupName, String automationAccountName, String runbookName) {
+        resumeWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE);
     }
 
     /**
@@ -686,7 +687,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -742,7 +743,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -780,21 +781,6 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(String resourceGroupName, String automationAccountName, String runbookName) {
-        stopAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Stop the test job.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -805,6 +791,21 @@ public final class TestJobsClientImpl implements TestJobsClient {
     public Response<Void> stopWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return stopWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Stop the test job.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String automationAccountName, String runbookName) {
+        stopWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE);
     }
 
     /**
@@ -844,7 +845,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -900,7 +901,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -938,21 +939,6 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void suspend(String resourceGroupName, String automationAccountName, String runbookName) {
-        suspendAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Suspend the test job.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -963,5 +949,20 @@ public final class TestJobsClientImpl implements TestJobsClient {
     public Response<Void> suspendWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return suspendWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Suspend the test job.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void suspend(String resourceGroupName, String automationAccountName, String runbookName) {
+        suspendWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE);
     }
 }

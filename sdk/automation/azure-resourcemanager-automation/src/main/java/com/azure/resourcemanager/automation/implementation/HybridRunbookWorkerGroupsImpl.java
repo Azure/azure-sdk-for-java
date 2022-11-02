@@ -28,10 +28,6 @@ public final class HybridRunbookWorkerGroupsImpl implements HybridRunbookWorkerG
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName, Context context) {
         return this
@@ -39,15 +35,8 @@ public final class HybridRunbookWorkerGroupsImpl implements HybridRunbookWorkerG
             .deleteWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context);
     }
 
-    public HybridRunbookWorkerGroup get(
-        String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName) {
-        HybridRunbookWorkerGroupInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName);
-        if (inner != null) {
-            return new HybridRunbookWorkerGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName);
     }
 
     public Response<HybridRunbookWorkerGroup> getWithResponse(
@@ -62,6 +51,17 @@ public final class HybridRunbookWorkerGroupsImpl implements HybridRunbookWorkerG
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new HybridRunbookWorkerGroupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public HybridRunbookWorkerGroup get(
+        String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName) {
+        HybridRunbookWorkerGroupInner inner =
+            this.serviceClient().get(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName);
+        if (inner != null) {
+            return new HybridRunbookWorkerGroupImpl(inner, this.manager());
         } else {
             return null;
         }

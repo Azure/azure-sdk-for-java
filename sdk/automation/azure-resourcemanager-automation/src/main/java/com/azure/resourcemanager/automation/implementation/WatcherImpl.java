@@ -205,24 +205,24 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
         return this;
     }
 
-    public void start() {
-        serviceManager.watchers().start(resourceGroupName, automationAccountName, watcherName);
-    }
-
     public Response<Void> startWithResponse(Context context) {
         return serviceManager
             .watchers()
             .startWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
-    public void stop() {
-        serviceManager.watchers().stop(resourceGroupName, automationAccountName, watcherName);
+    public void start() {
+        serviceManager.watchers().start(resourceGroupName, automationAccountName, watcherName);
     }
 
     public Response<Void> stopWithResponse(Context context) {
         return serviceManager
             .watchers()
             .stopWithResponse(resourceGroupName, automationAccountName, watcherName, context);
+    }
+
+    public void stop() {
+        serviceManager.watchers().stop(resourceGroupName, automationAccountName, watcherName);
     }
 
     public WatcherImpl withRegion(Region location) {

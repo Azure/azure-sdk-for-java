@@ -41,6 +41,10 @@ public final class VariableProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of VariableProperties class. */
+    public VariableProperties() {
+    }
+
     /**
      * Get the value property: Gets or sets the value of the variable.
      *

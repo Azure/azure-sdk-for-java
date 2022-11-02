@@ -16,18 +16,6 @@ public interface Connections {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionName The name of connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String automationAccountName, String connectionName);
-
-    /**
-     * Delete the connection.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionName The name of connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface Connections {
         String resourceGroupName, String automationAccountName, String connectionName, Context context);
 
     /**
-     * Retrieve the connection identified by connection name.
+     * Delete the connection.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -46,9 +34,8 @@ public interface Connections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection.
      */
-    Connection get(String resourceGroupName, String automationAccountName, String connectionName);
+    void delete(String resourceGroupName, String automationAccountName, String connectionName);
 
     /**
      * Retrieve the connection identified by connection name.
@@ -64,6 +51,19 @@ public interface Connections {
      */
     Response<Connection> getWithResponse(
         String resourceGroupName, String automationAccountName, String connectionName, Context context);
+
+    /**
+     * Retrieve the connection identified by connection name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionName The name of connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the connection.
+     */
+    Connection get(String resourceGroupName, String automationAccountName, String connectionName);
 
     /**
      * Retrieve a list of connections.

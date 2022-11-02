@@ -28,6 +28,10 @@ public final class SourceControlSecurityTokenProperties {
     @JsonProperty(value = "tokenType")
     private TokenType tokenType;
 
+    /** Creates an instance of SourceControlSecurityTokenProperties class. */
+    public SourceControlSecurityTokenProperties() {
+    }
+
     /**
      * Get the accessToken property: The access token.
      *

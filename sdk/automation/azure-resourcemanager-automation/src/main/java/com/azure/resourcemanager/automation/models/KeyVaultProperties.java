@@ -28,6 +28,10 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "keyVersion")
     private String keyVersion;
 
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
+
     /**
      * Get the keyvaultUri property: The URI of the key vault key used to encrypt data.
      *

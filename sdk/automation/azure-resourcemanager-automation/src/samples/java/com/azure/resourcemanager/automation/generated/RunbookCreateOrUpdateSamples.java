@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Runbook CreateOrUpdate. */
 public final class RunbookCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createRunbookAsDraft.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createRunbookAsDraft.json
      */
     /**
      * Sample code: Create runbook as draft.
@@ -38,7 +38,7 @@ public final class RunbookCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createOrUpdateRunbook.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createOrUpdateRunbook.json
      */
     /**
      * Sample code: Create or update runbook and publish it.

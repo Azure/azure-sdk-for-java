@@ -24,6 +24,10 @@ public final class ScheduleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ScheduleListResult class. */
+    public ScheduleListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of schedules.
      *

@@ -18,6 +18,10 @@ public final class StatisticsListResult {
     @JsonProperty(value = "value")
     private List<StatisticsInner> value;
 
+    /** Creates an instance of StatisticsListResult class. */
+    public StatisticsListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of statistics.
      *

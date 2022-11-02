@@ -28,6 +28,10 @@ public final class ModuleInner extends Resource {
     @JsonProperty(value = "etag")
     private String etag;
 
+    /** Creates an instance of ModuleInner class. */
+    public ModuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the module properties.
      *

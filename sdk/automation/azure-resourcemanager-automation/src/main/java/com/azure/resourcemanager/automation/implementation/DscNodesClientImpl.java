@@ -269,21 +269,6 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String nodeId) {
-        deleteAsync(resourceGroupName, automationAccountName, nodeId).block();
-    }
-
-    /**
-     * Delete the dsc node identified by node id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The node id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -294,6 +279,21 @@ public final class DscNodesClientImpl implements DscNodesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, nodeId, context).block();
+    }
+
+    /**
+     * Delete the dsc node identified by node id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The node id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String nodeId) {
+        deleteWithResponse(resourceGroupName, automationAccountName, nodeId, Context.NONE);
     }
 
     /**
@@ -427,22 +427,6 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeInner get(String resourceGroupName, String automationAccountName, String nodeId) {
-        return getAsync(resourceGroupName, automationAccountName, nodeId).block();
-    }
-
-    /**
-     * Retrieve the dsc node identified by node id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The node id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -453,6 +437,22 @@ public final class DscNodesClientImpl implements DscNodesClient {
     public Response<DscNodeInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, nodeId, context).block();
+    }
+
+    /**
+     * Retrieve the dsc node identified by node id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The node id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of a DscNode.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscNodeInner get(String resourceGroupName, String automationAccountName, String nodeId) {
+        return getWithResponse(resourceGroupName, automationAccountName, nodeId, Context.NONE).getValue();
     }
 
     /**
@@ -617,27 +617,6 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @param automationAccountName The name of the automation account.
      * @param nodeId Parameters supplied to the update dsc node.
      * @param dscNodeUpdateParameters Parameters supplied to the update dsc node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
-        DscNodeUpdateParameters dscNodeUpdateParameters) {
-        return updateAsync(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters).block();
-    }
-
-    /**
-     * Update the dsc node.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId Parameters supplied to the update dsc node.
-     * @param dscNodeUpdateParameters Parameters supplied to the update dsc node.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -654,6 +633,29 @@ public final class DscNodesClientImpl implements DscNodesClient {
         return updateWithResponseAsync(
                 resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters, context)
             .block();
+    }
+
+    /**
+     * Update the dsc node.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId Parameters supplied to the update dsc node.
+     * @param dscNodeUpdateParameters Parameters supplied to the update dsc node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of a DscNode.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscNodeInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String nodeId,
+        DscNodeUpdateParameters dscNodeUpdateParameters) {
+        return updateWithResponse(
+                resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters, Context.NONE)
+            .getValue();
     }
 
     /**

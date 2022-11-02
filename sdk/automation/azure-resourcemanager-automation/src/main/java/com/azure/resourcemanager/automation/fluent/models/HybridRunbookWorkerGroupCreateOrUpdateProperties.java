@@ -17,6 +17,10 @@ public final class HybridRunbookWorkerGroupCreateOrUpdateProperties {
     @JsonProperty(value = "credential")
     private RunAsCredentialAssociationProperty credential;
 
+    /** Creates an instance of HybridRunbookWorkerGroupCreateOrUpdateProperties class. */
+    public HybridRunbookWorkerGroupCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the credential property: Sets the credential of a worker group.
      *

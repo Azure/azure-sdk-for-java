@@ -34,6 +34,10 @@ public final class ContentSource {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of ContentSource class. */
+    public ContentSource() {
+    }
+
     /**
      * Get the hash property: Gets or sets the hash.
      *

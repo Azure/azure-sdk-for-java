@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for JobSchedule ListByAutomationAccount. */
 public final class JobScheduleListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listAllJobSchedulesByAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listAllJobSchedulesByAutomationAccount.json
      */
     /**
      * Sample code: List all job schedules by automation account.

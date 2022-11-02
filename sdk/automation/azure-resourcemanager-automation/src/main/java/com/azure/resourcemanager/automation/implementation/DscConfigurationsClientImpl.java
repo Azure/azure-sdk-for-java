@@ -34,6 +34,8 @@ import com.azure.resourcemanager.automation.fluent.models.DscConfigurationInner;
 import com.azure.resourcemanager.automation.models.DscConfigurationCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.DscConfigurationListResult;
 import com.azure.resourcemanager.automation.models.DscConfigurationUpdateParameters;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DscConfigurationsClient. */
@@ -168,7 +170,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                 + "/automationAccounts/{automationAccountName}/configurations/{configurationName}/content")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<String>> getContent(
+        Mono<Response<Flux<ByteBuffer>>> getContent(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
@@ -246,7 +248,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -303,7 +305,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -341,21 +343,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String configurationName) {
-        deleteAsync(resourceGroupName, automationAccountName, configurationName).block();
-    }
-
-    /**
-     * Delete the dsc configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The configuration name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -366,6 +353,21 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String configurationName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, configurationName, context).block();
+    }
+
+    /**
+     * Delete the dsc configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String configurationName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE);
     }
 
     /**
@@ -407,7 +409,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -465,7 +467,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -504,22 +506,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscConfigurationInner get(String resourceGroupName, String automationAccountName, String configurationName) {
-        return getAsync(resourceGroupName, automationAccountName, configurationName).block();
-    }
-
-    /**
-     * Retrieve the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The configuration name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -533,6 +519,22 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
     }
 
     /**
+     * Retrieve the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscConfigurationInner get(String resourceGroupName, String automationAccountName, String configurationName) {
+        return getWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE).getValue();
+    }
+
+    /**
      * Create the configuration identified by configuration name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
@@ -580,7 +582,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -649,7 +651,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -694,27 +696,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @param automationAccountName The name of the automation account.
      * @param configurationName The create or update parameters for configuration.
      * @param parameters The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        DscConfigurationCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, configurationName, parameters).block();
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -731,6 +712,29 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, configurationName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String configurationName,
+        DscConfigurationCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, configurationName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -776,7 +780,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -843,7 +847,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -885,24 +889,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @param automationAccountName The name of the automation account.
      * @param configurationName The create or update parameters for configuration.
      * @param parameters The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscConfigurationInner createOrUpdate(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, configurationName, parameters).block();
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -919,6 +905,26 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, configurationName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscConfigurationInner createOrUpdate(
+        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, configurationName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -967,7 +973,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1034,7 +1040,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1056,28 +1062,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscConfigurationInner> updateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        DscConfigurationUpdateParameters parameters) {
-        return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1089,24 +1073,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         final DscConfigurationUpdateParameters parameters = null;
         return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscConfigurationInner update(
-        String resourceGroupName, String automationAccountName, String configurationName) {
-        final DscConfigurationUpdateParameters parameters = null;
-        return updateAsync(resourceGroupName, automationAccountName, configurationName, parameters).block();
     }
 
     /**
@@ -1139,6 +1105,25 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The create or update parameters for configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscConfigurationInner update(
+        String resourceGroupName, String automationAccountName, String configurationName) {
+        final DscConfigurationUpdateParameters parameters = null;
+        return updateWithResponse(resourceGroupName, automationAccountName, configurationName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
      * @param parameters The create or update parameters for configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1173,7 +1158,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1237,7 +1222,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1251,25 +1236,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                 parameters,
                 accept,
                 context);
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscConfigurationInner> updateAsync(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
-        return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1308,7 +1274,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> getContentWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> getContentWithResponseAsync(
         String resourceGroupName, String automationAccountName, String configurationName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1334,7 +1300,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "text/powershell";
         return FluxUtil
             .withContext(
@@ -1365,7 +1331,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> getContentWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> getContentWithResponseAsync(
         String resourceGroupName, String automationAccountName, String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1391,7 +1357,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "text/powershell";
         context = this.client.mergeContext(context);
         return service
@@ -1418,26 +1384,10 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<String> getContentAsync(
+    private Mono<Flux<ByteBuffer>> getContentAsync(
         String resourceGroupName, String automationAccountName, String configurationName) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieve the configuration script identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getContent(String resourceGroupName, String automationAccountName, String configurationName) {
-        return getContentAsync(resourceGroupName, automationAccountName, configurationName).block();
     }
 
     /**
@@ -1453,10 +1403,28 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> getContentWithResponse(
+    public Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String configurationName, Context context) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, configurationName, context)
             .block();
+    }
+
+    /**
+     * Retrieve the configuration script identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> getContent(
+        String resourceGroupName, String automationAccountName, String configurationName) {
+        return getContentWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1502,7 +1470,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1577,7 +1545,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

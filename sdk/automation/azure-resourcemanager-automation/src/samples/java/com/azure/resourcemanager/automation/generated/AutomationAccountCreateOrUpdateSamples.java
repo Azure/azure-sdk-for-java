@@ -10,7 +10,7 @@ import com.azure.resourcemanager.automation.models.SkuNameEnum;
 /** Samples for AutomationAccount CreateOrUpdate. */
 public final class AutomationAccountCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/createOrUpdateAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createOrUpdateAutomationAccount.json
      */
     /**
      * Sample code: Create or update automation account.

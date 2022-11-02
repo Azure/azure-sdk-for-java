@@ -20,25 +20,6 @@ public interface SoftwareUpdateConfigurationsClient {
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
      * @param parameters Request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SoftwareUpdateConfigurationInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        SoftwareUpdateConfigurationInner parameters);
-
-    /**
-     * Create a new software update configuration with the name given in the URI.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
-     * @param parameters Request body.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,19 +37,23 @@ public interface SoftwareUpdateConfigurationsClient {
         Context context);
 
     /**
-     * Get a single software update configuration by name.
+     * Create a new software update configuration with the name given in the URI.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
+     * @param parameters Request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return software update configuration properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SoftwareUpdateConfigurationInner getByName(
-        String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName);
+    SoftwareUpdateConfigurationInner create(
+        String resourceGroupName,
+        String automationAccountName,
+        String softwareUpdateConfigurationName,
+        SoftwareUpdateConfigurationInner parameters);
 
     /**
      * Get a single software update configuration by name.
@@ -92,7 +77,7 @@ public interface SoftwareUpdateConfigurationsClient {
         Context context);
 
     /**
-     * delete a specific software update configuration.
+     * Get a single software update configuration by name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -100,9 +85,11 @@ public interface SoftwareUpdateConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single software update configuration by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName);
+    SoftwareUpdateConfigurationInner getByName(
+        String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName);
 
     /**
      * delete a specific software update configuration.
@@ -126,17 +113,17 @@ public interface SoftwareUpdateConfigurationsClient {
         Context context);
 
     /**
-     * Get all software update configurations for the account.
+     * delete a specific software update configuration.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
+     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SoftwareUpdateConfigurationListResultInner list(String resourceGroupName, String automationAccountName);
+    void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName);
 
     /**
      * Get all software update configurations for the account.
@@ -154,4 +141,17 @@ public interface SoftwareUpdateConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SoftwareUpdateConfigurationListResultInner> listWithResponse(
         String resourceGroupName, String automationAccountName, String clientRequestId, String filter, Context context);
+
+    /**
+     * Get all software update configurations for the account.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all software update configurations for the account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SoftwareUpdateConfigurationListResultInner list(String resourceGroupName, String automationAccountName);
 }

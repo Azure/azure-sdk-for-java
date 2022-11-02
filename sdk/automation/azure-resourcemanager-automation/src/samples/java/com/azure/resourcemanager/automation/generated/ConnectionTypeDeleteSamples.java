@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConnectionType Delete. */
 public final class ConnectionTypeDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteConnectionType.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteConnectionType.json
      */
     /**
      * Sample code: Delete an existing connection type.

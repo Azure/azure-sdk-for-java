@@ -80,6 +80,10 @@ public final class TestJobInner {
     @JsonProperty(value = "logActivityTrace")
     private Integer logActivityTrace;
 
+    /** Creates an instance of TestJobInner class. */
+    public TestJobInner() {
+    }
+
     /**
      * Get the creationTime property: Gets or sets the creation time of the test job.
      *

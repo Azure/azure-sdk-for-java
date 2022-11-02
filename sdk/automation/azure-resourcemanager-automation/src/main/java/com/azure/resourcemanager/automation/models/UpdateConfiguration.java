@@ -56,6 +56,10 @@ public final class UpdateConfiguration {
     @JsonProperty(value = "targets")
     private TargetProperties targets;
 
+    /** Creates an instance of UpdateConfiguration class. */
+    public UpdateConfiguration() {
+    }
+
     /**
      * Get the operatingSystem property: operating system of target machines.
      *

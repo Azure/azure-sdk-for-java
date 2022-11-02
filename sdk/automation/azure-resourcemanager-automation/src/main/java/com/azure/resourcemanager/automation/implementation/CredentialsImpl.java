@@ -27,10 +27,6 @@ public final class CredentialsImpl implements Credentials {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String credentialName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, credentialName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String credentialName, Context context) {
         return this
@@ -38,13 +34,8 @@ public final class CredentialsImpl implements Credentials {
             .deleteWithResponse(resourceGroupName, automationAccountName, credentialName, context);
     }
 
-    public Credential get(String resourceGroupName, String automationAccountName, String credentialName) {
-        CredentialInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, credentialName);
-        if (inner != null) {
-            return new CredentialImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String credentialName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, credentialName);
     }
 
     public Response<Credential> getWithResponse(
@@ -57,6 +48,15 @@ public final class CredentialsImpl implements Credentials {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CredentialImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Credential get(String resourceGroupName, String automationAccountName, String credentialName) {
+        CredentialInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, credentialName);
+        if (inner != null) {
+            return new CredentialImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -16,6 +16,10 @@ public final class NodeCountProperties {
     @JsonProperty(value = "count")
     private Integer count;
 
+    /** Creates an instance of NodeCountProperties class. */
+    public NodeCountProperties() {
+    }
+
     /**
      * Get the count property: Gets the count for the name.
      *

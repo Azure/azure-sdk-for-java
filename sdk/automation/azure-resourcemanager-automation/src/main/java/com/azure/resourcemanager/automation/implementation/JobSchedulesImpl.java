@@ -28,10 +28,6 @@ public final class JobSchedulesImpl implements JobSchedules {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, UUID jobScheduleId) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, jobScheduleId);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context) {
         return this
@@ -39,13 +35,8 @@ public final class JobSchedulesImpl implements JobSchedules {
             .deleteWithResponse(resourceGroupName, automationAccountName, jobScheduleId, context);
     }
 
-    public JobSchedule get(String resourceGroupName, String automationAccountName, UUID jobScheduleId) {
-        JobScheduleInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, jobScheduleId);
-        if (inner != null) {
-            return new JobScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, UUID jobScheduleId) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, jobScheduleId);
     }
 
     public Response<JobSchedule> getWithResponse(
@@ -58,6 +49,15 @@ public final class JobSchedulesImpl implements JobSchedules {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobScheduleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobSchedule get(String resourceGroupName, String automationAccountName, UUID jobScheduleId) {
+        JobScheduleInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, jobScheduleId);
+        if (inner != null) {
+            return new JobScheduleImpl(inner, this.manager());
         } else {
             return null;
         }

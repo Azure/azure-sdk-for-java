@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SourceControlSyncJob ListByAutomationAccount. */
 public final class SourceControlSyncJobListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControlSyncJob/getAllSourceControlSyncJobs.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/sourceControlSyncJob/getAllSourceControlSyncJobs.json
      */
     /**
      * Sample code: Get a list of source control sync jobs.

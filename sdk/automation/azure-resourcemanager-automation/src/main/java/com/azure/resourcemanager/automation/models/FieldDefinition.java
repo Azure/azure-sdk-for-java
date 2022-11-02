@@ -29,6 +29,10 @@ public final class FieldDefinition {
     @JsonProperty(value = "type", required = true)
     private String type;
 
+    /** Creates an instance of FieldDefinition class. */
+    public FieldDefinition() {
+    }
+
     /**
      * Get the isEncrypted property: Gets or sets the isEncrypted flag of the connection field definition.
      *

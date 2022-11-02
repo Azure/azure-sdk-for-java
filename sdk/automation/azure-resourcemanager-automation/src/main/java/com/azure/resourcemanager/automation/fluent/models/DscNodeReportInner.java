@@ -129,6 +129,10 @@ public final class DscNodeReportInner {
     @JsonProperty(value = "rawErrors")
     private String rawErrors;
 
+    /** Creates an instance of DscNodeReportInner class. */
+    public DscNodeReportInner() {
+    }
+
     /**
      * Get the endTime property: Gets or sets the end time of the node report.
      *

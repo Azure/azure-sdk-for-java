@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Certificate ListByAutomationAccount. */
 public final class CertificateListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCertificatesByAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listCertificatesByAutomationAccount.json
      */
     /**
      * Sample code: List certificates.

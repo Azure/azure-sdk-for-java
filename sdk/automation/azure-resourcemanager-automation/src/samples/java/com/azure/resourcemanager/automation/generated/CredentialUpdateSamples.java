@@ -10,7 +10,7 @@ import com.azure.resourcemanager.automation.models.Credential;
 /** Samples for Credential Update. */
 public final class CredentialUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateCredential_patch.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateCredential_patch.json
      */
     /**
      * Sample code: Update a credential.

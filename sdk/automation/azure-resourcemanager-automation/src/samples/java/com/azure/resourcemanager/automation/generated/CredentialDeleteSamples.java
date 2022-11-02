@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Credential Delete. */
 public final class CredentialDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteCredentialExisting.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteCredentialExisting.json
      */
     /**
      * Sample code: Delete a credential.

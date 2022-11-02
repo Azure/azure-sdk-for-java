@@ -27,20 +27,6 @@ public final class TestJobsImpl implements TestJobs {
         this.serviceManager = serviceManager;
     }
 
-    public TestJob create(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        TestJobCreateParameters parameters) {
-        TestJobInner inner =
-            this.serviceClient().create(resourceGroupName, automationAccountName, runbookName, parameters);
-        if (inner != null) {
-            return new TestJobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TestJob> createWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -62,8 +48,13 @@ public final class TestJobsImpl implements TestJobs {
         }
     }
 
-    public TestJob get(String resourceGroupName, String automationAccountName, String runbookName) {
-        TestJobInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, runbookName);
+    public TestJob create(
+        String resourceGroupName,
+        String automationAccountName,
+        String runbookName,
+        TestJobCreateParameters parameters) {
+        TestJobInner inner =
+            this.serviceClient().create(resourceGroupName, automationAccountName, runbookName, parameters);
         if (inner != null) {
             return new TestJobImpl(inner, this.manager());
         } else {
@@ -86,8 +77,13 @@ public final class TestJobsImpl implements TestJobs {
         }
     }
 
-    public void resume(String resourceGroupName, String automationAccountName, String runbookName) {
-        this.serviceClient().resume(resourceGroupName, automationAccountName, runbookName);
+    public TestJob get(String resourceGroupName, String automationAccountName, String runbookName) {
+        TestJobInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, runbookName);
+        if (inner != null) {
+            return new TestJobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> resumeWithResponse(
@@ -95,8 +91,8 @@ public final class TestJobsImpl implements TestJobs {
         return this.serviceClient().resumeWithResponse(resourceGroupName, automationAccountName, runbookName, context);
     }
 
-    public void stop(String resourceGroupName, String automationAccountName, String runbookName) {
-        this.serviceClient().stop(resourceGroupName, automationAccountName, runbookName);
+    public void resume(String resourceGroupName, String automationAccountName, String runbookName) {
+        this.serviceClient().resume(resourceGroupName, automationAccountName, runbookName);
     }
 
     public Response<Void> stopWithResponse(
@@ -104,13 +100,17 @@ public final class TestJobsImpl implements TestJobs {
         return this.serviceClient().stopWithResponse(resourceGroupName, automationAccountName, runbookName, context);
     }
 
-    public void suspend(String resourceGroupName, String automationAccountName, String runbookName) {
-        this.serviceClient().suspend(resourceGroupName, automationAccountName, runbookName);
+    public void stop(String resourceGroupName, String automationAccountName, String runbookName) {
+        this.serviceClient().stop(resourceGroupName, automationAccountName, runbookName);
     }
 
     public Response<Void> suspendWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return this.serviceClient().suspendWithResponse(resourceGroupName, automationAccountName, runbookName, context);
+    }
+
+    public void suspend(String resourceGroupName, String automationAccountName, String runbookName) {
+        this.serviceClient().suspend(resourceGroupName, automationAccountName, runbookName);
     }
 
     private TestJobsClient serviceClient() {

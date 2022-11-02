@@ -200,7 +200,7 @@ public final class VariablesClientImpl implements VariablesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +267,7 @@ public final class VariablesClientImpl implements VariablesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -312,27 +312,6 @@ public final class VariablesClientImpl implements VariablesClient {
      * @param automationAccountName The name of the automation account.
      * @param variableName The variable name.
      * @param parameters The parameters supplied to the create or update variable operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VariableInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String variableName,
-        VariableCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, variableName, parameters).block();
-    }
-
-    /**
-     * Create a variable.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param variableName The variable name.
-     * @param parameters The parameters supplied to the create or update variable operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -349,6 +328,29 @@ public final class VariablesClientImpl implements VariablesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, variableName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create a variable.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param variableName The variable name.
+     * @param parameters The parameters supplied to the create or update variable operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the variable.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VariableInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String variableName,
+        VariableCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, variableName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -397,7 +399,7 @@ public final class VariablesClientImpl implements VariablesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -464,7 +466,7 @@ public final class VariablesClientImpl implements VariablesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -509,27 +511,6 @@ public final class VariablesClientImpl implements VariablesClient {
      * @param automationAccountName The name of the automation account.
      * @param variableName The variable name.
      * @param parameters The parameters supplied to the update variable operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VariableInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String variableName,
-        VariableUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, variableName, parameters).block();
-    }
-
-    /**
-     * Update a variable.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param variableName The variable name.
-     * @param parameters The parameters supplied to the update variable operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -545,6 +526,28 @@ public final class VariablesClientImpl implements VariablesClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, variableName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update a variable.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param variableName The variable name.
+     * @param parameters The parameters supplied to the update variable operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the variable.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VariableInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String variableName,
+        VariableUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, variableName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -584,7 +587,7 @@ public final class VariablesClientImpl implements VariablesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -640,7 +643,7 @@ public final class VariablesClientImpl implements VariablesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -678,21 +681,6 @@ public final class VariablesClientImpl implements VariablesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param variableName The name of variable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String variableName) {
-        deleteAsync(resourceGroupName, automationAccountName, variableName).block();
-    }
-
-    /**
-     * Delete the variable.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param variableName The name of variable.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -703,6 +691,21 @@ public final class VariablesClientImpl implements VariablesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String variableName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, variableName, context).block();
+    }
+
+    /**
+     * Delete the variable.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param variableName The name of variable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String variableName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, variableName, Context.NONE);
     }
 
     /**
@@ -742,7 +745,7 @@ public final class VariablesClientImpl implements VariablesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -798,7 +801,7 @@ public final class VariablesClientImpl implements VariablesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -836,22 +839,6 @@ public final class VariablesClientImpl implements VariablesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param variableName The name of variable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VariableInner get(String resourceGroupName, String automationAccountName, String variableName) {
-        return getAsync(resourceGroupName, automationAccountName, variableName).block();
-    }
-
-    /**
-     * Retrieve the variable identified by variable name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param variableName The name of variable.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -862,6 +849,22 @@ public final class VariablesClientImpl implements VariablesClient {
     public Response<VariableInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String variableName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, variableName, context).block();
+    }
+
+    /**
+     * Retrieve the variable identified by variable name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param variableName The name of variable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the variable.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VariableInner get(String resourceGroupName, String automationAccountName, String variableName) {
+        return getWithResponse(resourceGroupName, automationAccountName, variableName, Context.NONE).getValue();
     }
 
     /**
@@ -898,7 +901,7 @@ public final class VariablesClientImpl implements VariablesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -959,7 +962,7 @@ public final class VariablesClientImpl implements VariablesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

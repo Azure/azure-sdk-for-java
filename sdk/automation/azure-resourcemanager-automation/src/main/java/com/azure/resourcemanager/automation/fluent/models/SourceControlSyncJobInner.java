@@ -37,6 +37,10 @@ public final class SourceControlSyncJobInner {
     @JsonProperty(value = "properties")
     private SourceControlSyncJobProperties innerProperties;
 
+    /** Creates an instance of SourceControlSyncJobInner class. */
+    public SourceControlSyncJobInner() {
+    }
+
     /**
      * Get the name property: Resource name.
      *

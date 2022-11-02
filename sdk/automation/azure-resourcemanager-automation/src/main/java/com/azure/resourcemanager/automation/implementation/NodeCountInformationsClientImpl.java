@@ -204,22 +204,6 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param countType The type of counts to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NodeCountsInner get(String resourceGroupName, String automationAccountName, CountType countType) {
-        return getAsync(resourceGroupName, automationAccountName, countType).block();
-    }
-
-    /**
-     * Retrieve counts for Dsc Nodes.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param countType The type of counts to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -230,5 +214,21 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
     public Response<NodeCountsInner> getWithResponse(
         String resourceGroupName, String automationAccountName, CountType countType, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, countType, context).block();
+    }
+
+    /**
+     * Retrieve counts for Dsc Nodes.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param countType The type of counts to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gets the count of nodes by count type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NodeCountsInner get(String resourceGroupName, String automationAccountName, CountType countType) {
+        return getWithResponse(resourceGroupName, automationAccountName, countType, Context.NONE).getValue();
     }
 }

@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for SourceControlSyncJob Get. */
 public final class SourceControlSyncJobGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControlSyncJob/getSourceControlSyncJob.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/sourceControlSyncJob/getSourceControlSyncJob.json
      */
     /**
      * Sample code: Get a source control sync job by job id.

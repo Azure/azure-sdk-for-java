@@ -16,6 +16,10 @@ public final class DscNodeConfigurationAssociationProperty {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of DscNodeConfigurationAssociationProperty class. */
+    public DscNodeConfigurationAssociationProperty() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the dsc node configuration.
      *

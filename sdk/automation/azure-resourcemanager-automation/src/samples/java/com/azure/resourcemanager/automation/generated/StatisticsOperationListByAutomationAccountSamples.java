@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StatisticsOperation ListByAutomationAccount. */
 public final class StatisticsOperationListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getStatisticsOfAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getStatisticsOfAutomationAccount.json
      */
     /**
      * Sample code: Get statistics of an automation account.

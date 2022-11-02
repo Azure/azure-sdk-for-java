@@ -16,6 +16,10 @@ public final class ConnectionTypeAssociationProperty {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of ConnectionTypeAssociationProperty class. */
+    public ConnectionTypeAssociationProperty() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the connection type.
      *

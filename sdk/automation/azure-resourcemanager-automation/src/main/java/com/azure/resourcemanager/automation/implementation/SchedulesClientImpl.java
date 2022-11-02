@@ -200,7 +200,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +267,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -312,27 +312,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
      * @param parameters The parameters supplied to the create or update schedule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String scheduleName,
-        ScheduleCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, scheduleName, parameters).block();
-    }
-
-    /**
-     * Create a schedule.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param scheduleName The schedule name.
-     * @param parameters The parameters supplied to the create or update schedule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -349,6 +328,29 @@ public final class SchedulesClientImpl implements SchedulesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, scheduleName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create a schedule.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param scheduleName The schedule name.
+     * @param parameters The parameters supplied to the create or update schedule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the schedule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScheduleInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String scheduleName,
+        ScheduleCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, scheduleName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -397,7 +399,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -464,7 +466,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -509,27 +511,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
      * @param parameters The parameters supplied to the update schedule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String scheduleName,
-        ScheduleUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, scheduleName, parameters).block();
-    }
-
-    /**
-     * Update the schedule identified by schedule name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param scheduleName The schedule name.
-     * @param parameters The parameters supplied to the update schedule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -545,6 +526,28 @@ public final class SchedulesClientImpl implements SchedulesClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, scheduleName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update the schedule identified by schedule name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param scheduleName The schedule name.
+     * @param parameters The parameters supplied to the update schedule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the schedule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScheduleInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String scheduleName,
+        ScheduleUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, scheduleName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -584,7 +587,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -640,7 +643,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -678,22 +681,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner get(String resourceGroupName, String automationAccountName, String scheduleName) {
-        return getAsync(resourceGroupName, automationAccountName, scheduleName).block();
-    }
-
-    /**
-     * Retrieve the schedule identified by schedule name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param scheduleName The schedule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -704,6 +691,22 @@ public final class SchedulesClientImpl implements SchedulesClient {
     public Response<ScheduleInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String scheduleName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, scheduleName, context).block();
+    }
+
+    /**
+     * Retrieve the schedule identified by schedule name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param scheduleName The schedule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the schedule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScheduleInner get(String resourceGroupName, String automationAccountName, String scheduleName) {
+        return getWithResponse(resourceGroupName, automationAccountName, scheduleName, Context.NONE).getValue();
     }
 
     /**
@@ -743,7 +746,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -799,7 +802,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -837,21 +840,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String scheduleName) {
-        deleteAsync(resourceGroupName, automationAccountName, scheduleName).block();
-    }
-
-    /**
-     * Delete the schedule identified by schedule name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param scheduleName The schedule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -862,6 +850,21 @@ public final class SchedulesClientImpl implements SchedulesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String scheduleName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, scheduleName, context).block();
+    }
+
+    /**
+     * Delete the schedule identified by schedule name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param scheduleName The schedule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String scheduleName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, scheduleName, Context.NONE);
     }
 
     /**
@@ -898,7 +901,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -959,7 +962,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

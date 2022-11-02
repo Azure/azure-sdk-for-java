@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ObjectDataTypes ListFieldsByModuleAndType. */
 public final class ObjectDataTypesListFieldsByModuleAndTypeSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listFieldsByModuleAndType.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listFieldsByModuleAndType.json
      */
     /**
      * Sample code: Get a list of fields of a given type.

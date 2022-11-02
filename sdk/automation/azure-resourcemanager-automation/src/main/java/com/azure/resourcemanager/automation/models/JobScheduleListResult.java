@@ -24,6 +24,10 @@ public final class JobScheduleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of JobScheduleListResult class. */
+    public JobScheduleListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of job schedules.
      *

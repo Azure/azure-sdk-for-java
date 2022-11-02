@@ -55,6 +55,10 @@ public final class SourceControlSyncJobByIdProperties {
     @JsonProperty(value = "exception")
     private String exception;
 
+    /** Creates an instance of SourceControlSyncJobByIdProperties class. */
+    public SourceControlSyncJobByIdProperties() {
+    }
+
     /**
      * Get the sourceControlSyncJobId property: The source control sync job id.
      *

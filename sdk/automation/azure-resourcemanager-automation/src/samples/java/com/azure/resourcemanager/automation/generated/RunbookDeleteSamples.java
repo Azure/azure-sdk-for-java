@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Runbook Delete. */
 public final class RunbookDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/deleteRunbook.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteRunbook.json
      */
     /**
      * Sample code: Delete a runbook.

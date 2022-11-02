@@ -280,31 +280,6 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
      * @param parameters Request body.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SoftwareUpdateConfigurationInner> createAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        SoftwareUpdateConfigurationInner parameters,
-        String clientRequestId) {
-        return createWithResponseAsync(
-                resourceGroupName, automationAccountName, softwareUpdateConfigurationName, parameters, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create a new software update configuration with the name given in the URI.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
-     * @param parameters Request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -320,30 +295,6 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         return createWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, parameters, clientRequestId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create a new software update configuration with the name given in the URI.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
-     * @param parameters Request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SoftwareUpdateConfigurationInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        SoftwareUpdateConfigurationInner parameters) {
-        final String clientRequestId = null;
-        return createAsync(
-                resourceGroupName, automationAccountName, softwareUpdateConfigurationName, parameters, clientRequestId)
-            .block();
     }
 
     /**
@@ -376,6 +327,35 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
                 clientRequestId,
                 context)
             .block();
+    }
+
+    /**
+     * Create a new software update configuration with the name given in the URI.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
+     * @param parameters Request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return software update configuration properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SoftwareUpdateConfigurationInner create(
+        String resourceGroupName,
+        String automationAccountName,
+        String softwareUpdateConfigurationName,
+        SoftwareUpdateConfigurationInner parameters) {
+        final String clientRequestId = null;
+        return createWithResponse(
+                resourceGroupName,
+                automationAccountName,
+                softwareUpdateConfigurationName,
+                parameters,
+                clientRequestId,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -511,29 +491,6 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SoftwareUpdateConfigurationInner> getByNameAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        String clientRequestId) {
-        return getByNameWithResponseAsync(
-                resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a single software update configuration by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -546,26 +503,6 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         return getByNameWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a single software update configuration by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SoftwareUpdateConfigurationInner getByName(
-        String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
-        final String clientRequestId = null;
-        return getByNameAsync(
-                resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
-            .block();
     }
 
     /**
@@ -591,6 +528,30 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         return getByNameWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Get a single software update configuration by name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single software update configuration by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SoftwareUpdateConfigurationInner getByName(
+        String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
+        final String clientRequestId = null;
+        return getByNameWithResponse(
+                resourceGroupName,
+                automationAccountName,
+                softwareUpdateConfigurationName,
+                clientRequestId,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -724,29 +685,6 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        String clientRequestId) {
-        return deleteWithResponseAsync(
-                resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * delete a specific software update configuration.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -759,22 +697,6 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         return deleteWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
             .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * delete a specific software update configuration.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
-        final String clientRequestId = null;
-        deleteAsync(resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId).block();
     }
 
     /**
@@ -800,6 +722,23 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         return deleteWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * delete a specific software update configuration.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
+        final String clientRequestId = null;
+        deleteWithResponse(
+            resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId, Context.NONE);
     }
 
     /**
@@ -919,25 +858,6 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param clientRequestId Identifies this specific client request.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SoftwareUpdateConfigurationListResultInner> listAsync(
-        String resourceGroupName, String automationAccountName, String clientRequestId, String filter) {
-        return listWithResponseAsync(resourceGroupName, automationAccountName, clientRequestId, filter)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get all software update configurations for the account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -950,23 +870,6 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         final String filter = null;
         return listWithResponseAsync(resourceGroupName, automationAccountName, clientRequestId, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get all software update configurations for the account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SoftwareUpdateConfigurationListResultInner list(String resourceGroupName, String automationAccountName) {
-        final String clientRequestId = null;
-        final String filter = null;
-        return listAsync(resourceGroupName, automationAccountName, clientRequestId, filter).block();
     }
 
     /**
@@ -991,5 +894,23 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         Context context) {
         return listWithResponseAsync(resourceGroupName, automationAccountName, clientRequestId, filter, context)
             .block();
+    }
+
+    /**
+     * Get all software update configurations for the account.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all software update configurations for the account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SoftwareUpdateConfigurationListResultInner list(String resourceGroupName, String automationAccountName) {
+        final String clientRequestId = null;
+        final String filter = null;
+        return listWithResponse(resourceGroupName, automationAccountName, clientRequestId, filter, Context.NONE)
+            .getValue();
     }
 }

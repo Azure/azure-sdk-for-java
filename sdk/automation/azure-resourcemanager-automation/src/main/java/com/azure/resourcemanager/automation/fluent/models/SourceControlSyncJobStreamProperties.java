@@ -36,6 +36,10 @@ public final class SourceControlSyncJobStreamProperties {
     @JsonProperty(value = "streamType")
     private StreamType streamType;
 
+    /** Creates an instance of SourceControlSyncJobStreamProperties class. */
+    public SourceControlSyncJobStreamProperties() {
+    }
+
     /**
      * Get the sourceControlSyncJobStreamId property: The sync job stream id.
      *

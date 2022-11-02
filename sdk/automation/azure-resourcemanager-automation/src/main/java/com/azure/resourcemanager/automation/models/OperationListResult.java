@@ -18,6 +18,10 @@ public final class OperationListResult {
     @JsonProperty(value = "value")
     private List<OperationInner> value;
 
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
+
     /**
      * Get the value property: List of Automation operations supported by the Automation resource provider.
      *

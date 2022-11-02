@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for JobStream ListByJob. */
 public final class JobStreamListByJobSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/listJobStreamsByJob.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/job/listJobStreamsByJob.json
      */
     /**
      * Sample code: List job streams by job name.

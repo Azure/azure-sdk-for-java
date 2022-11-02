@@ -22,6 +22,10 @@ public final class JobCollectionItemInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private JobCollectionItemProperties innerProperties = new JobCollectionItemProperties();
 
+    /** Creates an instance of JobCollectionItemInner class. */
+    public JobCollectionItemInner() {
+    }
+
     /**
      * Get the innerProperties property: Job properties.
      *

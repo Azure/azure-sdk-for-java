@@ -28,10 +28,6 @@ public final class JobsImpl implements Jobs {
         this.serviceManager = serviceManager;
     }
 
-    public String getOutput(String resourceGroupName, String automationAccountName, String jobName) {
-        return this.serviceClient().getOutput(resourceGroupName, automationAccountName, jobName);
-    }
-
     public Response<String> getOutputWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -43,8 +39,8 @@ public final class JobsImpl implements Jobs {
             .getOutputWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
-    public String getRunbookContent(String resourceGroupName, String automationAccountName, String jobName) {
-        return this.serviceClient().getRunbookContent(resourceGroupName, automationAccountName, jobName);
+    public String getOutput(String resourceGroupName, String automationAccountName, String jobName) {
+        return this.serviceClient().getOutput(resourceGroupName, automationAccountName, jobName);
     }
 
     public Response<String> getRunbookContentWithResponse(
@@ -58,8 +54,8 @@ public final class JobsImpl implements Jobs {
             .getRunbookContentWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
-    public void suspend(String resourceGroupName, String automationAccountName, String jobName) {
-        this.serviceClient().suspend(resourceGroupName, automationAccountName, jobName);
+    public String getRunbookContent(String resourceGroupName, String automationAccountName, String jobName) {
+        return this.serviceClient().getRunbookContent(resourceGroupName, automationAccountName, jobName);
     }
 
     public Response<Void> suspendWithResponse(
@@ -73,8 +69,8 @@ public final class JobsImpl implements Jobs {
             .suspendWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
-    public void stop(String resourceGroupName, String automationAccountName, String jobName) {
-        this.serviceClient().stop(resourceGroupName, automationAccountName, jobName);
+    public void suspend(String resourceGroupName, String automationAccountName, String jobName) {
+        this.serviceClient().suspend(resourceGroupName, automationAccountName, jobName);
     }
 
     public Response<Void> stopWithResponse(
@@ -88,13 +84,8 @@ public final class JobsImpl implements Jobs {
             .stopWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
-    public Job get(String resourceGroupName, String automationAccountName, String jobName) {
-        JobInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, jobName);
-        if (inner != null) {
-            return new JobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void stop(String resourceGroupName, String automationAccountName, String jobName) {
+        this.serviceClient().stop(resourceGroupName, automationAccountName, jobName);
     }
 
     public Response<Job> getWithResponse(
@@ -113,6 +104,15 @@ public final class JobsImpl implements Jobs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Job get(String resourceGroupName, String automationAccountName, String jobName) {
+        JobInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, jobName);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -138,10 +138,6 @@ public final class JobsImpl implements Jobs {
         return Utils.mapPage(inner, inner1 -> new JobCollectionItemImpl(inner1, this.manager()));
     }
 
-    public void resume(String resourceGroupName, String automationAccountName, String jobName) {
-        this.serviceClient().resume(resourceGroupName, automationAccountName, jobName);
-    }
-
     public Response<Void> resumeWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -151,6 +147,10 @@ public final class JobsImpl implements Jobs {
         return this
             .serviceClient()
             .resumeWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+    }
+
+    public void resume(String resourceGroupName, String automationAccountName, String jobName) {
+        this.serviceClient().resume(resourceGroupName, automationAccountName, jobName);
     }
 
     public Job getById(String id) {

@@ -31,6 +31,10 @@ public final class DscNodeConfigurationCreateOrUpdateParametersProperties {
     @JsonProperty(value = "incrementNodeConfigurationBuild")
     private Boolean incrementNodeConfigurationBuild;
 
+    /** Creates an instance of DscNodeConfigurationCreateOrUpdateParametersProperties class. */
+    public DscNodeConfigurationCreateOrUpdateParametersProperties() {
+    }
+
     /**
      * Get the source property: Gets or sets the source.
      *

@@ -141,7 +141,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -206,7 +206,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -248,24 +248,6 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
      * @param activityName The name of activity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the activity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActivityInner get(
-        String resourceGroupName, String automationAccountName, String moduleName, String activityName) {
-        return getAsync(resourceGroupName, automationAccountName, moduleName, activityName).block();
-    }
-
-    /**
-     * Retrieve the activity in the module identified by module name and activity name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param moduleName The name of module.
-     * @param activityName The name of activity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -281,6 +263,25 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
         Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, moduleName, activityName, context)
             .block();
+    }
+
+    /**
+     * Retrieve the activity in the module identified by module name and activity name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param moduleName The name of module.
+     * @param activityName The name of activity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the activity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityInner get(
+        String resourceGroupName, String automationAccountName, String moduleName, String activityName) {
+        return getWithResponse(resourceGroupName, automationAccountName, moduleName, activityName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -321,7 +322,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -387,7 +388,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

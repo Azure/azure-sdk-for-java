@@ -17,6 +17,10 @@ public final class SourceControlUpdateParameters {
     @JsonProperty(value = "properties")
     private SourceControlUpdateProperties innerProperties;
 
+    /** Creates an instance of SourceControlUpdateParameters class. */
+    public SourceControlUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The value of the source control.
      *

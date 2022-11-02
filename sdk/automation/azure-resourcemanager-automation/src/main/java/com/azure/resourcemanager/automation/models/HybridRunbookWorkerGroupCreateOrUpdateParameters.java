@@ -23,6 +23,10 @@ public final class HybridRunbookWorkerGroupCreateOrUpdateParameters {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of HybridRunbookWorkerGroupCreateOrUpdateParameters class. */
+    public HybridRunbookWorkerGroupCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets hybrid runbook worker group create or update properties.
      *

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.automation.generated;
 /** Samples for Certificate CreateOrUpdate. */
 public final class CertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateCertificate.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createOrUpdateCertificate.json
      */
     /**
      * Sample code: Create or update a certificate.

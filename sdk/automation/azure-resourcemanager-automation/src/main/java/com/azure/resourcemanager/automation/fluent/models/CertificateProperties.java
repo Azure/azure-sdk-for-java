@@ -47,6 +47,10 @@ public final class CertificateProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of CertificateProperties class. */
+    public CertificateProperties() {
+    }
+
     /**
      * Get the thumbprint property: Gets the thumbprint of the certificate.
      *

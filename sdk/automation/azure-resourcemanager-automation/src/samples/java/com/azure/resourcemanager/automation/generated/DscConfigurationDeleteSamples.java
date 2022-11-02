@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DscConfiguration Delete. */
 public final class DscConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/deleteDscConfiguration.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteDscConfiguration.json
      */
     /**
      * Sample code: Delete DSC Configuration.

@@ -19,6 +19,10 @@ public final class JobScheduleCreateParameters {
     @JsonProperty(value = "properties", required = true)
     private JobScheduleCreateProperties innerProperties = new JobScheduleCreateProperties();
 
+    /** Creates an instance of JobScheduleCreateParameters class. */
+    public JobScheduleCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the list of job schedule properties.
      *

@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.automation.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.automation.models.Module;
+import com.azure.resourcemanager.automation.models.PythonPackageUpdateParameters;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Python2Package Update. */
 public final class Python2PackageUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updatePython2Package.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updatePython2Package.json
      */
     /**
      * Sample code: Update a module.
@@ -20,12 +20,14 @@ public final class Python2PackageUpdateSamples {
      * @param manager Entry point to AutomationManager.
      */
     public static void updateAModule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Module resource =
-            manager
-                .python2Packages()
-                .getWithResponse("rg", "MyAutomationAccount", "MyPython2Package", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf()).apply();
+        manager
+            .python2Packages()
+            .updateWithResponse(
+                "rg",
+                "MyAutomationAccount",
+                "MyPython2Package",
+                new PythonPackageUpdateParameters().withTags(mapOf()),
+                Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

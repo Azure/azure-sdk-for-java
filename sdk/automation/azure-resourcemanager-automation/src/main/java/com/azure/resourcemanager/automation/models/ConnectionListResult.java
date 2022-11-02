@@ -24,6 +24,10 @@ public final class ConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ConnectionListResult class. */
+    public ConnectionListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of connection.
      *

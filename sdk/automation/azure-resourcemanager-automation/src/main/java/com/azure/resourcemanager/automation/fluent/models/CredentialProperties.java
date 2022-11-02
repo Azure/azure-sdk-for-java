@@ -35,6 +35,10 @@ public final class CredentialProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of CredentialProperties class. */
+    public CredentialProperties() {
+    }
+
     /**
      * Get the username property: Gets the user name of the credential.
      *

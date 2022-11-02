@@ -18,6 +18,10 @@ public final class KeyListResultInner {
     @JsonProperty(value = "keys")
     private List<Key> keys;
 
+    /** Creates an instance of KeyListResultInner class. */
+    public KeyListResultInner() {
+    }
+
     /**
      * Get the keys property: Lists the automation keys.
      *

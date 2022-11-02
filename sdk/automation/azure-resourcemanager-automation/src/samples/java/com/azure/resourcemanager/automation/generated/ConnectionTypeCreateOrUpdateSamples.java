@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ConnectionType CreateOrUpdate. */
 public final class ConnectionTypeCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateConnectionType.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createOrUpdateConnectionType.json
      */
     /**
      * Sample code: Create or update connection type.

@@ -47,6 +47,10 @@ public final class UsageInner {
     @JsonProperty(value = "throttleStatus")
     private String throttleStatus;
 
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
+
     /**
      * Get the id property: Gets or sets the id of the resource.
      *

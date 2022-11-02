@@ -21,19 +21,6 @@ public interface JobSchedulesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
-
-    /**
-     * Delete the job schedule identified by job schedule name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobScheduleId The job schedule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +32,7 @@ public interface JobSchedulesClient {
         String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
 
     /**
-     * Retrieve the job schedule identified by job schedule name.
+     * Delete the job schedule identified by job schedule name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -53,10 +40,9 @@ public interface JobSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobScheduleInner get(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
+    void delete(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
 
     /**
      * Retrieve the job schedule identified by job schedule name.
@@ -75,23 +61,18 @@ public interface JobSchedulesClient {
         String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
 
     /**
-     * Create a job schedule.
+     * Retrieve the job schedule identified by job schedule name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
-     * @param parameters The parameters supplied to the create job schedule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the job schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobScheduleInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        UUID jobScheduleId,
-        JobScheduleCreateParameters parameters);
+    JobScheduleInner get(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
 
     /**
      * Create a job schedule.
@@ -113,6 +94,25 @@ public interface JobSchedulesClient {
         UUID jobScheduleId,
         JobScheduleCreateParameters parameters,
         Context context);
+
+    /**
+     * Create a job schedule.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobScheduleId The job schedule name.
+     * @param parameters The parameters supplied to the create job schedule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job schedule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobScheduleInner create(
+        String resourceGroupName,
+        String automationAccountName,
+        UUID jobScheduleId,
+        JobScheduleCreateParameters parameters);
 
     /**
      * Retrieve a list of job schedules.

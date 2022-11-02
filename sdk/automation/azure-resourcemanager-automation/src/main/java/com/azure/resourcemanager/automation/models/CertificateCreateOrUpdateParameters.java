@@ -24,6 +24,10 @@ public final class CertificateCreateOrUpdateParameters {
     @JsonProperty(value = "properties", required = true)
     private CertificateCreateOrUpdateProperties innerProperties = new CertificateCreateOrUpdateProperties();
 
+    /** Creates an instance of CertificateCreateOrUpdateParameters class. */
+    public CertificateCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the certificate.
      *

@@ -58,26 +58,6 @@ public interface SourceControlSyncJobStreams {
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
      * @param streamId The id of the sync job stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job stream by id.
-     */
-    SourceControlSyncJobStreamById get(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String streamId);
-
-    /**
-     * Retrieve a sync job stream identified by stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
-     * @param streamId The id of the sync job stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -91,4 +71,24 @@ public interface SourceControlSyncJobStreams {
         UUID sourceControlSyncJobId,
         String streamId,
         Context context);
+
+    /**
+     * Retrieve a sync job stream identified by stream id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
+     * @param streamId The id of the sync job stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job stream by id.
+     */
+    SourceControlSyncJobStreamById get(
+        String resourceGroupName,
+        String automationAccountName,
+        String sourceControlName,
+        UUID sourceControlSyncJobId,
+        String streamId);
 }

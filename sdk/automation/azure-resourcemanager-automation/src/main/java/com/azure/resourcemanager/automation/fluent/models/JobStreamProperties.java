@@ -51,6 +51,10 @@ public final class JobStreamProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> value;
 
+    /** Creates an instance of JobStreamProperties class. */
+    public JobStreamProperties() {
+    }
+
     /**
      * Get the jobStreamId property: Gets or sets the id of the job stream.
      *

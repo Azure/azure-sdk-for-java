@@ -20,21 +20,6 @@ public interface JobStreamsClient {
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
      * @param jobStreamId The job stream id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobStreamInner get(String resourceGroupName, String automationAccountName, String jobName, String jobStreamId);
-
-    /**
-     * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param jobStreamId The job stream id.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,6 +35,21 @@ public interface JobStreamsClient {
         String jobStreamId,
         String clientRequestId,
         Context context);
+
+    /**
+     * Retrieve the job stream identified by job stream id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @param jobStreamId The job stream id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobStreamInner get(String resourceGroupName, String automationAccountName, String jobName, String jobStreamId);
 
     /**
      * Retrieve a list of jobs streams identified by job name.

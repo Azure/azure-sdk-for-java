@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Activity ListByModule. */
 public final class ActivityListByModuleSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listActivitiesByModule.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listActivitiesByModule.json
      */
     /**
      * Sample code: List activities by a module.

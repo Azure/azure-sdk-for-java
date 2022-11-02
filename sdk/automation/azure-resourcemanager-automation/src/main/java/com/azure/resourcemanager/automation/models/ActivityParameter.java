@@ -78,6 +78,10 @@ public final class ActivityParameter {
     @JsonProperty(value = "validationSet")
     private List<ActivityParameterValidationSet> validationSet;
 
+    /** Creates an instance of ActivityParameter class. */
+    public ActivityParameter() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the activity parameter.
      *

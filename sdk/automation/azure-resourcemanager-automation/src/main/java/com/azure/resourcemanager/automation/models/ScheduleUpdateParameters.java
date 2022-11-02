@@ -23,6 +23,10 @@ public final class ScheduleUpdateParameters {
     @JsonProperty(value = "properties")
     private ScheduleUpdateProperties innerProperties;
 
+    /** Creates an instance of ScheduleUpdateParameters class. */
+    public ScheduleUpdateParameters() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the Schedule.
      *

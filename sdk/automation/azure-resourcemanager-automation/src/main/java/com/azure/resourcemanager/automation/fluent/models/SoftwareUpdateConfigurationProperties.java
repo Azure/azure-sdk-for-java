@@ -70,6 +70,10 @@ public final class SoftwareUpdateConfigurationProperties {
     @JsonProperty(value = "tasks")
     private SoftwareUpdateConfigurationTasks tasks;
 
+    /** Creates an instance of SoftwareUpdateConfigurationProperties class. */
+    public SoftwareUpdateConfigurationProperties() {
+    }
+
     /**
      * Get the updateConfiguration property: update specific properties for the Software update configuration.
      *

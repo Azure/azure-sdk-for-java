@@ -23,6 +23,10 @@ public final class ActivityParameterSet {
     @JsonProperty(value = "parameters")
     private List<ActivityParameter> parameters;
 
+    /** Creates an instance of ActivityParameterSet class. */
+    public ActivityParameterSet() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the activity parameter set.
      *

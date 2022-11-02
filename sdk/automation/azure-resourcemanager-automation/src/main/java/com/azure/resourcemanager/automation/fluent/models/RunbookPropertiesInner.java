@@ -110,6 +110,10 @@ public final class RunbookPropertiesInner {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of RunbookPropertiesInner class. */
+    public RunbookPropertiesInner() {
+    }
+
     /**
      * Get the runbookType property: Gets or sets the type of the runbook.
      *

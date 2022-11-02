@@ -18,6 +18,10 @@ public final class SoftwareUpdateConfigurationListResultInner {
     @JsonProperty(value = "value")
     private List<SoftwareUpdateConfigurationCollectionItem> value;
 
+    /** Creates an instance of SoftwareUpdateConfigurationListResultInner class. */
+    public SoftwareUpdateConfigurationListResultInner() {
+    }
+
     /**
      * Get the value property: outer object returned when listing all software update configurations.
      *

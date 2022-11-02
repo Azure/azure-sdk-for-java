@@ -22,25 +22,6 @@ public interface VariablesClient {
      * @param automationAccountName The name of the automation account.
      * @param variableName The variable name.
      * @param parameters The parameters supplied to the create or update variable operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VariableInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String variableName,
-        VariableCreateOrUpdateParameters parameters);
-
-    /**
-     * Create a variable.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param variableName The variable name.
-     * @param parameters The parameters supplied to the create or update variable operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,23 +37,23 @@ public interface VariablesClient {
         Context context);
 
     /**
-     * Update a variable.
+     * Create a variable.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param variableName The variable name.
-     * @param parameters The parameters supplied to the update variable operation.
+     * @param parameters The parameters supplied to the create or update variable operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the variable.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VariableInner update(
+    VariableInner createOrUpdate(
         String resourceGroupName,
         String automationAccountName,
         String variableName,
-        VariableUpdateParameters parameters);
+        VariableCreateOrUpdateParameters parameters);
 
     /**
      * Update a variable.
@@ -96,17 +77,23 @@ public interface VariablesClient {
         Context context);
 
     /**
-     * Delete the variable.
+     * Update a variable.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param variableName The name of variable.
+     * @param variableName The variable name.
+     * @param parameters The parameters supplied to the update variable operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the variable.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String variableName);
+    VariableInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String variableName,
+        VariableUpdateParameters parameters);
 
     /**
      * Delete the variable.
@@ -125,7 +112,7 @@ public interface VariablesClient {
         String resourceGroupName, String automationAccountName, String variableName, Context context);
 
     /**
-     * Retrieve the variable identified by variable name.
+     * Delete the variable.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -133,10 +120,9 @@ public interface VariablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VariableInner get(String resourceGroupName, String automationAccountName, String variableName);
+    void delete(String resourceGroupName, String automationAccountName, String variableName);
 
     /**
      * Retrieve the variable identified by variable name.
@@ -153,6 +139,20 @@ public interface VariablesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VariableInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String variableName, Context context);
+
+    /**
+     * Retrieve the variable identified by variable name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param variableName The name of variable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the variable.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VariableInner get(String resourceGroupName, String automationAccountName, String variableName);
 
     /**
      * Retrieve a list of variables.

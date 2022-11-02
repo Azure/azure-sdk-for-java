@@ -23,6 +23,10 @@ public final class TargetProperties {
     @JsonProperty(value = "nonAzureQueries")
     private List<NonAzureQueryProperties> nonAzureQueries;
 
+    /** Creates an instance of TargetProperties class. */
+    public TargetProperties() {
+    }
+
     /**
      * Get the azureQueries property: List of Azure queries in the software update configuration.
      *

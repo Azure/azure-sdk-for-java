@@ -22,6 +22,10 @@ public final class AdvancedScheduleMonthlyOccurrence {
     @JsonProperty(value = "day")
     private ScheduleDay day;
 
+    /** Creates an instance of AdvancedScheduleMonthlyOccurrence class. */
+    public AdvancedScheduleMonthlyOccurrence() {
+    }
+
     /**
      * Get the occurrence property: Occurrence of the week within the month. Must be between 1 and 5.
      *

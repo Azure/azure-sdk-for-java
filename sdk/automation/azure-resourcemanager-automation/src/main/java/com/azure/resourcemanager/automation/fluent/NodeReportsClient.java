@@ -51,21 +51,6 @@ public interface NodeReportsClient {
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
      * @param reportId The report id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node report type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DscNodeReportInner get(String resourceGroupName, String automationAccountName, String nodeId, String reportId);
-
-    /**
-     * Retrieve the Dsc node report data by node id and report id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The Dsc node id.
-     * @param reportId The report id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +62,7 @@ public interface NodeReportsClient {
         String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context);
 
     /**
-     * Retrieve the Dsc node reports by node id and report id.
+     * Retrieve the Dsc node report data by node id and report id.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -86,10 +71,10 @@ public interface NodeReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return definition of the dsc node report type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId);
+    DscNodeReportInner get(String resourceGroupName, String automationAccountName, String nodeId, String reportId);
 
     /**
      * Retrieve the Dsc node reports by node id and report id.
@@ -107,4 +92,19 @@ public interface NodeReportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Object> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context);
+
+    /**
+     * Retrieve the Dsc node reports by node id and report id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The Dsc node id.
+     * @param reportId The report id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId);
 }

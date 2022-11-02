@@ -24,6 +24,10 @@ public final class CertificateListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CertificateListResult class. */
+    public CertificateListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of certificates.
      *

@@ -24,6 +24,10 @@ public final class SourceControlListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SourceControlListResult class. */
+    public SourceControlListResult() {
+    }
+
     /**
      * Get the value property: The list of source controls.
      *

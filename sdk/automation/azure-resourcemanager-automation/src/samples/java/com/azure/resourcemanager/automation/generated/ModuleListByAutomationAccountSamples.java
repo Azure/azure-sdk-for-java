@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Module ListByAutomationAccount. */
 public final class ModuleListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listModulesByAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listModulesByAutomationAccount.json
      */
     /**
      * Sample code: List modules by automation account.

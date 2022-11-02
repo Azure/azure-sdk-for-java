@@ -31,19 +31,6 @@ public final class SourceControlSyncJobsImpl implements SourceControlSyncJobs {
         this.serviceManager = serviceManager;
     }
 
-    public SourceControlSyncJobById get(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId) {
-        SourceControlSyncJobByIdInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId);
-        if (inner != null) {
-            return new SourceControlSyncJobByIdImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SourceControlSyncJobById> getWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -61,6 +48,19 @@ public final class SourceControlSyncJobsImpl implements SourceControlSyncJobs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SourceControlSyncJobByIdImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SourceControlSyncJobById get(
+        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId) {
+        SourceControlSyncJobByIdInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId);
+        if (inner != null) {
+            return new SourceControlSyncJobByIdImpl(inner, this.manager());
         } else {
             return null;
         }

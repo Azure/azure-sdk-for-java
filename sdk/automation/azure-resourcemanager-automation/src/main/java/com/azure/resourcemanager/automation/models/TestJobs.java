@@ -16,21 +16,6 @@ public interface TestJobs {
      * @param automationAccountName The name of the automation account.
      * @param runbookName The parameters supplied to the create test job operation.
      * @param parameters The parameters supplied to the create test job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
-     */
-    TestJob create(
-        String resourceGroupName, String automationAccountName, String runbookName, TestJobCreateParameters parameters);
-
-    /**
-     * Create a test job of the runbook.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The parameters supplied to the create test job operation.
-     * @param parameters The parameters supplied to the create test job operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,17 +30,19 @@ public interface TestJobs {
         Context context);
 
     /**
-     * Retrieve the test job for the specified runbook.
+     * Create a test job of the runbook.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
+     * @param runbookName The parameters supplied to the create test job operation.
+     * @param parameters The parameters supplied to the create test job operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the test job.
      */
-    TestJob get(String resourceGroupName, String automationAccountName, String runbookName);
+    TestJob create(
+        String resourceGroupName, String automationAccountName, String runbookName, TestJobCreateParameters parameters);
 
     /**
      * Retrieve the test job for the specified runbook.
@@ -73,7 +60,7 @@ public interface TestJobs {
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
 
     /**
-     * Resume the test job.
+     * Retrieve the test job for the specified runbook.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -81,8 +68,9 @@ public interface TestJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the test job.
      */
-    void resume(String resourceGroupName, String automationAccountName, String runbookName);
+    TestJob get(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Resume the test job.
@@ -100,7 +88,7 @@ public interface TestJobs {
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
 
     /**
-     * Stop the test job.
+     * Resume the test job.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -109,7 +97,7 @@ public interface TestJobs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stop(String resourceGroupName, String automationAccountName, String runbookName);
+    void resume(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Stop the test job.
@@ -127,7 +115,7 @@ public interface TestJobs {
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
 
     /**
-     * Suspend the test job.
+     * Stop the test job.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -136,7 +124,7 @@ public interface TestJobs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void suspend(String resourceGroupName, String automationAccountName, String runbookName);
+    void stop(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Suspend the test job.
@@ -152,4 +140,16 @@ public interface TestJobs {
      */
     Response<Void> suspendWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
+
+    /**
+     * Suspend the test job.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void suspend(String resourceGroupName, String automationAccountName, String runbookName);
 }

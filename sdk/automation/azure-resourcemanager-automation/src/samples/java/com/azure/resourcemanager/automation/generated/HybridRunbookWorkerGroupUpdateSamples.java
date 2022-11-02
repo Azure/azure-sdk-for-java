@@ -11,7 +11,7 @@ import com.azure.resourcemanager.automation.models.RunAsCredentialAssociationPro
 /** Samples for HybridRunbookWorkerGroup Update. */
 public final class HybridRunbookWorkerGroupUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/updateHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Update hybrid worker group.

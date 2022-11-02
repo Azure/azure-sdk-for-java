@@ -7,6 +7,7 @@ package com.azure.resourcemanager.automation.implementation;
 import com.azure.resourcemanager.automation.fluent.models.OperationInner;
 import com.azure.resourcemanager.automation.models.Operation;
 import com.azure.resourcemanager.automation.models.OperationDisplay;
+import com.azure.resourcemanager.automation.models.OperationPropertiesFormatServiceSpecification;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
@@ -24,6 +25,14 @@ public final class OperationImpl implements Operation {
 
     public OperationDisplay display() {
         return this.innerModel().display();
+    }
+
+    public String origin() {
+        return this.innerModel().origin();
+    }
+
+    public OperationPropertiesFormatServiceSpecification serviceSpecification() {
+        return this.innerModel().serviceSpecification();
     }
 
     public OperationInner innerModel() {

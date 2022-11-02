@@ -10,7 +10,7 @@ import com.azure.resourcemanager.automation.models.Variable;
 /** Samples for Variable Update. */
 public final class VariableUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateVariable_patch.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateVariable_patch.json
      */
     /**
      * Sample code: Update a variable.

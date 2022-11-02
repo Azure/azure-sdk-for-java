@@ -33,6 +33,10 @@ public final class ConnectionCreateOrUpdateProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> fieldDefinitionValues;
 
+    /** Creates an instance of ConnectionCreateOrUpdateProperties class. */
+    public ConnectionCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the description property: Gets or sets the description of the connection.
      *

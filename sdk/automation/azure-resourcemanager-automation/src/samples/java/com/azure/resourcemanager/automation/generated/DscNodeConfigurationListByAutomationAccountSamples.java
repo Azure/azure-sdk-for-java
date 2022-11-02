@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DscNodeConfiguration ListByAutomationAccount. */
 public final class DscNodeConfigurationListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeConfigurationsWithNoFilter.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listPagedDscNodeConfigurationsWithNoFilter.json
      */
     /**
      * Sample code: List Paged DSC node configurations by Automation Account with no filter.
@@ -24,7 +24,7 @@ public final class DscNodeConfigurationListByAutomationAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listDscNodeConfigurations.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listDscNodeConfigurations.json
      */
     /**
      * Sample code: List DSC node configurations by Automation Account.
@@ -39,7 +39,7 @@ public final class DscNodeConfigurationListByAutomationAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeConfigurationsWithNameFilter.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listPagedDscNodeConfigurationsWithNameFilter.json
      */
     /**
      * Sample code: List Paged DSC node configurations by Automation Account with name filter.

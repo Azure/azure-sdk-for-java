@@ -28,6 +28,10 @@ public final class Key {
     @JsonProperty(value = "Value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /** Creates an instance of Key class. */
+    public Key() {
+    }
+
     /**
      * Get the keyName property: Automation key name.
      *

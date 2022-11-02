@@ -22,6 +22,10 @@ public final class DscNodeUpdateParameters {
     @JsonProperty(value = "properties")
     private DscNodeUpdateParametersProperties properties;
 
+    /** Creates an instance of DscNodeUpdateParameters class. */
+    public DscNodeUpdateParameters() {
+    }
+
     /**
      * Get the nodeId property: Gets or sets the id of the dsc node.
      *

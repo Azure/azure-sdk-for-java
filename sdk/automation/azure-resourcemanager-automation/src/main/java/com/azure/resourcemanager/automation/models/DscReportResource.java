@@ -72,6 +72,10 @@ public final class DscReportResource {
     @JsonProperty(value = "startDate")
     private OffsetDateTime startDate;
 
+    /** Creates an instance of DscReportResource class. */
+    public DscReportResource() {
+    }
+
     /**
      * Get the resourceId property: Gets or sets the ID of the resource.
      *

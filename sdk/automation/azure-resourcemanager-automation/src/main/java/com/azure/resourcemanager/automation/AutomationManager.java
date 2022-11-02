@@ -54,6 +54,7 @@ import com.azure.resourcemanager.automation.implementation.OperationsImpl;
 import com.azure.resourcemanager.automation.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.automation.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.automation.implementation.Python2PackagesImpl;
+import com.azure.resourcemanager.automation.implementation.Python3PackagesImpl;
 import com.azure.resourcemanager.automation.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.automation.implementation.RunbookDraftsImpl;
 import com.azure.resourcemanager.automation.implementation.RunbooksImpl;
@@ -100,6 +101,7 @@ import com.azure.resourcemanager.automation.models.Operations;
 import com.azure.resourcemanager.automation.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.automation.models.PrivateLinkResources;
 import com.azure.resourcemanager.automation.models.Python2Packages;
+import com.azure.resourcemanager.automation.models.Python3Packages;
 import com.azure.resourcemanager.automation.models.ResourceProviders;
 import com.azure.resourcemanager.automation.models.RunbookDrafts;
 import com.azure.resourcemanager.automation.models.Runbooks;
@@ -130,15 +132,11 @@ public final class AutomationManager {
 
     private PrivateLinkResources privateLinkResources;
 
-    private Python2Packages python2Packages;
-
     private AgentRegistrationInformations agentRegistrationInformations;
 
     private DscNodes dscNodes;
 
     private NodeReports nodeReports;
-
-    private DscNodeConfigurations dscNodeConfigurations;
 
     private DscCompilationJobs dscCompilationJobs;
 
@@ -146,11 +144,15 @@ public final class AutomationManager {
 
     private NodeCountInformations nodeCountInformations;
 
-    private SourceControls sourceControls;
+    private Watchers watchers;
 
-    private SourceControlSyncJobs sourceControlSyncJobs;
+    private SoftwareUpdateConfigurations softwareUpdateConfigurations;
 
-    private SourceControlSyncJobStreams sourceControlSyncJobStreams;
+    private Webhooks webhooks;
+
+    private DeletedAutomationAccounts deletedAutomationAccounts;
+
+    private Python3Packages python3Packages;
 
     private AutomationAccounts automationAccounts;
 
@@ -168,6 +170,18 @@ public final class AutomationManager {
 
     private Credentials credentials;
 
+    private DscConfigurations dscConfigurations;
+
+    private DscNodeConfigurations dscNodeConfigurations;
+
+    private HybridRunbookWorkers hybridRunbookWorkers;
+
+    private HybridRunbookWorkerGroups hybridRunbookWorkerGroups;
+
+    private Jobs jobs;
+
+    private JobStreams jobStreams;
+
     private JobSchedules jobSchedules;
 
     private LinkedWorkspaces linkedWorkspaces;
@@ -180,27 +194,11 @@ public final class AutomationManager {
 
     private Fields fields;
 
-    private Schedules schedules;
-
-    private Variables variables;
-
-    private Watchers watchers;
-
-    private DscConfigurations dscConfigurations;
-
-    private Jobs jobs;
-
-    private JobStreams jobStreams;
-
     private Operations operations;
 
     private ResourceProviders resourceProviders;
 
-    private SoftwareUpdateConfigurations softwareUpdateConfigurations;
-
-    private SoftwareUpdateConfigurationRuns softwareUpdateConfigurationRuns;
-
-    private SoftwareUpdateConfigurationMachineRuns softwareUpdateConfigurationMachineRuns;
+    private Python2Packages python2Packages;
 
     private RunbookDrafts runbookDrafts;
 
@@ -210,13 +208,19 @@ public final class AutomationManager {
 
     private TestJobs testJobs;
 
-    private Webhooks webhooks;
+    private Schedules schedules;
 
-    private HybridRunbookWorkers hybridRunbookWorkers;
+    private SoftwareUpdateConfigurationMachineRuns softwareUpdateConfigurationMachineRuns;
 
-    private DeletedAutomationAccounts deletedAutomationAccounts;
+    private SoftwareUpdateConfigurationRuns softwareUpdateConfigurationRuns;
 
-    private HybridRunbookWorkerGroups hybridRunbookWorkerGroups;
+    private SourceControls sourceControls;
+
+    private SourceControlSyncJobs sourceControlSyncJobs;
+
+    private SourceControlSyncJobStreams sourceControlSyncJobStreams;
+
+    private Variables variables;
 
     private final AutomationClient clientObject;
 
@@ -383,7 +387,7 @@ public final class AutomationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.automation")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -466,18 +470,6 @@ public final class AutomationManager {
     }
 
     /**
-     * Gets the resource collection API of Python2Packages. It manages Module.
-     *
-     * @return Resource collection API of Python2Packages.
-     */
-    public Python2Packages python2Packages() {
-        if (this.python2Packages == null) {
-            this.python2Packages = new Python2PackagesImpl(clientObject.getPython2Packages(), this);
-        }
-        return python2Packages;
-    }
-
-    /**
      * Gets the resource collection API of AgentRegistrationInformations.
      *
      * @return Resource collection API of AgentRegistrationInformations.
@@ -512,18 +504,6 @@ public final class AutomationManager {
             this.nodeReports = new NodeReportsImpl(clientObject.getNodeReports(), this);
         }
         return nodeReports;
-    }
-
-    /**
-     * Gets the resource collection API of DscNodeConfigurations. It manages DscNodeConfiguration.
-     *
-     * @return Resource collection API of DscNodeConfigurations.
-     */
-    public DscNodeConfigurations dscNodeConfigurations() {
-        if (this.dscNodeConfigurations == null) {
-            this.dscNodeConfigurations = new DscNodeConfigurationsImpl(clientObject.getDscNodeConfigurations(), this);
-        }
-        return dscNodeConfigurations;
     }
 
     /**
@@ -564,40 +544,65 @@ public final class AutomationManager {
     }
 
     /**
-     * Gets the resource collection API of SourceControls. It manages SourceControl.
+     * Gets the resource collection API of Watchers. It manages Watcher.
      *
-     * @return Resource collection API of SourceControls.
+     * @return Resource collection API of Watchers.
      */
-    public SourceControls sourceControls() {
-        if (this.sourceControls == null) {
-            this.sourceControls = new SourceControlsImpl(clientObject.getSourceControls(), this);
+    public Watchers watchers() {
+        if (this.watchers == null) {
+            this.watchers = new WatchersImpl(clientObject.getWatchers(), this);
         }
-        return sourceControls;
+        return watchers;
     }
 
     /**
-     * Gets the resource collection API of SourceControlSyncJobs. It manages SourceControlSyncJob.
+     * Gets the resource collection API of SoftwareUpdateConfigurations. It manages SoftwareUpdateConfiguration.
      *
-     * @return Resource collection API of SourceControlSyncJobs.
+     * @return Resource collection API of SoftwareUpdateConfigurations.
      */
-    public SourceControlSyncJobs sourceControlSyncJobs() {
-        if (this.sourceControlSyncJobs == null) {
-            this.sourceControlSyncJobs = new SourceControlSyncJobsImpl(clientObject.getSourceControlSyncJobs(), this);
+    public SoftwareUpdateConfigurations softwareUpdateConfigurations() {
+        if (this.softwareUpdateConfigurations == null) {
+            this.softwareUpdateConfigurations =
+                new SoftwareUpdateConfigurationsImpl(clientObject.getSoftwareUpdateConfigurations(), this);
         }
-        return sourceControlSyncJobs;
+        return softwareUpdateConfigurations;
     }
 
     /**
-     * Gets the resource collection API of SourceControlSyncJobStreams.
+     * Gets the resource collection API of Webhooks. It manages Webhook.
      *
-     * @return Resource collection API of SourceControlSyncJobStreams.
+     * @return Resource collection API of Webhooks.
      */
-    public SourceControlSyncJobStreams sourceControlSyncJobStreams() {
-        if (this.sourceControlSyncJobStreams == null) {
-            this.sourceControlSyncJobStreams =
-                new SourceControlSyncJobStreamsImpl(clientObject.getSourceControlSyncJobStreams(), this);
+    public Webhooks webhooks() {
+        if (this.webhooks == null) {
+            this.webhooks = new WebhooksImpl(clientObject.getWebhooks(), this);
         }
-        return sourceControlSyncJobStreams;
+        return webhooks;
+    }
+
+    /**
+     * Gets the resource collection API of DeletedAutomationAccounts.
+     *
+     * @return Resource collection API of DeletedAutomationAccounts.
+     */
+    public DeletedAutomationAccounts deletedAutomationAccounts() {
+        if (this.deletedAutomationAccounts == null) {
+            this.deletedAutomationAccounts =
+                new DeletedAutomationAccountsImpl(clientObject.getDeletedAutomationAccounts(), this);
+        }
+        return deletedAutomationAccounts;
+    }
+
+    /**
+     * Gets the resource collection API of Python3Packages. It manages Module.
+     *
+     * @return Resource collection API of Python3Packages.
+     */
+    public Python3Packages python3Packages() {
+        if (this.python3Packages == null) {
+            this.python3Packages = new Python3PackagesImpl(clientObject.getPython3Packages(), this);
+        }
+        return python3Packages;
     }
 
     /**
@@ -697,6 +702,79 @@ public final class AutomationManager {
     }
 
     /**
+     * Gets the resource collection API of DscConfigurations. It manages DscConfiguration.
+     *
+     * @return Resource collection API of DscConfigurations.
+     */
+    public DscConfigurations dscConfigurations() {
+        if (this.dscConfigurations == null) {
+            this.dscConfigurations = new DscConfigurationsImpl(clientObject.getDscConfigurations(), this);
+        }
+        return dscConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of DscNodeConfigurations. It manages DscNodeConfiguration.
+     *
+     * @return Resource collection API of DscNodeConfigurations.
+     */
+    public DscNodeConfigurations dscNodeConfigurations() {
+        if (this.dscNodeConfigurations == null) {
+            this.dscNodeConfigurations = new DscNodeConfigurationsImpl(clientObject.getDscNodeConfigurations(), this);
+        }
+        return dscNodeConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of HybridRunbookWorkers. It manages HybridRunbookWorker.
+     *
+     * @return Resource collection API of HybridRunbookWorkers.
+     */
+    public HybridRunbookWorkers hybridRunbookWorkers() {
+        if (this.hybridRunbookWorkers == null) {
+            this.hybridRunbookWorkers = new HybridRunbookWorkersImpl(clientObject.getHybridRunbookWorkers(), this);
+        }
+        return hybridRunbookWorkers;
+    }
+
+    /**
+     * Gets the resource collection API of HybridRunbookWorkerGroups. It manages HybridRunbookWorkerGroup.
+     *
+     * @return Resource collection API of HybridRunbookWorkerGroups.
+     */
+    public HybridRunbookWorkerGroups hybridRunbookWorkerGroups() {
+        if (this.hybridRunbookWorkerGroups == null) {
+            this.hybridRunbookWorkerGroups =
+                new HybridRunbookWorkerGroupsImpl(clientObject.getHybridRunbookWorkerGroups(), this);
+        }
+        return hybridRunbookWorkerGroups;
+    }
+
+    /**
+     * Gets the resource collection API of Jobs. It manages Job.
+     *
+     * @return Resource collection API of Jobs.
+     */
+    public Jobs jobs() {
+        if (this.jobs == null) {
+            this.jobs = new JobsImpl(clientObject.getJobs(), this);
+        }
+        return jobs;
+    }
+
+    /**
+     * Gets the resource collection API of JobStreams.
+     *
+     * @return Resource collection API of JobStreams.
+     */
+    public JobStreams jobStreams() {
+        if (this.jobStreams == null) {
+            this.jobStreams = new JobStreamsImpl(clientObject.getJobStreams(), this);
+        }
+        return jobStreams;
+    }
+
+    /**
      * Gets the resource collection API of JobSchedules. It manages JobSchedule.
      *
      * @return Resource collection API of JobSchedules.
@@ -769,78 +847,6 @@ public final class AutomationManager {
     }
 
     /**
-     * Gets the resource collection API of Schedules. It manages Schedule.
-     *
-     * @return Resource collection API of Schedules.
-     */
-    public Schedules schedules() {
-        if (this.schedules == null) {
-            this.schedules = new SchedulesImpl(clientObject.getSchedules(), this);
-        }
-        return schedules;
-    }
-
-    /**
-     * Gets the resource collection API of Variables. It manages Variable.
-     *
-     * @return Resource collection API of Variables.
-     */
-    public Variables variables() {
-        if (this.variables == null) {
-            this.variables = new VariablesImpl(clientObject.getVariables(), this);
-        }
-        return variables;
-    }
-
-    /**
-     * Gets the resource collection API of Watchers. It manages Watcher.
-     *
-     * @return Resource collection API of Watchers.
-     */
-    public Watchers watchers() {
-        if (this.watchers == null) {
-            this.watchers = new WatchersImpl(clientObject.getWatchers(), this);
-        }
-        return watchers;
-    }
-
-    /**
-     * Gets the resource collection API of DscConfigurations. It manages DscConfiguration.
-     *
-     * @return Resource collection API of DscConfigurations.
-     */
-    public DscConfigurations dscConfigurations() {
-        if (this.dscConfigurations == null) {
-            this.dscConfigurations = new DscConfigurationsImpl(clientObject.getDscConfigurations(), this);
-        }
-        return dscConfigurations;
-    }
-
-    /**
-     * Gets the resource collection API of Jobs. It manages Job.
-     *
-     * @return Resource collection API of Jobs.
-     */
-    public Jobs jobs() {
-        if (this.jobs == null) {
-            this.jobs = new JobsImpl(clientObject.getJobs(), this);
-        }
-        return jobs;
-    }
-
-    /**
-     * Gets the resource collection API of JobStreams.
-     *
-     * @return Resource collection API of JobStreams.
-     */
-    public JobStreams jobStreams() {
-        if (this.jobStreams == null) {
-            this.jobStreams = new JobStreamsImpl(clientObject.getJobStreams(), this);
-        }
-        return jobStreams;
-    }
-
-    /**
      * Gets the resource collection API of Operations.
      *
      * @return Resource collection API of Operations.
@@ -865,43 +871,15 @@ public final class AutomationManager {
     }
 
     /**
-     * Gets the resource collection API of SoftwareUpdateConfigurations. It manages SoftwareUpdateConfiguration.
+     * Gets the resource collection API of Python2Packages.
      *
-     * @return Resource collection API of SoftwareUpdateConfigurations.
+     * @return Resource collection API of Python2Packages.
      */
-    public SoftwareUpdateConfigurations softwareUpdateConfigurations() {
-        if (this.softwareUpdateConfigurations == null) {
-            this.softwareUpdateConfigurations =
-                new SoftwareUpdateConfigurationsImpl(clientObject.getSoftwareUpdateConfigurations(), this);
+    public Python2Packages python2Packages() {
+        if (this.python2Packages == null) {
+            this.python2Packages = new Python2PackagesImpl(clientObject.getPython2Packages(), this);
         }
-        return softwareUpdateConfigurations;
-    }
-
-    /**
-     * Gets the resource collection API of SoftwareUpdateConfigurationRuns.
-     *
-     * @return Resource collection API of SoftwareUpdateConfigurationRuns.
-     */
-    public SoftwareUpdateConfigurationRuns softwareUpdateConfigurationRuns() {
-        if (this.softwareUpdateConfigurationRuns == null) {
-            this.softwareUpdateConfigurationRuns =
-                new SoftwareUpdateConfigurationRunsImpl(clientObject.getSoftwareUpdateConfigurationRuns(), this);
-        }
-        return softwareUpdateConfigurationRuns;
-    }
-
-    /**
-     * Gets the resource collection API of SoftwareUpdateConfigurationMachineRuns.
-     *
-     * @return Resource collection API of SoftwareUpdateConfigurationMachineRuns.
-     */
-    public SoftwareUpdateConfigurationMachineRuns softwareUpdateConfigurationMachineRuns() {
-        if (this.softwareUpdateConfigurationMachineRuns == null) {
-            this.softwareUpdateConfigurationMachineRuns =
-                new SoftwareUpdateConfigurationMachineRunsImpl(
-                    clientObject.getSoftwareUpdateConfigurationMachineRuns(), this);
-        }
-        return softwareUpdateConfigurationMachineRuns;
+        return python2Packages;
     }
 
     /**
@@ -953,53 +931,91 @@ public final class AutomationManager {
     }
 
     /**
-     * Gets the resource collection API of Webhooks. It manages Webhook.
+     * Gets the resource collection API of Schedules. It manages Schedule.
      *
-     * @return Resource collection API of Webhooks.
+     * @return Resource collection API of Schedules.
      */
-    public Webhooks webhooks() {
-        if (this.webhooks == null) {
-            this.webhooks = new WebhooksImpl(clientObject.getWebhooks(), this);
+    public Schedules schedules() {
+        if (this.schedules == null) {
+            this.schedules = new SchedulesImpl(clientObject.getSchedules(), this);
         }
-        return webhooks;
+        return schedules;
     }
 
     /**
-     * Gets the resource collection API of HybridRunbookWorkers. It manages HybridRunbookWorker.
+     * Gets the resource collection API of SoftwareUpdateConfigurationMachineRuns.
      *
-     * @return Resource collection API of HybridRunbookWorkers.
+     * @return Resource collection API of SoftwareUpdateConfigurationMachineRuns.
      */
-    public HybridRunbookWorkers hybridRunbookWorkers() {
-        if (this.hybridRunbookWorkers == null) {
-            this.hybridRunbookWorkers = new HybridRunbookWorkersImpl(clientObject.getHybridRunbookWorkers(), this);
+    public SoftwareUpdateConfigurationMachineRuns softwareUpdateConfigurationMachineRuns() {
+        if (this.softwareUpdateConfigurationMachineRuns == null) {
+            this.softwareUpdateConfigurationMachineRuns =
+                new SoftwareUpdateConfigurationMachineRunsImpl(
+                    clientObject.getSoftwareUpdateConfigurationMachineRuns(), this);
         }
-        return hybridRunbookWorkers;
+        return softwareUpdateConfigurationMachineRuns;
     }
 
     /**
-     * Gets the resource collection API of DeletedAutomationAccounts.
+     * Gets the resource collection API of SoftwareUpdateConfigurationRuns.
      *
-     * @return Resource collection API of DeletedAutomationAccounts.
+     * @return Resource collection API of SoftwareUpdateConfigurationRuns.
      */
-    public DeletedAutomationAccounts deletedAutomationAccounts() {
-        if (this.deletedAutomationAccounts == null) {
-            this.deletedAutomationAccounts =
-                new DeletedAutomationAccountsImpl(clientObject.getDeletedAutomationAccounts(), this);
+    public SoftwareUpdateConfigurationRuns softwareUpdateConfigurationRuns() {
+        if (this.softwareUpdateConfigurationRuns == null) {
+            this.softwareUpdateConfigurationRuns =
+                new SoftwareUpdateConfigurationRunsImpl(clientObject.getSoftwareUpdateConfigurationRuns(), this);
         }
-        return deletedAutomationAccounts;
+        return softwareUpdateConfigurationRuns;
     }
 
     /**
-     * Gets the resource collection API of HybridRunbookWorkerGroups. It manages HybridRunbookWorkerGroup.
+     * Gets the resource collection API of SourceControls. It manages SourceControl.
      *
-     * @return Resource collection API of HybridRunbookWorkerGroups.
+     * @return Resource collection API of SourceControls.
      */
-    public HybridRunbookWorkerGroups hybridRunbookWorkerGroups() {
-        if (this.hybridRunbookWorkerGroups == null) {
-            this.hybridRunbookWorkerGroups =
-                new HybridRunbookWorkerGroupsImpl(clientObject.getHybridRunbookWorkerGroups(), this);
+    public SourceControls sourceControls() {
+        if (this.sourceControls == null) {
+            this.sourceControls = new SourceControlsImpl(clientObject.getSourceControls(), this);
         }
-        return hybridRunbookWorkerGroups;
+        return sourceControls;
+    }
+
+    /**
+     * Gets the resource collection API of SourceControlSyncJobs. It manages SourceControlSyncJob.
+     *
+     * @return Resource collection API of SourceControlSyncJobs.
+     */
+    public SourceControlSyncJobs sourceControlSyncJobs() {
+        if (this.sourceControlSyncJobs == null) {
+            this.sourceControlSyncJobs = new SourceControlSyncJobsImpl(clientObject.getSourceControlSyncJobs(), this);
+        }
+        return sourceControlSyncJobs;
+    }
+
+    /**
+     * Gets the resource collection API of SourceControlSyncJobStreams.
+     *
+     * @return Resource collection API of SourceControlSyncJobStreams.
+     */
+    public SourceControlSyncJobStreams sourceControlSyncJobStreams() {
+        if (this.sourceControlSyncJobStreams == null) {
+            this.sourceControlSyncJobStreams =
+                new SourceControlSyncJobStreamsImpl(clientObject.getSourceControlSyncJobStreams(), this);
+        }
+        return sourceControlSyncJobStreams;
+    }
+
+    /**
+     * Gets the resource collection API of Variables. It manages Variable.
+     *
+     * @return Resource collection API of Variables.
+     */
+    public Variables variables() {
+        if (this.variables == null) {
+            this.variables = new VariablesImpl(clientObject.getVariables(), this);
+        }
+        return variables;
     }
 
     /**

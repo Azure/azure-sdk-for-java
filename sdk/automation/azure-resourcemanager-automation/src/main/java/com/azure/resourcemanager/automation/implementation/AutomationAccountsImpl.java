@@ -27,22 +27,13 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
         this.serviceManager = serviceManager;
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String automationAccountName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String automationAccountName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, context);
     }
 
-    public AutomationAccount getByResourceGroup(String resourceGroupName, String automationAccountName) {
-        AutomationAccountInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, automationAccountName);
-        if (inner != null) {
-            return new AutomationAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void deleteByResourceGroup(String resourceGroupName, String automationAccountName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName);
     }
 
     public Response<AutomationAccount> getByResourceGroupWithResponse(
@@ -55,6 +46,16 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AutomationAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AutomationAccount getByResourceGroup(String resourceGroupName, String automationAccountName) {
+        AutomationAccountInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, automationAccountName);
+        if (inner != null) {
+            return new AutomationAccountImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -141,7 +142,7 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, automationAccountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -162,7 +163,7 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, automationAccountName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, automationAccountName, context);
     }
 
     private AutomationAccountsClient serviceClient() {

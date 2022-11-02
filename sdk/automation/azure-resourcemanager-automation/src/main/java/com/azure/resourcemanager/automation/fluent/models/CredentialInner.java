@@ -18,6 +18,10 @@ public final class CredentialInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CredentialProperties innerProperties;
 
+    /** Creates an instance of CredentialInner class. */
+    public CredentialInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the properties of the credential.
      *

@@ -18,6 +18,10 @@ public final class TypeFieldListResult {
     @JsonProperty(value = "value")
     private List<TypeFieldInner> value;
 
+    /** Creates an instance of TypeFieldListResult class. */
+    public TypeFieldListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of fields.
      *

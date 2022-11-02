@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Job Create. */
 public final class JobCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/createJob.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/job/createJob.json
      */
     /**
      * Sample code: Create job.

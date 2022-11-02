@@ -16,6 +16,10 @@ public final class ActivityParameterValidationSet {
     @JsonProperty(value = "memberValue")
     private String memberValue;
 
+    /** Creates an instance of ActivityParameterValidationSet class. */
+    public ActivityParameterValidationSet() {
+    }
+
     /**
      * Get the memberValue property: Gets or sets the name of the activity parameter validation set member.
      *

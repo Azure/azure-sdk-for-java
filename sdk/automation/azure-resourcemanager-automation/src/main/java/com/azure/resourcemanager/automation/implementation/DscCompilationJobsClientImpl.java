@@ -613,23 +613,6 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscCompilationJobInner get(
-        String resourceGroupName, String automationAccountName, String compilationJobName) {
-        return getAsync(resourceGroupName, automationAccountName, compilationJobName).block();
-    }
-
-    /**
-     * Retrieve the Dsc configuration compilation job identified by job id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param compilationJobName The DSC configuration Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -640,6 +623,23 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
     public Response<DscCompilationJobInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String compilationJobName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, compilationJobName, context).block();
+    }
+
+    /**
+     * Retrieve the Dsc configuration compilation job identified by job id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param compilationJobName The DSC configuration Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the Dsc Compilation job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscCompilationJobInner get(
+        String resourceGroupName, String automationAccountName, String compilationJobName) {
+        return getWithResponse(resourceGroupName, automationAccountName, compilationJobName, Context.NONE).getValue();
     }
 
     /**
@@ -1002,24 +1002,6 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
      * @param jobStreamId The job stream id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStreamInner getStream(
-        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId) {
-        return getStreamAsync(resourceGroupName, automationAccountName, jobId, jobStreamId).block();
-    }
-
-    /**
-     * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobId The job id.
-     * @param jobStreamId The job stream id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1031,6 +1013,25 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
         String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId, Context context) {
         return getStreamWithResponseAsync(resourceGroupName, automationAccountName, jobId, jobStreamId, context)
             .block();
+    }
+
+    /**
+     * Retrieve the job stream identified by job stream id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobId The job id.
+     * @param jobStreamId The job stream id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobStreamInner getStream(
+        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId) {
+        return getStreamWithResponse(resourceGroupName, automationAccountName, jobId, jobStreamId, Context.NONE)
+            .getValue();
     }
 
     /**

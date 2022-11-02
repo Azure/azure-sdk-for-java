@@ -17,6 +17,10 @@ public final class SourceControlSyncJobCreateProperties {
     @JsonProperty(value = "commitId", required = true)
     private String commitId;
 
+    /** Creates an instance of SourceControlSyncJobCreateProperties class. */
+    public SourceControlSyncJobCreateProperties() {
+    }
+
     /**
      * Get the commitId property: The commit id of the source control sync job. If not syncing to a commitId, enter an
      * empty string.

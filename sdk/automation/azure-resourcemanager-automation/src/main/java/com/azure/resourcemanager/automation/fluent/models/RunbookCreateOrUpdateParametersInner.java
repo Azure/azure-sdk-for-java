@@ -40,6 +40,10 @@ public final class RunbookCreateOrUpdateParametersInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of RunbookCreateOrUpdateParametersInner class. */
+    public RunbookCreateOrUpdateParametersInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets runbook create or update properties.
      *

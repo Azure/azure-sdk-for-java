@@ -10,7 +10,7 @@ import com.azure.resourcemanager.automation.models.Certificate;
 /** Samples for Certificate Update. */
 public final class CertificateUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateCertificate.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateCertificate.json
      */
     /**
      * Sample code: Update a certificate.

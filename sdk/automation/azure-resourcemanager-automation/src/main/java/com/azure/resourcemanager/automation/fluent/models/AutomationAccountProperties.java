@@ -81,6 +81,10 @@ public final class AutomationAccountProperties {
     @JsonProperty(value = "automationHybridServiceUrl")
     private String automationHybridServiceUrl;
 
+    /** Creates an instance of AutomationAccountProperties class. */
+    public AutomationAccountProperties() {
+    }
+
     /**
      * Get the sku property: Gets or sets the SKU of account.
      *

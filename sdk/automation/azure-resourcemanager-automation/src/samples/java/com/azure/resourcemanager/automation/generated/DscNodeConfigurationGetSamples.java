@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DscNodeConfiguration Get. */
 public final class DscNodeConfigurationGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNodeConfiguration.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getDscNodeConfiguration.json
      */
     /**
      * Sample code: Get a DSC node configuration.

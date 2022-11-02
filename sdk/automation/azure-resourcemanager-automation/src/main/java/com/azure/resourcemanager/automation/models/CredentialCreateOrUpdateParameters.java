@@ -24,6 +24,10 @@ public final class CredentialCreateOrUpdateParameters {
     @JsonProperty(value = "properties", required = true)
     private CredentialCreateOrUpdateProperties innerProperties = new CredentialCreateOrUpdateProperties();
 
+    /** Creates an instance of CredentialCreateOrUpdateParameters class. */
+    public CredentialCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the credential.
      *

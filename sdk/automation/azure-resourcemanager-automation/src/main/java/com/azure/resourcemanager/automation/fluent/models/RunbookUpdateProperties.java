@@ -34,6 +34,10 @@ public final class RunbookUpdateProperties {
     @JsonProperty(value = "logActivityTrace")
     private Integer logActivityTrace;
 
+    /** Creates an instance of RunbookUpdateProperties class. */
+    public RunbookUpdateProperties() {
+    }
+
     /**
      * Get the description property: Gets or sets the description of the runbook.
      *

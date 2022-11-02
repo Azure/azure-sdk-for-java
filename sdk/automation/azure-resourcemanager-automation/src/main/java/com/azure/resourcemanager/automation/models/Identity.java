@@ -37,7 +37,11 @@ public class Identity {
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, IdentityUserAssignedIdentities> userAssignedIdentities;
+    private Map<String, UserAssignedIdentitiesProperties> userAssignedIdentities;
+
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of resource identity.
@@ -84,7 +88,7 @@ public class Identity {
      *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, IdentityUserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, UserAssignedIdentitiesProperties> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
@@ -96,7 +100,7 @@ public class Identity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the Identity object itself.
      */
-    public Identity withUserAssignedIdentities(Map<String, IdentityUserAssignedIdentities> userAssignedIdentities) {
+    public Identity withUserAssignedIdentities(Map<String, UserAssignedIdentitiesProperties> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

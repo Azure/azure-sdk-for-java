@@ -30,16 +30,6 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
         this.serviceManager = serviceManager;
     }
 
-    public DscCompilationJob get(String resourceGroupName, String automationAccountName, String compilationJobName) {
-        DscCompilationJobInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, compilationJobName);
-        if (inner != null) {
-            return new DscCompilationJobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DscCompilationJob> getWithResponse(
         String resourceGroupName, String automationAccountName, String compilationJobName, Context context) {
         Response<DscCompilationJobInner> inner =
@@ -50,6 +40,16 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DscCompilationJobImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DscCompilationJob get(String resourceGroupName, String automationAccountName, String compilationJobName) {
+        DscCompilationJobInner inner =
+            this.serviceClient().get(resourceGroupName, automationAccountName, compilationJobName);
+        if (inner != null) {
+            return new DscCompilationJobImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -69,16 +69,6 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
         return Utils.mapPage(inner, inner1 -> new DscCompilationJobImpl(inner1, this.manager()));
     }
 
-    public JobStream getStream(String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId) {
-        JobStreamInner inner =
-            this.serviceClient().getStream(resourceGroupName, automationAccountName, jobId, jobStreamId);
-        if (inner != null) {
-            return new JobStreamImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JobStream> getStreamWithResponse(
         String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId, Context context) {
         Response<JobStreamInner> inner =
@@ -91,6 +81,16 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobStreamImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobStream getStream(String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId) {
+        JobStreamInner inner =
+            this.serviceClient().getStream(resourceGroupName, automationAccountName, jobId, jobStreamId);
+        if (inner != null) {
+            return new JobStreamImpl(inner, this.manager());
         } else {
             return null;
         }

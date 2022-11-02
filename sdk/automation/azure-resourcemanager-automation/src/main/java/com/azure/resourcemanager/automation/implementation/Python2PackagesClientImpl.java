@@ -191,7 +191,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -247,7 +247,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -285,21 +285,6 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The python package name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String packageName) {
-        deleteAsync(resourceGroupName, automationAccountName, packageName).block();
-    }
-
-    /**
-     * Delete the python 2 package by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param packageName The python package name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -310,6 +295,21 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String packageName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, packageName, context).block();
+    }
+
+    /**
+     * Delete the python 2 package by name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param packageName The python package name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String packageName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE);
     }
 
     /**
@@ -349,7 +349,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -405,7 +405,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -443,22 +443,6 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The python package name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModuleInner get(String resourceGroupName, String automationAccountName, String packageName) {
-        return getAsync(resourceGroupName, automationAccountName, packageName).block();
-    }
-
-    /**
-     * Retrieve the python 2 package identified by package name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param packageName The python package name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -469,6 +453,22 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
     public Response<ModuleInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String packageName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, packageName, context).block();
+    }
+
+    /**
+     * Retrieve the python 2 package identified by package name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param packageName The python package name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the module type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModuleInner get(String resourceGroupName, String automationAccountName, String packageName) {
+        return getWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE).getValue();
     }
 
     /**
@@ -517,7 +517,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -584,7 +584,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -629,27 +629,6 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
      * @param automationAccountName The name of the automation account.
      * @param packageName The name of python package.
      * @param parameters The create or update parameters for python package.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModuleInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String packageName,
-        PythonPackageCreateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, packageName, parameters).block();
-    }
-
-    /**
-     * Create or Update the python 2 package identified by package name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param packageName The name of python package.
-     * @param parameters The create or update parameters for python package.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -666,6 +645,29 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, packageName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create or Update the python 2 package identified by package name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param packageName The name of python package.
+     * @param parameters The create or update parameters for python package.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the module type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModuleInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String packageName,
+        PythonPackageCreateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, packageName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -714,7 +716,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -781,7 +783,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -826,27 +828,6 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
      * @param automationAccountName The name of the automation account.
      * @param packageName The name of python package.
      * @param parameters The update parameters for python package.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModuleInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String packageName,
-        PythonPackageUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, packageName, parameters).block();
-    }
-
-    /**
-     * Update the python 2 package identified by package name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param packageName The name of python package.
-     * @param parameters The update parameters for python package.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -862,6 +843,28 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, packageName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update the python 2 package identified by package name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param packageName The name of python package.
+     * @param parameters The update parameters for python package.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the module type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModuleInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String packageName,
+        PythonPackageUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, packageName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -898,7 +901,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -959,7 +962,7 @@ public final class Python2PackagesClientImpl implements Python2PackagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

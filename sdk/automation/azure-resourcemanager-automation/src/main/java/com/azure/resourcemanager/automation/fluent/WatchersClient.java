@@ -21,22 +21,6 @@ public interface WatchersClient {
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
      * @param parameters The create or update parameters for watcher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the watcher type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WatcherInner createOrUpdate(
-        String resourceGroupName, String automationAccountName, String watcherName, WatcherInner parameters);
-
-    /**
-     * Create the watcher identified by watcher name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param watcherName The watcher name.
-     * @param parameters The create or update parameters for watcher.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,18 +36,20 @@ public interface WatchersClient {
         Context context);
 
     /**
-     * Retrieve the watcher identified by watcher name.
+     * Create the watcher identified by watcher name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
+     * @param parameters The create or update parameters for watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the watcher type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WatcherInner get(String resourceGroupName, String automationAccountName, String watcherName);
+    WatcherInner createOrUpdate(
+        String resourceGroupName, String automationAccountName, String watcherName, WatcherInner parameters);
 
     /**
      * Retrieve the watcher identified by watcher name.
@@ -82,20 +68,18 @@ public interface WatchersClient {
         String resourceGroupName, String automationAccountName, String watcherName, Context context);
 
     /**
-     * Update the watcher identified by watcher name.
+     * Retrieve the watcher identified by watcher name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
-     * @param parameters The update parameters for watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the watcher type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WatcherInner update(
-        String resourceGroupName, String automationAccountName, String watcherName, WatcherUpdateParameters parameters);
+    WatcherInner get(String resourceGroupName, String automationAccountName, String watcherName);
 
     /**
      * Update the watcher identified by watcher name.
@@ -119,17 +103,20 @@ public interface WatchersClient {
         Context context);
 
     /**
-     * Delete the watcher by name.
+     * Update the watcher identified by watcher name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
+     * @param parameters The update parameters for watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the watcher type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String watcherName);
+    WatcherInner update(
+        String resourceGroupName, String automationAccountName, String watcherName, WatcherUpdateParameters parameters);
 
     /**
      * Delete the watcher by name.
@@ -148,7 +135,7 @@ public interface WatchersClient {
         String resourceGroupName, String automationAccountName, String watcherName, Context context);
 
     /**
-     * Resume the watcher identified by watcher name.
+     * Delete the watcher by name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -158,7 +145,7 @@ public interface WatchersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(String resourceGroupName, String automationAccountName, String watcherName);
+    void delete(String resourceGroupName, String automationAccountName, String watcherName);
 
     /**
      * Resume the watcher identified by watcher name.
@@ -187,7 +174,7 @@ public interface WatchersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void stop(String resourceGroupName, String automationAccountName, String watcherName);
+    void start(String resourceGroupName, String automationAccountName, String watcherName);
 
     /**
      * Resume the watcher identified by watcher name.
@@ -204,6 +191,19 @@ public interface WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> stopWithResponse(
         String resourceGroupName, String automationAccountName, String watcherName, Context context);
+
+    /**
+     * Resume the watcher identified by watcher name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param watcherName The watcher name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void stop(String resourceGroupName, String automationAccountName, String watcherName);
 
     /**
      * Retrieve a list of watchers.

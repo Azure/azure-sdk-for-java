@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Schedule ListByAutomationAccount. */
 public final class ScheduleListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listSchedulesByAutomationAccount_First100.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listSchedulesByAutomationAccount_First100.json
      */
     /**
      * Sample code: List schedules by automation account, first 100.
@@ -22,7 +22,7 @@ public final class ScheduleListByAutomationAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listSchedulesByAutomationAccount_Next100.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listSchedulesByAutomationAccount_Next100.json
      */
     /**
      * Sample code: List schedules by automation account, next 100.

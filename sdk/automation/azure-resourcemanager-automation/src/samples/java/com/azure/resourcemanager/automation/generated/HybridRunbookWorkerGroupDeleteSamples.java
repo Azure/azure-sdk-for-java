@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for HybridRunbookWorkerGroup Delete. */
 public final class HybridRunbookWorkerGroupDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/deleteHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Delete a hybrid worker group.

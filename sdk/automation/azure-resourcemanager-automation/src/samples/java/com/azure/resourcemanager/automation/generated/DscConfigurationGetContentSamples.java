@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DscConfiguration GetContent. */
 public final class DscConfigurationGetContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getDscConfigurationContent.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getDscConfigurationContent.json
      */
     /**
      * Sample code: Get DSC Configuration content.

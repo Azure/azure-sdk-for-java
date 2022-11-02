@@ -191,7 +191,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -247,7 +247,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -285,21 +285,6 @@ public final class CredentialsClientImpl implements CredentialsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param credentialName The name of credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String credentialName) {
-        deleteAsync(resourceGroupName, automationAccountName, credentialName).block();
-    }
-
-    /**
-     * Delete the credential.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param credentialName The name of credential.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -310,6 +295,21 @@ public final class CredentialsClientImpl implements CredentialsClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String credentialName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, credentialName, context).block();
+    }
+
+    /**
+     * Delete the credential.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param credentialName The name of credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String credentialName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, credentialName, Context.NONE);
     }
 
     /**
@@ -349,7 +349,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -405,7 +405,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -444,22 +444,6 @@ public final class CredentialsClientImpl implements CredentialsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param credentialName The name of credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialInner get(String resourceGroupName, String automationAccountName, String credentialName) {
-        return getAsync(resourceGroupName, automationAccountName, credentialName).block();
-    }
-
-    /**
-     * Retrieve the credential identified by credential name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param credentialName The name of credential.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,6 +454,22 @@ public final class CredentialsClientImpl implements CredentialsClient {
     public Response<CredentialInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String credentialName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, credentialName, context).block();
+    }
+
+    /**
+     * Retrieve the credential identified by credential name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param credentialName The name of credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the credential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CredentialInner get(String resourceGroupName, String automationAccountName, String credentialName) {
+        return getWithResponse(resourceGroupName, automationAccountName, credentialName, Context.NONE).getValue();
     }
 
     /**
@@ -518,7 +518,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -585,7 +585,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -630,27 +630,6 @@ public final class CredentialsClientImpl implements CredentialsClient {
      * @param automationAccountName The name of the automation account.
      * @param credentialName The parameters supplied to the create or update credential operation.
      * @param parameters The parameters supplied to the create or update credential operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String credentialName,
-        CredentialCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, credentialName, parameters).block();
-    }
-
-    /**
-     * Create a credential.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param credentialName The parameters supplied to the create or update credential operation.
-     * @param parameters The parameters supplied to the create or update credential operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -667,6 +646,29 @@ public final class CredentialsClientImpl implements CredentialsClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, credentialName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create a credential.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param credentialName The parameters supplied to the create or update credential operation.
+     * @param parameters The parameters supplied to the create or update credential operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the credential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CredentialInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String credentialName,
+        CredentialCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, credentialName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -715,7 +717,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -782,7 +784,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -827,27 +829,6 @@ public final class CredentialsClientImpl implements CredentialsClient {
      * @param automationAccountName The name of the automation account.
      * @param credentialName The parameters supplied to the Update credential operation.
      * @param parameters The parameters supplied to the Update credential operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String credentialName,
-        CredentialUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, credentialName, parameters).block();
-    }
-
-    /**
-     * Update a credential.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param credentialName The parameters supplied to the Update credential operation.
-     * @param parameters The parameters supplied to the Update credential operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -863,6 +844,28 @@ public final class CredentialsClientImpl implements CredentialsClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, credentialName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update a credential.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param credentialName The parameters supplied to the Update credential operation.
+     * @param parameters The parameters supplied to the Update credential operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the credential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CredentialInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String credentialName,
+        CredentialUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, credentialName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -899,7 +902,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -960,7 +963,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

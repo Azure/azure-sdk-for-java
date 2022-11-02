@@ -100,7 +100,7 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -151,7 +151,7 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -186,21 +186,6 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the linked workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkedWorkspaceInner get(String resourceGroupName, String automationAccountName) {
-        return getAsync(resourceGroupName, automationAccountName).block();
-    }
-
-    /**
-     * Retrieve the linked workspace for the account id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -211,5 +196,20 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
     public Response<LinkedWorkspaceInner> getWithResponse(
         String resourceGroupName, String automationAccountName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, context).block();
+    }
+
+    /**
+     * Retrieve the linked workspace for the account id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the linked workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedWorkspaceInner get(String resourceGroupName, String automationAccountName) {
+        return getWithResponse(resourceGroupName, automationAccountName, Context.NONE).getValue();
     }
 }

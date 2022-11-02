@@ -53,6 +53,10 @@ public final class RunbookDraftInner {
     @JsonProperty(value = "outputTypes")
     private List<String> outputTypes;
 
+    /** Creates an instance of RunbookDraftInner class. */
+    public RunbookDraftInner() {
+    }
+
     /**
      * Get the inEdit property: Gets or sets whether runbook is in edit mode.
      *

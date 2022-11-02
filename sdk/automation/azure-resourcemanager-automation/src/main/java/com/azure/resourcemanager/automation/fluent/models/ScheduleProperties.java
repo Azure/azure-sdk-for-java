@@ -97,6 +97,10 @@ public final class ScheduleProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ScheduleProperties class. */
+    public ScheduleProperties() {
+    }
+
     /**
      * Get the startTime property: Gets or sets the start time of the schedule.
      *

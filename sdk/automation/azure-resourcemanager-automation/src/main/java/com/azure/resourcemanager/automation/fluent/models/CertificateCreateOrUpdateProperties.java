@@ -35,6 +35,10 @@ public final class CertificateCreateOrUpdateProperties {
     @JsonProperty(value = "isExportable")
     private Boolean isExportable;
 
+    /** Creates an instance of CertificateCreateOrUpdateProperties class. */
+    public CertificateCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the base64Value property: Gets or sets the base64 encoded value of the certificate.
      *

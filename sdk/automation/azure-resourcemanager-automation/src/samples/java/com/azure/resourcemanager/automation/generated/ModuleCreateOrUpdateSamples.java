@@ -12,7 +12,7 @@ import com.azure.resourcemanager.automation.models.ModuleCreateOrUpdateParameter
 /** Samples for Module CreateOrUpdate. */
 public final class ModuleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateModule.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createOrUpdateModule.json
      */
     /**
      * Sample code: Create or update a module.

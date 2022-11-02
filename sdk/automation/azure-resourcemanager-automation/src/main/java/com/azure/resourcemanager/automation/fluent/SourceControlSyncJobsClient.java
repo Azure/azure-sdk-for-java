@@ -24,27 +24,6 @@ public interface SourceControlSyncJobsClient {
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
      * @param parameters The parameters supplied to the create source control sync job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlSyncJobInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        SourceControlSyncJobCreateParameters parameters);
-
-    /**
-     * Creates the sync job for a source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
-     * @param parameters The parameters supplied to the create source control sync job operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,20 +40,25 @@ public interface SourceControlSyncJobsClient {
         Context context);
 
     /**
-     * Retrieve the source control sync job identified by job id.
+     * Creates the sync job for a source control.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
+     * @param parameters The parameters supplied to the create source control sync job operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the source control sync job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlSyncJobByIdInner get(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId);
+    SourceControlSyncJobInner create(
+        String resourceGroupName,
+        String automationAccountName,
+        String sourceControlName,
+        UUID sourceControlSyncJobId,
+        SourceControlSyncJobCreateParameters parameters);
 
     /**
      * Retrieve the source control sync job identified by job id.
@@ -96,6 +80,22 @@ public interface SourceControlSyncJobsClient {
         String sourceControlName,
         UUID sourceControlSyncJobId,
         Context context);
+
+    /**
+     * Retrieve the source control sync job identified by job id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SourceControlSyncJobByIdInner get(
+        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId);
 
     /**
      * Retrieve a list of source control sync jobs.

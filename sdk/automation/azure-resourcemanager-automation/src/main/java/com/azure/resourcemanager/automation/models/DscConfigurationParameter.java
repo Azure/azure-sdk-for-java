@@ -34,6 +34,10 @@ public final class DscConfigurationParameter {
     @JsonProperty(value = "defaultValue")
     private String defaultValue;
 
+    /** Creates an instance of DscConfigurationParameter class. */
+    public DscConfigurationParameter() {
+    }
+
     /**
      * Get the type property: Gets or sets the type of the parameter.
      *

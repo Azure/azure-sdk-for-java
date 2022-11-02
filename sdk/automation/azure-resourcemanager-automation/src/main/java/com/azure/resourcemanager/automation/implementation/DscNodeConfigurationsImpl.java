@@ -28,10 +28,6 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, nodeConfigurationName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
         return this
@@ -39,15 +35,8 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
             .deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context);
     }
 
-    public DscNodeConfiguration get(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
-        DscNodeConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, nodeConfigurationName);
-        if (inner != null) {
-            return new DscNodeConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, nodeConfigurationName);
     }
 
     public Response<DscNodeConfiguration> getWithResponse(
@@ -62,6 +51,17 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DscNodeConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DscNodeConfiguration get(
+        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+        DscNodeConfigurationInner inner =
+            this.serviceClient().get(resourceGroupName, automationAccountName, nodeConfigurationName);
+        if (inner != null) {
+            return new DscNodeConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

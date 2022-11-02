@@ -16,6 +16,10 @@ public final class HybridRunbookWorkerCreateOrUpdateParameters {
     @JsonProperty(value = "vmResourceId")
     private String vmResourceId;
 
+    /** Creates an instance of HybridRunbookWorkerCreateOrUpdateParameters class. */
+    public HybridRunbookWorkerCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the vmResourceId property: Azure Resource Manager Id for a virtual machine.
      *

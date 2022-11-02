@@ -24,6 +24,10 @@ public final class RunbookListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RunbookListResult class. */
+    public RunbookListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of runbooks.
      *

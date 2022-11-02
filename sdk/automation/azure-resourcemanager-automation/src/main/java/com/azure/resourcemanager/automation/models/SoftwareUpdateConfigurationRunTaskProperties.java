@@ -28,6 +28,10 @@ public final class SoftwareUpdateConfigurationRunTaskProperties {
     @JsonProperty(value = "jobId")
     private String jobId;
 
+    /** Creates an instance of SoftwareUpdateConfigurationRunTaskProperties class. */
+    public SoftwareUpdateConfigurationRunTaskProperties() {
+    }
+
     /**
      * Get the status property: The status of the task.
      *

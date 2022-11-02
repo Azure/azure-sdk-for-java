@@ -48,6 +48,10 @@ public final class DscNodeConfigurationProperties {
     @JsonProperty(value = "incrementNodeConfigurationBuild")
     private Boolean incrementNodeConfigurationBuild;
 
+    /** Creates an instance of DscNodeConfigurationProperties class. */
+    public DscNodeConfigurationProperties() {
+    }
+
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
      *

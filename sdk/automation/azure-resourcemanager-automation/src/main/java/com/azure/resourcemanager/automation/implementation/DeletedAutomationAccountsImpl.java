@@ -27,15 +27,6 @@ public final class DeletedAutomationAccountsImpl implements DeletedAutomationAcc
         this.serviceManager = serviceManager;
     }
 
-    public DeletedAutomationAccountListResult listBySubscription() {
-        DeletedAutomationAccountListResultInner inner = this.serviceClient().listBySubscription();
-        if (inner != null) {
-            return new DeletedAutomationAccountListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DeletedAutomationAccountListResult> listBySubscriptionWithResponse(Context context) {
         Response<DeletedAutomationAccountListResultInner> inner =
             this.serviceClient().listBySubscriptionWithResponse(context);
@@ -45,6 +36,15 @@ public final class DeletedAutomationAccountsImpl implements DeletedAutomationAcc
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DeletedAutomationAccountListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeletedAutomationAccountListResult listBySubscription() {
+        DeletedAutomationAccountListResultInner inner = this.serviceClient().listBySubscription();
+        if (inner != null) {
+            return new DeletedAutomationAccountListResultImpl(inner, this.manager());
         } else {
             return null;
         }

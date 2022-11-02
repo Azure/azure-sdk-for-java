@@ -183,7 +183,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
             return Mono
                 .error(new IllegalArgumentException("Parameter nodeConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -240,7 +240,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
             return Mono
                 .error(new IllegalArgumentException("Parameter nodeConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -279,21 +279,6 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
-        deleteAsync(resourceGroupName, automationAccountName, nodeConfigurationName).block();
-    }
-
-    /**
-     * Delete the Dsc node configurations by node configuration.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeConfigurationName The Dsc node configuration name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -305,6 +290,21 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, nodeConfigurationName, context)
             .block();
+    }
+
+    /**
+     * Delete the Dsc node configurations by node configuration.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeConfigurationName The Dsc node configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE);
     }
 
     /**
@@ -346,7 +346,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
             return Mono
                 .error(new IllegalArgumentException("Parameter nodeConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -404,7 +404,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
             return Mono
                 .error(new IllegalArgumentException("Parameter nodeConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -443,23 +443,6 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeConfigurationInner get(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
-        return getAsync(resourceGroupName, automationAccountName, nodeConfigurationName).block();
-    }
-
-    /**
-     * Retrieve the Dsc node configurations by node configuration.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeConfigurationName The Dsc node configuration name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,6 +453,24 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
     public Response<DscNodeConfigurationInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, nodeConfigurationName, context).block();
+    }
+
+    /**
+     * Retrieve the Dsc node configurations by node configuration.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeConfigurationName The Dsc node configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the dsc node configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscNodeConfigurationInner get(
+        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+        return getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -519,7 +520,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -587,7 +588,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -852,7 +853,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -927,7 +928,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Schedule Get. */
 public final class ScheduleGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getSchedule.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getSchedule.json
      */
     /**
      * Sample code: Get a schedule.

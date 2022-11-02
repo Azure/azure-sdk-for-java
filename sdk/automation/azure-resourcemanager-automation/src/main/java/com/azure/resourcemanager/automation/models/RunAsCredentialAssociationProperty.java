@@ -16,6 +16,10 @@ public final class RunAsCredentialAssociationProperty {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of RunAsCredentialAssociationProperty class. */
+    public RunAsCredentialAssociationProperty() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the credential.
      *

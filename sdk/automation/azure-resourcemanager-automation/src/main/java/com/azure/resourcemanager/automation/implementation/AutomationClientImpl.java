@@ -52,6 +52,7 @@ import com.azure.resourcemanager.automation.fluent.OperationsClient;
 import com.azure.resourcemanager.automation.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.automation.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.automation.fluent.Python2PackagesClient;
+import com.azure.resourcemanager.automation.fluent.Python3PackagesClient;
 import com.azure.resourcemanager.automation.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.automation.fluent.RunbookDraftsClient;
 import com.azure.resourcemanager.automation.fluent.RunbooksClient;
@@ -169,18 +170,6 @@ public final class AutomationClientImpl implements AutomationClient {
         return this.privateLinkResources;
     }
 
-    /** The Python2PackagesClient object to access its operations. */
-    private final Python2PackagesClient python2Packages;
-
-    /**
-     * Gets the Python2PackagesClient object to access its operations.
-     *
-     * @return the Python2PackagesClient object.
-     */
-    public Python2PackagesClient getPython2Packages() {
-        return this.python2Packages;
-    }
-
     /** The AgentRegistrationInformationsClient object to access its operations. */
     private final AgentRegistrationInformationsClient agentRegistrationInformations;
 
@@ -215,18 +204,6 @@ public final class AutomationClientImpl implements AutomationClient {
      */
     public NodeReportsClient getNodeReports() {
         return this.nodeReports;
-    }
-
-    /** The DscNodeConfigurationsClient object to access its operations. */
-    private final DscNodeConfigurationsClient dscNodeConfigurations;
-
-    /**
-     * Gets the DscNodeConfigurationsClient object to access its operations.
-     *
-     * @return the DscNodeConfigurationsClient object.
-     */
-    public DscNodeConfigurationsClient getDscNodeConfigurations() {
-        return this.dscNodeConfigurations;
     }
 
     /** The DscCompilationJobsClient object to access its operations. */
@@ -265,40 +242,64 @@ public final class AutomationClientImpl implements AutomationClient {
         return this.nodeCountInformations;
     }
 
-    /** The SourceControlsClient object to access its operations. */
-    private final SourceControlsClient sourceControls;
+    /** The WatchersClient object to access its operations. */
+    private final WatchersClient watchers;
 
     /**
-     * Gets the SourceControlsClient object to access its operations.
+     * Gets the WatchersClient object to access its operations.
      *
-     * @return the SourceControlsClient object.
+     * @return the WatchersClient object.
      */
-    public SourceControlsClient getSourceControls() {
-        return this.sourceControls;
+    public WatchersClient getWatchers() {
+        return this.watchers;
     }
 
-    /** The SourceControlSyncJobsClient object to access its operations. */
-    private final SourceControlSyncJobsClient sourceControlSyncJobs;
+    /** The SoftwareUpdateConfigurationsClient object to access its operations. */
+    private final SoftwareUpdateConfigurationsClient softwareUpdateConfigurations;
 
     /**
-     * Gets the SourceControlSyncJobsClient object to access its operations.
+     * Gets the SoftwareUpdateConfigurationsClient object to access its operations.
      *
-     * @return the SourceControlSyncJobsClient object.
+     * @return the SoftwareUpdateConfigurationsClient object.
      */
-    public SourceControlSyncJobsClient getSourceControlSyncJobs() {
-        return this.sourceControlSyncJobs;
+    public SoftwareUpdateConfigurationsClient getSoftwareUpdateConfigurations() {
+        return this.softwareUpdateConfigurations;
     }
 
-    /** The SourceControlSyncJobStreamsClient object to access its operations. */
-    private final SourceControlSyncJobStreamsClient sourceControlSyncJobStreams;
+    /** The WebhooksClient object to access its operations. */
+    private final WebhooksClient webhooks;
 
     /**
-     * Gets the SourceControlSyncJobStreamsClient object to access its operations.
+     * Gets the WebhooksClient object to access its operations.
      *
-     * @return the SourceControlSyncJobStreamsClient object.
+     * @return the WebhooksClient object.
      */
-    public SourceControlSyncJobStreamsClient getSourceControlSyncJobStreams() {
-        return this.sourceControlSyncJobStreams;
+    public WebhooksClient getWebhooks() {
+        return this.webhooks;
+    }
+
+    /** The DeletedAutomationAccountsClient object to access its operations. */
+    private final DeletedAutomationAccountsClient deletedAutomationAccounts;
+
+    /**
+     * Gets the DeletedAutomationAccountsClient object to access its operations.
+     *
+     * @return the DeletedAutomationAccountsClient object.
+     */
+    public DeletedAutomationAccountsClient getDeletedAutomationAccounts() {
+        return this.deletedAutomationAccounts;
+    }
+
+    /** The Python3PackagesClient object to access its operations. */
+    private final Python3PackagesClient python3Packages;
+
+    /**
+     * Gets the Python3PackagesClient object to access its operations.
+     *
+     * @return the Python3PackagesClient object.
+     */
+    public Python3PackagesClient getPython3Packages() {
+        return this.python3Packages;
     }
 
     /** The AutomationAccountsClient object to access its operations. */
@@ -397,6 +398,78 @@ public final class AutomationClientImpl implements AutomationClient {
         return this.credentials;
     }
 
+    /** The DscConfigurationsClient object to access its operations. */
+    private final DscConfigurationsClient dscConfigurations;
+
+    /**
+     * Gets the DscConfigurationsClient object to access its operations.
+     *
+     * @return the DscConfigurationsClient object.
+     */
+    public DscConfigurationsClient getDscConfigurations() {
+        return this.dscConfigurations;
+    }
+
+    /** The DscNodeConfigurationsClient object to access its operations. */
+    private final DscNodeConfigurationsClient dscNodeConfigurations;
+
+    /**
+     * Gets the DscNodeConfigurationsClient object to access its operations.
+     *
+     * @return the DscNodeConfigurationsClient object.
+     */
+    public DscNodeConfigurationsClient getDscNodeConfigurations() {
+        return this.dscNodeConfigurations;
+    }
+
+    /** The HybridRunbookWorkersClient object to access its operations. */
+    private final HybridRunbookWorkersClient hybridRunbookWorkers;
+
+    /**
+     * Gets the HybridRunbookWorkersClient object to access its operations.
+     *
+     * @return the HybridRunbookWorkersClient object.
+     */
+    public HybridRunbookWorkersClient getHybridRunbookWorkers() {
+        return this.hybridRunbookWorkers;
+    }
+
+    /** The HybridRunbookWorkerGroupsClient object to access its operations. */
+    private final HybridRunbookWorkerGroupsClient hybridRunbookWorkerGroups;
+
+    /**
+     * Gets the HybridRunbookWorkerGroupsClient object to access its operations.
+     *
+     * @return the HybridRunbookWorkerGroupsClient object.
+     */
+    public HybridRunbookWorkerGroupsClient getHybridRunbookWorkerGroups() {
+        return this.hybridRunbookWorkerGroups;
+    }
+
+    /** The JobsClient object to access its operations. */
+    private final JobsClient jobs;
+
+    /**
+     * Gets the JobsClient object to access its operations.
+     *
+     * @return the JobsClient object.
+     */
+    public JobsClient getJobs() {
+        return this.jobs;
+    }
+
+    /** The JobStreamsClient object to access its operations. */
+    private final JobStreamsClient jobStreams;
+
+    /**
+     * Gets the JobStreamsClient object to access its operations.
+     *
+     * @return the JobStreamsClient object.
+     */
+    public JobStreamsClient getJobStreams() {
+        return this.jobStreams;
+    }
+
     /** The JobSchedulesClient object to access its operations. */
     private final JobSchedulesClient jobSchedules;
 
@@ -469,78 +542,6 @@ public final class AutomationClientImpl implements AutomationClient {
         return this.fields;
     }
 
-    /** The SchedulesClient object to access its operations. */
-    private final SchedulesClient schedules;
-
-    /**
-     * Gets the SchedulesClient object to access its operations.
-     *
-     * @return the SchedulesClient object.
-     */
-    public SchedulesClient getSchedules() {
-        return this.schedules;
-    }
-
-    /** The VariablesClient object to access its operations. */
-    private final VariablesClient variables;
-
-    /**
-     * Gets the VariablesClient object to access its operations.
-     *
-     * @return the VariablesClient object.
-     */
-    public VariablesClient getVariables() {
-        return this.variables;
-    }
-
-    /** The WatchersClient object to access its operations. */
-    private final WatchersClient watchers;
-
-    /**
-     * Gets the WatchersClient object to access its operations.
-     *
-     * @return the WatchersClient object.
-     */
-    public WatchersClient getWatchers() {
-        return this.watchers;
-    }
-
-    /** The DscConfigurationsClient object to access its operations. */
-    private final DscConfigurationsClient dscConfigurations;
-
-    /**
-     * Gets the DscConfigurationsClient object to access its operations.
-     *
-     * @return the DscConfigurationsClient object.
-     */
-    public DscConfigurationsClient getDscConfigurations() {
-        return this.dscConfigurations;
-    }
-
-    /** The JobsClient object to access its operations. */
-    private final JobsClient jobs;
-
-    /**
-     * Gets the JobsClient object to access its operations.
-     *
-     * @return the JobsClient object.
-     */
-    public JobsClient getJobs() {
-        return this.jobs;
-    }
-
-    /** The JobStreamsClient object to access its operations. */
-    private final JobStreamsClient jobStreams;
-
-    /**
-     * Gets the JobStreamsClient object to access its operations.
-     *
-     * @return the JobStreamsClient object.
-     */
-    public JobStreamsClient getJobStreams() {
-        return this.jobStreams;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -565,40 +566,16 @@ public final class AutomationClientImpl implements AutomationClient {
         return this.resourceProviders;
     }
 
-    /** The SoftwareUpdateConfigurationsClient object to access its operations. */
-    private final SoftwareUpdateConfigurationsClient softwareUpdateConfigurations;
+    /** The Python2PackagesClient object to access its operations. */
+    private final Python2PackagesClient python2Packages;
 
     /**
-     * Gets the SoftwareUpdateConfigurationsClient object to access its operations.
+     * Gets the Python2PackagesClient object to access its operations.
      *
-     * @return the SoftwareUpdateConfigurationsClient object.
+     * @return the Python2PackagesClient object.
      */
-    public SoftwareUpdateConfigurationsClient getSoftwareUpdateConfigurations() {
-        return this.softwareUpdateConfigurations;
-    }
-
-    /** The SoftwareUpdateConfigurationRunsClient object to access its operations. */
-    private final SoftwareUpdateConfigurationRunsClient softwareUpdateConfigurationRuns;
-
-    /**
-     * Gets the SoftwareUpdateConfigurationRunsClient object to access its operations.
-     *
-     * @return the SoftwareUpdateConfigurationRunsClient object.
-     */
-    public SoftwareUpdateConfigurationRunsClient getSoftwareUpdateConfigurationRuns() {
-        return this.softwareUpdateConfigurationRuns;
-    }
-
-    /** The SoftwareUpdateConfigurationMachineRunsClient object to access its operations. */
-    private final SoftwareUpdateConfigurationMachineRunsClient softwareUpdateConfigurationMachineRuns;
-
-    /**
-     * Gets the SoftwareUpdateConfigurationMachineRunsClient object to access its operations.
-     *
-     * @return the SoftwareUpdateConfigurationMachineRunsClient object.
-     */
-    public SoftwareUpdateConfigurationMachineRunsClient getSoftwareUpdateConfigurationMachineRuns() {
-        return this.softwareUpdateConfigurationMachineRuns;
+    public Python2PackagesClient getPython2Packages() {
+        return this.python2Packages;
     }
 
     /** The RunbookDraftsClient object to access its operations. */
@@ -649,52 +626,88 @@ public final class AutomationClientImpl implements AutomationClient {
         return this.testJobs;
     }
 
-    /** The WebhooksClient object to access its operations. */
-    private final WebhooksClient webhooks;
+    /** The SchedulesClient object to access its operations. */
+    private final SchedulesClient schedules;
 
     /**
-     * Gets the WebhooksClient object to access its operations.
+     * Gets the SchedulesClient object to access its operations.
      *
-     * @return the WebhooksClient object.
+     * @return the SchedulesClient object.
      */
-    public WebhooksClient getWebhooks() {
-        return this.webhooks;
+    public SchedulesClient getSchedules() {
+        return this.schedules;
     }
 
-    /** The HybridRunbookWorkersClient object to access its operations. */
-    private final HybridRunbookWorkersClient hybridRunbookWorkers;
+    /** The SoftwareUpdateConfigurationMachineRunsClient object to access its operations. */
+    private final SoftwareUpdateConfigurationMachineRunsClient softwareUpdateConfigurationMachineRuns;
 
     /**
-     * Gets the HybridRunbookWorkersClient object to access its operations.
+     * Gets the SoftwareUpdateConfigurationMachineRunsClient object to access its operations.
      *
-     * @return the HybridRunbookWorkersClient object.
+     * @return the SoftwareUpdateConfigurationMachineRunsClient object.
      */
-    public HybridRunbookWorkersClient getHybridRunbookWorkers() {
-        return this.hybridRunbookWorkers;
+    public SoftwareUpdateConfigurationMachineRunsClient getSoftwareUpdateConfigurationMachineRuns() {
+        return this.softwareUpdateConfigurationMachineRuns;
     }
 
-    /** The DeletedAutomationAccountsClient object to access its operations. */
-    private final DeletedAutomationAccountsClient deletedAutomationAccounts;
+    /** The SoftwareUpdateConfigurationRunsClient object to access its operations. */
+    private final SoftwareUpdateConfigurationRunsClient softwareUpdateConfigurationRuns;
 
     /**
-     * Gets the DeletedAutomationAccountsClient object to access its operations.
+     * Gets the SoftwareUpdateConfigurationRunsClient object to access its operations.
      *
-     * @return the DeletedAutomationAccountsClient object.
+     * @return the SoftwareUpdateConfigurationRunsClient object.
      */
-    public DeletedAutomationAccountsClient getDeletedAutomationAccounts() {
-        return this.deletedAutomationAccounts;
+    public SoftwareUpdateConfigurationRunsClient getSoftwareUpdateConfigurationRuns() {
+        return this.softwareUpdateConfigurationRuns;
     }
 
-    /** The HybridRunbookWorkerGroupsClient object to access its operations. */
-    private final HybridRunbookWorkerGroupsClient hybridRunbookWorkerGroups;
+    /** The SourceControlsClient object to access its operations. */
+    private final SourceControlsClient sourceControls;
 
     /**
-     * Gets the HybridRunbookWorkerGroupsClient object to access its operations.
+     * Gets the SourceControlsClient object to access its operations.
      *
-     * @return the HybridRunbookWorkerGroupsClient object.
+     * @return the SourceControlsClient object.
      */
-    public HybridRunbookWorkerGroupsClient getHybridRunbookWorkerGroups() {
-        return this.hybridRunbookWorkerGroups;
+    public SourceControlsClient getSourceControls() {
+        return this.sourceControls;
+    }
+
+    /** The SourceControlSyncJobsClient object to access its operations. */
+    private final SourceControlSyncJobsClient sourceControlSyncJobs;
+
+    /**
+     * Gets the SourceControlSyncJobsClient object to access its operations.
+     *
+     * @return the SourceControlSyncJobsClient object.
+     */
+    public SourceControlSyncJobsClient getSourceControlSyncJobs() {
+        return this.sourceControlSyncJobs;
+    }
+
+    /** The SourceControlSyncJobStreamsClient object to access its operations. */
+    private final SourceControlSyncJobStreamsClient sourceControlSyncJobStreams;
+
+    /**
+     * Gets the SourceControlSyncJobStreamsClient object to access its operations.
+     *
+     * @return the SourceControlSyncJobStreamsClient object.
+     */
+    public SourceControlSyncJobStreamsClient getSourceControlSyncJobStreams() {
+        return this.sourceControlSyncJobStreams;
+    }
+
+    /** The VariablesClient object to access its operations. */
+    private final VariablesClient variables;
+
+    /**
+     * Gets the VariablesClient object to access its operations.
+     *
+     * @return the VariablesClient object.
+     */
+    public VariablesClient getVariables() {
+        return this.variables;
     }
 
     /**
@@ -722,17 +735,17 @@ public final class AutomationClientImpl implements AutomationClient {
         this.endpoint = endpoint;
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
-        this.python2Packages = new Python2PackagesClientImpl(this);
         this.agentRegistrationInformations = new AgentRegistrationInformationsClientImpl(this);
         this.dscNodes = new DscNodesClientImpl(this);
         this.nodeReports = new NodeReportsClientImpl(this);
-        this.dscNodeConfigurations = new DscNodeConfigurationsClientImpl(this);
         this.dscCompilationJobs = new DscCompilationJobsClientImpl(this);
         this.dscCompilationJobStreams = new DscCompilationJobStreamsClientImpl(this);
         this.nodeCountInformations = new NodeCountInformationsClientImpl(this);
-        this.sourceControls = new SourceControlsClientImpl(this);
-        this.sourceControlSyncJobs = new SourceControlSyncJobsClientImpl(this);
-        this.sourceControlSyncJobStreams = new SourceControlSyncJobStreamsClientImpl(this);
+        this.watchers = new WatchersClientImpl(this);
+        this.softwareUpdateConfigurations = new SoftwareUpdateConfigurationsClientImpl(this);
+        this.webhooks = new WebhooksClientImpl(this);
+        this.deletedAutomationAccounts = new DeletedAutomationAccountsClientImpl(this);
+        this.python3Packages = new Python3PackagesClientImpl(this);
         this.automationAccounts = new AutomationAccountsClientImpl(this);
         this.statisticsOperations = new StatisticsOperationsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
@@ -741,31 +754,32 @@ public final class AutomationClientImpl implements AutomationClient {
         this.connections = new ConnectionsClientImpl(this);
         this.connectionTypes = new ConnectionTypesClientImpl(this);
         this.credentials = new CredentialsClientImpl(this);
+        this.dscConfigurations = new DscConfigurationsClientImpl(this);
+        this.dscNodeConfigurations = new DscNodeConfigurationsClientImpl(this);
+        this.hybridRunbookWorkers = new HybridRunbookWorkersClientImpl(this);
+        this.hybridRunbookWorkerGroups = new HybridRunbookWorkerGroupsClientImpl(this);
+        this.jobs = new JobsClientImpl(this);
+        this.jobStreams = new JobStreamsClientImpl(this);
         this.jobSchedules = new JobSchedulesClientImpl(this);
         this.linkedWorkspaces = new LinkedWorkspacesClientImpl(this);
         this.activities = new ActivitiesClientImpl(this);
         this.modules = new ModulesClientImpl(this);
         this.objectDataTypes = new ObjectDataTypesClientImpl(this);
         this.fields = new FieldsClientImpl(this);
-        this.schedules = new SchedulesClientImpl(this);
-        this.variables = new VariablesClientImpl(this);
-        this.watchers = new WatchersClientImpl(this);
-        this.dscConfigurations = new DscConfigurationsClientImpl(this);
-        this.jobs = new JobsClientImpl(this);
-        this.jobStreams = new JobStreamsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
-        this.softwareUpdateConfigurations = new SoftwareUpdateConfigurationsClientImpl(this);
-        this.softwareUpdateConfigurationRuns = new SoftwareUpdateConfigurationRunsClientImpl(this);
-        this.softwareUpdateConfigurationMachineRuns = new SoftwareUpdateConfigurationMachineRunsClientImpl(this);
+        this.python2Packages = new Python2PackagesClientImpl(this);
         this.runbookDrafts = new RunbookDraftsClientImpl(this);
         this.runbooks = new RunbooksClientImpl(this);
         this.testJobStreams = new TestJobStreamsClientImpl(this);
         this.testJobs = new TestJobsClientImpl(this);
-        this.webhooks = new WebhooksClientImpl(this);
-        this.hybridRunbookWorkers = new HybridRunbookWorkersClientImpl(this);
-        this.deletedAutomationAccounts = new DeletedAutomationAccountsClientImpl(this);
-        this.hybridRunbookWorkerGroups = new HybridRunbookWorkerGroupsClientImpl(this);
+        this.schedules = new SchedulesClientImpl(this);
+        this.softwareUpdateConfigurationMachineRuns = new SoftwareUpdateConfigurationMachineRunsClientImpl(this);
+        this.softwareUpdateConfigurationRuns = new SoftwareUpdateConfigurationRunsClientImpl(this);
+        this.sourceControls = new SourceControlsClientImpl(this);
+        this.sourceControlSyncJobs = new SourceControlSyncJobsClientImpl(this);
+        this.sourceControlSyncJobStreams = new SourceControlSyncJobStreamsClientImpl(this);
+        this.variables = new VariablesClientImpl(this);
     }
 
     /**

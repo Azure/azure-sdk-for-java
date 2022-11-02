@@ -21,19 +21,6 @@ public interface CertificatesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String certificateName);
-
-    /**
-     * Delete the certificate.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +32,7 @@ public interface CertificatesClient {
         String resourceGroupName, String automationAccountName, String certificateName, Context context);
 
     /**
-     * Retrieve the certificate identified by certificate name.
+     * Delete the certificate.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -53,10 +40,9 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner get(String resourceGroupName, String automationAccountName, String certificateName);
+    void delete(String resourceGroupName, String automationAccountName, String certificateName);
 
     /**
      * Retrieve the certificate identified by certificate name.
@@ -75,23 +61,18 @@ public interface CertificatesClient {
         String resourceGroupName, String automationAccountName, String certificateName, Context context);
 
     /**
-     * Create a certificate.
+     * Retrieve the certificate identified by certificate name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param certificateName The parameters supplied to the create or update certificate operation.
-     * @param parameters The parameters supplied to the create or update certificate operation.
+     * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters);
+    CertificateInner get(String resourceGroupName, String automationAccountName, String certificateName);
 
     /**
      * Create a certificate.
@@ -115,23 +96,23 @@ public interface CertificatesClient {
         Context context);
 
     /**
-     * Update a certificate.
+     * Create a certificate.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param certificateName The parameters supplied to the update certificate operation.
-     * @param parameters The parameters supplied to the update certificate operation.
+     * @param certificateName The parameters supplied to the create or update certificate operation.
+     * @param parameters The parameters supplied to the create or update certificate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner update(
+    CertificateInner createOrUpdate(
         String resourceGroupName,
         String automationAccountName,
         String certificateName,
-        CertificateUpdateParameters parameters);
+        CertificateCreateOrUpdateParameters parameters);
 
     /**
      * Update a certificate.
@@ -153,6 +134,25 @@ public interface CertificatesClient {
         String certificateName,
         CertificateUpdateParameters parameters,
         Context context);
+
+    /**
+     * Update a certificate.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The parameters supplied to the update certificate operation.
+     * @param parameters The parameters supplied to the update certificate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CertificateInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String certificateName,
+        CertificateUpdateParameters parameters);
 
     /**
      * Retrieve a list of certificates.

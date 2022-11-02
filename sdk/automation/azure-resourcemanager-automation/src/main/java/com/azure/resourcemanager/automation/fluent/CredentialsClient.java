@@ -21,19 +21,6 @@ public interface CredentialsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param credentialName The name of credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String credentialName);
-
-    /**
-     * Delete the credential.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param credentialName The name of credential.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +32,7 @@ public interface CredentialsClient {
         String resourceGroupName, String automationAccountName, String credentialName, Context context);
 
     /**
-     * Retrieve the credential identified by credential name.
+     * Delete the credential.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -53,10 +40,9 @@ public interface CredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialInner get(String resourceGroupName, String automationAccountName, String credentialName);
+    void delete(String resourceGroupName, String automationAccountName, String credentialName);
 
     /**
      * Retrieve the credential identified by credential name.
@@ -75,23 +61,18 @@ public interface CredentialsClient {
         String resourceGroupName, String automationAccountName, String credentialName, Context context);
 
     /**
-     * Create a credential.
+     * Retrieve the credential identified by credential name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param credentialName The parameters supplied to the create or update credential operation.
-     * @param parameters The parameters supplied to the create or update credential operation.
+     * @param credentialName The name of credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String credentialName,
-        CredentialCreateOrUpdateParameters parameters);
+    CredentialInner get(String resourceGroupName, String automationAccountName, String credentialName);
 
     /**
      * Create a credential.
@@ -115,23 +96,23 @@ public interface CredentialsClient {
         Context context);
 
     /**
-     * Update a credential.
+     * Create a credential.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param credentialName The parameters supplied to the Update credential operation.
-     * @param parameters The parameters supplied to the Update credential operation.
+     * @param credentialName The parameters supplied to the create or update credential operation.
+     * @param parameters The parameters supplied to the create or update credential operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialInner update(
+    CredentialInner createOrUpdate(
         String resourceGroupName,
         String automationAccountName,
         String credentialName,
-        CredentialUpdateParameters parameters);
+        CredentialCreateOrUpdateParameters parameters);
 
     /**
      * Update a credential.
@@ -153,6 +134,25 @@ public interface CredentialsClient {
         String credentialName,
         CredentialUpdateParameters parameters,
         Context context);
+
+    /**
+     * Update a credential.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param credentialName The parameters supplied to the Update credential operation.
+     * @param parameters The parameters supplied to the Update credential operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the credential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CredentialInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String credentialName,
+        CredentialUpdateParameters parameters);
 
     /**
      * Retrieve a list of credentials.

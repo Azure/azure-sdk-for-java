@@ -12,7 +12,7 @@ import com.azure.resourcemanager.automation.models.ModuleUpdateParameters;
 /** Samples for Module Update. */
 public final class ModuleUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateModule.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateModule.json
      */
     /**
      * Sample code: Update a module.

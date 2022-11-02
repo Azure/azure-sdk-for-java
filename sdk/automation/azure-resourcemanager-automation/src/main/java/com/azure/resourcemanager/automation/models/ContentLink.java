@@ -28,6 +28,10 @@ public final class ContentLink {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of ContentLink class. */
+    public ContentLink() {
+    }
+
     /**
      * Get the uri property: Gets or sets the uri of the runbook content.
      *

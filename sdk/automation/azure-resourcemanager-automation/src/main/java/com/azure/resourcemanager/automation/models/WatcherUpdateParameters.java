@@ -23,6 +23,10 @@ public final class WatcherUpdateParameters {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of WatcherUpdateParameters class. */
+    public WatcherUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the watcher update properties.
      *

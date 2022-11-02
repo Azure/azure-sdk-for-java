@@ -60,23 +60,6 @@ public final class SourceControlSyncJobStreamsImpl implements SourceControlSyncJ
         return Utils.mapPage(inner, inner1 -> new SourceControlSyncJobStreamImpl(inner1, this.manager()));
     }
 
-    public SourceControlSyncJobStreamById get(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String streamId) {
-        SourceControlSyncJobStreamByIdInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, streamId);
-        if (inner != null) {
-            return new SourceControlSyncJobStreamByIdImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SourceControlSyncJobStreamById> getWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -100,6 +83,23 @@ public final class SourceControlSyncJobStreamsImpl implements SourceControlSyncJ
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SourceControlSyncJobStreamByIdImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SourceControlSyncJobStreamById get(
+        String resourceGroupName,
+        String automationAccountName,
+        String sourceControlName,
+        UUID sourceControlSyncJobId,
+        String streamId) {
+        SourceControlSyncJobStreamByIdInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, streamId);
+        if (inner != null) {
+            return new SourceControlSyncJobStreamByIdImpl(inner, this.manager());
         } else {
             return null;
         }

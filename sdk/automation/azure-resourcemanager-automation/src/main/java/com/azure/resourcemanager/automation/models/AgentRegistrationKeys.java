@@ -22,6 +22,10 @@ public final class AgentRegistrationKeys {
     @JsonProperty(value = "secondary")
     private String secondary;
 
+    /** Creates an instance of AgentRegistrationKeys class. */
+    public AgentRegistrationKeys() {
+    }
+
     /**
      * Get the primary property: Gets or sets the primary key.
      *

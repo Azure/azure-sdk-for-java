@@ -46,6 +46,10 @@ public final class DscReportError {
     @JsonProperty(value = "errorDetails")
     private String errorDetails;
 
+    /** Creates an instance of DscReportError class. */
+    public DscReportError() {
+    }
+
     /**
      * Get the errorSource property: Gets or sets the source of the error.
      *

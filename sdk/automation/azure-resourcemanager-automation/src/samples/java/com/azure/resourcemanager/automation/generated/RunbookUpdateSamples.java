@@ -10,7 +10,7 @@ import com.azure.resourcemanager.automation.models.Runbook;
 /** Samples for Runbook Update. */
 public final class RunbookUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/updateRunbook.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateRunbook.json
      */
     /**
      * Sample code: Update runbook.

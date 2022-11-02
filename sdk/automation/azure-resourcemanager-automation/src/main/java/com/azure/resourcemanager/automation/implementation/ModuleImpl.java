@@ -135,7 +135,7 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPython2Packages()
+                .getPython3Packages()
                 .createOrUpdateWithResponse(
                     resourceGroupName, automationAccountName, packageName, createParameters, Context.NONE)
                 .getValue();
@@ -146,7 +146,7 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPython2Packages()
+                .getPython3Packages()
                 .createOrUpdateWithResponse(
                     resourceGroupName, automationAccountName, packageName, createParameters, context)
                 .getValue();
@@ -169,7 +169,7 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPython2Packages()
+                .getPython3Packages()
                 .updateWithResponse(
                     resourceGroupName, automationAccountName, packageName, updateParameters, Context.NONE)
                 .getValue();
@@ -180,7 +180,7 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPython2Packages()
+                .getPython3Packages()
                 .updateWithResponse(resourceGroupName, automationAccountName, packageName, updateParameters, context)
                 .getValue();
         return this;
@@ -191,14 +191,14 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.packageName = Utils.getValueFromIdByName(innerObject.id(), "python2Packages");
+        this.packageName = Utils.getValueFromIdByName(innerObject.id(), "python3Packages");
     }
 
     public Module refresh() {
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPython2Packages()
+                .getPython3Packages()
                 .getWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE)
                 .getValue();
         return this;
@@ -208,7 +208,7 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPython2Packages()
+                .getPython3Packages()
                 .getWithResponse(resourceGroupName, automationAccountName, packageName, context)
                 .getValue();
         return this;

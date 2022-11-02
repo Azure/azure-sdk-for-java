@@ -78,6 +78,10 @@ public final class DscConfigurationProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of DscConfigurationProperties class. */
+    public DscConfigurationProperties() {
+    }
+
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the configuration.
      *

@@ -25,16 +25,6 @@ public final class KeysImpl implements Keys {
         this.serviceManager = serviceManager;
     }
 
-    public KeyListResult listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        KeyListResultInner inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        if (inner != null) {
-            return new KeyListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<KeyListResult> listByAutomationAccountWithResponse(
         String resourceGroupName, String automationAccountName, Context context) {
         Response<KeyListResultInner> inner =
@@ -45,6 +35,16 @@ public final class KeysImpl implements Keys {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new KeyListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public KeyListResult listByAutomationAccount(String resourceGroupName, String automationAccountName) {
+        KeyListResultInner inner =
+            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        if (inner != null) {
+            return new KeyListResultImpl(inner, this.manager());
         } else {
             return null;
         }

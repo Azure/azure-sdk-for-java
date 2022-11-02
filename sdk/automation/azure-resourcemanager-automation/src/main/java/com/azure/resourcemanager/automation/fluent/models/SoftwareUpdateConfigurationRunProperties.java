@@ -91,6 +91,10 @@ public final class SoftwareUpdateConfigurationRunProperties {
     @JsonProperty(value = "tasks")
     private SoftwareUpdateConfigurationRunTasks tasks;
 
+    /** Creates an instance of SoftwareUpdateConfigurationRunProperties class. */
+    public SoftwareUpdateConfigurationRunProperties() {
+    }
+
     /**
      * Get the softwareUpdateConfiguration property: software update configuration triggered this run.
      *

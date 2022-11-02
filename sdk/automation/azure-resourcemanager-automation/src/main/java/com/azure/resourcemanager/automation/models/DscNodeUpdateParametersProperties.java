@@ -17,6 +17,10 @@ public final class DscNodeUpdateParametersProperties {
     @JsonProperty(value = "nodeConfiguration")
     private DscNodeConfigurationAssociationProperty innerNodeConfiguration;
 
+    /** Creates an instance of DscNodeUpdateParametersProperties class. */
+    public DscNodeUpdateParametersProperties() {
+    }
+
     /**
      * Get the innerNodeConfiguration property: Gets or sets the configuration of the node.
      *

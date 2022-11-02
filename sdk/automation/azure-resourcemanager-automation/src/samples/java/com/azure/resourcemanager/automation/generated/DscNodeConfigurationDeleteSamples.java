@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DscNodeConfiguration Delete. */
 public final class DscNodeConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteDscNodeConfiguration.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteDscNodeConfiguration.json
      */
     /**
      * Sample code: Delete a DSC node configuration.

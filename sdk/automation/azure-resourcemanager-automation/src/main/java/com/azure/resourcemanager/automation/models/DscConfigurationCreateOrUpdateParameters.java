@@ -39,6 +39,10 @@ public final class DscConfigurationCreateOrUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of DscConfigurationCreateOrUpdateParameters class. */
+    public DscConfigurationCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets configuration create or update properties.
      *

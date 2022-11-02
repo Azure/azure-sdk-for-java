@@ -228,7 +228,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -284,7 +284,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -485,7 +485,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "text/powershell";
         return FluxUtil
             .withContext(
@@ -541,7 +541,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "text/powershell";
         context = this.client.mergeContext(context);
         return service
@@ -580,22 +580,6 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
-        return getContentAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Retrieve the content of runbook identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -606,6 +590,22 @@ public final class RunbooksClientImpl implements RunbooksClient {
     public Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Retrieve the content of runbook identified by runbook name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
+        return getContentWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE).getValue();
     }
 
     /**
@@ -645,7 +645,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -701,7 +701,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -739,22 +739,6 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunbookInner get(String resourceGroupName, String automationAccountName, String runbookName) {
-        return getAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Retrieve the runbook identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -765,6 +749,22 @@ public final class RunbooksClientImpl implements RunbooksClient {
     public Response<RunbookInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Retrieve the runbook identified by runbook name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the runbook type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunbookInner get(String resourceGroupName, String automationAccountName, String runbookName) {
+        return getWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE).getValue();
     }
 
     /**
@@ -814,7 +814,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -882,7 +882,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -929,28 +929,6 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @param runbookName The runbook name.
      * @param parameters The create or update parameters for runbook. Provide either content link for a published
      *     runbook or draft, not both.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunbookInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        RunbookCreateOrUpdateParametersInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, runbookName, parameters).block();
-    }
-
-    /**
-     * Create the runbook identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param parameters The create or update parameters for runbook. Provide either content link for a published
-     *     runbook or draft, not both.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -967,6 +945,30 @@ public final class RunbooksClientImpl implements RunbooksClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, runbookName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create the runbook identified by runbook name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param parameters The create or update parameters for runbook. Provide either content link for a published
+     *     runbook or draft, not both.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the runbook type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunbookInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String runbookName,
+        RunbookCreateOrUpdateParametersInner parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, runbookName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1015,7 +1017,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1082,7 +1084,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1127,27 +1129,6 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
      * @param parameters The update parameters for runbook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunbookInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        RunbookUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, runbookName, parameters).block();
-    }
-
-    /**
-     * Update the runbook identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param parameters The update parameters for runbook.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1163,6 +1144,28 @@ public final class RunbooksClientImpl implements RunbooksClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, runbookName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update the runbook identified by runbook name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param parameters The update parameters for runbook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the runbook type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunbookInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String runbookName,
+        RunbookUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, runbookName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1202,7 +1205,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1258,7 +1261,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1296,21 +1299,6 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String runbookName) {
-        deleteAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Delete the runbook by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1321,6 +1309,21 @@ public final class RunbooksClientImpl implements RunbooksClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Delete the runbook by name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String runbookName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE);
     }
 
     /**
@@ -1357,7 +1360,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1418,7 +1421,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -95,6 +95,10 @@ public final class SucScheduleProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of SucScheduleProperties class. */
+    public SucScheduleProperties() {
+    }
+
     /**
      * Get the startTime property: Gets or sets the start time of the schedule.
      *

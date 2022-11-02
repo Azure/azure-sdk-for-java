@@ -23,6 +23,10 @@ public final class GraphicalRunbookContentInner {
     @JsonProperty(value = "graphRunbookJson")
     private String graphRunbookJson;
 
+    /** Creates an instance of GraphicalRunbookContentInner class. */
+    public GraphicalRunbookContentInner() {
+    }
+
     /**
      * Get the rawContent property: Raw graphical Runbook content.
      *

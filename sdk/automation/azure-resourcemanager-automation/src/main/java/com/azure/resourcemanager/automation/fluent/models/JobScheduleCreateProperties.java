@@ -40,6 +40,10 @@ public final class JobScheduleCreateProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
+    /** Creates an instance of JobScheduleCreateProperties class. */
+    public JobScheduleCreateProperties() {
+    }
+
     /**
      * Get the schedule property: Gets or sets the schedule.
      *

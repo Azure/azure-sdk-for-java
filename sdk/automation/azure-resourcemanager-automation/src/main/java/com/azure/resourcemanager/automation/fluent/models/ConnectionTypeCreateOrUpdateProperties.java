@@ -27,6 +27,10 @@ public final class ConnectionTypeCreateOrUpdateProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, FieldDefinition> fieldDefinitions;
 
+    /** Creates an instance of ConnectionTypeCreateOrUpdateProperties class. */
+    public ConnectionTypeCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
      *

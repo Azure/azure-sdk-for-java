@@ -25,6 +25,10 @@ public final class TestJobCreateParameters {
     @JsonProperty(value = "runOn")
     private String runOn;
 
+    /** Creates an instance of TestJobCreateParameters class. */
+    public TestJobCreateParameters() {
+    }
+
     /**
      * Get the parameters property: Gets or sets the parameters of the test job.
      *

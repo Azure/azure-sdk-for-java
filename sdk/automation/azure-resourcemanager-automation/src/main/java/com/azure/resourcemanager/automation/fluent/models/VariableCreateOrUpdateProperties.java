@@ -28,6 +28,10 @@ public final class VariableCreateOrUpdateProperties {
     @JsonProperty(value = "isEncrypted")
     private Boolean isEncrypted;
 
+    /** Creates an instance of VariableCreateOrUpdateProperties class. */
+    public VariableCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the value property: Gets or sets the value of the variable.
      *

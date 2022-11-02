@@ -16,6 +16,10 @@ public final class UpdateConfigurationNavigation {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
+    /** Creates an instance of UpdateConfigurationNavigation class. */
+    public UpdateConfigurationNavigation() {
+    }
+
     /**
      * Get the name property: Name of the software update configuration triggered the software update configuration run.
      *

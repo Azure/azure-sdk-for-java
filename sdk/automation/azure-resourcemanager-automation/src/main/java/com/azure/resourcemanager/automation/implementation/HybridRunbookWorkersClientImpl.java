@@ -104,7 +104,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
                 + "/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups/{hybridRunbookWorkerGroupName}"
                 + "/hybridRunbookWorkers/{hybridRunbookWorkerId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HybridRunbookWorkerInner>> create(
             @HostParam("$host") String endpoint,
@@ -214,7 +214,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -283,7 +283,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -329,27 +329,6 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
      * @param hybridRunbookWorkerId The hybrid runbook worker id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String automationAccountName,
-        String hybridRunbookWorkerGroupName,
-        String hybridRunbookWorkerId) {
-        deleteAsync(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId)
-            .block();
-    }
-
-    /**
-     * Delete a hybrid runbook worker.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param hybridRunbookWorkerId The hybrid runbook worker id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -366,6 +345,31 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
         return deleteWithResponseAsync(
                 resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId, context)
             .block();
+    }
+
+    /**
+     * Delete a hybrid runbook worker.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+     * @param hybridRunbookWorkerId The hybrid runbook worker id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String resourceGroupName,
+        String automationAccountName,
+        String hybridRunbookWorkerGroupName,
+        String hybridRunbookWorkerId) {
+        deleteWithResponse(
+            resourceGroupName,
+            automationAccountName,
+            hybridRunbookWorkerGroupName,
+            hybridRunbookWorkerId,
+            Context.NONE);
     }
 
     /**
@@ -416,7 +420,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -485,7 +489,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -531,28 +535,6 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
      * @param hybridRunbookWorkerId The hybrid runbook worker id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of hybrid runbook worker.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HybridRunbookWorkerInner get(
-        String resourceGroupName,
-        String automationAccountName,
-        String hybridRunbookWorkerGroupName,
-        String hybridRunbookWorkerId) {
-        return getAsync(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId)
-            .block();
-    }
-
-    /**
-     * Retrieve a hybrid runbook worker.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param hybridRunbookWorkerId The hybrid runbook worker id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -569,6 +551,33 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
         return getWithResponseAsync(
                 resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId, context)
             .block();
+    }
+
+    /**
+     * Retrieve a hybrid runbook worker.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+     * @param hybridRunbookWorkerId The hybrid runbook worker id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of hybrid runbook worker.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HybridRunbookWorkerInner get(
+        String resourceGroupName,
+        String automationAccountName,
+        String hybridRunbookWorkerGroupName,
+        String hybridRunbookWorkerId) {
+        return getWithResponse(
+                resourceGroupName,
+                automationAccountName,
+                hybridRunbookWorkerGroupName,
+                hybridRunbookWorkerId,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -629,7 +638,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
         } else {
             hybridRunbookWorkerCreationParameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -709,7 +718,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
         } else {
             hybridRunbookWorkerCreationParameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -763,35 +772,6 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
      * @param hybridRunbookWorkerId The hybrid runbook worker id.
      * @param hybridRunbookWorkerCreationParameters The create or update parameters for hybrid runbook worker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of hybrid runbook worker.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HybridRunbookWorkerInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String hybridRunbookWorkerGroupName,
-        String hybridRunbookWorkerId,
-        HybridRunbookWorkerCreateParameters hybridRunbookWorkerCreationParameters) {
-        return createAsync(
-                resourceGroupName,
-                automationAccountName,
-                hybridRunbookWorkerGroupName,
-                hybridRunbookWorkerId,
-                hybridRunbookWorkerCreationParameters)
-            .block();
-    }
-
-    /**
-     * Create a hybrid runbook worker.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param hybridRunbookWorkerId The hybrid runbook worker id.
-     * @param hybridRunbookWorkerCreationParameters The create or update parameters for hybrid runbook worker.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -814,6 +794,36 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
                 hybridRunbookWorkerCreationParameters,
                 context)
             .block();
+    }
+
+    /**
+     * Create a hybrid runbook worker.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+     * @param hybridRunbookWorkerId The hybrid runbook worker id.
+     * @param hybridRunbookWorkerCreationParameters The create or update parameters for hybrid runbook worker.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of hybrid runbook worker.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HybridRunbookWorkerInner create(
+        String resourceGroupName,
+        String automationAccountName,
+        String hybridRunbookWorkerGroupName,
+        String hybridRunbookWorkerId,
+        HybridRunbookWorkerCreateParameters hybridRunbookWorkerCreationParameters) {
+        return createWithResponse(
+                resourceGroupName,
+                automationAccountName,
+                hybridRunbookWorkerGroupName,
+                hybridRunbookWorkerId,
+                hybridRunbookWorkerCreationParameters,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -874,7 +884,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
         } else {
             hybridRunbookWorkerMoveParameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -954,7 +964,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
         } else {
             hybridRunbookWorkerMoveParameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1008,34 +1018,6 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
      * @param hybridRunbookWorkerId The hybrid runbook worker id.
      * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void move(
-        String resourceGroupName,
-        String automationAccountName,
-        String hybridRunbookWorkerGroupName,
-        String hybridRunbookWorkerId,
-        HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters) {
-        moveAsync(
-                resourceGroupName,
-                automationAccountName,
-                hybridRunbookWorkerGroupName,
-                hybridRunbookWorkerId,
-                hybridRunbookWorkerMoveParameters)
-            .block();
-    }
-
-    /**
-     * Move a hybrid worker to a different group.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param hybridRunbookWorkerId The hybrid runbook worker id.
-     * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1058,6 +1040,34 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
                 hybridRunbookWorkerMoveParameters,
                 context)
             .block();
+    }
+
+    /**
+     * Move a hybrid worker to a different group.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+     * @param hybridRunbookWorkerId The hybrid runbook worker id.
+     * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void move(
+        String resourceGroupName,
+        String automationAccountName,
+        String hybridRunbookWorkerGroupName,
+        String hybridRunbookWorkerId,
+        HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters) {
+        moveWithResponse(
+            resourceGroupName,
+            automationAccountName,
+            hybridRunbookWorkerGroupName,
+            hybridRunbookWorkerId,
+            hybridRunbookWorkerMoveParameters,
+            Context.NONE);
     }
 
     /**
@@ -1102,7 +1112,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1177,7 +1187,7 @@ public final class HybridRunbookWorkersClientImpl implements HybridRunbookWorker
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

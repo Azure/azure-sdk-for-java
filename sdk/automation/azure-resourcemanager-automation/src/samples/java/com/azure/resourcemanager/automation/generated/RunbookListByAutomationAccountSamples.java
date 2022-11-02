@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Runbook ListByAutomationAccount. */
 public final class RunbookListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/listRunbooksByAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listRunbooksByAutomationAccount.json
      */
     /**
      * Sample code: List runbooks by automation account.

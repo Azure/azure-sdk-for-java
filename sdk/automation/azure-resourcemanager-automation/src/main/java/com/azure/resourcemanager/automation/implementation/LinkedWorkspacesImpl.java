@@ -26,15 +26,6 @@ public final class LinkedWorkspacesImpl implements LinkedWorkspaces {
         this.serviceManager = serviceManager;
     }
 
-    public LinkedWorkspace get(String resourceGroupName, String automationAccountName) {
-        LinkedWorkspaceInner inner = this.serviceClient().get(resourceGroupName, automationAccountName);
-        if (inner != null) {
-            return new LinkedWorkspaceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LinkedWorkspace> getWithResponse(
         String resourceGroupName, String automationAccountName, Context context) {
         Response<LinkedWorkspaceInner> inner =
@@ -45,6 +36,15 @@ public final class LinkedWorkspacesImpl implements LinkedWorkspaces {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LinkedWorkspaceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LinkedWorkspace get(String resourceGroupName, String automationAccountName) {
+        LinkedWorkspaceInner inner = this.serviceClient().get(resourceGroupName, automationAccountName);
+        if (inner != null) {
+            return new LinkedWorkspaceImpl(inner, this.manager());
         } else {
             return null;
         }

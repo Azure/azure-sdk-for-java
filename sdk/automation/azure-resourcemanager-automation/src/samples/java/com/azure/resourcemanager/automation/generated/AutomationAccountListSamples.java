@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AutomationAccount List. */
 public final class AutomationAccountListSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountsBySubscription.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listAutomationAccountsBySubscription.json
      */
     /**
      * Sample code: List automation accounts by resource group.

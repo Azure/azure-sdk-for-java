@@ -37,6 +37,10 @@ public final class ConnectionTypeInner {
     @JsonProperty(value = "properties")
     private ConnectionTypeProperties innerProperties;
 
+    /** Creates an instance of ConnectionTypeInner class. */
+    public ConnectionTypeInner() {
+    }
+
     /**
      * Get the id property: Gets the id of the resource.
      *

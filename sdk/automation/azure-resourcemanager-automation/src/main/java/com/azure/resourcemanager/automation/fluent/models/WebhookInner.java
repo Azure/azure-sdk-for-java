@@ -20,6 +20,10 @@ public final class WebhookInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private WebhookProperties innerProperties;
 
+    /** Creates an instance of WebhookInner class. */
+    public WebhookInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the webhook properties.
      *

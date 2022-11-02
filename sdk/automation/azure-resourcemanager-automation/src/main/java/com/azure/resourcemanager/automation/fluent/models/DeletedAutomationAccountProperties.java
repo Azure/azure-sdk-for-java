@@ -35,6 +35,10 @@ public final class DeletedAutomationAccountProperties {
     @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionTime;
 
+    /** Creates an instance of DeletedAutomationAccountProperties class. */
+    public DeletedAutomationAccountProperties() {
+    }
+
     /**
      * Get the automationAccountResourceId property: Gets or sets the Automation Account Resource Id.
      *

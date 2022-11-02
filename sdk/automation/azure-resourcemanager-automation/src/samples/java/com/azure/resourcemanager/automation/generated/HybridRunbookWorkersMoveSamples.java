@@ -10,7 +10,7 @@ import com.azure.resourcemanager.automation.models.HybridRunbookWorkerMoveParame
 /** Samples for HybridRunbookWorkers Move. */
 public final class HybridRunbookWorkersMoveSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/moveHybridRunbookWorker.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/moveHybridRunbookWorker.json
      */
     /**
      * Sample code: Move a V2 hybrid worker to a different group.

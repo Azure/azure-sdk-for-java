@@ -22,24 +22,6 @@ public interface HybridRunbookWorkersClient {
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
      * @param hybridRunbookWorkerId The hybrid runbook worker id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String automationAccountName,
-        String hybridRunbookWorkerGroupName,
-        String hybridRunbookWorkerId);
-
-    /**
-     * Delete a hybrid runbook worker.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param hybridRunbookWorkerId The hybrid runbook worker id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,7 +37,7 @@ public interface HybridRunbookWorkersClient {
         Context context);
 
     /**
-     * Retrieve a hybrid runbook worker.
+     * Delete a hybrid runbook worker.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -64,10 +46,9 @@ public interface HybridRunbookWorkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of hybrid runbook worker.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridRunbookWorkerInner get(
+    void delete(
         String resourceGroupName,
         String automationAccountName,
         String hybridRunbookWorkerGroupName,
@@ -95,25 +76,23 @@ public interface HybridRunbookWorkersClient {
         Context context);
 
     /**
-     * Create a hybrid runbook worker.
+     * Retrieve a hybrid runbook worker.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
      * @param hybridRunbookWorkerId The hybrid runbook worker id.
-     * @param hybridRunbookWorkerCreationParameters The create or update parameters for hybrid runbook worker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of hybrid runbook worker.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridRunbookWorkerInner create(
+    HybridRunbookWorkerInner get(
         String resourceGroupName,
         String automationAccountName,
         String hybridRunbookWorkerGroupName,
-        String hybridRunbookWorkerId,
-        HybridRunbookWorkerCreateParameters hybridRunbookWorkerCreationParameters);
+        String hybridRunbookWorkerId);
 
     /**
      * Create a hybrid runbook worker.
@@ -139,24 +118,25 @@ public interface HybridRunbookWorkersClient {
         Context context);
 
     /**
-     * Move a hybrid worker to a different group.
+     * Create a hybrid runbook worker.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
      * @param hybridRunbookWorkerId The hybrid runbook worker id.
-     * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
+     * @param hybridRunbookWorkerCreationParameters The create or update parameters for hybrid runbook worker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of hybrid runbook worker.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void move(
+    HybridRunbookWorkerInner create(
         String resourceGroupName,
         String automationAccountName,
         String hybridRunbookWorkerGroupName,
         String hybridRunbookWorkerId,
-        HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters);
+        HybridRunbookWorkerCreateParameters hybridRunbookWorkerCreationParameters);
 
     /**
      * Move a hybrid worker to a different group.
@@ -180,6 +160,26 @@ public interface HybridRunbookWorkersClient {
         String hybridRunbookWorkerId,
         HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters,
         Context context);
+
+    /**
+     * Move a hybrid worker to a different group.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+     * @param hybridRunbookWorkerId The hybrid runbook worker id.
+     * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void move(
+        String resourceGroupName,
+        String automationAccountName,
+        String hybridRunbookWorkerGroupName,
+        String hybridRunbookWorkerId,
+        HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters);
 
     /**
      * Retrieve a list of hybrid runbook workers.

@@ -45,6 +45,10 @@ public final class ConnectionProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ConnectionProperties class. */
+    public ConnectionProperties() {
+    }
+
     /**
      * Get the connectionType property: Gets or sets the connectionType of the connection.
      *

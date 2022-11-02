@@ -21,19 +21,6 @@ public interface ModulesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The module name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String moduleName);
-
-    /**
-     * Delete the module by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param moduleName The module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +32,7 @@ public interface ModulesClient {
         String resourceGroupName, String automationAccountName, String moduleName, Context context);
 
     /**
-     * Retrieve the module identified by module name.
+     * Delete the module by name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -53,10 +40,9 @@ public interface ModulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModuleInner get(String resourceGroupName, String automationAccountName, String moduleName);
+    void delete(String resourceGroupName, String automationAccountName, String moduleName);
 
     /**
      * Retrieve the module identified by module name.
@@ -75,23 +61,18 @@ public interface ModulesClient {
         String resourceGroupName, String automationAccountName, String moduleName, Context context);
 
     /**
-     * Create or Update the module identified by module name.
+     * Retrieve the module identified by module name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param moduleName The name of module.
-     * @param parameters The create or update parameters for module.
+     * @param moduleName The module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the module type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModuleInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String moduleName,
-        ModuleCreateOrUpdateParameters parameters);
+    ModuleInner get(String resourceGroupName, String automationAccountName, String moduleName);
 
     /**
      * Create or Update the module identified by module name.
@@ -115,20 +96,23 @@ public interface ModulesClient {
         Context context);
 
     /**
-     * Update the module identified by module name.
+     * Create or Update the module identified by module name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
-     * @param parameters The update parameters for module.
+     * @param parameters The create or update parameters for module.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the module type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModuleInner update(
-        String resourceGroupName, String automationAccountName, String moduleName, ModuleUpdateParameters parameters);
+    ModuleInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String moduleName,
+        ModuleCreateOrUpdateParameters parameters);
 
     /**
      * Update the module identified by module name.
@@ -150,6 +134,22 @@ public interface ModulesClient {
         String moduleName,
         ModuleUpdateParameters parameters,
         Context context);
+
+    /**
+     * Update the module identified by module name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param moduleName The name of module.
+     * @param parameters The update parameters for module.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the module type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ModuleInner update(
+        String resourceGroupName, String automationAccountName, String moduleName, ModuleUpdateParameters parameters);
 
     /**
      * Retrieve a list of modules.

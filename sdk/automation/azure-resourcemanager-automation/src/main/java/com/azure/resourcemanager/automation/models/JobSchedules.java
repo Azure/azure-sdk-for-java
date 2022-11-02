@@ -17,18 +17,6 @@ public interface JobSchedules {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
-
-    /**
-     * Delete the job schedule identified by job schedule name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobScheduleId The job schedule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +27,7 @@ public interface JobSchedules {
         String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
 
     /**
-     * Retrieve the job schedule identified by job schedule name.
+     * Delete the job schedule identified by job schedule name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -47,9 +35,8 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job schedule.
      */
-    JobSchedule get(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
+    void delete(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
 
     /**
      * Retrieve the job schedule identified by job schedule name.
@@ -65,6 +52,19 @@ public interface JobSchedules {
      */
     Response<JobSchedule> getWithResponse(
         String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
+
+    /**
+     * Retrieve the job schedule identified by job schedule name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobScheduleId The job schedule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job schedule.
+     */
+    JobSchedule get(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
 
     /**
      * Retrieve a list of job schedules.

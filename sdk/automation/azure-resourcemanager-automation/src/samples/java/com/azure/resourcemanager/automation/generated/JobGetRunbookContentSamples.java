@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Job GetRunbookContent. */
 public final class JobGetRunbookContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJobRunbookContent.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/job/getJobRunbookContent.json
      */
     /**
      * Sample code: Get Job Runbook Content.

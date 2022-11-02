@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Credential ListByAutomationAccount. */
 public final class CredentialListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCredentialsByAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listCredentialsByAutomationAccount.json
      */
     /**
      * Sample code: List credentials by automation account, first 100.
@@ -22,7 +22,7 @@ public final class CredentialListByAutomationAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCredentialsByAutomationAccount_next100_using_nextLink.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listCredentialsByAutomationAccount_next100_using_nextLink.json
      */
     /**
      * Sample code: List credentials by automation account, next 100.

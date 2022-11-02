@@ -29,6 +29,10 @@ public final class AdvancedSchedule {
     @JsonProperty(value = "monthlyOccurrences")
     private List<AdvancedScheduleMonthlyOccurrence> monthlyOccurrences;
 
+    /** Creates an instance of AdvancedSchedule class. */
+    public AdvancedSchedule() {
+    }
+
     /**
      * Get the weekDays property: Days of the week that the job should execute on.
      *

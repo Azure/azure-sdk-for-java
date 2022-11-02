@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for TestJob Create. */
 public final class TestJobCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createTestJob.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/createTestJob.json
      */
     /**
      * Sample code: Create test job.

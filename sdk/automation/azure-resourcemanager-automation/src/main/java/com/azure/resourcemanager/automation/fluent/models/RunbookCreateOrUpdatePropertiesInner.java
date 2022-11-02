@@ -55,6 +55,10 @@ public final class RunbookCreateOrUpdatePropertiesInner {
     @JsonProperty(value = "logActivityTrace")
     private Integer logActivityTrace;
 
+    /** Creates an instance of RunbookCreateOrUpdatePropertiesInner class. */
+    public RunbookCreateOrUpdatePropertiesInner() {
+    }
+
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
      *

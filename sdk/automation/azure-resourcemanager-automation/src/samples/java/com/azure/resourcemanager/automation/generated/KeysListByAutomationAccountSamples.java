@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Keys ListByAutomationAccount. */
 public final class KeysListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountKeys.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listAutomationAccountKeys.json
      */
     /**
      * Sample code: Get lists of an automation account.

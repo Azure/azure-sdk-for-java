@@ -16,6 +16,10 @@ public final class ScheduleAssociationProperty {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of ScheduleAssociationProperty class. */
+    public ScheduleAssociationProperty() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the Schedule.
      *

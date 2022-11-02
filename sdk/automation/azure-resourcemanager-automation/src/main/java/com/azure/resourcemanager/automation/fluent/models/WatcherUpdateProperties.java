@@ -16,6 +16,10 @@ public final class WatcherUpdateProperties {
     @JsonProperty(value = "executionFrequencyInSeconds")
     private Long executionFrequencyInSeconds;
 
+    /** Creates an instance of WatcherUpdateProperties class. */
+    public WatcherUpdateProperties() {
+    }
+
     /**
      * Get the executionFrequencyInSeconds property: Gets or sets the frequency at which the watcher is invoked.
      *

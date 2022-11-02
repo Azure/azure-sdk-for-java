@@ -18,6 +18,10 @@ public final class ModuleCreateOrUpdateProperties {
     @JsonProperty(value = "contentLink", required = true)
     private ContentLink contentLink;
 
+    /** Creates an instance of ModuleCreateOrUpdateProperties class. */
+    public ModuleCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the contentLink property: Gets or sets the module content link.
      *

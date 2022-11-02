@@ -183,7 +183,7 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -260,7 +260,7 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -310,31 +310,6 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
      * @param parameters The parameters supplied to the create source control sync job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlSyncJobInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        SourceControlSyncJobCreateParameters parameters) {
-        return createAsync(
-                resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, parameters)
-            .block();
-    }
-
-    /**
-     * Creates the sync job for a source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
-     * @param parameters The parameters supplied to the create source control sync job operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -357,6 +332,36 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
                 parameters,
                 context)
             .block();
+    }
+
+    /**
+     * Creates the sync job for a source control.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
+     * @param parameters The parameters supplied to the create source control sync job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlSyncJobInner create(
+        String resourceGroupName,
+        String automationAccountName,
+        String sourceControlName,
+        UUID sourceControlSyncJobId,
+        SourceControlSyncJobCreateParameters parameters) {
+        return createWithResponse(
+                resourceGroupName,
+                automationAccountName,
+                sourceControlName,
+                sourceControlSyncJobId,
+                parameters,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -404,7 +409,7 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -473,7 +478,7 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -515,24 +520,6 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlSyncJobByIdInner get(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId) {
-        return getAsync(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId).block();
-    }
-
-    /**
-     * Retrieve the source control sync job identified by job id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -549,6 +536,26 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
         return getWithResponseAsync(
                 resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, context)
             .block();
+    }
+
+    /**
+     * Retrieve the source control sync job identified by job id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlSyncJobByIdInner get(
+        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId) {
+        return getWithResponse(
+                resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -591,7 +598,7 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -664,7 +671,7 @@ public final class SourceControlSyncJobsClientImpl implements SourceControlSyncJ
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -73,6 +73,10 @@ public final class DscNodeProperties {
     @JsonProperty(value = "extensionHandler")
     private List<DscNodeExtensionHandlerAssociationProperty> extensionHandler;
 
+    /** Creates an instance of DscNodeProperties class. */
+    public DscNodeProperties() {
+    }
+
     /**
      * Get the lastSeen property: Gets or sets the last seen time of the node.
      *

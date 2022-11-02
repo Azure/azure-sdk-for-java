@@ -6,6 +6,7 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.automation.models.OperationDisplay;
+import com.azure.resourcemanager.automation.models.OperationPropertiesFormatServiceSpecification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Automation REST API operation. */
@@ -22,6 +23,22 @@ public final class OperationInner {
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
+
+    /*
+     * Origin of the operation.
+     */
+    @JsonProperty(value = "origin")
+    private String origin;
+
+    /*
+     * Operation properties format.
+     */
+    @JsonProperty(value = "properties")
+    private OperationPropertiesFormat innerProperties;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
@@ -64,6 +81,58 @@ public final class OperationInner {
     }
 
     /**
+     * Get the origin property: Origin of the operation.
+     *
+     * @return the origin value.
+     */
+    public String origin() {
+        return this.origin;
+    }
+
+    /**
+     * Set the origin property: Origin of the operation.
+     *
+     * @param origin the origin value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withOrigin(String origin) {
+        this.origin = origin;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: Operation properties format.
+     *
+     * @return the innerProperties value.
+     */
+    private OperationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the serviceSpecification property: Specification of the service.
+     *
+     * @return the serviceSpecification value.
+     */
+    public OperationPropertiesFormatServiceSpecification serviceSpecification() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceSpecification();
+    }
+
+    /**
+     * Set the serviceSpecification property: Specification of the service.
+     *
+     * @param serviceSpecification the serviceSpecification value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withServiceSpecification(OperationPropertiesFormatServiceSpecification serviceSpecification) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationPropertiesFormat();
+        }
+        this.innerProperties().withServiceSpecification(serviceSpecification);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -71,6 +140,9 @@ public final class OperationInner {
     public void validate() {
         if (display() != null) {
             display().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

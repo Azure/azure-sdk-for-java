@@ -447,23 +447,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, automationAccountName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Gets a private endpoint connection.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -475,6 +458,24 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String resourceGroupName, String automationAccountName, String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, privateEndpointConnectionName, context)
             .block();
+    }
+
+    /**
+     * Gets a private endpoint connection.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner get(
+        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName) {
+        return getWithResponse(resourceGroupName, automationAccountName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
     }
 
     /**

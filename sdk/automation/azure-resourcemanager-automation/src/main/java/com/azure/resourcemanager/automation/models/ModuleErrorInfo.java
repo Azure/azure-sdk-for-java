@@ -22,6 +22,10 @@ public final class ModuleErrorInfo {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of ModuleErrorInfo class. */
+    public ModuleErrorInfo() {
+    }
+
     /**
      * Get the code property: Gets or sets the error code.
      *

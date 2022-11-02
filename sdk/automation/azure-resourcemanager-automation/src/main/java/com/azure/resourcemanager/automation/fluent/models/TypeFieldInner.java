@@ -22,6 +22,10 @@ public final class TypeFieldInner {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of TypeFieldInner class. */
+    public TypeFieldInner() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the field.
      *

@@ -24,6 +24,10 @@ public final class VariableListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VariableListResult class. */
+    public VariableListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of variables.
      *

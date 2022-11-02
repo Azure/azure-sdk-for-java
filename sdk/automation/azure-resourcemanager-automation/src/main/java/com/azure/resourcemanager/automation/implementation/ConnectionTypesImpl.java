@@ -27,10 +27,6 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String connectionTypeName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, connectionTypeName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String connectionTypeName, Context context) {
         return this
@@ -38,14 +34,8 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
             .deleteWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context);
     }
 
-    public ConnectionType get(String resourceGroupName, String automationAccountName, String connectionTypeName) {
-        ConnectionTypeInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, connectionTypeName);
-        if (inner != null) {
-            return new ConnectionTypeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String connectionTypeName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, connectionTypeName);
     }
 
     public Response<ConnectionType> getWithResponse(
@@ -58,6 +48,16 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConnectionTypeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConnectionType get(String resourceGroupName, String automationAccountName, String connectionTypeName) {
+        ConnectionTypeInner inner =
+            this.serviceClient().get(resourceGroupName, automationAccountName, connectionTypeName);
+        if (inner != null) {
+            return new ConnectionTypeImpl(inner, this.manager());
         } else {
             return null;
         }

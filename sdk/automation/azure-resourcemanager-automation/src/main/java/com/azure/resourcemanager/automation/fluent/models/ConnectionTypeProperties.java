@@ -45,6 +45,10 @@ public final class ConnectionTypeProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ConnectionTypeProperties class. */
+    public ConnectionTypeProperties() {
+    }
+
     /**
      * Get the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
      *

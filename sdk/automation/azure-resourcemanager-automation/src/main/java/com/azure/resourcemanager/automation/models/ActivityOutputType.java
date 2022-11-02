@@ -22,6 +22,10 @@ public final class ActivityOutputType {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of ActivityOutputType class. */
+    public ActivityOutputType() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the activity output type.
      *

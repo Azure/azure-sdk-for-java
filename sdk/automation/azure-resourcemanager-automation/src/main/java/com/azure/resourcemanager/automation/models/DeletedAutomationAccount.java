@@ -42,6 +42,10 @@ public final class DeletedAutomationAccount {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of DeletedAutomationAccount class. */
+    public DeletedAutomationAccount() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the automation account properties.
      *

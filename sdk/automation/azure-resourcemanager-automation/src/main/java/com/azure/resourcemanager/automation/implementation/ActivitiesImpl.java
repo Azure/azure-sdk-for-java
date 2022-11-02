@@ -27,17 +27,6 @@ public final class ActivitiesImpl implements Activities {
         this.serviceManager = serviceManager;
     }
 
-    public Activity get(
-        String resourceGroupName, String automationAccountName, String moduleName, String activityName) {
-        ActivityInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, moduleName, activityName);
-        if (inner != null) {
-            return new ActivityImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Activity> getWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -54,6 +43,17 @@ public final class ActivitiesImpl implements Activities {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ActivityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Activity get(
+        String resourceGroupName, String automationAccountName, String moduleName, String activityName) {
+        ActivityInner inner =
+            this.serviceClient().get(resourceGroupName, automationAccountName, moduleName, activityName);
+        if (inner != null) {
+            return new ActivityImpl(inner, this.manager());
         } else {
             return null;
         }

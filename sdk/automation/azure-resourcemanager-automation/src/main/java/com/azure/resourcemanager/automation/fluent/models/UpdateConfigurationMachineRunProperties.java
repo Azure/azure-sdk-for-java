@@ -111,6 +111,10 @@ public final class UpdateConfigurationMachineRunProperties {
     @JsonProperty(value = "error")
     private ManagementError error;
 
+    /** Creates an instance of UpdateConfigurationMachineRunProperties class. */
+    public UpdateConfigurationMachineRunProperties() {
+    }
+
     /**
      * Get the targetComputer property: name of the updated computer.
      *

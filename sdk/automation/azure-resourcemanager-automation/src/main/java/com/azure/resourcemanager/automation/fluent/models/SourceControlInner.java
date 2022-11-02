@@ -19,6 +19,10 @@ public final class SourceControlInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SourceControlProperties innerProperties;
 
+    /** Creates an instance of SourceControlInner class. */
+    public SourceControlInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the source control.
      *

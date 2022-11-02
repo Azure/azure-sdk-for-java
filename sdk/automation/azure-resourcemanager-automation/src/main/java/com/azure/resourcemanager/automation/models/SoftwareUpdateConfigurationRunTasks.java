@@ -22,6 +22,10 @@ public final class SoftwareUpdateConfigurationRunTasks {
     @JsonProperty(value = "postTask")
     private SoftwareUpdateConfigurationRunTaskProperties postTask;
 
+    /** Creates an instance of SoftwareUpdateConfigurationRunTasks class. */
+    public SoftwareUpdateConfigurationRunTasks() {
+    }
+
     /**
      * Get the preTask property: Pre task properties.
      *

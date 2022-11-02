@@ -192,7 +192,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -249,7 +249,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -287,21 +287,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String certificateName) {
-        deleteAsync(resourceGroupName, automationAccountName, certificateName).block();
-    }
-
-    /**
-     * Delete the certificate.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -312,6 +297,21 @@ public final class CertificatesClientImpl implements CertificatesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String certificateName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, certificateName, context).block();
+    }
+
+    /**
+     * Delete the certificate.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The name of certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String certificateName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, certificateName, Context.NONE);
     }
 
     /**
@@ -352,7 +352,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -409,7 +409,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -448,22 +448,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner get(String resourceGroupName, String automationAccountName, String certificateName) {
-        return getAsync(resourceGroupName, automationAccountName, certificateName).block();
-    }
-
-    /**
-     * Retrieve the certificate identified by certificate name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -474,6 +458,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
     public Response<CertificateInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, certificateName, context).block();
+    }
+
+    /**
+     * Retrieve the certificate identified by certificate name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The name of certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner get(String resourceGroupName, String automationAccountName, String certificateName) {
+        return getWithResponse(resourceGroupName, automationAccountName, certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -523,7 +523,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -591,7 +591,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -636,27 +636,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the create or update certificate operation.
      * @param parameters The parameters supplied to the create or update certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, certificateName, parameters).block();
-    }
-
-    /**
-     * Create a certificate.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The parameters supplied to the create or update certificate operation.
-     * @param parameters The parameters supplied to the create or update certificate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -673,6 +652,29 @@ public final class CertificatesClientImpl implements CertificatesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, certificateName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create a certificate.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The parameters supplied to the create or update certificate operation.
+     * @param parameters The parameters supplied to the create or update certificate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String certificateName,
+        CertificateCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, certificateName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -722,7 +724,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -790,7 +792,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -835,27 +837,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the update certificate operation.
      * @param parameters The parameters supplied to the update certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, certificateName, parameters).block();
-    }
-
-    /**
-     * Update a certificate.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The parameters supplied to the update certificate operation.
-     * @param parameters The parameters supplied to the update certificate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -871,6 +852,28 @@ public final class CertificatesClientImpl implements CertificatesClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, certificateName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update a certificate.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The parameters supplied to the update certificate operation.
+     * @param parameters The parameters supplied to the update certificate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String certificateName,
+        CertificateUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, certificateName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -907,7 +910,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -968,7 +971,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

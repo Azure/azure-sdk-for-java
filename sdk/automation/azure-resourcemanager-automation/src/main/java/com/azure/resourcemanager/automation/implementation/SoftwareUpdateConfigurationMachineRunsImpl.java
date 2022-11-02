@@ -30,19 +30,6 @@ public final class SoftwareUpdateConfigurationMachineRunsImpl implements Softwar
         this.serviceManager = serviceManager;
     }
 
-    public SoftwareUpdateConfigurationMachineRun getById(
-        String resourceGroupName, String automationAccountName, UUID softwareUpdateConfigurationMachineRunId) {
-        SoftwareUpdateConfigurationMachineRunInner inner =
-            this
-                .serviceClient()
-                .getById(resourceGroupName, automationAccountName, softwareUpdateConfigurationMachineRunId);
-        if (inner != null) {
-            return new SoftwareUpdateConfigurationMachineRunImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SoftwareUpdateConfigurationMachineRun> getByIdWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -69,12 +56,14 @@ public final class SoftwareUpdateConfigurationMachineRunsImpl implements Softwar
         }
     }
 
-    public SoftwareUpdateConfigurationMachineRunListResult list(
-        String resourceGroupName, String automationAccountName) {
-        SoftwareUpdateConfigurationMachineRunListResultInner inner =
-            this.serviceClient().list(resourceGroupName, automationAccountName);
+    public SoftwareUpdateConfigurationMachineRun getById(
+        String resourceGroupName, String automationAccountName, UUID softwareUpdateConfigurationMachineRunId) {
+        SoftwareUpdateConfigurationMachineRunInner inner =
+            this
+                .serviceClient()
+                .getById(resourceGroupName, automationAccountName, softwareUpdateConfigurationMachineRunId);
         if (inner != null) {
-            return new SoftwareUpdateConfigurationMachineRunListResultImpl(inner, this.manager());
+            return new SoftwareUpdateConfigurationMachineRunImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -99,6 +88,17 @@ public final class SoftwareUpdateConfigurationMachineRunsImpl implements Softwar
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SoftwareUpdateConfigurationMachineRunListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SoftwareUpdateConfigurationMachineRunListResult list(
+        String resourceGroupName, String automationAccountName) {
+        SoftwareUpdateConfigurationMachineRunListResultInner inner =
+            this.serviceClient().list(resourceGroupName, automationAccountName);
+        if (inner != null) {
+            return new SoftwareUpdateConfigurationMachineRunListResultImpl(inner, this.manager());
         } else {
             return null;
         }

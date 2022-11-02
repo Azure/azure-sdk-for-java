@@ -66,6 +66,10 @@ public final class SourceControlProperties {
     @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
+    /** Creates an instance of SourceControlProperties class. */
+    public SourceControlProperties() {
+    }
+
     /**
      * Get the repoUrl property: The repo url of the source control.
      *

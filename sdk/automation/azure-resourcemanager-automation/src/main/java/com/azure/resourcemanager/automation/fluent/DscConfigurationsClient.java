@@ -12,22 +12,11 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.DscConfigurationInner;
 import com.azure.resourcemanager.automation.models.DscConfigurationCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.DscConfigurationUpdateParameters;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 /** An instance of this class provides access to all the operations defined in DscConfigurationsClient. */
 public interface DscConfigurationsClient {
-    /**
-     * Delete the dsc configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String configurationName);
-
     /**
      * Delete the dsc configuration identified by configuration name.
      *
@@ -45,7 +34,7 @@ public interface DscConfigurationsClient {
         String resourceGroupName, String automationAccountName, String configurationName, Context context);
 
     /**
-     * Retrieve the configuration identified by configuration name.
+     * Delete the dsc configuration identified by configuration name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -53,10 +42,9 @@ public interface DscConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DscConfigurationInner get(String resourceGroupName, String automationAccountName, String configurationName);
+    void delete(String resourceGroupName, String automationAccountName, String configurationName);
 
     /**
      * Retrieve the configuration identified by configuration name.
@@ -73,6 +61,41 @@ public interface DscConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DscConfigurationInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String configurationName, Context context);
+
+    /**
+     * Retrieve the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DscConfigurationInner get(String resourceGroupName, String automationAccountName, String configurationName);
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DscConfigurationInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String automationAccountName,
+        String configurationName,
+        DscConfigurationCreateOrUpdateParameters parameters,
+        Context context);
 
     /**
      * Create the configuration identified by configuration name.
@@ -111,7 +134,7 @@ public interface DscConfigurationsClient {
         String resourceGroupName,
         String automationAccountName,
         String configurationName,
-        DscConfigurationCreateOrUpdateParameters parameters,
+        String parameters,
         Context context);
 
     /**
@@ -144,11 +167,11 @@ public interface DscConfigurationsClient {
      * @return definition of the configuration type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DscConfigurationInner> createOrUpdateWithResponse(
+    Response<DscConfigurationInner> updateWithResponse(
         String resourceGroupName,
         String automationAccountName,
         String configurationName,
-        String parameters,
+        DscConfigurationUpdateParameters parameters,
         Context context);
 
     /**
@@ -183,43 +206,8 @@ public interface DscConfigurationsClient {
         String resourceGroupName,
         String automationAccountName,
         String configurationName,
-        DscConfigurationUpdateParameters parameters,
-        Context context);
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DscConfigurationInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
         String parameters,
         Context context);
-
-    /**
-     * Retrieve the configuration script identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    String getContent(String resourceGroupName, String automationAccountName, String configurationName);
 
     /**
      * Retrieve the configuration script identified by configuration name.
@@ -234,8 +222,22 @@ public interface DscConfigurationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<String> getContentWithResponse(
+    Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String configurationName, Context context);
+
+    /**
+     * Retrieve the configuration script identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String configurationName);
 
     /**
      * Retrieve a list of configurations.

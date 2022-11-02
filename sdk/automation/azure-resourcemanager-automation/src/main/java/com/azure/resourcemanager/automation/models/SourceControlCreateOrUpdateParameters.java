@@ -18,6 +18,10 @@ public final class SourceControlCreateOrUpdateParameters {
     @JsonProperty(value = "properties", required = true)
     private SourceControlCreateOrUpdateProperties innerProperties = new SourceControlCreateOrUpdateProperties();
 
+    /** Creates an instance of SourceControlCreateOrUpdateParameters class. */
+    public SourceControlCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the source control.
      *

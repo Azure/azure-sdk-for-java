@@ -62,6 +62,10 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
     @JsonProperty(value = "nextRun")
     private OffsetDateTime nextRun;
 
+    /** Creates an instance of SoftwareUpdateConfigurationCollectionItemProperties class. */
+    public SoftwareUpdateConfigurationCollectionItemProperties() {
+    }
+
     /**
      * Get the updateConfiguration property: Update specific properties of the software update configuration.
      *

@@ -24,6 +24,10 @@ public final class NodeCountsInner {
     @JsonProperty(value = "totalCount")
     private Integer totalCount;
 
+    /** Creates an instance of NodeCountsInner class. */
+    public NodeCountsInner() {
+    }
+
     /**
      * Get the value property: Gets an array of counts.
      *

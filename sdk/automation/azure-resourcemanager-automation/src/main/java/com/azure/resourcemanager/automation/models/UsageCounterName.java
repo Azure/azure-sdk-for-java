@@ -22,6 +22,10 @@ public final class UsageCounterName {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
+    /** Creates an instance of UsageCounterName class. */
+    public UsageCounterName() {
+    }
+
     /**
      * Get the value property: Gets or sets the usage counter name.
      *

@@ -16,18 +16,6 @@ public interface DscNodes {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String automationAccountName, String nodeId);
-
-    /**
-     * Delete the dsc node identified by node id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The node id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface DscNodes {
         String resourceGroupName, String automationAccountName, String nodeId, Context context);
 
     /**
-     * Retrieve the dsc node identified by node id.
+     * Delete the dsc node identified by node id.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -46,9 +34,8 @@ public interface DscNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode.
      */
-    DscNode get(String resourceGroupName, String automationAccountName, String nodeId);
+    void delete(String resourceGroupName, String automationAccountName, String nodeId);
 
     /**
      * Retrieve the dsc node identified by node id.
@@ -66,22 +53,17 @@ public interface DscNodes {
         String resourceGroupName, String automationAccountName, String nodeId, Context context);
 
     /**
-     * Update the dsc node.
+     * Retrieve the dsc node identified by node id.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param nodeId Parameters supplied to the update dsc node.
-     * @param dscNodeUpdateParameters Parameters supplied to the update dsc node.
+     * @param nodeId The node id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of a DscNode.
      */
-    DscNode update(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
-        DscNodeUpdateParameters dscNodeUpdateParameters);
+    DscNode get(String resourceGroupName, String automationAccountName, String nodeId);
 
     /**
      * Update the dsc node.
@@ -102,6 +84,24 @@ public interface DscNodes {
         String nodeId,
         DscNodeUpdateParameters dscNodeUpdateParameters,
         Context context);
+
+    /**
+     * Update the dsc node.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId Parameters supplied to the update dsc node.
+     * @param dscNodeUpdateParameters Parameters supplied to the update dsc node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of a DscNode.
+     */
+    DscNode update(
+        String resourceGroupName,
+        String automationAccountName,
+        String nodeId,
+        DscNodeUpdateParameters dscNodeUpdateParameters);
 
     /**
      * Retrieve a list of dsc nodes.

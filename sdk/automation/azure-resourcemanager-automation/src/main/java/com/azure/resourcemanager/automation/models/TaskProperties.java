@@ -25,6 +25,10 @@ public final class TaskProperties {
     @JsonProperty(value = "source")
     private String source;
 
+    /** Creates an instance of TaskProperties class. */
+    public TaskProperties() {
+    }
+
     /**
      * Get the parameters property: Gets or sets the parameters of the task.
      *

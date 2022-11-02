@@ -29,6 +29,10 @@ public final class AzureQueryProperties {
     @JsonProperty(value = "tagSettings")
     private TagSettingsProperties tagSettings;
 
+    /** Creates an instance of AzureQueryProperties class. */
+    public AzureQueryProperties() {
+    }
+
     /**
      * Get the scope property: List of Subscription or Resource Group ARM Ids.
      *

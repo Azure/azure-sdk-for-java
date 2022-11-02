@@ -48,6 +48,10 @@ public final class HybridRunbookWorkerProperties {
     @JsonProperty(value = "workerName")
     private String workerName;
 
+    /** Creates an instance of HybridRunbookWorkerProperties class. */
+    public HybridRunbookWorkerProperties() {
+    }
+
     /**
      * Get the ip property: Gets or sets the assigned machine IP address.
      *

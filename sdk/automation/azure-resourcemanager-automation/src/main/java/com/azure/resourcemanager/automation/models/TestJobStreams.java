@@ -17,20 +17,6 @@ public interface TestJobStreams {
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
      * @param jobStreamId The job stream id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
-     */
-    JobStream get(String resourceGroupName, String automationAccountName, String runbookName, String jobStreamId);
-
-    /**
-     * Retrieve a test job stream of the test job identified by runbook name and stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param jobStreamId The job stream id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,6 +29,20 @@ public interface TestJobStreams {
         String runbookName,
         String jobStreamId,
         Context context);
+
+    /**
+     * Retrieve a test job stream of the test job identified by runbook name and stream id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param jobStreamId The job stream id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream.
+     */
+    JobStream get(String resourceGroupName, String automationAccountName, String runbookName, String jobStreamId);
 
     /**
      * Retrieve a list of test job streams identified by runbook name.

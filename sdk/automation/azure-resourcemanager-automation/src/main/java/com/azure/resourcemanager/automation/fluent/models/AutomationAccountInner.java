@@ -43,6 +43,10 @@ public final class AutomationAccountInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of AutomationAccountInner class. */
+    public AutomationAccountInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the automation account properties.
      *

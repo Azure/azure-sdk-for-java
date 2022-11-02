@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for HybridRunbookWorkers ListByHybridRunbookWorkerGroup. */
 public final class HybridRunbookWorkersListByHybridRunbookWorkerGroupSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listHybridRunbookWorker.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listHybridRunbookWorker.json
      */
     /**
      * Sample code: List hybrid workers by hybrid runbook worker group.

@@ -32,6 +32,10 @@ public final class SoftwareUpdateConfigurationCollectionItem {
     private SoftwareUpdateConfigurationCollectionItemProperties innerProperties =
         new SoftwareUpdateConfigurationCollectionItemProperties();
 
+    /** Creates an instance of SoftwareUpdateConfigurationCollectionItem class. */
+    public SoftwareUpdateConfigurationCollectionItem() {
+    }
+
     /**
      * Get the name property: Name of the software update configuration.
      *

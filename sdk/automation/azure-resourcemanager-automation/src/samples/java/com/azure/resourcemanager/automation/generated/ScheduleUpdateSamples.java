@@ -10,7 +10,7 @@ import com.azure.resourcemanager.automation.models.Schedule;
 /** Samples for Schedule Update. */
 public final class ScheduleUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateSchedule.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateSchedule.json
      */
     /**
      * Sample code: Update a schedule.

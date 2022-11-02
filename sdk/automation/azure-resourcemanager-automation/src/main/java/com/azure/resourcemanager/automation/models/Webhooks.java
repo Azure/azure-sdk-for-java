@@ -15,18 +15,6 @@ public interface Webhooks {
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    String generateUri(String resourceGroupName, String automationAccountName);
-
-    /**
-     * Generates a Uri for use in creating a webhook.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,16 +24,16 @@ public interface Webhooks {
     Response<String> generateUriWithResponse(String resourceGroupName, String automationAccountName, Context context);
 
     /**
-     * Delete the webhook by name.
+     * Generates a Uri for use in creating a webhook.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param webhookName The webhook name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void delete(String resourceGroupName, String automationAccountName, String webhookName);
+    String generateUri(String resourceGroupName, String automationAccountName);
 
     /**
      * Delete the webhook by name.
@@ -63,7 +51,7 @@ public interface Webhooks {
         String resourceGroupName, String automationAccountName, String webhookName, Context context);
 
     /**
-     * Retrieve the webhook identified by webhook name.
+     * Delete the webhook by name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -71,9 +59,8 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
      */
-    Webhook get(String resourceGroupName, String automationAccountName, String webhookName);
+    void delete(String resourceGroupName, String automationAccountName, String webhookName);
 
     /**
      * Retrieve the webhook identified by webhook name.
@@ -89,6 +76,19 @@ public interface Webhooks {
      */
     Response<Webhook> getWithResponse(
         String resourceGroupName, String automationAccountName, String webhookName, Context context);
+
+    /**
+     * Retrieve the webhook identified by webhook name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param webhookName The webhook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the webhook type.
+     */
+    Webhook get(String resourceGroupName, String automationAccountName, String webhookName);
 
     /**
      * Retrieve a list of webhooks.

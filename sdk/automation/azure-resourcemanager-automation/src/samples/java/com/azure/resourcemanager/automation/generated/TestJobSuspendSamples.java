@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for TestJob Suspend. */
 public final class TestJobSuspendSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/suspendTestJob.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/suspendTestJob.json
      */
     /**
      * Sample code: Suspend test job.

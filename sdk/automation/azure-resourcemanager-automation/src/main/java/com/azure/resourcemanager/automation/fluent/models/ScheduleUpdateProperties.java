@@ -22,6 +22,10 @@ public final class ScheduleUpdateProperties {
     @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
+    /** Creates an instance of ScheduleUpdateProperties class. */
+    public ScheduleUpdateProperties() {
+    }
+
     /**
      * Get the description property: Gets or sets the description of the schedule.
      *

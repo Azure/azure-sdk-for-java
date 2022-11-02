@@ -27,17 +27,6 @@ public final class TestJobStreamsImpl implements TestJobStreams {
         this.serviceManager = serviceManager;
     }
 
-    public JobStream get(
-        String resourceGroupName, String automationAccountName, String runbookName, String jobStreamId) {
-        JobStreamInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, runbookName, jobStreamId);
-        if (inner != null) {
-            return new JobStreamImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JobStream> getWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -54,6 +43,17 @@ public final class TestJobStreamsImpl implements TestJobStreams {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobStreamImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobStream get(
+        String resourceGroupName, String automationAccountName, String runbookName, String jobStreamId) {
+        JobStreamInner inner =
+            this.serviceClient().get(resourceGroupName, automationAccountName, runbookName, jobStreamId);
+        if (inner != null) {
+            return new JobStreamImpl(inner, this.manager());
         } else {
             return null;
         }

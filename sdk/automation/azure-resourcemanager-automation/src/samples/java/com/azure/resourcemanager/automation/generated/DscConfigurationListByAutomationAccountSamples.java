@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DscConfiguration ListByAutomationAccount. */
 public final class DscConfigurationListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getAllDscConfigurations.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getAllDscConfigurations.json
      */
     /**
      * Sample code: Get DSC Configuration.
@@ -23,7 +23,7 @@ public final class DscConfigurationListByAutomationAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getPagedlDscConfigurationsWithNameFilter.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getPagedlDscConfigurationsWithNameFilter.json
      */
     /**
      * Sample code: List Paged DSC Configurations with name filter.
@@ -39,7 +39,7 @@ public final class DscConfigurationListByAutomationAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getPagedDscConfigurationsWithNoFilter.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getPagedDscConfigurationsWithNoFilter.json
      */
     /**
      * Sample code: List Paged DSC Configurations with no filter.

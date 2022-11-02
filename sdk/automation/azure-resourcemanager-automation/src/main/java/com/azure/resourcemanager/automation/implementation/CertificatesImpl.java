@@ -27,10 +27,6 @@ public final class CertificatesImpl implements Certificates {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String certificateName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, certificateName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String certificateName, Context context) {
         return this
@@ -38,13 +34,8 @@ public final class CertificatesImpl implements Certificates {
             .deleteWithResponse(resourceGroupName, automationAccountName, certificateName, context);
     }
 
-    public Certificate get(String resourceGroupName, String automationAccountName, String certificateName) {
-        CertificateInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, certificateName);
-        if (inner != null) {
-            return new CertificateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String certificateName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, certificateName);
     }
 
     public Response<Certificate> getWithResponse(
@@ -57,6 +48,15 @@ public final class CertificatesImpl implements Certificates {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Certificate get(String resourceGroupName, String automationAccountName, String certificateName) {
+        CertificateInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, certificateName);
+        if (inner != null) {
+            return new CertificateImpl(inner, this.manager());
         } else {
             return null;
         }

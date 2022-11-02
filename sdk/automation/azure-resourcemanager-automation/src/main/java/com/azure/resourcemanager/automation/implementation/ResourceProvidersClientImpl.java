@@ -108,7 +108,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -169,7 +169,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -208,23 +208,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Input data describing the graphical runbook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return graphical Runbook Content.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GraphicalRunbookContentInner convertGraphRunbookContent(
-        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters) {
-        return convertGraphRunbookContentAsync(resourceGroupName, automationAccountName, parameters).block();
-    }
-
-    /**
-     * Post operation to serialize or deserialize GraphRunbookContent.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param parameters Input data describing the graphical runbook.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -240,5 +223,24 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         return convertGraphRunbookContentWithResponseAsync(
                 resourceGroupName, automationAccountName, parameters, context)
             .block();
+    }
+
+    /**
+     * Post operation to serialize or deserialize GraphRunbookContent.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters Input data describing the graphical runbook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return graphical Runbook Content.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GraphicalRunbookContentInner convertGraphRunbookContent(
+        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters) {
+        return convertGraphRunbookContentWithResponse(
+                resourceGroupName, automationAccountName, parameters, Context.NONE)
+            .getValue();
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Python2Package Delete. */
 public final class Python2PackageDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deletePython2Package.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deletePython2Package.json
      */
     /**
      * Sample code: Delete a python 2 package.

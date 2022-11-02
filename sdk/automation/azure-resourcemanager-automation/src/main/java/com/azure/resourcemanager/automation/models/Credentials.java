@@ -16,18 +16,6 @@ public interface Credentials {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param credentialName The name of credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String automationAccountName, String credentialName);
-
-    /**
-     * Delete the credential.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param credentialName The name of credential.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface Credentials {
         String resourceGroupName, String automationAccountName, String credentialName, Context context);
 
     /**
-     * Retrieve the credential identified by credential name.
+     * Delete the credential.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -46,9 +34,8 @@ public interface Credentials {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the credential.
      */
-    Credential get(String resourceGroupName, String automationAccountName, String credentialName);
+    void delete(String resourceGroupName, String automationAccountName, String credentialName);
 
     /**
      * Retrieve the credential identified by credential name.
@@ -64,6 +51,19 @@ public interface Credentials {
      */
     Response<Credential> getWithResponse(
         String resourceGroupName, String automationAccountName, String credentialName, Context context);
+
+    /**
+     * Retrieve the credential identified by credential name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param credentialName The name of credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the credential.
+     */
+    Credential get(String resourceGroupName, String automationAccountName, String credentialName);
 
     /**
      * Retrieve a list of credentials.

@@ -102,6 +102,10 @@ public final class JobProperties {
     @JsonProperty(value = "provisioningState")
     private JobProvisioningState provisioningState;
 
+    /** Creates an instance of JobProperties class. */
+    public JobProperties() {
+    }
+
     /**
      * Get the runbook property: Gets or sets the runbook.
      *

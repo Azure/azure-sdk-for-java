@@ -24,6 +24,10 @@ public final class DscNodeReportListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DscNodeReportListResult class. */
+    public DscNodeReportListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of dsc node reports.
      *

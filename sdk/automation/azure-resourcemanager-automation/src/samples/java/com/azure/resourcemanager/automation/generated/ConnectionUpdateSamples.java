@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Connection Update. */
 public final class ConnectionUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateConnection.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateConnection.json
      */
     /**
      * Sample code: Update a connection.

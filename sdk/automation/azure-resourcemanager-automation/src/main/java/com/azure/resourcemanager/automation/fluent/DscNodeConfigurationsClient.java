@@ -22,19 +22,6 @@ public interface DscNodeConfigurationsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName);
-
-    /**
-     * Delete the Dsc node configurations by node configuration.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeConfigurationName The Dsc node configuration name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,7 +33,7 @@ public interface DscNodeConfigurationsClient {
         String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context);
 
     /**
-     * Retrieve the Dsc node configurations by node configuration.
+     * Delete the Dsc node configurations by node configuration.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -54,10 +41,9 @@ public interface DscNodeConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DscNodeConfigurationInner get(String resourceGroupName, String automationAccountName, String nodeConfigurationName);
+    void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName);
 
     /**
      * Retrieve the Dsc node configurations by node configuration.
@@ -74,6 +60,20 @@ public interface DscNodeConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DscNodeConfigurationInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context);
+
+    /**
+     * Retrieve the Dsc node configurations by node configuration.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeConfigurationName The Dsc node configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the dsc node configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DscNodeConfigurationInner get(String resourceGroupName, String automationAccountName, String nodeConfigurationName);
 
     /**
      * Create the node configuration identified by node configuration name.

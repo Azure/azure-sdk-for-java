@@ -247,7 +247,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "text/plain";
         return FluxUtil
             .withContext(
@@ -309,7 +309,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "text/plain";
         context = this.client.mergeContext(context);
         return service
@@ -323,25 +323,6 @@ public final class JobsClientImpl implements JobsClient {
                 clientRequestId,
                 accept,
                 context);
-    }
-
-    /**
-     * Retrieve the job output identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The name of the job to be created.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<String> getOutputAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String clientRequestId) {
-        return getOutputWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -368,23 +349,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The name of the job to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getOutput(String resourceGroupName, String automationAccountName, String jobName) {
-        final String clientRequestId = null;
-        return getOutputAsync(resourceGroupName, automationAccountName, jobName, clientRequestId).block();
-    }
-
-    /**
-     * Retrieve the job output identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The name of the job to be created.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,6 +365,24 @@ public final class JobsClientImpl implements JobsClient {
         Context context) {
         return getOutputWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Retrieve the job output identified by job name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The name of the job to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getOutput(String resourceGroupName, String automationAccountName, String jobName) {
+        final String clientRequestId = null;
+        return getOutputWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -441,7 +423,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "text/powershell";
         return FluxUtil
             .withContext(
@@ -503,7 +485,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "text/powershell";
         context = this.client.mergeContext(context);
         return service
@@ -517,25 +499,6 @@ public final class JobsClientImpl implements JobsClient {
                 clientRequestId,
                 accept,
                 context);
-    }
-
-    /**
-     * Retrieve the runbook content of the job identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<String> getRunbookContentAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String clientRequestId) {
-        return getRunbookContentWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -563,23 +526,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getRunbookContent(String resourceGroupName, String automationAccountName, String jobName) {
-        final String clientRequestId = null;
-        return getRunbookContentAsync(resourceGroupName, automationAccountName, jobName, clientRequestId).block();
-    }
-
-    /**
-     * Retrieve the runbook content of the job identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,6 +543,25 @@ public final class JobsClientImpl implements JobsClient {
         return getRunbookContentWithResponseAsync(
                 resourceGroupName, automationAccountName, jobName, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Retrieve the runbook content of the job identified by job name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getRunbookContent(String resourceGroupName, String automationAccountName, String jobName) {
+        final String clientRequestId = null;
+        return getRunbookContentWithResponse(
+                resourceGroupName, automationAccountName, jobName, clientRequestId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -637,7 +602,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -699,7 +664,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -713,25 +678,6 @@ public final class JobsClientImpl implements JobsClient {
                 clientRequestId,
                 accept,
                 context);
-    }
-
-    /**
-     * Suspend the job identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> suspendAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String clientRequestId) {
-        return suspendWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId)
-            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -758,22 +704,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void suspend(String resourceGroupName, String automationAccountName, String jobName) {
-        final String clientRequestId = null;
-        suspendAsync(resourceGroupName, automationAccountName, jobName, clientRequestId).block();
-    }
-
-    /**
-     * Suspend the job identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -790,6 +720,22 @@ public final class JobsClientImpl implements JobsClient {
         Context context) {
         return suspendWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Suspend the job identified by job name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void suspend(String resourceGroupName, String automationAccountName, String jobName) {
+        final String clientRequestId = null;
+        suspendWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, Context.NONE);
     }
 
     /**
@@ -830,7 +776,7 @@ public final class JobsClientImpl implements JobsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -892,7 +838,7 @@ public final class JobsClientImpl implements JobsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -906,25 +852,6 @@ public final class JobsClientImpl implements JobsClient {
                 clientRequestId,
                 accept,
                 context);
-    }
-
-    /**
-     * Stop the job identified by jobName.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String clientRequestId) {
-        return stopWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId)
-            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -951,22 +878,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(String resourceGroupName, String automationAccountName, String jobName) {
-        final String clientRequestId = null;
-        stopAsync(resourceGroupName, automationAccountName, jobName, clientRequestId).block();
-    }
-
-    /**
-     * Stop the job identified by jobName.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -983,6 +894,22 @@ public final class JobsClientImpl implements JobsClient {
         Context context) {
         return stopWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Stop the job identified by jobName.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String automationAccountName, String jobName) {
+        final String clientRequestId = null;
+        stopWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, Context.NONE);
     }
 
     /**
@@ -1023,7 +950,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1085,7 +1012,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1099,25 +1026,6 @@ public final class JobsClientImpl implements JobsClient {
                 clientRequestId,
                 accept,
                 context);
-    }
-
-    /**
-     * Retrieve the job identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> getAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String clientRequestId) {
-        return getWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1144,23 +1052,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner get(String resourceGroupName, String automationAccountName, String jobName) {
-        final String clientRequestId = null;
-        return getAsync(resourceGroupName, automationAccountName, jobName, clientRequestId).block();
-    }
-
-    /**
-     * Retrieve the job identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1177,6 +1068,24 @@ public final class JobsClientImpl implements JobsClient {
         Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Retrieve the job identified by job name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobInner get(String resourceGroupName, String automationAccountName, String jobName) {
+        final String clientRequestId = null;
+        return getWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1227,7 +1136,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1297,7 +1206,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1321,30 +1230,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
      * @param parameters The parameters supplied to the create job operation.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> createAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        JobCreateParameters parameters,
-        String clientRequestId) {
-        return createWithResponseAsync(resourceGroupName, automationAccountName, jobName, parameters, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create a job of the runbook.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param parameters The parameters supplied to the create job operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1356,25 +1241,6 @@ public final class JobsClientImpl implements JobsClient {
         final String clientRequestId = null;
         return createWithResponseAsync(resourceGroupName, automationAccountName, jobName, parameters, clientRequestId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create a job of the runbook.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param parameters The parameters supplied to the create job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner create(
-        String resourceGroupName, String automationAccountName, String jobName, JobCreateParameters parameters) {
-        final String clientRequestId = null;
-        return createAsync(resourceGroupName, automationAccountName, jobName, parameters, clientRequestId).block();
     }
 
     /**
@@ -1402,6 +1268,27 @@ public final class JobsClientImpl implements JobsClient {
         return createWithResponseAsync(
                 resourceGroupName, automationAccountName, jobName, parameters, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Create a job of the runbook.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @param parameters The parameters supplied to the create job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobInner create(
+        String resourceGroupName, String automationAccountName, String jobName, JobCreateParameters parameters) {
+        final String clientRequestId = null;
+        return createWithResponse(
+                resourceGroupName, automationAccountName, jobName, parameters, clientRequestId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1440,7 +1327,7 @@ public final class JobsClientImpl implements JobsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1509,7 +1396,7 @@ public final class JobsClientImpl implements JobsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1686,7 +1573,7 @@ public final class JobsClientImpl implements JobsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1748,7 +1635,7 @@ public final class JobsClientImpl implements JobsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1762,25 +1649,6 @@ public final class JobsClientImpl implements JobsClient {
                 clientRequestId,
                 accept,
                 context);
-    }
-
-    /**
-     * Resume the job identified by jobName.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resumeAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String clientRequestId) {
-        return resumeWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId)
-            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1807,22 +1675,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resume(String resourceGroupName, String automationAccountName, String jobName) {
-        final String clientRequestId = null;
-        resumeAsync(resourceGroupName, automationAccountName, jobName, clientRequestId).block();
-    }
-
-    /**
-     * Resume the job identified by jobName.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1839,6 +1691,22 @@ public final class JobsClientImpl implements JobsClient {
         Context context) {
         return resumeWithResponseAsync(resourceGroupName, automationAccountName, jobName, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Resume the job identified by jobName.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resume(String resourceGroupName, String automationAccountName, String jobName) {
+        final String clientRequestId = null;
+        resumeWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, Context.NONE);
     }
 
     /**

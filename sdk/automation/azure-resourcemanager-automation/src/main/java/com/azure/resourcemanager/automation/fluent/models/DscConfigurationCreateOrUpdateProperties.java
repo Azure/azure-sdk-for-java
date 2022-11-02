@@ -46,6 +46,10 @@ public final class DscConfigurationCreateOrUpdateProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of DscConfigurationCreateOrUpdateProperties class. */
+    public DscConfigurationCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
      *

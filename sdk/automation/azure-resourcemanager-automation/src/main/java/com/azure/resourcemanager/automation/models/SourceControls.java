@@ -16,18 +16,6 @@ public interface SourceControls {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String automationAccountName, String sourceControlName);
-
-    /**
-     * Delete the source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The name of source control.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface SourceControls {
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context);
 
     /**
-     * Retrieve the source control identified by source control name.
+     * Delete the source control.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -46,9 +34,8 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
      */
-    SourceControl get(String resourceGroupName, String automationAccountName, String sourceControlName);
+    void delete(String resourceGroupName, String automationAccountName, String sourceControlName);
 
     /**
      * Retrieve the source control identified by source control name.
@@ -64,6 +51,19 @@ public interface SourceControls {
      */
     Response<SourceControl> getWithResponse(
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context);
+
+    /**
+     * Retrieve the source control identified by source control name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The name of source control.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
+     */
+    SourceControl get(String resourceGroupName, String automationAccountName, String sourceControlName);
 
     /**
      * Retrieve a list of source controls.

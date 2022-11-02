@@ -41,15 +41,6 @@ public final class NodeReportsImpl implements NodeReports {
         return Utils.mapPage(inner, inner1 -> new DscNodeReportImpl(inner1, this.manager()));
     }
 
-    public DscNodeReport get(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
-        DscNodeReportInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, nodeId, reportId);
-        if (inner != null) {
-            return new DscNodeReportImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DscNodeReport> getWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
         Response<DscNodeReportInner> inner =
@@ -65,8 +56,13 @@ public final class NodeReportsImpl implements NodeReports {
         }
     }
 
-    public Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
-        return this.serviceClient().getContent(resourceGroupName, automationAccountName, nodeId, reportId);
+    public DscNodeReport get(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+        DscNodeReportInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, nodeId, reportId);
+        if (inner != null) {
+            return new DscNodeReportImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Object> getContentWithResponse(
@@ -74,6 +70,10 @@ public final class NodeReportsImpl implements NodeReports {
         return this
             .serviceClient()
             .getContentWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, context);
+    }
+
+    public Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+        return this.serviceClient().getContent(resourceGroupName, automationAccountName, nodeId, reportId);
     }
 
     private NodeReportsClient serviceClient() {

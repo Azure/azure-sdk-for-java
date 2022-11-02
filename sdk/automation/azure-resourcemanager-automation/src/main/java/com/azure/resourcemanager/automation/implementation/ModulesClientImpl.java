@@ -190,7 +190,7 @@ public final class ModulesClientImpl implements ModulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -246,7 +246,7 @@ public final class ModulesClientImpl implements ModulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -284,21 +284,6 @@ public final class ModulesClientImpl implements ModulesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The module name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String moduleName) {
-        deleteAsync(resourceGroupName, automationAccountName, moduleName).block();
-    }
-
-    /**
-     * Delete the module by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param moduleName The module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -309,6 +294,21 @@ public final class ModulesClientImpl implements ModulesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String moduleName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, moduleName, context).block();
+    }
+
+    /**
+     * Delete the module by name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param moduleName The module name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String moduleName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, moduleName, Context.NONE);
     }
 
     /**
@@ -348,7 +348,7 @@ public final class ModulesClientImpl implements ModulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -404,7 +404,7 @@ public final class ModulesClientImpl implements ModulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -442,22 +442,6 @@ public final class ModulesClientImpl implements ModulesClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The module name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModuleInner get(String resourceGroupName, String automationAccountName, String moduleName) {
-        return getAsync(resourceGroupName, automationAccountName, moduleName).block();
-    }
-
-    /**
-     * Retrieve the module identified by module name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param moduleName The module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -468,6 +452,22 @@ public final class ModulesClientImpl implements ModulesClient {
     public Response<ModuleInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String moduleName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, moduleName, context).block();
+    }
+
+    /**
+     * Retrieve the module identified by module name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param moduleName The module name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the module type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModuleInner get(String resourceGroupName, String automationAccountName, String moduleName) {
+        return getWithResponse(resourceGroupName, automationAccountName, moduleName, Context.NONE).getValue();
     }
 
     /**
@@ -516,7 +516,7 @@ public final class ModulesClientImpl implements ModulesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -583,7 +583,7 @@ public final class ModulesClientImpl implements ModulesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -628,27 +628,6 @@ public final class ModulesClientImpl implements ModulesClient {
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
      * @param parameters The create or update parameters for module.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModuleInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String moduleName,
-        ModuleCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, moduleName, parameters).block();
-    }
-
-    /**
-     * Create or Update the module identified by module name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param moduleName The name of module.
-     * @param parameters The create or update parameters for module.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -665,6 +644,29 @@ public final class ModulesClientImpl implements ModulesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, automationAccountName, moduleName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create or Update the module identified by module name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param moduleName The name of module.
+     * @param parameters The create or update parameters for module.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the module type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModuleInner createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String moduleName,
+        ModuleCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, automationAccountName, moduleName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -710,7 +712,7 @@ public final class ModulesClientImpl implements ModulesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -777,7 +779,7 @@ public final class ModulesClientImpl implements ModulesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -819,24 +821,6 @@ public final class ModulesClientImpl implements ModulesClient {
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
      * @param parameters The update parameters for module.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModuleInner update(
-        String resourceGroupName, String automationAccountName, String moduleName, ModuleUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, moduleName, parameters).block();
-    }
-
-    /**
-     * Update the module identified by module name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param moduleName The name of module.
-     * @param parameters The update parameters for module.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -852,6 +836,25 @@ public final class ModulesClientImpl implements ModulesClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, moduleName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update the module identified by module name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param moduleName The name of module.
+     * @param parameters The update parameters for module.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the module type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModuleInner update(
+        String resourceGroupName, String automationAccountName, String moduleName, ModuleUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, moduleName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -888,7 +891,7 @@ public final class ModulesClientImpl implements ModulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -949,7 +952,7 @@ public final class ModulesClientImpl implements ModulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

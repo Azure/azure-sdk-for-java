@@ -30,6 +30,10 @@ public final class DscNodeConfigurationListResult {
     @JsonProperty(value = "totalCount")
     private Integer totalCount;
 
+    /** Creates an instance of DscNodeConfigurationListResult class. */
+    public DscNodeConfigurationListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of Dsc node configurations.
      *

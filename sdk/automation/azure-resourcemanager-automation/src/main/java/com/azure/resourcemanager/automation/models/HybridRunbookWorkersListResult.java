@@ -24,6 +24,10 @@ public final class HybridRunbookWorkersListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of HybridRunbookWorkersListResult class. */
+    public HybridRunbookWorkersListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of hybrid runbook workers.
      *

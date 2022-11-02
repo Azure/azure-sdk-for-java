@@ -17,6 +17,10 @@ public class EncryptionPropertiesIdentity {
     @JsonProperty(value = "userAssignedIdentity")
     private Object userAssignedIdentity;
 
+    /** Creates an instance of EncryptionPropertiesIdentity class. */
+    public EncryptionPropertiesIdentity() {
+    }
+
     /**
      * Get the userAssignedIdentity property: The user identity used for CMK. It will be an ARM resource id in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.

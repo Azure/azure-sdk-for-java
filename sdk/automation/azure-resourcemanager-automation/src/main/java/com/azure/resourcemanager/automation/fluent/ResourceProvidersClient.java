@@ -18,21 +18,6 @@ public interface ResourceProvidersClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Input data describing the graphical runbook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return graphical Runbook Content.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphicalRunbookContentInner convertGraphRunbookContent(
-        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters);
-
-    /**
-     * Post operation to serialize or deserialize GraphRunbookContent.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param parameters Input data describing the graphical runbook.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,4 +30,19 @@ public interface ResourceProvidersClient {
         String automationAccountName,
         GraphicalRunbookContentInner parameters,
         Context context);
+
+    /**
+     * Post operation to serialize or deserialize GraphRunbookContent.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters Input data describing the graphical runbook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return graphical Runbook Content.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GraphicalRunbookContentInner convertGraphRunbookContent(
+        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters);
 }

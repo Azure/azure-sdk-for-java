@@ -28,6 +28,10 @@ public final class RawGraphicalRunbookContent {
     @JsonProperty(value = "runbookType")
     private GraphRunbookType runbookType;
 
+    /** Creates an instance of RawGraphicalRunbookContent class. */
+    public RawGraphicalRunbookContent() {
+    }
+
     /**
      * Get the schemaVersion property: Schema version of the serializer.
      *

@@ -20,6 +20,10 @@ public final class ConnectionInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ConnectionProperties innerProperties;
 
+    /** Creates an instance of ConnectionInner class. */
+    public ConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the properties of the connection.
      *

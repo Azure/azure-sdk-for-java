@@ -22,6 +22,10 @@ public final class DscNodeExtensionHandlerAssociationProperty {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of DscNodeExtensionHandlerAssociationProperty class. */
+    public DscNodeExtensionHandlerAssociationProperty() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the extension handler.
      *

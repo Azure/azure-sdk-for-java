@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DscConfiguration Update. */
 public final class DscConfigurationUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/updateDscConfiguration.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/updateDscConfiguration.json
      */
     /**
      * Sample code: Create or Update Configuration.

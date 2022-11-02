@@ -39,6 +39,10 @@ public final class WatcherInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of WatcherInner class. */
+    public WatcherInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the watcher properties.
      *

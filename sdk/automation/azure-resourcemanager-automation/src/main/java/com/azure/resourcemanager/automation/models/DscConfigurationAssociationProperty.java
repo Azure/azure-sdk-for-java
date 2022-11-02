@@ -16,6 +16,10 @@ public final class DscConfigurationAssociationProperty {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of DscConfigurationAssociationProperty class. */
+    public DscConfigurationAssociationProperty() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the Dsc configuration.
      *

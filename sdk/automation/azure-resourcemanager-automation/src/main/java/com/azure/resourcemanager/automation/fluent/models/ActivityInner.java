@@ -32,6 +32,10 @@ public final class ActivityInner {
     @JsonProperty(value = "properties")
     private ActivityProperties innerProperties;
 
+    /** Creates an instance of ActivityInner class. */
+    public ActivityInner() {
+    }
+
     /**
      * Get the id property: Gets or sets the id of the resource.
      *

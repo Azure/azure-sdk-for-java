@@ -21,19 +21,6 @@ public interface ConnectionsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionName The name of connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String connectionName);
-
-    /**
-     * Delete the connection.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionName The name of connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +32,7 @@ public interface ConnectionsClient {
         String resourceGroupName, String automationAccountName, String connectionName, Context context);
 
     /**
-     * Retrieve the connection identified by connection name.
+     * Delete the connection.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -53,10 +40,9 @@ public interface ConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionInner get(String resourceGroupName, String automationAccountName, String connectionName);
+    void delete(String resourceGroupName, String automationAccountName, String connectionName);
 
     /**
      * Retrieve the connection identified by connection name.
@@ -75,23 +61,18 @@ public interface ConnectionsClient {
         String resourceGroupName, String automationAccountName, String connectionName, Context context);
 
     /**
-     * Create or update a connection.
+     * Retrieve the connection identified by connection name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param connectionName The parameters supplied to the create or update connection operation.
-     * @param parameters The parameters supplied to the create or update connection operation.
+     * @param connectionName The name of connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionName,
-        ConnectionCreateOrUpdateParameters parameters);
+    ConnectionInner get(String resourceGroupName, String automationAccountName, String connectionName);
 
     /**
      * Create or update a connection.
@@ -115,23 +96,23 @@ public interface ConnectionsClient {
         Context context);
 
     /**
-     * Update a connection.
+     * Create or update a connection.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param connectionName The parameters supplied to the update a connection operation.
-     * @param parameters The parameters supplied to the update a connection operation.
+     * @param connectionName The parameters supplied to the create or update connection operation.
+     * @param parameters The parameters supplied to the create or update connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionInner update(
+    ConnectionInner createOrUpdate(
         String resourceGroupName,
         String automationAccountName,
         String connectionName,
-        ConnectionUpdateParameters parameters);
+        ConnectionCreateOrUpdateParameters parameters);
 
     /**
      * Update a connection.
@@ -153,6 +134,25 @@ public interface ConnectionsClient {
         String connectionName,
         ConnectionUpdateParameters parameters,
         Context context);
+
+    /**
+     * Update a connection.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionName The parameters supplied to the update a connection operation.
+     * @param parameters The parameters supplied to the update a connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String connectionName,
+        ConnectionUpdateParameters parameters);
 
     /**
      * Retrieve a list of connections.

@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for SoftwareUpdateConfigurationMachineRuns GetById. */
 public final class SoftwareUpdateConfigurationMachineRunsGetByIdSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationMachineRun/getSoftwareUpdateConfigurationMachineRunById.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/softwareUpdateConfigurationMachineRun/getSoftwareUpdateConfigurationMachineRunById.json
      */
     /**
      * Sample code: Get software update configuration machine run.

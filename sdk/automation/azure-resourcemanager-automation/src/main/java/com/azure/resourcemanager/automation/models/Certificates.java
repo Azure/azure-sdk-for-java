@@ -16,18 +16,6 @@ public interface Certificates {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String automationAccountName, String certificateName);
-
-    /**
-     * Delete the certificate.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface Certificates {
         String resourceGroupName, String automationAccountName, String certificateName, Context context);
 
     /**
-     * Retrieve the certificate identified by certificate name.
+     * Delete the certificate.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -46,9 +34,8 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate.
      */
-    Certificate get(String resourceGroupName, String automationAccountName, String certificateName);
+    void delete(String resourceGroupName, String automationAccountName, String certificateName);
 
     /**
      * Retrieve the certificate identified by certificate name.
@@ -64,6 +51,19 @@ public interface Certificates {
      */
     Response<Certificate> getWithResponse(
         String resourceGroupName, String automationAccountName, String certificateName, Context context);
+
+    /**
+     * Retrieve the certificate identified by certificate name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The name of certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the certificate.
+     */
+    Certificate get(String resourceGroupName, String automationAccountName, String certificateName);
 
     /**
      * Retrieve a list of certificates.

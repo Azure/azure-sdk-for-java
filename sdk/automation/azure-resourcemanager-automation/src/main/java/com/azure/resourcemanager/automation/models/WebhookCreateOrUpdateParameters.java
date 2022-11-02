@@ -26,6 +26,10 @@ public final class WebhookCreateOrUpdateParameters {
     @JsonProperty(value = "properties", required = true)
     private WebhookCreateOrUpdateProperties innerProperties = new WebhookCreateOrUpdateProperties();
 
+    /** Creates an instance of WebhookCreateOrUpdateParameters class. */
+    public WebhookCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the webhook.
      *

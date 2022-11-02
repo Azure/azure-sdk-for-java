@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for HybridRunbookWorkerGroup Get. */
 public final class HybridRunbookWorkerGroupGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/getHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Get a hybrid worker group.

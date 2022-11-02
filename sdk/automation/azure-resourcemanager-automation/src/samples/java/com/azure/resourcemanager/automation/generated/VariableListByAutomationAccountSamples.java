@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Variable ListByAutomationAccount. */
 public final class VariableListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listVariables_Next100.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listVariables_Next100.json
      */
     /**
      * Sample code: List variables, Next 100.
@@ -21,7 +21,7 @@ public final class VariableListByAutomationAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listVariables_First100.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/listVariables_First100.json
      */
     /**
      * Sample code: List variables, First 100.

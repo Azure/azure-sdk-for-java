@@ -29,22 +29,13 @@ public final class ModulesImpl implements Modules {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String moduleName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, moduleName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String moduleName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, moduleName, context);
     }
 
-    public Module get(String resourceGroupName, String automationAccountName, String moduleName) {
-        ModuleInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, moduleName);
-        if (inner != null) {
-            return new ModuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String moduleName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, moduleName);
     }
 
     public Response<Module> getWithResponse(
@@ -62,13 +53,8 @@ public final class ModulesImpl implements Modules {
         }
     }
 
-    public Module createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String moduleName,
-        ModuleCreateOrUpdateParameters parameters) {
-        ModuleInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, automationAccountName, moduleName, parameters);
+    public Module get(String resourceGroupName, String automationAccountName, String moduleName) {
+        ModuleInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, moduleName);
         if (inner != null) {
             return new ModuleImpl(inner, this.manager());
         } else {
@@ -97,10 +83,13 @@ public final class ModulesImpl implements Modules {
         }
     }
 
-    public Module update(
-        String resourceGroupName, String automationAccountName, String moduleName, ModuleUpdateParameters parameters) {
+    public Module createOrUpdate(
+        String resourceGroupName,
+        String automationAccountName,
+        String moduleName,
+        ModuleCreateOrUpdateParameters parameters) {
         ModuleInner inner =
-            this.serviceClient().update(resourceGroupName, automationAccountName, moduleName, parameters);
+            this.serviceClient().createOrUpdate(resourceGroupName, automationAccountName, moduleName, parameters);
         if (inner != null) {
             return new ModuleImpl(inner, this.manager());
         } else {
@@ -124,6 +113,17 @@ public final class ModulesImpl implements Modules {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ModuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Module update(
+        String resourceGroupName, String automationAccountName, String moduleName, ModuleUpdateParameters parameters) {
+        ModuleInner inner =
+            this.serviceClient().update(resourceGroupName, automationAccountName, moduleName, parameters);
+        if (inner != null) {
+            return new ModuleImpl(inner, this.manager());
         } else {
             return null;
         }

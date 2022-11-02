@@ -29,17 +29,6 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         this.serviceManager = serviceManager;
     }
 
-    public SoftwareUpdateConfiguration getByName(
-        String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
-        SoftwareUpdateConfigurationInner inner =
-            this.serviceClient().getByName(resourceGroupName, automationAccountName, softwareUpdateConfigurationName);
-        if (inner != null) {
-            return new SoftwareUpdateConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SoftwareUpdateConfiguration> getByNameWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -66,8 +55,15 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, softwareUpdateConfigurationName);
+    public SoftwareUpdateConfiguration getByName(
+        String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
+        SoftwareUpdateConfigurationInner inner =
+            this.serviceClient().getByName(resourceGroupName, automationAccountName, softwareUpdateConfigurationName);
+        if (inner != null) {
+            return new SoftwareUpdateConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -82,14 +78,8 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId, context);
     }
 
-    public SoftwareUpdateConfigurationListResult list(String resourceGroupName, String automationAccountName) {
-        SoftwareUpdateConfigurationListResultInner inner =
-            this.serviceClient().list(resourceGroupName, automationAccountName);
-        if (inner != null) {
-            return new SoftwareUpdateConfigurationListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, softwareUpdateConfigurationName);
     }
 
     public Response<SoftwareUpdateConfigurationListResult> listWithResponse(
@@ -108,6 +98,16 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SoftwareUpdateConfigurationListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SoftwareUpdateConfigurationListResult list(String resourceGroupName, String automationAccountName) {
+        SoftwareUpdateConfigurationListResultInner inner =
+            this.serviceClient().list(resourceGroupName, automationAccountName);
+        if (inner != null) {
+            return new SoftwareUpdateConfigurationListResultImpl(inner, this.manager());
         } else {
             return null;
         }

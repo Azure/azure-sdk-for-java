@@ -28,22 +28,13 @@ public final class DscNodesImpl implements DscNodes {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String nodeId) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, nodeId);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, nodeId, context);
     }
 
-    public DscNode get(String resourceGroupName, String automationAccountName, String nodeId) {
-        DscNodeInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, nodeId);
-        if (inner != null) {
-            return new DscNodeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String nodeId) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, nodeId);
     }
 
     public Response<DscNode> getWithResponse(
@@ -61,13 +52,8 @@ public final class DscNodesImpl implements DscNodes {
         }
     }
 
-    public DscNode update(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
-        DscNodeUpdateParameters dscNodeUpdateParameters) {
-        DscNodeInner inner =
-            this.serviceClient().update(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters);
+    public DscNode get(String resourceGroupName, String automationAccountName, String nodeId) {
+        DscNodeInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, nodeId);
         if (inner != null) {
             return new DscNodeImpl(inner, this.manager());
         } else {
@@ -91,6 +77,20 @@ public final class DscNodesImpl implements DscNodes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DscNodeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DscNode update(
+        String resourceGroupName,
+        String automationAccountName,
+        String nodeId,
+        DscNodeUpdateParameters dscNodeUpdateParameters) {
+        DscNodeInner inner =
+            this.serviceClient().update(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters);
+        if (inner != null) {
+            return new DscNodeImpl(inner, this.manager());
         } else {
             return null;
         }

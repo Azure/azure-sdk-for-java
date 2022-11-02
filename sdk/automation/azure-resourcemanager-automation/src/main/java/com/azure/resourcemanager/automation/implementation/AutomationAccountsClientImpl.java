@@ -210,7 +210,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -272,7 +272,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -311,23 +311,6 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Parameters supplied to the update automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutomationAccountInner update(
-        String resourceGroupName, String automationAccountName, AutomationAccountUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, parameters).block();
-    }
-
-    /**
-     * Update an automation account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param parameters Parameters supplied to the update automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -341,6 +324,23 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         AutomationAccountUpdateParameters parameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, parameters, context).block();
+    }
+
+    /**
+     * Update an automation account.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters Parameters supplied to the update automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the automation account type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutomationAccountInner update(
+        String resourceGroupName, String automationAccountName, AutomationAccountUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -383,7 +383,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -445,7 +445,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -484,23 +484,6 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Parameters supplied to the create or update automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutomationAccountInner createOrUpdate(
-        String resourceGroupName, String automationAccountName, AutomationAccountCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, parameters).block();
-    }
-
-    /**
-     * Create or update automation account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param parameters Parameters supplied to the create or update automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,6 +497,24 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         AutomationAccountCreateOrUpdateParameters parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, parameters, context).block();
+    }
+
+    /**
+     * Create or update automation account.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters Parameters supplied to the create or update automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the automation account type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutomationAccountInner createOrUpdate(
+        String resourceGroupName, String automationAccountName, AutomationAccountCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, automationAccountName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -548,7 +549,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -599,7 +600,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -633,20 +634,6 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName) {
-        deleteAsync(resourceGroupName, automationAccountName).block();
-    }
-
-    /**
-     * Delete an automation account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -656,6 +643,20 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, context).block();
+    }
+
+    /**
+     * Delete an automation account.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, Context.NONE);
     }
 
     /**
@@ -692,7 +693,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -744,7 +745,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -780,21 +781,6 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an Automation Account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutomationAccountInner getByResourceGroup(String resourceGroupName, String automationAccountName) {
-        return getByResourceGroupAsync(resourceGroupName, automationAccountName).block();
-    }
-
-    /**
-     * Get information about an Automation Account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -805,6 +791,21 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     public Response<AutomationAccountInner> getByResourceGroupWithResponse(
         String resourceGroupName, String automationAccountName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, automationAccountName, context).block();
+    }
+
+    /**
+     * Get information about an Automation Account.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about an Automation Account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutomationAccountInner getByResourceGroup(String resourceGroupName, String automationAccountName) {
+        return getByResourceGroupWithResponse(resourceGroupName, automationAccountName, Context.NONE).getValue();
     }
 
     /**
@@ -835,7 +836,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -890,7 +891,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -998,7 +999,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1043,7 +1044,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-22";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

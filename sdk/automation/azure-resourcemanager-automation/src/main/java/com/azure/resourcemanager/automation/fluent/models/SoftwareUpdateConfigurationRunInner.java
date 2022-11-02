@@ -31,6 +31,10 @@ public final class SoftwareUpdateConfigurationRunInner {
     @JsonProperty(value = "properties")
     private SoftwareUpdateConfigurationRunProperties innerProperties;
 
+    /** Creates an instance of SoftwareUpdateConfigurationRunInner class. */
+    public SoftwareUpdateConfigurationRunInner() {
+    }
+
     /**
      * Get the name property: Name of the software update configuration run.
      *

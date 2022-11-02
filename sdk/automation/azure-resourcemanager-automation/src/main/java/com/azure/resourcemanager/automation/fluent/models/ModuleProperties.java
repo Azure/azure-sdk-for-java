@@ -80,6 +80,10 @@ public final class ModuleProperties {
     @JsonProperty(value = "isComposite")
     private Boolean isComposite;
 
+    /** Creates an instance of ModuleProperties class. */
+    public ModuleProperties() {
+    }
+
     /**
      * Get the isGlobal property: Gets or sets the isGlobal flag of the module.
      *

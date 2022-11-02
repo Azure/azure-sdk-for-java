@@ -30,17 +30,6 @@ public final class SoftwareUpdateConfigurationRunsImpl implements SoftwareUpdate
         this.serviceManager = serviceManager;
     }
 
-    public SoftwareUpdateConfigurationRun getById(
-        String resourceGroupName, String automationAccountName, UUID softwareUpdateConfigurationRunId) {
-        SoftwareUpdateConfigurationRunInner inner =
-            this.serviceClient().getById(resourceGroupName, automationAccountName, softwareUpdateConfigurationRunId);
-        if (inner != null) {
-            return new SoftwareUpdateConfigurationRunImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SoftwareUpdateConfigurationRun> getByIdWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -67,11 +56,12 @@ public final class SoftwareUpdateConfigurationRunsImpl implements SoftwareUpdate
         }
     }
 
-    public SoftwareUpdateConfigurationRunListResult list(String resourceGroupName, String automationAccountName) {
-        SoftwareUpdateConfigurationRunListResultInner inner =
-            this.serviceClient().list(resourceGroupName, automationAccountName);
+    public SoftwareUpdateConfigurationRun getById(
+        String resourceGroupName, String automationAccountName, UUID softwareUpdateConfigurationRunId) {
+        SoftwareUpdateConfigurationRunInner inner =
+            this.serviceClient().getById(resourceGroupName, automationAccountName, softwareUpdateConfigurationRunId);
         if (inner != null) {
-            return new SoftwareUpdateConfigurationRunListResultImpl(inner, this.manager());
+            return new SoftwareUpdateConfigurationRunImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -96,6 +86,16 @@ public final class SoftwareUpdateConfigurationRunsImpl implements SoftwareUpdate
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SoftwareUpdateConfigurationRunListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SoftwareUpdateConfigurationRunListResult list(String resourceGroupName, String automationAccountName) {
+        SoftwareUpdateConfigurationRunListResultInner inner =
+            this.serviceClient().list(resourceGroupName, automationAccountName);
+        if (inner != null) {
+            return new SoftwareUpdateConfigurationRunListResultImpl(inner, this.manager());
         } else {
             return null;
         }

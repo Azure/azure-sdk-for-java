@@ -19,20 +19,6 @@ public interface DscCompilationJobStreamsClient {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job stream operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobStreamListResultInner listByJob(String resourceGroupName, String automationAccountName, UUID jobId);
-
-    /**
-     * Retrieve all the job streams for the compilation Job.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobId The job id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,4 +28,18 @@ public interface DscCompilationJobStreamsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobStreamListResultInner> listByJobWithResponse(
         String resourceGroupName, String automationAccountName, UUID jobId, Context context);
+
+    /**
+     * Retrieve all the job streams for the compilation Job.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobId The job id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for the list job stream operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobStreamListResultInner listByJob(String resourceGroupName, String automationAccountName, UUID jobId);
 }

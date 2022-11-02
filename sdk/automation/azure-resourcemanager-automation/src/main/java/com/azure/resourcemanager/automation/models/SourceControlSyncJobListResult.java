@@ -24,6 +24,10 @@ public final class SourceControlSyncJobListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SourceControlSyncJobListResult class. */
+    public SourceControlSyncJobListResult() {
+    }
+
     /**
      * Get the value property: The list of source control sync jobs.
      *

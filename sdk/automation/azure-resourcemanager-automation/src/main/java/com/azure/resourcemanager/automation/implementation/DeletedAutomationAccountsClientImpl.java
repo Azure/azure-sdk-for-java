@@ -146,18 +146,6 @@ public final class DeletedAutomationAccountsClientImpl implements DeletedAutomat
     /**
      * Retrieve deleted automation account.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list deleted automation account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedAutomationAccountListResultInner listBySubscription() {
-        return listBySubscriptionAsync().block();
-    }
-
-    /**
-     * Retrieve deleted automation account.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -167,5 +155,17 @@ public final class DeletedAutomationAccountsClientImpl implements DeletedAutomat
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedAutomationAccountListResultInner> listBySubscriptionWithResponse(Context context) {
         return listBySubscriptionWithResponseAsync(context).block();
+    }
+
+    /**
+     * Retrieve deleted automation account.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for the list deleted automation account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedAutomationAccountListResultInner listBySubscription() {
+        return listBySubscriptionWithResponse(Context.NONE).getValue();
     }
 }

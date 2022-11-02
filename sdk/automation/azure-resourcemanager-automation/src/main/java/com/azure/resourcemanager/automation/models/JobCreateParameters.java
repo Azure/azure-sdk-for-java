@@ -19,6 +19,10 @@ public final class JobCreateParameters {
     @JsonProperty(value = "properties", required = true)
     private JobCreateProperties innerProperties = new JobCreateProperties();
 
+    /** Creates an instance of JobCreateParameters class. */
+    public JobCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the list of job properties.
      *

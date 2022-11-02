@@ -27,10 +27,6 @@ public final class ConnectionsImpl implements Connections {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String connectionName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, connectionName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String connectionName, Context context) {
         return this
@@ -38,13 +34,8 @@ public final class ConnectionsImpl implements Connections {
             .deleteWithResponse(resourceGroupName, automationAccountName, connectionName, context);
     }
 
-    public Connection get(String resourceGroupName, String automationAccountName, String connectionName) {
-        ConnectionInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, connectionName);
-        if (inner != null) {
-            return new ConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String automationAccountName, String connectionName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, connectionName);
     }
 
     public Response<Connection> getWithResponse(
@@ -57,6 +48,15 @@ public final class ConnectionsImpl implements Connections {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Connection get(String resourceGroupName, String automationAccountName, String connectionName) {
+        ConnectionInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, connectionName);
+        if (inner != null) {
+            return new ConnectionImpl(inner, this.manager());
         } else {
             return null;
         }

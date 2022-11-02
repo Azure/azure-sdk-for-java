@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for JobSchedule Delete. */
 public final class JobScheduleDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteJobSchedule.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deleteJobSchedule.json
      */
     /**
      * Sample code: Delete a job schedule.

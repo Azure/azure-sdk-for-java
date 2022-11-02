@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for TestJobStreams Get. */
 public final class TestJobStreamsGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getTestJobStream.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getTestJobStream.json
      */
     /**
      * Sample code: Get test job stream.

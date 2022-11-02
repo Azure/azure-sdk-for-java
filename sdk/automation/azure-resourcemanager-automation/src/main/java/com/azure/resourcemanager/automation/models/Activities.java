@@ -17,20 +17,6 @@ public interface Activities {
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
      * @param activityName The name of activity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the activity.
-     */
-    Activity get(String resourceGroupName, String automationAccountName, String moduleName, String activityName);
-
-    /**
-     * Retrieve the activity in the module identified by module name and activity name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param moduleName The name of module.
-     * @param activityName The name of activity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,6 +29,20 @@ public interface Activities {
         String moduleName,
         String activityName,
         Context context);
+
+    /**
+     * Retrieve the activity in the module identified by module name and activity name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param moduleName The name of module.
+     * @param activityName The name of activity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the activity.
+     */
+    Activity get(String resourceGroupName, String automationAccountName, String moduleName, String activityName);
 
     /**
      * Retrieve a list of activities in the module identified by module name.

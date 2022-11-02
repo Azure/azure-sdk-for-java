@@ -28,15 +28,6 @@ public final class NodeCountInformationsImpl implements NodeCountInformations {
         this.serviceManager = serviceManager;
     }
 
-    public NodeCounts get(String resourceGroupName, String automationAccountName, CountType countType) {
-        NodeCountsInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, countType);
-        if (inner != null) {
-            return new NodeCountsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NodeCounts> getWithResponse(
         String resourceGroupName, String automationAccountName, CountType countType, Context context) {
         Response<NodeCountsInner> inner =
@@ -47,6 +38,15 @@ public final class NodeCountInformationsImpl implements NodeCountInformations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NodeCountsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NodeCounts get(String resourceGroupName, String automationAccountName, CountType countType) {
+        NodeCountsInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, countType);
+        if (inner != null) {
+            return new NodeCountsImpl(inner, this.manager());
         } else {
             return null;
         }

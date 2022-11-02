@@ -24,6 +24,10 @@ public final class ModuleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ModuleListResult class. */
+    public ModuleListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of modules.
      *

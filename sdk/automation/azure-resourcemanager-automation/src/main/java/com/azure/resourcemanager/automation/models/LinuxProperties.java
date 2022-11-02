@@ -35,6 +35,10 @@ public final class LinuxProperties {
     @JsonProperty(value = "rebootSetting")
     private String rebootSetting;
 
+    /** Creates an instance of LinuxProperties class. */
+    public LinuxProperties() {
+    }
+
     /**
      * Get the includedPackageClassifications property: Update classifications included in the software update
      * configuration.

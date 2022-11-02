@@ -27,6 +27,10 @@ public final class PythonPackageCreateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of PythonPackageCreateParameters class. */
+    public PythonPackageCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the module create properties.
      *

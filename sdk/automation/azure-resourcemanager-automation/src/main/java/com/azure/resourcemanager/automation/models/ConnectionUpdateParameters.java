@@ -24,6 +24,10 @@ public final class ConnectionUpdateParameters {
     @JsonProperty(value = "properties")
     private ConnectionUpdateProperties innerProperties;
 
+    /** Creates an instance of ConnectionUpdateParameters class. */
+    public ConnectionUpdateParameters() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the connection.
      *

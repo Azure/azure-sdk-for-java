@@ -27,15 +27,6 @@ public final class SchedulesImpl implements Schedules {
         this.serviceManager = serviceManager;
     }
 
-    public Schedule get(String resourceGroupName, String automationAccountName, String scheduleName) {
-        ScheduleInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, scheduleName);
-        if (inner != null) {
-            return new ScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Schedule> getWithResponse(
         String resourceGroupName, String automationAccountName, String scheduleName, Context context) {
         Response<ScheduleInner> inner =
@@ -51,13 +42,22 @@ public final class SchedulesImpl implements Schedules {
         }
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String scheduleName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, scheduleName);
+    public Schedule get(String resourceGroupName, String automationAccountName, String scheduleName) {
+        ScheduleInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, scheduleName);
+        if (inner != null) {
+            return new ScheduleImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String scheduleName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, scheduleName, context);
+    }
+
+    public void delete(String resourceGroupName, String automationAccountName, String scheduleName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, scheduleName);
     }
 
     public PagedIterable<Schedule> listByAutomationAccount(String resourceGroupName, String automationAccountName) {

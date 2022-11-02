@@ -49,6 +49,10 @@ public final class SourceControlSyncJobProperties {
     @JsonProperty(value = "syncType")
     private SyncType syncType;
 
+    /** Creates an instance of SourceControlSyncJobProperties class. */
+    public SourceControlSyncJobProperties() {
+    }
+
     /**
      * Get the sourceControlSyncJobId property: The source control sync job id.
      *

@@ -24,6 +24,10 @@ public final class SourceControlSyncJobStreamInner {
     @JsonProperty(value = "properties")
     private SourceControlSyncJobStreamProperties innerProperties;
 
+    /** Creates an instance of SourceControlSyncJobStreamInner class. */
+    public SourceControlSyncJobStreamInner() {
+    }
+
     /**
      * Get the id property: Resource id.
      *

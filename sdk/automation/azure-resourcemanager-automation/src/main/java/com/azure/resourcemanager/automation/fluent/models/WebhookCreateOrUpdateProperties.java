@@ -51,6 +51,10 @@ public final class WebhookCreateOrUpdateProperties {
     @JsonProperty(value = "runOn")
     private String runOn;
 
+    /** Creates an instance of WebhookCreateOrUpdateProperties class. */
+    public WebhookCreateOrUpdateProperties() {
+    }
+
     /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of webhook.
      *

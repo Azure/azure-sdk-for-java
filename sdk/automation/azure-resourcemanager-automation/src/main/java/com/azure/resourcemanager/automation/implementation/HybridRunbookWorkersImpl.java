@@ -28,16 +28,6 @@ public final class HybridRunbookWorkersImpl implements HybridRunbookWorkers {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(
-        String resourceGroupName,
-        String automationAccountName,
-        String hybridRunbookWorkerGroupName,
-        String hybridRunbookWorkerId) {
-        this
-            .serviceClient()
-            .delete(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -50,20 +40,14 @@ public final class HybridRunbookWorkersImpl implements HybridRunbookWorkers {
                 resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId, context);
     }
 
-    public HybridRunbookWorker get(
+    public void delete(
         String resourceGroupName,
         String automationAccountName,
         String hybridRunbookWorkerGroupName,
         String hybridRunbookWorkerId) {
-        HybridRunbookWorkerInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId);
-        if (inner != null) {
-            return new HybridRunbookWorkerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        this
+            .serviceClient()
+            .delete(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId);
     }
 
     public Response<HybridRunbookWorker> getWithResponse(
@@ -92,20 +76,20 @@ public final class HybridRunbookWorkersImpl implements HybridRunbookWorkers {
         }
     }
 
-    public void move(
+    public HybridRunbookWorker get(
         String resourceGroupName,
         String automationAccountName,
         String hybridRunbookWorkerGroupName,
-        String hybridRunbookWorkerId,
-        HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters) {
-        this
-            .serviceClient()
-            .move(
-                resourceGroupName,
-                automationAccountName,
-                hybridRunbookWorkerGroupName,
-                hybridRunbookWorkerId,
-                hybridRunbookWorkerMoveParameters);
+        String hybridRunbookWorkerId) {
+        HybridRunbookWorkerInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, hybridRunbookWorkerId);
+        if (inner != null) {
+            return new HybridRunbookWorkerImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> moveWithResponse(
@@ -124,6 +108,22 @@ public final class HybridRunbookWorkersImpl implements HybridRunbookWorkers {
                 hybridRunbookWorkerId,
                 hybridRunbookWorkerMoveParameters,
                 context);
+    }
+
+    public void move(
+        String resourceGroupName,
+        String automationAccountName,
+        String hybridRunbookWorkerGroupName,
+        String hybridRunbookWorkerId,
+        HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters) {
+        this
+            .serviceClient()
+            .move(
+                resourceGroupName,
+                automationAccountName,
+                hybridRunbookWorkerGroupName,
+                hybridRunbookWorkerId,
+                hybridRunbookWorkerMoveParameters);
     }
 
     public PagedIterable<HybridRunbookWorker> listByHybridRunbookWorkerGroup(

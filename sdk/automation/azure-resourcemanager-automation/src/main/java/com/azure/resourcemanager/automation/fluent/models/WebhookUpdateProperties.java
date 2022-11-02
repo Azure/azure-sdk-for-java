@@ -37,6 +37,10 @@ public final class WebhookUpdateProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of WebhookUpdateProperties class. */
+    public WebhookUpdateProperties() {
+    }
+
     /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of webhook.
      *

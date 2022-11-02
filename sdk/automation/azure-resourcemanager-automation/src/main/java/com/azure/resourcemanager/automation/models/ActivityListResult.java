@@ -24,6 +24,10 @@ public final class ActivityListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ActivityListResult class. */
+    public ActivityListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of activities.
      *

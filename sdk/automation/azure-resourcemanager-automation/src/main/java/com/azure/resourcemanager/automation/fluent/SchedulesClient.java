@@ -22,25 +22,6 @@ public interface SchedulesClient {
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
      * @param parameters The parameters supplied to the create or update schedule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String scheduleName,
-        ScheduleCreateOrUpdateParameters parameters);
-
-    /**
-     * Create a schedule.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param scheduleName The schedule name.
-     * @param parameters The parameters supplied to the create or update schedule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,23 +37,23 @@ public interface SchedulesClient {
         Context context);
 
     /**
-     * Update the schedule identified by schedule name.
+     * Create a schedule.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
-     * @param parameters The parameters supplied to the update schedule operation.
+     * @param parameters The parameters supplied to the create or update schedule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner update(
+    ScheduleInner createOrUpdate(
         String resourceGroupName,
         String automationAccountName,
         String scheduleName,
-        ScheduleUpdateParameters parameters);
+        ScheduleCreateOrUpdateParameters parameters);
 
     /**
      * Update the schedule identified by schedule name.
@@ -96,18 +77,23 @@ public interface SchedulesClient {
         Context context);
 
     /**
-     * Retrieve the schedule identified by schedule name.
+     * Update the schedule identified by schedule name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
+     * @param parameters The parameters supplied to the update schedule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner get(String resourceGroupName, String automationAccountName, String scheduleName);
+    ScheduleInner update(
+        String resourceGroupName,
+        String automationAccountName,
+        String scheduleName,
+        ScheduleUpdateParameters parameters);
 
     /**
      * Retrieve the schedule identified by schedule name.
@@ -126,7 +112,7 @@ public interface SchedulesClient {
         String resourceGroupName, String automationAccountName, String scheduleName, Context context);
 
     /**
-     * Delete the schedule identified by schedule name.
+     * Retrieve the schedule identified by schedule name.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -134,9 +120,10 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String scheduleName);
+    ScheduleInner get(String resourceGroupName, String automationAccountName, String scheduleName);
 
     /**
      * Delete the schedule identified by schedule name.
@@ -153,6 +140,19 @@ public interface SchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String scheduleName, Context context);
+
+    /**
+     * Delete the schedule identified by schedule name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param scheduleName The schedule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String automationAccountName, String scheduleName);
 
     /**
      * Retrieve a list of schedules.

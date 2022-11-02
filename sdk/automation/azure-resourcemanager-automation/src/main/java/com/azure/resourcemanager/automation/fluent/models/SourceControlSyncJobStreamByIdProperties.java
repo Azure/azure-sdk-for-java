@@ -51,6 +51,10 @@ public final class SourceControlSyncJobStreamByIdProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> value;
 
+    /** Creates an instance of SourceControlSyncJobStreamByIdProperties class. */
+    public SourceControlSyncJobStreamByIdProperties() {
+    }
+
     /**
      * Get the sourceControlSyncJobStreamId property: The sync job stream id.
      *

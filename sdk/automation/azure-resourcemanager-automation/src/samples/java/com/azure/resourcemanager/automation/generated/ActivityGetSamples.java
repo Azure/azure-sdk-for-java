@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Activity Get. */
 public final class ActivityGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getActivityInAModule.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getActivityInAModule.json
      */
     /**
      * Sample code: Get Activity in a module.

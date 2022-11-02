@@ -11,7 +11,7 @@ import com.azure.resourcemanager.automation.models.TokenType;
 /** Samples for SourceControl CreateOrUpdate. */
 public final class SourceControlCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/createOrUpdateSourceControl.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/sourceControl/createOrUpdateSourceControl.json
      */
     /**
      * Sample code: Create or update a source control.
@@ -31,7 +31,7 @@ public final class SourceControlCreateOrUpdateSamples {
             .withSourceType(SourceType.VSO_GIT)
             .withSecurityToken(
                 new SourceControlSecurityTokenProperties()
-                    .withAccessToken("fakeTokenPlaceholder")
+                    .withAccessToken("3a326f7a0dcd343ea58fee21f2fd5fb4c1234567")
                     .withTokenType(TokenType.PERSONAL_ACCESS_TOKEN))
             .withDescription("my description")
             .create();

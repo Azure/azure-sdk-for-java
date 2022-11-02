@@ -47,6 +47,10 @@ public final class SourceControlUpdateProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of SourceControlUpdateProperties class. */
+    public SourceControlUpdateProperties() {
+    }
+
     /**
      * Get the branch property: The repo branch of the source control.
      *

@@ -16,6 +16,10 @@ public final class DscReportResourceNavigation {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
+    /** Creates an instance of DscReportResourceNavigation class. */
+    public DscReportResourceNavigation() {
+    }
+
     /**
      * Get the resourceId property: Gets or sets the ID of the resource to navigate to.
      *

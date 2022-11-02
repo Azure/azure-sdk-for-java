@@ -39,6 +39,10 @@ public final class ModuleCreateOrUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ModuleCreateOrUpdateParameters class. */
+    public ModuleCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the module create properties.
      *

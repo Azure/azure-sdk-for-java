@@ -53,13 +53,6 @@ public interface AutomationClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
-     * Gets the Python2PackagesClient object to access its operations.
-     *
-     * @return the Python2PackagesClient object.
-     */
-    Python2PackagesClient getPython2Packages();
-
-    /**
      * Gets the AgentRegistrationInformationsClient object to access its operations.
      *
      * @return the AgentRegistrationInformationsClient object.
@@ -79,13 +72,6 @@ public interface AutomationClient {
      * @return the NodeReportsClient object.
      */
     NodeReportsClient getNodeReports();
-
-    /**
-     * Gets the DscNodeConfigurationsClient object to access its operations.
-     *
-     * @return the DscNodeConfigurationsClient object.
-     */
-    DscNodeConfigurationsClient getDscNodeConfigurations();
 
     /**
      * Gets the DscCompilationJobsClient object to access its operations.
@@ -109,25 +95,39 @@ public interface AutomationClient {
     NodeCountInformationsClient getNodeCountInformations();
 
     /**
-     * Gets the SourceControlsClient object to access its operations.
+     * Gets the WatchersClient object to access its operations.
      *
-     * @return the SourceControlsClient object.
+     * @return the WatchersClient object.
      */
-    SourceControlsClient getSourceControls();
+    WatchersClient getWatchers();
 
     /**
-     * Gets the SourceControlSyncJobsClient object to access its operations.
+     * Gets the SoftwareUpdateConfigurationsClient object to access its operations.
      *
-     * @return the SourceControlSyncJobsClient object.
+     * @return the SoftwareUpdateConfigurationsClient object.
      */
-    SourceControlSyncJobsClient getSourceControlSyncJobs();
+    SoftwareUpdateConfigurationsClient getSoftwareUpdateConfigurations();
 
     /**
-     * Gets the SourceControlSyncJobStreamsClient object to access its operations.
+     * Gets the WebhooksClient object to access its operations.
      *
-     * @return the SourceControlSyncJobStreamsClient object.
+     * @return the WebhooksClient object.
      */
-    SourceControlSyncJobStreamsClient getSourceControlSyncJobStreams();
+    WebhooksClient getWebhooks();
+
+    /**
+     * Gets the DeletedAutomationAccountsClient object to access its operations.
+     *
+     * @return the DeletedAutomationAccountsClient object.
+     */
+    DeletedAutomationAccountsClient getDeletedAutomationAccounts();
+
+    /**
+     * Gets the Python3PackagesClient object to access its operations.
+     *
+     * @return the Python3PackagesClient object.
+     */
+    Python3PackagesClient getPython3Packages();
 
     /**
      * Gets the AutomationAccountsClient object to access its operations.
@@ -186,6 +186,48 @@ public interface AutomationClient {
     CredentialsClient getCredentials();
 
     /**
+     * Gets the DscConfigurationsClient object to access its operations.
+     *
+     * @return the DscConfigurationsClient object.
+     */
+    DscConfigurationsClient getDscConfigurations();
+
+    /**
+     * Gets the DscNodeConfigurationsClient object to access its operations.
+     *
+     * @return the DscNodeConfigurationsClient object.
+     */
+    DscNodeConfigurationsClient getDscNodeConfigurations();
+
+    /**
+     * Gets the HybridRunbookWorkersClient object to access its operations.
+     *
+     * @return the HybridRunbookWorkersClient object.
+     */
+    HybridRunbookWorkersClient getHybridRunbookWorkers();
+
+    /**
+     * Gets the HybridRunbookWorkerGroupsClient object to access its operations.
+     *
+     * @return the HybridRunbookWorkerGroupsClient object.
+     */
+    HybridRunbookWorkerGroupsClient getHybridRunbookWorkerGroups();
+
+    /**
+     * Gets the JobsClient object to access its operations.
+     *
+     * @return the JobsClient object.
+     */
+    JobsClient getJobs();
+
+    /**
+     * Gets the JobStreamsClient object to access its operations.
+     *
+     * @return the JobStreamsClient object.
+     */
+    JobStreamsClient getJobStreams();
+
+    /**
      * Gets the JobSchedulesClient object to access its operations.
      *
      * @return the JobSchedulesClient object.
@@ -228,48 +270,6 @@ public interface AutomationClient {
     FieldsClient getFields();
 
     /**
-     * Gets the SchedulesClient object to access its operations.
-     *
-     * @return the SchedulesClient object.
-     */
-    SchedulesClient getSchedules();
-
-    /**
-     * Gets the VariablesClient object to access its operations.
-     *
-     * @return the VariablesClient object.
-     */
-    VariablesClient getVariables();
-
-    /**
-     * Gets the WatchersClient object to access its operations.
-     *
-     * @return the WatchersClient object.
-     */
-    WatchersClient getWatchers();
-
-    /**
-     * Gets the DscConfigurationsClient object to access its operations.
-     *
-     * @return the DscConfigurationsClient object.
-     */
-    DscConfigurationsClient getDscConfigurations();
-
-    /**
-     * Gets the JobsClient object to access its operations.
-     *
-     * @return the JobsClient object.
-     */
-    JobsClient getJobs();
-
-    /**
-     * Gets the JobStreamsClient object to access its operations.
-     *
-     * @return the JobStreamsClient object.
-     */
-    JobStreamsClient getJobStreams();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -284,25 +284,11 @@ public interface AutomationClient {
     ResourceProvidersClient getResourceProviders();
 
     /**
-     * Gets the SoftwareUpdateConfigurationsClient object to access its operations.
+     * Gets the Python2PackagesClient object to access its operations.
      *
-     * @return the SoftwareUpdateConfigurationsClient object.
+     * @return the Python2PackagesClient object.
      */
-    SoftwareUpdateConfigurationsClient getSoftwareUpdateConfigurations();
-
-    /**
-     * Gets the SoftwareUpdateConfigurationRunsClient object to access its operations.
-     *
-     * @return the SoftwareUpdateConfigurationRunsClient object.
-     */
-    SoftwareUpdateConfigurationRunsClient getSoftwareUpdateConfigurationRuns();
-
-    /**
-     * Gets the SoftwareUpdateConfigurationMachineRunsClient object to access its operations.
-     *
-     * @return the SoftwareUpdateConfigurationMachineRunsClient object.
-     */
-    SoftwareUpdateConfigurationMachineRunsClient getSoftwareUpdateConfigurationMachineRuns();
+    Python2PackagesClient getPython2Packages();
 
     /**
      * Gets the RunbookDraftsClient object to access its operations.
@@ -333,30 +319,51 @@ public interface AutomationClient {
     TestJobsClient getTestJobs();
 
     /**
-     * Gets the WebhooksClient object to access its operations.
+     * Gets the SchedulesClient object to access its operations.
      *
-     * @return the WebhooksClient object.
+     * @return the SchedulesClient object.
      */
-    WebhooksClient getWebhooks();
+    SchedulesClient getSchedules();
 
     /**
-     * Gets the HybridRunbookWorkersClient object to access its operations.
+     * Gets the SoftwareUpdateConfigurationMachineRunsClient object to access its operations.
      *
-     * @return the HybridRunbookWorkersClient object.
+     * @return the SoftwareUpdateConfigurationMachineRunsClient object.
      */
-    HybridRunbookWorkersClient getHybridRunbookWorkers();
+    SoftwareUpdateConfigurationMachineRunsClient getSoftwareUpdateConfigurationMachineRuns();
 
     /**
-     * Gets the DeletedAutomationAccountsClient object to access its operations.
+     * Gets the SoftwareUpdateConfigurationRunsClient object to access its operations.
      *
-     * @return the DeletedAutomationAccountsClient object.
+     * @return the SoftwareUpdateConfigurationRunsClient object.
      */
-    DeletedAutomationAccountsClient getDeletedAutomationAccounts();
+    SoftwareUpdateConfigurationRunsClient getSoftwareUpdateConfigurationRuns();
 
     /**
-     * Gets the HybridRunbookWorkerGroupsClient object to access its operations.
+     * Gets the SourceControlsClient object to access its operations.
      *
-     * @return the HybridRunbookWorkerGroupsClient object.
+     * @return the SourceControlsClient object.
      */
-    HybridRunbookWorkerGroupsClient getHybridRunbookWorkerGroups();
+    SourceControlsClient getSourceControls();
+
+    /**
+     * Gets the SourceControlSyncJobsClient object to access its operations.
+     *
+     * @return the SourceControlSyncJobsClient object.
+     */
+    SourceControlSyncJobsClient getSourceControlSyncJobs();
+
+    /**
+     * Gets the SourceControlSyncJobStreamsClient object to access its operations.
+     *
+     * @return the SourceControlSyncJobStreamsClient object.
+     */
+    SourceControlSyncJobStreamsClient getSourceControlSyncJobStreams();
+
+    /**
+     * Gets the VariablesClient object to access its operations.
+     *
+     * @return the VariablesClient object.
+     */
+    VariablesClient getVariables();
 }

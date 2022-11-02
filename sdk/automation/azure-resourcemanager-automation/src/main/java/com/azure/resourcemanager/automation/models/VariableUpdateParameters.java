@@ -23,6 +23,10 @@ public final class VariableUpdateParameters {
     @JsonProperty(value = "properties")
     private VariableUpdateProperties innerProperties;
 
+    /** Creates an instance of VariableUpdateParameters class. */
+    public VariableUpdateParameters() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the variable.
      *

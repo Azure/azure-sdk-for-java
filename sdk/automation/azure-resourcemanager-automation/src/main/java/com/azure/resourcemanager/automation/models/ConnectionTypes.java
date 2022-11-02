@@ -16,18 +16,6 @@ public interface ConnectionTypes {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The name of connection type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String automationAccountName, String connectionTypeName);
-
-    /**
-     * Delete the connection type.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionTypeName The name of connection type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface ConnectionTypes {
         String resourceGroupName, String automationAccountName, String connectionTypeName, Context context);
 
     /**
-     * Retrieve the connection type identified by connection type name.
+     * Delete the connection type.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
@@ -46,9 +34,8 @@ public interface ConnectionTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
      */
-    ConnectionType get(String resourceGroupName, String automationAccountName, String connectionTypeName);
+    void delete(String resourceGroupName, String automationAccountName, String connectionTypeName);
 
     /**
      * Retrieve the connection type identified by connection type name.
@@ -64,6 +51,19 @@ public interface ConnectionTypes {
      */
     Response<ConnectionType> getWithResponse(
         String resourceGroupName, String automationAccountName, String connectionTypeName, Context context);
+
+    /**
+     * Retrieve the connection type identified by connection type name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionTypeName The name of connection type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the connection type.
+     */
+    ConnectionType get(String resourceGroupName, String automationAccountName, String connectionTypeName);
 
     /**
      * Retrieve a list of connection types.

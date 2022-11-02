@@ -18,21 +18,6 @@ public interface SourceControlSyncJobs {
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job.
-     */
-    SourceControlSyncJobById get(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId);
-
-    /**
-     * Retrieve the source control sync job identified by job id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,6 +30,21 @@ public interface SourceControlSyncJobs {
         String sourceControlName,
         UUID sourceControlSyncJobId,
         Context context);
+
+    /**
+     * Retrieve the source control sync job identified by job id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job.
+     */
+    SourceControlSyncJobById get(
+        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId);
 
     /**
      * Retrieve a list of source control sync jobs.

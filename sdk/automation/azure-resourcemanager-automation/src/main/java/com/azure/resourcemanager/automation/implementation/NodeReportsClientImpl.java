@@ -494,24 +494,6 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
      * @param reportId The report id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node report type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeReportInner get(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
-        return getAsync(resourceGroupName, automationAccountName, nodeId, reportId).block();
-    }
-
-    /**
-     * Retrieve the Dsc node report data by node id and report id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The Dsc node id.
-     * @param reportId The report id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -522,6 +504,24 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
     public Response<DscNodeReportInner> getWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, nodeId, reportId, context).block();
+    }
+
+    /**
+     * Retrieve the Dsc node report data by node id and report id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The Dsc node id.
+     * @param reportId The report id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the dsc node report type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscNodeReportInner get(
+        String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+        return getWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, Context.NONE).getValue();
     }
 
     /**
@@ -668,23 +668,6 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
      * @param reportId The report id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
-        return getContentAsync(resourceGroupName, automationAccountName, nodeId, reportId).block();
-    }
-
-    /**
-     * Retrieve the Dsc node reports by node id and report id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The Dsc node id.
-     * @param reportId The report id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -695,6 +678,24 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
     public Response<Object> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, nodeId, reportId, context).block();
+    }
+
+    /**
+     * Retrieve the Dsc node reports by node id and report id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The Dsc node id.
+     * @param reportId The report id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+        return getContentWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, Context.NONE)
+            .getValue();
     }
 
     /**

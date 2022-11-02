@@ -22,6 +22,10 @@ public final class NonAzureQueryProperties {
     @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
+    /** Creates an instance of NonAzureQueryProperties class. */
+    public NonAzureQueryProperties() {
+    }
+
     /**
      * Get the functionAlias property: Log Analytics Saved Search name.
      *

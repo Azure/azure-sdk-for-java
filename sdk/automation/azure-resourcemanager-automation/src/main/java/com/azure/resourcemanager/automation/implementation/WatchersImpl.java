@@ -27,15 +27,6 @@ public final class WatchersImpl implements Watchers {
         this.serviceManager = serviceManager;
     }
 
-    public Watcher get(String resourceGroupName, String automationAccountName, String watcherName) {
-        WatcherInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, watcherName);
-        if (inner != null) {
-            return new WatcherImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Watcher> getWithResponse(
         String resourceGroupName, String automationAccountName, String watcherName, Context context) {
         Response<WatcherInner> inner =
@@ -51,8 +42,13 @@ public final class WatchersImpl implements Watchers {
         }
     }
 
-    public void delete(String resourceGroupName, String automationAccountName, String watcherName) {
-        this.serviceClient().delete(resourceGroupName, automationAccountName, watcherName);
+    public Watcher get(String resourceGroupName, String automationAccountName, String watcherName) {
+        WatcherInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, watcherName);
+        if (inner != null) {
+            return new WatcherImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -60,8 +56,8 @@ public final class WatchersImpl implements Watchers {
         return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
-    public void start(String resourceGroupName, String automationAccountName, String watcherName) {
-        this.serviceClient().start(resourceGroupName, automationAccountName, watcherName);
+    public void delete(String resourceGroupName, String automationAccountName, String watcherName) {
+        this.serviceClient().delete(resourceGroupName, automationAccountName, watcherName);
     }
 
     public Response<Void> startWithResponse(
@@ -69,13 +65,17 @@ public final class WatchersImpl implements Watchers {
         return this.serviceClient().startWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
-    public void stop(String resourceGroupName, String automationAccountName, String watcherName) {
-        this.serviceClient().stop(resourceGroupName, automationAccountName, watcherName);
+    public void start(String resourceGroupName, String automationAccountName, String watcherName) {
+        this.serviceClient().start(resourceGroupName, automationAccountName, watcherName);
     }
 
     public Response<Void> stopWithResponse(
         String resourceGroupName, String automationAccountName, String watcherName, Context context) {
         return this.serviceClient().stopWithResponse(resourceGroupName, automationAccountName, watcherName, context);
+    }
+
+    public void stop(String resourceGroupName, String automationAccountName, String watcherName) {
+        this.serviceClient().stop(resourceGroupName, automationAccountName, watcherName);
     }
 
     public PagedIterable<Watcher> listByAutomationAccount(String resourceGroupName, String automationAccountName) {

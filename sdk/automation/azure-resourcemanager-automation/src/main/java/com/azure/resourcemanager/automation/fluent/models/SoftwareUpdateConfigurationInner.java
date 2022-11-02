@@ -23,6 +23,10 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private SoftwareUpdateConfigurationProperties innerProperties = new SoftwareUpdateConfigurationProperties();
 
+    /** Creates an instance of SoftwareUpdateConfigurationInner class. */
+    public SoftwareUpdateConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Software update configuration properties.
      *

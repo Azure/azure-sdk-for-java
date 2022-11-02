@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SoftwareUpdateConfigurationMachineRuns List. */
 public final class SoftwareUpdateConfigurationMachineRunsListSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationMachineRun/listSoftwareUpdateConfigurationMachineRuns.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/softwareUpdateConfigurationMachineRun/listSoftwareUpdateConfigurationMachineRuns.json
      */
     /**
      * Sample code: List software update configuration machine runs.
@@ -24,7 +24,7 @@ public final class SoftwareUpdateConfigurationMachineRunsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationMachineRun/listSoftwareUpdateConfigurationMachineRunsByRun.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/softwareUpdateConfigurationMachineRun/listSoftwareUpdateConfigurationMachineRunsByRun.json
      */
     /**
      * Sample code: List software update configuration machine runs for a specific software update configuration run.

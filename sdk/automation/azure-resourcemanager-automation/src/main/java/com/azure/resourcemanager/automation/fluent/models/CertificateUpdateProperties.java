@@ -16,6 +16,10 @@ public final class CertificateUpdateProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of CertificateUpdateProperties class. */
+    public CertificateUpdateProperties() {
+    }
+
     /**
      * Get the description property: Gets or sets the description of the certificate.
      *

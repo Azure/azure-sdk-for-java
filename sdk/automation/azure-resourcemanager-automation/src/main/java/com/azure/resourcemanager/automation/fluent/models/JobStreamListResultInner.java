@@ -23,6 +23,10 @@ public final class JobStreamListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of JobStreamListResultInner class. */
+    public JobStreamListResultInner() {
+    }
+
     /**
      * Get the value property: A list of job streams.
      *

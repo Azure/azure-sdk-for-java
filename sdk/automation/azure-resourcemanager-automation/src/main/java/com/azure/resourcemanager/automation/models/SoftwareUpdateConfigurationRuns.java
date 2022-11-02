@@ -16,20 +16,6 @@ public interface SoftwareUpdateConfigurationRuns {
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationRunId The Id of the software update configuration run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration Run by Id.
-     */
-    SoftwareUpdateConfigurationRun getById(
-        String resourceGroupName, String automationAccountName, UUID softwareUpdateConfigurationRunId);
-
-    /**
-     * Get a single software update configuration Run by Id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationRunId The Id of the software update configuration run.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,16 +31,18 @@ public interface SoftwareUpdateConfigurationRuns {
         Context context);
 
     /**
-     * Return list of software update configuration runs.
+     * Get a single software update configuration Run by Id.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
+     * @param softwareUpdateConfigurationRunId The Id of the software update configuration run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing all software update configuration runs.
+     * @return a single software update configuration Run by Id.
      */
-    SoftwareUpdateConfigurationRunListResult list(String resourceGroupName, String automationAccountName);
+    SoftwareUpdateConfigurationRun getById(
+        String resourceGroupName, String automationAccountName, UUID softwareUpdateConfigurationRunId);
 
     /**
      * Return list of software update configuration runs.
@@ -80,4 +68,16 @@ public interface SoftwareUpdateConfigurationRuns {
         String skip,
         String top,
         Context context);
+
+    /**
+     * Return list of software update configuration runs.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of listing all software update configuration runs.
+     */
+    SoftwareUpdateConfigurationRunListResult list(String resourceGroupName, String automationAccountName);
 }

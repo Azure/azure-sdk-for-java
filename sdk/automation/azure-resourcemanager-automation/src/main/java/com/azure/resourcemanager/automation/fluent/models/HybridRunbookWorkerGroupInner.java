@@ -26,6 +26,10 @@ public final class HybridRunbookWorkerGroupInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of HybridRunbookWorkerGroupInner class. */
+    public HybridRunbookWorkerGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the hybrid worker group properties.
      *

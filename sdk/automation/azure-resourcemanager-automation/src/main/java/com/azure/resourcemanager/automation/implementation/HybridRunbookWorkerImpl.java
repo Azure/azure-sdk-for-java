@@ -160,17 +160,6 @@ public final class HybridRunbookWorkerImpl implements HybridRunbookWorker, Hybri
         return this;
     }
 
-    public void move(HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters) {
-        serviceManager
-            .hybridRunbookWorkers()
-            .move(
-                resourceGroupName,
-                automationAccountName,
-                hybridRunbookWorkerGroupName,
-                hybridRunbookWorkerId,
-                hybridRunbookWorkerMoveParameters);
-    }
-
     public Response<Void> moveWithResponse(
         HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters, Context context) {
         return serviceManager
@@ -182,6 +171,17 @@ public final class HybridRunbookWorkerImpl implements HybridRunbookWorker, Hybri
                 hybridRunbookWorkerId,
                 hybridRunbookWorkerMoveParameters,
                 context);
+    }
+
+    public void move(HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters) {
+        serviceManager
+            .hybridRunbookWorkers()
+            .move(
+                resourceGroupName,
+                automationAccountName,
+                hybridRunbookWorkerGroupName,
+                hybridRunbookWorkerId,
+                hybridRunbookWorkerMoveParameters);
     }
 
     public HybridRunbookWorkerImpl withName(String name) {

@@ -35,6 +35,10 @@ public final class AgentRegistrationInner {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of AgentRegistrationInner class. */
+    public AgentRegistrationInner() {
+    }
+
     /**
      * Get the dscMetaConfiguration property: Gets or sets the dsc meta configuration.
      *

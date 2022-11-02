@@ -32,6 +32,10 @@ public final class JobCreateProperties {
     @JsonProperty(value = "runOn")
     private String runOn;
 
+    /** Creates an instance of JobCreateProperties class. */
+    public JobCreateProperties() {
+    }
+
     /**
      * Get the runbook property: Gets or sets the runbook.
      *

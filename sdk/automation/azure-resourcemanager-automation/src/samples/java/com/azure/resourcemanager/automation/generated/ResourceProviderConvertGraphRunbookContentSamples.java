@@ -12,7 +12,7 @@ import com.azure.resourcemanager.automation.models.RawGraphicalRunbookContent;
 /** Samples for ResourceProvider ConvertGraphRunbookContent. */
 public final class ResourceProviderConvertGraphRunbookContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/serializeGraphRunbookContent.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/serializeGraphRunbookContent.json
      */
     /**
      * Sample code: Get Graphical raw runbook content from graphical runbook JSON object.
@@ -31,7 +31,7 @@ public final class ResourceProviderConvertGraphRunbookContentSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/deserializeGraphRunbookContent.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/deserializeGraphRunbookContent.json
      */
     /**
      * Sample code: Get Graphical runbook content from raw content.

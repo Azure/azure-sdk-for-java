@@ -28,6 +28,10 @@ public final class EncryptionProperties {
     @JsonProperty(value = "identity")
     private EncryptionPropertiesIdentity identity;
 
+    /** Creates an instance of EncryptionProperties class. */
+    public EncryptionProperties() {
+    }
+
     /**
      * Get the keyVaultProperties property: Key vault properties.
      *

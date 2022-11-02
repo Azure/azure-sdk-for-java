@@ -16,6 +16,10 @@ public final class LinkedWorkspaceInner {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of LinkedWorkspaceInner class. */
+    public LinkedWorkspaceInner() {
+    }
+
     /**
      * Get the id property: Gets the id of the linked workspace.
      *

@@ -24,6 +24,10 @@ public final class SourceControlSyncJobStreamsListBySyncJob {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SourceControlSyncJobStreamsListBySyncJob class. */
+    public SourceControlSyncJobStreamsListBySyncJob() {
+    }
+
     /**
      * Get the value property: The list of source control sync job streams.
      *

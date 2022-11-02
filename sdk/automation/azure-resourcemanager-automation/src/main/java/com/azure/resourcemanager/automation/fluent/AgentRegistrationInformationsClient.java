@@ -18,19 +18,6 @@ public interface AgentRegistrationInformationsClient {
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentRegistrationInner get(String resourceGroupName, String automationAccountName);
-
-    /**
-     * Retrieve the automation agent registration information.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,19 +29,17 @@ public interface AgentRegistrationInformationsClient {
         String resourceGroupName, String automationAccountName, Context context);
 
     /**
-     * Regenerate a primary or secondary agent registration key.
+     * Retrieve the automation agent registration information.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param parameters The name of the agent registration key to be regenerated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the agent registration information type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentRegistrationInner regenerateKey(
-        String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters);
+    AgentRegistrationInner get(String resourceGroupName, String automationAccountName);
 
     /**
      * Regenerate a primary or secondary agent registration key.
@@ -74,4 +59,19 @@ public interface AgentRegistrationInformationsClient {
         String automationAccountName,
         AgentRegistrationRegenerateKeyParameter parameters,
         Context context);
+
+    /**
+     * Regenerate a primary or secondary agent registration key.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters The name of the agent registration key to be regenerated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the agent registration information type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentRegistrationInner regenerateKey(
+        String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters);
 }

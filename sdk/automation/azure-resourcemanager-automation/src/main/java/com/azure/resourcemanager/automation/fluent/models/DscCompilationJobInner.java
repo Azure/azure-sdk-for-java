@@ -23,6 +23,10 @@ public final class DscCompilationJobInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DscCompilationJobProperties innerProperties;
 
+    /** Creates an instance of DscCompilationJobInner class. */
+    public DscCompilationJobInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets or sets the properties of the Dsc Compilation job.
      *

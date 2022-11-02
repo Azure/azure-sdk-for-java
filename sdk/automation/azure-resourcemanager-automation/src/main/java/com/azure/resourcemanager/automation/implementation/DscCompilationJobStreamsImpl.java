@@ -28,16 +28,6 @@ public final class DscCompilationJobStreamsImpl implements DscCompilationJobStre
         this.serviceManager = serviceManager;
     }
 
-    public JobStreamListResult listByJob(String resourceGroupName, String automationAccountName, UUID jobId) {
-        JobStreamListResultInner inner =
-            this.serviceClient().listByJob(resourceGroupName, automationAccountName, jobId);
-        if (inner != null) {
-            return new JobStreamListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JobStreamListResult> listByJobWithResponse(
         String resourceGroupName, String automationAccountName, UUID jobId, Context context) {
         Response<JobStreamListResultInner> inner =
@@ -48,6 +38,16 @@ public final class DscCompilationJobStreamsImpl implements DscCompilationJobStre
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobStreamListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobStreamListResult listByJob(String resourceGroupName, String automationAccountName, UUID jobId) {
+        JobStreamListResultInner inner =
+            this.serviceClient().listByJob(resourceGroupName, automationAccountName, jobId);
+        if (inner != null) {
+            return new JobStreamListResultImpl(inner, this.manager());
         } else {
             return null;
         }

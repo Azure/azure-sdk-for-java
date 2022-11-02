@@ -150,7 +150,7 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
         if (jobStreamId == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobStreamId is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -218,7 +218,7 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
         if (jobStreamId == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobStreamId is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -242,30 +242,6 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
      * @param jobStreamId The job stream id.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobStreamInner> getAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String jobStreamId,
-        String clientRequestId) {
-        return getWithResponseAsync(resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param jobStreamId The job stream id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -277,25 +253,6 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
         final String clientRequestId = null;
         return getWithResponseAsync(resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param jobStreamId The job stream id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStreamInner get(
-        String resourceGroupName, String automationAccountName, String jobName, String jobStreamId) {
-        final String clientRequestId = null;
-        return getAsync(resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId).block();
     }
 
     /**
@@ -323,6 +280,27 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
         return getWithResponseAsync(
                 resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId, context)
             .block();
+    }
+
+    /**
+     * Retrieve the job stream identified by job stream id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @param jobStreamId The job stream id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobStreamInner get(
+        String resourceGroupName, String automationAccountName, String jobName, String jobStreamId) {
+        final String clientRequestId = null;
+        return getWithResponse(
+                resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -365,7 +343,7 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -440,7 +418,7 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

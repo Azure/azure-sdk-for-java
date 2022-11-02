@@ -50,6 +50,10 @@ public final class ActivityProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ActivityProperties class. */
+    public ActivityProperties() {
+    }
+
     /**
      * Get the definition property: Gets or sets the user name of the activity.
      *

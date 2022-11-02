@@ -19,6 +19,10 @@ public final class PythonPackageUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of PythonPackageUpdateParameters class. */
+    public PythonPackageUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Gets or sets the tags attached to the resource.
      *

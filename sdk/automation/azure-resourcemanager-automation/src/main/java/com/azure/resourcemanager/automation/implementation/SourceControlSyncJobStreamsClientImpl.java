@@ -159,7 +159,7 @@ public final class SourceControlSyncJobStreamsClientImpl implements SourceContro
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -240,7 +240,7 @@ public final class SourceControlSyncJobStreamsClientImpl implements SourceContro
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -456,7 +456,7 @@ public final class SourceControlSyncJobStreamsClientImpl implements SourceContro
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -531,7 +531,7 @@ public final class SourceControlSyncJobStreamsClientImpl implements SourceContro
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-01-13-preview";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -581,30 +581,6 @@ public final class SourceControlSyncJobStreamsClientImpl implements SourceContro
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
      * @param streamId The id of the sync job stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job stream by id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlSyncJobStreamByIdInner get(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String streamId) {
-        return getAsync(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, streamId)
-            .block();
-    }
-
-    /**
-     * Retrieve a sync job stream identified by stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
-     * @param streamId The id of the sync job stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -622,6 +598,36 @@ public final class SourceControlSyncJobStreamsClientImpl implements SourceContro
         return getWithResponseAsync(
                 resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, streamId, context)
             .block();
+    }
+
+    /**
+     * Retrieve a sync job stream identified by stream id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
+     * @param streamId The id of the sync job stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job stream by id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlSyncJobStreamByIdInner get(
+        String resourceGroupName,
+        String automationAccountName,
+        String sourceControlName,
+        UUID sourceControlSyncJobId,
+        String streamId) {
+        return getWithResponse(
+                resourceGroupName,
+                automationAccountName,
+                sourceControlName,
+                sourceControlSyncJobId,
+                streamId,
+                Context.NONE)
+            .getValue();
     }
 
     /**

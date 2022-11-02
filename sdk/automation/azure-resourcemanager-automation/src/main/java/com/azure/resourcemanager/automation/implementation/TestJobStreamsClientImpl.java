@@ -143,7 +143,7 @@ public final class TestJobStreamsClientImpl implements TestJobStreamsClient {
         if (jobStreamId == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobStreamId is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -208,7 +208,7 @@ public final class TestJobStreamsClientImpl implements TestJobStreamsClient {
         if (jobStreamId == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobStreamId is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -250,24 +250,6 @@ public final class TestJobStreamsClientImpl implements TestJobStreamsClient {
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
      * @param jobStreamId The job stream id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStreamInner get(
-        String resourceGroupName, String automationAccountName, String runbookName, String jobStreamId) {
-        return getAsync(resourceGroupName, automationAccountName, runbookName, jobStreamId).block();
-    }
-
-    /**
-     * Retrieve a test job stream of the test job identified by runbook name and stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param jobStreamId The job stream id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -283,6 +265,25 @@ public final class TestJobStreamsClientImpl implements TestJobStreamsClient {
         Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName, jobStreamId, context)
             .block();
+    }
+
+    /**
+     * Retrieve a test job stream of the test job identified by runbook name and stream id.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param jobStreamId The job stream id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobStreamInner get(
+        String resourceGroupName, String automationAccountName, String runbookName, String jobStreamId) {
+        return getWithResponse(resourceGroupName, automationAccountName, runbookName, jobStreamId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -324,7 +325,7 @@ public final class TestJobStreamsClientImpl implements TestJobStreamsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -392,7 +393,7 @@ public final class TestJobStreamsClientImpl implements TestJobStreamsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-30";
+        final String apiVersion = "2022-08-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AutomationAccount GetByResourceGroup. */
 public final class AutomationAccountGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-08-08/examples/getAutomationAccount.json
      */
     /**
      * Sample code: Get automation account.

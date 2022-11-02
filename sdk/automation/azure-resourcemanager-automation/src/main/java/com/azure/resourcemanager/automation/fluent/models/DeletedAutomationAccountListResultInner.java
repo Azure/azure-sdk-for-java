@@ -18,6 +18,10 @@ public final class DeletedAutomationAccountListResultInner {
     @JsonProperty(value = "value")
     private List<DeletedAutomationAccount> value;
 
+    /** Creates an instance of DeletedAutomationAccountListResultInner class. */
+    public DeletedAutomationAccountListResultInner() {
+    }
+
     /**
      * Get the value property: Gets or sets the list of deleted automation accounts.
      *

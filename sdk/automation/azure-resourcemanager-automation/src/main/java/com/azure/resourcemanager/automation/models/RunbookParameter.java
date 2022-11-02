@@ -34,6 +34,10 @@ public final class RunbookParameter {
     @JsonProperty(value = "defaultValue")
     private String defaultValue;
 
+    /** Creates an instance of RunbookParameter class. */
+    public RunbookParameter() {
+    }
+
     /**
      * Get the type property: Gets or sets the type of the parameter.
      *

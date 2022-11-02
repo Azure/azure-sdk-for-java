@@ -25,6 +25,10 @@ public final class JobStreamInner {
     @JsonProperty(value = "properties")
     private JobStreamProperties innerProperties;
 
+    /** Creates an instance of JobStreamInner class. */
+    public JobStreamInner() {
+    }
+
     /**
      * Get the id property: Gets or sets the id of the resource.
      *

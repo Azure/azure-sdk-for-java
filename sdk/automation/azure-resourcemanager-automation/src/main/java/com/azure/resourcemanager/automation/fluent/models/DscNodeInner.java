@@ -20,6 +20,10 @@ public final class DscNodeInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DscNodeProperties innerProperties;
 
+    /** Creates an instance of DscNodeInner class. */
+    public DscNodeInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a DscNode.
      *
