@@ -437,12 +437,11 @@ public class SimpleSyncPollerTests {
         final Response activationResponse = new Response("Activated");
         when(activationOperation.apply(any())).thenReturn(activationResponse);
 
-        LongRunningOperationStatus matchStatus
-            = SUCCESSFULLY_COMPLETED;
+        LongRunningOperationStatus matchStatus = SUCCESSFULLY_COMPLETED;
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
-        //
+
         when(pollOperation.apply(any())).thenAnswer((Answer<PollResponse<Response>>) invocationOnMock -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
@@ -454,7 +453,7 @@ public class SimpleSyncPollerTests {
                         new Response("1"), Duration.ofMillis(10));
                 case 2:
                     return new PollResponse<>(matchStatus,
-                        new Response("1"), Duration.ofMillis(10));
+                        new Response("2"), Duration.ofMillis(10));
                 default:
                     throw new RuntimeException("Poll should not be called after matching response");
             }
