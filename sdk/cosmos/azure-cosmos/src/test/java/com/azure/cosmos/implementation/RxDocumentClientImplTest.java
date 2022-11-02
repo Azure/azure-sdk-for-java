@@ -93,7 +93,7 @@ public class RxDocumentClientImplTest {
         this.resetSessionTokenRetryPolicyMock = Mockito.mock(IRetryPolicyFactory.class);
     }
 
-    @Test(groups = "unit")
+    @Test(groups = {"unit"})
     public void readMany() {
 
         // setup static method mocks
@@ -258,6 +258,12 @@ public class RxDocumentClientImplTest {
             })
             .expectComplete()
             .verify();
+
+        // release static mocks
+        httpClientMock.close();
+        partitionKeyInternalHelperMock.close();
+        observableHelperMock.close();
+        documentQueryExecutionFactoryMock.close();
     }
 
     private static HttpClient dummyHttpClient() {
