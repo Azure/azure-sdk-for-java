@@ -20,12 +20,10 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
 import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
-import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
 public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
@@ -65,11 +63,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private final int maxRetries;
 
-    private AzureAppConfigurationProperties globalProperties;
-
-    public AppConfigurationReplicaClientsBuilder(int maxRetries, AzureAppConfigurationProperties globalProperties) {
+    public AppConfigurationReplicaClientsBuilder(int maxRetries) {
         this.maxRetries = maxRetries;
-        this.globalProperties = globalProperties;
     }
 
     /**
@@ -238,10 +233,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigured, replicaCount))
             .retryPolicy(new RetryPolicy(retryPolicy));
-
-        if (globalProperties != null) {
-            ConfigurationClientBuilderFactory factory = new ConfigurationClientBuilderFactory(globalProperties);
-        }
 
         if (clientProvider != null) {
             clientProvider.setup(builder, endpoint);
