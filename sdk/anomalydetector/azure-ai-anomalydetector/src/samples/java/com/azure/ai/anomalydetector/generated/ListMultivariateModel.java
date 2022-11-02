@@ -18,12 +18,11 @@ public class ListMultivariateModel {
         AnomalyDetectorClient anomalyDetectorClient =
                 new AnomalyDetectorClientBuilder()
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
-                        .apiVersion("v1.1")
                         .endpoint("{Endpoint}")
                         .buildClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.listmultivariatemodel.listmultivariatemodel
+        // BEGIN:com.azure.ai.anomalydetector.generated.listmultivariatemodels.listmultivariatemodel
         RequestOptions requestOptions = new RequestOptions().addQueryParam("skip", "0").addQueryParam("top", "10");
-        PagedIterable<BinaryData> response = anomalyDetectorClient.listMultivariateModel(requestOptions);
-        // END:com.azure.ai.anomalydetector.generated.listmultivariatemodel.listmultivariatemodel
+        PagedIterable<BinaryData> response = anomalyDetectorClient.listMultivariateModels(requestOptions);
+        // END:com.azure.ai.anomalydetector.generated.listmultivariatemodels.listmultivariatemodel
     }
 }
