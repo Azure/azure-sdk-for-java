@@ -176,7 +176,6 @@
     "sdk/schemaregistry/azure-data-schemaregistry-apacheavro/**",
     "sdk/servicebus/build/**",
     "sdk/spring/scripts/**",
-    "sdk/servicebus/azure-messaging-servicebus/**",
     "sdk/spring/spring-cloud-azure-actuator/**",
     "sdk/spring/spring-cloud-azure-actuator-autoconfigure/**",
     "sdk/spring/spring-cloud-azure-integration-tests/**",
@@ -704,6 +703,14 @@
         "kldn",
         "dccf"
       ]
+    },
+    {
+      "filename": "sdk/servicebus/azure-messaging-servicebus/**",
+      "words": [
+        "Conniey",
+        "qpid",
+        "unretriable"
+        ]
     }
   ],
   "allowCompoundWords": true
