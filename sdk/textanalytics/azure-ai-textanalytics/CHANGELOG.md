@@ -22,11 +22,9 @@
  `AbstractSummaryResultCollection`, `AbstractSummaryResult`, `AbstractiveSummary`, and `SummaryContext`. 
   Access the feature through the `beginAnalyzeActions` API.
 - Added the dynamic text classification on documents without needing to train a model. The feature can be used by calling:
-    - `DynamicClassifyDocumentResultCollection dynamicClassificationBatch(Iterable<String> documents, String language, DynamicClassificationOptions options)`    
-    - `Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context)`
-    - `Mono<DynamicClassifyDocumentResultCollection> dynamicClassificationBatch(Iterable<String> documents, String language, DynamicClassificationOptions options)`
-    - `Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options)`.
-    - New models: `ClassificationType`, `DynamicClassificationOptions` and `DynamicClassifyDocumentResultCollection`.
+    - Synchronous API: `Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context)`
+    - Asynchronous API: `Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options)`.
+    - Added New models: `ClassificationType`, `DynamicClassificationOptions` and `DynamicClassifyDocumentResultCollection`.
 
 ### Breaking Changes
 

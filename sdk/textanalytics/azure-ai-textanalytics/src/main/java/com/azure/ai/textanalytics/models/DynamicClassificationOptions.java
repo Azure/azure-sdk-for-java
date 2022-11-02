@@ -61,7 +61,7 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
     }
 
     /**
-     * Gets the value of {@code categories}
+     * Gets the value of {@code categories}. A list of categories to which input is classified to.
      *
      * @return The value of {@code categories}.
      */
@@ -70,9 +70,9 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
     }
 
     /**
-     * Sets the value of {@code categories}.
+     * Sets the value of {@code categories}. A list of categories to which input is classified to.
      *
-     * @param categories the
+     * @param categories A list of categories to which input is classified to.
      *
      * @return The DynamicClassificationOptions object itself.
      */
