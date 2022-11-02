@@ -29,8 +29,6 @@ public enum TextAnalyticsServiceVersion implements ServiceVersion {
      */
     V2022_10_01_PREVIEW("2022-10-01-preview");
 
-
-
     private final String version;
 
     TextAnalyticsServiceVersion(String version) {

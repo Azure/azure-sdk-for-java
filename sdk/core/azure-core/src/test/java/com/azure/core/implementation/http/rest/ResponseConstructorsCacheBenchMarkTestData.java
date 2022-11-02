@@ -291,11 +291,6 @@ class ResponseConstructorsCacheBenchMarkTestData {
                 public boolean isHeadersEagerlyConverted() {
                     return false;
                 }
-
-                @Override
-                public boolean isHeadersEagerlyConverted() {
-                    return false;
-                }
             }).block();
             this.bodyAsObject = bodyAsObject;
         }
