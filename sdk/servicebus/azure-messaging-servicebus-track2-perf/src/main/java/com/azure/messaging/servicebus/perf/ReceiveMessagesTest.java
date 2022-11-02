@@ -8,6 +8,8 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.perf.test.core.TestDataCreationHelper;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -46,17 +48,18 @@ public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOption
 
     @Override
     public Mono<Integer> runBatchAsync() {
-        AtomicInteger count = new AtomicInteger();
+        int receiveCount = options.getMessagesToReceive();
         return receiverAsync
             .receiveMessages()
-            .take(options.getMessagesToReceive())
+            .take(receiveCount)
             .flatMap(message -> {
-                count.getAndIncrement();
-                if (options.getIsDeleteMode()) {
+                if (!options.getIsDeleteMode()) {
                     return receiverAsync.complete(message);
                 }
                 return Mono.empty();
-            }, 1).then().thenReturn(count.get());
+            }, 1)
+            .then()
+            .thenReturn(receiveCount);
 
     }
 
