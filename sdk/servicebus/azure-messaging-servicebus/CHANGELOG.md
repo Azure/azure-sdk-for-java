@@ -6,7 +6,7 @@
 - Added rule manager client to manage rules for ServiceBus subscription with listen claims. ([#27711](https://github.com/Azure/azure-sdk-for-java/issues/27711))
 - Added ability to create a subscription with default rule. ([#29885](https://github.com/Azure/azure-sdk-for-java/issues/29885))
 - `ServiceBusAdministrationClientBuilder` now supports using `AzureSasCredential`. ([#30255](https://github.com/Azure/azure-sdk-for-java/issues/30255))
-- `EntityPath` and `FullyQualifiedNamespace` properties are now readable from `ServiceBusProcessorClient`. ([#29089](https://github.com/Azure/azure-sdk-for-java/issues/29089))
+- `EntityPath` and `FullyQualifiedNamespace` properties are now readable from `ServiceBusReceivedMessageContext`. ([#29089](https://github.com/Azure/azure-sdk-for-java/issues/29089))
 ### Breaking Changes
 
 ### Bugs Fixed
