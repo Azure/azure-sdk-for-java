@@ -19,8 +19,7 @@ public final class QueryRequest {
     private List<String> subscriptions;
 
     /*
-     * Azure management groups against which to execute the query. Example: [
-     * 'mg1', 'mg2' ]
+     * Azure management groups against which to execute the query. Example: [ 'mg1', 'mg2' ]
      */
     @JsonProperty(value = "managementGroups")
     private List<String> managementGroups;
@@ -42,6 +41,10 @@ public final class QueryRequest {
      */
     @JsonProperty(value = "facets")
     private List<FacetRequest> facets;
+
+    /** Creates an instance of QueryRequest class. */
+    public QueryRequest() {
+    }
 
     /**
      * Get the subscriptions property: Azure subscriptions against which to execute the query.

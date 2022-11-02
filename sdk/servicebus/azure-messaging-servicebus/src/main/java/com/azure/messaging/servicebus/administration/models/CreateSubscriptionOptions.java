@@ -377,7 +377,7 @@ public final class CreateSubscriptionOptions {
     }
 
     /***
-     * Set the rule that the subscriptions hould be created with, if any.
+     * Set the rule that the subscriptions should be created with, if any.
      *
      * @param ruleProperties the rule description (name, action, filter)
      *

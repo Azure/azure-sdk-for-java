@@ -102,6 +102,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final boolean isStreamResponse;
     private final boolean returnTypeDecodeable;
     private final boolean responseEagerlyRead;
+    private final boolean ignoreResponseBody;
     private final boolean headersEagerlyConverted;
     private final String spanName;
 
@@ -278,6 +279,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
+        this.ignoreResponseBody = isResponseBodyIgnored(unwrappedReturnType);
         this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
@@ -709,6 +711,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     @Override
+    public boolean isResponseBodyIgnored() {
+        return ignoreResponseBody;
+    }
+
+    @Override
     public boolean isHeadersEagerlyConverted() {
         return headersEagerlyConverted;
     }
@@ -722,7 +729,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return spanName;
     }
 
-    static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {
+    public static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {
         if (unwrappedReturnType == null) {
             return false;
         }
@@ -735,17 +742,24 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
     }
 
-    static boolean isResponseEagerlyRead(Type unwrappedReturnType) {
+    public static boolean isResponseBodyIgnored(Type unwrappedReturnType) {
         if (unwrappedReturnType == null) {
             return false;
         }
 
-        return isReturnTypeDecodeable(unwrappedReturnType)
-            || TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.TYPE)
+        return TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.TYPE)
             || TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
     }
 
-    static Type unwrapReturnType(Type returnType) {
+    public static boolean isResponseEagerlyRead(Type unwrappedReturnType) {
+        if (unwrappedReturnType == null) {
+            return false;
+        }
+
+        return isReturnTypeDecodeable(unwrappedReturnType);
+    }
+
+    public static Type unwrapReturnType(Type returnType) {
         if (returnType == null) {
             return null;
         }

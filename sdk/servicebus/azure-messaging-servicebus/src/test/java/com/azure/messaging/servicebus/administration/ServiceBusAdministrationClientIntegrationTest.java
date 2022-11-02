@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -47,9 +48,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.azure.messaging.servicebus.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -94,6 +98,31 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             .filter(properties -> !properties.getName().toLowerCase(Locale.ROOT)
                 .equals(getEntityName(getRuleBaseName(), 2)))
             .forEach(property -> client.deleteRule(topicName, subscriptionName, property.getName()));
+    }
+
+    /**
+     * Test to connect to the service bus with an azure sas credential.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    @Test
+    void azureSasCredentialsTest() {
+        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+
+        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+
+        String connectionString = getConnectionString(true);
+        Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = sasPattern.matcher(connectionString);
+        assertTrue(matcher.find(), "Couldn't find SAS from connection string");
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .endpoint(fullyQualifiedDomainName)
+            .credential(new AzureSasCredential(matcher.group(1)))
+            .buildClient();
+        NamespaceProperties np = client.getNamespaceProperties();
+        assertNotNull(np.getName());
     }
 
     @Test
