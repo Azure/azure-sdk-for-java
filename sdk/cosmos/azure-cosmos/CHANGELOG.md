@@ -8,9 +8,9 @@
 
 #### Bugs Fixed
 * Fixed a rare race condition for `query plan` cache exceeding the allowed size limit - See [PR 31859](https://github.com/Azure/azure-sdk-for-java/pull/31859)
+* Added improvement in `RntbdClientChannelHealthChecker` for detecting continuous transit timeout. - See [PR 31544](https://github.com/Azure/azure-sdk-for-java/pull/31544)
 
 #### Other Changes
-* Added improvement in `RntbdClientChannelHealthChecker` for continuous transit timeout. - See [PR 31544](https://github.com/Azure/azure-sdk-for-java/pull/31544)
 
 ### 4.38.1 (2022-10-21)
 #### Other Changes
