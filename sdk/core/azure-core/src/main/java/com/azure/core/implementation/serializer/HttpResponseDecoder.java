@@ -54,7 +54,7 @@ public final class HttpResponseDecoder {
      * Subscribing to body kickoff http content reading, it's decoding then emission of decoded object. Subscribing to
      * header kickoff header decoding and emission of decoded object.
      */
-    public static final class HttpDecodedResponse implements Closeable {
+    public static class HttpDecodedResponse implements Closeable {
         private final HttpResponse response;
         private final SerializerAdapter serializer;
         private final HttpResponseDecodeData decodeData;

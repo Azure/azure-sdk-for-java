@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util;
+package com.azure.core.util.mocking;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -12,9 +12,9 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 /**
- * An abstract file channel used for mocking in tests.
+ * A file channel used for mocking in tests.
  */
-public abstract class MyFileChannel extends FileChannel {
+public class MyFileChannel extends FileChannel {
     // Needed by Mockito
     public MyFileChannel() {
         super();

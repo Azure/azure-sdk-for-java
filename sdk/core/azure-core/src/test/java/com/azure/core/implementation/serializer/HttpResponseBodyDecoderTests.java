@@ -17,14 +17,10 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -62,19 +58,6 @@ public class HttpResponseBodyDecoderTests {
 
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
-
-    private AutoCloseable openMocks;
-
-    @BeforeEach
-    public void prepareForMocking() {
-        this.openMocks = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    public void clearMocks() throws Exception {
-        openMocks.close();
-        Mockito.framework().clearInlineMock(this);
-    }
 
     @ParameterizedTest
     @MethodSource("invalidHttpResponseSupplier")
@@ -442,10 +425,21 @@ public class HttpResponseBodyDecoderTests {
     }
 
     private static ParameterizedType mockParameterizedType(Type rawType, Type... actualTypeArguments) {
-        ParameterizedType parameterizedType = mock(ParameterizedType.class);
-        when(parameterizedType.getRawType()).thenReturn(rawType);
-        when(parameterizedType.getActualTypeArguments()).thenReturn(actualTypeArguments);
+        return new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return actualTypeArguments;
+            }
 
-        return parameterizedType;
+            @Override
+            public Type getRawType() {
+                return rawType;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
     }
 }

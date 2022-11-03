@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util;
+package com.azure.core.util.mocking;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -11,7 +11,7 @@ import java.nio.channels.FileLock;
 import java.util.concurrent.Future;
 
 /**
- * An abstract asynchronous file channel used for mocking in tests.
+ * An asynchronous file channel used for mocking in tests.
  */
 public class MyAsynchronousFileChannel extends AsynchronousFileChannel {
 

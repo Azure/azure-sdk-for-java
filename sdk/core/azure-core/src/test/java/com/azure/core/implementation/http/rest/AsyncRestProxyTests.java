@@ -3,11 +3,13 @@
 
 package com.azure.core.implementation.http.rest;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.MockHttpResponse;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
-import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.mocking.MySerializerAdapter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -38,8 +38,6 @@ import static org.mockito.Mockito.when;
 public class AsyncRestProxyTests {
 
     @Mock
-    private SerializerAdapter serializerAdapter;
-    @Mock
     private HttpPipeline httpPipeline;
     @Mock
     private SwaggerMethodParser methodParser;
@@ -47,8 +45,6 @@ public class AsyncRestProxyTests {
     private SwaggerInterfaceParser interfaceParser;
     @Mock
     private HttpResponseDecoder.HttpDecodedResponse decodedResponse;
-    @Mock
-    private HttpResponse httpResponse;
 
     private AsyncRestProxy asyncRestProxy;
     private AutoCloseable mocksCloseable;
@@ -56,7 +52,7 @@ public class AsyncRestProxyTests {
     @BeforeEach
     public void beforeEach() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
-        asyncRestProxy = new AsyncRestProxy(httpPipeline, serializerAdapter, interfaceParser);
+        asyncRestProxy = new AsyncRestProxy(httpPipeline, new MySerializerAdapter(), interfaceParser);
     }
 
     @AfterEach
@@ -79,9 +75,9 @@ public class AsyncRestProxyTests {
     public void handleBodyReturnTypeBoolean(Type returnType, int statusCode, Boolean expectedValue) {
 
         // Arrange
-        when(decodedResponse.getSourceResponse()).thenReturn(httpResponse);
+        HttpResponse httpResponse = new MockHttpResponse(null, statusCode);
 
-        when(httpResponse.getStatusCode()).thenReturn(statusCode);
+        when(decodedResponse.getSourceResponse()).thenReturn(httpResponse);
 
         when(methodParser.getHttpMethod()).thenReturn(HttpMethod.HEAD);
         when(methodParser.getReturnValueWireType()).thenReturn(null);
@@ -105,10 +101,10 @@ public class AsyncRestProxyTests {
         final String expected = "hello";
         final byte[] expectedBytes = expected.getBytes(StandardCharsets.UTF_8);
         final Type returnType = byte[].class;
-        when(decodedResponse.getSourceResponse()).thenReturn(httpResponse);
 
-        when(httpResponse.getStatusCode()).thenReturn(200);
-        when(httpResponse.getBodyAsByteArray()).thenReturn(Mono.just(expectedBytes));
+        HttpResponse httpResponse = new MockHttpResponse(null, 200, new HttpHeaders(), expectedBytes);
+
+        when(decodedResponse.getSourceResponse()).thenReturn(httpResponse);
 
         when(methodParser.getHttpMethod()).thenReturn(HttpMethod.GET);
         when(methodParser.getReturnValueWireType()).thenReturn(null);
@@ -132,12 +128,11 @@ public class AsyncRestProxyTests {
         // Arrange
         final String expected = "hello";
         final byte[] expectedBytes = expected.getBytes(StandardCharsets.UTF_8);
-        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(expectedBytes);
         final Type returnType = InputStream.class;
-        when(decodedResponse.getSourceResponse()).thenReturn(httpResponse);
 
-        when(httpResponse.getStatusCode()).thenReturn(200);
-        when(httpResponse.getBodyAsInputStream()).thenReturn(Mono.just(byteArrayInputStream));
+        HttpResponse httpResponse = new MockHttpResponse(null, 200, new HttpHeaders(), expectedBytes);
+
+        when(decodedResponse.getSourceResponse()).thenReturn(httpResponse);
 
         when(methodParser.getHttpMethod()).thenReturn(HttpMethod.GET);
         when(methodParser.getReturnValueWireType()).thenReturn(null);
