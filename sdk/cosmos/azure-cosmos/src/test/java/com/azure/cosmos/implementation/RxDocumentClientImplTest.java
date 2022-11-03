@@ -264,6 +264,9 @@ public class RxDocumentClientImplTest {
         partitionKeyInternalHelperMock.close();
         observableHelperMock.close();
         documentQueryExecutionFactoryMock.close();
+
+        // de-register client
+        rxDocumentClient.close();
     }
 
     private static HttpClient dummyHttpClient() {
