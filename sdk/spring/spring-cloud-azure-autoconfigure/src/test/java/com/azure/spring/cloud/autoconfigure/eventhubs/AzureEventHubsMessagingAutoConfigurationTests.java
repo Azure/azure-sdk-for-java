@@ -112,7 +112,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
                 ObjectMapper mapper = context.getBean(ObjectMapper.class);
-                assertTrue(mapper.writeValueAsString(new Date()).matches("^\\d+") );
+                assertTrue(mapper.writeValueAsString(new Date()).matches("^\\d+"));
             });
     }
 

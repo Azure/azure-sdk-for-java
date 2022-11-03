@@ -58,7 +58,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
                 ObjectMapper mapper = context.getBean(ObjectMapper.class);
-                assertTrue(mapper.writeValueAsString(new Date()).matches("^\\d+") );
+                assertTrue(mapper.writeValueAsString(new Date()).matches("^\\d+"));
             });
     }
 

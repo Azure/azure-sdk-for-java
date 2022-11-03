@@ -99,7 +99,7 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
                 ObjectMapper mapper = context.getBean(ObjectMapper.class);
-                assertTrue(mapper.writeValueAsString(new Date()).matches("^\\d+") );
+                assertTrue(mapper.writeValueAsString(new Date()).matches("^\\d+"));
             });
     }
 
