@@ -3,13 +3,16 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-
-import com.azure.cosmos.implementation.apachecommons.codec.digest.MurmurHash3;
 import com.azure.cosmos.implementation.routing.MurmurHash3_32;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import org.apache.commons.lang3.RandomUtils;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -17,13 +20,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class MurmurHash3_32Test {
 
+    private MurmurHash3_32 murmurHash3_32;
+
+    @BeforeClass(groups = "unit")
+    public void before_MurmurHash3_32Test() {
+        murmurHash3_32 = new MurmurHash3_32();
+    }
 
     @Test(groups = "unit")
     public void murmurHash3_32_EmptyByteArray() {
         byte[] byteArray = new byte[0];
         int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
-        int expectedHash = MurmurHash3.hash32x86(byteArray, 0, byteArray.length, 0);
+        HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
+        int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
 
         assertThat(actualHash).isEqualTo(expectedHash);
     }
@@ -33,7 +43,8 @@ public class MurmurHash3_32Test {
         byte[] byteArray = new String("test").getBytes(Charset.forName("UTF-8"));
         int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
-        int expectedHash = MurmurHash3.hash32x86(byteArray, 0, byteArray.length, 0);
+        HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
+        int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
 
         assertThat(actualHash).isEqualTo(expectedHash);
     }
@@ -45,7 +56,8 @@ public class MurmurHash3_32Test {
             byte[] byteArray = nonLatin.substring(0, i).getBytes("UTF-8");
             int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
-            int expectedHash = MurmurHash3.hash32x86(byteArray, 0, byteArray.length, 0);
+            HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
+            int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
 
             assertThat(actualHash).isEqualTo(expectedHash);
         }
@@ -56,7 +68,8 @@ public class MurmurHash3_32Test {
         byte[] byteArray = new byte[3];
         int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
-        int expectedHash = MurmurHash3.hash32x86(byteArray, 0, byteArray.length, 0);
+        HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
+        int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
 
         assertThat(actualHash).isEqualTo(expectedHash);
     }
@@ -68,7 +81,8 @@ public class MurmurHash3_32Test {
 
             int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
-            int expectedHash = MurmurHash3.hash32x86(byteArray, 0, byteArray.length, 0);
+            HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
+            int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
 
             assertThat(actualHash).isEqualTo(expectedHash);
         }

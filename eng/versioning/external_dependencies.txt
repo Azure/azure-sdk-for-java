@@ -249,7 +249,7 @@ org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;2.2-M3-groovy-2.5
 groovy4_org.spockframework:spock-core;2.2-M3-groovy-4.0
-org.testng:testng;7.5
+org.testng:testng;7.3.0
 uk.org.lidalia:slf4j-test;1.2.0
 uk.org.webcompere:system-stubs-jupiter;2.0.1
 com.google.truth:truth;1.1.3
@@ -338,7 +338,7 @@ test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.3
-cosmos_com.google.guava:guava;30.1.1-jre
+cosmos_com.google.guava:guava;25.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
