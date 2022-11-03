@@ -83,6 +83,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesFo
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesForDomainFilter;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedDynamicClassifyDocumentResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultSortByOffset;
@@ -3008,5 +3009,87 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 )),
                 result.toStream().collect(Collectors.toList()));
         }, null);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void dynamicClassificationDuplicateIdInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        extractBatchKeyPhrasesDuplicateIdRunner(inputs -> {
+            StepVerifier.create(client.dynamicClassificationBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()));
+        });
+    }
+
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void dynamicClassificationEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        textAnalyticsInputEmptyIdRunner(inputs -> {
+            StepVerifier.create(client.dynamicClassificationBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> {
+                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+                });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void dynamicClassificationMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        dynamicClassificationRunner((inputs, options) -> {
+            StepVerifier.create(client.dynamicClassificationBatchWithResponse(inputs, options))
+                .assertNext(response -> validateDynamicClassifyDocumentResultCollectionWithResponse(true,
+                    getExpectedDynamicClassifyDocumentResultCollection(), 200, response))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void dynamicClassificationStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        dynamicClassificationStringInputRunner((inputs, options) ->
+            StepVerifier.create(client.dynamicClassificationBatch(inputs, null, options))
+                .assertNext(response -> validateDynamicClassifyDocumentResultCollection(true,
+                    getExpectedDynamicClassifyDocumentResultCollection(), response))
+                .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void dynamicClassificationBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        dynamicClassificationBatchWarningRunner((inputs, options) ->
+            StepVerifier.create(client.dynamicClassificationBatchWithResponse(inputs, options))
+                .assertNext(response -> response.getValue().forEach(classifyDocumentResult ->
+                    classifyDocumentResult.getWarnings().forEach(warning -> {
+                        assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
+                    })))
+                .verifyComplete()
+        );
+    }
+
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void dynamicClassificationBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        tooManyDocumentsRunner(inputs -> {
+            StepVerifier.create(client.dynamicClassificationBatch(inputs, null, null))
+                .verifyErrorSatisfies(ex -> {
+                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
+                });
+        });
     }
 }

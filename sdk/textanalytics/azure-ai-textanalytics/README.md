@@ -12,6 +12,7 @@ features for understanding and analyzing text, and includes the following main f
 - Extractive Text Summarization
 - Custom Named Entity Recognition
 - Custom Text Classification
+- Dynamic Text Classification
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -239,8 +240,9 @@ The following sections provide several code snippets covering some of the most c
 * [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 * [Custom Entities Recognition](#custom-entities-recognition "Custom entities recognition")
 * [Custom Text Classification](#custom-text-classification "Custom text classification")
-* [Extractive Text Summarization][abstractive_summary_action_sample]
-* [Abstractive Text Summarization][extractive_summary_action_sample]
+* [Dynamic Text Classification][dynamic_classification_sample]
+* [Abstractive Text Summarization][abstractive_summary_action_sample]
+* [Extractive Text Summarization][extractive_summary_action_sample]
 
 ### Text Analytics Client
 Language service supports both synchronous and asynchronous client creation by using
@@ -544,8 +546,8 @@ set of documents. Currently, the supported features are:
 - Custom Entity Recognition (API version 2022-05-01 and newer)
 - Custom Single-Label Classification (API version 2022-05-01 and newer)
 - Custom Multi-Label Classification (API version 2022-05-01 and newer)
-- Extractive Text Summarization (API version 2022-10-01-preview and newer)
 - Abstractive Text Summarization (API version 2022-10-01-preview and newer)
+- Extractive Text Summarization (API version 2022-10-01-preview and newer)
 
 ```java readme-sample-analyzeActions
     List<TextDocumentInput> documents = Arrays.asList(
@@ -702,5 +704,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 [abstractive_summary_action_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AbstractiveSummarization.java
 [extractive_summary_action_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ExtractiveSummarization.java
+[dynamic_classification_sample]:  https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DynamicClassificationBatchDocuments.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

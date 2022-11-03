@@ -28,6 +28,9 @@ import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.DocumentWarning;
+import com.azure.ai.textanalytics.implementation.models.DynamicClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.DynamicClassificationResultDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.DynamicClassificationTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskResult;
@@ -95,6 +98,7 @@ import com.azure.ai.textanalytics.models.DateTimeSubKind;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.EntityAssociation;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.EntityCertainty;
@@ -419,6 +423,13 @@ public final class Utility {
             toAnalyzeSentimentResultCollection(((SentimentTaskResult) response.getValue()).getResults()));
     }
 
+    public static Response<DynamicClassifyDocumentResultCollection> toDynamicClassifyDocumentResultCollectionResponse(
+        Response<AnalyzeTextTaskResult> response) {
+        return new SimpleResponse<>(response,
+            toDynamicClassificationResultCollection(
+                ((DynamicClassificationTaskResult) response.getValue()).getResults()));
+    }
+
     // Detect Language
     public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse(
         Response<LanguageResult> response) {
@@ -548,6 +559,47 @@ public final class Utility {
                 keyPhraseResult.getStatistics() == null ? null
                     : toBatchStatistics(keyPhraseResult.getStatistics())));
     }
+
+    // Dynamic Classification
+    public static DynamicClassifyDocumentResultCollection toDynamicClassificationResultCollection(
+        DynamicClassificationResult classificationResult) {
+        List<ClassifyDocumentResult> dynamicClassificationResults = new ArrayList<>();
+
+        // A list of document results
+        for (DynamicClassificationResultDocumentsItem documentItem: classificationResult.getDocuments()) {
+            dynamicClassificationResults.add(toDynamicClassificationResult(documentItem));
+        }
+        // Document errors
+        for (InputError documentError : classificationResult.getErrors()) {
+            dynamicClassificationResults.add(new ClassifyDocumentResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError())));
+        }
+
+        DynamicClassifyDocumentResultCollection resultCollection =
+            new DynamicClassifyDocumentResultCollection(dynamicClassificationResults);
+        DynamicClassifyDocumentResultCollectionPropertiesHelper.setStatistics(resultCollection,
+            toBatchStatistics(classificationResult.getStatistics()));
+        DynamicClassifyDocumentResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+            classificationResult.getModelVersion());
+
+        return resultCollection;
+    }
+
+    public static ClassifyDocumentResult toDynamicClassificationResult(
+        DynamicClassificationResultDocumentsItem documentItem) {
+        ClassifyDocumentResult classifyDocumentResult = new ClassifyDocumentResult(
+            documentItem.getId(),
+            documentItem.getStatistics() == null ? null
+                : toTextDocumentStatistics(documentItem.getStatistics()),
+            null);
+        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult,
+            new IterableStream<>(toDocumentClassifications(documentItem.getClassProperty())));
+        ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,
+            new IterableStream<>(documentItem.getWarnings().stream().map(
+                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())));
+        return classifyDocumentResult;
+    }
+
 
     // Named Entities Recognition
     public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollectionResponse(

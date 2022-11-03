@@ -21,6 +21,10 @@
 - Added the Abstractive Summarization feature and related models: `AbstractSummaryAction`, `AbstractSummaryActionResult`,
  `AbstractSummaryResultCollection`, `AbstractSummaryResult`, `AbstractiveSummary`, and `SummaryContext`. 
   Access the feature through the `beginAnalyzeActions` API.
+- Added the dynamic text classification on documents without needing to train a model. The feature can be used by calling:
+    - Synchronous API: `Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context)`
+    - Asynchronous API: `Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options)`.
+    - Added New models: `ClassificationType`, `DynamicClassificationOptions` and `DynamicClassifyDocumentResultCollection`.
 
 ### Breaking Changes
 
