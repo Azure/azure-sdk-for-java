@@ -4,11 +4,9 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `withCopyStart` method in `Snapshot` for copying incremental snapshot from incremental snapshot.
+- Supported `awaitCopyStartCompletion` and `awaitCopyStartCompletionAsync` method in `Snapshot`.
+- Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress. 
 
 ## 2.20.0 (2022-10-26)
 
