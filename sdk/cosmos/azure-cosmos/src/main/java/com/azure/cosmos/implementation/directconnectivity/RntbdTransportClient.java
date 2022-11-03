@@ -229,11 +229,15 @@ public class RntbdTransportClient extends TransportClient {
         final URI address = addressUri.getURI();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
+
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 
+        // Since reactor-core 3.4.23, if the Mono.fromCompletionStage is cancelled, then it will also cancel the internal future
+        // If SDK has not sent the request to server, then SDK will not send the request to server
+        // If the request has been sent to server, then SDK will discard the response once get from server
         return Mono.fromFuture(record).map(storeResponse -> {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
@@ -249,7 +253,7 @@ public class RntbdTransportClient extends TransportClient {
             storeResponse.setRequestPayloadLength(request.getContentLength());
             storeResponse.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
             storeResponse.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
-            if(this.channelAcquisitionContextEnabled) {
+            if (this.channelAcquisitionContextEnabled) {
                 storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
 
@@ -292,7 +296,7 @@ public class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
             BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
-            if(this.channelAcquisitionContextEnabled) {
+            if (this.channelAcquisitionContextEnabled) {
                 BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
             }
 
