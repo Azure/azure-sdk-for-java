@@ -18,6 +18,9 @@
     <javaModulesSurefireArgLine>
       --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
   </properties>
 
   <parent>
@@ -112,6 +115,13 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <failOnWarning>false</failOnWarning>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
