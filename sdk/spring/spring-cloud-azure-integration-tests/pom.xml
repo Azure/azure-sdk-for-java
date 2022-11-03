@@ -157,6 +157,11 @@
             </configuration>
           </execution>
         </executions>
+        <configuration>
+          <includes>
+            <include>**/StorageFileShareIT.java</include>
+          </includes>
+        </configuration>
       </plugin>
     </plugins>
   </build>
