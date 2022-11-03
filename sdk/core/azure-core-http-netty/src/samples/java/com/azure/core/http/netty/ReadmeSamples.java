@@ -67,7 +67,7 @@ public class ReadmeSamples {
      * positively impact the performance of some APIs such as Storage's download to file methods provided in Blobs,
      * Datalake, and Files.
      */
-    @SuppressWarnings("deprecated") // maxChunkSize is deprecated in a future version of Reactor Netty
+    @SuppressWarnings("deprecation") // maxChunkSize is deprecated in a future version of Reactor Netty
     public void largerMaxChunkSizeWithConfiguredNettyClient() {
         // BEGIN: readme-sample-customMaxChunkSize
         // Constructs an HttpClient with a modified max chunk size.
