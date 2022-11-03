@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed a rare race condition for `query plan` cache exceeding the allowed size limit - See [PR 31859](https://github.com/Azure/azure-sdk-for-java/pull/31859)
 
 #### Other Changes
 * Optimized `readMany` API to leverage point reads when a single item is requested for a given partition - See [PR 31723](https://github.com/Azure/azure-sdk-for-java/pull/31723)

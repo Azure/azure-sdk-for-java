@@ -1085,7 +1085,7 @@ public final class CertificateAsyncClient {
      * <pre>
      * CertificateIssuer issuer = new CertificateIssuer&#40;&quot;issuerName&quot;, &quot;providerName&quot;&#41;
      *     .setAccountId&#40;&quot;keyvaultuser&quot;&#41;
-     *     .setPassword&#40;&quot;temp2&quot;&#41;;
+     *     .setPassword&#40;&quot;fakePasswordPlaceholder&quot;&#41;;
      * certificateAsyncClient.createIssuer&#40;issuer&#41;
      *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponse -&gt; &#123;
@@ -1122,7 +1122,7 @@ public final class CertificateAsyncClient {
      * <pre>
      * CertificateIssuer newIssuer = new CertificateIssuer&#40;&quot;issuerName&quot;, &quot;providerName&quot;&#41;
      *     .setAccountId&#40;&quot;keyvaultuser&quot;&#41;
-     *     .setPassword&#40;&quot;temp2&quot;&#41;;
+     *     .setPassword&#40;&quot;fakePasswordPlaceholder&quot;&#41;;
      * certificateAsyncClient.createIssuerWithResponse&#40;newIssuer&#41;
      *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponse -&gt; &#123;

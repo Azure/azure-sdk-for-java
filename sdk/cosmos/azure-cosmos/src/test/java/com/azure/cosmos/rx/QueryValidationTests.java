@@ -44,6 +44,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,6 +52,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -240,6 +243,34 @@ public class QueryValidationTests extends TestSuiteBase {
         return new Object[][]{
             new Object[] { "Select * from c "},
         };
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, enabled = false)
+    //  To run this test, update the QUERYPLAN_CACHE_SIZE constant to 10.
+    //  The query plan cache size should not hit more than 10
+    //  Without synchronization, it goes above 10
+    public void queryPlanCacheSizeHit() {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+
+        String pk = "pk";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setPartitionKey(new PartitionKey(pk));
+        Random random = new Random();
+        for (int i = 0; i < 55; i++) {
+            String query = "select * from c where c.id = '" + UUID.randomUUID() + "'";
+            executorService.execute(() -> {
+                createdContainer.queryItems(query, options, TestObject.class).delaySubscription(Duration.ofSeconds(random.nextInt(3))).subscribe();
+            });
+        }
+
+        try {
+            logger.info("Awaiting termination");
+            executorService.awaitTermination(10, TimeUnit.SECONDS);
+            logger.info("Terminating now");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)

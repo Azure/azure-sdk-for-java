@@ -422,7 +422,7 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     Hotel preparePascalCaseFieldsHotel() {
-        return new Hotel().hotelId("123").hotelName("Lord of the Rings").description("J.R.R").descriptionFr("Tolkien");
+        return new Hotel().hotelId("132").hotelName("Lord of the Rings").description("J.R.R").descriptionFr("Tolkien");
     }
 
     @SuppressWarnings({"deprecation", "UseOfObsoleteDateTimeApi"})

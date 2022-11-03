@@ -1,25 +1,29 @@
 - [Azure identity JDBC PostgreSQL plugin library for Java](#azure-identity-jdbc-postgresql-plugin-library-for-java)
-  * [Getting started](#getting-started)
-    + [Prerequisites](#prerequisites)
-    + [Include the package](#include-the-package)
-      - [Include direct dependency](#include-direct-dependency)
-    + [Prepare the Azure Database for PostgreSQL](#prepare-the-azure-database-for-postgresql)
-      - [Prepare the working environment](#prepare-the-working-environment)
-      - [Create an Azure Database for PostgreSQL server](#create-an-azure-database-for-postgresql-server)
-      - [Configure a firewall rule for your PostgreSQL server](#configure-a-firewall-rule-for-your-postgresql-server)
-      - [Enable Azure AD-based authentication](#enable-azure-ad-based-authentication)
-  * [Key concepts](#key-concepts)
-    + [Azure AD authentication with PostgreSQL](#azure-ad-authentication-with-postgresql)
-    + [Architecture](#architecture)
-  * [Examples](#examples)
-    + [Authenticating with DefaultAzureCredential](#authenticating-with-defaultazurecredential)
-    + [Connect using managed identity](#connect-using-managed-identity)
-    + [Connect using service principal](#connect-using-service-principal)
-    + [Cloud Configuration](#cloud-configuration)
-  * [JDBC Parameters](#jdbc-parameters)
-  * [Troubleshooting](#troubleshooting)
-  * [Next steps](#next-steps)
-  * [Contributing](#contributing)
+    * [Getting started](#getting-started)
+        + [Prerequisites](#prerequisites)
+        + [Include the package](#include-the-package)
+            - [Include direct dependency](#include-direct-dependency)
+        + [Prepare the Azure Database for PostgreSQL](#prepare-the-azure-database-for-postgresql)
+            - [Prepare the working environment](#prepare-the-working-environment)
+            - [Create an Azure Database for PostgreSQL server](#create-an-azure-database-for-postgresql-server)
+            - [Configure a firewall rule for your PostgreSQL server](#configure-a-firewall-rule-for-your-postgresql-server)
+            - [Enable Azure AD-based authentication](#enable-azure-ad-based-authentication)
+    * [Key concepts](#key-concepts)
+        + [Azure AD authentication with PostgreSQL](#azure-ad-authentication-with-postgresql)
+        + [Architecture](#architecture)
+        + [Token as password](#token-as-password)
+    * [Examples](#examples)
+        + [Authenticating with DefaultAzureCredential](#authenticating-with-defaultazurecredential)
+        + [Connect using managed identity](#connect-using-managed-identity)
+        + [Connect using service principal](#connect-using-service-principal)
+        + [Cloud Configuration](#cloud-configuration)
+        + [Customize Credential](#customize-credential)
+            - [Customize CredentialProvider](#customize-credentialprovider)
+            - [Configure CredentialProvider](#configure-credentialprovider)
+    * [JDBC Parameters](#jdbc-parameters)
+    * [Troubleshooting](#troubleshooting)
+    * [Next steps](#next-steps)
+    * [Contributing](#contributing)
   
 # Azure identity JDBC PostgreSQL plugin library for Java
 
@@ -146,6 +150,15 @@ This picture shows how the jdbc authentication plugin for PostgreSQl authenticat
 
 ![postgresql_design.png](img/postgresql_design.png)
 
+1. The JDBC auth plugin will get an access token from Azure AD.
+2. The JDBC driver will take the token obtained from step 1 as the password ( `token as password`) to connect with the MySQL server.
+3. The MySQL server will check the access token and authenticate internally.
+
+### Token as password
+
+Instead of using a password directly, using a token as the password is recommended. Access tokens can have restricted permissions and expiration time. From a security point of view, using shorter-lived access tokens is much safer than using a password.
+
+
 ## Examples
 
 ### Authenticating with DefaultAzureCredential
@@ -205,24 +218,62 @@ String url="${YOUR_JDBC_URL}";
 Connection connection=DriverManager.getConnection(url,properties);
 ```
 
+
+
+### Customize Credential
+
+By default, the JDBC authentication plugin will authenticate with built-in credentials, but users can also authenticate with their credentials by providing customized `TokenCredentialProvider`.
+
+#### Customize CredentialProvider
+
+Create a class called **InteractiveBrowserCredentialProvider.java** which implements **TokenCredentialProvider**:
+
+```java
+public class InteractiveBrowserCredentialProvider implements TokenCredentialProvider {
+
+    public InteractiveBrowserCredentialProvider(TokenCredentialProviderOptions options) {
+    }
+
+    @Override
+    public TokenCredential get() {
+        return new InteractiveBrowserCredentialBuilder()
+                .build();
+    }
+}
+
+```
+
+#### Configure CredentialProvider
+
+```java
+Properties properties=new Properties();
+properties.put("sslmode","require");
+properties.put("authenticationPluginClassName","com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin");
+properties.put(AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey(), InteractiveBrowserCredentialProvider.class.getCanonicalName());
+properties.put("user","${YOUR_POSTGRESQL_USERNAME}@${AZ_DATABASE_NAME}");
+String url="${YOUR_JDBC_URL}";
+
+Connection connection=DriverManager.getConnection(url,properties);
+```
+
 ## JDBC Parameters
 
-|Parameter Key | Description|
-|---|---|
-|azure.clientId|Client ID to use when performing service principal authentication with Azure.|
-|azure.clientSecret|Client secret to use when performing service principal authentication with Azure.|
-|azure.clientCertificatePath|Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure.|
-|azure.clientCertificatePassword|Password of the certificate file.|
-|azure.username|Username to use when performing username/password authentication with Azure.|
-|azure.password|Password to use when performing username/password authentication with Azure.|
-|azure.managedIdentityEnabled|Whether to enable managed identity to authenticate with Azure.|
-|azure.authorityHost|The well known authority hosts for the Azure Public Cloud and sovereign clouds.|
-|azure.tenantId|Tenant ID for Azure resources.|
-|azure.claims|Claims for Azure resources.|
-|azure.scopes|Scopes for Azure resources.|
-|azure.accessTokenTimeoutInSeconds|Max time to get an access token.|
-|azure.tokenCredentialProviderClassName|The canonical class name of a class that implements 'TokenCredentialProvider'.|
-|azure.tokenCredentialBeanName|The given bean name of a TokenCredential bean in the Spring context.|
+| Parameter Key                          | Description|
+|----------------------------------------|---|
+| azure.clientId                         |Client ID to use when performing service principal authentication with Azure.|
+| azure.clientSecret                     |Client secret to use when performing service principal authentication with Azure.|
+| azure.clientCertificatePath            |Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure.|
+| azure.clientCertificatePassword        |Password of the certificate file.|
+| azure.username                         |Username to use when performing username/password authentication with Azure.|
+| azure.password                         |Password to use when performing username/password authentication with Azure.|
+| azure.managedIdentityEnabled           |Whether to enable managed identity to authenticate with Azure.|
+| azure.authorityHost                    |The well known authority hosts for the Azure Public Cloud and sovereign clouds.|
+| azure.tenantId                         |Tenant ID for Azure resources.|
+| azure.claims                           |Claims for Azure resources.|
+| azure.scopes                           |Scopes for Azure resources.|
+| azure.accessTokenTimeoutInSeconds      |Max time to get an access token.|
+| azure.tokenCredentialProviderClassName |The canonical class name of a class that implements 'TokenCredentialProvider'.|
+| azure.tokenCredentialBeanName          |The given bean name of a TokenCredential bean in the Spring context.|
 
 ## Troubleshooting
 

@@ -22,6 +22,7 @@ import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
@@ -120,10 +121,16 @@ public class CallRecordingAsync {
             }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
+            options.setRepeatabilityHeaders(handleApiIdempotency(options.getRepeatabilityHeaders()));
+
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return contentsInternal
-                    .recordingWithResponseAsync(request, null, null, contextValue)
+                    .recordingWithResponseAsync(
+                        request,
+                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                        contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
@@ -565,4 +572,15 @@ public class CallRecordingAsync {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
     }
+
+    //region helper functions
+    /***
+     * Make sure repeatability headers of the request are correctly set.
+     *
+     * @return a verified RepeatabilityHeaders object.
+     */
+    private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
+        return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
+    }
+    //endregion
 }
