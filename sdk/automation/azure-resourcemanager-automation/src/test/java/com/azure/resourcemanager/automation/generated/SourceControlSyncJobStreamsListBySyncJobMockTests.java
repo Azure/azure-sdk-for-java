@@ -35,7 +35,7 @@ public final class SourceControlSyncJobStreamsListBySyncJobMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"efyihduyeuyl\",\"properties\":{\"sourceControlSyncJobStreamId\":\"mtybkcgsu\",\"summary\":\"hllnmwynefxe\",\"time\":\"2021-08-05T19:39:29Z\",\"streamType\":\"Error\"}}]}";
+            "{\"value\":[{\"id\":\"g\",\"properties\":{\"sourceControlSyncJobStreamId\":\"cfogxhcxnwjt\",\"summary\":\"dzxcouzfwo\",\"time\":\"2021-05-28T21:34:54Z\",\"streamType\":\"Error\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,15 +67,15 @@ public final class SourceControlSyncJobStreamsListBySyncJobMockTests {
             manager
                 .sourceControlSyncJobStreams()
                 .listBySyncJob(
-                    "cvjqdv",
-                    "wkqp",
-                    "drlefgnaavuag",
-                    UUID.fromString("d06ad439-eb2d-430b-a3aa-ae341f4f39f9"),
-                    "tetaoutnpdctuhs",
+                    "xjmf",
+                    "eftvhkmoog",
+                    "rh",
+                    UUID.fromString("0d17818a-2c52-435b-b127-35fb5a40a6dc"),
+                    "kbwg",
                     Context.NONE);
 
-        Assertions.assertEquals("mtybkcgsu", response.iterator().next().sourceControlSyncJobStreamId());
-        Assertions.assertEquals("hllnmwynefxe", response.iterator().next().summary());
+        Assertions.assertEquals("cfogxhcxnwjt", response.iterator().next().sourceControlSyncJobStreamId());
+        Assertions.assertEquals("dzxcouzfwo", response.iterator().next().summary());
         Assertions.assertEquals(StreamType.ERROR, response.iterator().next().streamType());
     }
 }

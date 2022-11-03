@@ -33,7 +33,7 @@ public final class UsagesListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"oeeonqlnfwm\",\"name\":{\"value\":\"vqdbpbhfck\",\"localizedValue\":\"ezcrcssbzhddubb\"},\"unit\":\"fblhkalehp\",\"currentValue\":54.89888256688064,\"limit\":236559775331846617,\"throttleStatus\":\"j\"}]}";
+            "{\"value\":[{\"id\":\"kqvjcteoedlr\",\"name\":{\"value\":\"kk\",\"localizedValue\":\"xv\"},\"unit\":\"zdpv\",\"currentValue\":77.85644717840508,\"limit\":5482912658563791539,\"throttleStatus\":\"abxzfsnggytex\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,14 +61,14 @@ public final class UsagesListByAutomationAccountMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Usage> response = manager.usages().listByAutomationAccount("uykbbmn", "aglt", Context.NONE);
+        PagedIterable<Usage> response = manager.usages().listByAutomationAccount("oskkfmk", "fdjxyxg", Context.NONE);
 
-        Assertions.assertEquals("oeeonqlnfwm", response.iterator().next().id());
-        Assertions.assertEquals("vqdbpbhfck", response.iterator().next().name().value());
-        Assertions.assertEquals("ezcrcssbzhddubb", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("fblhkalehp", response.iterator().next().unit());
-        Assertions.assertEquals(54.89888256688064D, response.iterator().next().currentValue());
-        Assertions.assertEquals(236559775331846617L, response.iterator().next().limit());
-        Assertions.assertEquals("j", response.iterator().next().throttleStatus());
+        Assertions.assertEquals("kqvjcteoedlr", response.iterator().next().id());
+        Assertions.assertEquals("kk", response.iterator().next().name().value());
+        Assertions.assertEquals("xv", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("zdpv", response.iterator().next().unit());
+        Assertions.assertEquals(77.85644717840508D, response.iterator().next().currentValue());
+        Assertions.assertEquals(5482912658563791539L, response.iterator().next().limit());
+        Assertions.assertEquals("abxzfsnggytex", response.iterator().next().throttleStatus());
     }
 }

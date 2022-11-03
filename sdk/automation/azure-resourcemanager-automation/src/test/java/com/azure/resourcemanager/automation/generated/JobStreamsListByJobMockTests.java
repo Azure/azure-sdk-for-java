@@ -34,7 +34,7 @@ public final class JobStreamsListByJobMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"dgvpyig\",\"properties\":{\"jobStreamId\":\"qilzdc\",\"time\":\"2021-12-03T11:01:32Z\",\"streamType\":\"Verbose\",\"streamText\":\"dxngucaif\",\"summary\":\"urwwgilfjq\",\"value\":{}}}]}";
+            "{\"value\":[{\"id\":\"eb\",\"properties\":{\"jobStreamId\":\"zldbglzoutbaaqg\",\"time\":\"2021-09-17T07:24:14Z\",\"streamType\":\"Warning\",\"streamText\":\"lyzgsnor\",\"summary\":\"gmnzjotvmrx\",\"value\":{}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,13 +65,13 @@ public final class JobStreamsListByJobMockTests {
         PagedIterable<JobStream> response =
             manager
                 .jobStreams()
-                .listByJob("yqbhd", "afjrqpjiyrqjcrg", "xwmzwdfkbnrz", "rpdltbq", "tqjfgxxsaet", Context.NONE);
+                .listByJob("kydfbwljavhuerkj", "dvrgliegftcvbi", "ftksd", "gdnk", "fgmwd", Context.NONE);
 
-        Assertions.assertEquals("dgvpyig", response.iterator().next().id());
-        Assertions.assertEquals("qilzdc", response.iterator().next().jobStreamId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T11:01:32Z"), response.iterator().next().time());
-        Assertions.assertEquals(JobStreamType.VERBOSE, response.iterator().next().streamType());
-        Assertions.assertEquals("dxngucaif", response.iterator().next().streamText());
-        Assertions.assertEquals("urwwgilfjq", response.iterator().next().summary());
+        Assertions.assertEquals("eb", response.iterator().next().id());
+        Assertions.assertEquals("zldbglzoutbaaqg", response.iterator().next().jobStreamId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T07:24:14Z"), response.iterator().next().time());
+        Assertions.assertEquals(JobStreamType.WARNING, response.iterator().next().streamType());
+        Assertions.assertEquals("lyzgsnor", response.iterator().next().streamText());
+        Assertions.assertEquals("gmnzjotvmrx", response.iterator().next().summary());
     }
 }

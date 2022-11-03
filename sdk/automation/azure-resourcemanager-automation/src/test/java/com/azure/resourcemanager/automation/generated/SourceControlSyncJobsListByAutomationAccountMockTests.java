@@ -35,7 +35,7 @@ public final class SourceControlSyncJobsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"tmbpjp\",\"type\":\"vwjhrsidqpxlbt\",\"id\":\"kft\",\"properties\":{\"sourceControlSyncJobId\":\"twmykyut\",\"creationTime\":\"2021-01-09T02:09:26Z\",\"provisioningState\":\"Failed\",\"startTime\":\"2021-01-07T14:10:42Z\",\"endTime\":\"2021-03-20T23:10:31Z\",\"syncType\":\"PartialSync\"}}]}";
+            "{\"value\":[{\"name\":\"zrpywlptyuqh\",\"type\":\"mc\",\"id\":\"ykpfu\",\"properties\":{\"sourceControlSyncJobId\":\"xcn\",\"creationTime\":\"2021-08-04T01:38:28Z\",\"provisioningState\":\"Failed\",\"startTime\":\"2021-05-30T17:11:44Z\",\"endTime\":\"2021-08-08T00:24:14Z\",\"syncType\":\"FullSync\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,10 +66,10 @@ public final class SourceControlSyncJobsListByAutomationAccountMockTests {
         PagedIterable<SourceControlSyncJob> response =
             manager
                 .sourceControlSyncJobs()
-                .listByAutomationAccount("gm", "mjpjscdfpdqwty", "ev", "wmseharxifvqn", Context.NONE);
+                .listByAutomationAccount("k", "jjmztnlmsoodtmv", "cdhdyswcrpt", "eajczxvlgsrgkr", Context.NONE);
 
-        Assertions.assertEquals("twmykyut", response.iterator().next().sourceControlSyncJobId());
+        Assertions.assertEquals("xcn", response.iterator().next().sourceControlSyncJobId());
         Assertions.assertEquals(ProvisioningState.FAILED, response.iterator().next().provisioningState());
-        Assertions.assertEquals(SyncType.PARTIAL_SYNC, response.iterator().next().syncType());
+        Assertions.assertEquals(SyncType.FULL_SYNC, response.iterator().next().syncType());
     }
 }

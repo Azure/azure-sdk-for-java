@@ -36,7 +36,7 @@ public final class DscConfigurationsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"jobCount\":1687194645,\"parameters\":{},\"source\":{\"type\":\"embeddedContent\",\"value\":\"wyrmouv\",\"version\":\"gmokzkltrfowt\"},\"state\":\"New\",\"logVerbose\":true,\"creationTime\":\"2021-01-21T00:20:13Z\",\"lastModifiedTime\":\"2021-08-24T22:19:46Z\",\"nodeConfigurationCount\":1859597773,\"description\":\"drqc\"},\"etag\":\"idhftu\",\"location\":\"vhdxlwyo\",\"tags\":{\"yixhafratqxmb\":\"qzdkfn\"},\"id\":\"roumzznva\",\"name\":\"qjrhuzgfxonj\",\"type\":\"pusllywpv\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"jobCount\":925672952,\"parameters\":{},\"source\":{\"type\":\"uri\",\"value\":\"jisgglmvokatuztj\",\"version\":\"ibpvbkaehxsmzyg\"},\"state\":\"Edit\",\"logVerbose\":true,\"creationTime\":\"2021-06-10T07:30:20Z\",\"lastModifiedTime\":\"2021-08-05T00:58:14Z\",\"nodeConfigurationCount\":1714280194,\"description\":\"kxh\"},\"etag\":\"owljuxlkbectvtfj\",\"location\":\"skdchmaiubavl\",\"tags\":{\"dgjqafkmkro\":\"vgmfalkzazmgok\",\"pqrtvaoznqni\":\"zrthqet\"},\"id\":\"iezeagm\",\"name\":\"eituugedhfpjs\",\"type\":\"lzmb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,25 +67,24 @@ public final class DscConfigurationsListByAutomationAccountMockTests {
         PagedIterable<DscConfiguration> response =
             manager
                 .dscConfigurations()
-                .listByAutomationAccount(
-                    "oqodkadpp", "ibngqladyw", "xwhydtluvv", 377688377, 1449134162, "wzsnuy", Context.NONE);
+                .listByAutomationAccount("xsl", "vlzladl", "x", 1108245888, 1000238415, "qhvfd", Context.NONE);
 
-        Assertions.assertEquals("vhdxlwyo", response.iterator().next().location());
-        Assertions.assertEquals("qzdkfn", response.iterator().next().tags().get("yixhafratqxmb"));
-        Assertions.assertEquals("idhftu", response.iterator().next().etag());
+        Assertions.assertEquals("skdchmaiubavl", response.iterator().next().location());
+        Assertions.assertEquals("vgmfalkzazmgok", response.iterator().next().tags().get("dgjqafkmkro"));
+        Assertions.assertEquals("owljuxlkbectvtfj", response.iterator().next().etag());
         Assertions
             .assertEquals(DscConfigurationProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions.assertEquals(1687194645, response.iterator().next().jobCount());
-        Assertions.assertEquals(ContentSourceType.EMBEDDED_CONTENT, response.iterator().next().source().type());
-        Assertions.assertEquals("wyrmouv", response.iterator().next().source().value());
-        Assertions.assertEquals("gmokzkltrfowt", response.iterator().next().source().version());
-        Assertions.assertEquals(DscConfigurationState.NEW, response.iterator().next().state());
+        Assertions.assertEquals(925672952, response.iterator().next().jobCount());
+        Assertions.assertEquals(ContentSourceType.URI, response.iterator().next().source().type());
+        Assertions.assertEquals("jisgglmvokatuztj", response.iterator().next().source().value());
+        Assertions.assertEquals("ibpvbkaehxsmzyg", response.iterator().next().source().version());
+        Assertions.assertEquals(DscConfigurationState.EDIT, response.iterator().next().state());
         Assertions.assertEquals(true, response.iterator().next().logVerbose());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-21T00:20:13Z"), response.iterator().next().creationTime());
+            .assertEquals(OffsetDateTime.parse("2021-06-10T07:30:20Z"), response.iterator().next().creationTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-08-24T22:19:46Z"), response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals(1859597773, response.iterator().next().nodeConfigurationCount());
-        Assertions.assertEquals("drqc", response.iterator().next().description());
+            .assertEquals(OffsetDateTime.parse("2021-08-05T00:58:14Z"), response.iterator().next().lastModifiedTime());
+        Assertions.assertEquals(1714280194, response.iterator().next().nodeConfigurationCount());
+        Assertions.assertEquals("kxh", response.iterator().next().description());
     }
 }

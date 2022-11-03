@@ -32,7 +32,7 @@ public final class FieldsListByTypeMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"name\":\"fkx\",\"type\":\"cbrwjiutgnjizbe\"}]}";
+        String responseStr = "{\"value\":[{\"name\":\"a\",\"type\":\"wvixq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class FieldsListByTypeMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TypeField> response =
-            manager.fields().listByType("cm", "erndbrnyeofltfnn", "rkadjfynnfmuiiir", "pfoh", Context.NONE);
+            manager.fields().listByType("lu", "ynbpvzlqywauy", "njc", "hmocgjshg", Context.NONE);
 
-        Assertions.assertEquals("fkx", response.iterator().next().name());
-        Assertions.assertEquals("cbrwjiutgnjizbe", response.iterator().next().type());
+        Assertions.assertEquals("a", response.iterator().next().name());
+        Assertions.assertEquals("wvixq", response.iterator().next().type());
     }
 }

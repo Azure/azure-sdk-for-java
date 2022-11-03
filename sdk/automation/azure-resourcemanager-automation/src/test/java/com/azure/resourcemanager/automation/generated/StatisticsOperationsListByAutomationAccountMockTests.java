@@ -32,7 +32,7 @@ public final class StatisticsOperationsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"counterProperty\":\"cua\",\"counterValue\":6317498949961723510,\"startTime\":\"2021-09-19T10:45:54Z\",\"endTime\":\"2021-06-09T17:30:49Z\",\"id\":\"rykycndzfqivjr\"}]}";
+            "{\"value\":[{\"counterProperty\":\"hxmfqryarvsxzqb\",\"counterValue\":4744312828562478676,\"startTime\":\"2021-03-31T05:28:16Z\",\"endTime\":\"2021-09-06T02:21:36Z\",\"id\":\"thzodubtlmjtgbl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +61,6 @@ public final class StatisticsOperationsListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Statistics> response =
-            manager.statisticsOperations().listByAutomationAccount("bpqvybefg", "mx", "okcvtlubses", Context.NONE);
+            manager.statisticsOperations().listByAutomationAccount("jgvrquvpyggl", "mcrdcue", "jt", Context.NONE);
     }
 }

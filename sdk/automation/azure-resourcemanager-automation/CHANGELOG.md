@@ -1,8 +1,90 @@
 # Release History
 
-## 1.0.0-beta.3 (2022-11-02)
+## 1.0.0-beta.3 (2022-11-03)
 
 - Azure Resource Manager Automation client library for Java. This package contains Microsoft Azure SDK for Automation Management SDK. Automation Client. Package tag package-2022-08-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+
+
+* `models.IdentityUserAssignedIdentities` was removed
+
+* `models.RunbookDraftUndoEditResult` was removed
+
+* `models.HttpStatusCode` was removed
+
+
+
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+* `models.ModuleProvisioningState[] values()` -> `java.util.Collection values()`
+
+
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+
+
+* `define(java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+* `getById(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+
+
+* `replaceContentWithResponse(java.lang.String,java.lang.String,java.lang.String,reactor.core.publisher.Flux,long,com.azure.core.util.Context)` was removed
+* `models.RunbookDraftUndoEditResult undoEdit(java.lang.String,java.lang.String,java.lang.String)` -> `void undoEdit(java.lang.String,java.lang.String,java.lang.String)`
+* `java.io.InputStream replaceContent(java.lang.String,java.lang.String,java.lang.String,reactor.core.publisher.Flux,long)` -> `void replaceContent(java.lang.String,java.lang.String,java.lang.String,reactor.core.publisher.Flux,long)`
+* `java.io.InputStream replaceContent(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long)` -> `void replaceContent(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long)`
+* `replaceContentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long,com.azure.core.util.Context)` was removed
+
+
+
+* `java.lang.String getContent(java.lang.String,java.lang.String,java.lang.String)` -> `reactor.core.publisher.Flux getContent(java.lang.String,java.lang.String,java.lang.String)`
+
+
+
+* `models.Dimension` was added
+
+* `models.LogSpecification` was added
+
+* `models.OperationPropertiesFormatServiceSpecification` was added
+
+* `models.Python3Packages` was added
+
+* `models.MetricSpecification` was added
+
+* `models.UserAssignedIdentitiesProperties` was added
+
+
+
+* `withDescription(java.lang.String)` was added
+* `description()` was added
+
+
+
+* `origin()` was added
+* `serviceSpecification()` was added
+
+
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+
+
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageUpdateParameters,com.azure.core.util.Context)` was added
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageCreateParameters,com.azure.core.util.Context)` was added
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageCreateParameters)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageUpdateParameters)` was added
+
+
+
+* `python3Packages()` was added
+
+
+
+* `replaceContent(java.lang.String,java.lang.String,java.lang.String,reactor.core.publisher.Flux,long,com.azure.core.util.Context)` was added
+* `replaceContent(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long,com.azure.core.util.Context)` was added
 
 ### Breaking Changes
 
@@ -14,9 +96,9 @@
 
 #### `models.ModuleProvisioningState` was modified
 
-* `toString()` was removed
 * `valueOf(java.lang.String)` was removed
 * `models.ModuleProvisioningState[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
 
 #### `models.AutomationAccounts` was modified
 
@@ -24,19 +106,19 @@
 
 #### `models.Python2Packages` was modified
 
-* `define(java.lang.String)` was removed
-* `deleteById(java.lang.String)` was removed
-* `getById(java.lang.String)` was removed
 * `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
 * `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteById(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
 
 #### `models.RunbookDrafts` was modified
 
 * `replaceContentWithResponse(java.lang.String,java.lang.String,java.lang.String,reactor.core.publisher.Flux,long,com.azure.core.util.Context)` was removed
-* `models.RunbookDraftUndoEditResult undoEdit(java.lang.String,java.lang.String,java.lang.String)` -> `void undoEdit(java.lang.String,java.lang.String,java.lang.String)`
 * `java.io.InputStream replaceContent(java.lang.String,java.lang.String,java.lang.String,reactor.core.publisher.Flux,long)` -> `void replaceContent(java.lang.String,java.lang.String,java.lang.String,reactor.core.publisher.Flux,long)`
-* `java.io.InputStream replaceContent(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long)` -> `void replaceContent(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long)`
+* `models.RunbookDraftUndoEditResult undoEdit(java.lang.String,java.lang.String,java.lang.String)` -> `void undoEdit(java.lang.String,java.lang.String,java.lang.String)`
 * `replaceContentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long,com.azure.core.util.Context)` was removed
+* `java.io.InputStream replaceContent(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long)` -> `void replaceContent(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,long)`
 
 #### `models.DscConfigurations` was modified
 
@@ -63,8 +145,8 @@
 
 #### `models.Operation` was modified
 
-* `origin()` was added
 * `serviceSpecification()` was added
+* `origin()` was added
 
 #### `models.AutomationAccounts` was modified
 
@@ -73,8 +155,8 @@
 #### `models.Python2Packages` was modified
 
 * `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageUpdateParameters,com.azure.core.util.Context)` was added
-* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageCreateParameters,com.azure.core.util.Context)` was added
 * `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageCreateParameters)` was added
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageCreateParameters,com.azure.core.util.Context)` was added
 * `update(java.lang.String,java.lang.String,java.lang.String,models.PythonPackageUpdateParameters)` was added
 
 #### `AutomationManager` was modified

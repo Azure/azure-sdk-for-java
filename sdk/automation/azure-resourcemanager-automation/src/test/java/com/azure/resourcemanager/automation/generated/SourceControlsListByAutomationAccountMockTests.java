@@ -34,7 +34,7 @@ public final class SourceControlsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"repoUrl\":\"dmkrrb\",\"branch\":\"pfulube\",\"folderPath\":\"ybpmf\",\"autoSync\":false,\"publishRunbook\":true,\"sourceType\":\"VsoGit\",\"description\":\"zkrvfyi\",\"creationTime\":\"2021-05-06T22:44:52Z\",\"lastModifiedTime\":\"2021-02-18T19:59:42Z\"},\"id\":\"hlzvfictnkjj\",\"name\":\"gcwn\",\"type\":\"hbkgfyrt\"}]}";
+            "{\"value\":[{\"properties\":{\"repoUrl\":\"kst\",\"branch\":\"nvago\",\"folderPath\":\"yhdrxb\",\"autoSync\":false,\"publishRunbook\":true,\"sourceType\":\"VsoTfvc\",\"description\":\"hitxnm\",\"creationTime\":\"2021-03-01T16:59:55Z\",\"lastModifiedTime\":\"2021-02-17T14:58:42Z\"},\"id\":\"zbuwvorbalkjnbk\",\"name\":\"dhlltqstqkqsyg\",\"type\":\"iynecovagz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,18 +65,18 @@ public final class SourceControlsListByAutomationAccountMockTests {
         PagedIterable<SourceControl> response =
             manager
                 .sourceControls()
-                .listByAutomationAccount("zygleexahvm", "whsbrcary", "sjjzyvoaqajuveh", Context.NONE);
+                .listByAutomationAccount("fhxrzfr", "vztiucwviqllukh", "rcqxgcbvzarmqc", Context.NONE);
 
-        Assertions.assertEquals("dmkrrb", response.iterator().next().repoUrl());
-        Assertions.assertEquals("pfulube", response.iterator().next().branch());
-        Assertions.assertEquals("ybpmf", response.iterator().next().folderPath());
+        Assertions.assertEquals("kst", response.iterator().next().repoUrl());
+        Assertions.assertEquals("nvago", response.iterator().next().branch());
+        Assertions.assertEquals("yhdrxb", response.iterator().next().folderPath());
         Assertions.assertEquals(false, response.iterator().next().autoSync());
         Assertions.assertEquals(true, response.iterator().next().publishRunbook());
-        Assertions.assertEquals(SourceType.VSO_GIT, response.iterator().next().sourceType());
-        Assertions.assertEquals("zkrvfyi", response.iterator().next().description());
+        Assertions.assertEquals(SourceType.VSO_TFVC, response.iterator().next().sourceType());
+        Assertions.assertEquals("hitxnm", response.iterator().next().description());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-05-06T22:44:52Z"), response.iterator().next().creationTime());
+            .assertEquals(OffsetDateTime.parse("2021-03-01T16:59:55Z"), response.iterator().next().creationTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-02-18T19:59:42Z"), response.iterator().next().lastModifiedTime());
+            .assertEquals(OffsetDateTime.parse("2021-02-17T14:58:42Z"), response.iterator().next().lastModifiedTime());
     }
 }

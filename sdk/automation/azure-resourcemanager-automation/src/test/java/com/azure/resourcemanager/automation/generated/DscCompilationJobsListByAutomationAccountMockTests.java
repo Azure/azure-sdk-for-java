@@ -35,7 +35,7 @@ public final class DscCompilationJobsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"configuration\":{\"name\":\"mxitpfinzcpd\"},\"startedBy\":\"krlgjm\",\"jobId\":\"1d047154-875a-4674-92f0-4c269222c505\",\"creationTime\":\"2021-10-17T16:04:29Z\",\"provisioningState\":\"Succeeded\",\"runOn\":\"guefz\",\"status\":\"Activating\",\"statusDetails\":\"heqdurelyujlfyou\",\"startTime\":\"2021-07-26T21:57:47Z\",\"endTime\":\"2021-06-04T02:57:44Z\",\"exception\":\"clcdigptajbrzmq\",\"lastModifiedTime\":\"2021-06-01T07:57:22Z\",\"lastStatusModifiedTime\":\"2021-10-08T19:51:54Z\",\"parameters\":{\"jc\":\"oclxiut\",\"zjd\":\"z\",\"jb\":\"r\",\"w\":\"xjeaoqaqbzgyh\"}},\"id\":\"v\",\"name\":\"atbwbqam\",\"type\":\"e\"}]}";
+            "{\"value\":[{\"properties\":{\"configuration\":{\"name\":\"dve\"},\"startedBy\":\"rcssbzhddubbnq\",\"jobId\":\"efd3865d-00d6-4ea9-abc6-bd63b232070e\",\"creationTime\":\"2021-09-07T21:56:27Z\",\"provisioningState\":\"Succeeded\",\"runOn\":\"ehpavawugiqjtiog\",\"status\":\"Blocked\",\"statusDetails\":\"inic\",\"startTime\":\"2021-08-05T18:56:25Z\",\"endTime\":\"2021-10-14T00:10:30Z\",\"exception\":\"hi\",\"lastModifiedTime\":\"2021-01-31T14:57:48Z\",\"lastStatusModifiedTime\":\"2021-01-16T13:12:59Z\",\"parameters\":{\"pczykmktpvwxqc\":\"n\",\"ufmpqumqyjgy\":\"ehchk\"}},\"id\":\"zulo\",\"name\":\"saeuzanhsfnhsenw\",\"type\":\"hpzfngqj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,13 @@ public final class DscCompilationJobsListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DscCompilationJob> response =
-            manager.dscCompilationJobs().listByAutomationAccount("agttm", "mmagoaqylkjzt", "iua", Context.NONE);
+            manager.dscCompilationJobs().listByAutomationAccount("onql", "fwmyymv", "dbpb", Context.NONE);
 
-        Assertions.assertEquals("mxitpfinzcpd", response.iterator().next().configuration().name());
+        Assertions.assertEquals("dve", response.iterator().next().configuration().name());
         Assertions.assertEquals(JobProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions.assertEquals("guefz", response.iterator().next().runOn());
-        Assertions.assertEquals(JobStatus.ACTIVATING, response.iterator().next().status());
-        Assertions.assertEquals("heqdurelyujlfyou", response.iterator().next().statusDetails());
-        Assertions.assertEquals("oclxiut", response.iterator().next().parameters().get("jc"));
+        Assertions.assertEquals("ehpavawugiqjtiog", response.iterator().next().runOn());
+        Assertions.assertEquals(JobStatus.BLOCKED, response.iterator().next().status());
+        Assertions.assertEquals("inic", response.iterator().next().statusDetails());
+        Assertions.assertEquals("n", response.iterator().next().parameters().get("pczykmktpvwxqc"));
     }
 }

@@ -34,7 +34,7 @@ public final class HybridRunbookWorkersListByHybridRunbookWorkerGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"ip\":\"lss\",\"registeredDateTime\":\"2021-08-03T23:23:23Z\",\"lastSeenDateTime\":\"2021-08-03T00:39:12Z\",\"vmResourceId\":\"vtfycnlbvgjcodk\",\"workerType\":\"HybridV1\",\"workerName\":\"iytssikizbc\"},\"id\":\"q\",\"name\":\"vntnrgmqso\",\"type\":\"hcekxgnlykm\"}]}";
+            "{\"value\":[{\"properties\":{\"ip\":\"uktrfnslnlrx\",\"registeredDateTime\":\"2021-05-05T19:39:20Z\",\"lastSeenDateTime\":\"2021-03-04T13:27:29Z\",\"vmResourceId\":\"wntfmtbgwjdxwna\",\"workerType\":\"HybridV2\",\"workerName\":\"rdreyzjwhsetw\"},\"id\":\"wzzqseuzuukykcy\",\"name\":\"hyqqzzdcy\",\"type\":\"ey\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,16 @@ public final class HybridRunbookWorkersListByHybridRunbookWorkerGroupMockTests {
         PagedIterable<HybridRunbookWorker> response =
             manager
                 .hybridRunbookWorkers()
-                .listByHybridRunbookWorkerGroup("gsnbagnchjh", "emuowakyw", "lhjym", "cgqtag", Context.NONE);
+                .listByHybridRunbookWorkerGroup("tehdpboujs", "kfvvdshxcde", "suenyg", "xcgjtf", Context.NONE);
 
-        Assertions.assertEquals("lss", response.iterator().next().ip());
+        Assertions.assertEquals("uktrfnslnlrx", response.iterator().next().ip());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-03T23:23:23Z"), response.iterator().next().registeredDateTime());
+                OffsetDateTime.parse("2021-05-05T19:39:20Z"), response.iterator().next().registeredDateTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-08-03T00:39:12Z"), response.iterator().next().lastSeenDateTime());
-        Assertions.assertEquals("vtfycnlbvgjcodk", response.iterator().next().vmResourceId());
-        Assertions.assertEquals(WorkerType.HYBRID_V1, response.iterator().next().workerType());
-        Assertions.assertEquals("iytssikizbc", response.iterator().next().workerName());
+            .assertEquals(OffsetDateTime.parse("2021-03-04T13:27:29Z"), response.iterator().next().lastSeenDateTime());
+        Assertions.assertEquals("wntfmtbgwjdxwna", response.iterator().next().vmResourceId());
+        Assertions.assertEquals(WorkerType.HYBRID_V2, response.iterator().next().workerType());
+        Assertions.assertEquals("rdreyzjwhsetw", response.iterator().next().workerName());
     }
 }

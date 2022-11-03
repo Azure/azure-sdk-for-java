@@ -36,7 +36,7 @@ public final class DscNodeConfigurationsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"lastModifiedTime\":\"2021-06-08T22:40:53Z\",\"creationTime\":\"2021-01-09T02:35:52Z\",\"configuration\":{\"name\":\"ck\"},\"source\":\"ikxkxhneg\",\"nodeCount\":2785122180998227471,\"incrementNodeConfigurationBuild\":true},\"id\":\"h\",\"name\":\"me\",\"type\":\"lvukaobrlb\"}";
+            "{\"properties\":{\"lastModifiedTime\":\"2021-10-09T13:57:58Z\",\"creationTime\":\"2021-10-02T04:29:53Z\",\"configuration\":{\"name\":\"ybmx\"},\"source\":\"xocuullojkpoyhgw\",\"nodeCount\":505239500038837458,\"incrementNodeConfigurationBuild\":false},\"id\":\"bdl\",\"name\":\"zgdyrcvuqbs\",\"type\":\"zlrqhbjnqogdx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,34 +67,25 @@ public final class DscNodeConfigurationsCreateOrUpdateMockTests {
         DscNodeConfiguration response =
             manager
                 .dscNodeConfigurations()
-                .define("hctmmkosz")
-                .withExistingAutomationAccount("iarxqiubxdukec", "xdazv")
-                .withTags(
-                    mapOf(
-                        "mxlbn",
-                        "uuatvlmbjwcol",
-                        "ahprzrvxhmtfhocn",
-                        "tpc",
-                        "isn",
-                        "zcmjhngxnoqrxt",
-                        "hepfwwtjfdoes",
-                        "evhdlmydid"))
-                .withName("utrpbr")
+                .define("xbibanbaupw")
+                .withExistingAutomationAccount("qkwaruwd", "vqzxoebwg")
+                .withTags(mapOf("lgw", "bhuhk", "o", "okhu", "cqypz", "jy", "fejyvdwtfxptpqa", "zufgs"))
+                .withName("boy")
                 .withSource(
                     new ContentSource()
-                        .withType(ContentSourceType.URI)
-                        .withValue("ntrpcaqkiof")
-                        .withVersion("tfmhklbnldpvcb"))
-                .withConfiguration(new DscConfigurationAssociationProperty().withName("ezyquw"))
+                        .withType(ContentSourceType.EMBEDDED_CONTENT)
+                        .withValue("lozkxbzrp")
+                        .withVersion("plssanbtttk"))
+                .withConfiguration(new DscConfigurationAssociationProperty().withName("uxunrswg"))
                 .withIncrementNodeConfigurationBuild(true)
                 .create();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T22:40:53Z"), response.lastModifiedTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T02:35:52Z"), response.creationTime());
-        Assertions.assertEquals("ck", response.configuration().name());
-        Assertions.assertEquals("ikxkxhneg", response.source());
-        Assertions.assertEquals(2785122180998227471L, response.nodeCount());
-        Assertions.assertEquals(true, response.incrementNodeConfigurationBuild());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T13:57:58Z"), response.lastModifiedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T04:29:53Z"), response.creationTime());
+        Assertions.assertEquals("ybmx", response.configuration().name());
+        Assertions.assertEquals("xocuullojkpoyhgw", response.source());
+        Assertions.assertEquals(505239500038837458L, response.nodeCount());
+        Assertions.assertEquals(false, response.incrementNodeConfigurationBuild());
     }
 
     @SuppressWarnings("unchecked")

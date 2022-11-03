@@ -33,7 +33,7 @@ public final class DscNodesListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"lastSeen\":\"2021-08-09T02:04:42Z\",\"registrationTime\":\"2021-05-11T13:05:57Z\",\"ip\":\"skbuhzaca\",\"accountId\":\"yltcoqcuj\",\"nodeConfiguration\":{\"name\":\"xzak\"},\"status\":\"jkmvbi\",\"nodeId\":\"jofqcvovjufycs\",\"etag\":\"lbemyej\",\"totalCount\":1797904663,\"extensionHandler\":[]},\"id\":\"egthortudawl\",\"name\":\"jfel\",\"type\":\"erppt\"}]}";
+            "{\"value\":[{\"properties\":{\"lastSeen\":\"2021-07-13T11:14:58Z\",\"registrationTime\":\"2021-07-09T21:26:46Z\",\"ip\":\"awjyosxwwhnh\",\"accountId\":\"fv\",\"nodeConfiguration\":{\"name\":\"pmil\"},\"status\":\"nwynudq\",\"nodeId\":\"zsauzp\",\"etag\":\"xee\",\"totalCount\":1924802741,\"extensionHandler\":[]},\"id\":\"hzlraymezxlsk\",\"name\":\"hmx\",\"type\":\"fdsajred\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,17 +65,23 @@ public final class DscNodesListByAutomationAccountMockTests {
             manager
                 .dscNodes()
                 .listByAutomationAccount(
-                    "nub", "oitpkpztrgdgx", "coqra", 1293640540, 2040757308, "gyxpqit", Context.NONE);
+                    "sknxrwzawnvsbcf",
+                    "zagxnvhycvdi",
+                    "wrzregzgyufu",
+                    395000982,
+                    1733524398,
+                    "pweryekzk",
+                    Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T02:04:42Z"), response.iterator().next().lastSeen());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T11:14:58Z"), response.iterator().next().lastSeen());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-05-11T13:05:57Z"), response.iterator().next().registrationTime());
-        Assertions.assertEquals("skbuhzaca", response.iterator().next().ip());
-        Assertions.assertEquals("yltcoqcuj", response.iterator().next().accountId());
-        Assertions.assertEquals("jkmvbi", response.iterator().next().status());
-        Assertions.assertEquals("jofqcvovjufycs", response.iterator().next().nodeId());
-        Assertions.assertEquals("lbemyej", response.iterator().next().etag());
-        Assertions.assertEquals(1797904663, response.iterator().next().totalCount());
-        Assertions.assertEquals("xzak", response.iterator().next().namePropertiesName());
+            .assertEquals(OffsetDateTime.parse("2021-07-09T21:26:46Z"), response.iterator().next().registrationTime());
+        Assertions.assertEquals("awjyosxwwhnh", response.iterator().next().ip());
+        Assertions.assertEquals("fv", response.iterator().next().accountId());
+        Assertions.assertEquals("nwynudq", response.iterator().next().status());
+        Assertions.assertEquals("zsauzp", response.iterator().next().nodeId());
+        Assertions.assertEquals("xee", response.iterator().next().etag());
+        Assertions.assertEquals(1924802741, response.iterator().next().totalCount());
+        Assertions.assertEquals("pmil", response.iterator().next().namePropertiesName());
     }
 }

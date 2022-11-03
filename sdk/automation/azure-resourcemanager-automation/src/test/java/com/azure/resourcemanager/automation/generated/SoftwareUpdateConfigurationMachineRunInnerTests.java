@@ -16,7 +16,7 @@ public final class SoftwareUpdateConfigurationMachineRunInnerTests {
         SoftwareUpdateConfigurationMachineRunInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"nbkkjanurnnq\",\"id\":\"q\",\"properties\":{\"targetComputer\":\"zxqltgrdogypx\",\"targetComputerType\":\"vbfihwuhvctafsr\",\"softwareUpdateConfiguration\":{\"name\":\"blml\"},\"status\":\"wxihs\",\"osType\":\"xwqagnepzw\",\"correlationId\":\"f89a36aa-fdc4-48db-b8a9-752a19d81115\",\"sourceComputerId\":\"8759c6f9-2d76-4726-b1f3-8463af4ae9b6\",\"startTime\":\"2021-04-28T19:57:20Z\",\"endTime\":\"2021-07-04T22:14:12Z\",\"configuredDuration\":\"qqagwwr\",\"job\":{\"id\":\"mz\"},\"creationTime\":\"2021-09-19T08:46:46Z\",\"createdBy\":\"rrczezkhhltnj\",\"lastModifiedTime\":\"2021-02-14T18:09:59Z\",\"lastModifiedBy\":\"oawjqoyueay\"}}")
+                    "{\"name\":\"nbkkjanurnnq\",\"id\":\"q\",\"properties\":{\"targetComputer\":\"zxqltgrdogypx\",\"targetComputerType\":\"vbfihwuhvctafsr\",\"softwareUpdateConfiguration\":{\"name\":\"blml\"},\"status\":\"wxihs\",\"osType\":\"xwqagnepzw\",\"correlationId\":\"26bb605f-7079-49e8-8a8d-da4b9fa1e2e4\",\"sourceComputerId\":\"90432302-314d-4af8-9dfc-4207ca0442fc\",\"startTime\":\"2021-04-28T19:57:20Z\",\"endTime\":\"2021-07-04T22:14:12Z\",\"configuredDuration\":\"qqagwwr\",\"job\":{\"id\":\"mz\"},\"creationTime\":\"2021-09-19T08:46:46Z\",\"createdBy\":\"rrczezkhhltnj\",\"lastModifiedTime\":\"2021-02-14T18:09:59Z\",\"lastModifiedBy\":\"oawjqoyueay\"}}")
                 .toObject(SoftwareUpdateConfigurationMachineRunInner.class);
     }
 

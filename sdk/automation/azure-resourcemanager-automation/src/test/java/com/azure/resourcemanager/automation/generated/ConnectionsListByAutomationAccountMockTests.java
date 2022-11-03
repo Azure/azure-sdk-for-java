@@ -33,7 +33,7 @@ public final class ConnectionsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"connectionType\":{\"name\":\"wjjufwbe\"},\"fieldDefinitionValues\":{\"zcvjytiqswbqerz\":\"uorhtssruqnmdvh\"},\"creationTime\":\"2021-07-01T19:46:41Z\",\"lastModifiedTime\":\"2021-07-17T20:22:02Z\",\"description\":\"tdgukvlbp\"},\"id\":\"tgdstyouambe\",\"name\":\"reswmowegmmut\",\"type\":\"yxey\"}]}";
+            "{\"value\":[{\"properties\":{\"connectionType\":{\"name\":\"c\"},\"fieldDefinitionValues\":{\"ielnz\":\"mfcnrjajqmatxj\",\"mtlpqagyno\":\"gxxgfb\",\"lin\":\"prnzc\"},\"creationTime\":\"2020-12-21T11:31:07Z\",\"lastModifiedTime\":\"2021-05-29T09:45:38Z\",\"description\":\"xaq\"},\"id\":\"ibmq\",\"name\":\"miymqruqguhfupet\",\"type\":\"svvoqsbpkflanfk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class ConnectionsListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Connection> response =
-            manager.connections().listByAutomationAccount("fngq", "clid", Context.NONE);
+            manager.connections().listByAutomationAccount("sqxtltclkrdpq", "fhyrfrakk", Context.NONE);
 
-        Assertions.assertEquals("wjjufwbe", response.iterator().next().connectionType().name());
-        Assertions.assertEquals("tdgukvlbp", response.iterator().next().description());
+        Assertions.assertEquals("c", response.iterator().next().connectionType().name());
+        Assertions.assertEquals("xaq", response.iterator().next().description());
     }
 }

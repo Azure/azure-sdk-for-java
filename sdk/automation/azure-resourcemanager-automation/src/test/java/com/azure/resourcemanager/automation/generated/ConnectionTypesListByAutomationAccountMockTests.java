@@ -33,7 +33,7 @@ public final class ConnectionTypesListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"lz\",\"name\":\"sygrijwa\",\"type\":\"fanraybfu\",\"properties\":{\"isGlobal\":false,\"fieldDefinitions\":{},\"creationTime\":\"2021-04-24T14:57:40Z\",\"lastModifiedTime\":\"2021-05-15T07:11:43Z\",\"description\":\"h\"}}]}";
+            "{\"value\":[{\"id\":\"fkbebauzl\",\"name\":\"txxwpfh\",\"type\":\"zudrtpzk\",\"properties\":{\"isGlobal\":false,\"fieldDefinitions\":{},\"creationTime\":\"2021-10-04T08:02:18Z\",\"lastModifiedTime\":\"2020-12-20T18:42:34Z\",\"description\":\"qrhm\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class ConnectionTypesListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ConnectionType> response =
-            manager.connectionTypes().listByAutomationAccount("uqi", "ijiitns", Context.NONE);
+            manager.connectionTypes().listByAutomationAccount("wzsfftedousnktjt", "ravaq", Context.NONE);
 
         Assertions.assertEquals(false, response.iterator().next().isGlobal());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-05-15T07:11:43Z"), response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals("h", response.iterator().next().description());
+            .assertEquals(OffsetDateTime.parse("2020-12-20T18:42:34Z"), response.iterator().next().lastModifiedTime());
+        Assertions.assertEquals("qrhm", response.iterator().next().description());
     }
 }

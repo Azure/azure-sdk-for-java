@@ -33,7 +33,7 @@ public final class CredentialsListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"userName\":\"zmxieqvdsmaklix\",\"creationTime\":\"2021-11-09T17:12:24Z\",\"lastModifiedTime\":\"2021-03-19T11:31:11Z\",\"description\":\"xalybxawoijpo\"},\"id\":\"tblxpkkwjdjodqhy\",\"name\":\"incnr\",\"type\":\"mehllizhceu\"}]}";
+            "{\"value\":[{\"properties\":{\"userName\":\"uvrzmzqmzjqrb\",\"creationTime\":\"2021-07-14T11:36:59Z\",\"lastModifiedTime\":\"2021-08-06T19:00:47Z\",\"description\":\"yfoeb\"},\"id\":\"jtjppg\",\"name\":\"aohoqkpjtnq\",\"type\":\"ilaywkdcwm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class CredentialsListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Credential> response =
-            manager.credentials().listByAutomationAccount("dkygywezski", "ca", Context.NONE);
+            manager.credentials().listByAutomationAccount("vm", "lyymffhmjpddny", Context.NONE);
 
-        Assertions.assertEquals("xalybxawoijpo", response.iterator().next().description());
+        Assertions.assertEquals("yfoeb", response.iterator().next().description());
     }
 }

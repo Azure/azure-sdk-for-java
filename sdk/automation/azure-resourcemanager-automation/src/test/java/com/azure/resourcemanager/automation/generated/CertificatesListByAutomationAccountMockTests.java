@@ -33,7 +33,7 @@ public final class CertificatesListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"thumbprint\":\"bonhpczykmktp\",\"expiryTime\":\"2021-03-14T18:05:22Z\",\"isExportable\":true,\"creationTime\":\"2021-07-18T08:02:30Z\",\"lastModifiedTime\":\"2021-09-14T03:13:29Z\",\"description\":\"khufmpqumqyjgydz\"},\"id\":\"lod\",\"name\":\"aeuzanh\",\"type\":\"fnhsenwphp\"}]}";
+            "{\"value\":[{\"properties\":{\"thumbprint\":\"wzzoslpk\",\"expiryTime\":\"2021-12-03T08:55:55Z\",\"isExportable\":true,\"creationTime\":\"2021-03-10T08:35:26Z\",\"lastModifiedTime\":\"2021-01-26T11:16:55Z\",\"description\":\"ajsqjcemqbmfuv\"},\"id\":\"arwzxuqrebl\",\"name\":\"immbwxsfgtdm\",\"type\":\"vxekraokqkbud\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class CertificatesListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Certificate> response =
-            manager.certificates().listByAutomationAccount("iogqgdminictte", "johiyg", Context.NONE);
+            manager.certificates().listByAutomationAccount("svtzarhzv", "nsqktc", Context.NONE);
 
-        Assertions.assertEquals("khufmpqumqyjgydz", response.iterator().next().description());
+        Assertions.assertEquals("ajsqjcemqbmfuv", response.iterator().next().description());
     }
 }

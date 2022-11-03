@@ -32,7 +32,7 @@ public final class ObjectDataTypesListFieldsByTypeMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"name\":\"wjiqullqxb\",\"type\":\"vr\"}]}";
+        String responseStr = "{\"value\":[{\"name\":\"jmriprlkdneyttlr\",\"type\":\"ivcbkutpumltwj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class ObjectDataTypesListFieldsByTypeMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TypeField> response =
-            manager.objectDataTypes().listFieldsByType("fvabmvmsxba", "vwjcnkottlwuh", "ajmailfemjjza", Context.NONE);
+            manager.objectDataTypes().listFieldsByType("rzgdkkagvw", "khsusmmorf", "zhwilzzh", Context.NONE);
 
-        Assertions.assertEquals("wjiqullqxb", response.iterator().next().name());
-        Assertions.assertEquals("vr", response.iterator().next().type());
+        Assertions.assertEquals("jmriprlkdneyttlr", response.iterator().next().name());
+        Assertions.assertEquals("ivcbkutpumltwj", response.iterator().next().type());
     }
 }

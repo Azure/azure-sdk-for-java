@@ -33,7 +33,7 @@ public final class JobSchedulesListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"dfmmpzhzzwvy\",\"name\":\"gyngydgrpxncak\",\"type\":\"aondjrkclamgg\",\"properties\":{\"jobScheduleId\":\"mfejdoqeykglty\",\"schedule\":{\"name\":\"qfgqkayejsxtlg\"},\"runbook\":{\"name\":\"fgzii\"},\"runOn\":\"ijjcea\",\"parameters\":{\"tvamcaszknx\":\"jjj\"}}}]}";
+            "{\"value\":[{\"id\":\"e\",\"name\":\"ldmaxxijvskwsdgk\",\"type\":\"yacwrasekwefc\",\"properties\":{\"jobScheduleId\":\"nwoqartwy\",\"schedule\":{\"name\":\"cladvatdavuqmcb\"},\"runbook\":{\"name\":\"fobjlquvjezcj\"},\"runOn\":\"v\",\"parameters\":{\"glkmiqwnnr\":\"mioyo\",\"ladydgnhautwu\":\"clibbfqpsp\"}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class JobSchedulesListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JobSchedule> response =
-            manager.jobSchedules().listByAutomationAccount("dmkxwxdcvjwcy", "iakeciqc", "xrtuicds", Context.NONE);
+            manager.jobSchedules().listByAutomationAccount("gpkrie", "bgnixxoww", "kyfwnwpiwxeiicr", Context.NONE);
 
-        Assertions.assertEquals("mfejdoqeykglty", response.iterator().next().jobScheduleId());
-        Assertions.assertEquals("qfgqkayejsxtlg", response.iterator().next().schedule().name());
-        Assertions.assertEquals("fgzii", response.iterator().next().runbook().name());
-        Assertions.assertEquals("ijjcea", response.iterator().next().runOn());
-        Assertions.assertEquals("jjj", response.iterator().next().parameters().get("tvamcaszknx"));
+        Assertions.assertEquals("nwoqartwy", response.iterator().next().jobScheduleId());
+        Assertions.assertEquals("cladvatdavuqmcb", response.iterator().next().schedule().name());
+        Assertions.assertEquals("fobjlquvjezcj", response.iterator().next().runbook().name());
+        Assertions.assertEquals("v", response.iterator().next().runOn());
+        Assertions.assertEquals("mioyo", response.iterator().next().parameters().get("glkmiqwnnr"));
     }
 }

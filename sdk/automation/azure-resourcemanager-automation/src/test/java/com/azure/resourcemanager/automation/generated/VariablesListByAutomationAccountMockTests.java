@@ -33,7 +33,7 @@ public final class VariablesListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"value\":\"oxcxscvslx\",\"isEncrypted\":true,\"creationTime\":\"2021-09-10T02:42:58Z\",\"lastModifiedTime\":\"2021-03-30T14:33:34Z\",\"description\":\"ukmyjmkxet\"},\"id\":\"csl\",\"name\":\"jfkqidn\",\"type\":\"toqxjh\"}]}";
+            "{\"value\":[{\"properties\":{\"value\":\"mhjhaus\",\"isEncrypted\":true,\"creationTime\":\"2021-10-23T08:44:10Z\",\"lastModifiedTime\":\"2021-03-27T06:06:44Z\",\"description\":\"fztsi\"},\"id\":\"sc\",\"name\":\"qs\",\"type\":\"eiihfymko\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,14 +62,14 @@ public final class VariablesListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Variable> response =
-            manager.variables().listByAutomationAccount("atxtjrrlkmdskjhh", "dl", Context.NONE);
+            manager.variables().listByAutomationAccount("pfliwo", "nguuzhwvla", Context.NONE);
 
-        Assertions.assertEquals("oxcxscvslx", response.iterator().next().value());
+        Assertions.assertEquals("mhjhaus", response.iterator().next().value());
         Assertions.assertEquals(true, response.iterator().next().isEncrypted());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-09-10T02:42:58Z"), response.iterator().next().creationTime());
+            .assertEquals(OffsetDateTime.parse("2021-10-23T08:44:10Z"), response.iterator().next().creationTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-30T14:33:34Z"), response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals("ukmyjmkxet", response.iterator().next().description());
+            .assertEquals(OffsetDateTime.parse("2021-03-27T06:06:44Z"), response.iterator().next().lastModifiedTime());
+        Assertions.assertEquals("fztsi", response.iterator().next().description());
     }
 }

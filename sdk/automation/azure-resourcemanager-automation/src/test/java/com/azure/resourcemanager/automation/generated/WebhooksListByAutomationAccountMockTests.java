@@ -33,7 +33,7 @@ public final class WebhooksListByAutomationAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"isEnabled\":true,\"uri\":\"labnsmjkwynq\",\"expiryTime\":\"2021-05-26T07:05:34Z\",\"lastInvokedTime\":\"2021-01-21T15:48:08Z\",\"parameters\":{\"tjcrspxklurccl\":\"kvwjtqpkevmy\",\"gpxvkqmaupxvpi\":\"gxannnoytzposewx\",\"ds\":\"dfaifyzyzeyuube\",\"ytoithgygvfl\":\"l\"},\"runbook\":{\"name\":\"dihoyn\"},\"runOn\":\"xwetwkdrcyrucpc\",\"creationTime\":\"2021-06-13T01:59:19Z\",\"lastModifiedTime\":\"2021-01-02T00:46:22Z\",\"lastModifiedBy\":\"qumoeno\",\"description\":\"aienhqhsknd\"},\"id\":\"elqkaadlkn\",\"name\":\"foanniyopetx\",\"type\":\"vcnrly\"}]}";
+            "{\"value\":[{\"properties\":{\"isEnabled\":true,\"uri\":\"skmqozzkivyhj\",\"expiryTime\":\"2021-10-01T08:46:01Z\",\"lastInvokedTime\":\"2021-11-04T07:10:22Z\",\"parameters\":{\"fkwa\":\"xlqfh\",\"nlqxsjxtele\":\"solronqqlm\",\"oolzqocarkuzl\":\"hvuqbo\",\"t\":\"cnn\"},\"runbook\":{\"name\":\"awqytllhdyzm\"},\"runOn\":\"kzexnx\",\"creationTime\":\"2021-06-14T23:11:42Z\",\"lastModifiedTime\":\"2021-08-23T03:40:52Z\",\"lastModifiedBy\":\"ymx\",\"description\":\"abjkdtfohfao\"},\"id\":\"zvkiwrsiwdy\",\"name\":\"quryk\",\"type\":\"rra\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,21 +62,21 @@ public final class WebhooksListByAutomationAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Webhook> response =
-            manager.webhooks().listByAutomationAccount("pxgzdyimsfayor", "r", "vk", Context.NONE);
+            manager.webhooks().listByAutomationAccount("qnoowsbedenrex", "xbhxvucnulgmnhj", "vdyznf", Context.NONE);
 
         Assertions.assertEquals(true, response.iterator().next().isEnabled());
-        Assertions.assertEquals("labnsmjkwynq", response.iterator().next().uri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T07:05:34Z"), response.iterator().next().expiryTime());
+        Assertions.assertEquals("skmqozzkivyhj", response.iterator().next().uri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T08:46:01Z"), response.iterator().next().expiryTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-21T15:48:08Z"), response.iterator().next().lastInvokedTime());
-        Assertions.assertEquals("kvwjtqpkevmy", response.iterator().next().parameters().get("tjcrspxklurccl"));
-        Assertions.assertEquals("dihoyn", response.iterator().next().runbook().name());
-        Assertions.assertEquals("xwetwkdrcyrucpc", response.iterator().next().runOn());
+            .assertEquals(OffsetDateTime.parse("2021-11-04T07:10:22Z"), response.iterator().next().lastInvokedTime());
+        Assertions.assertEquals("xlqfh", response.iterator().next().parameters().get("fkwa"));
+        Assertions.assertEquals("awqytllhdyzm", response.iterator().next().runbook().name());
+        Assertions.assertEquals("kzexnx", response.iterator().next().runOn());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-06-13T01:59:19Z"), response.iterator().next().creationTime());
+            .assertEquals(OffsetDateTime.parse("2021-06-14T23:11:42Z"), response.iterator().next().creationTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-02T00:46:22Z"), response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals("qumoeno", response.iterator().next().lastModifiedBy());
-        Assertions.assertEquals("aienhqhsknd", response.iterator().next().description());
+            .assertEquals(OffsetDateTime.parse("2021-08-23T03:40:52Z"), response.iterator().next().lastModifiedTime());
+        Assertions.assertEquals("ymx", response.iterator().next().lastModifiedBy());
+        Assertions.assertEquals("abjkdtfohfao", response.iterator().next().description());
     }
 }
