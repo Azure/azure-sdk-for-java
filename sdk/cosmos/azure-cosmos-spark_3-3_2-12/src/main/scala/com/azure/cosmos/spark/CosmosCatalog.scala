@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.spark
 
+import org.apache.spark.sql.catalyst.analysis.NonEmptyNamespaceException
+
 import java.util
 // scalastyle:off underscore.import
 // scalastyle:on underscore.import
@@ -42,7 +44,13 @@ class CosmosCatalog
     }
 
     @throws(classOf[NoSuchNamespaceException])
+    @throws(classOf[NonEmptyNamespaceException])
     override def dropNamespace(namespace: Array[String], cascade: Boolean): Boolean = {
+        if (!cascade) {
+            if (this.listTables(namespace).length > 0) {
+                throw new NonEmptyNamespaceException(namespace)
+            }
+        }
         super.dropNamespaceBase(namespace)
     }
 }

@@ -15,7 +15,7 @@ import com.azure.cosmos.models._
 import com.azure.cosmos.CosmosException
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
-import org.apache.spark.sql.connector.catalog._
+import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, Table, TableCatalog, TableChange}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 import org.apache.spark.sql.types.StructType
