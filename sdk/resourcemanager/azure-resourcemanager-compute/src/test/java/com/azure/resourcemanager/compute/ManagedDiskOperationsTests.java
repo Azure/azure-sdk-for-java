@@ -283,6 +283,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(snapshot.incremental());
         Assertions.assertEquals(CreationSourceType.COPIED_FROM_DISK, snapshot.source().type());
         Assertions.assertEquals(DiskCreateOption.COPY, snapshot.creationMethod());
+        Assertions.assertThrows(IllegalStateException.class, snapshot::awaitCopyStartCompletion);
 
         // copy the snapshot to the same region
         Snapshot snapshotSameRegion =
