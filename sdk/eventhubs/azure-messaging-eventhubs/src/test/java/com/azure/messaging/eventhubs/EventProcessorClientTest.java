@@ -739,10 +739,6 @@ public class EventProcessorClientTest {
     @Test
     public void testProcessorDisposeQuickly() throws InterruptedException {
         // Arrange
-        final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer1);
-        TracerProvider tracerProvider = new TracerProvider(tracers);
-
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
@@ -750,7 +746,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
-            .createConsumer(anyString(), anyInt()))
+            .createConsumer(anyString(), anyInt(), eq(true)))
             .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
@@ -767,8 +763,8 @@ public class EventProcessorClientTest {
         final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(200, 3);
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
-            3, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
+            3, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
 
         // Act
         eventProcessorClient.start();
@@ -787,9 +783,6 @@ public class EventProcessorClientTest {
     @Test
     public void testProcessorDisposeSlow() throws InterruptedException {
         // Arrange
-        final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer1);
-        TracerProvider tracerProvider = new TracerProvider(tracers);
 
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
@@ -798,7 +791,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
-            .createConsumer(anyString(), anyInt()))
+            .createConsumer(anyString(), anyInt(), eq(true)))
             .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
@@ -815,8 +808,8 @@ public class EventProcessorClientTest {
         final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(5000, 3);
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
-            3, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
+            3, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
 
         // Act
         eventProcessorClient.start();
