@@ -26,20 +26,20 @@ stages:
           vmImage: 'MMSUbuntu20.04'
 
           steps:
-            - # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-              # as we require the GitHub service connection to be loaded.
-              - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                    parameters:
-                      Paths:
-                        - '**/*.xml'
-                        - '!sdk/**/test-recordings'
-                        - '!sdk/**/session-records'
+            # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+            # as we require the GitHub service connection to be loaded.
+            - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+                - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                  parameters:
+                    Paths:
+                      - '**/*.xml'
+                      - '!sdk/**/test-recordings'
+                      - '!sdk/**/session-records'
 
-              - task: UsePythonVersion@0
-                displayName: 'Use Python $(PythonVersion)'
-                inputs:
-                  versionSpec: $(PythonVersion)
+            - task: UsePythonVersion@0
+              displayName: 'Use Python $(PythonVersion)'
+              inputs:
+                versionSpec: $(PythonVersion)
 
             - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
               parameters:
