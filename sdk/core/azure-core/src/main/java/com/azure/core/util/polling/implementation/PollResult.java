@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * A simple structure representing the partial response received from an operation location URL, containing the
  * information of the status of the long-running operation.
  */
-public class PollResult {
+public final class PollResult {
     private LongRunningOperationStatus status;
     private String resourceLocation;
 
