@@ -953,7 +953,7 @@ public class DataLakeFileClient extends DataLakePathClient {
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
             .setUncommittedDataRetained(retainUncommittedData)
-            .setClosed(close)
+            .setClose(close)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions);
 
@@ -983,7 +983,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions&#40;&#41;
      *     .setUncommittedDataRetained&#40;retainUncommittedData&#41;
-     *     .setClosed&#40;close&#41;
+     *     .setClose&#40;close&#41;
      *     .setPathHttpHeaders&#40;httpHeaders&#41;
      *     .setRequestConditions&#40;requestConditions&#41;
      *     .setLeaseAction&#40;LeaseAction.ACQUIRE&#41;

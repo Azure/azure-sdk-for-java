@@ -64,7 +64,7 @@ public class DataLakeFileFlushOptions {
      *
      * @return whether the file stream has been closed.
      */
-    public Boolean isClosed() {
+    public Boolean isClose() {
         return close;
     }
 
@@ -82,7 +82,7 @@ public class DataLakeFileFlushOptions {
      * @param close boolean flag to indicate whether file stream has been closed.
      * @return the updated DataLakeFileFlushOptions object.
      */
-    public DataLakeFileFlushOptions setClosed(Boolean close) {
+    public DataLakeFileFlushOptions setClose(Boolean close) {
         this.close = close;
         return this;
     }
@@ -173,11 +173,11 @@ public class DataLakeFileFlushOptions {
      * Optional. Specifies the duration of the lease, in seconds, or specify -1 for a lease that never expires.
      * A non-infinite lease can be between 15 and 60 seconds.
      *
-     * @param leaseDuration the new lease duration.
+     * @param leaseDurationInSeconds the new lease duration.
      * @return the updated DataLakeFileFlushOptions object.
      */
-    public DataLakeFileFlushOptions setLeaseDuration(Integer leaseDuration) {
-        this.leaseDuration = leaseDuration;
+    public DataLakeFileFlushOptions setLeaseDuration(Integer leaseDurationInSeconds) {
+        this.leaseDuration = leaseDurationInSeconds;
         return this;
     }
 
