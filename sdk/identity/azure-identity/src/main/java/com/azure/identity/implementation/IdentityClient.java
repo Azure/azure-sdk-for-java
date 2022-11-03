@@ -1080,7 +1080,7 @@ public class IdentityClient extends IdentityClientBase {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    private Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequestContext request) {
+    public Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;
