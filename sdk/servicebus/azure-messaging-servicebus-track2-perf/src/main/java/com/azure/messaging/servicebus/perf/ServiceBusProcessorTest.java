@@ -59,6 +59,7 @@ public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptio
             .queueName(QUEUE_NAME)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .maxConcurrentCalls(options.getMaxConcurrentCalls())
+            .prefetchCount(options.getPrefetchCount())
             .processMessage(messageContext -> {
                 eventRaised();
             })

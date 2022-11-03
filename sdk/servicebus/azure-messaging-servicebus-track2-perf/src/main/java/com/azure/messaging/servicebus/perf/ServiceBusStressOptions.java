@@ -26,13 +26,16 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     private boolean isDeleteMode = true;
 
     @Parameter(names = { "-mcc", "--maxConcurrentCalls" }, description = "Processor client max concurrent calls")
-    private int maxConcurrentCalls = 1;
+    private int maxConcurrentCalls = 10;
 
     @Parameter(names = { "-mbst", "--messageBatchSendTimes" }, description = "Message batch send times")
     private int messageBatchSendTimes = 10;
 
     @Parameter(names = { "-mbs", "--messageBatchSize"}, description = "Message batch size")
     private int messageBatchSize = 100;
+
+    @Parameter(names = { "-pc", "--prefetchCount"}, description = "Client prefetch count")
+    private int prefetchCount = 100;
 
     /**
      * Get the configured messagesToSend option for performance test.
@@ -88,5 +91,13 @@ public class ServiceBusStressOptions extends PerfStressOptions {
      */
     public int getMessageBatchSize() {
         return messageBatchSize;
+    }
+
+    /**
+     * Get the configured prefetchCount option for performance tst.
+     * @return
+     */
+    public int getPrefetchCount() {
+        return prefetchCount;
     }
 }
