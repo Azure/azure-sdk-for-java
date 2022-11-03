@@ -176,7 +176,6 @@
     "sdk/schemaregistry/azure-data-schemaregistry-apacheavro/**",
     "sdk/servicebus/build/**",
     "sdk/spring/scripts/**",
-    "sdk/servicebus/azure-messaging-servicebus/**",
     "sdk/spring/spring-cloud-azure-actuator/**",
     "sdk/spring/spring-cloud-azure-actuator-autoconfigure/**",
     "sdk/spring/spring-cloud-azure-integration-tests/**",
@@ -661,6 +660,61 @@
       ]
     },
     {
+      "filename": "NOTICE.txt",
+      "words": [
+        "Tatu",
+        "Saloranta",
+        "JAXB",
+        "Stax",
+        "Tene",
+        "Azul",
+        "rkuhn",
+        "benjchristensen",
+        "viktorklang",
+        "Klang",
+        "smaldini",
+        "Stephane",
+        "Maldini",
+        "savulchik",
+        "Savulchik",
+        "ktoso",
+        "Malawski",
+        "ouertani",
+        "Ouertani",
+        "Mickevičius",
+        "ldaley",
+        "colinrgodsey",
+        "Godsey",
+        "davidmoten",
+        "Moten",
+        "Mauswerks",
+        "rstoyanchev",
+        "Rossen",
+        "Stoyanchev",
+        "Bjorn",
+        "anthonyvdotbe",
+        "Vanelverdinghe",
+        "seratch",
+        "akarnokd",
+        "Karnok",
+        "egetman",
+        "Evgeniy",
+        "patriknw",
+        "Patrik",
+        "angelsanz",
+        "Ángel",
+        "Sanz",
+        "shenghaiyang",
+        "kiiadi",
+        "jroper",
+        "olegdokuka",
+        "Oleh",
+        "Dokuka",
+        "Netifi",
+        "Zaugg"
+      ]
+    },
+    {
       "filename": "sdk/storage/azure-storage-blob/**",
       "words": [
         "clientime",
@@ -704,6 +758,14 @@
         "kldn",
         "dccf"
       ]
+    },
+    {
+      "filename": "sdk/servicebus/azure-messaging-servicebus/**",
+      "words": [
+        "Conniey",
+        "qpid",
+        "unretriable"
+        ]
     }
   ],
   "allowCompoundWords": true

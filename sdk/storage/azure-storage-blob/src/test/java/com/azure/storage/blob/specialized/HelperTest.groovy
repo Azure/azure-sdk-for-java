@@ -9,6 +9,7 @@ import com.azure.core.util.serializer.SerializerEncoding
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobUrlParts
+import com.azure.storage.blob.FakeCredentialInTest
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.PageList
@@ -68,7 +69,7 @@ class HelperTest extends APISpec {
 
     def "URLParser"() {
         when:
-        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig=sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D"))
+        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig=" + FakeCredentialInTest.fakeSignaturePlaceholder))
 
         then:
         parts.getScheme() == "http"
