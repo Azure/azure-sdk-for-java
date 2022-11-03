@@ -127,7 +127,8 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     public Mono<Void> awaitCopyStartCompletionAsync() {
         if (creationMethod() != DiskCreateOption.COPY_START) {
             return Mono.error(logger.logThrowableAsError(new IllegalStateException(
-                "\"awaitCopyStartCompletionAsync\" cannot be called on snapshot \"%s\" when \"creationMethod\" is not \"CopyStart\"")));
+                String.format(
+                    "\"awaitCopyStartCompletionAsync\" cannot be called on snapshot \"%s\" when \"creationMethod\" is not \"CopyStart\"", this.name()))));
         }
         return getInnerAsync()
             .flatMap(inner -> {
