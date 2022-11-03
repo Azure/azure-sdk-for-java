@@ -200,13 +200,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <failOnWarning>false</failOnWarning>
-        </configuration>
-      </plugin>
       <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

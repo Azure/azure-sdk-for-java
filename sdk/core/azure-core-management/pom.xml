@@ -51,7 +51,7 @@
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
-    <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
+    <compiler.failondeprecatedstatus/>
   </properties>
 
   <developers>
@@ -107,15 +107,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <failOnWarning>false</failOnWarning>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
