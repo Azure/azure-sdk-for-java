@@ -20,7 +20,7 @@ public class AnalyticalStorageCodeSnippet {
 
         client.createDatabaseIfNotExists(DATABASE_NAME).block();
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(CONTAINER_NAME, "/id");
-        cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(-1);
+        cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(0);
         client.getDatabase(DATABASE_NAME).createContainer(cosmosContainerProperties).block();
 
         client.close();
