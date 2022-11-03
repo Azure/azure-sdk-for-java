@@ -71,14 +71,7 @@
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.11",
         "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
-      },
-      "Spark 3.3 Integration Tests targeting Cosmos Emulator - Java 17'": {
-        "ProfileFlag": "-Dspark-e2e_3-3",
-        "PROTOCOLS": "[\"Tcp\"]",
-        "DESIRED_CONSISTENCIES": "[\"Session\"]",
-        "JavaTestVersion": "1.17",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
-      }      
+      }     
     }
   }
 }
