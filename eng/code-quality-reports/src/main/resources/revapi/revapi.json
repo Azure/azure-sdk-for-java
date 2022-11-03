@@ -539,6 +539,41 @@
           "code": "java.method.numberOfParametersChanged",
           "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
           "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.models.SettingSelector",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.models.SettingFields",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.models.ConfigurationSetting",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "enum com.azure.data.appconfiguration.ConfigurationServiceVersion",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.ConfigurationClientBuilder",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.ConfigurationClient",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.ConfigurationAsyncClient",
+          "justification": "This is an Azure SDK class that is used in the public API."
         }
       ]
     }

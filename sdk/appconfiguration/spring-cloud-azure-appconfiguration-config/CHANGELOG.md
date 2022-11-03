@@ -50,7 +50,7 @@
 This release is compatible with Spring Boot 2.5.0-2.5.11, 2.6.0-2.6.5.
 
 ### Features Added
-- Added refresh interval parameter to `spring.cloud.azure.appconfiguraiton` to force refreshes on a given interval. Can be used to make sure secrets are kept up to date.
+- Added refresh interval parameter to `spring.cloud.azure.appconfiguration` to force refreshes on a given interval. Can be used to make sure secrets are kept up to date.
 - Added BackoffTimeCalculator, which sets the next refresh period to sooner if a refresh fails.
 
 ### Dependency Upgrades
