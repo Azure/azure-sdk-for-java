@@ -39,6 +39,21 @@ Licensed under the MIT License.
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
+      --add-exports java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/java.lang=ALL-UNNAMED
+      --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+      --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+      --add-opens java.base/java.io=ALL-UNNAMED
+      --add-opens java.base/java.net=ALL-UNNAMED
+      --add-opens java.base/java.nio=ALL-UNNAMED
+      --add-opens java.base/java.util=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
+      --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/sun.nio.cs=ALL-UNNAMED
+      --add-opens java.base/sun.security.action=ALL-UNNAMED
+      --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+
       --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
