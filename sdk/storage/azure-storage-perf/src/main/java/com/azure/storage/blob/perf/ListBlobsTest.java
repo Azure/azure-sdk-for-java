@@ -7,6 +7,8 @@ import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
 
@@ -16,10 +18,19 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     }
 
     public Mono<Void> globalSetupAsync() {
+        // Perform blob uploading in parallel.
+        //
+        // This not only results in faster setup it also helps guard against an edge case seen in Reactor Netty
+        // where only one IO thread could end up owning all connections in the connection pool. This results in
+        // drastically less CPU usage and throughput, there is ongoing discussions with Reactor Netty on what causes
+        // this edge case, whether we had a design flaw in the performance tests, or if there is a configuration change
+        // needed in Reactor Netty.
         return super.globalSetupAsync().then(
             Flux.range(0, options.getCount())
-                .map(i -> "getblobstest-" + UUID.randomUUID())
-                .flatMap(b -> blobContainerAsyncClient.getBlobAsyncClient(b).upload(Flux.empty(), null))
+                .parallel(options.getParallel())
+                .runOn(Schedulers.boundedElastic())
+                .flatMap(iteration -> blobContainerAsyncClient.getBlobAsyncClient("getblobstest-" + UUID.randomUUID())
+                    .upload(Flux.empty(), null), false, Math.min(options.getParallel(), 1000 / options.getParallel()), 1)
                 .then());
     }
 

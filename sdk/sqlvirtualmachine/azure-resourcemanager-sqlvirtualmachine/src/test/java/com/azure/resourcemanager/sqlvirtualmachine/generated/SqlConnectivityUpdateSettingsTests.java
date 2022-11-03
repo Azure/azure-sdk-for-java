@@ -16,12 +16,12 @@ public final class SqlConnectivityUpdateSettingsTests {
         SqlConnectivityUpdateSettings model =
             BinaryData
                 .fromString(
-                    "{\"connectivityType\":\"PRIVATE\",\"port\":639676552,\"sqlAuthUpdateUserName\":\"fbebrjcxer\",\"sqlAuthUpdatePassword\":\"wutttxfvjrbi\"}")
+                    "{\"connectivityType\":\"PRIVATE\",\"port\":639676552,\"sqlAuthUpdateUserName\":\"fakeSqlAuthUpdateUsernamePlaceholder\",\"sqlAuthUpdatePassword\":\"fakeSqlAuthUpdatePasswordPlaceholder\"}")
                 .toObject(SqlConnectivityUpdateSettings.class);
         Assertions.assertEquals(ConnectivityType.PRIVATE, model.connectivityType());
         Assertions.assertEquals(639676552, model.port());
-        Assertions.assertEquals("fbebrjcxer", model.sqlAuthUpdateUsername());
-        Assertions.assertEquals("wutttxfvjrbi", model.sqlAuthUpdatePassword());
+        Assertions.assertEquals("fakeSqlAuthUpdateUsernamePlaceholder", model.sqlAuthUpdateUsername());
+        Assertions.assertEquals("fakeSqlAuthUpdatePasswordPlaceholder", model.sqlAuthUpdatePassword());
     }
 
     @Test
@@ -30,12 +30,12 @@ public final class SqlConnectivityUpdateSettingsTests {
             new SqlConnectivityUpdateSettings()
                 .withConnectivityType(ConnectivityType.PRIVATE)
                 .withPort(639676552)
-                .withSqlAuthUpdateUsername("fbebrjcxer")
-                .withSqlAuthUpdatePassword("wutttxfvjrbi");
+                .withSqlAuthUpdateUsername("fakeSqlAuthUpdateUsernamePlaceholder")
+                .withSqlAuthUpdatePassword("fakeSqlAuthUpdatePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(SqlConnectivityUpdateSettings.class);
         Assertions.assertEquals(ConnectivityType.PRIVATE, model.connectivityType());
         Assertions.assertEquals(639676552, model.port());
-        Assertions.assertEquals("fbebrjcxer", model.sqlAuthUpdateUsername());
-        Assertions.assertEquals("wutttxfvjrbi", model.sqlAuthUpdatePassword());
+        Assertions.assertEquals("fakeSqlAuthUpdateUsernamePlaceholder", model.sqlAuthUpdateUsername());
+        Assertions.assertEquals("fakeSqlAuthUpdatePasswordPlaceholder", model.sqlAuthUpdatePassword());
     }
 }
