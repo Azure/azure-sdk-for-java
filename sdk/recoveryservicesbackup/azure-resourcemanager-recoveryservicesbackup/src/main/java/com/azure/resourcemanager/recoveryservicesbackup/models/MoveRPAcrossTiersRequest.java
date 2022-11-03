@@ -28,6 +28,10 @@ public final class MoveRPAcrossTiersRequest {
     @JsonProperty(value = "targetTierType")
     private RecoveryPointTierType targetTierType;
 
+    /** Creates an instance of MoveRPAcrossTiersRequest class. */
+    public MoveRPAcrossTiersRequest() {
+    }
+
     /**
      * Get the objectType property: Gets the class type.
      *

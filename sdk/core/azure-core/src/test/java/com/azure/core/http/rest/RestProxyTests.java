@@ -227,7 +227,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void voidReturningApiEagerlyReadsResponse() {
+    public void voidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -237,12 +237,13 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
     }
 
     @Test
-    public void monoVoidReturningApiEagerlyReadsResponse() {
+    public void monoVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -253,12 +254,13 @@ public class RestProxyTests {
                 testInterface.testMethodReturnsMonoVoid())
             .verifyComplete();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
     }
 
     @Test
-    public void monoResponseVoidReturningApiEagerlyReadsResponse() {
+    public void monoResponseVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -270,12 +272,13 @@ public class RestProxyTests {
             .expectNextCount(1)
             .verifyComplete();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
     }
 
     @Test
-    public void responseVoidReturningApiEagerlyReadsResponse() {
+    public void responseVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -285,8 +288,9 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testMethodReturnsResponseVoid();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
     }
 
     @Test
@@ -300,8 +304,7 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testDownload();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
     }
 
     @Test
@@ -319,8 +322,7 @@ public class RestProxyTests {
             .expectNextCount(1)
             .verifyComplete();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {

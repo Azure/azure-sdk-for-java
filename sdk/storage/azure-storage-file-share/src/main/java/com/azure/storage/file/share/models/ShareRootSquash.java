@@ -33,6 +33,9 @@ public enum ShareRootSquash {
      */
     @JsonCreator
     public static ShareRootSquash fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ShareRootSquash[] items = ShareRootSquash.values();
         for (ShareRootSquash item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ShareRootSquash {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

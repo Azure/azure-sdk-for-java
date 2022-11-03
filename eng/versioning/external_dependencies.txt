@@ -10,7 +10,7 @@
 ch.qos.logback:logback-classic;1.2.11
 com.fasterxml.jackson.core:jackson-annotations;2.13.4
 com.fasterxml.jackson.core:jackson-core;2.13.4
-com.fasterxml.jackson.core:jackson-databind;2.13.4
+com.fasterxml.jackson.core:jackson-databind;2.13.4.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.4
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.4
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.4
@@ -201,7 +201,7 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.13.2
+com.microsoft.azure:msal4j;1.13.3
 com.microsoft.azure:msal4j-persistence-extension;1.1.0
 com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;1.14.0
@@ -249,7 +249,7 @@ org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;2.2-M3-groovy-2.5
 groovy4_org.spockframework:spock-core;2.2-M3-groovy-4.0
-org.testng:testng;7.3.0
+org.testng:testng;7.5
 uk.org.lidalia:slf4j-test;1.2.0
 uk.org.webcompere:system-stubs-jupiter;2.0.1
 com.google.truth:truth;1.1.3
@@ -262,7 +262,7 @@ com.github.javaparser:javaparser-core;3.24.2
 com.google.code.findbugs:jsr305;3.0.2
 com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
 com.nimbusds:nimbus-jose-jwt;9.22
-com.puppycrawl.tools:checkstyle;9.2
+com.puppycrawl.tools:checkstyle;9.3
 commons-io:commons-io;2.11.0
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.2.12
@@ -274,7 +274,7 @@ net.oneandone.reflections8:reflections8;0.11.7
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6
 net.jonathangiles.tools:whitelistgenerator-maven-plugin;1.0.2
 org.apache.commons:commons-collections4;4.4
-org.apache.commons:commons-text;1.6
+org.apache.commons:commons-text;1.10.0
 org.apache.maven:maven-plugin-api;3.8.6
 org.apache.maven:maven-project;2.2.1
 org.apache.maven.plugin-tools:maven-plugin-annotations;3.6.4
@@ -338,7 +338,7 @@ test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.3
-cosmos_com.google.guava:guava;25.0-jre
+cosmos_com.google.guava:guava;30.1.1-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0

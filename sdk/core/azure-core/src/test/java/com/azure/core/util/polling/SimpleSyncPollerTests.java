@@ -255,6 +255,7 @@ public class SimpleSyncPollerTests {
         PollResponse<Response> pollResponse = poller.waitForCompletion();
         Assertions.assertNotNull(pollResponse.getValue());
         assertEquals(response2.getValue().getResponse(), pollResponse.getValue().getResponse());
+        assertEquals(response2.getValue().getResponse(), poller.waitForCompletion().getValue().getResponse());
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
     }
 
@@ -429,6 +430,47 @@ public class SimpleSyncPollerTests {
         );
         boolean completed = countDownLatch.await(1, TimeUnit.SECONDS);
         Assertions.assertTrue(completed);
+    }
+
+    @Test
+    public void waitUntilShouldPollToCompletion() {
+        final Response activationResponse = new Response("Activated");
+        when(activationOperation.apply(any())).thenReturn(activationResponse);
+
+        LongRunningOperationStatus matchStatus = SUCCESSFULLY_COMPLETED;
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+
+        when(pollOperation.apply(any())).thenAnswer((Answer<PollResponse<Response>>) invocationOnMock -> {
+            invocationCount[0]++;
+            switch (invocationCount[0]) {
+                case 0:
+                    return new PollResponse<>(IN_PROGRESS,
+                        new Response("0"), Duration.ofMillis(10));
+                case 1:
+                    return new PollResponse<>(IN_PROGRESS,
+                        new Response("1"), Duration.ofMillis(10));
+                case 2:
+                    return new PollResponse<>(matchStatus,
+                        new Response("2"), Duration.ofMillis(10));
+                default:
+                    throw new RuntimeException("Poll should not be called after matching response");
+            }
+        });
+
+        SyncPoller<Response, CertificateOutput> poller = new SimpleSyncPoller<>(
+            Duration.ofMillis(10),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt)),
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
+
+        PollResponse<Response> pollResponse = poller.waitUntil(matchStatus);
+        assertEquals(matchStatus, pollResponse.getStatus());
+        assertEquals(matchStatus, poller.waitUntil(matchStatus).getStatus());
+        assertEquals(2, invocationCount[0]);
     }
 
 

@@ -15,15 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class IaasVmilrRegistrationRequest extends IlrRequest {
     /*
-     * ID of the IaaS VM backup copy from where the files/folders have to be
-     * restored.
+     * ID of the IaaS VM backup copy from where the files/folders have to be restored.
      */
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
-     * Fully qualified ARM ID of the virtual machine whose the files / folders
-     * have to be restored.
+     * Fully qualified ARM ID of the virtual machine whose the files / folders have to be restored.
      */
     @JsonProperty(value = "virtualMachineId")
     private String virtualMachineId;
@@ -39,6 +37,10 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
      */
     @JsonProperty(value = "renewExistingRegistration")
     private Boolean renewExistingRegistration;
+
+    /** Creates an instance of IaasVmilrRegistrationRequest class. */
+    public IaasVmilrRegistrationRequest() {
+    }
 
     /**
      * Get the recoveryPointId property: ID of the IaaS VM backup copy from where the files/folders have to be restored.

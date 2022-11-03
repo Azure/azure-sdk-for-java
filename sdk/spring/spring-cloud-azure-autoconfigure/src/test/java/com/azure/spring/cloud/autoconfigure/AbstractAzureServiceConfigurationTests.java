@@ -20,6 +20,10 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.CLIENT_ID_PLACEHOLDER;
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.PASSWORD_PLACEHOLDER;
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.SECRET;
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.USERNAME_PLACEHOLDER;
 import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,8 +44,8 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
                 getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.client-secret=fake-client-secret"
+                getPropertyPrefix() + ".credential." + CLIENT_ID_PLACEHOLDER + "=fakeClientIdPlaceholder",
+                getPropertyPrefix() + ".credential.client-" + SECRET + "=fake-client-secret"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
@@ -58,7 +62,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
                 getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
+                getPropertyPrefix() + ".credential." + CLIENT_ID_PLACEHOLDER + "=fakeClientIdPlaceholder",
                 getPropertyPrefix() + ".credential.client-certificate-path=fake-client-cert-path"
             )
             .withConfiguration(AutoConfigurations.of(
@@ -75,9 +79,9 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
         getMinimalContextRunner()
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.username=123",
-                getPropertyPrefix() + ".credential.password=123"
+                getPropertyPrefix() + ".credential." + CLIENT_ID_PLACEHOLDER + "=fakeClientIdPlaceholder",
+                getPropertyPrefix() + ".credential." + USERNAME_PLACEHOLDER + "=fakeNamePlaceholder",
+                getPropertyPrefix() + ".credential." + PASSWORD_PLACEHOLDER + "=fakePasswordPlaceholder"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,

@@ -9,11 +9,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
@@ -21,6 +20,7 @@ import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownlo
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
+import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
@@ -41,7 +41,6 @@ import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,12 +52,10 @@ import java.util.Map;
 
 /**
  * This class provides helper methods for common model patterns.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public final class ModelHelper {
-
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
     /**
@@ -420,19 +417,9 @@ public final class ModelHelper {
         return new BlobsDownloadHeaders(headers);
     }
 
-    public static BlobQueryHeaders transformQueryHeaders(HttpHeaders headers) {
-        return transformHeadersToClass(headers);
-    }
-
-    private static <T> T transformHeadersToClass(HttpHeaders headers) {
-        if (headers == null) {
-            return null;
-        }
-        try {
-            return SERIALIZER.deserialize(headers, BlobQueryHeaders.class);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+    public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {
+        return BlobQueryHeadersConstructorProxy.create(headers)
+            .setErrorCode(ModelHelper.getErrorCode(rawHeaders));
     }
 
     public static void validateConditionsNotPresent(BlobRequestConditions requestConditions,

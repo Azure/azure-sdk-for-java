@@ -24,6 +24,10 @@ public final class WeeklySchedule {
     @JsonProperty(value = "scheduleRunTimes")
     private List<OffsetDateTime> scheduleRunTimes;
 
+    /** Creates an instance of WeeklySchedule class. */
+    public WeeklySchedule() {
+    }
+
     /**
      * Get the scheduleRunDays property: The scheduleRunDays property.
      *

@@ -42,6 +42,10 @@ public final class MabContainerExtendedInfo {
     @JsonProperty(value = "lastBackupStatus")
     private String lastBackupStatus;
 
+    /** Creates an instance of MabContainerExtendedInfo class. */
+    public MabContainerExtendedInfo() {
+    }
+
     /**
      * Get the lastRefreshedAt property: Time stamp when this container was refreshed.
      *

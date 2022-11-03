@@ -19,6 +19,7 @@ import org.mockito.verification.VerificationMode;
 
 import java.util.List;
 
+import static com.azure.spring.cloud.service.implementation.storage.FakeCredentialInTest.FAKE_CUSTOMER_PROVIDED_KEY;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -34,7 +35,6 @@ class AzureBlobClientBuilderFactoryTests
     AzureBlobClientBuilderFactoryTests.BlobServiceClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.blob.core.windows.net/";
-    private static final String CUSTOMER_PROVIDED_KEY = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
     private static final String CONNECTION_STRING = "BlobEndpoint=https://test.blob.core.windows.net/;"
         + "QueueEndpoint=https://test.queue.core.windows.net/;FileEndpoint=https://test.file.core.windows.net/;"
         + "TableEndpoint=https://test.table.core.windows.net/;SharedAccessSignature=sv=2020-08-04"
@@ -92,7 +92,7 @@ class AzureBlobClientBuilderFactoryTests
     protected void verifyServicePropertiesConfigured() {
         AzureStorageBlobTestProperties properties = new AzureStorageBlobTestProperties();
         properties.setEndpoint(ENDPOINT);
-        properties.setCustomerProvidedKey(CUSTOMER_PROVIDED_KEY);
+        properties.setCustomerProvidedKey(FAKE_CUSTOMER_PROVIDED_KEY);
         properties.setEncryptionScope("test-scope");
         properties.setServiceVersion(BlobServiceVersion.V2019_07_07);
 

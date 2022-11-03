@@ -30,6 +30,10 @@ public final class HourlySchedule {
     @JsonProperty(value = "scheduleWindowDuration")
     private Integer scheduleWindowDuration;
 
+    /** Creates an instance of HourlySchedule class. */
+    public HourlySchedule() {
+    }
+
     /**
      * Get the interval property: Interval at which backup needs to be triggered. For hourly the value can be 4/6/8/12.
      *

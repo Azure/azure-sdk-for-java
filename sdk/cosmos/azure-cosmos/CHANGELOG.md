@@ -7,8 +7,14 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed a rare race condition for `query plan` cache exceeding the allowed size limit - See [PR 31859](https://github.com/Azure/azure-sdk-for-java/pull/31859)
 
 #### Other Changes
+
+### 4.38.1 (2022-10-21)
+#### Other Changes
+* Updated test dependency of apache `commons-text` to version 1.10.0 - CVE-2022-42889 - See [PR 31674](https://github.com/Azure/azure-sdk-for-java/pull/31674)
+* Updated `jackson-databind` dependency to 2.13.4.2 - CVE-2022-42003 - See [PR 31559](https://github.com/Azure/azure-sdk-for-java/pull/31559)
 
 ### 4.38.0 (2022-10-12)
 #### Features Added

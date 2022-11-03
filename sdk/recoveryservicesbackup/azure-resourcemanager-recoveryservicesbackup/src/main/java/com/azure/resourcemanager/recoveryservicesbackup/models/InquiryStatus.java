@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InquiryStatus. */
+/** Status of protectable item, i.e. InProgress,Succeeded,Failed. */
 public final class InquiryStatus extends ExpandableStringEnum<InquiryStatus> {
     /** Static value Invalid for InquiryStatus. */
     public static final InquiryStatus INVALID = fromString("Invalid");

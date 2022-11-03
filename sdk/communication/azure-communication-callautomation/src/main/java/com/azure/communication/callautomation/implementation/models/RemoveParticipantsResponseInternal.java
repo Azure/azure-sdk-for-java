@@ -7,7 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RemoveParticipantsResponseInternal model. */
+/** The response payload for removing participants of the call. */
 @Fluent
 public final class RemoveParticipantsResponseInternal {
     /*

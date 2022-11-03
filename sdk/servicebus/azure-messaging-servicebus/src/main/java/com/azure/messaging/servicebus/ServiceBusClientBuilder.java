@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
@@ -53,9 +52,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Locale;
@@ -650,6 +647,15 @@ public final class ServiceBusClientBuilder implements
     }
 
     /**
+     * A new instance of {@link ServiceBusRuleManagerBuilder} used to configure a Service Bus rule manager instance.
+     *
+     * @return A new instance of {@link ServiceBusRuleManagerBuilder}.
+     */
+    public ServiceBusRuleManagerBuilder ruleManager() {
+        return new ServiceBusRuleManagerBuilder();
+    }
+
+    /**
      * Called when a child client is closed. Disposes of the shared connection if there are no more clients.
      */
     void onClientClose() {
@@ -731,11 +737,12 @@ public final class ServiceBusClientBuilder implements
         if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
             && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Cannot use a proxy when TransportType is not AMQP."));
+                "Cannot use a proxy when TransportType is not AMQP Web Sockets. "
+                    + "Use the setter 'transportType(AmqpTransportType.AMQP_WEB_SOCKETS)' to enable Web Sockets mode."));
         }
 
         if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(configuration);
+            proxyOptions = ProxyOptions.fromConfiguration(configuration);
         }
 
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
@@ -757,48 +764,6 @@ public final class ServiceBusClientBuilder implements
                 ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
                 options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
                 customEndpointAddress.getPort());
-        }
-    }
-
-    private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
-        ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
-        if (proxyOptions != null) {
-            authentication = proxyOptions.getAuthentication();
-        }
-
-        String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
-
-        if (CoreUtils.isNullOrEmpty(proxyAddress)) {
-            return ProxyOptions.SYSTEM_DEFAULTS;
-        }
-
-        return getProxyOptions(authentication, proxyAddress, configuration,
-            Boolean.parseBoolean(configuration.get("java.net.useSystemProxies")));
-    }
-
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
-        Configuration configuration, boolean useSystemProxies) {
-        String host;
-        int port;
-        if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
-            final String[] hostPort = proxyAddress.split(":");
-            host = hostPort[0];
-            port = Integer.parseInt(hostPort[1]);
-            final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-            final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
-            final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
-            return new ProxyOptions(authentication, proxy, username, password);
-        } else if (useSystemProxies) {
-            // java.net.useSystemProxies needs to be set to true in this scenario.
-            // If it is set to false 'ProxyOptions' in azure-core will return null.
-            com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
-                .fromConfiguration(configuration);
-            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
-                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
-        } else {
-            LOGGER.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
-                + "set or was false.");
-            return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }
 
@@ -2017,6 +1982,77 @@ public final class ServiceBusClientBuilder implements
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
+        }
+    }
+
+    /**
+     * Builder for creating {@link ServiceBusRuleManagerAsyncClient}  to manage Service Bus subscription rules.
+     *
+     * @see ServiceBusRuleManagerAsyncClient
+     */
+    @ServiceClientBuilder(serviceClients = {ServiceBusRuleManagerAsyncClient.class})
+    public final class ServiceBusRuleManagerBuilder {
+        private String subscriptionName;
+        private String topicName;
+
+        private ServiceBusRuleManagerBuilder() {
+        }
+
+        /**
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
+         *
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusRuleManagerBuilder} object.
+         * @see #subscriptionName A subscription name should be set as well.
+         */
+        public ServiceBusRuleManagerBuilder topicName(String topicName) {
+            this.topicName = topicName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the subscription in the topic to manage its rules. <b>{@link #topicName(String)} must also be set.
+         * </b>
+         * @param subscriptionName Name of the subscription.
+         *
+         * @return The modified {@link ServiceBusRuleManagerBuilder} object.
+         * @see #topicName A topic name should be set as well.
+         */
+        public ServiceBusRuleManagerBuilder subscriptionName(String subscriptionName) {
+            this.subscriptionName = subscriptionName;
+            return this;
+        }
+
+        /**
+         * Creates an <b>asynchronous</b> {@link ServiceBusRuleManagerAsyncClient} for managing rules of the specific subscription.
+         *
+         * @return A new {@link ServiceBusRuleManagerAsyncClient} that manages rules for specific subscription.
+         * @throws IllegalStateException if {@code topicName} or {@code subscriptionName} is null or empty. It is also
+         * thrown if the Service Bus {@link #connectionString(String) connectionString} contains an {@code EntityPath}
+         * that does not match one set in {@link #topicName(String) topicName}.
+         */
+        public ServiceBusRuleManagerAsyncClient buildAsyncClient() {
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
+                null);
+            final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName,
+                null);
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+
+            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionProcessor,
+                ServiceBusClientBuilder.this::onClientClose);
+        }
+
+        /**
+         * Creates a <b>synchronous</b> {@link ServiceBusRuleManagerClient} for managing rules of the specific subscription.
+         *
+         * @return A new {@link ServiceBusRuleManagerClient} that manages rules for specific subscription.
+         * @throws IllegalStateException if {@code topicName} or {@code subscriptionName} is null or empty. It is also
+         * thrown if the Service Bus {@link #connectionString(String) connectionString} contains an {@code EntityPath}
+         * that does not match one set in {@link #topicName(String) topicName}.
+         */
+        public ServiceBusRuleManagerClient buildClient() {
+            return new ServiceBusRuleManagerClient(buildAsyncClient(), MessageUtils.getTotalTimeout(retryOptions));
         }
     }
 

@@ -199,8 +199,8 @@ public class KubernetesClustersImpl
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .listClusterUserCredentialsAsync(resourceGroupName, kubernetesClusterName, null, format)
-            .map(CredentialResultsInner::kubeconfigs);
+            .listClusterUserCredentialsWithResponseAsync(resourceGroupName, kubernetesClusterName, null, format)
+            .map(response -> response.getValue().kubeconfigs());
     }
 
     @Override
