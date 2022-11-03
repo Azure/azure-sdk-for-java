@@ -12,7 +12,6 @@ import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultSt
 import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -48,15 +47,15 @@ public class AzureStorageQueueMessagingAutoConfiguration {
     /**
      * Autoconfigure the {@link StorageQueueTemplate} instance.
      * @param storageQueueClientFactory the storage queue client factory to create the storage queue clients for the template.
-     * @param messageConverter the objectProvider message converter used by the template.
+     * @param messageConverter the message converter used by the template.
      * @return the storage queue template.
      */
     @Bean
     @ConditionalOnMissingBean
     public StorageQueueTemplate storageQueueTemplate(StorageQueueClientFactory storageQueueClientFactory,
-                                                     ObjectProvider<StorageQueueMessageConverter> messageConverter) {
+                                                     StorageQueueMessageConverter messageConverter) {
         StorageQueueTemplate storageQueueTemplate = new StorageQueueTemplate(storageQueueClientFactory);
-        storageQueueTemplate.setMessageConverter(messageConverter.getIfAvailable());
+        storageQueueTemplate.setMessageConverter(messageConverter);
         return storageQueueTemplate;
     }
 
