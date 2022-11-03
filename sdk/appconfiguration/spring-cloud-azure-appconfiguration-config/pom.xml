@@ -94,13 +94,6 @@
             <version>2.7.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
         </dependency>
 
-        <!-- Spring Cloud Azure -->
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter</artifactId>
-            <version>4.4.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
-        </dependency>
-
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
