@@ -70,8 +70,8 @@ public class MetricsJavaDocCodeSnippets {
     public void readmeSampleDefaultSdkConfiguration() {
         // BEGIN: readme-sample-defaultConfiguration
 
-        // configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
-        AutoConfiguredOpenTelemetrySdk.initialize();
+        // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
+        // AutoConfiguredOpenTelemetrySdk.initialize();
 
         // configure Azure Client, no metric configuration needed
         // client will use global OTel configured by OpenTelemetry autoconfigure package.

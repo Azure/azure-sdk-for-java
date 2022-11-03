@@ -85,7 +85,6 @@ public class ListKeyVaultSecretsAutoConfigurationSample {
     private static Tracer configureTracing() {
         // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:
 
-        // AutoConfiguredOpenTelemetrySdk.initialize();
         // OpenTelemetrySdk sdk = AutoConfiguredOpenTelemetrySdk.initialize()
         //    .getOpenTelemetrySdk();
 
