@@ -95,6 +95,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <projectTestSourceDirectory>${project.build.testSourceDirectory}</projectTestSourceDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
@@ -1570,7 +1571,7 @@
       <id>test-module-base-compile</id>
       <activation>
         <file>
-          <exists>${build.testSourceDirectory}/module-info.java</exists>
+          <exists>${projectTestSourceDirectory}/module-info.java</exists>
         </file>
       </activation>
 
