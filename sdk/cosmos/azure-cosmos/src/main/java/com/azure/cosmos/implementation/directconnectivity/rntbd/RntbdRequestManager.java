@@ -186,13 +186,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     public void channelRead(final ChannelHandlerContext context, final Object message) {
 
         this.traceOperation(context, "channelRead");
-
-        this.timestamps.channelReadCompleted();
         this.timestamps.resetTransitTimeout(); // we have got a successful read, so reset the transitTimeout count.
 
         try {
             if (message.getClass() == RntbdResponse.class) {
-
                 try {
                     this.messageReceived(context, (RntbdResponse) message);
                 } catch (CorruptedFrameException error) {
@@ -233,6 +230,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     @Override
     public void channelReadComplete(final ChannelHandlerContext context) {
         this.traceOperation(context, "channelReadComplete");
+        this.timestamps.channelReadCompleted();
         context.fireChannelReadComplete();
     }
 

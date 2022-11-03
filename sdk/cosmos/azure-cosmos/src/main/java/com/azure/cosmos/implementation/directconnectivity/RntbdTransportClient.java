@@ -14,11 +14,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -474,6 +470,11 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration sslHandshakeTimeoutMinDuration;
 
+        /**
+         * This property will be used in {@link RntbdClientChannelHealthChecker} to determine whether there is a readHang.
+         * If there is no successful reads for up to receiveHangDetectionTime, and the number of consecutive timeout has also reached this config,
+         * then SDK is going to treat the channel as unhealthy and close it.
+         */
         @JsonProperty()
         private final int transientTimeoutDetectionThreshold;
         // endregion
@@ -715,7 +716,8 @@ public class RntbdTransportClient extends TransportClient {
          *   "requestTimerResolution": "PT100MS",
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
-         *   "threadCount": 16
+         *   "threadCount": 16,
+         *   "transientTimeoutDetectionThreshold": 3
          * }}</pre>
          * </li>
          * </ol>
