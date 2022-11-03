@@ -5,9 +5,9 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AzureEventHubsTemplateConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureEventHubsMessagingAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsMessagingAutoConfiguration.class, JacksonAutoConfiguration.class));
 
     @Test
     void disableEventHubsShouldNotConfigure() {
@@ -52,7 +52,6 @@ class AzureEventHubsTemplateConfigurationTests {
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withBean(ObjectMapper.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubsTemplate.class);
                 assertThat(context).hasSingleBean(EventHubsProducerFactory.class);
