@@ -554,7 +554,31 @@
           "code": "java.method.numberOfParametersChanged",
           "old": "method com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::messageConverter()",
           "new": "method com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::messageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
-          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration "
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.spring.messaging.eventhubs.core.EventHubsTemplate com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsTemplate(com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory, ===com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter===)",
+          "new": "parameter com.azure.spring.messaging.eventhubs.core.EventHubsTemplate com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsTemplate(com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory, ===org.springframework.beans.factory.ObjectProvider<com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter>===)",
+          "parameterIndex": "1",
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.spring.messaging.servicebus.core.ServiceBusTemplate com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusTemplate(com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory, ===com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter===)",
+          "new": "parameter com.azure.spring.messaging.servicebus.core.ServiceBusTemplate com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusTemplate(com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory, ===org.springframework.beans.factory.ObjectProvider<com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter>===)",
+          "parameterIndex": "1",
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::storageQueueTemplate(com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientFactory, ===com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter===)",
+          "new": "parameter com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::storageQueueTemplate(com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientFactory, ===org.springframework.beans.factory.ObjectProvider<com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter>===)",
+          "parameterIndex": "1",
+          "justification": "Make the ObjectMapper follow Spring Boot's pattern to enable autoconfiguration"
         },
         {
           "regex": true,
