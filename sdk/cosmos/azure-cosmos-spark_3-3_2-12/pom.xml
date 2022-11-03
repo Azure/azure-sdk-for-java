@@ -126,6 +126,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
+              <argLine>--add-exports java.base/sun.nio.ch=ALL-UNNAMED</argLine>
               <includes>
                 <include>**/*.*</include>
                 <include>**/*Test.*</include>
