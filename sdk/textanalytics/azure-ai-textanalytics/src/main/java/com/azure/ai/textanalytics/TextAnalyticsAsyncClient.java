@@ -1929,8 +1929,8 @@ public final class TextAnalyticsAsyncClient {
      *                 TextDocumentBatchStatistics healthcareTaskStatistics =
      *                     analyzeHealthcareEntitiesResultCollection.getStatistics&#40;&#41;;
      *                 &#47;&#47; Batch statistics
-     *                 System.out.printf&#40;&quot;Documents statistics: document count = %s, erroneous document count = %s,&quot;
-     *                         + &quot; transaction count = %s, valid document count = %s.%n&quot;,
+     *                 System.out.printf&#40;&quot;Documents statistics: document count = %d, erroneous document count = %d,&quot;
+     *                         + &quot; transaction count = %d, valid document count = %d.%n&quot;,
      *                     healthcareTaskStatistics.getDocumentCount&#40;&#41;,
      *                     healthcareTaskStatistics.getInvalidDocumentCount&#40;&#41;,
      *                     healthcareTaskStatistics.getTransactionCount&#40;&#41;,
@@ -2040,8 +2040,8 @@ public final class TextAnalyticsAsyncClient {
      *                 TextDocumentBatchStatistics healthcareTaskStatistics =
      *                     analyzeHealthcareEntitiesResultCollection.getStatistics&#40;&#41;;
      *                 &#47;&#47; Batch statistics
-     *                 System.out.printf&#40;&quot;Documents statistics: document count = %s, erroneous document count = %s,&quot;
-     *                                       + &quot; transaction count = %s, valid document count = %s.%n&quot;,
+     *                 System.out.printf&#40;&quot;Documents statistics: document count = %d, erroneous document count = %d,&quot;
+     *                                       + &quot; transaction count = %d, valid document count = %d.%n&quot;,
      *                     healthcareTaskStatistics.getDocumentCount&#40;&#41;,
      *                     healthcareTaskStatistics.getInvalidDocumentCount&#40;&#41;,
      *                     healthcareTaskStatistics.getTransactionCount&#40;&#41;,

@@ -288,8 +288,8 @@ public final class TextAnalyticsClient {
      * &#47;&#47; Batch statistics
      * TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics&#40;&#41;;
      * System.out.printf&#40;
-     *     &quot;Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s,&quot;
-     *         + &quot; valid document count = %s.%n&quot;,
+     *     &quot;Documents statistics: document count = %d, erroneous document count = %d, transaction count = %d,&quot;
+     *         + &quot; valid document count = %d.%n&quot;,
      *     batchStatistics.getDocumentCount&#40;&#41;, batchStatistics.getInvalidDocumentCount&#40;&#41;,
      *     batchStatistics.getTransactionCount&#40;&#41;, batchStatistics.getValidDocumentCount&#40;&#41;&#41;;
      *
@@ -1823,8 +1823,8 @@ public final class TextAnalyticsClient {
      *     TextDocumentBatchStatistics healthcareTaskStatistics =
      *         analyzeHealthcareEntitiesResultCollection.getStatistics&#40;&#41;;
      *     &#47;&#47; Batch statistics
-     *     System.out.printf&#40;&quot;Documents statistics: document count = %s, erroneous document count = %s,&quot;
-     *             + &quot; transaction count = %s, valid document count = %s.%n&quot;,
+     *     System.out.printf&#40;&quot;Documents statistics: document count = %d, erroneous document count = %d,&quot;
+     *             + &quot; transaction count = %d, valid document count = %d.%n&quot;,
      *         healthcareTaskStatistics.getDocumentCount&#40;&#41;, healthcareTaskStatistics.getInvalidDocumentCount&#40;&#41;,
      *         healthcareTaskStatistics.getTransactionCount&#40;&#41;, healthcareTaskStatistics.getValidDocumentCount&#40;&#41;&#41;;
      *
@@ -1930,8 +1930,8 @@ public final class TextAnalyticsClient {
      *     TextDocumentBatchStatistics healthcareTaskStatistics =
      *         analyzeHealthcareEntitiesResultCollection.getStatistics&#40;&#41;;
      *     &#47;&#47; Batch statistics
-     *     System.out.printf&#40;&quot;Documents statistics: document count = %s, erroneous document count = %s,&quot;
-     *             + &quot; transaction count = %s, valid document count = %s.%n&quot;,
+     *     System.out.printf&#40;&quot;Documents statistics: document count = %d, erroneous document count = %d,&quot;
+     *             + &quot; transaction count = %d, valid document count = %d.%n&quot;,
      *         healthcareTaskStatistics.getDocumentCount&#40;&#41;, healthcareTaskStatistics.getInvalidDocumentCount&#40;&#41;,
      *         healthcareTaskStatistics.getTransactionCount&#40;&#41;, healthcareTaskStatistics.getValidDocumentCount&#40;&#41;&#41;;
      *
