@@ -27,11 +27,11 @@ public class DatasourceCredentialAsyncSample {
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
-        final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
+        final String mockSecret = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
         DataSourceCredentialEntity datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecret)
             .setTenantId(tId)
             .setSecretNameForDataSourceClientId("DSClientID_1")
             .setSecretNameForDataSourceClientSecret("DSClientSer_1");
@@ -74,7 +74,7 @@ public class DatasourceCredentialAsyncSample {
             });
 
         // Update the datasource credential entity.
-        Mono<DataSourceCredentialEntity> updateDatasourcCredMono = fetchDataFeedMono
+        Mono<DataSourceCredentialEntity> updateDatasourceCredMono = fetchDataFeedMono
             .flatMap(datasourceCredEntity -> {
                 DataSourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
                 if (datasourceCredEntity instanceof DataSourceServicePrincipalInKeyVault) {
@@ -95,7 +95,7 @@ public class DatasourceCredentialAsyncSample {
             });
 
         // Delete the datasource credential entity.
-        Mono<Void> deleteDatasourceCredMono = updateDatasourcCredMono.flatMap(datasourceCredEntity -> {
+        Mono<Void> deleteDatasourceCredMono = updateDatasourceCredMono.flatMap(datasourceCredEntity -> {
             return advisorAdministrationAsyncClient.deleteDataSourceCredential(datasourceCredEntity.getId())
                 .doOnSubscribe(__ ->
                     System.out.printf("Deleting datasource credential entity: %s%n", datasourceCredEntity.getId()))

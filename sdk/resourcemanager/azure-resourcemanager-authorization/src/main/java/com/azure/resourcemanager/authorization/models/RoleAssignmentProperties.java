@@ -25,6 +25,9 @@ public final class RoleAssignmentProperties {
     @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
+    @JsonProperty(value = "description")
+    private String description;
+
     /**
      * Get the roleDefinitionId property: The role definition ID used in the role assignment.
      *
@@ -64,6 +67,26 @@ public final class RoleAssignmentProperties {
      */
     public RoleAssignmentProperties withPrincipalId(String principalId) {
         this.principalId = principalId;
+        return this;
+    }
+
+    /**
+     * Get the description property: Description of role assignment.
+     *
+     * @return the description value
+     */
+    public String description() {
+        return description;
+    }
+
+    /**
+     * Set the description property: Description of role assignment.
+     *
+     * @param description the description value to set.
+     * @return the RoleAssignmentPropertiesWithScope object itself.
+     */
+    public RoleAssignmentProperties withDescription(String description) {
+        this.description = description;
         return this;
     }
 

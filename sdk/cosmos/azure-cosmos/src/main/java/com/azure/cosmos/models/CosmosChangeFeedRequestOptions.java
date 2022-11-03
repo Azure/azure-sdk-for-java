@@ -408,8 +408,7 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return a {@link CosmosChangeFeedRequestOptions} instance with AllVersionsAndDeletes mode enabled
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions allVersionsAndDeletes() {
 
         if (!this.startFromInternal.supportsFullFidelityRetention()) {

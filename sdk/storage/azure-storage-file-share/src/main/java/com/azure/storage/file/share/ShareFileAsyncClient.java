@@ -1151,7 +1151,8 @@ public class ShareFileAsyncClient {
         return downloadRange(range, getRangeContentMd5, requestConditions, context)
             .map(response -> {
                 String eTag = ModelHelper.getETag(response.getHeaders());
-                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(response.getHeaders());
+                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
+                    response.getDeserializedHeaders(), response.getHeaders());
 
                 long finalEnd;
                 if (range.getEnd() == null) {

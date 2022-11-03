@@ -47,6 +47,10 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     @JsonProperty(value = "role")
     private OpenShiftAgentPoolProfileRole role;
 
+    /** Creates an instance of OpenShiftManagedClusterAgentPoolProfile class. */
+    public OpenShiftManagedClusterAgentPoolProfile() {
+    }
+
     /**
      * Get the name property: Unique name of the pool profile in the context of the subscription and resource group.
      *

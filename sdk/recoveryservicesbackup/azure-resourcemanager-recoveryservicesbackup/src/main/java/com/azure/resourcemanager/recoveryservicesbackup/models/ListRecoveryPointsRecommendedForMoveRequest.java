@@ -23,6 +23,10 @@ public final class ListRecoveryPointsRecommendedForMoveRequest {
     @JsonProperty(value = "excludedRPList")
     private List<String> excludedRPList;
 
+    /** Creates an instance of ListRecoveryPointsRecommendedForMoveRequest class. */
+    public ListRecoveryPointsRecommendedForMoveRequest() {
+    }
+
     /**
      * Get the objectType property: Gets the class type.
      *

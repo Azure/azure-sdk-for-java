@@ -10,10 +10,8 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoCon
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
-import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
-import com.mysql.cj.conf.PropertyKey;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -23,6 +21,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.enhanceJdbcUrl;
+import static com.azure.spring.cloud.autoconfigure.jdbc.MySqlAzureJdbcAutoConfigurationTest.MYSQL_USER_AGENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -30,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
 
     private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
+    private static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
 
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -75,7 +75,8 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                     String expectedJdbcUrl = enhanceJdbcUrl(
                         DatabaseType.MYSQL,
                         MYSQL_CONNECTION_STRING,
-                        PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
+                        PUBLIC_AUTHORITY_HOST_STRING,
+                        MYSQL_USER_AGENT,
                         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
                     );
                     assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());

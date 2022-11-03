@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The options for removing participants.
@@ -36,6 +38,7 @@ public final class RemoveParticipantsOptions {
      */
     public RemoveParticipantsOptions(List<CommunicationIdentifier> participants) {
         this.participants = participants;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**

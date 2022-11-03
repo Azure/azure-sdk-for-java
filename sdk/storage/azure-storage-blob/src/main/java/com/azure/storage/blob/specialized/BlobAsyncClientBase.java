@@ -1265,9 +1265,8 @@ public class BlobAsyncClientBase {
 
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context)
             .map(response -> {
-                String eTag = ModelHelper.getETag(response.getHeaders());
-                BlobsDownloadHeaders blobsDownloadHeaders =
-                    ModelHelper.transformBlobDownloadHeaders(response.getHeaders());
+                BlobsDownloadHeaders blobsDownloadHeaders = response.getDeserializedHeaders();
+                String eTag = blobsDownloadHeaders.getETag();
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
                     blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
 
@@ -2629,7 +2628,7 @@ public class BlobAsyncClientBase {
                 new BlobQueryReader(response.getValue(), queryOptions.getProgressConsumer(),
                     queryOptions.getErrorConsumer())
                     .read(),
-                ModelHelper.transformQueryHeaders(response.getHeaders())));
+                ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders())));
     }
 
     /**

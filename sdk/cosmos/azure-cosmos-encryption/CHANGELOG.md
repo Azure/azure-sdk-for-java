@@ -10,6 +10,11 @@
 
 #### Other Changes
 
+### 1.8.1 (2022-10-21)
+#### Other Changes
+* Updated test dependency of apache commons-text to version 1.10.0 - CVE-2022-42889 - See [PR 31674](https://github.com/Azure/azure-sdk-for-java/pull/31674)
+* Updated `azure-cosmos` to version `4.38.1`.
+
 ### 1.8.0 (2022-10-12)
 #### Other Changes
 * Updated `azure-cosmos` to version `4.38.0`.

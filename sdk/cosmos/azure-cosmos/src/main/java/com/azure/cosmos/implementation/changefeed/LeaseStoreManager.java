@@ -29,7 +29,7 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
 
         LeaseStoreManagerBuilderDefinition hostName(String hostName);
 
-        Mono<LeaseStoreManager> build();
+        LeaseStoreManager build();
     }
 
     /**

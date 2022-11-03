@@ -14,6 +14,10 @@ import java.util.List;
 @JsonTypeName("AzureBackupServerContainer")
 @Fluent
 public final class AzureBackupServerContainer extends DpmContainer {
+    /** Creates an instance of AzureBackupServerContainer class. */
+    public AzureBackupServerContainer() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureBackupServerContainer withCanReRegister(Boolean canReRegister) {

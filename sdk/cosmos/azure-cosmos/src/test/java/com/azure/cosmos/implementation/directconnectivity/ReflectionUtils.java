@@ -367,8 +367,7 @@ public class ReflectionUtils {
         try {
             Field field = GatewayAddressCache.class.getDeclaredField(fieldName);
             field.setAccessible(true);
-            FieldUtils.removeFinalModifier(field, true);
-            FieldUtils.writeField(field, (Object)null, newDuration, true);
+            FieldUtils.writeStaticField(field, newDuration, true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
