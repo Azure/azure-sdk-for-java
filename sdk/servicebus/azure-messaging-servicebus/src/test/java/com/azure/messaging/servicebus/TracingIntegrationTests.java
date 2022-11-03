@@ -19,7 +19,10 @@ import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.data.LinkData;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -46,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TracingIntegrationTests extends IntegrationTestBase {
     private TestSpanProcessor spanProcessor;
     private ServiceBusSenderAsyncClient sender;
@@ -60,12 +64,17 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getQueueName(0));
-        OpenTelemetrySdk.builder()
-            .setTracerProvider(
-                SdkTracerProvider.builder()
-                    .addSpanProcessor(spanProcessor)
-                    .build())
-            .buildAndRegisterGlobal();
+        try {
+            OpenTelemetrySdk.builder()
+                .setTracerProvider(
+                    SdkTracerProvider.builder()
+                        .addSpanProcessor(spanProcessor)
+                        .build())
+                .buildAndRegisterGlobal();
+        } catch (IllegalStateException e) {
+            // Set has already been called
+            e.printStackTrace();
+        }
 
         sender = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
@@ -98,6 +107,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(1)
     public void sendAndReceive()  {
         ServiceBusMessage message1 = new ServiceBusMessage(CONTENTS_BYTES);
         ServiceBusMessage message2 = new ServiceBusMessage(CONTENTS_BYTES);
@@ -135,6 +145,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(2)
     public void sendPeekRenewLockAndDefer() throws InterruptedException {
         String traceId = IdGenerator.random().generateTraceId();
         String traceparent = "00-" + traceId + "-" + IdGenerator.random().generateSpanId() + "-01";
@@ -184,6 +195,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(3)
     public void sendReceiveRenewLockAndDeferSync() {
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(CONTENTS_BYTES)))
             .verifyComplete();
@@ -210,6 +222,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(4)
     public void syncReceive() {
         List<ServiceBusMessage> messages = new ArrayList<>();
         messages.add(new ServiceBusMessage(CONTENTS_BYTES));
@@ -235,6 +248,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(5)
     public void syncReceiveTimeout() {
         List<ServiceBusReceivedMessage> receivedMessages = receiverSync.receiveMessages(100, Duration.ofMillis(1))
             .stream().collect(Collectors.toList());
@@ -249,6 +263,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(6)
     public void peekMessage() {
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(CONTENTS_BYTES)))
             .verifyComplete();
@@ -262,6 +277,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(7)
     public void peekNonExistingMessage() {
         StepVerifier.create(receiver.peekMessage(Long.MAX_VALUE - 1))
             .verifyComplete();
@@ -271,6 +287,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(8)
     public void sendAndProcess() throws InterruptedException {
         String messageId = UUID.randomUUID().toString();
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES)
@@ -334,6 +351,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(9)
     public void sendProcessAndFail() throws InterruptedException {
         String messageId = UUID.randomUUID().toString();
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES)
@@ -383,6 +401,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Order(10)
     public void scheduleAndCancelMessage() {
         ServiceBusMessage message = new ServiceBusMessage("m");
         StepVerifier.create(
