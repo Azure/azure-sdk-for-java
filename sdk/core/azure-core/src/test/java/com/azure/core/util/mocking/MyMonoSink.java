@@ -49,9 +49,4 @@ public class MyMonoSink<T> implements MonoSink<T> {
     public MonoSink<T> onDispose(Disposable d) {
         return null;
     }
-
-    @Override
-    public ContextView contextView() {
-        return MonoSink.super.contextView();
-    }
 }
