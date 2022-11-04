@@ -527,9 +527,7 @@ public class OpenTelemetryTracerTest {
                 assertFalse(Span.current().getSpanContext().isValid());
             } catch (Exception e) {
                 fail();
-            } finally {
             }
-
             assertSame(parentSpan, Span.current());
         }
     }
