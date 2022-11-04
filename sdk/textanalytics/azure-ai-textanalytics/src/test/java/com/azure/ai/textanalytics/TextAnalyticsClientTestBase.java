@@ -682,7 +682,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeActionsWithActionNames(HttpClient httpClient,
+    abstract void analyzeActionsWithActionNames(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeActionsAutoDetectedLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeActionsAutoDetectedLanguageCustomTexts(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -1241,6 +1247,43 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         );
     }
 
+    void analyzeActionsAutoDetectedLanguageRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", "Microsoft was founded by Bill Gates and Paul Allen").setLanguage("auto"),
+                new TextDocumentInput("1", "Microsoft fue fundado por Bill Gates y Paul Allen").setLanguage("auto")),
+            new TextAnalyticsActions()
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction())
+                .setExtractSummaryActions(new ExtractSummaryAction())
+//                .setAbstractiveSummaryActions(new AbstractiveSummaryAction()) // not supported in the region West US 2.
+//                .setAnalyzeHealthcareEntitiesActions(new AnalyzeHealthcareEntitiesAction())
+        );
+    }
+
+    void analyzeActionsAutoDetectedLanguageCustomTextRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", "Microsoft was founded by Bill Gates and Paul Allen").setLanguage("auto"),
+                new TextDocumentInput("1", "Microsoft fue fundado por Bill Gates y Paul Allen").setLanguage("auto")),
+            new TextAnalyticsActions()
+                .setRecognizeCustomEntitiesActions(
+                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
+                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME))
+                .setSingleLabelClassifyActions(
+                    new SingleLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME))
+                .setMultiLabelClassifyActions(
+                    new MultiLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
+                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME))
+        );
+    }
+
     void analyzeActionsWithActionNamesRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
@@ -1657,9 +1700,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualLanguage detectedLanguage returned by the API.
      */
     static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
-        // TODO: issue https://github.com/Azure/azure-sdk-for-java/issues/13841
-        assertNotNull(actualLanguage.getIso6391Name());
-        assertNotNull(actualLanguage.getName());
+        assertEquals(expectedLanguage.getName(), actualLanguage.getName());
+        assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
         assertNotNull(actualLanguage.getConfidenceScore());
     }
 

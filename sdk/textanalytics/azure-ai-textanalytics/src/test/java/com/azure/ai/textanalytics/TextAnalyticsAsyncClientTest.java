@@ -8,8 +8,12 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.EntityConditionality;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
@@ -17,7 +21,10 @@ import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -55,6 +62,8 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
+import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
+import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_SPANISH;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
@@ -1909,7 +1918,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-
     // Healthcare LRO
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
@@ -2401,6 +2409,131 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                                                      .collect(Collectors.toList()).get(0).getActionName());
                 assertEquals(CUSTOM_ACTION_NAME, actionsResult.getExtractKeyPhrasesResults().stream()
                                                      .collect(Collectors.toList()).get(0).getActionName());
+            });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeActionsAutoDetectedLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeActionsAutoDetectedLanguageRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+            List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
+            actionsResults.forEach(actionsResult -> {
+                // Named entities recognition
+                List<RecognizeEntitiesResult> recognizeEntitiesResults = actionsResult.getRecognizeEntitiesResults()
+                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                    .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    recognizeEntitiesResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    recognizeEntitiesResults.get(1).getDetectedLanguage());
+                // PII entities recognition
+                List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults =
+                    actionsResult.getRecognizePiiEntitiesResults()
+                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                    .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    recognizePiiEntitiesResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    recognizePiiEntitiesResults.get(1).getDetectedLanguage());
+                // Linked entities recognition
+                List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
+                    actionsResult.getRecognizeLinkedEntitiesResults()
+                        .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                        .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    recognizeLinkedEntitiesResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    recognizeLinkedEntitiesResults.get(1).getDetectedLanguage());
+                // Sentiment analysis
+                List<AnalyzeSentimentResult> analyzeSentimentResults = actionsResult.getAnalyzeSentimentResults()
+                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                    .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    analyzeSentimentResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    analyzeSentimentResults.get(1).getDetectedLanguage());
+                // Key phrases extraction
+                List<ExtractKeyPhraseResult> keyPhraseResults = actionsResult.getExtractKeyPhrasesResults()
+                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                    .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    keyPhraseResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    keyPhraseResults.get(1).getDetectedLanguage());
+                // Extractive summarization
+                List<ExtractSummaryResult> extractSummaryResults = actionsResult.getExtractSummaryResults()
+                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                    .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    extractSummaryResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    extractSummaryResults.get(1).getDetectedLanguage());
+
+                // Abstractive summarization
+//                List<AbstractiveSummaryResult> abstractiveSummaryResults = actionsResult.getAbstractiveSummaryResults()
+//                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+//                    .stream().collect(Collectors.toList());
+//                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+//                    abstractiveSummaryResults.get(0).getDetectedLanguage());
+//                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+//                    abstractiveSummaryResults.get(1).getDetectedLanguage());
+//                // Healthcare entities recognition
+//                List<AnalyzeHealthcareEntitiesResult> analyzeHealthcareEntitiesResults =
+//                    actionsResult.getAnalyzeHealthcareEntitiesResults()
+//                        .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+//                        .stream().collect(Collectors.toList());
+//                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+//                    analyzeHealthcareEntitiesResults.get(0).getDetectedLanguage());
+//                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+//                    analyzeHealthcareEntitiesResults.get(1).getDetectedLanguage());
+            });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeActionsAutoDetectedLanguageCustomTexts(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeActionsAutoDetectedLanguageCustomTextRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+            List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
+            actionsResults.forEach(actionsResult -> {
+                // Custom entities recognition
+                List<RecognizeEntitiesResult> customEntitiesResults = actionsResult.getRecognizeCustomEntitiesResults()
+                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                    .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    customEntitiesResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    customEntitiesResults.get(1).getDetectedLanguage());
+                // Single label classification
+                List<ClassifyDocumentResult> singleLabelResults = actionsResult.getSingleLabelClassifyResults()
+                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                    .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    singleLabelResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    singleLabelResults.get(1).getDetectedLanguage());
+                // Multi label classification
+                List<ClassifyDocumentResult> multiLabelResults = actionsResult.getMultiLabelClassifyResults()
+                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+                    .stream().collect(Collectors.toList());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+                    multiLabelResults.get(0).getDetectedLanguage());
+                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+                    multiLabelResults.get(1).getDetectedLanguage());
             });
         });
     }

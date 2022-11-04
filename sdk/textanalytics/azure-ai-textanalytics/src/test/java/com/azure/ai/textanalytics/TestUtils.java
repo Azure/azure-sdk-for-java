@@ -196,7 +196,7 @@ final class TestUtils {
         "Je m'appelle Mondly.");
 
     static final List<String> DETECT_LANGUAGE_INPUTS = asList(
-        "This is written in English", "Este es un documento escrito en Español.", "~@!~:)");
+        "This is written in English", "Este es un documento escrito en Español.");
 
     static final String PII_ENTITY_OFFSET_INPUT = "SSN: 859-98-0987";
     static final String SENTIMENT_OFFSET_INPUT = "The hotel was unclean.";
@@ -229,9 +229,7 @@ final class TestUtils {
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return asList(
             new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
-            new DetectLanguageInput("1", DETECT_LANGUAGE_INPUTS.get(1), "US"),
-            new DetectLanguageInput("2", DETECT_LANGUAGE_INPUTS.get(2), "US")
-        );
+            new DetectLanguageInput("1", DETECT_LANGUAGE_INPUTS.get(1), "US"));
     }
 
     static List<DetectLanguageInput> getDuplicateIdDetectLanguageInputs() {
@@ -272,8 +270,7 @@ final class TestUtils {
         final TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
         final List<DetectLanguageResult> detectLanguageResultList = asList(
             new DetectLanguageResult("0", new TextDocumentStatistics(26, 1), null, getDetectedLanguageEnglish()),
-            new DetectLanguageResult("1", new TextDocumentStatistics(40, 1), null, getDetectedLanguageSpanish()),
-            new DetectLanguageResult("2", new TextDocumentStatistics(6, 1), null, getUnknownDetectedLanguage()));
+            new DetectLanguageResult("1", new TextDocumentStatistics(40, 1), null, getDetectedLanguageSpanish()));
         return new DetectLanguageResultCollection(detectLanguageResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
 
