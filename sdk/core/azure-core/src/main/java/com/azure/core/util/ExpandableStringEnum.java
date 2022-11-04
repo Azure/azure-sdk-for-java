@@ -28,10 +28,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * <p>
      * This constructor shouldn't be called as it will produce a {@link ExpandableStringEnum} which doesn't
      * have a String enum value.
-     *
-     * @deprecated Use the {@link #fromString(String, Class)} factory method.
      */
-    @Deprecated
     public ExpandableStringEnum() {
     }
 
