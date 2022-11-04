@@ -71,7 +71,7 @@ public final class CloneVirtualMachineToNewRegion {
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
-            System.out.println("Created a Linux VM with managed OS and data disks: " + linuxVM.id());
+            System.out.printf("Created a Linux VM with managed OS and data disks: %s %n", linuxVM.id());
             Utils.print(linuxVM);
 
             // Gets the specialized managed OS and Data disks of the virtual machine
@@ -85,7 +85,7 @@ public final class CloneVirtualMachineToNewRegion {
 
             //=============================================================
             // Deallocating the virtual machine
-            System.out.println("Deallocating VM: " + linuxVM.id());
+            System.out.printf("Deallocating VM: %s %n", linuxVM.id());
 
             linuxVM.deallocate();
 
@@ -124,7 +124,7 @@ public final class CloneVirtualMachineToNewRegion {
             // Delete snapshot from old region
             azureResourceManager.snapshots().deleteById(osSnapshot.id());
 
-            System.out.println("Created managed snapshot holding OS: " + osSnapshotNewRegion.id());
+            System.out.printf("Created managed snapshot holding OS: %s %n", osSnapshotNewRegion.id());
 
             //=============================================================
             // Create Managed snapshot from the Data managed disks
@@ -162,7 +162,7 @@ public final class CloneVirtualMachineToNewRegion {
 
                 dataSnapshots.add(dataSnapshotNewRegion);
 
-                System.out.println("Created managed snapshot holding data: " + dataSnapshotNewRegion.id());
+                System.out.printf("Created managed snapshot holding data: %s %n", dataSnapshotNewRegion.id());
                 // ResourceManagerUtils.print(dataDisk); TODO
             }
 
@@ -178,7 +178,7 @@ public final class CloneVirtualMachineToNewRegion {
                 .withSizeInGB(100)
                 .create();
 
-            System.out.println("Created managed disk holding OS: " + osDisk.id());
+            System.out.printf("Created managed disk holding OS: %s %n", osDisk.id());
             // ResourceManagerUtils.print(osDisk); TODO
 
             //=============================================================
@@ -196,7 +196,7 @@ public final class CloneVirtualMachineToNewRegion {
                     .create();
                 newDataDisks.add(dataDisk);
 
-                System.out.println("Created managed disk holding data: " + dataDisk.id());
+                System.out.printf("Created managed disk holding data: %s %n", dataDisk.id());
                 // ResourceManagerUtils.print(dataDisk); TODO
             }
 
@@ -222,28 +222,28 @@ public final class CloneVirtualMachineToNewRegion {
 
             //=============================================================
             //
-            System.out.println("Deleting OS snapshot - " + osSnapshotNewRegion.id());
+            System.out.printf("Deleting OS snapshot - %s %n", osSnapshotNewRegion.id());
 
             azureResourceManager.snapshots().deleteById(osSnapshotNewRegion.id());
 
             System.out.println("Deleted OS snapshot");
 
             for (Snapshot dataSnapshot : dataSnapshots) {
-                System.out.println("Deleting data snapshot - " + dataSnapshot.id());
+                System.out.printf("Deleting data snapshot - %s %n", dataSnapshot.id());
 
                 azureResourceManager.snapshots().deleteById(dataSnapshot.id());
 
                 System.out.println("Deleted data snapshot");
             }
 
-            System.out.println("De-allocating the virtual machine - " + linuxVM2.id());
+            System.out.printf("De-allocating the virtual machine - %s %n", linuxVM2.id());
 
             linuxVM2.deallocate();
             return true;
         } finally {
-            System.out.println("Deleting Resource Group: " + rgName);
+            System.out.printf("Deleting Resource Group: %s %n", rgName);
             azureResourceManager.resourceGroups().beginDeleteByName(rgName);
-            System.out.println("Deleting Resource Group: " + rgNameNew);
+            System.out.printf("Deleting Resource Group: %s %n", rgNameNew);
             azureResourceManager.resourceGroups().beginDeleteByName(rgNameNew);
         }
     }
