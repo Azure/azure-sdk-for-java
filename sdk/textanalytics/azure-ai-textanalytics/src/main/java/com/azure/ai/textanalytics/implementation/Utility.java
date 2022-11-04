@@ -307,8 +307,7 @@ public final class Utility {
             innerError.getTarget());
     }
 
-    public static TextAnalyticsWarning toTextAnalyticsWarning(
-        DocumentWarning warning) {
+    public static TextAnalyticsWarning toTextAnalyticsWarning(DocumentWarning warning) {
         final WarningCodeValue warningCodeValue = warning.getCode();
         return new TextAnalyticsWarning(
             WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
@@ -413,12 +412,12 @@ public final class Utility {
     }
 
     // Sentiment Analysis
-    public static Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse(
+    public static Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponseLegacyApi(
         Response<SentimentResponse> response) {
         return new SimpleResponse<>(response, toAnalyzeSentimentResultCollection(response.getValue()));
     }
 
-    public static Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse2(
+    public static Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponseLanguageApi(
         Response<AnalyzeTextTaskResult> response) {
         return new SimpleResponse<>(response,
             toAnalyzeSentimentResultCollection(((SentimentTaskResult) response.getValue()).getResults()));
@@ -804,9 +803,10 @@ public final class Utility {
                 }).collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(
                     warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
-
-        RecognizeEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeEntitiesResult,
-            toDetectedLanguage(documentEntities.getDetectedLanguage()));
+        if (documentEntities.getDetectedLanguage() != null) {
+            RecognizeEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeEntitiesResult,
+                toDetectedLanguage(documentEntities.getDetectedLanguage()));
+        }
         return recognizeEntitiesResult;
     }
 
@@ -829,8 +829,10 @@ public final class Utility {
                 }).collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(
                     warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
-        RecognizeEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeEntitiesResult,
-            toDetectedLanguage(documentEntities.getDetectedLanguage()));
+        if (documentEntities.getDetectedLanguage() != null) {
+            RecognizeEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeEntitiesResult,
+                toDetectedLanguage(documentEntities.getDetectedLanguage()));
+        }
         return recognizeEntitiesResult;
     }
 
@@ -858,6 +860,7 @@ public final class Utility {
                 PiiEntityPropertiesHelper.setSubcategory(piiEntity, entity.getSubcategory());
                 PiiEntityPropertiesHelper.setConfidenceScore(piiEntity, entity.getConfidenceScore());
                 PiiEntityPropertiesHelper.setOffset(piiEntity, entity.getOffset());
+                PiiEntityPropertiesHelper.setLength(piiEntity, entity.getLength());
                 return piiEntity;
             }).collect(Collectors.toList());
             // Warnings
@@ -871,8 +874,10 @@ public final class Utility {
                 null,
                 new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(),
                     new IterableStream<>(warnings)));
-            RecognizePiiEntitiesResultPropertiesHelper.setDetectedLanguage(recognizePiiEntitiesResult,
-                toDetectedLanguage(documentEntities.getDetectedLanguage()));
+            if (documentEntities.getDetectedLanguage() != null) {
+                RecognizePiiEntitiesResultPropertiesHelper.setDetectedLanguage(recognizePiiEntitiesResult,
+                    toDetectedLanguage(documentEntities.getDetectedLanguage()));
+            }
             // Document result list
             recognizePiiEntitiesResults.add(recognizePiiEntitiesResult);
         });
@@ -900,8 +905,10 @@ public final class Utility {
                     new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
                     new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
                         warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
-            ExtractKeyPhraseResultPropertiesHelper.setDetectedLanguage(extractKeyPhraseResult,
-                toDetectedLanguage(documentKeyPhrases.getDetectedLanguage()));
+            if (documentKeyPhrases.getDetectedLanguage() != null) {
+                ExtractKeyPhraseResultPropertiesHelper.setDetectedLanguage(extractKeyPhraseResult,
+                    toDetectedLanguage(documentKeyPhrases.getDetectedLanguage()));
+            }
             // Document result list
             keyPhraseResultList.add(extractKeyPhraseResult);
         }
@@ -963,8 +970,10 @@ public final class Utility {
                                 }).collect(Collectors.toList())),
                             new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
                                 warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
-                    RecognizeLinkedEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeLinkedEntitiesResult,
-                        toDetectedLanguage(documentLinkedEntities.getDetectedLanguage()));
+                    if (documentLinkedEntities.getDetectedLanguage() != null) {
+                        RecognizeLinkedEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeLinkedEntitiesResult,
+                            toDetectedLanguage(documentLinkedEntities.getDetectedLanguage()));
+                    }
                     return recognizeLinkedEntitiesResult;
                 }).collect(Collectors.toList());
 
@@ -1103,8 +1112,10 @@ public final class Utility {
                     IterableStream.of(healthcareEntityRelations));
                 AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(analyzeHealthcareEntitiesResult,
                     documentEntities.getFhirBundle());
-                AnalyzeHealthcareEntitiesResultPropertiesHelper.setDetectedLanguage(analyzeHealthcareEntitiesResult,
-                    toDetectedLanguage(documentEntities.getDetectedLanguage()));
+                if (documentEntities.getDetectedLanguage() != null) {
+                    AnalyzeHealthcareEntitiesResultPropertiesHelper.setDetectedLanguage(analyzeHealthcareEntitiesResult,
+                        toDetectedLanguage(documentEntities.getDetectedLanguage()));
+                }
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
         // Document errors
@@ -1291,8 +1302,10 @@ public final class Utility {
                 new IterableStream<>(warnings)
             ));
 
-        AnalyzeSentimentResultPropertiesHelper.setDetectedLanguage(analyzeSentimentResult,
-            toDetectedLanguage(documentSentiment.getDetectedLanguage()));
+        if (documentSentiment.getDetectedLanguage() != null) {
+            AnalyzeSentimentResultPropertiesHelper.setDetectedLanguage(analyzeSentimentResult,
+                toDetectedLanguage(documentSentiment.getDetectedLanguage()));
+        }
         return analyzeSentimentResult;
     }
 
@@ -1451,8 +1464,10 @@ public final class Utility {
         }
         ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,
             new IterableStream<>(warnings));
-        ClassifyDocumentResultPropertiesHelper.setDetectedLanguage(classifyDocumentResult,
-            toDetectedLanguage(singleClassificationDocument.getDetectedLanguage()));
+        if (singleClassificationDocument.getDetectedLanguage() != null) {
+            ClassifyDocumentResultPropertiesHelper.setDetectedLanguage(classifyDocumentResult,
+                toDetectedLanguage(singleClassificationDocument.getDetectedLanguage()));
+        }
         return classifyDocumentResult;
     }
 
@@ -1497,8 +1512,10 @@ public final class Utility {
 
         AbstractiveSummaryResultPropertiesHelper.setSummaries(summaryResult,
             new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries())));
-        AbstractiveSummaryResultPropertiesHelper.setDetectedLanguage(summaryResult,
-            toDetectedLanguage(documentResult.getDetectedLanguage()));
+        if (documentResult.getDetectedLanguage() != null) {
+            AbstractiveSummaryResultPropertiesHelper.setDetectedLanguage(summaryResult,
+                toDetectedLanguage(documentResult.getDetectedLanguage()));
+        }
 
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
@@ -1588,8 +1605,10 @@ public final class Utility {
             null
         );
         ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentenceCollection);
-        ExtractSummaryResultPropertiesHelper.setDetectedLanguage(extractSummaryResult,
-            toDetectedLanguage(documentSummary.getDetectedLanguage()));
+        if (documentSummary.getDetectedLanguage() != null) {
+            ExtractSummaryResultPropertiesHelper.setDetectedLanguage(extractSummaryResult,
+                toDetectedLanguage(documentSummary.getDetectedLanguage()));
+        }
         return extractSummaryResult;
     }
 

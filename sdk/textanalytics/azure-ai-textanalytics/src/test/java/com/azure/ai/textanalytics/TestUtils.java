@@ -267,7 +267,7 @@ final class TestUtils {
      * @return A {@link DetectLanguageResultCollection}.
      */
     static DetectLanguageResultCollection getExpectedBatchDetectedLanguages() {
-        final TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
+        final TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         final List<DetectLanguageResult> detectLanguageResultList = asList(
             new DetectLanguageResult("0", new TextDocumentStatistics(26, 1), null, getDetectedLanguageEnglish()),
             new DetectLanguageResult("1", new TextDocumentStatistics(40, 1), null, getDetectedLanguageSpanish()));
@@ -280,10 +280,6 @@ final class TestUtils {
 
     static DetectedLanguage getDetectedLanguageSpanish() {
         return new DetectedLanguage("Spanish", "es", 0.0, null);
-    }
-
-    static DetectedLanguage getUnknownDetectedLanguage() {
-        return new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
     }
 
     /**
