@@ -40,10 +40,7 @@ public final class CloneVirtualMachineToNewRegion {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "VM1", 15);
         final String linuxVMName2 = Utils.randomResourceName(azureResourceManager, "VM2", 15);
-        final String managedOSSnapshotName = Utils.randomResourceName(azureResourceManager, "ss-os-", 15);
-        final String managedDataDiskSnapshotPrefix = Utils.randomResourceName(azureResourceManager, "ss-data-", 15);
-        final String managedNewOSDiskName = Utils.randomResourceName(azureResourceManager, "ds-os-nw-", 15);
-        final String managedNewDataDiskNamePrefix = Utils.randomResourceName(azureResourceManager, "ds-data-nw-", 15);
+        final String snapshotCopiedSuffix = "-snp-copied";
 
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String rgNameNew = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
@@ -52,11 +49,6 @@ public final class CloneVirtualMachineToNewRegion {
         final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_WEST;
         final Region regionNew = Region.US_EAST;
-
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
-        final String apacheInstallCommand = "bash install_apache.sh";
-        List<String> apacheInstallScriptUris = new ArrayList<>();
-        apacheInstallScriptUris.add(apacheInstallScript);
 
         try {
             //=============================================================
@@ -71,19 +63,11 @@ public final class CloneVirtualMachineToNewRegion {
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
                 .withSsh(sshPublicKey)
                 .withNewDataDisk(100)
                 .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
-                .defineNewExtension("CustomScriptForLinux")
-                .withPublisher("Microsoft.OSTCExtensions")
-                .withType("CustomScriptForLinux")
-                .withVersion("1.4")
-                .withMinorVersionAutoUpgrade()
-                .withPublicSetting("fileUris", apacheInstallScriptUris)
-                .withPublicSetting("commandToExecute", apacheInstallCommand)
-                .attach()
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
@@ -113,7 +97,7 @@ public final class CloneVirtualMachineToNewRegion {
             System.out.printf("Creating managed snapshot from the managed disk (holding specialized OS): %s %n", osDisk.id());
 
             Snapshot osSnapshot = azureResourceManager.snapshots()
-                .define(managedOSSnapshotName)
+                .define(osDisk.name() + "-snp")
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withLinuxFromDisk(osDisk)
@@ -123,14 +107,12 @@ public final class CloneVirtualMachineToNewRegion {
             //=============================================================
             // Copy snapshots to the new region
 
-            // Create resource group in the new region
-            azureResourceManager.resourceGroups().define(rgNameNew).withRegion(regionNew).create();
 
             System.out.printf("Copying managed snapshot %s to a new region.%n", osDisk.id());
 
             Snapshot osSnapshotNewRegion = azureResourceManager
                 .snapshots()
-                .define(managedOSSnapshotName + "new")
+                .define(osDisk.name() + snapshotCopiedSuffix)
                 .withRegion(regionNew)
                 .withNewResourceGroup(rgNameNew)
                 .withDataFromSnapshot(osSnapshot)
@@ -148,12 +130,11 @@ public final class CloneVirtualMachineToNewRegion {
             // Create Managed snapshot from the Data managed disks
 
             List<Snapshot> dataSnapshots = new ArrayList<>();
-            int i = 0;
             for (Disk dataDisk : dataDisks) {
                 System.out.printf("Creating managed snapshot from the managed disk (holding data): %s %n", dataDisk.id());
 
                 Snapshot dataSnapshot = azureResourceManager.snapshots()
-                    .define(managedDataDiskSnapshotPrefix + "-" + i)
+                    .define(dataDisk.name() + "-snp")
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withDataFromDisk(dataDisk)
@@ -167,7 +148,7 @@ public final class CloneVirtualMachineToNewRegion {
 
                 Snapshot dataSnapshotNewRegion = azureResourceManager
                     .snapshots()
-                    .define(managedDataDiskSnapshotPrefix + "new" + "-" + i)
+                    .define(dataDisk.name() + snapshotCopiedSuffix)
                     .withRegion(regionNew)
                     .withExistingResourceGroup(rgNameNew)
                     .withDataFromSnapshot(dataSnapshot)
@@ -183,7 +164,6 @@ public final class CloneVirtualMachineToNewRegion {
 
                 System.out.println("Created managed snapshot holding data: " + dataSnapshotNewRegion.id());
                 // ResourceManagerUtils.print(dataDisk); TODO
-                i++;
             }
 
             //=============================================================
@@ -191,7 +171,7 @@ public final class CloneVirtualMachineToNewRegion {
 
             System.out.printf("Creating managed disk from the snapshot holding OS: %s %n", osSnapshotNewRegion.id());
 
-            Disk newOSDisk = azureResourceManager.disks().define(managedNewOSDiskName)
+            Disk newOSDisk = azureResourceManager.disks().define(osSnapshotNewRegion.name().replace(snapshotCopiedSuffix, "-new"))
                 .withRegion(regionNew)
                 .withExistingResourceGroup(rgNameNew)
                 .withLinuxFromSnapshot(osSnapshotNewRegion.id())
@@ -205,11 +185,10 @@ public final class CloneVirtualMachineToNewRegion {
             // Create Managed disks from the data snapshots
 
             List<Disk> newDataDisks = new ArrayList<>();
-            i = 0;
             for (Snapshot dataSnapshot : dataSnapshots) {
                 System.out.printf("Creating managed disk from the Data snapshot: %s %n", dataSnapshot.id());
 
-                Disk dataDisk = azureResourceManager.disks().define(managedNewDataDiskNamePrefix + "-" + i)
+                Disk dataDisk = azureResourceManager.disks().define(dataSnapshot.name().replace(snapshotCopiedSuffix, "-new"))
                     .withRegion(regionNew)
                     .withExistingResourceGroup(rgNameNew)
                     .withData()
@@ -219,7 +198,6 @@ public final class CloneVirtualMachineToNewRegion {
 
                 System.out.println("Created managed disk holding data: " + dataDisk.id());
                 // ResourceManagerUtils.print(dataDisk); TODO
-                i++;
             }
 
             //
@@ -263,18 +241,10 @@ public final class CloneVirtualMachineToNewRegion {
             linuxVM2.deallocate();
             return true;
         } finally {
-            try {
-                System.out.println("Deleting Resource Group: " + rgName);
-                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
-                System.out.println("Deleted Resource Group: " + rgName);
-                System.out.println("Deleting Resource Group: " + rgNameNew);
-                azureResourceManager.resourceGroups().beginDeleteByName(rgNameNew);
-                System.out.println("Deleted Resource Group: " + rgNameNew);
-            } catch (NullPointerException npe) {
-                System.out.println("Did not create any resources in Azure. No clean up is necessary");
-            } catch (Exception g) {
-                g.printStackTrace();
-            }
+            System.out.println("Deleting Resource Group: " + rgName);
+            azureResourceManager.resourceGroups().beginDeleteByName(rgName);
+            System.out.println("Deleting Resource Group: " + rgNameNew);
+            azureResourceManager.resourceGroups().beginDeleteByName(rgNameNew);
         }
     }
 
