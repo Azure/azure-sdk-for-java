@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.mocking.MyAsynchronousFileChannel;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class AsynchronousFileChannelAdapterTest {
     @Test
     public void closeDelegates() throws IOException {
         AtomicInteger closeCalls = new AtomicInteger();
-        AsynchronousFileChannel fileChannelMock = new MyAsynchronousFileChannel() {
+        AsynchronousFileChannel fileChannelMock = new MockAsynchronousFileChannel() {
             @Override
             public void close() throws IOException {
                 closeCalls.incrementAndGet();
@@ -54,7 +54,7 @@ public class AsynchronousFileChannelAdapterTest {
     @Test
     public void isOpenDelegates() {
         AtomicInteger openCalls = new AtomicInteger();
-        AsynchronousFileChannel fileChannelMock = new MyAsynchronousFileChannel() {
+        AsynchronousFileChannel fileChannelMock = new MockAsynchronousFileChannel() {
             @Override
             public boolean isOpen() {
                 return openCalls.getAndIncrement() == 0;
@@ -278,7 +278,7 @@ public class AsynchronousFileChannelAdapterTest {
     @Test
     public void doesNotAllowConcurrentOperations() {
         // Mock is no-op. It will not complete operations.
-        AsynchronousFileChannel fileChannelMock = new MyAsynchronousFileChannel();
+        AsynchronousFileChannel fileChannelMock = new MockAsynchronousFileChannel();
         ByteBuffer buffer = ByteBuffer.allocate(0);
 
         {

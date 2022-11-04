@@ -12,7 +12,7 @@ import java.util.concurrent.Future;
 /**
  * An asynchronous byte channel used for mocking in tests.
  */
-public class MyAsynchronousByteChannel implements AsynchronousByteChannel {
+public class MockAsynchronousByteChannel implements AsynchronousByteChannel {
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
 

@@ -13,7 +13,7 @@ import java.util.function.LongConsumer;
  * A Mono sink used for mocking in tests.
  */
 @SuppressWarnings("deprecation")
-public class MyMonoSink<T> implements MonoSink<T> {
+public class MockMonoSink<T> implements MonoSink<T> {
     @Override
     public void success() {
 

@@ -9,7 +9,7 @@ import java.io.OutputStream;
 /**
  * An output stream used for mocking in tests.
  */
-public class MyOutputStream extends OutputStream {
+public class MockOutputStream extends OutputStream {
     @Override
     public void write(int b) throws IOException {
 

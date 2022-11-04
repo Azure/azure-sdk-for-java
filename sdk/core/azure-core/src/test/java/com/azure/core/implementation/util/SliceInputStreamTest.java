@@ -4,7 +4,7 @@
 package com.azure.core.implementation.util;
 
 
-import com.azure.core.util.mocking.MyInputStream;
+import com.azure.core.util.mocking.MockInputStream;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -120,7 +120,7 @@ public class SliceInputStreamTest {
     @Test
     public void delegatesMarkSupported() {
         AtomicBoolean markSupported = new AtomicBoolean(true);
-        InputStream innerStream = new MyInputStream() {
+        InputStream innerStream = new MockInputStream() {
             @Override
             public boolean markSupported() {
                 return markSupported.compareAndSet(true, false);
@@ -136,7 +136,7 @@ public class SliceInputStreamTest {
     @Test
     public void delegatesClose() throws Exception {
         AtomicBoolean closed = new AtomicBoolean();
-        InputStream innerStream = new MyInputStream() {
+        InputStream innerStream = new MockInputStream() {
             @Override
             public void close() throws IOException {
                 closed.set(true);

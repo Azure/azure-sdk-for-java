@@ -9,7 +9,7 @@ import java.io.InputStream;
 /**
  * An input stream used for mocking in tests.
  */
-public class MyInputStream extends InputStream {
+public class MockInputStream extends InputStream {
     @Override
     public int read() throws IOException {
         return 0;

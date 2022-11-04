@@ -5,7 +5,7 @@ package com.azure.core.implementation;
 
 import com.azure.core.util.PartialWriteChannel;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.mocking.MyWritableByteChannel;
+import com.azure.core.util.mocking.MockWritableByteChannel;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -35,7 +35,7 @@ public class ByteCountingWritableByteChannelTest {
     @Test
     public void isOpenDelegates() {
         AtomicInteger openCalls = new AtomicInteger();
-        WritableByteChannel writableByteChannel = new MyWritableByteChannel() {
+        WritableByteChannel writableByteChannel = new MockWritableByteChannel() {
             @Override
             public boolean isOpen() {
                 return openCalls.getAndIncrement() == 0;
@@ -52,7 +52,7 @@ public class ByteCountingWritableByteChannelTest {
     @Test
     public void closeDelegates() throws IOException {
         AtomicInteger closeCalls = new AtomicInteger();
-        WritableByteChannel writableByteChannel = new MyWritableByteChannel() {
+        WritableByteChannel writableByteChannel = new MockWritableByteChannel() {
             @Override
             public void close() throws IOException {
                 closeCalls.incrementAndGet();

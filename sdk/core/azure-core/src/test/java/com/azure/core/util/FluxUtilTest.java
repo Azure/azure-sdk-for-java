@@ -9,8 +9,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.mocking.MyAsynchronousFileChannel;
-import com.azure.core.util.mocking.MyFileChannel;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
+import com.azure.core.util.mocking.MockFileChannel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -244,7 +244,7 @@ public class FluxUtilTest {
 
     private static Stream<Arguments> writeFileDoesNotSwallowErrorSupplier() {
         // AsynchronousFileChannel that throws NonWritableChannelException.
-        AsynchronousFileChannel nonWritableChannel = new MyAsynchronousFileChannel() {
+        AsynchronousFileChannel nonWritableChannel = new MockAsynchronousFileChannel() {
             @Override
             public <A> void write(ByteBuffer src, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {
@@ -262,7 +262,7 @@ public class FluxUtilTest {
             sink.next(ByteBuffer.allocate(16));
             return count + 1;
         });
-        AsynchronousFileChannel exceptionThrowingChannel = new MyAsynchronousFileChannel() {
+        AsynchronousFileChannel exceptionThrowingChannel = new MockAsynchronousFileChannel() {
             @Override
             public <A> void write(ByteBuffer src, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {
@@ -293,10 +293,10 @@ public class FluxUtilTest {
             }
         };
 
-        AsynchronousFileChannel ignoresRequestChannel = new MyAsynchronousFileChannel();
+        AsynchronousFileChannel ignoresRequestChannel = new MockAsynchronousFileChannel();
 
         // CompletionHandler that emits a writing error.
-        AsynchronousFileChannel completionHandlerPropagatesError = new MyAsynchronousFileChannel() {
+        AsynchronousFileChannel completionHandlerPropagatesError = new MockAsynchronousFileChannel() {
             @Override
             public <A> void write(ByteBuffer src, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {
@@ -490,7 +490,7 @@ public class FluxUtilTest {
         AtomicInteger sizeCalls = new AtomicInteger();
         AtomicInteger implCloseChannelCalls = new AtomicInteger();
 
-        MyFileChannel channel = new MyFileChannel() {
+        MockFileChannel channel = new MockFileChannel() {
             @Override
             public void implCloseChannel() {
                 implCloseChannelCalls.incrementAndGet();

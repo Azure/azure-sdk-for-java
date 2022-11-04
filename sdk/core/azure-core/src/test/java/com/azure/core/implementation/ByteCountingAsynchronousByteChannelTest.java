@@ -6,7 +6,7 @@ package com.azure.core.implementation;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.io.IOUtils;
-import com.azure.core.util.mocking.MyAsynchronousByteChannel;
+import com.azure.core.util.mocking.MockAsynchronousByteChannel;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class ByteCountingAsynchronousByteChannelTest {
     @Test
     public void isOpenDelegates() {
         AtomicInteger openCalls = new AtomicInteger();
-        AsynchronousByteChannel asynchronousByteChannel = new MyAsynchronousByteChannel() {
+        AsynchronousByteChannel asynchronousByteChannel = new MockAsynchronousByteChannel() {
             @Override
             public boolean isOpen() {
                 return openCalls.getAndIncrement() == 0;
@@ -60,7 +60,7 @@ public class ByteCountingAsynchronousByteChannelTest {
     @Test
     public void closeDelegates() throws IOException {
         AtomicInteger closeCalls = new AtomicInteger();
-        AsynchronousByteChannel asynchronousByteChannel = new MyAsynchronousByteChannel() {
+        AsynchronousByteChannel asynchronousByteChannel = new MockAsynchronousByteChannel() {
             @Override
             public void close() throws IOException {
                 closeCalls.incrementAndGet();

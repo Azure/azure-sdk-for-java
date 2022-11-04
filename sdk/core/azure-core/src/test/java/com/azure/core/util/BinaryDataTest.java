@@ -10,7 +10,7 @@ import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.azure.core.implementation.util.MyFileContent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.mocking.MyAsynchronousFileChannel;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -488,7 +488,7 @@ public class BinaryDataTest {
     @Test
     public void fileChannelCloseErrorReturnsReactively() {
         AtomicInteger closeCalls = new AtomicInteger();
-        AsynchronousFileChannel myFileChannel = new MyAsynchronousFileChannel() {
+        AsynchronousFileChannel myFileChannel = new MockAsynchronousFileChannel() {
             @Override
             public <A> void read(ByteBuffer dst, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {
@@ -520,7 +520,7 @@ public class BinaryDataTest {
     @Test
     public void fileChannelIsClosedWhenReadErrors() {
         AtomicInteger closeCalls = new AtomicInteger();
-        AsynchronousFileChannel myFileChannel = new MyAsynchronousFileChannel() {
+        AsynchronousFileChannel myFileChannel = new MockAsynchronousFileChannel() {
             @Override
             public <A> void read(ByteBuffer dst, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {

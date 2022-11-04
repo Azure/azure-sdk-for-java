@@ -4,7 +4,7 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.io.IOUtils;
-import com.azure.core.util.mocking.MyAsynchronousFileChannel;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
 
@@ -22,7 +22,7 @@ public class AsynchronousByteChannelWriteSubscriberTests {
     @SuppressWarnings("unchecked")
     @Test
     public void multipleSubscriptionsCancelsLaterSubscriptions() {
-        AsynchronousFileChannel channel = new MyAsynchronousFileChannel() {
+        AsynchronousFileChannel channel = new MockAsynchronousFileChannel() {
             @Override
             public <A> void write(ByteBuffer src, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {

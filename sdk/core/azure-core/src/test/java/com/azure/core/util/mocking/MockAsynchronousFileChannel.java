@@ -13,7 +13,7 @@ import java.util.concurrent.Future;
 /**
  * An asynchronous file channel used for mocking in tests.
  */
-public class MyAsynchronousFileChannel extends AsynchronousFileChannel {
+public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
 
     @Override
     public long size() throws IOException {

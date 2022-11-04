@@ -8,7 +8,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.util.mocking.MySerializerAdapter;
+import com.azure.core.util.mocking.MockSerializerAdapter;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class HttpResponseHeaderDecoderTests {
 
     @Test
     public void ioExceptionIsMappedToHttpResponseException() {
-        SerializerAdapter serializer = new MySerializerAdapter() {
+        SerializerAdapter serializer = new MockSerializerAdapter() {
             @Override
             public <T> T deserialize(HttpHeaders headers, Type type) throws IOException {
                 throw new IOException();

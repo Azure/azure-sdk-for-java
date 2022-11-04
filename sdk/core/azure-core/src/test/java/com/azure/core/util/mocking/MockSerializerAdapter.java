@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * A serializer adapter used for mocking in tests.
  */
-public class MySerializerAdapter implements SerializerAdapter {
+public class MockSerializerAdapter implements SerializerAdapter {
     @Override
     public String serialize(Object object, SerializerEncoding encoding) throws IOException {
         return null;

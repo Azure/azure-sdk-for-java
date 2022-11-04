@@ -3,8 +3,8 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.mocking.MyMonoSink;
-import com.azure.core.util.mocking.MyOutputStream;
+import com.azure.core.util.mocking.MockMonoSink;
+import com.azure.core.util.mocking.MockOutputStream;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
@@ -24,7 +24,7 @@ public class OutputStreamWriteSubscriberTests {
 
     @Test
     public void multipleSubscriptionsCancelsLaterSubscriptions() {
-        OutputStream stream = new MyOutputStream() {
+        OutputStream stream = new MockOutputStream() {
             @Override
             public void write(byte[] b, int off, int len) {
             }
@@ -46,11 +46,11 @@ public class OutputStreamWriteSubscriberTests {
 
     @Test
     public void errorDuringWritingCancelsSubscription() {
-        OutputStream stream = new MyOutputStream();
+        OutputStream stream = new MockOutputStream();
         CountingSubscription subscription = new CountingSubscription();
 
         AtomicReference<Throwable> error = new AtomicReference<>();
-        MonoSink<Void> sink = new MyMonoSink<Void>() {
+        MonoSink<Void> sink = new MockMonoSink<Void>() {
             @Override
             public void error(Throwable e) {
                 error.set(e);

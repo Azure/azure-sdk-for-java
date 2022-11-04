@@ -10,7 +10,7 @@ import java.nio.channels.WritableByteChannel;
 /**
  * A writable byte channel used for mocking in tests.
  */
-public class MyWritableByteChannel implements WritableByteChannel {
+public class MockWritableByteChannel implements WritableByteChannel {
     @Override
     public int write(ByteBuffer src) throws IOException {
         return 0;
