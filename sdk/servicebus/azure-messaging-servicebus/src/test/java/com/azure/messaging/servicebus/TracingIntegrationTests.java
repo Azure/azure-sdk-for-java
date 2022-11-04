@@ -4,6 +4,9 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder;
+import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -19,6 +22,8 @@ import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.data.LinkData;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,18 +39,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
@@ -57,13 +65,33 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     ServiceBusReceiverClient receiverSync;
     ServiceBusProcessorClient processor;
 
+    private final static String testQueueName = getEntityName(getQueueBaseName(),
+        ThreadLocalRandom.current().nextInt(10000));
+
     public TracingIntegrationTests() {
         super(new ClientLogger(TracingIntegrationTests.class));
     }
 
+    @BeforeAll
+    static void setup() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(90));
+        ServiceBusAdministrationClient adminClient = new ServiceBusAdministrationClientBuilder()
+            .connectionString(getConnectionString())
+            .buildClient();
+        assumeTrue(adminClient.createQueue(testQueueName).getStatus() == EntityStatus.ACTIVE);
+    }
+
+    @AfterAll
+    static void cleanup() {
+        StepVerifier.resetDefaultTimeout();
+        ServiceBusAdministrationClient adminClient = new ServiceBusAdministrationClientBuilder()
+            .connectionString(getConnectionString())
+            .buildClient();
+        adminClient.deleteQueue(testQueueName);
+    }
     @Override
     protected void beforeTest() {
-        spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getQueueName(0));
+        spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), testQueueName);
         try {
             OpenTelemetrySdk.builder()
                 .setTracerProvider(
@@ -79,19 +107,19 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         sender = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .sender()
-            .queueName(getQueueName(0))
+            .queueName(testQueueName)
             .buildAsyncClient();
 
         receiver = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .receiver()
-            .queueName(getQueueName(0))
+            .queueName(testQueueName)
             .buildAsyncClient(false, false);
 
         receiverSync = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .receiver()
-            .queueName(getQueueName(0))
+            .queueName(testQueueName)
             .buildClient();
     }
 
@@ -126,6 +154,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
         List<ReadableSpan> messageSpans = findSpans(spans, "ServiceBus.message");
+        assertEquals(2, messageSpans.size());
         assertMessageSpan(messageSpans.get(0), message1);
         assertMessageSpan(messageSpans.get(1), message2);
 
@@ -311,7 +340,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         processor = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .processor()
-            .queueName(getQueueName(0))
+            .queueName(testQueueName)
             .processMessage(mc -> {
                 if (mc.getMessage().getMessageId().equals(messageId)) {
                     currentInProcess.set(Span.current());
@@ -369,7 +398,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         processor = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .processor()
-            .queueName(getQueueName(0))
+            .queueName(testQueueName)
             .processMessage(mc -> {
                 if (mc.getMessage().getMessageId().equals(messageId)) {
                     receivedMessage.set(mc.getMessage());
