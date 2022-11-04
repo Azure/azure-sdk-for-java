@@ -28,7 +28,7 @@ public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
     @Test
     public void testDetect() {
         testDetectEntireSeriesWithResponse(request -> {
-            Response<BinaryData> response = getClient().detectEntireSeriesWithResponse(request, new RequestOptions());
+            Response<BinaryData> response = getClient().detectUnivariateEntireSeriesWithResponse(request, new RequestOptions());
             System.out.println(response.toString());
 
             String responseBodyStr = response.getValue().toString();
