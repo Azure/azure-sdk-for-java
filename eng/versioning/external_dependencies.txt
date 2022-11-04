@@ -17,6 +17,7 @@ com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.4
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.4
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.4
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.4
+com.fasterxml.woodstox:woodstox-core;6.4.0
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
