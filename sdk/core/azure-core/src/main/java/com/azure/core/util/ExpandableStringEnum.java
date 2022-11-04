@@ -3,13 +3,19 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.ReflectionUtils;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.ArrayList;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * Base implementation for expandable, single string enums.
@@ -17,11 +23,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
-        = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, ExpandableStringEnumSubType<?>> VALUES = new ConcurrentHashMap<>();
 
-    private String name;
-    private Class<T> clazz;
+    String name;
+    Class<T> clazz;
 
     /**
      * Creates a new instance of {@link ExpandableStringEnum} without a {@link #toString()} value.
@@ -43,34 +48,19 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @param <T> the class of the expandable string enum.
      * @return The expandable string enum instance.
      */
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({"unchecked"})
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;
         }
 
-        ConcurrentHashMap<String, ?> clazzValues = VALUES.computeIfAbsent(clazz, key -> new ConcurrentHashMap<>());
-        T value = (T) clazzValues.get(name);
-
-        if (value != null) {
-            return value;
-        } else {
-            try {
-                value = clazz.newInstance();
-                return value.nameAndAddValue(name, value, clazz);
-            } catch (IllegalAccessException | InstantiationException ex) {
-                return null;
-            }
+        ExpandableStringEnumSubType<T> subType = (ExpandableStringEnumSubType<T>) VALUES.get(clazz);
+        if (subType == null) {
+            subType = new ExpandableStringEnumSubType<>(clazz);
+            VALUES.put(clazz, subType);
         }
-    }
 
-    @SuppressWarnings("unchecked")
-    T nameAndAddValue(String name, T value, Class<T> clazz) {
-        this.name = name;
-        this.clazz = clazz;
-
-        ((ConcurrentHashMap<String, T>) VALUES.get(clazz)).put(name, value);
-        return (T) this;
+        return subType.getOrCreate(name);
     }
 
     /**
@@ -82,7 +72,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {
-        return new ArrayList<T>((Collection<T>) VALUES.getOrDefault(clazz, new ConcurrentHashMap<>()).values());
+        return (Collection<T>) VALUES.getOrDefault(clazz, new ExpandableStringEnumSubType<>(clazz)).values();
     }
 
     @Override
@@ -109,6 +99,65 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
             return ((ExpandableStringEnum<T>) obj).name == null;
         } else {
             return this.name.equals(((ExpandableStringEnum<T>) obj).name);
+        }
+    }
+
+    @SuppressWarnings({"deprecation", "unchecked"})
+    static final class ExpandableStringEnumSubType<T extends ExpandableStringEnum<T>> {
+        private final Class<T> enumType;
+        private final Supplier<T> enumCreator;
+        private final Map<String, T> enums = new ConcurrentHashMap<>();
+
+        ExpandableStringEnumSubType(Class<T> enumType) {
+            this.enumType = enumType;
+
+            Supplier<T> enumCreator;
+            try {
+                // Attempt to use a MethodHandle.
+                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(enumType);
+                Constructor<?> emptyConstructor = enumType.getDeclaredConstructor();
+                MethodHandle handle = lookup.unreflectConstructor(emptyConstructor);
+                enumCreator = (Supplier<T>) LambdaMetafactory.metafactory(MethodHandles.lookup(), "get",
+                        MethodType.methodType(Supplier.class), MethodType.methodType(Object.class), handle,
+                        handle.type())
+                    .getTarget()
+                    .invoke();
+            } catch (Throwable throwable) {
+                if (throwable instanceof Error && throwable.getClass() != LinkageError.class) {
+                    throw (Error) throwable;
+                }
+
+                // Fallback to using Class.newInstance
+                enumCreator = () -> {
+                    try {
+                        return enumType.newInstance();
+                    } catch (ReflectiveOperationException ignored) {
+                        return null;
+                    }
+                };
+            }
+
+            this.enumCreator = enumCreator;
+        }
+
+        T getOrCreate(String name) {
+            T value = enums.get(name);
+            if (value == null) {
+                value = enumCreator.get();
+                if (value == null) {
+                    return null;
+                }
+
+                value.name = name;
+                value.clazz = enumType;
+                enums.put(name, value);
+            }
+
+            return value;
+        }
+
+        Collection<T> values() {
+            return enums.values();
         }
     }
 }
