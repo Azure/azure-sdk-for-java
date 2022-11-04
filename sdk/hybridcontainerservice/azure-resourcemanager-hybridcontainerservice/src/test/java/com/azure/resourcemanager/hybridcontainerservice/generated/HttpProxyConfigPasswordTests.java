@@ -13,14 +13,14 @@ public final class HttpProxyConfigPasswordTests {
     @Test
     public void testDeserialize() {
         HttpProxyConfigPassword model =
-            BinaryData.fromString("{\"password\":\"bavxbniwdjswzt\"}").toObject(HttpProxyConfigPassword.class);
-        Assertions.assertEquals("bavxbniwdjswzt", model.password());
+            BinaryData.fromString("{\"password\":\"fakePasswordPlaceholder\"}").toObject(HttpProxyConfigPassword.class);
+        Assertions.assertEquals("fakePasswordPlaceholder", model.password());
     }
 
     @Test
     public void testSerialize() {
-        HttpProxyConfigPassword model = new HttpProxyConfigPassword().withPassword("bavxbniwdjswzt");
+        HttpProxyConfigPassword model = new HttpProxyConfigPassword().withPassword("fakePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(HttpProxyConfigPassword.class);
-        Assertions.assertEquals("bavxbniwdjswzt", model.password());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.password());
     }
 }
