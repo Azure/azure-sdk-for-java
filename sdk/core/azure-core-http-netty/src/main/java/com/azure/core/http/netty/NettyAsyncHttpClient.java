@@ -259,28 +259,27 @@ class NettyAsyncHttpClient implements HttpClient {
         HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse, boolean ignoreResponseBody,
         boolean headersEagerlyConverted) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
-            // Ignoring the response body takes precedent over eagerly reading the response body.
-            // Both should never be true at the same time but this is acts as a safeguard.
-            if (ignoreResponseBody) {
-                AtomicBoolean firstNext = new AtomicBoolean(true);
-                return reactorNettyConnection.inbound().receive()
-                    .doOnNext(ignored -> {
-                        if (!firstNext.compareAndSet(true, false)) {
-                            LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-                                + "Response body will be ignored as directed.");
-                        }
-                    })
-                    .ignoreElements()
-                    .doFinally(ignored -> closeConnection(reactorNettyConnection))
-                    .then(Mono.fromSupplier(() -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
-                        EMPTY_BYTES, headersEagerlyConverted)));
-            }
+            // For now, eagerlyReadResponse and ignoreResponseBody works the same.
+//            if (ignoreResponseBody) {
+//                AtomicBoolean firstNext = new AtomicBoolean(true);
+//                return reactorNettyConnection.inbound().receive()
+//                    .doOnNext(ignored -> {
+//                        if (!firstNext.compareAndSet(true, false)) {
+//                            LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+//                                + "Response body will be ignored as directed.");
+//                        }
+//                    })
+//                    .ignoreElements()
+//                    .doFinally(ignored -> closeConnection(reactorNettyConnection))
+//                    .then(Mono.fromSupplier(() -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
+//                        EMPTY_BYTES, headersEagerlyConverted)));
+//            }
 
             /*
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
              * response MUST be deeply copied to ensure it can safely be used downstream.
              */
-            if (eagerlyReadResponse) {
+            if (eagerlyReadResponse || ignoreResponseBody) {
                 // Set up the body flux and dispose the connection once it has been received.
                 return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
