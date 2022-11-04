@@ -22,8 +22,10 @@ public final class TextDocumentInput {
 
     /*
      * (Optional) This is the 2 letter ISO 639-1 representation of a language.
-     * For example, use "en" for English; "es" for Spanish etc. If not set, use
-     * "en" for English as default.
+     * For example, use "en" for English; "es" for Spanish etc. For automatic language detection, use "auto"
+     * (Only supported by API version 2022-10-01-preview and newer). If not set, uses "en" for English as default.
+     * Per-document language will take precedence over whole batch language. See https://aka.ms/talangs for
+     * supported languages in Language API.
      */
     private String language;
 
@@ -68,9 +70,12 @@ public final class TextDocumentInput {
     }
 
     /**
-     * Set the language property: (Optional) This is the 2 letter ISO 639-1
-     * representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
+     * Set the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language.
+     * For example, use "en" for English; "es" for Spanish etc. For automatic language detection, use "auto"
+     * (Only supported by API version 2022-10-01-preview and newer, and only support in long-running operation
+     * method `beginAnalyzeAction`). If not set, uses "en" for English as default.
+     * Per-document language will take precedence over whole batch language. See https://aka.ms/talangs for
+     * supported languages in Language API.
      *
      * @param language Optional. This is the 2 letter ISO 639-1 representation of a language.
      *

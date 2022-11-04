@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 
@@ -18,7 +19,8 @@ public final class ExtractSummaryResultPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link ExtractSummaryResult} instance.
      */
     public interface ExtractSummaryResultAccessor {
-        void setSentences(ExtractSummaryResult extractSummaryResult, SummarySentenceCollection sentences);
+        void setSentences(ExtractSummaryResult documentResult, SummarySentenceCollection sentences);
+        void setDetectedLanguage(ExtractSummaryResult documentResult, DetectedLanguage detectedLanguage);
     }
 
     /**
@@ -30,7 +32,11 @@ public final class ExtractSummaryResultPropertiesHelper {
         accessor = extractSummaryResultAccessor;
     }
 
-    public static void setSentences(ExtractSummaryResult extractSummaryResult, SummarySentenceCollection sentences) {
-        accessor.setSentences(extractSummaryResult, sentences);
+    public static void setSentences(ExtractSummaryResult documentResult, SummarySentenceCollection sentences) {
+        accessor.setSentences(documentResult, sentences);
+    }
+
+    public static void setDetectedLanguage(ExtractSummaryResult documentResult, DetectedLanguage detectedLanguage) {
+        accessor.setDetectedLanguage(documentResult, detectedLanguage);
     }
 }

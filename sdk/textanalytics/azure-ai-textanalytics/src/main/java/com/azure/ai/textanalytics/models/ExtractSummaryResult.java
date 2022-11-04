@@ -11,12 +11,21 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class ExtractSummaryResult extends TextAnalyticsResult {
+    private DetectedLanguage detectedLanguage;
     private SummarySentenceCollection sentences;
 
     static {
         ExtractSummaryResultPropertiesHelper.setAccessor(
-            ((extractSummaryResult, sentences) -> extractSummaryResult.setSentences(sentences))
-        );
+            new ExtractSummaryResultPropertiesHelper.ExtractSummaryResultAccessor() {
+                @Override
+                public void setSentences(ExtractSummaryResult documentResult, SummarySentenceCollection sentences) {
+                    documentResult.setSentences(sentences);
+                }
+                @Override
+                public void setDetectedLanguage(ExtractSummaryResult documentResult, DetectedLanguage detectedLanguage) {
+                    documentResult.setDetectedLanguage(detectedLanguage);
+                }
+            });
     }
 
     /**
@@ -41,6 +50,20 @@ public final class ExtractSummaryResult extends TextAnalyticsResult {
     public SummarySentenceCollection getSentences() {
         throwExceptionIfError();
         return sentences;
+    }
+
+    /**
+     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
+     * contain an object of the language detected for this document.
+     *
+     * @return the detectedLanguage value.
+     */
+    public DetectedLanguage getDetectedLanguage() {
+        return this.detectedLanguage;
+    }
+
+    private void setDetectedLanguage(DetectedLanguage detectedLanguage) {
+        this.detectedLanguage = detectedLanguage;
     }
 
     private void setSentences(SummarySentenceCollection sentences) {
