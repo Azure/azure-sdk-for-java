@@ -15,7 +15,6 @@ import java.nio.channels.WritableByteChannel;
  * A file channel used for mocking in tests.
  */
 public class MyFileChannel extends FileChannel {
-    // Needed by Mockito
     public MyFileChannel() {
         super();
     }
