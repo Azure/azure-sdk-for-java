@@ -50,7 +50,7 @@ public final class RecognizeEntitiesResult extends TextAnalyticsResult {
 
     /**
      * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
+     * contain an object of the language detected for this document.
      *
      * @return the detectedLanguage value.
      */
