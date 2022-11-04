@@ -80,7 +80,7 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends Continuabl
      *
      * @param provider the Page Retrieval Provider
      */
-    PagedIterableBase(Supplier<PageRetrieverSync<String, P>> provider) {
+    public PagedIterableBase(Supplier<PageRetrieverSync<String, P>> provider) {
         super(provider, null, token -> !CoreUtils.isNullOrEmpty(token));
     }
 }

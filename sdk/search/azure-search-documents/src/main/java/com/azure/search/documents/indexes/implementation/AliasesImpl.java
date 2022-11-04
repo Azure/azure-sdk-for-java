@@ -396,7 +396,7 @@ public final class AliasesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchAlias> listAsync(RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions));
+        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions, Context.NONE));
     }
 
     /**

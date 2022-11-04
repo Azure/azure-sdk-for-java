@@ -14,17 +14,17 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
-import com.azure.search.documents.implementation.models.SearchErrorException;
+import com.azure.search.documents.implementation.models.*;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.*;
-import com.azure.search.documents.util.AutocompletePagedIterable;
-import com.azure.search.documents.util.SearchPagedIterable;
-import com.azure.search.documents.util.SearchPagedResponse;
-import com.azure.search.documents.util.SuggestPagedIterable;
-import com.azure.search.documents.util.SuggestPagedResponse;
+import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SuggestResult;
+import com.azure.search.documents.util.*;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
@@ -35,9 +35,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.http.rest.RestProxyUtils.LOGGER;
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.serializer.TypeReference.createInstance;
-import static com.azure.search.documents.SearchAsyncClient.buildIndexBatch;
+import static com.azure.search.documents.SearchAsyncClient.*;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
@@ -688,11 +687,9 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Long> getDocumentCountWithResponse(Context context) {
         try {
-            try {
-                return restClient.getDocuments().countSyncWithResponse(null, context);
-            } catch (SearchErrorException | com.azure.search.documents.indexes.implementation.models.SearchErrorException ex) {
-                throw new HttpResponseException(ex.getMessage(), ex.getResponse());
-            }
+            return restClient.getDocuments().countSyncWithResponse(null, context);
+        } catch (SearchErrorException | com.azure.search.documents.indexes.implementation.models.SearchErrorException ex) {
+            throw new HttpResponseException(ex.getMessage(), ex.getResponse());
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -777,7 +774,40 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText, SearchOptions searchOptions, Context context) {
-        return new SearchPagedIterable(asyncClient.search(searchText, searchOptions, context));
+        SearchRequest request = createSearchRequest(searchText, searchOptions);
+        // The firstPageResponse shared among all functional calls below.
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
+        Function<String, SearchPagedResponse> func = continuationToken ->
+            search(request, continuationToken, firstPageResponseWrapper, context);
+        return new SearchPagedIterable(() -> func.apply(null), func);
+    }
+
+    private SearchPagedResponse search(SearchRequest request, String continuationToken,
+                                             SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
+        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
+            return firstPageResponseWrapper.getFirstPageResponse();
+        }
+        SearchRequest requestToUse = (continuationToken == null)
+            ? request
+            : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
+
+        try {
+            Response<SearchDocumentsResult> response = restClient.getDocuments().searchPostSyncWithResponse(requestToUse, null, context);
+            SearchDocumentsResult result = response.getValue();
+
+            SearchPagedResponse page = new SearchPagedResponse(
+                new SimpleResponse<>(response, getSearchResults(result, serializer)),
+                createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
+                result.getCoverage(), result.getAnswers());
+            if (continuationToken == null) {
+                firstPageResponseWrapper.setFirstPageResponse(page);
+            }
+            return page;
+
+        } catch (SearchErrorException | com.azure.search.documents.indexes.implementation.models.SearchErrorException exception) {
+            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+        }
     }
 
     /**

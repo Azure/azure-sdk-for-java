@@ -5,12 +5,12 @@ package com.azure.search.documents.util;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.paging.ContinuablePagedIterable;
+import com.azure.core.util.paging.PageRetrieverSync;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  * Implementation of {@link ContinuablePagedIterable} where the continuation token type is {@link SearchRequest}, the
  * element type is {@link SearchResult}, and the page type is {@link SearchPagedResponse}.
  */
-public final class SearchPagedIterable extends PagedIterableBase<SearchResult, SearchPagedResponse> {
+public final class SearchPagedIterable extends  PagedIterableBase<SearchResult, SearchPagedResponse> {
     private final SearchPagedFlux pagedFlux;
     private final Supplier<SearchFirstPageResponseWrapper> metadataSupplier;
 
@@ -43,9 +43,9 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * @param firstPageRetriever Supplied that handles retrieving {@link SearchPagedResponse SearchPagedResponses}.
      */
     public SearchPagedIterable(Supplier<SearchPagedResponse> firstPageRetriever) {
-        super(firstPageRetriever);
-        metadataSupplier = () -> new SearchFirstPageResponseWrapper().setFirstPageResponse(firstPageRetriever.get());
+        this(firstPageRetriever, null);
     }
+
 
     /**
      * Creates an instance of {@link SearchPagedFlux}.
@@ -54,11 +54,22 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * @param nextPageRetriever Function that retrieves the next {@link SearchPagedResponse SearchPagedResponses} given
      * a continuation token.
      */
-    public SearchPagedIterable(Supplier<Mono<SearchPagedResponse>> firstPageRetriever,
-                           Function<String, Mono<SearchPagedResponse>> nextPageRetriever) {
-        super(firstPageRetriever, nextPageRetriever);
-        metadataSupplier = () -> firstPageRetriever.get().map(response ->
-            new SearchFirstPageResponseWrapper().setFirstPageResponse(response));
+    public SearchPagedIterable(Supplier<SearchPagedResponse> firstPageRetriever,
+                         Function<String, SearchPagedResponse> nextPageRetriever) {
+        this(() -> (continuationToken, pageSize) ->
+            continuationToken == null
+                ? firstPageRetriever.get()
+                : nextPageRetriever.apply(continuationToken), true, () -> {
+            SearchPagedResponse response = firstPageRetriever.get();
+            return new SearchFirstPageResponseWrapper().setFirstPageResponse(response);
+        });
+    }
+
+    private SearchPagedIterable(Supplier<PageRetrieverSync<String, SearchPagedResponse>> provider, boolean ignored,
+                                Supplier<SearchFirstPageResponseWrapper> metadataSupplier) {
+        super(provider);
+        this.pagedFlux = null;
+        this.metadataSupplier = metadataSupplier;
     }
 
     /**
@@ -70,7 +81,12 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * request, otherwise {@code null}.
      */
     public Double getCoverage() {
-        return pagedFlux.getCoverage().block();
+        if (pagedFlux != null) {
+            return pagedFlux.getCoverage().block();
+        } else {
+            SearchFirstPageResponseWrapper metaData = metadataSupplier.get();
+            return metaData.getFirstPageResponse().getCoverage();
+        }
     }
 
     /**
@@ -81,7 +97,12 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * @return The facet query results if {@code facets} were supplied in the request, otherwise {@code null}.
      */
     public Map<String, List<FacetResult>> getFacets() {
-        return pagedFlux.getFacets().block();
+        if (pagedFlux != null) {
+            return pagedFlux.getFacets().block();
+        } else {
+            SearchFirstPageResponseWrapper metaData = metadataSupplier.get();
+            return metaData.getFirstPageResponse().getFacets();
+        }
     }
 
     /**
@@ -93,7 +114,12 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * {@code null}.
      */
     public Long getTotalCount() {
-        return pagedFlux.getTotalCount().block();
+        if (pagedFlux != null) {
+            return pagedFlux.getTotalCount().block();
+        } else {
+            SearchFirstPageResponseWrapper metaData = metadataSupplier.get();
+            return metaData.getFirstPageResponse().getCount();
+        }
     }
 
     /**
@@ -104,6 +130,11 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * @return The answer results if {@code answers} were supplied in the request, otherwise null.
      */
     public List<AnswerResult> getAnswers() {
-        return pagedFlux.getAnswers().block();
+        if (pagedFlux != null) {
+            return pagedFlux.getAnswers().block();
+        } else {
+            SearchFirstPageResponseWrapper metaData = metadataSupplier.get();
+            return metaData.getFirstPageResponse().getAnswers();
+        }
     }
 }

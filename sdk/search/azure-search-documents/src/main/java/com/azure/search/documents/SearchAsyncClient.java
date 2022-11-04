@@ -875,7 +875,7 @@ public final class SearchAsyncClient {
                 SearchDocumentsResult result = response.getValue();
 
                 SearchPagedResponse page = new SearchPagedResponse(
-                    new SimpleResponse<>(response, getSearchResults(result)),
+                    new SimpleResponse<>(response, getSearchResults(result, serializer)),
                     createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
                     result.getCoverage(), result.getAnswers());
                 if (continuationToken == null) {
@@ -885,18 +885,18 @@ public final class SearchAsyncClient {
             });
     }
 
-    private List<SearchResult> getSearchResults(SearchDocumentsResult result) {
+    static List<SearchResult> getSearchResults(SearchDocumentsResult result, JsonSerializer jsonSerializer) {
         return result.getResults().stream()
-            .map(searchResult -> SearchResultConverter.map(searchResult, serializer))
+            .map(searchResult -> SearchResultConverter.map(searchResult, jsonSerializer))
             .collect(Collectors.toList());
     }
 
-    private static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
+    static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), result.getNextLink(),
             result.getNextPageParameters());
     }
 
-    private static Map<String, List<FacetResult>> getFacets(SearchDocumentsResult result) {
+    static Map<String, List<FacetResult>> getFacets(SearchDocumentsResult result) {
         if (result.getFacets() == null) {
             return null;
         }
@@ -1065,7 +1065,7 @@ public final class SearchAsyncClient {
      * @param options search options
      * @return SearchRequest
      */
-    private static SearchRequest createSearchRequest(String searchText, SearchOptions options) {
+    static SearchRequest createSearchRequest(String searchText, SearchOptions options) {
         SearchRequest request = new SearchRequest().setSearchText(searchText);
 
         if (options == null) {

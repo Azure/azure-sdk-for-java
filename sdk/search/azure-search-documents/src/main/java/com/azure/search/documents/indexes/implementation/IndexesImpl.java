@@ -460,7 +460,7 @@ public final class IndexesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndex> listAsync(String select, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listSinglePageAsync(select, requestOptions));
+        return new PagedFlux<>(() -> listSinglePageAsync(select, requestOptions, Context.NONE));
     }
 
     /**
