@@ -6,15 +6,15 @@ import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.commons.lang3.RandomStringUtils
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 import java.util.UUID
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
+abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
@@ -56,22 +56,6 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     val throughput = cosmosClient.getDatabase(databaseName).readThroughput().block()
 
     throughput.getProperties.getManualThroughput shouldEqual 1000
-  }
-
-  // TODO: moderakh spark on windows has issue with this test.
-  // java.lang.RuntimeException: java.io.IOException: (null) entry in command string: null chmod 0733 D:\tmp\hive;
-  // once we move Linux CI re-enable the test:
-  it can "drops a database" in {
-    assume(!Platform.isWindows)
-
-    val databaseName = getAutoCleanableDatabaseName
-    spark.catalog.databaseExists(databaseName) shouldEqual false
-
-    createDatabase(spark, databaseName)
-    databaseExists(databaseName) shouldEqual true
-
-    dropDatabase(spark, databaseName)
-    spark.catalog.databaseExists(databaseName) shouldEqual false
   }
 
   it can "create a table with defaults" in {
@@ -758,12 +742,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
       .toMap
   }
 
-  private def createDatabase(spark: SparkSession, databaseName: String) = {
+  def createDatabase(spark: SparkSession, databaseName: String): DataFrame = {
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
-  }
-
-  private def dropDatabase(spark: SparkSession, databaseName: String) = {
-    spark.sql(s"DROP DATABASE testCatalog.$databaseName;")
   }
 
   //scalastyle:on magic.number
