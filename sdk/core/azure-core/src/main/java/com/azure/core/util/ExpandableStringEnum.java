@@ -11,10 +11,11 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 /**
@@ -23,7 +24,9 @@ import java.util.function.Supplier;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static final Map<Class<?>, ExpandableStringEnumSubType<?>> VALUES = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, ExpandableStringEnumSubType<?>> VALUES = new HashMap<>();
+
+    private static final Object CREATE_SUBTYPE_LOCK = new Object();
 
     String name;
     Class<T> clazz;
@@ -48,19 +51,12 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @param <T> the class of the expandable string enum.
      * @return The expandable string enum instance.
      */
-    @SuppressWarnings({"unchecked"})
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;
         }
 
-        ExpandableStringEnumSubType<T> subType = (ExpandableStringEnumSubType<T>) VALUES.get(clazz);
-        if (subType == null) {
-            subType = new ExpandableStringEnumSubType<>(clazz);
-            VALUES.put(clazz, subType);
-        }
-
-        return subType.getOrCreate(name);
+        return getOrCreateSubType(clazz).getOrCreate(name);
     }
 
     /**
@@ -70,9 +66,24 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @param <T> the class of the expandable string enum.
      * @return A collection of all known values for the given {@code clazz}.
      */
-    @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {
-        return (Collection<T>) VALUES.getOrDefault(clazz, new ExpandableStringEnumSubType<>(clazz)).values();
+        ExpandableStringEnumSubType<T> subType = getOrCreateSubType(clazz);
+
+        return new ArrayList<>(subType.values());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends ExpandableStringEnum<T>> ExpandableStringEnumSubType<T> getOrCreateSubType(
+        Class<T> enumType) {
+        ExpandableStringEnumSubType<T> subType = (ExpandableStringEnumSubType<T>) VALUES.get(enumType);
+        if (subType == null) {
+            synchronized (CREATE_SUBTYPE_LOCK) {
+                subType = (ExpandableStringEnumSubType<T>) VALUES.computeIfAbsent(enumType,
+                    c -> new ExpandableStringEnumSubType<>(enumType));
+            }
+        }
+
+        return subType;
     }
 
     @Override
@@ -104,9 +115,11 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
 
     @SuppressWarnings({"deprecation", "unchecked"})
     static final class ExpandableStringEnumSubType<T extends ExpandableStringEnum<T>> {
+        private final Object createEnumLock = new Object();
+
         private final Class<T> enumType;
         private final Supplier<T> enumCreator;
-        private final Map<String, T> enums = new ConcurrentHashMap<>();
+        private final Map<String, T> enums = new HashMap<>();
 
         ExpandableStringEnumSubType(Class<T> enumType) {
             this.enumType = enumType;
@@ -143,14 +156,19 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         T getOrCreate(String name) {
             T value = enums.get(name);
             if (value == null) {
-                value = enumCreator.get();
-                if (value == null) {
-                    return null;
-                }
+                synchronized (createEnumLock) {
+                    value = enums.computeIfAbsent(name, n -> {
+                        T v = enumCreator.get();
+                        if (v == null) {
+                            return null;
+                        }
 
-                value.name = name;
-                value.clazz = enumType;
-                enums.put(name, value);
+                        v.name = name;
+                        v.clazz = enumType;
+
+                        return v;
+                    });
+                }
             }
 
             return value;
