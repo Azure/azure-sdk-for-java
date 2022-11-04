@@ -19,7 +19,7 @@
 ### Other Changes
 
 - Removed size limit when creating a `BinaryData.fromFlux` when the `Flux<ByteBuffer>` is buffered.
-- Deprecated empty argument constructor in `ExpandableStringEnum`, and its subtypes.
+- Deprecated empty argument constructor in `ExpandableStringEnum` subtypes.
 - Miscellaneous performance improvements.
 
 #### Dependency Updates

@@ -14,8 +14,16 @@ import java.util.Locale;
 public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     private String caseInsensitive;
 
-    // Needed by ExpandableStringEnum
-    private HttpHeaderName() {
+    /**
+     * Creates a new instance of {@link HttpHeaderName} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link HttpHeaderName} which doesn't have a String enum
+     * value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpHeaderName() {
     }
 
     /**
@@ -50,7 +58,7 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
         }
 
         HttpHeaderName headerName = fromString(name, HttpHeaderName.class);
-        headerName.caseInsensitive = headerName.toString().toLowerCase(Locale.ROOT);
+        headerName.caseInsensitive = name.toLowerCase(Locale.ROOT);
 
         return headerName;
     }
