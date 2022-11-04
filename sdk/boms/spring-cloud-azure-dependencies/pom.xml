@@ -61,6 +61,18 @@
         <version>2.20.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
       </dependency>
 
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
+        <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;dependency} -->
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
+        <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-postgresql;dependency} -->
+      </dependency>
+
       <!-- Spring Cloud Azure -->
       <dependency>
         <groupId>com.azure.spring</groupId>
@@ -262,6 +274,16 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-messaging-azure-storage-queue</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
