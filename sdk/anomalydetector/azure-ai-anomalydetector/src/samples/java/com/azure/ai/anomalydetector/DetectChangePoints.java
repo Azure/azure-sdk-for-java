@@ -73,7 +73,7 @@ public class DetectChangePoints {
         System.out.println(detectBodyStr);
         BinaryData detectBody = BinaryData.fromString(detectBodyStr);
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = anomalyDetectorClient.detectChangePointWithResponse(detectBody, requestOptions);
+        Response<BinaryData> response = anomalyDetectorClient.detectUnivariateChangePointWithResponse(detectBody, requestOptions);
         System.out.println(response.getValue().toString());
 
     }

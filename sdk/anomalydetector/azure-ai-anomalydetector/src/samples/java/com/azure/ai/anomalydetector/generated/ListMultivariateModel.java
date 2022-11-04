@@ -18,6 +18,7 @@ public class ListMultivariateModel {
         AnomalyDetectorClient anomalyDetectorClient =
                 new AnomalyDetectorClientBuilder()
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
+                        .apiVersion("v1.1")
                         .endpoint("{Endpoint}")
                         .buildClient();
         // BEGIN:com.azure.ai.anomalydetector.generated.listmultivariatemodels.listmultivariatemodel

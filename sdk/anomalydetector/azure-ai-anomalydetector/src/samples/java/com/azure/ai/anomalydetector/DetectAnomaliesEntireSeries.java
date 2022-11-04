@@ -37,6 +37,7 @@ public class DetectAnomaliesEntireSeries {
     public static void main(final String[] args) throws IOException {
         String endpoint = "<anomaly-detector-resource-endpoint>";
         String key = "<anomaly-detector-resource-key>";
+
         HttpHeaders headers = new HttpHeaders()
             .put("Accept", ContentType.APPLICATION_JSON);
 
@@ -57,7 +58,7 @@ public class DetectAnomaliesEntireSeries {
         JsonReader reader = Json.createReader(fileInputStream);
         BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = anomalyDetectorClient.detectEntireSeriesWithResponse(detectBody, requestOptions);
+        Response<BinaryData> response = anomalyDetectorClient.detectUnivariateEntireSeriesWithResponse(detectBody, requestOptions);
         System.out.println(response.getValue().toString());
 
     }

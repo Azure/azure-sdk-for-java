@@ -17,7 +17,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.SyncPoller;
 
 /** Initializes a new instance of the synchronous AnomalyDetectorClient type. */
 @ServiceClient(builder = AnomalyDetectorClientBuilder.class)
@@ -681,13 +680,13 @@ public final class AnomalyDetectorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of detection results for the given resultId.
+     * @return detection results for the given resultId along with {@link Response}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDetectMultivariateBatchAnomaly(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> detectMultivariateBatchAnomalyWithResponse(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.beginDetectMultivariateBatchAnomaly(modelId, body, requestOptions).getSyncPoller();
+        return this.client.detectMultivariateBatchAnomalyWithResponse(modelId, body, requestOptions).block();
     }
 
     /**

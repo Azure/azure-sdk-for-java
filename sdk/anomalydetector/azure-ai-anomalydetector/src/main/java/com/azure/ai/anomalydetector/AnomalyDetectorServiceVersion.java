@@ -10,7 +10,7 @@ import com.azure.core.util.ServiceVersion;
 /** Service version of AnomalyDetectorClient. */
 public enum AnomalyDetectorServiceVersion implements ServiceVersion {
     /** Enum value v1.1. */
-    V1_1("v1.1");
+    VV1_1("v1.1");
 
     private final String version;
 
@@ -30,6 +30,6 @@ public enum AnomalyDetectorServiceVersion implements ServiceVersion {
      * @return The latest {@link AnomalyDetectorServiceVersion}.
      */
     public static AnomalyDetectorServiceVersion getLatest() {
-        return V1_1;
+        return VV1_1;
     }
 }

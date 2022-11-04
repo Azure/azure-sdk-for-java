@@ -78,7 +78,7 @@ public class MultivariateSample {
 
     private static UUID createModel(AnomalyDetectorClient client, BinaryData body) {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.createMultivariateModelWithResponse(body, requestOptions);
+        Response<BinaryData> response = client.createAndTrainMultivariateModelWithResponse(body, requestOptions);
         String header = response.getHeaders().get("Location").getValue();
         String[] modelIds = header.split("/");
         UUID modelId = UUID.fromString(modelIds[modelIds.length - 1]);
@@ -99,7 +99,7 @@ public class MultivariateSample {
 
     private static UUID getResultId(AnomalyDetectorClient client, BinaryData body, UUID modelId) {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.batchDetectAnomalyWithResponse(modelId.toString(), body, requestOptions);
+        Response<BinaryData> response = client.detectMultivariateBatchAnomalyWithResponse(modelId.toString(), body, requestOptions);
         String responseBodyStr = response.getValue().toString();
         JsonObject jsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
         UUID resultId = UUID.fromString(jsonObject.getString("resultId"));
@@ -108,7 +108,7 @@ public class MultivariateSample {
 
     private static String getInferenceStatus(AnomalyDetectorClient client, UUID resultId) {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getBatchDetectionResultWithResponse(resultId.toString(), requestOptions);
+        Response<BinaryData> response = client.getMultivariateBatchDetectionResultWithResponse(resultId.toString(), requestOptions);
         String responseBodyStr = response.getValue().toString();
         JsonObject jsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
         String status = jsonObject.getJsonObject("summary").getString("status");
@@ -119,7 +119,7 @@ public class MultivariateSample {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("skip", skip.toString())
             .addQueryParam("top", top.toString());
-        PagedIterable<BinaryData> response = client.listMultivariateModel(requestOptions);
+        PagedIterable<BinaryData> response = client.listMultivariateModels(requestOptions);
 
         Iterator<PagedResponse<BinaryData>> ite = response.iterableByPage().iterator();
         int i = 1;
@@ -136,14 +136,17 @@ public class MultivariateSample {
 
     private static Response<BinaryData> GetLastDetectResult(AnomalyDetectorClient client, BinaryData body, UUID modelId){
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.lastDetectAnomalyWithResponse(modelId.toString(), body, requestOptions);
+        Response<BinaryData> response = client.detectMultivariateLastAnomalyWithResponse(modelId.toString(), body, requestOptions);
 
         return response;
     }
 
     public static void Run(BinaryData trainBody, BinaryData beginInferBody) throws Exception {
-        String endpoint = "<anomaly-detector-resource-endpoint>";
-        String key = "<anomaly-detector-resource-key>";
+//        String endpoint = "<anomaly-detector-resource-endpoint>";
+//        String key = "<anomaly-detector-resource-key>";
+        String endpoint = "https://multi-ad-test-uscx.cognitiveservices.azure.com/";
+        String key = "7fbc448065f54affa3515f2affb979d5";
+
         // Get multivariate client
         AnomalyDetectorClient client = getClient(endpoint, key);
 
@@ -158,6 +161,7 @@ public class MultivariateSample {
                 System.out.println("READY");
                 break;
             }else if(modelStatus == ModelStatus.FAILED){
+                System.out.println("FAILED");
                 throw new Exception(modelInfo.getJsonArray("errors").getString(0));
             }
             System.out.println("TRAINING");
@@ -226,7 +230,7 @@ public class MultivariateSample {
         // test OneTable
         System.out.println("============================= Test OneTable =============================================");
         BinaryData trainBodyOneTable = BinaryData.fromString("{\"slidingWindow\":200,\"alignPolicy\":{\"alignMode\":\"Outer\",\"fillNAMethod\":\"Linear\",\"paddingValue\":0},\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-onetable/sample_data_20_3000.csv\",\"dataSchema\":\"OneTable\",\"startTime\":\"2021-01-02T00:00:00Z\",\"endTime\":\"2021-01-02T05:00:00Z\",\"displayName\":\"SampleRequest\"}");
-        BinaryData beginInferBodyOneTable = BinaryData.fromString("{\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000\",\"topContributorCount\":10,\"startTime\":\"2021-01-01T00:00:00Z\",\"endTime\":\"2021-01-01T12:00:00Z\"}");
+        BinaryData beginInferBodyOneTable = BinaryData.fromString("{\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-onetable/sample_data_20_3000.csv\",\"topContributorCount\":10,\"startTime\":\"2021-01-01T00:00:00Z\",\"endTime\":\"2021-01-01T12:00:00Z\"}");
         Run(trainBodyOneTable, beginInferBodyOneTable);
 
     }

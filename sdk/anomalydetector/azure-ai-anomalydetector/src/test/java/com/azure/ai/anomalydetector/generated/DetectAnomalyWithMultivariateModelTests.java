@@ -6,9 +6,8 @@
 package com.azure.ai.anomalydetector.generated;
 
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -21,10 +20,19 @@ public final class DetectAnomalyWithMultivariateModelTests extends AnomalyDetect
                 BinaryData.fromString(
                         "{\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"endTime\":\"2019-04-01T00:40:00Z\",\"startTime\":\"2019-04-01T00:15:00Z\",\"topContributorCount\":10}");
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
-                anomalyDetectorClient.beginDetectMultivariateBatchAnomaly(
+        Response<BinaryData> response =
+                anomalyDetectorClient.detectMultivariateBatchAnomalyWithResponse(
                         "45aad126-aafd-11ea-b8fb-d89ef3400c5f", body, requestOptions);
+        Assertions.assertEquals(202, response.getStatusCode());
         Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+                "{Endpoint}/anomalydetector/v1.1/multivariate/detect-batch/",
+                response.getHeaders().get("Operation-Location").getValue());
+        Assertions.assertEquals(
+                "663884e6-b117-11ea-b3de-0242ac130004", response.getHeaders().get("Operation-Id").getValue());
+        Assertions.assertEquals(
+                BinaryData.fromString(
+                                "{\"resultId\":\"663884e6-b117-11ea-b3de-0242ac130004\",\"results\":[],\"summary\":{\"errors\":[],\"setupInfo\":{\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"endTime\":\"2021-01-01T00:29:00Z\",\"startTime\":\"2021-01-01T00:00:00Z\",\"topContributorCount\":10},\"status\":\"CREATED\"}}")
+                        .toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }
