@@ -147,31 +147,30 @@ class RecognizeLinkedEntityAsyncClient {
         inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
         final Context finalContext = getNotNullContext(context)
-                                         .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
         final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
         final String finalModelVersion = options.getModelVersion();
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
         final boolean finalIncludeStatistics = options.isIncludeStatistics();
         if (service != null) {
-            return service
-                       .analyzeTextWithResponseAsync(
-                           new AnalyzeTextEntityLinkingInput()
-                               .setParameters(
-                                   new EntityLinkingTaskParameters()
-                                                                     .setStringIndexType(finalStringIndexType)
-                                                                     .setModelVersion(finalModelVersion)
-                                                                     .setLoggingOptOut(finalLoggingOptOut))
-                               .setAnalysisInput(
-                                   new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                           finalIncludeStatistics,
-                           finalContext)
-                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
-                           getDocumentCount(documents)))
-                       .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
-                           response.getValue()))
-                       .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
-                       .map(Utility::toRecognizeLinkedEntitiesResultCollection)
-                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+            return service.analyzeTextWithResponseAsync(
+                new AnalyzeTextEntityLinkingInput()
+                    .setParameters(
+                        new EntityLinkingTaskParameters()
+                            .setStringIndexType(finalStringIndexType)
+                            .setModelVersion(finalModelVersion)
+                            .setLoggingOptOut(finalLoggingOptOut))
+                    .setAnalysisInput(
+                        new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                finalIncludeStatistics,
+                finalContext)
+                .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                    getDocumentCount(documents)))
+                .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
+                    response.getValue()))
+                .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
+                .map(Utility::toRecognizeLinkedEntitiesResultCollectionResponseLanguageApi)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
         return legacyService.entitiesLinkingWithResponseAsync(
@@ -181,13 +180,13 @@ class RecognizeLinkedEntityAsyncClient {
             finalLoggingOptOut,
             finalStringIndexType,
             finalContext)
-                   .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
-                       getDocumentCount(documents)))
-                   .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
-                       response.getValue()))
-                   .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
-                   .map(Utility::toRecognizeLinkedEntitiesResultCollectionResponse)
-                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                getDocumentCount(documents)))
+            .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
+                response.getValue()))
+            .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
+            .map(Utility::toRecognizeLinkedEntitiesResultCollectionResponseLegacyApi)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
     private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
