@@ -100,6 +100,9 @@ public class ChecksumUtils {
     }
 
     public static UploadTransferValidationOptions md5ToOptions(byte[] md5) {
+        if (md5 == null) {
+            return null;
+        }
         return new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
             .setPrecalculatedChecksum(CoreUtils.clone(md5));
     }
@@ -107,6 +110,6 @@ public class ChecksumUtils {
     public static DownloadTransferValidationOptions requestMd5ToOptions(boolean requestMd5) {
         return requestMd5
             ? new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
-            : new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.None);
+            : null;
     }
 }

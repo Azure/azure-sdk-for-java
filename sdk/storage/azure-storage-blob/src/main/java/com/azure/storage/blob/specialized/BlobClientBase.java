@@ -53,7 +53,9 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.DownloadTransferValidationOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.ChecksumUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -332,6 +334,8 @@ public class BlobClientBase {
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
         BlobRequestConditions requestConditions = options.getRequestConditions() == null
             ? new BlobRequestConditions() : options.getRequestConditions();
+        DownloadTransferValidationOptions finalValidation = options.getTransferValidation() == null
+            ? this.client.getValidationOptions().getDownload() : options.getTransferValidation();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
@@ -339,7 +343,8 @@ public class BlobClientBase {
         com.azure.storage.common.ParallelTransferOptions parallelTransferOptions =
             new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (chunkRange, conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
+            (chunkRange, conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions,
+                finalValidation, contextFinal);
         return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
                 BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
@@ -883,7 +888,8 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
+            .downloadStreamWithResponse(range, options, requestConditions,
+                ChecksumUtils.requestMd5ToOptions(getRangeContentMd5), context)
             .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
                 .thenReturn(new BlobDownloadResponse(response)));
 
@@ -925,7 +931,7 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(
         DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<BlobDownloadContentResponse> download = client
-            .downloadStreamWithResponse(null, options, requestConditions, false, context)
+            .downloadStreamWithResponse(null, options, requestConditions, null, context)
             .flatMap(r ->
                 BinaryData.fromFlux(r.getValue())
                     .map(data ->

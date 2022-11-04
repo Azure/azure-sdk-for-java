@@ -249,10 +249,18 @@ public class BlockBlobSimpleUploadOptions {
         return this;
     }
 
+    /**
+     * @return Transfer validation options for this operation.
+     */
     public UploadTransferValidationOptions getTransferValidation() {
         return transferValidation;
     }
 
+    /**
+     *
+     * @param transferValidation Transfer validation options to use on this operation.
+     * @return The updated options.
+     */
     public BlockBlobSimpleUploadOptions setTransferValidation(UploadTransferValidationOptions transferValidation) {
         this.transferValidation = transferValidation;
         return this;

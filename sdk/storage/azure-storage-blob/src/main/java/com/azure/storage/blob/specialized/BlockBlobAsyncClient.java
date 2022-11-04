@@ -36,11 +36,13 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.*;
+import com.azure.storage.common.implementation.ChecksumUtils;
+import com.azure.storage.common.implementation.ChecksumValue;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -434,7 +436,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        // TODO will this always be non-null?
+        // TODO (jaschrep): will this always be non-null?
         UploadTransferValidationOptions validationOptions = options.getTransferValidation() != null
             ? options.getTransferValidation() : this.getValidationOptions().getUpload();
 
@@ -442,8 +444,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             .flatMap(tuple2 -> {
                 BinaryData bData = tuple2.getT1();
                 ChecksumValue finalValidation = tuple2.getT2();
-                // TODO get crc in generated put blob
-                if (finalValidation.getCrc64() != null) throw new UnsupportedOperationException("crc not in generated code");
+                // TODO (jaschrep): get crc in generated put blob
+                if (finalValidation.getCrc64() != null) {
+                    throw LOGGER.logExceptionAsError(new UnsupportedOperationException("crc not in generated code"));
+                }
                 return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
                     options.getLength(), bData, null, finalValidation.getMd5(), options.getMetadata(),
                     requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
@@ -773,7 +777,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Objects.requireNonNull(data.getLength(), "data must have defined length");
         Context finalContext = context == null ? Context.NONE : context;
 
-        // TODO will this always be non-null?
+        // TODO (jaschrep): will this always be non-null?
         UploadTransferValidationOptions validationOptions = transferValidation != null
             ? transferValidation : this.getValidationOptions().getUpload();
 

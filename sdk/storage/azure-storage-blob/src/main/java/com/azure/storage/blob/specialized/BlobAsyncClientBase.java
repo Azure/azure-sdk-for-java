@@ -79,8 +79,15 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.*;
-import com.azure.storage.common.implementation.*;
+import com.azure.storage.common.DownloadTransferValidationOptions;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TransferValidationOptions;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.ChecksumUtils;
+import com.azure.storage.common.implementation.ChecksumValue;
+import com.azure.storage.common.implementation.DownloadChecksumRequest;
+import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -503,7 +510,7 @@ public class BlobAsyncClientBase {
 
     /**
      * Gets the trasnfer validation options on this client.
-     * @return
+     * @return This client's validation options.
      */
     final TransferValidationOptions getValidationOptions() {
         return this.validationOptions;
@@ -1293,7 +1300,7 @@ public class BlobAsyncClientBase {
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, DownloadTransferValidationOptions transferValidation, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
-        //TODO is this always non-null?
+        //TODO (jaschrep): is this always non-null?
         DownloadTransferValidationOptions finalValidationOptions = transferValidation != null
             ? transferValidation : getValidationOptions().getDownload();
         DownloadChecksumRequest requestChecksum = new DownloadChecksumRequest(

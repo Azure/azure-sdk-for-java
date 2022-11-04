@@ -9,7 +9,7 @@ import java.util.Objects;
  * Options for additional content integrity checks on download.
  */
 public class DownloadTransferValidationOptions {
-    private StorageChecksumAlgorithm checksumAlgorithm = StorageChecksumAlgorithm.Auto;
+    private StorageChecksumAlgorithm checksumAlgorithm = StorageChecksumAlgorithm.None;
     private boolean autoValidateChecksum = true;
 
     /**

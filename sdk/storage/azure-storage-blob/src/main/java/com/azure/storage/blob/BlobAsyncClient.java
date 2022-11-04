@@ -195,6 +195,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
      * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @param validation Transfer validation options for this client.
      */
     protected BlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
                               String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,

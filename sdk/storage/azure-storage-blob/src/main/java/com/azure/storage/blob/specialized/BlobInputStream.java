@@ -74,7 +74,7 @@ public final class BlobInputStream extends StorageInputStream {
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
             ByteBuffer currentBuffer = this.blobClient.downloadStreamWithResponse(
-                new BlobRange(offset, (long) readLength), null, this.accessCondition, false, this.context)
+                new BlobRange(offset, (long) readLength), null, this.accessCondition, null, this.context)
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
                 .block();
 

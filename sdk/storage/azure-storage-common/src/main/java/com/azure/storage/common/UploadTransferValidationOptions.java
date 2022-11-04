@@ -7,7 +7,7 @@ package com.azure.storage.common;
  * Options for additional content integrity checks on upload.
  */
 public class UploadTransferValidationOptions {
-    private StorageChecksumAlgorithm checksumAlgorithm = StorageChecksumAlgorithm.Auto;
+    private StorageChecksumAlgorithm checksumAlgorithm = StorageChecksumAlgorithm.None;
     private byte[] precalculatedChecksum;
 
     /**
