@@ -282,10 +282,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return NOOP_CLOSEABLE;
         }
 
-        io.opentelemetry.context.Context traceContext = getTraceContextOrDefault(context, null);
-        if (traceContext == null) {
-            return NOOP_CLOSEABLE;
-        }
+        io.opentelemetry.context.Context traceContext = getTraceContextOrDefault(context, io.opentelemetry.context.Context.root());
         return traceContext.makeCurrent();
     }
 
