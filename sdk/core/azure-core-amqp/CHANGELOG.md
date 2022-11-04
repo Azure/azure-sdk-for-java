@@ -1,10 +1,6 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.8.0 (2022-11-04)
 
 ### Bugs Fixed
 
@@ -12,6 +8,12 @@
 - Enabling HTTP Proxy for custom endpoint and updating Proxy CONNECT request to use the actual front-end host ([31826](https://github.com/Azure/azure-sdk-for-java/issues/31826))
 
 ### Other Changes
+
+- 
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
 
 ## 2.7.2 (2022-10-07)
 

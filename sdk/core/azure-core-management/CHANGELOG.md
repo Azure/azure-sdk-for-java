@@ -1,14 +1,14 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.9.0 (2022-11-04)
 
 ### Other Changes
+
+- Deprecated empty argument constructor in `ExpandableStringEnum` subtypes.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
 
 ## 1.8.1 (2022-10-07)
 
