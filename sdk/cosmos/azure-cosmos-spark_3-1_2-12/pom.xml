@@ -40,6 +40,23 @@
   </developers>
   <properties>
     <cosmos.spark.skip>false</cosmos.spark.skip>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/java.lang=ALL-UNNAMED
+      --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+      --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+      --add-opens java.base/java.io=ALL-UNNAMED
+      --add-opens java.base/java.net=ALL-UNNAMED
+      --add-opens java.base/java.nio=ALL-UNNAMED
+      --add-opens java.base/java.util=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
+      --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/sun.nio.cs=ALL-UNNAMED
+      --add-opens java.base/sun.security.action=ALL-UNNAMED
+      --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
   <build>
     <plugins>
@@ -110,6 +127,22 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
+              <argLine>
+                --add-exports java.base/sun.nio.ch=ALL-UNNAMED
+                --add-opens java.base/java.lang=ALL-UNNAMED
+                --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+                --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+                --add-opens java.base/java.io=ALL-UNNAMED
+                --add-opens java.base/java.net=ALL-UNNAMED
+                --add-opens java.base/java.nio=ALL-UNNAMED
+                --add-opens java.base/java.util=ALL-UNNAMED
+                --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+                --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
+                --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+                --add-opens java.base/sun.nio.cs=ALL-UNNAMED
+                --add-opens java.base/sun.security.action=ALL-UNNAMED
+                --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+              </argLine>
               <includes>
                 <include>**/*.*</include>
                 <include>**/*Test.*</include>
@@ -124,6 +157,22 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
+              <argLine>
+                --add-exports java.base/sun.nio.ch=ALL-UNNAMED
+                --add-opens java.base/java.lang=ALL-UNNAMED
+                --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+                --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+                --add-opens java.base/java.io=ALL-UNNAMED
+                --add-opens java.base/java.net=ALL-UNNAMED
+                --add-opens java.base/java.nio=ALL-UNNAMED
+                --add-opens java.base/java.util=ALL-UNNAMED
+                --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+                --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
+                --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+                --add-opens java.base/sun.nio.cs=ALL-UNNAMED
+                --add-opens java.base/sun.security.action=ALL-UNNAMED
+                --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+              </argLine>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
