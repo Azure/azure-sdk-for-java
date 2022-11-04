@@ -546,7 +546,6 @@ set of documents. Currently, the supported features are:
 - Custom Entity Recognition (API version 2022-05-01 and newer)
 - Custom Single-Label Classification (API version 2022-05-01 and newer)
 - Custom Multi-Label Classification (API version 2022-05-01 and newer)
-- Dynamic Text Classification (API version 2022-10-01-preview and newer)
 - Abstractive Text Summarization (API version 2022-10-01-preview and newer)
 - Extractive Text Summarization (API version 2022-10-01-preview and newer)
 
