@@ -485,8 +485,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void getTopicDoesNotExist() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-99"
-            : getEntityName(getTopicBaseName(), 99);
+            ? "topic-127"
+            : getEntityName(getTopicBaseName(), 127);
 
         assertThrows(ResourceNotFoundException.class, () -> client.getTopic(topicName),
             "Topic exists! But should not. Incorrect getTopic behavior");
@@ -504,8 +504,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void getTopicExistsFalse() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-99"
-            : getEntityName(getTopicBaseName(), 99);
+            ? "topic-127"
+            : getEntityName(getTopicBaseName(), 127);
 
         assertFalse(client.getTopicExists(topicName));
     }
