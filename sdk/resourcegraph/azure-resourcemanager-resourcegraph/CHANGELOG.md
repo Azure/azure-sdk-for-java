@@ -1,14 +1,56 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2022-11-04)
+
+- Azure Resource Manager ResourceGraph client library for Java. This package contains Microsoft Azure SDK for ResourceGraph Management SDK. Azure Resource Graph API Reference. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ResourcesHistoryRequest` was added
 
-### Bugs Fixed
+* `models.ResourceSnapshotData` was added
 
-### Other Changes
+* `models.ResourcesHistoryRequestOptions` was added
+
+* `models.DateTimeInterval` was added
+
+* `models.ChangeCategory` was added
+
+* `models.ResourceChangeDetailsRequestParameters` was added
+
+* `models.ResourceChangeData` was added
+
+* `models.ResourceChangeDataAfterSnapshot` was added
+
+* `models.ResourcePropertyChange` was added
+
+* `models.ResourceChangesRequestParameters` was added
+
+* `models.AuthorizationScopeFilter` was added
+
+* `models.ChangeType` was added
+
+* `models.ResourceChangesRequestParametersInterval` was added
+
+* `models.ResourceChangeDataBeforeSnapshot` was added
+
+* `models.PropertyChangeType` was added
+
+* `models.ResourceChangeList` was added
+
+#### `models.ResourceProviders` was modified
+
+* `resourceChangeDetailsWithResponse(models.ResourceChangeDetailsRequestParameters,com.azure.core.util.Context)` was added
+* `resourceChanges(models.ResourceChangesRequestParameters)` was added
+* `resourcesHistoryWithResponse(models.ResourcesHistoryRequest,com.azure.core.util.Context)` was added
+* `resourceChangeDetails(models.ResourceChangeDetailsRequestParameters)` was added
+* `resourcesHistory(models.ResourcesHistoryRequest)` was added
+* `resourceChangesWithResponse(models.ResourceChangesRequestParameters,com.azure.core.util.Context)` was added
+
+#### `models.QueryRequestOptions` was modified
+
+* `withAuthorizationScopeFilter(models.AuthorizationScopeFilter)` was added
+* `authorizationScopeFilter()` was added
 
 ## 1.0.0 (2022-11-02)
 
