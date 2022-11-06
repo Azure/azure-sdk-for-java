@@ -290,12 +290,9 @@ public class EventGridCustomization extends Customization {
     public void replaceClassAnnotation(LibraryCustomization customization) {
         // HealthcareFhirResource events
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
-        packageModels.getClass("HealthcareFhirResourceCreatedEventData").removeAnnotation("@Immutable")
-            .addAnnotation("@Fluent");
-        packageModels.getClass("HealthcareFhirResourceDeletedEventData").removeAnnotation("@Immutable")
-            .addAnnotation("@Fluent");
-        packageModels.getClass("HealthcareFhirResourceUpdatedEventData").removeAnnotation("@Immutable")
-            .addAnnotation("@Fluent");
+        packageModels.getClass("HealthcareFhirResourceCreatedEventData").removeAnnotation("@Immutable");
+        packageModels.getClass("HealthcareFhirResourceDeletedEventData").removeAnnotation("@Immutable");
+        packageModels.getClass("HealthcareFhirResourceUpdatedEventData").removeAnnotation("@Immutable");
         // Communication events
         packageModels.getClass("AcsUserDisconnectedEventData").removeAnnotation("@Fluent")
             .addAnnotation("@Immutable");
