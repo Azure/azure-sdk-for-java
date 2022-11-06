@@ -33,6 +33,8 @@ import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdRespons
 import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
+
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -215,7 +217,7 @@ public final class SchemasImpl {
      * @return a registered schema by its unique ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Flux<ByteBuffer>> getByIdAsync(String id) {
+    public Mono<InputStream> getByIdAsync(String id) {
         return getByIdWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -233,7 +235,7 @@ public final class SchemasImpl {
      * @return a registered schema by its unique ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Flux<ByteBuffer>> getByIdAsync(String id, Context context) {
+    public Mono<InputStream> getByIdAsync(String id, Context context) {
         return getByIdWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -284,9 +286,7 @@ public final class SchemasImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Integer> getVersionsAsync(String groupName, String schemaName) {
-        return new PagedFlux<>(
-                () -> getVersionsSinglePageAsync(groupName, schemaName),
-                nextLink -> getVersionsNextSinglePageAsync(nextLink, context));
+        return getVersionsAsync(groupName, schemaName, Context.NONE);
     }
 
     /**
@@ -386,7 +386,7 @@ public final class SchemasImpl {
      * @return one specific version of one schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Flux<ByteBuffer>> getSchemaVersionAsync(String groupName, String schemaName, int schemaVersion) {
+    public Mono<InputStream> getSchemaVersionAsync(String groupName, String schemaName, int schemaVersion) {
         return getSchemaVersionWithResponseAsync(groupName, schemaName, schemaVersion)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -407,7 +407,7 @@ public final class SchemasImpl {
      * @return one specific version of one schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Flux<ByteBuffer>> getSchemaVersionAsync(
+    public Mono<InputStream> getSchemaVersionAsync(
             String groupName, String schemaName, int schemaVersion, Context context) {
         return getSchemaVersionWithResponseAsync(groupName, schemaName, schemaVersion, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
