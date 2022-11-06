@@ -16,7 +16,7 @@ public enum ContentType {
     APPLICATION_JSON_SERIALIZATION_JSON("application/json; serialization=json"),
 
     /** Enum value text/plain; charset=utf-8. */
-    TEXT_PLAIN_CHARSET_UTF8("text/plain; charset=utf-8");
+    TEXT_PLAIN_CHARSET_UTF8("application/octet-stream");
 
     /** The actual serialized value for a ContentType instance. */
     private final String value;
