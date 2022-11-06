@@ -193,7 +193,7 @@ public final class KeyVaultSettingsClient {
     public KeyVaultListSettingsResult listSettings() {
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-        this.implClient.getSettings(vaultUrl).getValue()
+        this.implClient.getSettings(vaultUrl).getSettings()
             .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
 
         return new KeyVaultListSettingsResult(keyVaultSettings);
@@ -214,7 +214,7 @@ public final class KeyVaultSettingsClient {
         Response<SettingsListResult> response = this.implClient.getSettingsWithResponse(vaultUrl, context);
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-        response.getValue().getValue()
+        response.getValue().getSettings()
             .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
 
         return new SimpleResponse<>(response, new KeyVaultListSettingsResult(keyVaultSettings));

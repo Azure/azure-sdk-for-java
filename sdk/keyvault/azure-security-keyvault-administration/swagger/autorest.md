@@ -78,4 +78,9 @@ These settings apply only when `--tag=settings` is specified on the command line
 input-file: https://github.com/Azure/azure-rest-api-specs/tree/d78681a9d322bbd8d33ecaad7e6aaa2d513513b4/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
 title: KeyVaultSettingsClient
 sync-methods: all
+directive:
+- where-model: SettingsListResult
+  rename-property:
+    from: value
+    to: settings
 ```

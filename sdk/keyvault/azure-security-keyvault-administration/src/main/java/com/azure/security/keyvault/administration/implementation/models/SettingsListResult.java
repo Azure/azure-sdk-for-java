@@ -14,18 +14,18 @@ public final class SettingsListResult {
     /*
      * A response message containing a list of account settings with their associated value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Setting> value;
+    @JsonProperty(value = "settings", access = JsonProperty.Access.WRITE_ONLY)
+    private List<Setting> settings;
 
     /** Creates an instance of SettingsListResult class. */
     public SettingsListResult() {}
 
     /**
-     * Get the value property: A response message containing a list of account settings with their associated value.
+     * Get the settings property: A response message containing a list of account settings with their associated value.
      *
-     * @return the value value.
+     * @return the settings value.
      */
-    public List<Setting> getValue() {
-        return this.value;
+    public List<Setting> getSettings() {
+        return this.settings;
     }
 }

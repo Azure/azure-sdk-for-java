@@ -245,7 +245,7 @@ public final class KeyVaultSettingsAsyncClient {
                 .map(settingsListResult -> {
                     List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-                    settingsListResult.getValue().forEach(setting ->
+                    settingsListResult.getSettings().forEach(setting ->
                         keyVaultSettings.add(transformToKeyVaultSetting(setting)));
 
                     return new KeyVaultListSettingsResult(keyVaultSettings);
@@ -274,7 +274,7 @@ public final class KeyVaultSettingsAsyncClient {
                 .map(response -> {
                     List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-                    response.getValue().getValue().forEach(setting ->
+                    response.getValue().getSettings().forEach(setting ->
                         keyVaultSettings.add(transformToKeyVaultSetting(setting)));
 
                     return new SimpleResponse<>(response, new KeyVaultListSettingsResult(keyVaultSettings));
