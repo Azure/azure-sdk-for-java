@@ -11,16 +11,18 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
+import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
+import com.azure.security.keyvault.administration.models.KeyVaultListSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
-import com.azure.security.keyvault.administration.models.KeyVaultListSettingsResult;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -52,27 +54,37 @@ public final class KeyVaultSettingsAsyncClient {
     }
 
     /**
-     * Updates a given account setting with the provided value.
+     * Updates a given {@link KeyVaultSetting account setting}.
      *
-     * @param name The name of the account setting to update.
-     * @param value The value to set.
+     * @param setting The {@link KeyVaultSetting account setting} to update.
      *
      * @return A {@link Mono} containing the updated {@link KeyVaultSetting account setting}.
      *
+     * @throws NullPointerException if {@code setting} is {@code null}.
      * @throws IllegalArgumentException thrown if {@code name} or {@code value} is {@code null} or empty.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultSetting> updateSetting(String name, String value) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
+    public Mono<KeyVaultSetting> updateSetting(KeyVaultSetting setting) {
+        Objects.requireNonNull(setting,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'setting'"));
+
+        if (CoreUtils.isNullOrEmpty(setting.getName())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Setting name cannot be null or empty"));
+        }
+
+        String settingValueAsString = null;
+
+        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+            settingValueAsString = setting.asBoolean().toString();
         }
 
         try {
-            return this.implClient.updateSettingAsync(vaultUrl, name, value)
-                .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", name))
-                .doOnSuccess(response -> logger.verbose("Updated account setting - {}", name))
-                .doOnError(error -> logger.warning("Failed updating account setting - {}", name, error))
+            return this.implClient.updateSettingAsync(vaultUrl, setting.getName(), settingValueAsString)
+                .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", setting.getName()))
+                .doOnSuccess(response -> logger.verbose("Updated account setting - {}", setting.getName()))
+                .doOnError(error -> logger.warning("Failed updating account setting - {}", setting.getName(), error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultSettingsAsyncClient::transformToKeyVaultSetting);
         } catch (RuntimeException e) {
@@ -81,57 +93,39 @@ public final class KeyVaultSettingsAsyncClient {
     }
 
     /**
-     * Updates a given account setting with the provided value.
+     * Updates a given {@link KeyVaultSetting account setting}.
      *
-     * @param name The name of the account setting to update.
-     * @param value The value to set.
-     *
-     * @return A {@link Mono} containing the updated {@link KeyVaultSetting account setting}.
-     *
-     * @throws IllegalArgumentException thrown if {@code name} or {@code value} is {@code null} or empty.
-     * @throws KeyVaultErrorException thrown if the request is rejected by the server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultSetting> updateSetting(String name, boolean value) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
-        }
-
-        try {
-            return this.implClient.updateSettingAsync(vaultUrl, name, Boolean.toString(value))
-                .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", name))
-                .doOnSuccess(response -> logger.verbose("Updated account setting - {}", name))
-                .doOnError(error -> logger.warning("Failed updating account setting - {}", name, error))
-                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultSettingsAsyncClient::transformToKeyVaultSetting);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    /**
-     * Updates a given account setting with the provided value.
-     *
-     * @param name The name of the setting to update.
-     * @param value The value to set.
+     * @param setting The {@link KeyVaultSetting account setting} to update.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the updated
      * {@link KeyVaultSetting account setting}.
      *
+     * @throws NullPointerException if {@code setting} is {@code null}.
      * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultSetting>> updateSettingWithResponse(String name, String value) {
-        if (CoreUtils.isNullOrEmpty(name)) {
+    public Mono<Response<KeyVaultSetting>> updateSettingWithResponse(KeyVaultSetting setting) {
+        Objects.requireNonNull(setting,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'setting'"));
+
+
+        if (CoreUtils.isNullOrEmpty(setting.getName())) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
         }
 
+        String settingValueAsString = null;
+
+        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+            settingValueAsString = setting.asBoolean().toString();
+        }
+
         try {
-            return this.implClient.updateSettingWithResponseAsync(vaultUrl, name, value)
-                .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", name))
-                .doOnSuccess(response -> logger.verbose("Updated account setting - {}", name))
-                .doOnError(error -> logger.warning("Failed updating account setting - {}", name, error))
+            return this.implClient.updateSettingWithResponseAsync(vaultUrl, setting.getName(), settingValueAsString)
+                .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", setting.getName()))
+                .doOnSuccess(response -> logger.verbose("Updated account setting - {}", setting.getName()))
+                .doOnError(error -> logger.warning("Failed updating account setting - {}", setting.getName(), error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> new SimpleResponse<>(response, transformToKeyVaultSetting(response.getValue())));
         } catch (RuntimeException e) {

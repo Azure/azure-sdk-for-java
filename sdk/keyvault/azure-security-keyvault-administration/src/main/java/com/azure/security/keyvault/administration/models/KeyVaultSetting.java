@@ -35,6 +35,18 @@ public final class KeyVaultSetting {
     }
 
     /**
+     * Creates a new {@link KeyVaultSetting setting} with the specified details.
+     *
+     * @param name The name of the {@link KeyVaultSetting setting}.
+     * @param value The value of the {@link KeyVaultSetting setting}.
+     */
+    public KeyVaultSetting(String name, Boolean value) {
+        this.name = name;
+        this.value = value;
+        this.type = KeyVaultSettingType.BOOLEAN;
+    }
+
+    /**
      * Gets the name of the {@link KeyVaultSetting}.
      *
      * @return The name of the {@link KeyVaultSetting}.
@@ -44,9 +56,9 @@ public final class KeyVaultSetting {
     }
 
     /**
-     * Get the value of the {@link KeyVaultSetting}.
+     * Get the value of the {@link KeyVaultSetting} as a {@link Boolean}.
      *
-     * @return The value of the {@link KeyVaultSetting}.
+     * @return The value of the {@link KeyVaultSetting} as a {@link Boolean}.
      */
     public Boolean asBoolean() {
         if (type != KeyVaultSettingType.BOOLEAN) {

@@ -11,15 +11,18 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
 import com.azure.security.keyvault.administration.implementation.models.SettingsListResult;
-import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 import com.azure.security.keyvault.administration.models.KeyVaultListSettingsResult;
+import com.azure.security.keyvault.administration.models.KeyVaultSetting;
+import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The {@link KeyVaultSettingsClient} provides asynchronous methods to create, update, get and list
@@ -48,94 +51,66 @@ public final class KeyVaultSettingsClient {
     }
 
     /**
-     * Updates a given account setting with the provided value.
+     * Updates a given {@link KeyVaultSetting account setting}.
      *
-     * @param name The name of the account setting to update.
-     * @param value The value to set.
+     * @param setting The {@link KeyVaultSetting account setting} to update.
      *
      * @return The updated {@link KeyVaultSetting account setting}.
      *
+     * @throws NullPointerException if {@code setting} is {@code null}.
      * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultSetting updateSetting(String name, String value) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
+    public KeyVaultSetting updateSetting(KeyVaultSetting setting) {
+        Objects.requireNonNull(setting,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'setting'"));
+
+        if (CoreUtils.isNullOrEmpty(setting.getName())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Setting name cannot be null or empty"));
+        }
+
+        String settingValueAsString = null;
+
+        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+            settingValueAsString = setting.asBoolean().toString();
         }
 
         return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-            this.implClient.updateSetting(vaultUrl, name, value));
+            this.implClient.updateSetting(vaultUrl, setting.getName(), settingValueAsString));
     }
 
     /**
-     * Updates a given account setting with the provided value.
+     * Updates a given {@link KeyVaultSetting account setting}.
      *
-     * @param name The name of the account setting to update.
-     * @param value The value to set.
-     *
-     * @return The updated {@link KeyVaultSetting account setting}.
-     *
-     * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
-     * @throws KeyVaultErrorException thrown if the request is rejected by the server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultSetting updateSetting(String name, boolean value) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
-        }
-
-        return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-            this.implClient.updateSetting(vaultUrl, name, Boolean.toString(value)));
-    }
-
-    /**
-     * Updates a given account setting with the provided value.
-     *
-     * @param name The name of the setting to update.
-     * @param value The value to set.
+     * @param setting The {@link KeyVaultSetting account setting} to update.
      * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the updated
      * {@link KeyVaultSetting account setting}.
      *
+     * @throws NullPointerException if {@code setting} is {@code null}.
      * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultSetting> updateSettingWithResponse(String name, String value, Context context) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
+    public Response<KeyVaultSetting> updateSettingWithResponse(KeyVaultSetting setting, Context context) {
+        if (CoreUtils.isNullOrEmpty(setting.getName())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Setting name cannot be null or empty"));
         }
 
-        Response<Setting> response = this.implClient.updateSettingWithResponse(vaultUrl, name, value, context);
+        String settingValueAsString = null;
 
-        return new SimpleResponse<>(response, KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
-    }
-
-    /**
-     * Updates a given account setting with the provided value.
-     *
-     * @param name The name of the setting to update.
-     * @param value The value to set.
-     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
-     *
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the updated
-     * {@link KeyVaultSetting account setting}.
-     *
-     * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
-     * @throws KeyVaultErrorException thrown if the request is rejected by the server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultSetting> updateSettingWithResponse(String name, boolean value, Context context) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
+        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+            settingValueAsString = setting.asBoolean().toString();
         }
 
         Response<Setting> response =
-            this.implClient.updateSettingWithResponse(vaultUrl, name, Boolean.toString(value), context);
+            this.implClient.updateSettingWithResponse(vaultUrl, setting.getName(), settingValueAsString, context);
 
-        return new SimpleResponse<>(response, KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
+        return new SimpleResponse<>(response,
+            KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
     }
 
     /**
