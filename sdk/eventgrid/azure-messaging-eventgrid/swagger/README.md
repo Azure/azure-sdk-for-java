@@ -315,6 +315,14 @@ public class EventGridCustomization extends Customization {
 
         replaceClassAnnotation(customization);
         customizeMediaJobOutputAsset(customization);
+        customizeStorageDirectoryDeletedEventData(customization);
+    }
+
+    public void customizeStorageDirectoryDeletedEventData(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("StorageDirectoryDeletedEventData");
+        classCustomization.getMethod("getRecursive").rename("isRecursive").setReturnType("Boolean", "Boolean.getBoolean(%s)");
+        classCustomization.getMethod("setRecursive").replaceParameters("Boolean recursive").replaceBody("this.recursive = String.valueOf(recursive); return this;");
     }
 
     public void customizeMediaJobOutputAsset(LibraryCustomization customization) {
