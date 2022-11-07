@@ -91,7 +91,7 @@ public interface ReactiveCosmosOperations {
      * @param <T>           type class of domainType
      * @return results as Page
      */
-    <T> CosmosPagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType);
+    <T> Mono<CosmosPagedFlux<T>> paginationQuery(CosmosQuery query, Class<T> domainType);
 
     /**
      * Find by id

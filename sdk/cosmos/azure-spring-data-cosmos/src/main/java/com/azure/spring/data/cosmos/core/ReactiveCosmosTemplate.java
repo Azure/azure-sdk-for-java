@@ -292,7 +292,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     @Override
-    public <T> CosmosPagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType) {
+    public <T> Mono<CosmosPagedFlux<T>> paginationQuery(CosmosQuery query, Class<T> domainType) {
         final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
         Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -304,8 +304,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         });
 
         final String containerName = getContainerName(domainType);
-        return cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName)
-            .queryItems(querySpec, cosmosQueryRequestOptions, domainType);
+        Mono<CosmosPagedFlux<T>> result = Mono.just(cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName)
+            .queryItems(querySpec, cosmosQueryRequestOptions, domainType));
+        return result;
     }
 
     /**

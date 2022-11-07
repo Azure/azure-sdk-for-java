@@ -117,7 +117,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
     }
 
     private boolean isCosmosPageQuery() {
-        return method.getMethod().getGenericReturnType().toString().startsWith("com.azure.cosmos.util.CosmosPagedFlux");
+        return method.getMethod().getGenericReturnType().toString().startsWith("reactor.core.publisher.Mono<com.azure.cosmos.util.CosmosPagedFlux");
     }
 
     private boolean isReactiveSingleResultQuery() {

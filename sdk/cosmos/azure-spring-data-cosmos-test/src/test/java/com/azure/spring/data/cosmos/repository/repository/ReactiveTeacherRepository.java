@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.repository.repository;
 
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.spring.data.cosmos.domain.ReactiveTeacher;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import reactor.core.publisher.Mono;
@@ -13,4 +14,6 @@ public interface ReactiveTeacherRepository extends ReactiveCosmosRepository<Reac
     Mono<Boolean> existsByFirstNameIsNotNull();
 
     Mono<Boolean> existsByLastNameIsNull();
+
+    Mono<CosmosPagedFlux<ReactiveTeacher>> findAllByFirstName(String firstName);
 }
