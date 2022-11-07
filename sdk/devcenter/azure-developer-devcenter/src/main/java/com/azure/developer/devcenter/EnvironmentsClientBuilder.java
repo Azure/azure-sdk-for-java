@@ -37,6 +37,7 @@ import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the EnvironmentsClient type. */
@@ -52,7 +53,8 @@ public final class EnvironmentsClientBuilder
     @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://devcenter.azure.com/.default"};
 
     @Generated
-    private final Map<String, String> properties = CoreUtils.getProperties("azure-developer-devcenter.properties");
+    private static final Map<String, String> PROPERTIES =
+            CoreUtils.getProperties("azure-developer-devcenter.properties");
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -131,6 +133,7 @@ public final class EnvironmentsClientBuilder
     @Generated
     @Override
     public EnvironmentsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -272,21 +275,17 @@ public final class EnvironmentsClientBuilder
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -311,7 +310,7 @@ public final class EnvironmentsClientBuilder
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
-                        .clientOptions(clientOptions)
+                        .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
     }

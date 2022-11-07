@@ -25,7 +25,7 @@ class DevBoxTests extends DevCenterClientTestBase {
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
 
         // Tear down the Dev Box when we're finished:
-        SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
+        SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                         devBoxesClient.beginDeleteDevBox(projectName, "me", "TestDevBox", null);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxDeleteResponse.waitForCompletion().getStatus());
