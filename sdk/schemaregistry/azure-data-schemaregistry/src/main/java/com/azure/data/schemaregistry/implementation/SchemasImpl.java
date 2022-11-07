@@ -27,7 +27,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
-import com.azure.data.schemaregistry.implementation.models.SchemaFormat;
+import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
 import com.azure.data.schemaregistry.implementation.models.SchemaVersions;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
@@ -105,7 +105,7 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") SchemaFormat contentType,
+                @HeaderParam("Content-Type") SchemaFormatImpl contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> schemaContent,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -119,7 +119,7 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") SchemaFormat contentType,
+                @HeaderParam("Content-Type") SchemaFormatImpl contentType,
                 @BodyParam("application/octet-stream") BinaryData schemaContent,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -133,7 +133,7 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") SchemaFormat contentType,
+                @HeaderParam("Content-Type") SchemaFormatImpl contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> schemaContent,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -147,7 +147,7 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") SchemaFormat contentType,
+                @HeaderParam("Content-Type") SchemaFormatImpl contentType,
                 @BodyParam("application/octet-stream") BinaryData schemaContent,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -435,7 +435,7 @@ public final class SchemasImpl {
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength) {
         final String accept = "application/json";
@@ -476,7 +476,7 @@ public final class SchemasImpl {
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength,
             Context context) {
@@ -515,7 +515,7 @@ public final class SchemasImpl {
     public Mono<Void> queryIdByContentAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength) {
         return queryIdByContentWithResponseAsync(groupName, schemaName, contentType, schemaContent, contentLength)
@@ -545,7 +545,7 @@ public final class SchemasImpl {
     public Mono<Void> queryIdByContentAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength,
             Context context) {
@@ -576,7 +576,7 @@ public final class SchemasImpl {
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             BinaryData schemaContent,
             long contentLength) {
         final String accept = "application/json";
@@ -617,7 +617,7 @@ public final class SchemasImpl {
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             BinaryData schemaContent,
             long contentLength,
             Context context) {
@@ -656,7 +656,7 @@ public final class SchemasImpl {
     public Mono<Void> queryIdByContentAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             BinaryData schemaContent,
             long contentLength) {
         return queryIdByContentWithResponseAsync(groupName, schemaName, contentType, schemaContent, contentLength)
@@ -686,7 +686,7 @@ public final class SchemasImpl {
     public Mono<Void> queryIdByContentAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             BinaryData schemaContent,
             long contentLength,
             Context context) {
@@ -717,7 +717,7 @@ public final class SchemasImpl {
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength) {
         final String accept = "application/json";
@@ -758,7 +758,7 @@ public final class SchemasImpl {
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength,
             Context context) {
@@ -797,7 +797,7 @@ public final class SchemasImpl {
     public Mono<Void> registerAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength) {
         return registerWithResponseAsync(groupName, schemaName, contentType, schemaContent, contentLength)
@@ -827,7 +827,7 @@ public final class SchemasImpl {
     public Mono<Void> registerAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength,
             Context context) {
@@ -855,7 +855,7 @@ public final class SchemasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
-            String groupName, String schemaName, SchemaFormat contentType, BinaryData schemaContent,
+            String groupName, String schemaName, SchemaFormatImpl contentType, BinaryData schemaContent,
         long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -895,7 +895,7 @@ public final class SchemasImpl {
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             BinaryData schemaContent,
             long contentLength,
             Context context) {
@@ -932,7 +932,7 @@ public final class SchemasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> registerAsync(
-            String groupName, String schemaName, SchemaFormat contentType, BinaryData schemaContent,
+            String groupName, String schemaName, SchemaFormatImpl contentType, BinaryData schemaContent,
         long contentLength) {
         return registerWithResponseAsync(groupName, schemaName, contentType, schemaContent, contentLength)
                 .flatMap(ignored -> Mono.empty());
@@ -961,7 +961,7 @@ public final class SchemasImpl {
     public Mono<Void> registerAsync(
             String groupName,
             String schemaName,
-            SchemaFormat contentType,
+            SchemaFormatImpl contentType,
             BinaryData schemaContent,
             long contentLength,
             Context context) {

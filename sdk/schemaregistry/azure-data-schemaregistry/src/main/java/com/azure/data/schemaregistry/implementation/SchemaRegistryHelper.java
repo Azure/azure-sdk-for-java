@@ -2,7 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.data.schemaregistry.implementation;
 
-import com.azure.data.schemaregistry.implementation.models.*;
+import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 
@@ -59,24 +67,24 @@ public final class SchemaRegistryHelper {
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
-    public static ContentType getContentType(SchemaFormat schemaFormat) {
+    public static SchemaFormatImpl getContentType(SchemaFormat schemaFormat) {
         Objects.requireNonNull(schemaFormat, "'schemaFormat' cannot be null.'");
 
         if (schemaFormat == SchemaFormat.AVRO) {
-            return ContentType.APPLICATION_JSON_SERIALIZATION_AVRO;
+            return SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO;
         } else if (schemaFormat == SchemaFormat.JSON) {
-            return ContentType.APPLICATION_JSON_SERIALIZATION_JSON;
+            return SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON;
         } else {
-            return ContentType.TEXT_PLAIN_CHARSET_UTF8;
+            return SchemaFormatImpl.TEXT_PLAIN_CHARSET_UTF8;
         }
     }
 
-    public static SchemaFormat getSchemaFormat(ContentType contentType) {
+    public static SchemaFormat getSchemaFormat(SchemaFormatImpl contentType) {
         Objects.requireNonNull(contentType, "'schemaFormat' cannot be null.'");
 
-        if (contentType == ContentType.APPLICATION_JSON_SERIALIZATION_AVRO) {
+        if (contentType == SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO) {
             return SchemaFormat.AVRO;
-        } else if (contentType == ContentType.APPLICATION_JSON_SERIALIZATION_JSON) {
+        } else if (contentType == SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON) {
             return SchemaFormat.JSON;
         } else {
             return SchemaFormat.CUSTOM;
