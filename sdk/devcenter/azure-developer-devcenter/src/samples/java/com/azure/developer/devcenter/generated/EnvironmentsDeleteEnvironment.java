@@ -22,7 +22,7 @@ public class EnvironmentsDeleteEnvironment {
                         .buildClient();
         // BEGIN:com.azure.developer.devcenter.generated.environmentsdeleteenvironment.environmentsdeleteenvironment
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
+        SyncPoller<BinaryData, Void> response =
                 environmentsClient.beginDeleteEnvironment("myProject", "me", "{environmentName}", requestOptions);
         // END:com.azure.developer.devcenter.generated.environmentsdeleteenvironment.environmentsdeleteenvironment
     }

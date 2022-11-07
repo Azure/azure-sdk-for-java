@@ -38,7 +38,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
         }
 
         // Delete the environment when we're finished:
-        SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
+        SyncPoller<BinaryData, Void> environmentDeleteResponse =
                         environmentsClient.beginDeleteEnvironment(projectName, "me", "SdkTesting-Environment", null);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentDeleteResponse.waitForCompletion().getStatus());
