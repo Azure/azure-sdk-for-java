@@ -185,6 +185,7 @@ directive:
 ```java
 import org.slf4j.Logger;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -313,6 +314,12 @@ public class EventGridCustomization extends Customization {
             .addFile("src/main/java/com/azure/messaging/eventgrid/implementation/SystemEventMappingNames.java", sb.toString());
 
         replaceClassAnnotation(customization);
+        customizeMediaJobOutputAsset(customization);
+    }
+
+    public void customizeMediaJobOutputAsset(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        packageModels.getClass("MediaJobOutputAsset").setModifier(Modifier.PUBLIC | Modifier.FINAL);
     }
     
     public void replaceClassAnnotation(LibraryCustomization customization) {
