@@ -73,6 +73,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final String USE_SYSTEM_PROXY = "java.net.useSystemProxies";
     private static final String VALUE_TRUE = "true";
     private static final String PLAYBACK_URI = PLAYBACK_URI_BASE + "1234";
+    private static final String JUNIT5_TEST_TIMEOUT_KEY = "junit.jupiter.execution.timeout.test.method.default";
     private static final AzureProfile PLAYBACK_PROFILE = new AzureProfile(
         ZERO_TENANT,
         ZERO_SUBSCRIPTION,
@@ -237,6 +238,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 interceptorManager.getPlaybackClient());
             textReplacementRules.put(PLAYBACK_URI_BASE + "1234", PLAYBACK_URI);
             addTextReplacementRules(textReplacementRules);
+
+            setDefaultTestTimeout();
         } else {
             if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
                 final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
@@ -453,4 +456,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * Cleans up resources.
      */
     protected abstract void cleanUpResources();
+
+    private void setDefaultTestTimeout() {
+        // default timeout for @Test methods, 10 seconds
+        // if test does not finish within the timeout, TimeoutException will be thrown
+        System.setProperty(JUNIT5_TEST_TIMEOUT_KEY, "10 s");
+    }
 }
