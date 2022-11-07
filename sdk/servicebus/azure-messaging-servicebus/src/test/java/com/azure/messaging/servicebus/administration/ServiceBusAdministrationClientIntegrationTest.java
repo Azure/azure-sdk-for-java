@@ -62,13 +62,13 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(20);
 
-    private static final String forwardToQueue = getEntityName(getQueueBaseName(), 1729);
-    private static final String queueToCreate = getEntityName(getQueueBaseName(), 144);
-    private static final String forwardToTopicName = getEntityName(getTopicBaseName(), 1000);
-    private static final String existingTopicName = getEntityName(getTopicBaseName(), 729);
-    private static final String topicToCreate = getEntityName(getTopicBaseName(), 144);
-    private static final String existingSubscriptionName = getEntityName(getSubscriptionBaseName(), 729);
-    private static final String existingRuleName = getEntityName(getRuleBaseName(), 729);
+    private static final String FORWARD_TO_QUEUE = getEntityName(getQueueBaseName(), 1729);
+    private static final String QUEUE_TO_CREATE = getEntityName(getQueueBaseName(), 144);
+    private static final String FORWARD_TO_TOPIC_NAME = getEntityName(getTopicBaseName(), 1000);
+    private static final String EXISTING_TOPIC_NAME = getEntityName(getTopicBaseName(), 729);
+    private static final String TOPIC_TO_CREATE = getEntityName(getTopicBaseName(), 144);
+    private static final String EXISTING_SUBSCRIPTION_NAME = getEntityName(getSubscriptionBaseName(), 729);
+    private static final String EXISTING_RULE_NAME = getEntityName(getRuleBaseName(), 729);
 
     @BeforeAll
     static void setup() {
@@ -80,24 +80,24 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             .buildClient();
 
         // Create necessary queue
-        if (!client.getQueueExists(forwardToQueue)) {
-            client.createQueue(forwardToQueue);
+        if (!client.getQueueExists(FORWARD_TO_QUEUE)) {
+            client.createQueue(FORWARD_TO_QUEUE);
         }
 
         // Create topics and subscription in topic
-        if (!client.getTopicExists(forwardToTopicName)) {
-            client.createTopic(forwardToTopicName);
+        if (!client.getTopicExists(FORWARD_TO_TOPIC_NAME)) {
+            client.createTopic(FORWARD_TO_TOPIC_NAME);
         }
-        if (client.getTopicExists(existingTopicName)) {
-            client.deleteTopic(existingTopicName);
+        if (client.getTopicExists(EXISTING_TOPIC_NAME)) {
+            client.deleteTopic(EXISTING_TOPIC_NAME);
         }
 
-        client.createTopic(existingTopicName);
-        client.createSubscription(existingTopicName, existingSubscriptionName);
+        client.createTopic(EXISTING_TOPIC_NAME);
+        client.createSubscription(EXISTING_TOPIC_NAME, EXISTING_SUBSCRIPTION_NAME);
 
         final CreateRuleOptions ruleOptions = new CreateRuleOptions();
         ruleOptions.setFilter(new SqlRuleFilter("1=1"));
-        client.createRule(existingTopicName, existingRuleName, existingSubscriptionName, ruleOptions);
+        client.createRule(EXISTING_TOPIC_NAME, EXISTING_RULE_NAME, EXISTING_SUBSCRIPTION_NAME, ruleOptions);
     }
 
     @AfterAll
@@ -110,13 +110,13 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             .connectionString(getConnectionString(false))
             .buildClient();
         // Clear all queues
-        client.deleteQueue(forwardToQueue);
-        client.deleteQueue(queueToCreate);
+        client.deleteQueue(FORWARD_TO_QUEUE);
+        client.deleteQueue(QUEUE_TO_CREATE);
 
         //Clear all topics
-        client.deleteTopic(topicToCreate);
-        client.deleteTopic(forwardToTopicName);
-        client.deleteTopic(existingTopicName);
+        client.deleteTopic(TOPIC_TO_CREATE);
+        client.deleteTopic(FORWARD_TO_TOPIC_NAME);
+        client.deleteTopic(EXISTING_TOPIC_NAME);
     }
 
     /**
@@ -147,8 +147,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void createQueue() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = interceptorManager.isPlaybackMode() ? "queue-144" : queueToCreate;
-        final String forwardToEntityName = interceptorManager.isPlaybackMode() ? "queue-1729" : forwardToQueue;
+        final String queueName = interceptorManager.isPlaybackMode() ? "queue-144" : QUEUE_TO_CREATE;
+        final String forwardToEntityName = interceptorManager.isPlaybackMode() ? "queue-1729" : FORWARD_TO_QUEUE;
 
         final String keyName = "test-rule";
         final List<AccessRights> accessRights = Collections.singletonList(AccessRights.SEND);
@@ -198,7 +198,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void createTopicWithResponse() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-144" : topicToCreate;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-144" : TOPIC_TO_CREATE;
         final CreateTopicOptions expected = new CreateTopicOptions()
             .setMaxSizeInMegabytes(2048L)
             .setDuplicateDetectionRequired(true)
@@ -227,8 +227,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void createSubscription() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
-        final String forwardToTopic = interceptorManager.isPlaybackMode() ? "topic-1000" : forwardToTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
+        final String forwardToTopic = interceptorManager.isPlaybackMode() ? "topic-1000" : FORWARD_TO_TOPIC_NAME;
         final String subscriptionName = testResourceNamer.randomName(getSubscriptionBaseName(), 10);
         final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
             .setMaxDeliveryCount(7)
@@ -256,10 +256,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
 
         final String ruleName = testResourceNamer.randomName("rule", 5);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
         final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(action)
@@ -282,10 +282,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
 
         final String ruleName = testResourceNamer.randomName("rule", 7);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
 
         final RuleProperties rule = client.createRule(topicName, subscriptionName, ruleName);
         assertEquals(ruleName, rule.getName());
@@ -298,10 +298,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
 
         final String ruleName = testResourceNamer.randomName("rule", 7);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
         final SqlRuleFilter filter = new SqlRuleFilter("sys.To='foo' OR sys.MessageId IS NULL");
 
         final CreateRuleOptions options = new CreateRuleOptions()
@@ -328,7 +328,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
     @Test
     void createQueueExistingName() {
-        final String queueName = interceptorManager.isPlaybackMode() ? "queue-1729" : forwardToQueue;
+        final String queueName = interceptorManager.isPlaybackMode() ? "queue-1729" : FORWARD_TO_QUEUE;
         final CreateQueueOptions options = new CreateQueueOptions();
         final ServiceBusAdministrationClient client = getClient();
 
@@ -340,10 +340,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
     @Test
     void createSubscriptionExistingName() {
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
         final ServiceBusAdministrationClient client = getClient();
 
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
@@ -357,10 +357,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
 
         final String ruleName = testResourceNamer.randomName("rule", 15);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
         final SqlRuleAction expectedAction = new SqlRuleAction("SET MessageId = 'matching-id'");
         final SqlRuleFilter expectedFilter = new SqlRuleFilter("sys.To = 'telemetry-event'");
 
@@ -401,7 +401,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getQueue() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = interceptorManager.isPlaybackMode() ? "queue-1729" : forwardToQueue;
+        final String queueName = interceptorManager.isPlaybackMode() ? "queue-1729" : FORWARD_TO_QUEUE;
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final QueueProperties queueProperties = client.getQueue(queueName);
@@ -431,7 +431,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getQueueExists() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = interceptorManager.isPlaybackMode() ? "queue-1729" : forwardToQueue;
+        final String queueName = interceptorManager.isPlaybackMode() ? "queue-1729" : FORWARD_TO_QUEUE;
 
         assertTrue(client.getQueueExists(queueName));
     }
@@ -449,7 +449,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getQueueRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = interceptorManager.isPlaybackMode() ? "queue-1729" : forwardToQueue;
+        final String queueName = interceptorManager.isPlaybackMode() ? "queue-1729" : FORWARD_TO_QUEUE;
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final QueueRuntimeProperties runtimeProperties = client.getQueueRuntimeProperties(queueName);
@@ -463,7 +463,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getTopic() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final TopicProperties topicProperties = client.getTopic(topicName);
@@ -495,7 +495,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getTopicExists() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
 
         assertTrue(client.getTopicExists(topicName));
     }
@@ -513,7 +513,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getTopicRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final TopicRuntimeProperties runtimeProperties = client.getTopicRuntimeProperties(topicName);
@@ -531,10 +531,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getSubscription() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final SubscriptionProperties properties = client.getSubscription(topicName, subscriptionName);
@@ -553,7 +553,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getSubscriptionDoesNotExist() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-99"
             : getEntityName(getSubscriptionBaseName(), 99);
@@ -567,10 +567,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getSubscriptionExists() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
 
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
     }
@@ -578,10 +578,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getSubscriptionRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final SubscriptionRuntimeProperties properties = client.getSubscriptionRuntimeProperties(topicName, subscriptionName);
@@ -620,10 +620,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         final ServiceBusAdministrationClient client = builder.buildClient();
 
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
 
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
             () -> client.getSubscriptionRuntimeProperties(topicName, subscriptionName),
@@ -635,11 +635,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void getRule() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = interceptorManager.isPlaybackMode() ? "rule-729" : existingRuleName;
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String ruleName = interceptorManager.isPlaybackMode() ? "rule-729" : EXISTING_RULE_NAME;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
 
         final Response<RuleProperties> response = client.getRuleWithResponse(topicName, subscriptionName, ruleName, null);
         assertEquals(200, response.getStatusCode());
@@ -674,10 +674,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final String ruleName = interceptorManager.isPlaybackMode()
             ? "rule-9"
             : getEntityName(getRuleBaseName(), 9);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
         client.createRule(topicName, subscriptionName, ruleName);
 
         client.deleteRule(topicName, subscriptionName, ruleName);
@@ -686,7 +686,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void deleteSubscription() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-9"
             : getEntityName(getSubscriptionBaseName(), 9);
@@ -738,7 +738,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void listSubscriptions() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
 
         PagedIterable<SubscriptionProperties> subscriptionProperties = client.listSubscriptions(topicName);
         subscriptionProperties.forEach(subscription -> {
@@ -752,11 +752,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void listRules() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = interceptorManager.isPlaybackMode() ? "rule-729" : existingRuleName;
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : existingTopicName;
+        final String ruleName = interceptorManager.isPlaybackMode() ? "rule-729" : EXISTING_RULE_NAME;
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic-729" : EXISTING_TOPIC_NAME;
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-729"
-            : existingSubscriptionName;
+            : EXISTING_SUBSCRIPTION_NAME;
 
         PagedIterable<RuleProperties> ruleProperties = client.listRules(topicName, subscriptionName);
 

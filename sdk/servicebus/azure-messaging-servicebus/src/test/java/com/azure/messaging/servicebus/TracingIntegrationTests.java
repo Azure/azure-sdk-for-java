@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
@@ -65,7 +64,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     ServiceBusReceiverClient receiverSync;
     ServiceBusProcessorClient processor;
 
-    private final static String testQueueName = getEntityName(getQueueBaseName(),
+    private final static String TEST_QUEUE_NAME = getEntityName(getQueueBaseName(),
         ThreadLocalRandom.current().nextInt(10000));
 
     public TracingIntegrationTests() {
@@ -78,7 +77,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         ServiceBusAdministrationClient adminClient = new ServiceBusAdministrationClientBuilder()
             .connectionString(getConnectionString())
             .buildClient();
-        assumeTrue(adminClient.createQueue(testQueueName).getStatus() == EntityStatus.ACTIVE);
+        assumeTrue(adminClient.createQueue(TEST_QUEUE_NAME).getStatus() == EntityStatus.ACTIVE);
     }
 
     @AfterAll
@@ -87,11 +86,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         ServiceBusAdministrationClient adminClient = new ServiceBusAdministrationClientBuilder()
             .connectionString(getConnectionString())
             .buildClient();
-        adminClient.deleteQueue(testQueueName);
+        adminClient.deleteQueue(TEST_QUEUE_NAME);
     }
     @Override
     protected void beforeTest() {
-        spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), testQueueName);
+        spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), TEST_QUEUE_NAME);
         try {
             OpenTelemetrySdk.builder()
                 .setTracerProvider(
@@ -107,19 +106,19 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         sender = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .sender()
-            .queueName(testQueueName)
+            .queueName(TEST_QUEUE_NAME)
             .buildAsyncClient();
 
         receiver = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .receiver()
-            .queueName(testQueueName)
+            .queueName(TEST_QUEUE_NAME)
             .buildAsyncClient(false, false);
 
         receiverSync = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .receiver()
-            .queueName(testQueueName)
+            .queueName(TEST_QUEUE_NAME)
             .buildClient();
     }
 
@@ -340,7 +339,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         processor = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .processor()
-            .queueName(testQueueName)
+            .queueName(TEST_QUEUE_NAME)
             .processMessage(mc -> {
                 if (mc.getMessage().getMessageId().equals(messageId)) {
                     currentInProcess.set(Span.current());
@@ -398,7 +397,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         processor = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .processor()
-            .queueName(testQueueName)
+            .queueName(TEST_QUEUE_NAME)
             .processMessage(mc -> {
                 if (mc.getMessage().getMessageId().equals(messageId)) {
                     receivedMessage.set(mc.getMessage());
