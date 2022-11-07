@@ -64,7 +64,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     ServiceBusReceiverClient receiverSync;
     ServiceBusProcessorClient processor;
 
-    private final static String TEST_QUEUE_NAME = getEntityName(getQueueBaseName(),
+    private static final String TEST_QUEUE_NAME = getEntityName(getQueueBaseName(),
         ThreadLocalRandom.current().nextInt(10000));
 
     public TracingIntegrationTests() {
