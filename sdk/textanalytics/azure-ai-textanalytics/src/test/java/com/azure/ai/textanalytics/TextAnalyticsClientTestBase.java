@@ -139,6 +139,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
     static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
     static final String REDACTED = "REDACTED";
+
+    static final String AZURE_TEXT_ANALYTICS_ENDPOINT =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
+    static final String AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT");
+    static final String AZURE_TEXT_ANALYTICS_API_KEY =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY");
+    static final String AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY");
     static final String AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME");
     static final String AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME =
@@ -1505,27 +1514,31 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         );
     }
 
-    String getEndpoint() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
+    String getEndpoint(boolean isStaticResource) {
+        return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
+            : isStaticResource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT : AZURE_TEXT_ANALYTICS_ENDPOINT;
+    }
+
+    String getApiKey(boolean isStaticSource) {
+        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+            : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 
     TextAnalyticsClientBuilder getTextAnalyticsAsyncClientBuilder(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
+        TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(getEndpoint(isStaticResource))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
         if (getTestMode() == TestMode.RECORD) {
+
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(FAKE_API_KEY));
         } else {
-            builder.credential((new AzureKeyCredential(
-                Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY"))));
+            builder.credential(new AzureKeyCredential(getApiKey(isStaticResource)));
         }
         return builder;
     }
