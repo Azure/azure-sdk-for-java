@@ -22,6 +22,9 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
+import com.azure.resourcemanager.test.utils.PlaybackTimeout;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -53,6 +56,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -238,8 +242,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 interceptorManager.getPlaybackClient());
             textReplacementRules.put(PLAYBACK_URI_BASE + "1234", PLAYBACK_URI);
             addTextReplacementRules(textReplacementRules);
-
-            setDefaultTestTimeout();
         } else {
             if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
                 final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
@@ -357,6 +359,27 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     }
 
+    /**
+     * Initialize default playback time for each test method.
+     * If {@link PlaybackTimeout} is present on current test method, its timeout will be set accordingly.
+     * Otherwise, default playback timeout is set to 5 seconds.
+     *
+     * @param testInfo {@link TestInfo} to retrieve annotation on test method.
+     */
+    @BeforeEach
+    void initDefaultPlaybackTimeout(TestInfo testInfo) {
+        if (isPlaybackMode()) {
+            testInfo.getTestMethod().ifPresent(method -> {
+                if (method.isAnnotationPresent(PlaybackTimeout.class)) {
+                    PlaybackTimeout timeout = method.getAnnotation(PlaybackTimeout.class);
+                    setDefaultTestTimeout(Duration.of(timeout.value(), timeout.unit()));
+                } else {
+                    setDefaultTestTimeout(Duration.ofSeconds(5));
+                }
+            });
+        }
+    }
+
     private void addTextReplacementRules(Map<String, String> rules) {
         for (Map.Entry<String, String> entry : rules.entrySet()) {
             interceptorManager.addTextReplacementRule(entry.getKey(), entry.getValue());
@@ -457,9 +480,19 @@ public abstract class ResourceManagerTestBase extends TestBase {
      */
     protected abstract void cleanUpResources();
 
-    private void setDefaultTestTimeout() {
-        // default timeout for @Test methods, 10 seconds
-        // if test does not finish within the timeout, TimeoutException will be thrown
-        System.setProperty(JUNIT5_TEST_TIMEOUT_KEY, "10 s");
+    /**
+     * Default timeout for @Test methods.
+     * If test does not finish within the timeout, TimeoutException will be thrown.
+     * <p>This method should be called in @BeforeEach or @BeforeAll phase in order to take effect.</p>
+     *
+     * @param duration positive timeout duration
+     */
+    private void setDefaultTestTimeout(Duration duration) {
+        Objects.requireNonNull(duration);
+        if (duration.isNegative() || duration.isZero()) {
+            LOGGER.warning("Ignored non-positive test timeout.");
+            return;
+        }
+        System.setProperty(JUNIT5_TEST_TIMEOUT_KEY, String.format("%s ms", duration.toMillis()));
     }
 }
