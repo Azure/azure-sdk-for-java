@@ -108,7 +108,7 @@ public final class SchemaGroupsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(Context.NONE));
+        return listAsync(Context.NONE);
     }
 
     /**
