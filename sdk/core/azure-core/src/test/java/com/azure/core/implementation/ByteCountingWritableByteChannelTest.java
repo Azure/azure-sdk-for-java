@@ -5,8 +5,8 @@ package com.azure.core.implementation;
 
 import com.azure.core.util.PartialWriteChannel;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.mocking.MockWritableByteChannel;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,25 +34,37 @@ public class ByteCountingWritableByteChannelTest {
 
     @Test
     public void isOpenDelegates() {
-        WritableByteChannel writableByteChannel = Mockito.mock(WritableByteChannel.class);
-        Mockito.when(writableByteChannel.isOpen()).thenReturn(true, false);
+        AtomicInteger openCalls = new AtomicInteger();
+        WritableByteChannel writableByteChannel = new MockWritableByteChannel() {
+            @Override
+            public boolean isOpen() {
+                return openCalls.getAndIncrement() == 0;
+            }
+        };
         ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(writableByteChannel, null);
 
         assertTrue(channel.isOpen());
         assertFalse(channel.isOpen());
 
-        Mockito.verify(writableByteChannel, Mockito.times(2)).isOpen();
+        assertEquals(2, openCalls.get());
     }
 
     @Test
     public void closeDelegates() throws IOException {
-        WritableByteChannel writableByteChannel = Mockito.mock(WritableByteChannel.class);
+        AtomicInteger closeCalls = new AtomicInteger();
+        WritableByteChannel writableByteChannel = new MockWritableByteChannel() {
+            @Override
+            public void close() throws IOException {
+                closeCalls.incrementAndGet();
+                super.close();
+            }
+        };
         ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(writableByteChannel, null);
 
         channel.close();
         channel.close();
 
-        Mockito.verify(writableByteChannel, Mockito.times(2)).close();
+        assertEquals(2, closeCalls.get());
     }
 
     @Test

@@ -80,6 +80,10 @@ public final class RestProxyTestsWireMockServer {
         server.stubFor(head(urlPathMatching("/voideagerreadoom")).willReturn(aResponse()
             .withHeader("Content-Length", "10737418240")));
 
+        server.stubFor(put("/voiderrorreturned").willReturn(aResponse()
+            .withStatus(400)
+            .withBody("void exception body thrown")));
+
         return server;
     }
 
