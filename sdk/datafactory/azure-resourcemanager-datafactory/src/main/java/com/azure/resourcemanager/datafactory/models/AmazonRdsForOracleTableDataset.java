@@ -23,6 +23,10 @@ public final class AmazonRdsForOracleTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AmazonRdsForOracleTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AmazonRdsForOracleTableDataset class. */
+    public AmazonRdsForOracleTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: AmazonRdsForOracle dataset properties.
      *

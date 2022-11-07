@@ -41,17 +41,6 @@ public final class ImageVersionsImpl implements ImageVersions {
         return Utils.mapPage(inner, inner1 -> new ImageVersionImpl(inner1, this.manager()));
     }
 
-    public ImageVersion get(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, String versionName) {
-        ImageVersionInner inner =
-            this.serviceClient().get(resourceGroupName, devCenterName, galleryName, imageName, versionName);
-        if (inner != null) {
-            return new ImageVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ImageVersion> getWithResponse(
         String resourceGroupName,
         String devCenterName,
@@ -69,6 +58,17 @@ public final class ImageVersionsImpl implements ImageVersions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ImageVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ImageVersion get(
+        String resourceGroupName, String devCenterName, String galleryName, String imageName, String versionName) {
+        ImageVersionInner inner =
+            this.serviceClient().get(resourceGroupName, devCenterName, galleryName, imageName, versionName);
+        if (inner != null) {
+            return new ImageVersionImpl(inner, this.manager());
         } else {
             return null;
         }

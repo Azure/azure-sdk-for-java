@@ -16,17 +16,6 @@ public interface ResourceProvidersClient {
      * Redeem invite code to join a redeemable lab.
      *
      * @param parameters Request parameters to provide redeem code.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void redeemInvitationCode(RedeemRequest parameters);
-
-    /**
-     * Redeem invite code to join a redeemable lab.
-     *
-     * @param parameters Request parameters to provide redeem code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,4 +24,15 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> redeemInvitationCodeWithResponse(RedeemRequest parameters, Context context);
+
+    /**
+     * Redeem invite code to join a redeemable lab.
+     *
+     * @param parameters Request parameters to provide redeem code.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void redeemInvitationCode(RedeemRequest parameters);
 }

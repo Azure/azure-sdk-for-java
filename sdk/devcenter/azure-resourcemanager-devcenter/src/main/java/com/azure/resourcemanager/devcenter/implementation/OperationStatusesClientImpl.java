@@ -188,23 +188,6 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      *
      * @param location The Azure region.
      * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(String location, String operationId) {
-        return getAsync(location, operationId).block();
-    }
-
-    /**
-     * Get Operation Status
-     *
-     * <p>Gets the current status of an async operation.
-     *
-     * @param location The Azure region.
-     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -214,5 +197,22 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
+    }
+
+    /**
+     * Get Operation Status
+     *
+     * <p>Gets the current status of an async operation.
+     *
+     * @param location The Azure region.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner get(String location, String operationId) {
+        return getWithResponse(location, operationId, Context.NONE).getValue();
     }
 }

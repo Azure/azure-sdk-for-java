@@ -178,6 +178,17 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     @JsonProperty(value = "expressRouteGatewayBypass")
     private Boolean expressRouteGatewayBypass;
 
+    /*
+     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
+     * must be enabled.
+     */
+    @JsonProperty(value = "enablePrivateLinkFastPath")
+    private Boolean enablePrivateLinkFastPath;
+
+    /** Creates an instance of VirtualNetworkGatewayConnectionPropertiesFormatInner class. */
+    public VirtualNetworkGatewayConnectionPropertiesFormatInner() {
+    }
+
     /**
      * Get the authorizationKey property: The authorizationKey.
      *
@@ -642,6 +653,29 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     public VirtualNetworkGatewayConnectionPropertiesFormatInner withExpressRouteGatewayBypass(
         Boolean expressRouteGatewayBypass) {
         this.expressRouteGatewayBypass = expressRouteGatewayBypass;
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.enablePrivateLinkFastPath;
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionPropertiesFormatInner withEnablePrivateLinkFastPath(
+        Boolean enablePrivateLinkFastPath) {
+        this.enablePrivateLinkFastPath = enablePrivateLinkFastPath;
         return this;
     }
 

@@ -60,18 +60,6 @@ public interface Projects {
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param projectName The name of the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific project.
-     */
-    Project getByResourceGroup(String resourceGroupName, String projectName);
-
-    /**
-     * Gets a specific project.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,6 +67,18 @@ public interface Projects {
      * @return a specific project along with {@link Response}.
      */
     Response<Project> getByResourceGroupWithResponse(String resourceGroupName, String projectName, Context context);
+
+    /**
+     * Gets a specific project.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific project.
+     */
+    Project getByResourceGroup(String resourceGroupName, String projectName);
 
     /**
      * Deletes a project resource.

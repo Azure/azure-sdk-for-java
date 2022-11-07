@@ -34,6 +34,10 @@ public final class AzureCredentials {
     @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
+    /** Creates an instance of AzureCredentials class. */
+    public AzureCredentials() {
+    }
+
     /**
      * Get the clientId property: Client Id.
      *

@@ -20,11 +20,14 @@ public final class JoinRequestDetailsInner extends ProxyResource {
     private JoinRequestProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of JoinRequestDetailsInner class. */
+    public JoinRequestDetailsInner() {
+    }
 
     /**
      * Get the innerProperties property: join request properties.

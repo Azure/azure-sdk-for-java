@@ -30,6 +30,10 @@ public final class NextHopResultInner {
     @JsonProperty(value = "routeTableId")
     private String routeTableId;
 
+    /** Creates an instance of NextHopResultInner class. */
+    public NextHopResultInner() {
+    }
+
     /**
      * Get the nextHopType property: Next hop type.
      *

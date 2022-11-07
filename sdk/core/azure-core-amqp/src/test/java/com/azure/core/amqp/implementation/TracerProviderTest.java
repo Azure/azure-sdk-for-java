@@ -31,6 +31,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("deprecation")
 public class TracerProviderTest {
     private static final String SERVICE_BASE_NAME = "serviceBaseName";
     private static final String METHOD_NAME = SERVICE_BASE_NAME + "send";

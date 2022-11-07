@@ -51,6 +51,10 @@ public final class IntegrationRuntimeSsisCatalogInfo {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IntegrationRuntimeSsisCatalogInfo class. */
+    public IntegrationRuntimeSsisCatalogInfo() {
+    }
+
     /**
      * Get the catalogServerEndpoint property: The catalog database server URL.
      *

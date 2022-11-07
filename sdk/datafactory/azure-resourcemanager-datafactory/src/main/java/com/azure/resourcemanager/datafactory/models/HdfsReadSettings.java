@@ -78,6 +78,10 @@ public final class HdfsReadSettings extends StoreReadSettings {
     @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
+    /** Creates an instance of HdfsReadSettings class. */
+    public HdfsReadSettings() {
+    }
+
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).

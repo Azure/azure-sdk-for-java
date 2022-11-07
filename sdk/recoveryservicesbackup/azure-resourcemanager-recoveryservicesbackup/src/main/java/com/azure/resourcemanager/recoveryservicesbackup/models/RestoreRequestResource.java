@@ -24,6 +24,10 @@ public final class RestoreRequestResource extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of RestoreRequestResource class. */
+    public RestoreRequestResource() {
+    }
+
     /**
      * Get the properties property: RestoreRequestResource properties.
      *

@@ -25,6 +25,10 @@ public final class ManagedPrivateEndpointListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ManagedPrivateEndpointListResponse class. */
+    public ManagedPrivateEndpointListResponse() {
+    }
+
     /**
      * Get the value property: List of managed private endpoints.
      *

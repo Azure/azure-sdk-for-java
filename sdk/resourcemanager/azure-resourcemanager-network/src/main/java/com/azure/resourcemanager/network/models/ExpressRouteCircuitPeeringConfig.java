@@ -47,6 +47,10 @@ public final class ExpressRouteCircuitPeeringConfig {
     @JsonProperty(value = "routingRegistryName")
     private String routingRegistryName;
 
+    /** Creates an instance of ExpressRouteCircuitPeeringConfig class. */
+    public ExpressRouteCircuitPeeringConfig() {
+    }
+
     /**
      * Get the advertisedPublicPrefixes property: The reference to AdvertisedPublicPrefixes.
      *

@@ -60,6 +60,10 @@ public final class ConnectionMonitorTestConfiguration {
     @JsonProperty(value = "successThreshold")
     private ConnectionMonitorSuccessThreshold successThreshold;
 
+    /** Creates an instance of ConnectionMonitorTestConfiguration class. */
+    public ConnectionMonitorTestConfiguration() {
+    }
+
     /**
      * Get the name property: The name of the connection monitor test configuration.
      *

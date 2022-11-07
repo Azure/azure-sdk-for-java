@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
@@ -16,6 +17,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
@@ -56,6 +58,16 @@ public final class ManagedClusterInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private ManagedClusterProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of ManagedClusterInner class. */
+    public ManagedClusterInner() {
+    }
 
     /**
      * Get the sku property: The managed cluster SKU.
@@ -124,6 +136,15 @@ public final class ManagedClusterInner extends Resource {
      */
     private ManagedClusterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -451,6 +472,29 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withPodIdentityProfile(podIdentityProfile);
+        return this;
+    }
+
+    /**
+     * Get the oidcIssuerProfile property: The OIDC issuer profile of the Managed Cluster.
+     *
+     * @return the oidcIssuerProfile value.
+     */
+    public ManagedClusterOidcIssuerProfile oidcIssuerProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().oidcIssuerProfile();
+    }
+
+    /**
+     * Set the oidcIssuerProfile property: The OIDC issuer profile of the Managed Cluster.
+     *
+     * @param oidcIssuerProfile the oidcIssuerProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withOidcIssuerProfile(ManagedClusterOidcIssuerProfile oidcIssuerProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withOidcIssuerProfile(oidcIssuerProfile);
         return this;
     }
 

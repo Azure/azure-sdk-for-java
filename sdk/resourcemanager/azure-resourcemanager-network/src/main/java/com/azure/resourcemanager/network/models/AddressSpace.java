@@ -17,6 +17,10 @@ public final class AddressSpace {
     @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
 
+    /** Creates an instance of AddressSpace class. */
+    public AddressSpace() {
+    }
+
     /**
      * Get the addressPrefixes property: A list of address blocks reserved for this virtual network in CIDR notation.
      *

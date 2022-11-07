@@ -25,6 +25,10 @@ public final class MicrosoftAccessLinkedService extends LinkedService {
     private MicrosoftAccessLinkedServiceTypeProperties innerTypeProperties =
         new MicrosoftAccessLinkedServiceTypeProperties();
 
+    /** Creates an instance of MicrosoftAccessLinkedService class. */
+    public MicrosoftAccessLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Microsoft Access linked service properties.
      *

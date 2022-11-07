@@ -105,6 +105,10 @@ public final class EffectiveNetworkSecurityRule {
     @JsonProperty(value = "direction")
     private SecurityRuleDirection direction;
 
+    /** Creates an instance of EffectiveNetworkSecurityRule class. */
+    public EffectiveNetworkSecurityRule() {
+    }
+
     /**
      * Get the name property: The name of the security rule specified by the user (if created by the user).
      *

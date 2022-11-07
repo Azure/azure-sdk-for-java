@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MabServerType. */
+/** Server type of MAB container. */
 public final class MabServerType extends ExpandableStringEnum<MabServerType> {
     /** Static value Invalid for MabServerType. */
     public static final MabServerType INVALID = fromString("Invalid");

@@ -24,6 +24,10 @@ public final class SalesforceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SalesforceLinkedServiceTypeProperties innerTypeProperties = new SalesforceLinkedServiceTypeProperties();
 
+    /** Creates an instance of SalesforceLinkedService class. */
+    public SalesforceLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Salesforce linked service properties.
      *

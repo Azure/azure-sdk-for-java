@@ -234,24 +234,6 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
      * @param replicaName Name of the Container App Revision Replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replica for a Container App Revision.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner getReplica(
-        String resourceGroupName, String containerAppName, String revisionName, String replicaName) {
-        return getReplicaAsync(resourceGroupName, containerAppName, revisionName, replicaName).block();
-    }
-
-    /**
-     * Get a replica for a Container App Revision.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param replicaName Name of the Container App Revision Replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -263,6 +245,25 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
         String resourceGroupName, String containerAppName, String revisionName, String replicaName, Context context) {
         return getReplicaWithResponseAsync(resourceGroupName, containerAppName, revisionName, replicaName, context)
             .block();
+    }
+
+    /**
+     * Get a replica for a Container App Revision.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param revisionName Name of the Container App Revision.
+     * @param replicaName Name of the Container App Revision Replica.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replica for a Container App Revision.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicaInner getReplica(
+        String resourceGroupName, String containerAppName, String revisionName, String replicaName) {
+        return getReplicaWithResponse(resourceGroupName, containerAppName, revisionName, replicaName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -397,22 +398,6 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Revision Replicas collection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaCollectionInner listReplicas(String resourceGroupName, String containerAppName, String revisionName) {
-        return listReplicasAsync(resourceGroupName, containerAppName, revisionName).block();
-    }
-
-    /**
-     * List replicas for a Container App Revision.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -423,5 +408,21 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
     public Response<ReplicaCollectionInner> listReplicasWithResponse(
         String resourceGroupName, String containerAppName, String revisionName, Context context) {
         return listReplicasWithResponseAsync(resourceGroupName, containerAppName, revisionName, context).block();
+    }
+
+    /**
+     * List replicas for a Container App Revision.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param revisionName Name of the Container App Revision.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Revision Replicas collection ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicaCollectionInner listReplicas(String resourceGroupName, String containerAppName, String revisionName) {
+        return listReplicasWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE).getValue();
     }
 }

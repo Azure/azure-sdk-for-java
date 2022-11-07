@@ -19,7 +19,7 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Virtual Machines.
+     * @return a list of Virtual Machines as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualMachine> list(String resourceGroupName, String privateCloudName, String clusterName);
 
@@ -33,10 +33,30 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Virtual Machines.
+     * @return a list of Virtual Machines as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualMachine> list(
         String resourceGroupName, String privateCloudName, String clusterName, Context context);
+
+    /**
+     * Get a virtual machine by id in a private cloud cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param virtualMachineId Virtual Machine identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine by id in a private cloud cluster along with {@link Response}.
+     */
+    Response<VirtualMachine> getWithResponse(
+        String resourceGroupName,
+        String privateCloudName,
+        String clusterName,
+        String virtualMachineId,
+        Context context);
 
     /**
      * Get a virtual machine by id in a private cloud cluster.
@@ -51,26 +71,6 @@ public interface VirtualMachines {
      * @return a virtual machine by id in a private cloud cluster.
      */
     VirtualMachine get(String resourceGroupName, String privateCloudName, String clusterName, String virtualMachineId);
-
-    /**
-     * Get a virtual machine by id in a private cloud cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param virtualMachineId Virtual Machine identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine by id in a private cloud cluster.
-     */
-    Response<VirtualMachine> getWithResponse(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String virtualMachineId,
-        Context context);
 
     /**
      * Enable or disable DRS-driven VM movement restriction.

@@ -39,6 +39,10 @@ public final class NetworkManagerProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of NetworkManagerProperties class. */
+    public NetworkManagerProperties() {
+    }
+
     /**
      * Get the description property: A description of the network manager.
      *

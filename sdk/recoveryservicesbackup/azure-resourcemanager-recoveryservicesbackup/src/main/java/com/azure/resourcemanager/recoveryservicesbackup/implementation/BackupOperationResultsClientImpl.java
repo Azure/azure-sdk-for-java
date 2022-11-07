@@ -205,13 +205,16 @@ public final class BackupOperationResultsClientImpl implements BackupOperationRe
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void get(String vaultName, String resourceGroupName, String operationId) {
-        getAsync(vaultName, resourceGroupName, operationId).block();
+    public Response<Void> getWithResponse(
+        String vaultName, String resourceGroupName, String operationId, Context context) {
+        return getWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
     }
 
     /**
@@ -223,15 +226,12 @@ public final class BackupOperationResultsClientImpl implements BackupOperationRe
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
-        return getWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
+    public void get(String vaultName, String resourceGroupName, String operationId) {
+        getWithResponse(vaultName, resourceGroupName, operationId, Context.NONE);
     }
 }

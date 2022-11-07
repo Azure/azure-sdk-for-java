@@ -28,7 +28,7 @@ public final class LabsCreateOrUpdateSamples {
                 "{invoiceSectionName}",
                 new LabDetailsInner()
                     .withDisplayName("example lab")
-                    .withBudgetPerStudent(new Amount().withCurrency("USD").withValue(100.0f))
+                    .withBudgetPerStudent(new Amount().withCurrency("USD").withValue(100.0F))
                     .withDescription("example lab description")
                     .withExpirationDate(OffsetDateTime.parse("2021-12-09T22:11:29.422Z")),
                 Context.NONE);

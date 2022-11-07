@@ -11,6 +11,7 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBase;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -68,7 +69,7 @@ class DefaultTokenCredentialProviderTest {
         Field fieldIdentityClient = ClientSecretCredential.class.getDeclaredField("identityClient");
         fieldIdentityClient.setAccessible(true);
         IdentityClient identityClient = (IdentityClient) fieldIdentityClient.get(tokenCredential);
-        Field fieldClientSecret = IdentityClient.class.getDeclaredField("clientSecret");
+        Field fieldClientSecret = IdentityClientBase.class.getDeclaredField("clientSecret");
         fieldClientSecret.setAccessible(true);
 
         assertEquals("fake-tenantId", identityClient.getTenantId());
@@ -96,7 +97,7 @@ class DefaultTokenCredentialProviderTest {
         fieldIdentityClient.setAccessible(true);
         IdentityClient identityClient = (IdentityClient) fieldIdentityClient.get(tokenCredential);
 
-        Field fieldCertificatePath = IdentityClient.class.getDeclaredField("certificatePath");
+        Field fieldCertificatePath = IdentityClientBase.class.getDeclaredField("certificatePath");
         fieldCertificatePath.setAccessible(true);
 
         // verify

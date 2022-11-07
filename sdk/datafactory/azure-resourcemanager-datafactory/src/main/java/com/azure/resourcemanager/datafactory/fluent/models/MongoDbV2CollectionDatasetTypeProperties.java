@@ -17,6 +17,10 @@ public final class MongoDbV2CollectionDatasetTypeProperties {
     @JsonProperty(value = "collection", required = true)
     private Object collection;
 
+    /** Creates an instance of MongoDbV2CollectionDatasetTypeProperties class. */
+    public MongoDbV2CollectionDatasetTypeProperties() {
+    }
+
     /**
      * Get the collection property: The collection name of the MongoDB database. Type: string (or Expression with
      * resultType string).

@@ -26,6 +26,10 @@ public final class GenericContainer extends ProtectionContainer {
     @JsonProperty(value = "extendedInformation")
     private GenericContainerExtendedInfo extendedInformation;
 
+    /** Creates an instance of GenericContainer class. */
+    public GenericContainer() {
+    }
+
     /**
      * Get the fabricName property: Name of the container's fabric.
      *

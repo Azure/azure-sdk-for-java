@@ -215,7 +215,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-master", "encryption", "non-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"simple", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -249,7 +249,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-master", "encryption", "non-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"simple", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");

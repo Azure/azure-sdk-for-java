@@ -40,15 +40,6 @@ public final class BackupEnginesImpl implements BackupEngines {
         return Utils.mapPage(inner, inner1 -> new BackupEngineBaseResourceImpl(inner1, this.manager()));
     }
 
-    public BackupEngineBaseResource get(String vaultName, String resourceGroupName, String backupEngineName) {
-        BackupEngineBaseResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, backupEngineName);
-        if (inner != null) {
-            return new BackupEngineBaseResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BackupEngineBaseResource> getWithResponse(
         String vaultName,
         String resourceGroupName,
@@ -66,6 +57,15 @@ public final class BackupEnginesImpl implements BackupEngines {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BackupEngineBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BackupEngineBaseResource get(String vaultName, String resourceGroupName, String backupEngineName) {
+        BackupEngineBaseResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, backupEngineName);
+        if (inner != null) {
+            return new BackupEngineBaseResourceImpl(inner, this.manager());
         } else {
             return null;
         }

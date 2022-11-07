@@ -55,6 +55,10 @@ public final class WorkloadNetworkVMGroupImpl
         return this.innerModel().revision();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkloadNetworkVMGroupInner innerModel() {
         return this.innerObject;
     }

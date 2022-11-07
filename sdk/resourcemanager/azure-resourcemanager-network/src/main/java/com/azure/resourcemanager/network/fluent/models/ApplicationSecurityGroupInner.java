@@ -31,6 +31,10 @@ public final class ApplicationSecurityGroupInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ApplicationSecurityGroupInner class. */
+    public ApplicationSecurityGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application security group.
      *

@@ -31,6 +31,10 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of HubVirtualNetworkConnectionInner class. */
+    public HubVirtualNetworkConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the hub virtual network connection.
      *
