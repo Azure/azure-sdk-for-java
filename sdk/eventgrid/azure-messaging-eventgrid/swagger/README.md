@@ -101,28 +101,56 @@ input-file:
 ```yaml
 directive:
 - from: swagger-document
-  where: $.definitions
+  where: $.definitions.KeyVaultVaultAccessPolicyChangedEventData.properties
   transform: >
-    $.KeyVaultVaultAccessPolicyChangedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultVaultAccessPolicyChangedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultCertificateNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultCertificateNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultCertificateNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultCertificateNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultCertificateExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultCertificateExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultKeyNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultKeyNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultKeyNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultKeyNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultKeyExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultKeyExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultSecretNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultSecretNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultSecretNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultSecretNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultSecretExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultSecretExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $["NBF"]["x-ms-client-name"] = "Nbf";
+    $["EXP"]["x-ms-client-name"] = "Exp";
+      
+- from: swagger-document
+  where: $.definitions.KeyVaultCertificateNewVersionCreatedEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultCertificateNearExpiryEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultCertificateExpiredEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultKeyNewVersionCreatedEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultKeyNearExpiryEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultKeyExpiredEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultSecretNewVersionCreatedEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultSecretNearExpiryEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultSecretExpiredEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
 ```
 
 ### Mark a discriminator property as "required"
