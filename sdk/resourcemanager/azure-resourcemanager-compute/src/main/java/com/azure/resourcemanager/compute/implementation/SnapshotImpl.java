@@ -140,7 +140,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
                 }
                 return result;
             })
-            .repeatWhen(longFlux -> Flux.interval(manager().serviceClient().getDefaultPollInterval()))
+            .repeatWhen(longFlux -> Flux.interval(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval())))
             .takeUntil(inner -> {
                 if (Float.valueOf(100).equals(inner.completionPercent())) {
                     return true;
