@@ -15,9 +15,13 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+import java.util.concurrent.TimeUnit;
 
 public class VirtualMachineExtensionImageOperationsTests extends ComputeManagementTest {
     @Test
+    @Timeout(value = 5, unit = TimeUnit.HOURS) // session records too large, let it timeout longer
     public void canListExtensionImages() throws Exception {
         final int maxListing = 20;
         int count = 0;
