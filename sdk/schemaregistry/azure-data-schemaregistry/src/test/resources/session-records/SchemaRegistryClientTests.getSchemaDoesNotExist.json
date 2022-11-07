@@ -1,19 +1,20 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/59f112cf-ff02-40e6-aca9-0d30ed7f7f94?api-version=2021-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/59f112cf-ff02-40e6-aca9-0d30ed7f7f94?api-version=2022-10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "01994c9e-6a94-41fc-ad39-e60b31d9f87f"
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "888bb8e4-e458-45b8-87cc-ab9633076680"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=31536000",
       "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ItemNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Body" : "{\"Code\":404,\"Detail\":\"Schema id 59f112cf-ff02-40e6-aca9-0d30ed7f7f94 does not exist. TrackingId:dc9bda8b-c340-4fee-9a59-89c13be11dab_G18, SystemTracker:conniey.servicebus.windows.net:$schemaGroups\\/$schemas\\/59f112cf-ff02-40e6-aca9-0d30ed7f7f94, Timestamp:2021-11-11T02:50:13\"}",
-      "Date" : "Thu, 11 Nov 2021 02:50:12 GMT",
+      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema id 59f112cf-ff02-40e6-aca9-0d30ed7f7f94 does not exist. TrackingId:950fb4ce-827c-4742-8692-f6b4c449bf5f_G5, SystemTracker:swathipschemaregistry-avro.servicebus.windows.net:$schemaGroups\\/$schemas\\/59f112cf-ff02-40e6-aca9-0d30ed7f7f94, Timestamp:2022-11-07T22:57:00\"}}",
+      "Date" : "Mon, 07 Nov 2022 22:57:00 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

@@ -1,23 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch167984d39?api-version=2021-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_python_test_group/schemas/sch27638067f?api-version=2022-10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7dfefecf-281b-42ca-b4d9-61c973ae7abf",
-      "Content-Type" : "application/json; serialization=avro"
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "13f82da1-38ab-4ac1-b2f3-b252c10056c2",
+      "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=31536000",
       "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidRequest",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"Code\":400,\"Detail\":\"Schema validation failed: Error reading JObject from JsonReader. Current JsonReader item is not an object: String. Path '', line 1, position 3. TrackingId:712d66d0-2bb7-4704-a706-5ab6d6ec884c_G5, SystemTracker:conniey.servicebus.windows.net:$schemaGroups\\/mygroup\\/schemas\\/sch167984d39, Timestamp:2021-11-11T02:50:13\"}",
-      "Date" : "Thu, 11 Nov 2021 02:50:13 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Json schema validation failed: 'type' was not found for field: name at 'fields[1]'. TrackingId:01f6caf8-03cc-4ad0-b899-b842c3db02c1_G15, SystemTracker:swathipschemaregistry-avro.servicebus.windows.net:$schemaGroups\\/azsdk_python_test_group\\/schemas\\/sch27638067f, Timestamp:2022-11-07T22:57:00\"}}",
+      "Date" : "Mon, 07 Nov 2022 22:57:00 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch167984d39" ]
+  "variables" : [ "sch27638067f" ]
 }
