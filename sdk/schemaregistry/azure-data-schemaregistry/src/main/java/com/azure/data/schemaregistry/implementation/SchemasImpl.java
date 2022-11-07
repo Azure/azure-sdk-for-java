@@ -26,18 +26,18 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.data.schemaregistry.implementation.models.ContentType;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
+import com.azure.data.schemaregistry.implementation.models.SchemaFormat;
 import com.azure.data.schemaregistry.implementation.models.SchemaVersions;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Schemas. */
 public final class SchemasImpl {
@@ -105,7 +105,7 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") ContentType contentType,
+                @HeaderParam("Content-Type") SchemaFormat contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> schemaContent,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -119,7 +119,7 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") ContentType contentType,
+                @HeaderParam("Content-Type") SchemaFormat contentType,
                 @BodyParam("application/octet-stream") BinaryData schemaContent,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -133,7 +133,7 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") ContentType contentType,
+                @HeaderParam("Content-Type") SchemaFormat contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> schemaContent,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -147,7 +147,7 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") ContentType contentType,
+                @HeaderParam("Content-Type") SchemaFormat contentType,
                 @BodyParam("application/octet-stream") BinaryData schemaContent,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -422,7 +422,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,7 +435,7 @@ public final class SchemasImpl {
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength) {
         final String accept = "application/json";
@@ -462,7 +462,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -476,7 +476,7 @@ public final class SchemasImpl {
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength,
             Context context) {
@@ -502,7 +502,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -515,7 +515,7 @@ public final class SchemasImpl {
     public Mono<Void> queryIdByContentAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength) {
         return queryIdByContentWithResponseAsync(groupName, schemaName, contentType, schemaContent, contentLength)
@@ -531,7 +531,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -545,7 +545,7 @@ public final class SchemasImpl {
     public Mono<Void> queryIdByContentAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength,
             Context context) {
@@ -563,7 +563,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -576,7 +576,7 @@ public final class SchemasImpl {
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             BinaryData schemaContent,
             long contentLength) {
         final String accept = "application/json";
@@ -603,7 +603,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -617,7 +617,7 @@ public final class SchemasImpl {
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             BinaryData schemaContent,
             long contentLength,
             Context context) {
@@ -643,7 +643,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -656,7 +656,7 @@ public final class SchemasImpl {
     public Mono<Void> queryIdByContentAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             BinaryData schemaContent,
             long contentLength) {
         return queryIdByContentWithResponseAsync(groupName, schemaName, contentType, schemaContent, contentLength)
@@ -672,7 +672,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -686,7 +686,7 @@ public final class SchemasImpl {
     public Mono<Void> queryIdByContentAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             BinaryData schemaContent,
             long contentLength,
             Context context) {
@@ -705,7 +705,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,7 +717,7 @@ public final class SchemasImpl {
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength) {
         final String accept = "application/json";
@@ -745,7 +745,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -758,7 +758,7 @@ public final class SchemasImpl {
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength,
             Context context) {
@@ -785,7 +785,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,7 +797,7 @@ public final class SchemasImpl {
     public Mono<Void> registerAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength) {
         return registerWithResponseAsync(groupName, schemaName, contentType, schemaContent, contentLength)
@@ -814,7 +814,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -827,7 +827,7 @@ public final class SchemasImpl {
     public Mono<Void> registerAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             Flux<ByteBuffer> schemaContent,
             long contentLength,
             Context context) {
@@ -845,7 +845,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -855,11 +855,8 @@ public final class SchemasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
-            String groupName,
-            String schemaName,
-            ContentType contentType,
-            BinaryData schemaContent,
-            long contentLength) {
+            String groupName, String schemaName, SchemaFormat contentType, BinaryData schemaContent,
+        long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -885,7 +882,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -898,7 +895,7 @@ public final class SchemasImpl {
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             BinaryData schemaContent,
             long contentLength,
             Context context) {
@@ -925,7 +922,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -935,11 +932,8 @@ public final class SchemasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> registerAsync(
-            String groupName,
-            String schemaName,
-            ContentType contentType,
-            BinaryData schemaContent,
-            long contentLength) {
+            String groupName, String schemaName, SchemaFormat contentType, BinaryData schemaContent,
+        long contentLength) {
         return registerWithResponseAsync(groupName, schemaName, contentType, schemaContent, contentLength)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -954,7 +948,7 @@ public final class SchemasImpl {
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
      * @param schemaName Name of schema.
-     * @param contentType Upload file type.
+     * @param contentType Content type of the schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -967,7 +961,7 @@ public final class SchemasImpl {
     public Mono<Void> registerAsync(
             String groupName,
             String schemaName,
-            ContentType contentType,
+            SchemaFormat contentType,
             BinaryData schemaContent,
             long contentLength,
             Context context) {
