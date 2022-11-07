@@ -15,7 +15,7 @@ public class TrafficClientBuilderTest {
     public void missingMapsClientId() {
         assertThrows(NullPointerException.class, () -> {
             final TrafficClientBuilder builder = new TrafficClientBuilder();
-            builder.mapsClientId(null);
+            builder.trafficClientId(null);
         });
     }
 
@@ -89,7 +89,7 @@ public class TrafficClientBuilderTest {
     public void missingCredentials() {
         assertThrows(IllegalArgumentException.class, () -> {
             final TrafficClientBuilder builder = new TrafficClientBuilder();
-            builder.mapsClientId("mapsClientId");
+            builder.trafficClientId("mapsClientId");
             builder.buildClient();
         });
     }

@@ -157,7 +157,7 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
             .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11)
-            .setTrafficmodelid("1335294634919").setExpandCluster(false).setOriginalPosition(false)
+            .setTrafficmodelId("1335294634919").setExpandCluster(false).setOriginalPosition(false)
             .setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en")
             .setProjectionStandard(ProjectionStandard.EPSG900913);
         StepVerifier.create(client.getTrafficIncidentDetail(trafficIncidentDetailOptions))
@@ -179,7 +179,7 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
         .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-        .setBoundingZoom(11).setTrafficmodelid("1335294634919").setExpandCluster(false).setOriginalPosition(false)
+        .setBoundingZoom(11).setTrafficmodelId("1335294634919").setExpandCluster(false).setOriginalPosition(false)
         .setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
         StepVerifier.create(client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions))
             .assertNext(response -> {
@@ -199,7 +199,7 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
         .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-        .setBoundingZoom(-1000).setTrafficmodelid("1335294634919").setExpandCluster(false).setOriginalPosition(false)
+        .setBoundingZoom(-1000).setTrafficmodelId("1335294634919").setExpandCluster(false).setOriginalPosition(false)
         .setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
         StepVerifier.create(client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions))
             .verifyErrorSatisfies(ex -> {

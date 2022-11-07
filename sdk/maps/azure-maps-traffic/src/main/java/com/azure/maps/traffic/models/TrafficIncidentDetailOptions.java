@@ -106,7 +106,7 @@ public final class TrafficIncidentDetailOptions {
      * @param trafficmodelid Number referencing traffic model. This can be obtained from the Viewport API. 
      * @return TrafficIncidentDetailOptions
      */
-    public TrafficIncidentDetailOptions setTrafficmodelid(String trafficmodelid) {
+    public TrafficIncidentDetailOptions setTrafficmodelId(String trafficmodelid) {
         this.trafficmodelid = trafficmodelid;
         return this;
     }

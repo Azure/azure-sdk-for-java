@@ -108,9 +108,9 @@ public class TrafficCustomization extends Customization {
 
      // Customizes the Point class
      private void customizePoint(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("Point");
+        ClassCustomization classCustomization = models.getClass("MapsPoint");
         classCustomization.addConstructor(
-            "private Point() {\n" +
+            "private MapsPoint() {\n" +
             "}")
             .getJavadoc()
             .setDescription("Set default constructor to private");

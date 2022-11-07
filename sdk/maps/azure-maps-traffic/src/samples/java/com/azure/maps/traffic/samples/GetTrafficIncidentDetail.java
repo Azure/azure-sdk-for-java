@@ -32,7 +32,7 @@ public class GetTrafficIncidentDetail {
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         builder.credential(tokenCredential);
-        builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+        builder.trafficClientId(System.getenv("MAPS_CLIENT_ID"));
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         TrafficClient client = builder.buildClient();
 
@@ -46,14 +46,14 @@ public class GetTrafficIncidentDetail {
             new TrafficIncidentDetailOptions()
                 .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11)
                 .setIncidentDetailStyle(IncidentDetailStyle.S3).setBoundingZoom(11)
-                .setTrafficmodelid("1335294634919"));
+                .setTrafficmodelId("1335294634919"));
 
         // complete
         client.getTrafficIncidentDetail(
             new TrafficIncidentDetailOptions()
                 .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11)
                 .setIncidentDetailStyle(IncidentDetailStyle.S3).setBoundingZoom(11)
-                .setTrafficmodelid("1335294634919").setLanguage("en")
+                .setTrafficmodelId("1335294634919").setLanguage("en")
                 .setProjectionStandard(ProjectionStandard.EPSG900913).setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
                 .setExpandCluster(false).setOriginalPosition(false));
         // END: com.azure.maps.traffic.sync.get_traffic_incident_detail
@@ -69,7 +69,7 @@ public class GetTrafficIncidentDetail {
         DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
 
         asyncClientbuilder.credential(asyncClientTokenCredential);
-        asyncClientbuilder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+        asyncClientbuilder.trafficClientId(System.getenv("MAPS_CLIENT_ID"));
         asyncClientbuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         TrafficAsyncClient asyncClient = asyncClientbuilder.buildAsyncClient();
 
@@ -83,14 +83,14 @@ public class GetTrafficIncidentDetail {
             new TrafficIncidentDetailOptions()
                 .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11)
                 .setIncidentDetailStyle(IncidentDetailStyle.S3).setBoundingZoom(11)
-                .setTrafficmodelid("1335294634919"));
+                .setTrafficmodelId("1335294634919"));
 
         // complete
         asyncClient.getTrafficIncidentDetail(
             new TrafficIncidentDetailOptions()
                 .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11)
                 .setIncidentDetailStyle(IncidentDetailStyle.S3).setBoundingZoom(11)
-                .setTrafficmodelid("1335294634919").setLanguage("en")
+                .setTrafficmodelId("1335294634919").setLanguage("en")
                 .setProjectionStandard(ProjectionStandard.EPSG900913).setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
                 .setExpandCluster(false).setOriginalPosition(false));
         // END: com.azure.maps.traffic.async.get_traffic_incident_detail

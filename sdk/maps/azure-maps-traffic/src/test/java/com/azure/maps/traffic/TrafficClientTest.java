@@ -159,7 +159,7 @@ public class TrafficClientTest extends TrafficClientTestBase {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
-            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11).setTrafficmodelid("1335294634919")
+            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11).setTrafficmodelId("1335294634919")
             .setExpandCluster(false).setOriginalPosition(false).setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
             .setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
         TrafficIncidentDetail actualResult = client.getTrafficIncidentDetail(trafficIncidentDetailOptions);
@@ -175,7 +175,7 @@ public class TrafficClientTest extends TrafficClientTestBase {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
-            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11).setTrafficmodelid("1335294634919")
+            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11).setTrafficmodelId("1335294634919")
             .setExpandCluster(false).setOriginalPosition(false).setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
             .setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
         validateTrafficIncidentDetailWithResponse(TestUtils.getExpectedTrafficIncidentDetail(), 200, client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions, null));
@@ -188,7 +188,7 @@ public class TrafficClientTest extends TrafficClientTestBase {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions()
             .setIncidentDetailStyle(IncidentDetailStyle.S3).setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(-1000).setTrafficmodelid("1335294634919").setExpandCluster(false)
+            .setBoundingZoom(-1000).setTrafficmodelId("1335294634919").setExpandCluster(false)
             .setOriginalPosition(false).setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en")
             .setProjectionStandard(ProjectionStandard.EPSG900913);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,

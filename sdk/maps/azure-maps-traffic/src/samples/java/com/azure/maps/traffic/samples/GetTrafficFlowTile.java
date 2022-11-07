@@ -30,7 +30,7 @@ public class GetTrafficFlowTile {
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         builder.credential(tokenCredential);
-        builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+        builder.trafficClientId(System.getenv("MAPS_CLIENT_ID"));
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         TrafficClient client = builder.buildClient();
 
@@ -62,7 +62,7 @@ public class GetTrafficFlowTile {
         DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
 
         asyncClientbuilder.credential(asyncClientTokenCredential);
-        asyncClientbuilder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+        asyncClientbuilder.trafficClientId(System.getenv("MAPS_CLIENT_ID"));
         asyncClientbuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         TrafficAsyncClient asyncClient = asyncClientbuilder.buildAsyncClient();
 

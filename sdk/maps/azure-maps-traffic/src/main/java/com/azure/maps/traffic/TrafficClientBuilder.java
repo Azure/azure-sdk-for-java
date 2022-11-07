@@ -122,7 +122,7 @@ public final class TrafficClientBuilder implements AzureKeyCredentialTrait<Traff
      * @param trafficClientId the clientId value.
      * @return the SearchClientBuilder.
      */
-    public TrafficClientBuilder mapsClientId(String trafficClientId) {
+    public TrafficClientBuilder trafficClientId(String trafficClientId) {
         this.trafficClientId = Objects.requireNonNull(trafficClientId, "'trafficClientId' cannot be null.");
         return this;
     }

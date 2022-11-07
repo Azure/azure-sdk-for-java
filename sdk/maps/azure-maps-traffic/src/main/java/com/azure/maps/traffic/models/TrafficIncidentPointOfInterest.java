@@ -23,7 +23,7 @@ public final class TrafficIncidentPointOfInterest {
      * style, zoom level and road type
      */
     @JsonProperty(value = "p", access = JsonProperty.Access.WRITE_ONLY)
-    private Point point;
+    private MapsPoint point;
 
     /*
      * The icon category associated with this incident. Values are numbers in
@@ -46,13 +46,13 @@ public final class TrafficIncidentPointOfInterest {
      * Bottom left coordinate of the cluster in the projection of the request
      */
     @JsonProperty(value = "cbl", access = JsonProperty.Access.WRITE_ONLY)
-    private Point bottomLeftCoordinate;
+    private MapsPoint bottomLeftCoordinate;
 
     /*
      * Top right coordinate of the cluster in the projection of the request
      */
     @JsonProperty(value = "ctr", access = JsonProperty.Access.WRITE_ONLY)
-    private Point topLeftCoordinate;
+    private MapsPoint topLeftCoordinate;
 
     /*
      * Cluster size: the number of incidents in the cluster
@@ -137,7 +137,7 @@ public final class TrafficIncidentPointOfInterest {
      *
      * @return the point value.
      */
-    public Point getPoint() {
+    public MapsPoint getPoint() {
         return this.point;
     }
 
@@ -167,7 +167,7 @@ public final class TrafficIncidentPointOfInterest {
      *
      * @return the bottomLeftCoordinate value.
      */
-    public Point getBottomLeftCoordinate() {
+    public MapsPoint getBottomLeftCoordinate() {
         return this.bottomLeftCoordinate;
     }
 
@@ -176,7 +176,7 @@ public final class TrafficIncidentPointOfInterest {
      *
      * @return the topLeftCoordinate value.
      */
-    public Point getTopLeftCoordinate() {
+    public MapsPoint getTopLeftCoordinate() {
         return this.topLeftCoordinate;
     }
 

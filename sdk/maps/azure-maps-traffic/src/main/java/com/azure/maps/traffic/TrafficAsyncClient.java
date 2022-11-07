@@ -55,7 +55,7 @@ import reactor.core.publisher.Mono;
 * &#47;&#47; Creates a builder
 * TrafficClientBuilder builder = new TrafficClientBuilder&#40;&#41;;
 * builder.credential&#40;tokenCredential&#41;;
-* builder.mapsClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;;
+* builder.trafficClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;;
 * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
 *
 * &#47;&#47; Builds a client
