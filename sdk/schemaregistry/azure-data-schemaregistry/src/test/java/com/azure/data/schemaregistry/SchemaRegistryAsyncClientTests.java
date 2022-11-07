@@ -46,7 +46,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     static final String SCHEMA_CONTENT_NO_WHITESPACE = WHITESPACE_PATTERN.matcher(SCHEMA_CONTENT).replaceAll("");
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
-    static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_TEST_GROUP = "azsdk_python_test_group";
     static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private String schemaGroup;
