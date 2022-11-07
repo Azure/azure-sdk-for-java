@@ -22,8 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 class ActiveClientTokenManagerTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
@@ -100,7 +98,6 @@ class ActiveClientTokenManagerTest {
     /**
      * Verify that the ActiveClientTokenManager reschedules the authorization task.
      */
-    @SuppressWarnings("unchecked")
     @Test
     void getAuthorizationResultsRetriableError() {
         // Arrange
@@ -117,10 +114,6 @@ class ActiveClientTokenManagerTest {
             }
         });
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-
-
-        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(DEFAULT_DURATION), Mono.error(error),
-            getNextExpiration(DEFAULT_DURATION));
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
