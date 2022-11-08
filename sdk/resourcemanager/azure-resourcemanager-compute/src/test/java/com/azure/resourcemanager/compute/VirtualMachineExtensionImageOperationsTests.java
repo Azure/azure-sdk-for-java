@@ -13,11 +13,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageType
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersions;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
-import com.azure.resourcemanager.test.utils.PlaybackTimeout;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 
 public class VirtualMachineExtensionImageOperationsTests extends ComputeManagementTest {
 
