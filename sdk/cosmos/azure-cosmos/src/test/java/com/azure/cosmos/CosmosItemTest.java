@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
@@ -312,10 +313,31 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
-//    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-//    public void readManyOptimization() {
-//
-//    }
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyOptimizationRequestChargeComparisonForSingleTupleWithSmallSize() throws Exception {
+        String idAndPkValue = UUID.randomUUID().toString();
+        ObjectNode doc = getDocumentDefinition(idAndPkValue, idAndPkValue);
+        container.createItem(doc);
+        String query = String.format("SELECT * from c where c.id = '%s'", idAndPkValue);
+        CosmosPagedIterable<ObjectNode> queryResult = container.queryItems(query, new CosmosQueryRequestOptions(), ObjectNode.class);
+        FeedResponse<ObjectNode> readManyResult = container.readMany(Arrays.asList(new CosmosItemIdentity(new PartitionKey(idAndPkValue), idAndPkValue)), ObjectNode.class);
+
+        AtomicReference<Double> queryRequestCharge = new AtomicReference<>(0d);
+        double readManyRequestCharge = 0d;
+
+        assertThat(queryResult).isNotNull();
+        assertThat(queryResult.stream().count()).isEqualTo(1L);
+        assertThat(readManyResult).isNotNull();
+        assertThat(readManyResult.getRequestCharge()).isGreaterThan(0D);
+
+        queryResult
+                .iterableByPage(1)
+                .forEach(feedResponse -> queryRequestCharge.updateAndGet(v -> v + feedResponse.getRequestCharge()));
+
+        readManyRequestCharge += readManyResult.getRequestCharge();
+
+        assertThat(readManyRequestCharge).isLessThan(queryRequestCharge.get());
+    }
 
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
