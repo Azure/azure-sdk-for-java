@@ -27,11 +27,12 @@ in the docs folder.
 ## Troubleshoot ServiceBusProcessorClient issues
 ### Client hangs or stalls with a high prefetch and maxConcurrentCall value
 `Update disposition request timed out.` exception is throw and the client stops processing new messages. 
-This issue is known to occur when the number of threads in threadpool is low or equal to the `maxConcurentCalls` value.
+This issue is known to occur when the number of threads in thread-pool is low or equal to the `maxConcurrentCalls` value.
 
+<!-- cSpell:ignore Dreactor -->
 Mitigation: add vm option `-Dreactor.schedulers.defaultBoundedElasticSize=<large number greater than concurrency count>`
 The default value of this property is `10 * number of CPU cores`. This problem is encountered more 
-frequently in an AKS environment.
+frequently in an Azure Kubernetes Service (AKS) environment.
 
 The reason this occurs is because of thread starvation. When all threads are utilized for message processing, the 
 processing thread can't get new threads to run other tasks. And the reason for thread starvation are two-fold. 
