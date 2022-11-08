@@ -1,0 +1,1611 @@
+language:
+  default:
+    name: Confidential Ledger Service
+    description: ''
+    namespace: Azure.Security.ConfidentialLedger
+  java:
+    namespace: com.azure.security.confidentialledger
+protocol: {}
+info:
+  title: Confidential Ledger Service
+  description: ''
+schemas:
+  strings:
+    - &ref_1
+      language:
+        default:
+          name: ledgerUri
+          description: ''
+      protocol: {}
+      type: string
+    - &ref_0
+      language:
+        default:
+          name: string
+          description: simple string
+      protocol: {}
+      type: string
+    - &ref_4
+      language:
+        default:
+          name: transactionId
+          description: >-
+            A unique identifier for the state of the ledger. If returned as part
+            of a LedgerEntry, it indicates the state from which the entry was
+            read.
+      protocol: {}
+      type: string
+    - &ref_5
+      language:
+        default:
+          name: nextLink
+          description: The location of an instance of LedgerEntry
+      protocol: {}
+      type: string
+  constants:
+    - &ref_14
+      language:
+        default:
+          name: accept
+          description: 'api-version: 2022-08-13'
+      protocol: {}
+      type: constant
+      valueType: *ref_0
+      value:
+        value: '2022-08-13'
+    - &ref_15
+      language:
+        default:
+          name: accept
+          description: 'Accept: application/json'
+      protocol: {}
+      type: constant
+      valueType: *ref_0
+      value:
+        value: application/json
+    - &ref_34
+      language:
+        default:
+          name: content-type
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_0
+      value:
+        value: application/merge-patch+json
+  objects:
+    - &ref_9
+      language:
+        default:
+          name: CollectionModel
+          description: Identifier for collections.
+          namespace: Azure.Security.ConfidentialLedger
+        java:
+          namespace: com.azure.security.confidentialledger
+      protocol: {}
+      type: object
+      properties:
+        - language:
+            default:
+              name: collectionId
+              description: ''
+          protocol: {}
+          schema: *ref_1
+          serializedName: collectionId
+          required: true
+          nullable: false
+          readOnly: true
+      usage:
+        - output
+    - &ref_17
+      language:
+        default:
+          name: ErrorResponse
+          description: A response containing error details.
+          namespace: Azure.Core.Foundations
+        java:
+          namespace: com.azure.core.foundations
+      protocol: {}
+      type: object
+      properties:
+        - language:
+            default:
+              name: error
+              description: The error object.
+          protocol: {}
+          schema: &ref_2
+            language:
+              default:
+                name: Error
+                description: The error object.
+                namespace: Azure.Core.Foundations
+              java:
+                namespace: com.azure.core.foundations
+            protocol: {}
+            type: object
+            properties:
+              - language:
+                  default:
+                    name: code
+                    description: One of a server-defined set of error codes.
+                protocol: {}
+                schema: *ref_1
+                serializedName: code
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: message
+                    description: A human-readable representation of the error.
+                protocol: {}
+                schema: *ref_1
+                serializedName: message
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: target
+                    description: The target of the error.
+                protocol: {}
+                schema: *ref_1
+                serializedName: target
+                required: false
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: details
+                    description: >-
+                      An array of details about specific errors that led to this
+                      reported error.
+                protocol: {}
+                schema: &ref_10
+                  language:
+                    default:
+                      name: details
+                      description: ''
+                  protocol: {}
+                  type: array
+                  elementType: *ref_2
+                serializedName: details
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: innererror
+                    description: >-
+                      An object containing more specific information than the
+                      current object about the error.
+                protocol: {}
+                schema: &ref_3
+                  language:
+                    default:
+                      name: InnerError
+                      description: >-
+                        An object containing more specific information about the
+                        error. As per Microsoft One API guidelines -
+                        https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+                      namespace: Azure.Core.Foundations
+                    java:
+                      namespace: com.azure.core.foundations
+                  protocol: {}
+                  type: object
+                  properties:
+                    - language:
+                        default:
+                          name: code
+                          description: One of a server-defined set of error codes.
+                      protocol: {}
+                      schema: *ref_1
+                      serializedName: code
+                      required: true
+                      nullable: false
+                      readOnly: false
+                    - language:
+                        default:
+                          name: innererror
+                          description: Inner error.
+                      protocol: {}
+                      schema: *ref_3
+                      serializedName: innererror
+                      required: false
+                      nullable: false
+                      readOnly: false
+                  usage:
+                    - exception
+                serializedName: innererror
+                required: false
+                nullable: false
+                readOnly: false
+            usage:
+              - exception
+          serializedName: error
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - exception
+    - *ref_2
+    - *ref_3
+    - &ref_20
+      language:
+        default:
+          name: PagedLedgerEntries
+          description: Paginated ledger entries returned in response to a query.
+          namespace: Azure.Security.ConfidentialLedger
+        java:
+          namespace: com.azure.security.confidentialledger
+      protocol: {}
+      type: object
+      properties:
+        - language:
+            default:
+              name: entries
+              description: Array of ledger entries.
+          protocol: {}
+          schema: &ref_11
+            language:
+              default:
+                name: entries
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_6
+              language:
+                default:
+                  name: LedgerEntry
+                  description: ''
+                  namespace: Azure.Security.ConfidentialLedger
+                java:
+                  namespace: com.azure.security.confidentialledger
+              protocol: {}
+              type: object
+              properties:
+                - language:
+                    default:
+                      name: contents
+                      description: Contents of the ledger entry.
+                  protocol: {}
+                  schema: *ref_1
+                  serializedName: contents
+                  required: true
+                  nullable: false
+                  readOnly: false
+                - language:
+                    default:
+                      name: collectionId
+                      description: ''
+                  protocol: {}
+                  schema: *ref_1
+                  serializedName: collectionId
+                  required: true
+                  nullable: false
+                  readOnly: true
+                - language:
+                    default:
+                      name: transactionId
+                      description: ''
+                  protocol: {}
+                  schema: *ref_4
+                  serializedName: transactionId
+                  required: true
+                  nullable: false
+                  readOnly: true
+              usage:
+                - output
+          serializedName: entries
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: state
+              description: State of the ledger query.
+          protocol: {}
+          schema: &ref_7
+            language:
+              default:
+                name: LedgerQueryState
+                description: ''
+                namespace: Azure.Security.ConfidentialLedger
+              java:
+                namespace: com.azure.security.confidentialledger
+            protocol: {}
+            type: choice
+            choiceType: *ref_0
+            choices:
+              - value: Loading
+                language:
+                  default:
+                    name: Loading
+                    description: ''
+              - value: Ready
+                language:
+                  default:
+                    name: Ready
+                    description: ''
+            usage:
+              - output
+          serializedName: state
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: nextLink
+              description: Path from which to retrieve the next page of results.
+          protocol: {}
+          schema: *ref_5
+          serializedName: nextLink
+          required: false
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+    - *ref_6
+    - &ref_21
+      language:
+        default:
+          name: UpdateablePropertiesDefaultKeyVisibilityLedgerEntryread
+          description: The template for adding updateable properties.
+          namespace: Cadl
+        java:
+          namespace: com.cadl
+      protocol: {}
+      type: object
+      properties:
+        - language:
+            default:
+              name: contents
+              description: Contents of the ledger entry.
+          protocol: {}
+          schema: *ref_1
+          serializedName: contents
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+    - &ref_27
+      language:
+        default:
+          name: TransactionReceipt
+          description: A receipt certifying the transaction at the specified id.
+          namespace: Azure.Security.ConfidentialLedger
+        java:
+          namespace: com.azure.security.confidentialledger
+      protocol: {}
+      type: object
+      properties:
+        - language:
+            default:
+              name: receipt
+              description: ''
+          protocol: {}
+          schema: &ref_8
+            language:
+              default:
+                name: ReceiptContents
+                description: ''
+                namespace: Azure.Security.ConfidentialLedger
+              java:
+                namespace: com.azure.security.confidentialledger
+            protocol: {}
+            type: object
+            usage:
+              - output
+          serializedName: receipt
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: state
+              description: ''
+          protocol: {}
+          schema: *ref_7
+          serializedName: state
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: transactionId
+              description: ''
+          protocol: {}
+          schema: *ref_4
+          serializedName: transactionId
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+    - *ref_8
+    - &ref_29
+      language:
+        default:
+          name: TransactionStatus
+          description: Response returned to a query for the transaction status.
+          namespace: Azure.Security.ConfidentialLedger
+        java:
+          namespace: com.azure.security.confidentialledger
+      protocol: {}
+      type: object
+      properties:
+        - language:
+            default:
+              name: state
+              description: ''
+          protocol: {}
+          schema: &ref_12
+            language:
+              default:
+                name: TransactionState
+                description: ''
+                namespace: Azure.Security.ConfidentialLedger
+              java:
+                namespace: com.azure.security.confidentialledger
+            protocol: {}
+            type: choice
+            choiceType: *ref_0
+            choices:
+              - value: Committed
+                language:
+                  default:
+                    name: Committed
+                    description: ''
+              - value: Pending
+                language:
+                  default:
+                    name: Pending
+                    description: ''
+            usage:
+              - output
+          serializedName: state
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: transactionId
+              description: ''
+          protocol: {}
+          schema: *ref_4
+          serializedName: transactionId
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+    - &ref_33
+      language:
+        default:
+          name: LedgerUser
+          description: Details about a Confidential ledger user.
+          namespace: Azure.Security.ConfidentialLedger
+        java:
+          namespace: com.azure.security.confidentialledger
+      protocol: {}
+      type: object
+      properties:
+        - language:
+            default:
+              name: userId
+              description: The user id, either an AAD object ID or certificate fingerprint.
+          protocol: {}
+          schema: *ref_1
+          serializedName: userId
+          required: true
+          nullable: false
+          readOnly: true
+        - language:
+            default:
+              name: assignedRole
+              description: The user's assigned role.
+          protocol: {}
+          schema: &ref_13
+            language:
+              default:
+                name: LedgerUserRole
+                description: ''
+                namespace: Azure.Security.ConfidentialLedger
+              java:
+                namespace: com.azure.security.confidentialledger
+            protocol: {}
+            type: choice
+            choiceType: *ref_0
+            choices:
+              - value: Administrator
+                language:
+                  default:
+                    name: Administrator
+                    description: ''
+              - value: Contributor
+                language:
+                  default:
+                    name: Contributor
+                    description: ''
+              - value: Reader
+                language:
+                  default:
+                    name: Reader
+                    description: ''
+            usage:
+              - output
+              - input
+          serializedName: assignedRole
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - input
+  arrays:
+    - &ref_16
+      language:
+        default:
+          name: response
+          description: ''
+      protocol: {}
+      type: array
+      elementType: *ref_9
+    - *ref_10
+    - *ref_11
+  choices:
+    - *ref_7
+    - *ref_12
+    - *ref_13
+operationGroups:
+  - language:
+      default:
+        name: ConfidentialLedger
+        description: ''
+    protocol: {}
+    $key: ConfidentialLedger
+    operations:
+      - language:
+          default:
+            name: listCollections
+            description: Collection ids are user-created collections of ledger entries
+        protocol: {}
+        operationId: ConfidentialLedger_listCollections
+        summary: Retrieves a list of collection ids present in the Confidential Ledger
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/collections
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - &ref_18
+            language:
+              default:
+                name: ledgerUri
+                description: ''
+                serializedName: ledgerUri
+            protocol:
+              http:
+                in: uri
+            schema: *ref_1
+            implementation: Client
+            origin: modelerfour:synthesized/host
+            required: true
+          - &ref_19
+            language:
+              default:
+                name: api-version
+                description: Version parameter
+                serializedName: api-version
+            protocol:
+              http:
+                in: query
+            schema: *ref_14
+            implementation: Client
+            origin: modelerfour:synthesized/api-version
+            required: true
+            clientDefaultValue: '2022-08-13'
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters: []
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_16
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: getEnclaveQuotes
+            description: >-
+              A quote is an SGX enclave measurement that can be used to verify
+              the validity of a node and its enclave.
+        protocol: {}
+        operationId: ConfidentialLedger_getEnclaveQuotes
+        summary: Gets quotes for all nodes of the Confidential Ledger.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/enclaveQuotes
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters: []
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: getConstitution
+            description: >-
+              The constitution is a script that assesses and applies proposals
+              from consortium members.
+        protocol: {}
+        operationId: ConfidentialLedger_getConstitution
+        summary: Gets the constitution used for governance.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/governance/constitution
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters: []
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: getConsortiumMembers
+            description: Consortium members can manage the Confidential Ledger.
+        protocol: {}
+        operationId: ConfidentialLedger_getConsortiumMembers
+        summary: Gets the consortium members.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/governance/members
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters: []
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: listLedgerEntries
+            description: >-
+              A collection id may optionally be specified. Only entries in the
+              specified (or default) collection will be returned.
+        protocol: {}
+        operationId: ConfidentialLedger_listLedgerEntries
+        summary: Gets ledger entries from a collection corresponding to a range.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+          x-ms-pageable:
+            itemName: entries
+            nextLinkName: nextLink
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/transactions
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters: []
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_20
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: createLedgerEntry
+            description: A collection id may optionally be specified.
+        protocol: {}
+        operationId: ConfidentialLedger_createLedgerEntry
+        summary: Writes a ledger entry.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/transactions
+                method: post
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - &ref_22
+            language:
+              default:
+                name: collectionId
+                description: The collection id.
+                serializedName: collectionId
+            protocol:
+              http:
+                in: query
+            schema: *ref_1
+            implementation: Method
+            required: false
+            nullable: false
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+          - &ref_23
+            language:
+              default:
+                name: UpdateableProperties
+                description: The template for adding updateable properties.
+            protocol:
+              http:
+                in: body
+            schema: *ref_21
+            implementation: Method
+            required: true
+        signatureParameters:
+          - *ref_22
+          - *ref_23
+        responses:
+          - language:
+              default:
+                name: ''
+                description: >-
+                  The request has succeeded and a new resource has been created
+                  as a result.
+            protocol:
+              http:
+                statusCodes:
+                  - '201'
+                headers:
+                  - header: Location
+                    schema: *ref_5
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: getLedgerEntry
+            description: Get a LedgerEntry
+        protocol: {}
+        operationId: ConfidentialLedger_getLedgerEntry
+        summary: >-
+          Gets the ledger entry at the specified transaction id. A collection id
+          may optionally be specified to indicate the collection from which to
+          fetch the value.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/transactions/{transactionId}
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - &ref_24
+            language:
+              default:
+                name: transactionId
+                description: ''
+                serializedName: transactionId
+            protocol:
+              http:
+                in: path
+            schema: *ref_4
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_25
+            language:
+              default:
+                name: collectionId
+                description: The collection id.
+                serializedName: collectionId
+            protocol:
+              http:
+                in: query
+            schema: *ref_1
+            implementation: Method
+            required: false
+            nullable: false
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters:
+          - *ref_24
+          - *ref_25
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_6
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: getReceipt
+            description: Runs a custom action on LedgerEntry
+        protocol: {}
+        operationId: ConfidentialLedger_getReceipt
+        summary: >-
+          Gets a receipt certifying ledger contents at a particular transaction
+          id.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/transactions/{transactionId}/receipt
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - &ref_26
+            language:
+              default:
+                name: transactionId
+                description: ''
+                serializedName: transactionId
+            protocol:
+              http:
+                in: path
+            schema: *ref_4
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters:
+          - *ref_26
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_27
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: getTransactionStatus
+            description: Runs a custom action on LedgerEntry
+        protocol: {}
+        operationId: ConfidentialLedger_getTransactionStatus
+        summary: >-
+          Gets a receipt certifying ledger contents at a particular transaction
+          id.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/transactions/{transactionId}/status
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - &ref_28
+            language:
+              default:
+                name: transactionId
+                description: ''
+                serializedName: transactionId
+            protocol:
+              http:
+                in: path
+            schema: *ref_4
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters:
+          - *ref_28
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_29
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: getCurrentLedgerEntry
+            description: Runs a custom action on LedgerEntry
+        protocol: {}
+        operationId: ConfidentialLedger_getCurrentLedgerEntry
+        summary: Gets the current value available in the ledger.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/transactions:getCurrentLedgerEntry
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - &ref_30
+            language:
+              default:
+                name: collectionId
+                description: The collection id.
+                serializedName: collectionId
+            protocol:
+              http:
+                in: query
+            schema: *ref_1
+            implementation: Method
+            required: false
+            nullable: false
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters:
+          - *ref_30
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_6
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: deleteUser
+            description: Delete a LedgerUser
+        protocol: {}
+        operationId: ConfidentialLedger_deleteUser
+        summary: Deletes a user from the Confidential Ledger.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/users/{userId}
+                method: delete
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - &ref_31
+            language:
+              default:
+                name: userId
+                description: >-
+                  The user id, either an AAD object ID or certificate
+                  fingerprint.
+                serializedName: userId
+            protocol:
+              http:
+                in: path
+            schema: *ref_1
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters:
+          - *ref_31
+        responses:
+          - language:
+              default:
+                name: ''
+                description: >-
+                  There is no content to send for this request, but the headers
+                  may be useful. 
+            protocol:
+              http:
+                statusCodes:
+                  - '204'
+                headers: []
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: getUser
+            description: Get a LedgerUser
+        protocol: {}
+        operationId: ConfidentialLedger_getUser
+        summary: Gets a user.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/users/{userId}
+                method: get
+                uri: '{ledgerUri}'
+        parameters:
+          - *ref_18
+          - &ref_32
+            language:
+              default:
+                name: userId
+                description: >-
+                  The user id, either an AAD object ID or certificate
+                  fingerprint.
+                serializedName: userId
+            protocol:
+              http:
+                in: path
+            schema: *ref_1
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+        signatureParameters:
+          - *ref_32
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_33
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+      - language:
+          default:
+            name: createOrUpdateUser
+            description: Creates or updates a LedgerUser
+        protocol: {}
+        operationId: ConfidentialLedger_createOrUpdateUser
+        summary: Adds a user or updates a user's fields.
+        apiVersions:
+          - version: '2022-08-13'
+        extensions:
+          convenienceMethod: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /app/users/{userId}
+                method: patch
+                uri: '{ledgerUri}'
+                mediaTypes:
+                  - application/merge-patch+json
+        parameters:
+          - *ref_18
+          - &ref_35
+            language:
+              default:
+                name: userId
+                description: >-
+                  The user id, either an AAD object ID or certificate
+                  fingerprint.
+                serializedName: userId
+            protocol:
+              http:
+                in: path
+            schema: *ref_1
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: content-type
+                description: ''
+                serializedName: content-type
+            protocol:
+              http:
+                in: header
+            schema: *ref_34
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_19
+          - language:
+              default:
+                name: accept
+                description: Accept header
+                serializedName: accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_15
+            implementation: Method
+            origin: modelerfour:synthesized/accept
+            required: true
+          - &ref_36
+            language:
+              default:
+                name: LedgerUser
+                description: Details about a Confidential ledger user.
+            protocol:
+              http:
+                in: body
+            schema: *ref_33
+            implementation: Method
+            required: true
+        signatureParameters:
+          - *ref_35
+          - *ref_36
+        responses:
+          - language:
+              default:
+                name: ''
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_33
+          - language:
+              default:
+                name: ''
+                description: >-
+                  The request has succeeded and a new resource has been created
+                  as a result.
+            protocol:
+              http:
+                statusCodes:
+                  - '201'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_33
+        exceptions:
+          - language:
+              default:
+                name: ''
+                description: An unexpected error response
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_17
+security:
+  authenticationRequired: true
+  schemes:
+    - type: OAuth2
+      scopes:
+        - https://confidential-ledger.azure.com/.default
+globalParameters:
+  - *ref_18

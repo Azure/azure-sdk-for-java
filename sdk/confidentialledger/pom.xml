@@ -9,7 +9,8 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-      <module>azure-resourcemanager-confidentialledger</module>
-      <module>azure-security-confidentialledger</module>
+    <module>azure-confidentialledger</module>
+    <module>azure-resourcemanager-confidentialledger</module>
+    <module>azure-security-confidentialledger</module>
   </modules>
 </project>
