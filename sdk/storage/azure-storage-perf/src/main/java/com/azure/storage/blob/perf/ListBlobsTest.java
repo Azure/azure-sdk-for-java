@@ -7,7 +7,6 @@ import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
@@ -30,7 +29,8 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
                 .parallel(options.getParallel())
                 .runOn(Schedulers.boundedElastic())
                 .flatMap(iteration -> blobContainerAsyncClient.getBlobAsyncClient("getblobstest-" + UUID.randomUUID())
-                    .upload(Flux.empty(), null), false, Math.min(options.getParallel(), 1000 / options.getParallel()), 1)
+                    .upload(Flux.empty(), null), false, 1, 1)
+                .sequential()
                 .then());
     }
 
