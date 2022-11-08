@@ -31,6 +31,7 @@ autorest --java --use:@autorest/java@4.0.46
 ``` yaml
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
+use: '@autorest/java@4.1.6'
 output-folder: ./..
 generate-client-as-impl: true
 namespace: com.azure.containers.containerregistry
@@ -41,8 +42,9 @@ sync-methods: none
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ArtifactTagOrder,ArtifactManifestOrder,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties,ContainerRepositoryProperties,OciManifest,OciBlobDescriptor,OciAnnotations
+custom-types: ArtifactTagOrder,ArtifactManifestOrder,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties,ContainerRepositoryProperties,OciManifest,OciBlobDescriptor,OciAnnotations,ArtifactManifestProperties,ArtifactTagProperties
 custom-types-subpackage: models
+enable-sync-stack: true
 ```
 
 ### Set modelAsString flag for the enum values of ArtifactTagOrderBy

@@ -4,7 +4,6 @@
 
 package com.azure.containers.containerregistry.models;
 
-import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,10 +12,9 @@ import java.time.OffsetDateTime;
 /** Tag attributes. */
 @JsonFlatten
 @Fluent
-public final class ArtifactTagProperties {
+public class ArtifactTagProperties {
     /*
-     * Registry login server name. This is likely to be similar to
-     * {registry-name}.azurecr.io.
+     * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;
@@ -75,39 +73,8 @@ public final class ArtifactTagProperties {
     @JsonProperty(value = "tag.changeableAttributes.readEnabled")
     private Boolean readEnabled;
 
-    static {
-        ArtifactTagPropertiesHelper.setAccessor(new ArtifactTagPropertiesHelper.ArtifactTagPropertiesAccessor() {
-            @Override
-            public void setRepositoryName(ArtifactTagProperties tagProperties, String repositoryName) {
-                tagProperties.setRepositoryName(repositoryName);
-            }
-
-            @Override
-            public void setName(ArtifactTagProperties tagProperties, String tagName) {
-                tagProperties.setName(tagName);
-            }
-
-            @Override
-            public void setDigest(ArtifactTagProperties tagProperties, String digest) {
-                tagProperties.setDigest(digest);
-            }
-
-            @Override
-            public void setCreatedOn(ArtifactTagProperties tagProperties, OffsetDateTime createdOn) {
-                tagProperties.setCreatedOn(createdOn);
-            }
-
-            @Override
-            public void setlastUpdatedOn(ArtifactTagProperties tagProperties, OffsetDateTime lastUpdatedOn) {
-                tagProperties.setLastUpdatedOn(lastUpdatedOn);
-            }
-        });
-    }
-
-    private ArtifactTagProperties setName(String tagName) {
-        this.name = tagName;
-        return this;
-    }
+    /** Creates an instance of ArtifactTagProperties class. */
+    public ArtifactTagProperties() {}
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
@@ -241,27 +208,6 @@ public final class ArtifactTagProperties {
      */
     public ArtifactTagProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
-        return this;
-    }
-
-    private ArtifactTagProperties setRepositoryName(String repositoryName) {
-        this.repositoryName = repositoryName;
-        return this;
-    }
-
-    private ArtifactTagProperties setDigest(String digest) {
-        this.digest = digest;
-        return this;
-    }
-
-
-    private ArtifactTagProperties setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
-        return this;
-    }
-
-    private ArtifactTagProperties setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
         return this;
     }
 }

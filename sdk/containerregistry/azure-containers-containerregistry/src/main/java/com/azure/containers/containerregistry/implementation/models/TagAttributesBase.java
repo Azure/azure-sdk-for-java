@@ -61,6 +61,9 @@ public class TagAttributesBase {
     @JsonProperty(value = "changeableAttributes.readEnabled")
     private Boolean readEnabled;
 
+    /** Creates an instance of TagAttributesBase class. */
+    public TagAttributesBase() {}
+
     /**
      * Get the name property: Tag name.
      *
