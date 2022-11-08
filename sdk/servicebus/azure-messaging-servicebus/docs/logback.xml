@@ -15,6 +15,7 @@
       <pattern>%d{HH:mm:ss} [%t] %.-1level %-20logger{20} - %msg%n</pattern>
     </encoder>
 
+    <!-- cSpell:ignore JaninoEventEvaluator -->
     <!-- FILTERS: Evaluators default to JaninoEventEvaluator -->
     <!-- Log everything from ReceiveLinkHandler except the 'onDelivery' messages. -->
     <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
