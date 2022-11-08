@@ -521,18 +521,6 @@ public class OpenTelemetryTracerTest {
     }
 
     @Test
-    public void startCurrentSpanNoContext() {
-        try (Scope parentScope = parentSpan.makeCurrent()) {
-            try (AutoCloseable scope = openTelemetryTracer.makeSpanCurrent(Context.NONE)) {
-                assertFalse(Span.current().getSpanContext().isValid());
-            } catch (Exception e) {
-                fail();
-            }
-            assertSame(parentSpan, Span.current());
-        }
-    }
-
-    @Test
     @SuppressWarnings("deprecation")
     public void startEndCurrentSpanBackwardCompatible() {
         try (Scope parentScope = parentSpan.makeCurrent()) {
