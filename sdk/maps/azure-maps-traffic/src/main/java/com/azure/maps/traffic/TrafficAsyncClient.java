@@ -513,14 +513,14 @@ public final class TrafficAsyncClient {
      *     new TrafficIncidentDetailOptions&#40;&#41;
      *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
      *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
-     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;&#41;;
+     *         .setTrafficmodelId&#40;&quot;1335294634919&quot;&#41;&#41;;
      *
      * &#47;&#47; complete
      * client.getTrafficIncidentDetail&#40;
      *     new TrafficIncidentDetailOptions&#40;&#41;
      *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
      *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
-     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
+     *         .setTrafficmodelId&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *         .setProjectionStandard&#40;ProjectionStandard.EPSG900913&#41;.setIncidentGeometryType&#40;IncidentGeometryType.ORIGINAL&#41;
      *         .setExpandCluster&#40;false&#41;.setOriginalPosition&#40;false&#41;&#41;;
      * </pre>
@@ -561,14 +561,14 @@ public final class TrafficAsyncClient {
      *     new TrafficIncidentDetailOptions&#40;&#41;
      *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
      *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
-     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;&#41;;
+     *         .setTrafficmodelId&#40;&quot;1335294634919&quot;&#41;&#41;;
      *
      * &#47;&#47; complete
      * client.getTrafficIncidentDetail&#40;
      *     new TrafficIncidentDetailOptions&#40;&#41;
      *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
      *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
-     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
+     *         .setTrafficmodelId&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *         .setProjectionStandard&#40;ProjectionStandard.EPSG900913&#41;.setIncidentGeometryType&#40;IncidentGeometryType.ORIGINAL&#41;
      *         .setExpandCluster&#40;false&#41;.setOriginalPosition&#40;false&#41;&#41;;
      * </pre>
@@ -606,14 +606,14 @@ public final class TrafficAsyncClient {
      *     new TrafficIncidentDetailOptions&#40;&#41;
      *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
      *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
-     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;&#41;;
+     *         .setTrafficmodelId&#40;&quot;1335294634919&quot;&#41;&#41;;
      *
      * &#47;&#47; complete
      * client.getTrafficIncidentDetail&#40;
      *     new TrafficIncidentDetailOptions&#40;&#41;
      *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
      *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
-     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
+     *         .setTrafficmodelId&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *         .setProjectionStandard&#40;ProjectionStandard.EPSG900913&#41;.setIncidentGeometryType&#40;IncidentGeometryType.ORIGINAL&#41;
      *         .setExpandCluster&#40;false&#41;.setOriginalPosition&#40;false&#41;&#41;;
      * </pre>

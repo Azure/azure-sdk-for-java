@@ -76,6 +76,8 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 Get Traffic Flow Segment
 ```java com.azure.maps.traffic.sync.get_traffic_flow_segment
+System.out.println("Get Traffic Flow Segment:");
+
 // options
 client.getTrafficFlowSegment(
     new TrafficFlowSegmentOptions()
@@ -92,6 +94,8 @@ client.getTrafficFlowSegment(
 
 Get Traffic Flow Tile
 ```java com.azure.maps.traffic.sync.get_traffic_flow_tile
+System.out.println("Get Traffic Flow Tile:");
+
 // options
 client.getTrafficFlowTile(
     new TrafficFlowTileOptions()
@@ -101,11 +105,13 @@ client.getTrafficFlowTile(
 client.getTrafficFlowTile(
     new TrafficFlowTileOptions()
         .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY).setFormat(TileFormat.PNG).setZoom(10)
-        .setTileIndex(new TileIndex().setX(2044).setY(1360)).setThickness(10));    
+        .setTileIndex(new TileIndex().setX(2044).setY(1360)).setThickness(10));
 ```
 
 Get Traffic Incident Detail
 ```java com.azure.maps.traffic.sync.get_traffic_incident_detail
+System.out.println("Get Traffic Incident Detail:");
+
 // options
 client.getTrafficIncidentDetail(
     new TrafficIncidentDetailOptions()
@@ -120,11 +126,13 @@ client.getTrafficIncidentDetail(
         .setIncidentDetailStyle(IncidentDetailStyle.S3).setBoundingZoom(11)
         .setTrafficmodelId("1335294634919").setLanguage("en")
         .setProjectionStandard(ProjectionStandard.EPSG900913).setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
-        .setExpandCluster(false).setOriginalPosition(false));  
+        .setExpandCluster(false).setOriginalPosition(false));
 ```
 
 Get Traffic Incident Tile
 ```java com.azure.maps.traffic.sync.get_traffic_incident_tile
+System.out.println("Get Traffic Incident Tile:");
+
 // options
 client.getTrafficIncidentTile(
     new TrafficIncidentTileOptions()
@@ -140,6 +148,8 @@ client.getTrafficIncidentTile(
 
 Get Traffic Incident Viewport
 ```java com.azure.maps.traffic.sync.get_traffic_incident_viewport
+System.out.println("Get Traffic Incident Tile:");
+
 // options
 client.getTrafficIncidentViewport(
     new TrafficIncidentViewportOptions()

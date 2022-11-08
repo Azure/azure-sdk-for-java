@@ -83,6 +83,12 @@
   ],
   "overrides": [
     {
+      "filename": "sdk/maps/azure-maps-traffic/README.md",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
       "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/ProjectionStandard.java",
       "words": [
         "EPSG"

@@ -33,7 +33,7 @@ import com.azure.maps.traffic.models.TrafficFlowSegmentData;
 import com.azure.maps.traffic.models.TrafficIncidentViewport;
 
 public class TrafficClientTestBase extends TestBase {
-    static final String FAKE_API_KEY = "1234567890";
+    static final String FAKE_API_KEY = "fakeApiKey";
 
     private final String endpoint = Configuration.getGlobalConfiguration().get("API-LEARN_ENDPOINT");
     Duration durationTestMode;
@@ -113,11 +113,7 @@ public class TrafficClientTestBase extends TestBase {
     static void validateGetTrafficFlowSegment(TrafficFlowSegmentData expected, TrafficFlowSegmentData actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getFlowSegmentData().getCurrentSpeed(), actual.getFlowSegmentData().getCurrentSpeed());
-        assertEquals(expected.getFlowSegmentData().getCurrentTravelTime(), actual.getFlowSegmentData().getCurrentTravelTime());
-        assertEquals(expected.getFlowSegmentData().getFreeFlowSpeed(), actual.getFlowSegmentData().getFreeFlowSpeed());
-        assertEquals(expected.getFlowSegmentData().getFreeFlowTravelTime(), actual.getFlowSegmentData().getFreeFlowTravelTime());
-        assertEquals(expected.getFlowSegmentData().getConfidence(), actual.getFlowSegmentData().getConfidence());
+        assertEquals(expected.getConfidence(), actual.getConfidence());
     }
 
     static void validateGetTrafficFlowSegmentWithResponse(TrafficFlowSegmentData expected, int expectedStatusCode, Response<TrafficFlowSegmentData> response) {
@@ -140,7 +136,7 @@ public class TrafficClientTestBase extends TestBase {
     static void validateTrafficIncidentDetail(TrafficIncidentDetail expected, TrafficIncidentDetail actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getTm().getPointsOfInterest().size(), actual.getTm().getPointsOfInterest().size());
+        assertEquals(expected.getPointsOfInterest().size(), actual.getPointsOfInterest().size());
     }
 
     static void validateTrafficIncidentDetailWithResponse(TrafficIncidentDetail expected, int expectedStatusCode, Response<TrafficIncidentDetail> response) {

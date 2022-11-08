@@ -5,7 +5,9 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.maps.traffic.implementation.models.TrafficIncidentDetailTm;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** This object is returned from a successful Traffic incident Detail call. */
 @Immutable
@@ -20,11 +22,20 @@ public final class TrafficIncidentDetail {
     private TrafficIncidentDetail() {}
 
     /**
-     * Get the tm property: Main response element.
+     * Get the id property: ID of the traffic model for this incident.
      *
-     * @return the tm value.
+     * @return the id value.
      */
-    public TrafficIncidentDetailTm getTm() {
-        return this.tm;
+    public String getId() {
+        return this.tm.getId();
+    }
+
+    /**
+     * Get the pointsOfInterest property: A single traffic incident, or a cluster of traffic incidents.
+     *
+     * @return the pointsOfInterest value.
+     */
+    public List<TrafficIncidentPointOfInterest> getPointsOfInterest() {
+        return this.tm.getPointsOfInterest();
     }
 }
