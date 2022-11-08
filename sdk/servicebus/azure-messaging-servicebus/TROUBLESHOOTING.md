@@ -5,7 +5,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 ## Table of contents
 - [Implicit prefetch issue in ServiceBusReceiverClient](#implicit-prefetch-issue-in-servicebusreceiverclient)
 - [Troubleshoot ServiceBusProcessorClient issues](#troubleshoot-servicebusprocessorclient-issues)
-  - [Client hangs or stalls with a high prefetch and maxConcurrentCall value](#Client-hangs-or-stalls-with-a-high-prefetch-and-maxconcurrentcall-value)
+  - [Client hangs or stalls with a high prefetch and maxConcurrentCall value](#client-hangs-or-stalls-with-a-high-prefetch-and-maxconcurrentcall-value)
     - [Credit calculation issue](#credit-calculation-issue)
 - [Autocomplete issue](#autocomplete-issue)
 - [Migrate from legacy to new client library](#migrate-from-legacy-to-new-client-library)
@@ -30,15 +30,19 @@ in the docs folder.
 This issue is known to occur when the number of threads in thread-pool is low or equal to the `maxConcurrentCalls` value.
 
 <!-- cSpell:ignore Dreactor -->
-Mitigation: add vm option `-Dreactor.schedulers.defaultBoundedElasticSize=<large number greater than concurrency count>`
+Mitigation: 
+* add vm option `-Dreactor.schedulers.defaultBoundedElasticSize=<large number greater than concurrency count>`
 The default value of this property is `10 * number of CPU cores`. This problem is encountered more 
 frequently in an Azure Kubernetes Service (AKS) environment.
+* Another setting that helps ease the problem here is disabling prefetch which can be done by setting `prefetchCount(0)` when the client is created.
 
 The reason this occurs is because of thread starvation. When all threads are utilized for message processing, the 
 processing thread can't get new threads to run other tasks. And the reason for thread starvation are two-fold. 
-One of them is the backpressure from the reactor-operators-chain which causes the acknowledgements to stay in the
-`receiveLinkHandler`'s buffer. The other is the problem with credit calculation. More information on that is in 
-[Credit calculation issue](#credit-calculation-issue).
+One of them is, given that today message settlement acknowledgements and the actual messages share the same
+`receiveLinkHandler`'s buffer, the backpressure from the reactor-operators-chain which is supposed only act on the 
+messages, ends up making the settlement acknowledgement to stay in the buffer. The other is the problem with credit 
+calculation. More information on that is in [Credit calculation issue](#credit-calculation-issue).
+
 #### Credit calculation issue
 Currently, the credits that are placed on the link are overestimated as the way we calculated the number of credits 
 used is incorrect. Trying to get link Credits from multiple threads to calculate credits fail. This is something we 
