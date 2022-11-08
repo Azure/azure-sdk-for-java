@@ -3,8 +3,8 @@
 This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure Service Bus Java client library, and mitigation steps to resolve these errors.
 
 ## Table of contents
-- [Implicit prefetch issue in Sync ReceiverClient](#implicit-prefetch-issue-in-Sync-ReceiverClient)
-- [Troubleshoot ServiceBusProcessorClient issues](#troubleshoot-servicebus-issues)
+- [Implicit prefetch issue in ServiceBusReceiverClient](#implicit-prefetch-issue-in-ServiceBusReceiverClient)
+- [Troubleshoot ServiceBusProcessorClient issues](#troubleshoot-ServiceBusProcessorClient-issues)
   - [Client hangs or stalls with a high prefetch and maxConcurrentCall value](#Client-hangs-or-stalls-with-a-high-prefetch-and-maxConcurrentCall-value)
     - [Credit calculation issue](#credit-calculation-issue)
 - [Autocomplete issue](#autocomplete-issue)
@@ -17,26 +17,27 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Get additional help](#get-additional-help)
     - [Filing GitHub issues](#filing-github-issues)
 
-## Implicit prefetch issue in Sync ReceiverClient
+## Implicit prefetch issue in ServiceBusReceiverClient
 Even after the application disables prefetch in the client builder, the `receiveMessages` API in 
 `ServiceBusReceiverClient` can re-enable prefetch implicitly, which may not be obvious.
 
 A detailed write-up on this issue is present in the [SyncReceiveAndPrefetch][SyncReceiveAndPrefetch] document present 
 in the docs folder.
 
-## Troubleshoot ServiceBus issues
+## Troubleshoot ServiceBusProcessorClient issues
 ### Client hangs or stalls with a high prefetch and maxConcurrentCall value
-Client throws `Update disposition request timed out.` and hangs or stalls processing new messages. 
+`Update disposition request timed out.` exception is throw and the client stops processing new messages. 
 This issue is known to occur when the number of threads in threadpool is low or equal to the `maxConcurentCalls` value.
 
-Mitigation : add vm option `-Dreactor.schedulers.defaultBoundedElasticSize=<large number greater than concurrency count>`
+Mitigation: add vm option `-Dreactor.schedulers.defaultBoundedElasticSize=<large number greater than concurrency count>`
 The default value of this property is `10 * number of CPU cores`. This problem is encountered more 
 frequently in an AKS environment.
 
 The reason this occurs is because of thread starvation. When all threads are utilized for message processing, the 
 processing thread can't get new threads to run other tasks. And the reason for thread starvation are two-fold. 
 One of them is the backpressure from the reactor-operators-chain which causes the acknowledgements to stay in the
-receiveLinkHandler's buffer. The other is the problem with credit calculation. More information on that is below.
+`receiveLinkHandler`'s buffer. The other is the problem with credit calculation. More information on that is in 
+[Credit calculation issue](#credit-calculation-issue).
 #### Credit calculation issue
 Currently, the credits that are placed on the link are overestimated as the way we calculated the number of credits 
 used is incorrect. Trying to get link Credits from multiple threads to calculate credits fail. This is something we 
@@ -51,7 +52,7 @@ customer side.
 This problem also manifests itself due to thread hopping in the reactor operators, which might cause the completion to
 occur out of order, resulting in incorrect message state. 
 
-Mitigation : Use `disableAutoComplete()` and `.maxAutoLockRenewalDuration(Duration.ZERO)` to turn off the two features 
+Mitigation: Use `disableAutoComplete()` and `.maxAutoLockRenewalDuration(Duration.ZERO)` to turn off the two features 
 in `ServiceBusReceiverAsyncClient`. 
 Especially when there is any kind of buffering involved in the message processing code path. After disabling 
 AutoComplete, message settlement (completion / abandonment) should be done explicitly from the message processing code.
@@ -71,17 +72,14 @@ state.  Below are sample log4j2 and logback configurations to reduce the excessi
 enabled.
 
 ### Configuring Log4J 2
-
 1. Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for Log4j2" section.
 2. Add [log4j2.xml][log4j2] to your `src/main/resources`.
 
 ### Configuring logback
-
 1. Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for logback" section.
 2. Add [logback.xml][logback] to your `src/main/resources`.
 
 ### Enable AMQP transport logging
-
 If enabling client logging is not enough to diagnose your issues.  You can enable logging to a file in the underlying
 AMQP library, [Qpid Proton-J][qpid_proton_j_apache].  Qpid Proton-J uses `java.util.logging`. You can enable logging by
 creating a configuration file with the contents below.  Or set `proton.trace.level=ALL` and whichever configuration options
@@ -91,7 +89,6 @@ you want for the `java.util.logging.Handler` implementation.  The implementation
 To trace the AMQP transport frames, set the environment variable: `PN_TRACE_FRM=1`.
 
 #### Sample "logging.properties" file
-
 The configuration file below logs TRACE level output from proton-j to the file "proton-trace.log".
 
 ```
@@ -105,7 +102,6 @@ java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 ```
 
 ### Reduce logging
-
 One way to decrease logging is to change the verbosity.  Another is to add filters that exclude logs from logger names 
 packages like `com.azure.messaging.servicebus` or `com.azure.core.amqp`.  Examples of this can be found in the XML files 
 in [Configuring Log4J 2](#configuring-log4j-2) and [Configure logback](#configuring-logback).
@@ -119,11 +115,9 @@ When submitting a bug, log messages from classes in the following packages are i
 
 
 ## Get additional help
-
 Additional information on ways to reach out for support can be found in the [SUPPORT.md][SUPPORT] at the repo's root.
 
 ### Filing GitHub issues
-
 When filing GitHub issues, the following details are requested:
 
 * Service Bus configuration / Namespace environment
@@ -134,9 +128,10 @@ When filing GitHub issues, the following details are requested:
     * What is the machine(s) specs where the client is processing messages?
     * How many instances are running?
     * What is the max heap set (i.e., Xmx)?
-    * What is the MaxConcurrentCalls value?
-    * What is the PrefetchCount value?
-    * Is AutoComplete enabled or disabled?
+    * What is the configuration the client is created with?  
+      * If applicable, what is the MaxConcurrentCalls value?
+      * If applicable, what is the PrefetchCount value?
+      * If applicable, is AutoComplete enabled or disabled?
 * What is the traffic pattern like?  (i.e. # messages/minute and if the Client is always busy or has slow traffic periods.)
 * Repro code and steps
     * This is important as we often cannot reproduce the issue in our environment.

@@ -18,36 +18,7 @@
 
   <!-- Additivity is not set here so we inherit the existing Appenders from the Root element. -->
   <Loggers>
-    <!-- Log only warnings from the checkpoint store. -->
-    <Logger name="com.azure.messaging.eventhubs.checkpointstore.blob" level="WARN">
-    </Logger>
-
-    <!-- PartitionBasedLoadBalancer: Log warnings. The usual output is load balancing output which is noisy. -->
-    <Logger name="com.azure.messaging.eventhubs.PartitionBasedLoadBalancer" level="WARN">
-    </Logger>
-
-    <!-- OPTIONAL SUPPRESSION. If we know it is not a link credit or propagation issue, we can suppress this. -->
-    <!-- Log only the 'On next' messages so we know messages are being propagated downstream. -->
-    <Logger name="com.azure.messaging.eventhubs.PartitionPumpManager" level="DEBUG">
-      <ScriptFilter>
-        <Script name="PartitionPumpManagerScript" language="groovy"><![CDATA[
-        import org.apache.logging.log4j.Level;
-
-        if (logEvent.getLevel().isMoreSpecificThan(Level.WARN)) {
-          return true;
-        }
-
-        def message = logEvent.getMessage();
-        return message != null && message.getFormat().startsWith("On next");
-        ]]>
-        </Script>
-      </ScriptFilter>
-    </Logger>
-
-    <!-- DEFAULT: If the other logger clauses don't apply, log it. This includes our implementation
-    classes in com.azure.messaging.eventhubs.implementation. -->
-    <Logger name="com.azure.messaging.eventhubs" level="DEBUG">
-    </Logger>
+    <Logger name="com.azure.messaging.servicebus" level="DEBUG" />
 
     <!-- Log everything from ReceiveLinkHandler except the 'onDelivery' messages. -->
     <Logger name="com.azure.core.amqp.implementation.handler.ReceiveLinkHandler" level="DEBUG">

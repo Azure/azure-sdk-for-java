@@ -16,19 +16,6 @@
     </encoder>
 
     <!-- FILTERS: Evaluators default to JaninoEventEvaluator -->
-
-    <!-- OPTIONAL SUPPRESSION. If we know it is not a link credit or propagation issue, we can suppress this. -->
-    <!-- Log only the 'On next' messages so we know messages are being propagated downstream. -->
-    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-      <evaluator>
-        <expression>return level &lt; WARN &amp;&amp;
-        logger.equals(&quot;com.azure.messaging.eventhubs.PartitionPumpManager&quot;) &amp;&amp;
-        !message.startsWith(&quot;On next&quot;);</expression>
-      </evaluator>
-      <OnMismatch>NEUTRAL</OnMismatch>
-      <OnMatch>DENY</OnMatch>
-    </filter>
-
     <!-- Log everything from ReceiveLinkHandler except the 'onDelivery' messages. -->
     <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
       <evaluator>
@@ -67,19 +54,6 @@
     </encoder>
 
     <!-- FILTERS: Evaluators default to JaninoEventEvaluator -->
-
-    <!-- OPTIONAL SUPPRESSION. If we know it is not a link credit or propagation issue, we can suppress this. -->
-    <!-- Log only the 'On next' messages so we know messages are being propagated downstream. -->
-    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-      <evaluator>
-        <expression>return level &lt; WARN &amp;&amp;
-          logger.equals(&quot;com.azure.messaging.eventhubs.PartitionPumpManager&quot;) &amp;&amp;
-          !message.startsWith(&quot;On next&quot;);</expression>
-      </evaluator>
-      <OnMismatch>NEUTRAL</OnMismatch>
-      <OnMatch>DENY</OnMatch>
-    </filter>
-
     <!-- Log everything from ReceiveLinkHandler except the 'onDelivery' messages. -->
     <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
       <evaluator>
@@ -112,17 +86,7 @@
     </filter>
   </appender>
 
-  <logger name="com.azure.messaging.eventhubs.checkpointstore.blob" level="WARN">
-  </logger>
-
-  <logger name="com.azure.messaging.eventhubs.PartitionBasedLoadBalancer" level="WARN">
-  </logger>
-
-  <logger name="com.azure.core.amqp.implementation" level="DEBUG">
-  </logger>
-
-  <logger name="com.azure.messaging.eventhubs" level="DEBUG">
-  </logger>
+  <logger name="com.azure.messaging.servicebus" level="DEBUG" />
 
   <root level="WARN">
     <appender-ref ref="Console"/>
