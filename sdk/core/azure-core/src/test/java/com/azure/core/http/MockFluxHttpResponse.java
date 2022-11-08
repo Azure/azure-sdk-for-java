@@ -4,8 +4,6 @@
 package com.azure.core.http;
 
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -14,13 +12,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class MockFluxHttpResponse extends HttpResponse {
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
-
     private final int statusCode;
-
     private final HttpHeaders headers;
-
     private final Flux<ByteBuffer> bodyBytes;
+
+    private boolean closed;
 
     public MockFluxHttpResponse(HttpRequest request, Flux<ByteBuffer> bodyBytes) {
         super(request);
@@ -71,5 +67,15 @@ public class MockFluxHttpResponse extends HttpResponse {
         return getBodyAsByteArray().map(
             bytes -> new String(bytes, charset)
         );
+    }
+
+    @Override
+    public void close() {
+        closed = true;
+        super.close();
+    }
+
+    public boolean isClosed() {
+        return closed;
     }
 }

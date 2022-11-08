@@ -21,6 +21,7 @@ import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -136,19 +137,19 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
                 Mono<SnapshotInner> result = Mono.just(inner);
                 if (inner.copyCompletionError() != null) { // service error
                     result = Mono.error(new ManagementException(inner.copyCompletionError().errorMessage(), null));
-                } else if (inner.completionPercent() == null || inner.completionPercent() != 100) { // in progress
-                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.",
-                        inner.name(), inner.completionPercent());
-                    result = Mono.empty();
                 }
                 return result;
             })
-            .repeatWhenEmpty(longFlux ->
-                longFlux
-                    .flatMap(
-                        index ->
-                            Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
-                                manager().serviceClient().getDefaultPollInterval()))))
+            .repeatWhen(longFlux -> Flux.interval(manager().serviceClient().getDefaultPollInterval()))
+            .takeUntil(inner -> {
+                if (Float.valueOf(100).equals(inner.completionPercent())) {
+                    return true;
+                } else { // in progress
+                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.",
+                        inner.name(), inner.completionPercent());
+                    return false;
+                }
+            })
             .then();
     }
 
