@@ -9,7 +9,7 @@
 #### Bugs Fixed
 * Fixed a rare race condition for `query plan` cache exceeding the allowed size limit - See [PR 31859](https://github.com/Azure/azure-sdk-for-java/pull/31859)
 * Added improvement in `RntbdClientChannelHealthChecker` for detecting continuous transit timeout. - See [PR 31544](https://github.com/Azure/azure-sdk-for-java/pull/31544)
-* Fix an issue in replica validation where addresses sorting does not happen properly when replica validation is enabled. - See [PR 32022](https://github.com/Azure/azure-sdk-for-java/pull/32022)
+* Fixed an issue in replica validation where addresses sorting does not happen properly when replica validation is enabled. - See [PR 32022](https://github.com/Azure/azure-sdk-for-java/pull/32022)
 
 #### Other Changes
 * Shaded `MurmurHash3` of apache `commons-codec` to enable removing of the `guava` dependency - CVE-2020-8908 - See [PR 31761](https://github.com/Azure/azure-sdk-for-java/pull/31761)
