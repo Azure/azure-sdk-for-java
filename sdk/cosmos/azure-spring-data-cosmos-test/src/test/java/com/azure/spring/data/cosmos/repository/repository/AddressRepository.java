@@ -62,4 +62,7 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
 
     @Query(value = "SELECT * FROM a WHERE ARRAY_CONTAINS(@cities, a.city) ")
     List<Address> annotatedFindByCitiesWithSort(@Param("cities") List<String> cities, Sort sort);
+
+    @Query(value = "SELECT distinct c.postalCode FROM c WHERE c.street = @street")
+    Page<JsonNode> annotatedFindPostalCodeByStreetOrdered(@Param("street") String street, Pageable pageable);
 }

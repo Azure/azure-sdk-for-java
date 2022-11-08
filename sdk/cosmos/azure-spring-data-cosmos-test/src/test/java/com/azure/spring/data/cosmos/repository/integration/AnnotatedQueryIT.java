@@ -2,15 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
+import com.azure.spring.data.cosmos.domain.PersonCrossPartition;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -46,6 +51,8 @@ public class AnnotatedQueryIT {
     @Autowired
     private CosmosTemplate template;
 
+    private static CosmosEntityInformation<Address, String> addressInfo;
+
     @Autowired
     private AuditableRepository auditableRepository;
 
@@ -55,6 +62,7 @@ public class AnnotatedQueryIT {
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class, AuditableEntity.class);
+        addressInfo = new CosmosEntityInformation<>(Address.class);
     }
 
     @Test
@@ -314,5 +322,23 @@ public class AnnotatedQueryIT {
         cities2.add(TestConstants.CITY_0);
         final List<Address> resultsAsc2 = addressRepository.annotatedFindByCitiesWithSort(cities2, Sort.by(Sort.Direction.ASC, "postalCode"));
         assertAddressOrder(resultsAsc2, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedQueryBug() {
+        final List<Address> addresses = new ArrayList<>();
+        for (int i=0; i<1000; i++) {
+            Address address = new Address(String.valueOf(10000+i), TestConstants.STREET, TestConstants.CITY+i);
+            addresses.add(address);
+            //addressRepository.save(address);
+        }
+        addressRepository.saveAll(addresses);
+
+        CosmosPageRequest pageRequest = new CosmosPageRequest(0, 100, null, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<JsonNode> resultsAsc = addressRepository.annotatedFindPostalCodeByStreetOrdered(TestConstants.STREET, pageRequest);
+
+        String token = ((CosmosPageRequest)resultsAsc.getPageable()).getRequestContinuation();
+        CosmosPageRequest pageRequest2 = new CosmosPageRequest(1, 100, token, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<JsonNode> resultAsc2 = addressRepository.annotatedFindPostalCodeByStreetOrdered(TestConstants.STREET, pageRequest2);
     }
 }
