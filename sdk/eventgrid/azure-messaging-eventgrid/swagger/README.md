@@ -316,6 +316,33 @@ public class EventGridCustomization extends Customization {
         replaceClassAnnotation(customization);
         customizeMediaJobOutputAsset(customization);
         customizeStorageDirectoryDeletedEventData(customization);
+        customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization);
+    }
+
+    public void customizeAcsRecordingFileStatusUpdatedEventDataDuration(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsRecordingFileStatusUpdatedEventData");
+        PropertyCustomization property = classCustomization.getProperty("recordingDurationMs");
+        property.generateGetterAndSetter();
+
+        classCustomization.getMethod("getRecordingDurationMs")
+            .rename("getRecordingDuration")
+            .setReturnType("Duration", "Duration.ofMillis(%s)")
+            .replaceBody("if (this.recordingDurationMs != null) { return Duration.ofMillis(this.recordingDurationMs); } return null;", Arrays.asList("java.time.Duration"))
+            .getJavadoc()
+            .setDescription("Get the recordingDuration property: The recording duration.")
+            .setReturn("the recordingDuration value.");
+
+
+        classCustomization.getMethod("setRecordingDurationMs")
+            .rename("setRecordingDuration")
+            .replaceParameters("Duration recordingDuration")
+            .replaceBody("if (recordingDuration != null) { this.recordingDurationMs = recordingDuration.toMillis(); } else { this.recordingDurationMs = null; } return this;")
+            .getJavadoc()
+            .setDescription("Set the recordingDuration property: The recording duration.")
+            .setParam("recordingDuration", "the recordingDuration value to set.")
+            .removeParam("recordingDurationMs");
+
     }
 
     public void customizeStorageDirectoryDeletedEventData(LibraryCustomization customization) {
