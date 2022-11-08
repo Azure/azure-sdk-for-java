@@ -131,7 +131,9 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
                 String.format(
                     "\"awaitCopyStartCompletionAsync\" cannot be called on snapshot \"%s\" when \"creationMethod\" is not \"CopyStart\"", this.name()))));
         }
-        return getInnerAsync()
+
+        return Flux.interval(Duration.ZERO, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
+            .flatMap(ignored -> getInnerAsync())
             .flatMap(inner -> {
                 setInner(inner);
                 Mono<SnapshotInner> result = Mono.just(inner);
@@ -140,7 +142,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
                 }
                 return result;
             })
-            .repeatWhen(longFlux -> Flux.interval(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval())))
             .takeUntil(inner -> {
                 if (Float.valueOf(100).equals(inner.completionPercent())) {
                     return true;
