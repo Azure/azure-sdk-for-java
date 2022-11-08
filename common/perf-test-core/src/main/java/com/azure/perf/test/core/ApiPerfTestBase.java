@@ -24,12 +24,11 @@ import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 /**
  * The Base Performance Test class for API based Perf Tests.
- *
  * @param <TOptions> the performance test options to use while running the test.
  */
 public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
@@ -47,7 +46,6 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
 
     /**
      * Creates an instance of the Http Based Performance test.
-     *
      * @param options the performance test options to use while running the test.
      * @throws IllegalStateException if an errors is encountered with building ssl context.
      */
@@ -60,7 +58,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             recordPlaybackHttpClient = createRecordPlaybackClient(options);
             testProxy = options.getTestProxies().get(parallelIndex % options.getTestProxies().size());
             testProxyPolicy = new TestProxyPolicy(testProxy);
-            policies = Collections.singletonList(testProxyPolicy);
+            policies = Arrays.asList(testProxyPolicy);
         } else {
             recordPlaybackHttpClient = null;
             testProxy = null;
@@ -81,7 +79,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
 
                         reactor.netty.http.client.HttpClient nettyHttpClient =
                             reactor.netty.http.client.HttpClient.create()
-                                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+                            .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 
                         return new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
                     } catch (SSLException e) {
@@ -129,20 +127,21 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     }
 
     /**
-     * Attempts to configure a ClientBuilder using reflection.  If a ClientBuilder does not follow the standard
-     * convention, it can be configured manually using the "httpClient" and "policies" fields.
-     *
+     * Attempts to configure a ClientBuilder using reflection.  If a ClientBuilder does not follow the standard convention,
+     * it can be configured manually using the "httpClient" and "policies" fields.
      * @param clientBuilder The client builder.
      * @throws IllegalStateException If reflective access to get httpClient or addPolicy methods fail.
      */
     protected void configureClientBuilder(HttpTrait<?> clientBuilder) {
-        if (httpClient != null) {
-            clientBuilder.httpClient(httpClient);
-        }
+        if (httpClient != null || policies != null) {
+            if (httpClient != null) {
+                clientBuilder.httpClient(httpClient);
+            }
 
-        if (policies != null) {
-            for (HttpPipelinePolicy policy : policies) {
-                clientBuilder.addPolicy(policy);
+            if (policies != null) {
+                for (HttpPipelinePolicy policy : policies) {
+                    clientBuilder.addPolicy(policy);
+                }
             }
         }
     }
@@ -164,37 +163,28 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         lastCompletionNanoTime = 0;
         long startNanoTime = System.nanoTime();
 
-        return Flux.generate(sink -> {
-                if (System.nanoTime() < endNanoTime) {
-                    sink.next(1);
-                } else {
-                    sink.complete();
-                }
-            })
-            .flatMap(ignored -> {
-                if (System.nanoTime() < endNanoTime) {
-                    return runTestAsync();
-                } else {
-                    return Mono.just(0);
-                }
-            }, 1)
-            .doOnNext(result -> {
-                completedOperations += result;
+        return Flux.just(1)
+            .repeat()
+            .flatMap(i -> runTestAsync(), 1)
+            .doOnNext(v -> {
+                completedOperations += v;
                 lastCompletionNanoTime = System.nanoTime() - startNanoTime;
             })
+            .takeWhile(i -> System.nanoTime() < endNanoTime)
             .then();
     }
 
     /**
-     * Indicates how many operations were completed in a single run of the test. Good to be used for batch operations.
+     * Indicates how many operations were completed in a single run of the test.
+     * Good to be used for batch operations.
      *
      * @return the number of successful operations completed.
      */
     abstract int runTest();
 
     /**
-     * Indicates how many operations were completed in a single run of the async test. Good to be used for batch
-     * operations.
+     * Indicates how many operations were completed in a single run of the async test.
+     * Good to be used for batch operations.
      *
      * @return the number of successful operations completed.
      */
@@ -202,7 +192,6 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
 
     /**
      * Stops playback tests.
-     *
      * @return An empty {@link Mono}.
      */
     public Mono<Void> stopPlaybackAsync() {
@@ -256,7 +245,6 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
 
     /**
      * Records responses and starts tests in playback mode.
-     *
      * @return
      */
     @Override
@@ -265,16 +253,16 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
 
             // Make one call to Run() before starting recording, to avoid capturing one-time setup like authorization requests.
             return runSyncOrAsync()
-                .then(startRecordingAsync())
-                .then(Mono.defer(() -> {
+            .then(startRecordingAsync())
+            .then(Mono.defer(() -> {
                     testProxyPolicy.setRecordingId(recordingId);
                     testProxyPolicy.setMode("record");
                     return Mono.empty();
                 }))
-                .then(runSyncOrAsync())
-                .then(stopRecordingAsync())
-                .then(startPlaybackAsync())
-                .then(Mono.defer(() -> {
+            .then(runSyncOrAsync())
+            .then(stopRecordingAsync())
+            .then(startPlaybackAsync())
+            .then(Mono.defer(() -> {
                     testProxyPolicy.setRecordingId(recordingId);
                     testProxyPolicy.setMode("playback");
                     return Mono.empty();
