@@ -3,9 +3,9 @@
 This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure Service Bus Java client library, and mitigation steps to resolve these errors.
 
 ## Table of contents
-- [Implicit prefetch issue in ServiceBusReceiverClient](#implicit-prefetch-issue-in-ServiceBusReceiverClient)
-- [Troubleshoot ServiceBusProcessorClient issues](#troubleshoot-ServiceBusProcessorClient-issues)
-  - [Client hangs or stalls with a high prefetch and maxConcurrentCall value](#Client-hangs-or-stalls-with-a-high-prefetch-and-maxConcurrentCall-value)
+- [Implicit prefetch issue in ServiceBusReceiverClient](#implicit-prefetch-issue-in-servicebusreceiverclient)
+- [Troubleshoot ServiceBusProcessorClient issues](#troubleshoot-servicebusprocessorclient-issues)
+  - [Client hangs or stalls with a high prefetch and maxConcurrentCall value](#Client-hangs-or-stalls-with-a-high-prefetch-and-maxconcurrentcall-value)
     - [Credit calculation issue](#credit-calculation-issue)
 - [Autocomplete issue](#autocomplete-issue)
 - [Migrate from legacy to new client library](#migrate-from-legacy-to-new-client-library)
