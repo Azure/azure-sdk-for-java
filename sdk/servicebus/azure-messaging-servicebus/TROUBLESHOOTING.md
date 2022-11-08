@@ -150,3 +150,4 @@ Error and warning level logs do not provide enough information. The period of at
 [MigrationGuide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/migration-guide.md
 [SyncReceiveAndPrefetch]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 [Samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/src/samples
+[SUPPORT]: https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md
