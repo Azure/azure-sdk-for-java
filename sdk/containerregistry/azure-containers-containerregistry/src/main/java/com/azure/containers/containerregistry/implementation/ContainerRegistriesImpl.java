@@ -5,8 +5,6 @@
 package com.azure.containers.containerregistry.implementation;
 
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
-import com.azure.containers.containerregistry.implementation.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.implementation.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsNextResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsResponse;
@@ -21,6 +19,8 @@ import com.azure.containers.containerregistry.implementation.models.ManifestWrit
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
+import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
+import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;

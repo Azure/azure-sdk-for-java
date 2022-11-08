@@ -221,7 +221,7 @@ public class ContainerRegistryBlobAsyncClient {
         String digest = UtilsImpl.computeDigest(data);
         return this.blobsImpl.startUploadWithResponseAsync(repositoryName, context)
             .flatMap(startUploadResponse -> this.blobsImpl.uploadChunkWithResponseAsync(trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), Flux.just(data), data.remaining(), context))
-            .flatMap(uploadChunkResponse -> this.blobsImpl.completeUploadWithResponseAsync(digest, trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), null, 0L, context))
+            .flatMap(uploadChunkResponse -> this.blobsImpl.completeUploadWithResponseAsync(digest, trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (Flux<ByteBuffer>) null, 0L, context))
             .flatMap(completeUploadResponse -> {
                 Response<UploadBlobResult> res = new ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, UploadBlobResult>(completeUploadResponse.getRequest(),
                     completeUploadResponse.getStatusCode(),
@@ -343,28 +343,21 @@ public class ContainerRegistryBlobAsyncClient {
         return this.blobsImpl.getBlobWithResponseAsync(repositoryName, digest, context).flatMap(streamResponse -> {
             String resDigest = UtilsImpl.getDigestFromHeader(streamResponse.getHeaders());
 
-            return BinaryData.fromFlux(streamResponse.getValue())
-                .flatMap(binaryData -> {
-                    // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
-                    // the contents returned by the service.
-                    if (Objects.equals(resDigest, digest)) {
-                        Response<DownloadBlobResult> response = new SimpleResponse<>(
-                            streamResponse.getRequest(),
-                            streamResponse.getStatusCode(),
-                            streamResponse.getHeaders(),
-                            new DownloadBlobResult(resDigest, binaryData));
+            BinaryData binaryData = streamResponse.getValue();
 
-                        return Mono.just(response);
-                    } else {
-                        return monoError(logger, new ServiceResponseException("The digest in the response does not match the expected digest."));
-                    }
-                }).doFinally(ignored -> {
-                    try {
-                        streamResponse.close();
-                    } catch (Exception e) {
-                        logger.logThrowableAsError(e);
-                    }
-                });
+            // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
+            // the contents returned by the service.
+            if (Objects.equals(resDigest, digest)) {
+                Response<DownloadBlobResult> response = new SimpleResponse<>(
+                    streamResponse.getRequest(),
+                    streamResponse.getStatusCode(),
+                    streamResponse.getHeaders(),
+                    new DownloadBlobResult(resDigest, binaryData));
+
+                return Mono.just(response);
+            } else {
+                return monoError(logger, new ServiceResponseException("The digest in the response does not match the expected digest."));
+            }
         }).onErrorMap(UtilsImpl::mapException);
     }
 
@@ -402,8 +395,6 @@ public class ContainerRegistryBlobAsyncClient {
         return this.blobsImpl.deleteBlobWithResponseAsync(repositoryName, digest, context)
             .flatMap(streamResponse -> {
                 Mono<Response<Void>> res = deleteResponseToSuccess(streamResponse);
-                // Since we are not passing the streamResponse back to the user, we need to close this.
-                streamResponse.close();
                 return res;
             })
             .onErrorMap(UtilsImpl::mapException);
