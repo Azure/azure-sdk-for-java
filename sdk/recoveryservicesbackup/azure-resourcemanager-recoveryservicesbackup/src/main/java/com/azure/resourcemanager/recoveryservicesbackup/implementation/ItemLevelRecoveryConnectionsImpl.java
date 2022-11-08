@@ -25,26 +25,6 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
         this.serviceManager = serviceManager;
     }
 
-    public void provision(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        IlrRequestResource parameters) {
-        this
-            .serviceClient()
-            .provision(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters);
-    }
-
     public Response<Void> provisionWithResponse(
         String vaultName,
         String resourceGroupName,
@@ -67,16 +47,24 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
                 context);
     }
 
-    public void revoke(
+    public void provision(
         String vaultName,
         String resourceGroupName,
         String fabricName,
         String containerName,
         String protectedItemName,
-        String recoveryPointId) {
+        String recoveryPointId,
+        IlrRequestResource parameters) {
         this
             .serviceClient()
-            .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
+            .provision(
+                vaultName,
+                resourceGroupName,
+                fabricName,
+                containerName,
+                protectedItemName,
+                recoveryPointId,
+                parameters);
     }
 
     public Response<Void> revokeWithResponse(
@@ -91,6 +79,18 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
             .serviceClient()
             .revokeWithResponse(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, context);
+    }
+
+    public void revoke(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String recoveryPointId) {
+        this
+            .serviceClient()
+            .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
     }
 
     private ItemLevelRecoveryConnectionsClient serviceClient() {

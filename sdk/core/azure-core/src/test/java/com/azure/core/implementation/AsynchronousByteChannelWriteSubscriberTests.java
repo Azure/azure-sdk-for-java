@@ -4,21 +4,16 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.io.IOUtils;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
-import reactor.core.publisher.MonoSink;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link AsynchronousByteChannelWriteSubscriber}.
@@ -27,32 +22,46 @@ public class AsynchronousByteChannelWriteSubscriberTests {
     @SuppressWarnings("unchecked")
     @Test
     public void multipleSubscriptionsCancelsLaterSubscriptions() {
-        AsynchronousFileChannel channel = mock(AsynchronousFileChannel.class);
-        doAnswer(invocation -> {
-            ByteBuffer stream = invocation.getArgument(0);
-            CompletionHandler<Integer, ByteBuffer> handler = invocation.getArgument(3);
-
-            int remaining = stream.remaining();
-            stream.position(stream.limit());
-            handler.completed(remaining, stream);
-
-            return null;
-        }).when(channel).write(any(), anyLong(), any(), any());
-
-        MonoSink<Void> sink = (MonoSink<Void>) mock(MonoSink.class);
+        AsynchronousFileChannel channel = new MockAsynchronousFileChannel() {
+            @Override
+            public <A> void write(ByteBuffer src, long position, A attachment,
+                CompletionHandler<Integer, ? super A> handler) {
+                int remaining = src.remaining();
+                src.position(src.position() + remaining);
+                handler.completed(remaining, attachment);
+            }
+        };
 
         AsynchronousByteChannelWriteSubscriber fileWriteSubscriber = new AsynchronousByteChannelWriteSubscriber(
-            IOUtils.toAsynchronousByteChannel(channel, 0), sink);
-        Subscription subscription1 = mock(Subscription.class);
-        Subscription subscription2 = mock(Subscription.class);
+            IOUtils.toAsynchronousByteChannel(channel, 0), null);
+
+        CallTrackingSubscription subscription1 = new CallTrackingSubscription();
+        CallTrackingSubscription subscription2 = new CallTrackingSubscription();
 
         fileWriteSubscriber.onSubscribe(subscription1);
         fileWriteSubscriber.onSubscribe(subscription2);
 
-        verify(subscription1, times(1)).request(1);
-        verify(subscription1, never()).cancel();
+        assertEquals(1, subscription1.requestOneCalls.get());
+        assertEquals(0, subscription1.cancelCalls.get());
 
-        verify(subscription2, never()).request(1);
-        verify(subscription2, times(1)).cancel();
+        assertEquals(0, subscription2.requestOneCalls.get());
+        assertEquals(1, subscription2.cancelCalls.get());
+    }
+
+    private static final class CallTrackingSubscription implements Subscription {
+        private final AtomicInteger requestOneCalls = new AtomicInteger();
+        private final AtomicInteger cancelCalls = new AtomicInteger();
+
+        @Override
+        public void request(long n) {
+            if (n == 1) {
+                requestOneCalls.incrementAndGet();
+            }
+        }
+
+        @Override
+        public void cancel() {
+            cancelCalls.incrementAndGet();
+        }
     }
 }

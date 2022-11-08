@@ -51,6 +51,10 @@ public final class SapBWLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SapBWLinkedServiceTypeProperties class. */
+    public SapBWLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the server property: Host name of the SAP BW instance. Type: string (or Expression with resultType string).
      *

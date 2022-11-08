@@ -33,6 +33,10 @@ public final class ExecutePipelineActivityTypeProperties {
     @JsonProperty(value = "waitOnCompletion")
     private Boolean waitOnCompletion;
 
+    /** Creates an instance of ExecutePipelineActivityTypeProperties class. */
+    public ExecutePipelineActivityTypeProperties() {
+    }
+
     /**
      * Get the pipeline property: Pipeline reference.
      *

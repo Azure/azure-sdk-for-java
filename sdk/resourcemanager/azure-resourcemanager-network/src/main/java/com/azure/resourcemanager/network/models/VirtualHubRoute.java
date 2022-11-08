@@ -23,6 +23,10 @@ public final class VirtualHubRoute {
     @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
 
+    /** Creates an instance of VirtualHubRoute class. */
+    public VirtualHubRoute() {
+    }
+
     /**
      * Get the addressPrefixes property: List of all addressPrefixes.
      *

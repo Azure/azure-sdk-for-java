@@ -36,6 +36,10 @@ public final class PrivateEndpointConnectionPropertiesInner {
     @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
 
+    /** Creates an instance of PrivateEndpointConnectionPropertiesInner class. */
+    public PrivateEndpointConnectionPropertiesInner() {
+    }
+
     /**
      * Get the privateEndpoint property: The resource of private end point.
      *

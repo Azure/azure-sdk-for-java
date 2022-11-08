@@ -50,6 +50,10 @@ public final class TeamDeskLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of TeamDeskLinkedServiceTypeProperties class. */
+    public TeamDeskLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the authenticationType property: The authentication type to use.
      *

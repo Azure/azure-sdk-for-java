@@ -25,6 +25,18 @@ public final class AzureSynapseArtifactsLinkedServiceTypeProperties {
     @JsonProperty(value = "authentication")
     private Object authentication;
 
+    /*
+     * The resource ID of the Synapse workspace. The format should be:
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
+     * Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "workspaceResourceId")
+    private Object workspaceResourceId;
+
+    /** Creates an instance of AzureSynapseArtifactsLinkedServiceTypeProperties class. */
+    public AzureSynapseArtifactsLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the endpoint property: https://&lt;workspacename&gt;.dev.azuresynapse.net, Azure Synapse Analytics workspace
      * URL. Type: string (or Expression with resultType string).
@@ -66,6 +78,30 @@ public final class AzureSynapseArtifactsLinkedServiceTypeProperties {
      */
     public AzureSynapseArtifactsLinkedServiceTypeProperties withAuthentication(Object authentication) {
         this.authentication = authentication;
+        return this;
+    }
+
+    /**
+     * Get the workspaceResourceId property: The resource ID of the Synapse workspace. The format should be:
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the workspaceResourceId value.
+     */
+    public Object workspaceResourceId() {
+        return this.workspaceResourceId;
+    }
+
+    /**
+     * Set the workspaceResourceId property: The resource ID of the Synapse workspace. The format should be:
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set.
+     * @return the AzureSynapseArtifactsLinkedServiceTypeProperties object itself.
+     */
+    public AzureSynapseArtifactsLinkedServiceTypeProperties withWorkspaceResourceId(Object workspaceResourceId) {
+        this.workspaceResourceId = workspaceResourceId;
         return this;
     }
 

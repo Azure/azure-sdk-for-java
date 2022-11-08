@@ -78,7 +78,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         if (providers == null) {
             return next.process();
         }
-        return next.process().flatMap(
+        return next.clone().process().flatMap(
             response -> {
                 if (!isResponseSuccessful(response)) {
                     HttpResponse bufferedResponse = response.buffer();
@@ -88,24 +88,44 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
 
                             SerializerAdapter jacksonAdapter =
                                 SerializerFactory.createDefaultManagementSerializerAdapter();
-                            ManagementError cloudError;
+                            ManagementError managementError;
                             try {
-                                cloudError = jacksonAdapter.deserialize(
+                                managementError = jacksonAdapter.deserialize(
                                     bodyStr, ManagementError.class, SerializerEncoding.JSON);
                             } catch (IOException e) {
                                 return Mono.just(bufferedResponse);
                             }
 
-                            if (cloudError != null && MISSING_SUBSCRIPTION_REGISTRATION.equals(cloudError.getCode())) {
-                                Pattern providerPattern = Pattern.compile(".*'(.*)'");
-                                Matcher providerMatcher = providerPattern.matcher(cloudError.getMessage());
-                                if (!providerMatcher.find()) {
-                                    return Mono.just(bufferedResponse);
+                            if (managementError != null
+                                && MISSING_SUBSCRIPTION_REGISTRATION.equals(managementError.getCode())) {
+
+                                String resourceNamespace = null;
+
+                                if (managementError.getDetails() != null) {
+                                    // find in details.target
+                                    resourceNamespace = managementError.getDetails().stream()
+                                        .filter(d -> MISSING_SUBSCRIPTION_REGISTRATION.equals(d.getCode())
+                                            && d.getTarget() != null)
+                                        .map(ManagementError::getTarget)
+                                        .findFirst().orElse(null);
+                                }
+                                if (resourceNamespace == null) {
+                                    // find in message
+                                    Pattern providerPattern = Pattern.compile(".*'(.*)'");
+                                    Matcher providerMatcher = providerPattern.matcher(managementError.getMessage());
+                                    if (!providerMatcher.find()) {
+                                        return Mono.just(bufferedResponse);
+                                    }
+                                    resourceNamespace = providerMatcher.group(1);
                                 }
 
                                 // Retry after registration
-                                return registerProviderUntilSuccess(providerMatcher.group(1))
-                                        .flatMap(afterRegistered -> next.process());
+                                return registerProviderUntilSuccess(resourceNamespace)
+                                    // in case error, return the response before registering resource provider
+                                    // if not error, this will be ignored
+                                    .then(Mono.just(bufferedResponse))
+                                    .onErrorReturn(bufferedResponse)
+                                    .then(next.clone().process());
                             }
                             return Mono.just(bufferedResponse);
                         }
@@ -124,8 +144,12 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                         return Mono.empty();
                     }
                     return providers.getByNameAsync(namespace)
-                            .flatMap(this::checkProviderRegistered)
-                            .retryWhen(Retry.max(60).filter(ProviderUnregisteredException.class::isInstance));
+                        .flatMap(this::checkProviderRegistered)
+                        .retryWhen(Retry
+                            // 30 * 10sec
+                            .fixedDelay(30,
+                                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
+                            .filter(ProviderUnregisteredException.class::isInstance));
                 }
             );
     }
@@ -134,12 +158,11 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         if (isProviderRegistered(provider)) {
             return Mono.empty();
         }
-        ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         return Mono.error(new ProviderUnregisteredException());
     }
 
     private boolean isProviderRegistered(Provider provider) {
-        return provider.registrationState().equalsIgnoreCase("Registered");
+        return "Registered".equalsIgnoreCase(provider.registrationState());
     }
 
     private static class ProviderUnregisteredException extends RuntimeException {

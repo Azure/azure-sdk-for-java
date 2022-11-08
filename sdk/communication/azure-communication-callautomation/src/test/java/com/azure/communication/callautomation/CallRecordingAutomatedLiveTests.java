@@ -3,20 +3,22 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallConnectionState;
-import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.RecordingChannel;
 import com.azure.communication.callautomation.models.RecordingContent;
 import com.azure.communication.callautomation.models.RecordingFormat;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
-import com.azure.communication.callautomation.models.events.CallDisconnectedEvent;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallDisconnected;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
@@ -60,9 +62,9 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             String uniqueId = serviceBusWithNewCall(source, target);
 
             // create call and assert response
-            CreateCallResult createCallResult = client.createCall(
-                new CreateCallOptions(source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
-            );
+            CreateCallOptions createCallOptions = new CreateCallOptions(source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
+                .setRepeatabilityHeaders(null);
+            CreateCallResult createCallResult = client.createCallWithResponse(createCallOptions, null).getValue();
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
 
@@ -71,11 +73,13 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallResult answerCallResult = client.answerCall(incomingCallContext, DISPATCHER_CALLBACK);
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK)
+                .setRepeatabilityHeaders(null);
+            AnswerCallResult answerCallResult = client.answerCallWithResponse(answerCallOptions, null).getValue();
             assertNotNull(answerCallResult);
 
             // wait for callConnected
-            CallConnectedEvent callConnectedEvent = waitForEvent(CallConnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // get properties
@@ -89,6 +93,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
                     .setRecordingContent(RecordingContent.AUDIO)
                     .setRecordingFormat(RecordingFormat.WAV)
                     .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK)
+                    .setRepeatabilityHeaders(null)
             );
 
             assertNotNull(recordingStateResult.getRecordingId());
@@ -100,7 +105,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             if (!callConnectionId.isEmpty()) {
                 CallConnection callConnection = client.getCallConnection(callConnectionId);
                 callConnection.hangUp(true);
-                CallDisconnectedEvent callDisconnectedEvent = waitForEvent(CallDisconnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+                CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callConnectionId, Duration.ofSeconds(10));
                 assertNotNull(callDisconnectedEvent);
             }
         } catch (Exception ex) {
@@ -137,9 +142,9 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             String uniqueId = serviceBusWithNewCall(source, target);
 
             // create call and assert response
-            CreateCallResult createCallResult = client.createCall(
-                new CreateCallOptions(source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
-            );
+            CreateCallOptions createCallOptions = new CreateCallOptions(source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
+                .setRepeatabilityHeaders(null);
+            CreateCallResult createCallResult = client.createCallWithResponse(createCallOptions, null).getValue();
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
 
@@ -148,11 +153,13 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallResult answerCallResult = client.answerCall(incomingCallContext, DISPATCHER_CALLBACK);
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK)
+                .setRepeatabilityHeaders(null);
+            AnswerCallResult answerCallResult = client.answerCallWithResponse(answerCallOptions, null).getValue();
             assertNotNull(answerCallResult);
 
             // wait for callConnected
-            CallConnectedEvent callConnectedEvent = waitForEvent(CallConnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // get properties
@@ -166,12 +173,13 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
                     .setRecordingContent(RecordingContent.AUDIO)
                     .setRecordingFormat(RecordingFormat.WAV)
                     .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK)
-                    .setChannelAffinity(new ArrayList<ChannelAffinity>() {
+                    .setAudioChannelParticipantOrdering(new ArrayList<CommunicationIdentifier>() {
                         {
-                            add(new ChannelAffinity(0, source));
-                            add(new ChannelAffinity(1, target));
+                            add(source);
+                            add(target);
                         }
                     })
+                    .setRepeatabilityHeaders(null)
             );
 
             assertNotNull(recordingStateResult.getRecordingId());
@@ -182,8 +190,8 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             // hangup
             if (!callConnectionId.isEmpty()) {
                 CallConnection callConnection = client.getCallConnection(callConnectionId);
-                callConnection.hangUp(true);
-                CallDisconnectedEvent callDisconnectedEvent = waitForEvent(CallDisconnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+                callConnection.hangUpWithResponse(new HangUpOptions(true).setRepeatabilityHeaders(null), null);
+                CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callConnectionId, Duration.ofSeconds(10));
                 assertNotNull(callDisconnectedEvent);
             }
         } catch (Exception ex) {

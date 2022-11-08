@@ -25,6 +25,10 @@ public final class GoogleSheetsLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of GoogleSheetsLinkedServiceTypeProperties class. */
+    public GoogleSheetsLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the apiToken property: The api token for the GoogleSheets source.
      *

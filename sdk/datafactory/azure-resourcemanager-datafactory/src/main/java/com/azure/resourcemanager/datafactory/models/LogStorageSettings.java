@@ -46,6 +46,10 @@ public final class LogStorageSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of LogStorageSettings class. */
+    public LogStorageSettings() {
+    }
+
     /**
      * Get the linkedServiceName property: Log storage linked service reference.
      *

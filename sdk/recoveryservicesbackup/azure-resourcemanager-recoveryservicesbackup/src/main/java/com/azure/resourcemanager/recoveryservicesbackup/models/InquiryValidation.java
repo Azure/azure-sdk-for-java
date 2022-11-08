@@ -28,6 +28,10 @@ public final class InquiryValidation {
     @JsonProperty(value = "additionalDetail", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalDetail;
 
+    /** Creates an instance of InquiryValidation class. */
+    public InquiryValidation() {
+    }
+
     /**
      * Get the status property: Status for the Inquiry Validation.
      *

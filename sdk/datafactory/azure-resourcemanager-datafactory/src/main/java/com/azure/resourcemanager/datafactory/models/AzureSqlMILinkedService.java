@@ -24,6 +24,10 @@ public final class AzureSqlMILinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureSqlMILinkedServiceTypeProperties innerTypeProperties = new AzureSqlMILinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureSqlMILinkedService class. */
+    public AzureSqlMILinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure SQL Managed Instance linked service properties.
      *

@@ -28,8 +28,21 @@ public interface RoleAssignment
     /** @return the principal ID */
     String principalId();
 
-    /** @return the condition */
+    /**
+     * Gets the condition.
+     * <p>
+     * This is a preview feature.
+     *
+     * @return the condition
+     */
     String condition();
+
+    /**
+     * Gets the description.
+     *
+     * @return the description
+     */
+    String description();
 
     /**************************************************************
      * Fluent interfaces to provision an role assignment
@@ -154,11 +167,22 @@ public interface RoleAssignment
             WithCreate withSubscriptionScope(String subscriptionId);
         }
 
+        /** The stage of role assignment definition allowing specifying the description. */
+        interface WithDescription {
+            /**
+             * Specifies the description.
+             *
+             * @param description the description.
+             * @return the next stage in role assignment definition
+             */
+            WithCreate withDescription(String description);
+        }
+
         /**
          * An role assignment definition with sufficient inputs to create a new role assignment in the cloud, but
          * exposing additional optional inputs to specify.
          */
-        interface WithCreate extends Creatable<RoleAssignment> {
+        interface WithCreate extends Creatable<RoleAssignment>, WithDescription {
         }
     }
 }

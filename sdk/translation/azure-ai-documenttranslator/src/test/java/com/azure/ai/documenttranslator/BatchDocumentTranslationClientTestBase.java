@@ -14,7 +14,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 
 public class BatchDocumentTranslationClientTestBase extends TestBase {
-    private static final String FAKE_API_KEY = "1234567890";
+    private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
     BatchDocumentTranslationRestClient getClient() {

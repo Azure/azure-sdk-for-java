@@ -3,10 +3,9 @@
     "-Pe2e": "E2E",
     "-Pfast": "Fast",
     "-Pdirect": "Direct",
-    "-Pnon-emulator": "NonEmulator",
     "-Pmulti-master": "MultiMaster",
     "-Pmulti-region": "MultiRegion",
-    "-e -Plong": "Long",
+    "-Plong": "Long",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
@@ -33,19 +32,17 @@
       "ProfileFlag": "-Pe2e",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pnon-emulator", "-Pfast", "-Pdirect", "-e -Plong" ],
+      "ProfileFlag": [ "-Pfast", "-Pdirect" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": [ "[\"Strong\", \"Session\"]", "[\"BoundedStaleness\"]", "[\"ConsistentPrefix\"]" ],
@@ -55,8 +52,7 @@
       "ProfileFlag": "-Pfast",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCY": "BoundedStaleness",
@@ -66,19 +62,29 @@
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
       "ACCOUNT_CONSISTENCY": "Strong",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pdirect", "-Pnon-emulator" ],
+      "ProfileFlag": [ "-Pdirect" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       },
-      "JavaTestVersion": "1.11"
+      "JavaTestVersion": ["1.8", "1.11"]
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Plong" ],
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      },
+      "JavaTestVersion": ["1.8", "1.11"]
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
@@ -94,11 +100,10 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect", "-Pnon-emulator" ],
+      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
@@ -113,8 +118,7 @@
       "PREFERRED_LOCATIONS": null,
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     }
   ]
 }

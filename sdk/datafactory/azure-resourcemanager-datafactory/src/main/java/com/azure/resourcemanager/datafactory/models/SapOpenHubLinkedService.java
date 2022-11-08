@@ -24,6 +24,10 @@ public final class SapOpenHubLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SapOpenHubLinkedServiceTypeProperties innerTypeProperties = new SapOpenHubLinkedServiceTypeProperties();
 
+    /** Creates an instance of SapOpenHubLinkedService class. */
+    public SapOpenHubLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to SAP Business Warehouse Open Hub Destination linked
      * service type.

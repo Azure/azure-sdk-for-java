@@ -24,6 +24,10 @@ public final class OdbcLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private OdbcLinkedServiceTypeProperties innerTypeProperties = new OdbcLinkedServiceTypeProperties();
 
+    /** Creates an instance of OdbcLinkedService class. */
+    public OdbcLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: ODBC linked service properties.
      *

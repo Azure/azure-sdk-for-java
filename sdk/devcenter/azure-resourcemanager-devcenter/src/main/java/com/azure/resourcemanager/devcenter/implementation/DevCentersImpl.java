@@ -47,15 +47,6 @@ public final class DevCentersImpl implements DevCenters {
         return Utils.mapPage(inner, inner1 -> new DevCenterImpl(inner1, this.manager()));
     }
 
-    public DevCenter getByResourceGroup(String resourceGroupName, String devCenterName) {
-        DevCenterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, devCenterName);
-        if (inner != null) {
-            return new DevCenterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DevCenter> getByResourceGroupWithResponse(
         String resourceGroupName, String devCenterName, Context context) {
         Response<DevCenterInner> inner =
@@ -66,6 +57,15 @@ public final class DevCentersImpl implements DevCenters {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DevCenterImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DevCenter getByResourceGroup(String resourceGroupName, String devCenterName) {
+        DevCenterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, devCenterName);
+        if (inner != null) {
+            return new DevCenterImpl(inner, this.manager());
         } else {
             return null;
         }

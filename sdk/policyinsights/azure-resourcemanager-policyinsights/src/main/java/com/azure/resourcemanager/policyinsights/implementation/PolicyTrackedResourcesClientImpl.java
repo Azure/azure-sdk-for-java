@@ -26,16 +26,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.fluent.PolicyTrackedResourcesClient;
 import com.azure.resourcemanager.policyinsights.fluent.models.PolicyTrackedResourceInner;
 import com.azure.resourcemanager.policyinsights.models.PolicyTrackedResourcesQueryResults;
+import com.azure.resourcemanager.policyinsights.models.PolicyTrackedResourcesResourceType;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyTrackedResourcesClient. */
 public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedResourcesClient {
-    private final ClientLogger logger = new ClientLogger(PolicyTrackedResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicyTrackedResourcesService service;
 
@@ -71,7 +69,8 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
             @HostParam("$host") String endpoint,
             @PathParam("managementGroupsNamespace") String managementGroupsNamespace,
             @PathParam("managementGroupName") String managementGroupName,
-            @PathParam("policyTrackedResourcesResource") String policyTrackedResourcesResource,
+            @PathParam("policyTrackedResourcesResource")
+                PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
             @QueryParam("$top") Integer top,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -86,7 +85,8 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyTrackedResourcesQueryResults>> listQueryResultsForSubscription(
             @HostParam("$host") String endpoint,
-            @PathParam("policyTrackedResourcesResource") String policyTrackedResourcesResource,
+            @PathParam("policyTrackedResourcesResource")
+                PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
             @QueryParam("$top") Integer top,
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
@@ -103,7 +103,8 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
         Mono<Response<PolicyTrackedResourcesQueryResults>> listQueryResultsForResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("policyTrackedResourcesResource") String policyTrackedResourcesResource,
+            @PathParam("policyTrackedResourcesResource")
+                PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
             @QueryParam("$top") Integer top,
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
@@ -120,7 +121,8 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
         Mono<Response<PolicyTrackedResourcesQueryResults>> listQueryResultsForResource(
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
-            @PathParam("policyTrackedResourcesResource") String policyTrackedResourcesResource,
+            @PathParam("policyTrackedResourcesResource")
+                PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
             @QueryParam("$top") Integer top,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -172,16 +174,21 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForManagementGroupSinglePageAsync(
-        String managementGroupName, Integer top, String filter) {
+        String managementGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -192,8 +199,13 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupName is required and cannot be null."));
         }
+        if (policyTrackedResourcesResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyTrackedResourcesResource is required and cannot be null."));
+        }
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String policyTrackedResourcesResource = "default";
         final String apiVersion = "2018-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
@@ -226,17 +238,23 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForManagementGroupSinglePageAsync(
-        String managementGroupName, Integer top, String filter, Context context) {
+        String managementGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -247,8 +265,13 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupName is required and cannot be null."));
         }
+        if (policyTrackedResourcesResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyTrackedResourcesResource is required and cannot be null."));
+        }
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String policyTrackedResourcesResource = "default";
         final String apiVersion = "2018-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -278,18 +301,25 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForManagementGroupAsync(
-        String managementGroupName, Integer top, String filter) {
+        String managementGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter) {
         return new PagedFlux<>(
-            () -> listQueryResultsForManagementGroupSinglePageAsync(managementGroupName, top, filter),
+            () ->
+                listQueryResultsForManagementGroupSinglePageAsync(
+                    managementGroupName, policyTrackedResourcesResource, top, filter),
             nextLink -> listQueryResultsForManagementGroupNextSinglePageAsync(nextLink));
     }
 
@@ -297,17 +327,22 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForManagementGroupAsync(String managementGroupName) {
+    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForManagementGroupAsync(
+        String managementGroupName, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
         final Integer top = null;
         final String filter = null;
         return new PagedFlux<>(
-            () -> listQueryResultsForManagementGroupSinglePageAsync(managementGroupName, top, filter),
+            () ->
+                listQueryResultsForManagementGroupSinglePageAsync(
+                    managementGroupName, policyTrackedResourcesResource, top, filter),
             nextLink -> listQueryResultsForManagementGroupNextSinglePageAsync(nextLink));
     }
 
@@ -315,19 +350,27 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForManagementGroupAsync(
-        String managementGroupName, Integer top, String filter, Context context) {
+        String managementGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
         return new PagedFlux<>(
-            () -> listQueryResultsForManagementGroupSinglePageAsync(managementGroupName, top, filter, context),
+            () ->
+                listQueryResultsForManagementGroupSinglePageAsync(
+                    managementGroupName, policyTrackedResourcesResource, top, filter, context),
             nextLink -> listQueryResultsForManagementGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -335,54 +378,74 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForManagementGroup(String managementGroupName) {
+    public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForManagementGroup(
+        String managementGroupName, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
         final Integer top = null;
         final String filter = null;
-        return new PagedIterable<>(listQueryResultsForManagementGroupAsync(managementGroupName, top, filter));
+        return new PagedIterable<>(
+            listQueryResultsForManagementGroupAsync(managementGroupName, policyTrackedResourcesResource, top, filter));
     }
 
     /**
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForManagementGroup(
-        String managementGroupName, Integer top, String filter, Context context) {
-        return new PagedIterable<>(listQueryResultsForManagementGroupAsync(managementGroupName, top, filter, context));
+        String managementGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listQueryResultsForManagementGroupAsync(
+                managementGroupName, policyTrackedResourcesResource, top, filter, context));
     }
 
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForSubscriptionSinglePageAsync(
-        Integer top, String filter) {
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource, Integer top, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (policyTrackedResourcesResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyTrackedResourcesResource is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -390,7 +453,6 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyTrackedResourcesResource = "default";
         final String apiVersion = "2018-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
@@ -421,22 +483,33 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForSubscriptionSinglePageAsync(
-        Integer top, String filter, Context context) {
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (policyTrackedResourcesResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyTrackedResourcesResource is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -444,7 +517,6 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyTrackedResourcesResource = "default";
         final String apiVersion = "2018-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -472,100 +544,127 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForSubscriptionAsync(Integer top, String filter) {
+    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForSubscriptionAsync(
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource, Integer top, String filter) {
         return new PagedFlux<>(
-            () -> listQueryResultsForSubscriptionSinglePageAsync(top, filter),
+            () -> listQueryResultsForSubscriptionSinglePageAsync(policyTrackedResourcesResource, top, filter),
             nextLink -> listQueryResultsForSubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForSubscriptionAsync() {
+    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForSubscriptionAsync(
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
         final Integer top = null;
         final String filter = null;
         return new PagedFlux<>(
-            () -> listQueryResultsForSubscriptionSinglePageAsync(top, filter),
+            () -> listQueryResultsForSubscriptionSinglePageAsync(policyTrackedResourcesResource, top, filter),
             nextLink -> listQueryResultsForSubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForSubscriptionAsync(
-        Integer top, String filter, Context context) {
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
         return new PagedFlux<>(
-            () -> listQueryResultsForSubscriptionSinglePageAsync(top, filter, context),
+            () -> listQueryResultsForSubscriptionSinglePageAsync(policyTrackedResourcesResource, top, filter, context),
             nextLink -> listQueryResultsForSubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForSubscription() {
+    public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForSubscription(
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
         final Integer top = null;
         final String filter = null;
-        return new PagedIterable<>(listQueryResultsForSubscriptionAsync(top, filter));
+        return new PagedIterable<>(listQueryResultsForSubscriptionAsync(policyTrackedResourcesResource, top, filter));
     }
 
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForSubscription(
-        Integer top, String filter, Context context) {
-        return new PagedIterable<>(listQueryResultsForSubscriptionAsync(top, filter, context));
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listQueryResultsForSubscriptionAsync(policyTrackedResourcesResource, top, filter, context));
     }
 
     /**
      * Queries policy tracked resources under the resource group.
      *
      * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForResourceGroupSinglePageAsync(
-        String resourceGroupName, Integer top, String filter) {
+        String resourceGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -576,13 +675,18 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        if (policyTrackedResourcesResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyTrackedResourcesResource is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyTrackedResourcesResource = "default";
         final String apiVersion = "2018-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
@@ -615,17 +719,23 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource group.
      *
      * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForResourceGroupSinglePageAsync(
-        String resourceGroupName, Integer top, String filter, Context context) {
+        String resourceGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -636,13 +746,18 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        if (policyTrackedResourcesResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyTrackedResourcesResource is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyTrackedResourcesResource = "default";
         final String apiVersion = "2018-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -672,18 +787,25 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource group.
      *
      * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForResourceGroupAsync(
-        String resourceGroupName, Integer top, String filter) {
+        String resourceGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter) {
         return new PagedFlux<>(
-            () -> listQueryResultsForResourceGroupSinglePageAsync(resourceGroupName, top, filter),
+            () ->
+                listQueryResultsForResourceGroupSinglePageAsync(
+                    resourceGroupName, policyTrackedResourcesResource, top, filter),
             nextLink -> listQueryResultsForResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -691,17 +813,22 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource group.
      *
      * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForResourceGroupAsync(String resourceGroupName) {
+    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForResourceGroupAsync(
+        String resourceGroupName, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
         final Integer top = null;
         final String filter = null;
         return new PagedFlux<>(
-            () -> listQueryResultsForResourceGroupSinglePageAsync(resourceGroupName, top, filter),
+            () ->
+                listQueryResultsForResourceGroupSinglePageAsync(
+                    resourceGroupName, policyTrackedResourcesResource, top, filter),
             nextLink -> listQueryResultsForResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -709,19 +836,27 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource group.
      *
      * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForResourceGroupAsync(
-        String resourceGroupName, Integer top, String filter, Context context) {
+        String resourceGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
         return new PagedFlux<>(
-            () -> listQueryResultsForResourceGroupSinglePageAsync(resourceGroupName, top, filter, context),
+            () ->
+                listQueryResultsForResourceGroupSinglePageAsync(
+                    resourceGroupName, policyTrackedResourcesResource, top, filter, context),
             nextLink -> listQueryResultsForResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -729,50 +864,67 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource group.
      *
      * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForResourceGroup(String resourceGroupName) {
+    public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForResourceGroup(
+        String resourceGroupName, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
         final Integer top = null;
         final String filter = null;
-        return new PagedIterable<>(listQueryResultsForResourceGroupAsync(resourceGroupName, top, filter));
+        return new PagedIterable<>(
+            listQueryResultsForResourceGroupAsync(resourceGroupName, policyTrackedResourcesResource, top, filter));
     }
 
     /**
      * Queries policy tracked resources under the resource group.
      *
      * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForResourceGroup(
-        String resourceGroupName, Integer top, String filter, Context context) {
-        return new PagedIterable<>(listQueryResultsForResourceGroupAsync(resourceGroupName, top, filter, context));
+        String resourceGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listQueryResultsForResourceGroupAsync(
+                resourceGroupName, policyTrackedResourcesResource, top, filter, context));
     }
 
     /**
      * Queries policy tracked resources under the resource.
      *
      * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForResourceSinglePageAsync(
-        String resourceId, Integer top, String filter) {
+        String resourceId,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -782,7 +934,12 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
         }
-        final String policyTrackedResourcesResource = "default";
+        if (policyTrackedResourcesResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyTrackedResourcesResource is required and cannot be null."));
+        }
         final String apiVersion = "2018-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
@@ -814,17 +971,23 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource.
      *
      * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForResourceSinglePageAsync(
-        String resourceId, Integer top, String filter, Context context) {
+        String resourceId,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -834,7 +997,12 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
         }
-        final String policyTrackedResourcesResource = "default";
+        if (policyTrackedResourcesResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyTrackedResourcesResource is required and cannot be null."));
+        }
         final String apiVersion = "2018-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -863,18 +1031,23 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource.
      *
      * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForResourceAsync(
-        String resourceId, Integer top, String filter) {
+        String resourceId,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter) {
         return new PagedFlux<>(
-            () -> listQueryResultsForResourceSinglePageAsync(resourceId, top, filter),
+            () -> listQueryResultsForResourceSinglePageAsync(resourceId, policyTrackedResourcesResource, top, filter),
             nextLink -> listQueryResultsForResourceNextSinglePageAsync(nextLink));
     }
 
@@ -882,17 +1055,20 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource.
      *
      * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForResourceAsync(String resourceId) {
+    private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForResourceAsync(
+        String resourceId, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
         final Integer top = null;
         final String filter = null;
         return new PagedFlux<>(
-            () -> listQueryResultsForResourceSinglePageAsync(resourceId, top, filter),
+            () -> listQueryResultsForResourceSinglePageAsync(resourceId, policyTrackedResourcesResource, top, filter),
             nextLink -> listQueryResultsForResourceNextSinglePageAsync(nextLink));
     }
 
@@ -900,19 +1076,27 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource.
      *
      * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyTrackedResourceInner> listQueryResultsForResourceAsync(
-        String resourceId, Integer top, String filter, Context context) {
+        String resourceId,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
         return new PagedFlux<>(
-            () -> listQueryResultsForResourceSinglePageAsync(resourceId, top, filter, context),
+            () ->
+                listQueryResultsForResourceSinglePageAsync(
+                    resourceId, policyTrackedResourcesResource, top, filter, context),
             nextLink -> listQueryResultsForResourceNextSinglePageAsync(nextLink, context));
     }
 
@@ -920,44 +1104,56 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
      * Queries policy tracked resources under the resource.
      *
      * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForResource(String resourceId) {
+    public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForResource(
+        String resourceId, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
         final Integer top = null;
         final String filter = null;
-        return new PagedIterable<>(listQueryResultsForResourceAsync(resourceId, top, filter));
+        return new PagedIterable<>(
+            listQueryResultsForResourceAsync(resourceId, policyTrackedResourcesResource, top, filter));
     }
 
     /**
      * Queries policy tracked resources under the resource.
      *
      * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyTrackedResourceInner> listQueryResultsForResource(
-        String resourceId, Integer top, String filter, Context context) {
-        return new PagedIterable<>(listQueryResultsForResourceAsync(resourceId, top, filter, context));
+        String resourceId,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listQueryResultsForResourceAsync(resourceId, policyTrackedResourcesResource, top, filter, context));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForManagementGroupNextSinglePageAsync(
@@ -992,12 +1188,13 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForManagementGroupNextSinglePageAsync(
@@ -1029,11 +1226,12 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForSubscriptionNextSinglePageAsync(
@@ -1067,12 +1265,13 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForSubscriptionNextSinglePageAsync(
@@ -1104,11 +1303,12 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForResourceGroupNextSinglePageAsync(
@@ -1142,12 +1342,13 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForResourceGroupNextSinglePageAsync(
@@ -1179,11 +1380,12 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForResourceNextSinglePageAsync(
@@ -1217,12 +1419,13 @@ public final class PolicyTrackedResourcesClientImpl implements PolicyTrackedReso
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyTrackedResourceInner>> listQueryResultsForResourceNextSinglePageAsync(

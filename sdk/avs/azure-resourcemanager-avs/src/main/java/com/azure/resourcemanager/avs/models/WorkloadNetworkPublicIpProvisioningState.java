@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadNetworkPublicIpProvisioningState. */
+/** The provisioning state. */
 public final class WorkloadNetworkPublicIpProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkPublicIpProvisioningState> {
     /** Static value Succeeded for WorkloadNetworkPublicIpProvisioningState. */
@@ -26,6 +26,9 @@ public final class WorkloadNetworkPublicIpProvisioningState
     /** Static value Updating for WorkloadNetworkPublicIpProvisioningState. */
     public static final WorkloadNetworkPublicIpProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for WorkloadNetworkPublicIpProvisioningState. */
+    public static final WorkloadNetworkPublicIpProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates or finds a WorkloadNetworkPublicIpProvisioningState from its string representation.
      *
@@ -37,7 +40,11 @@ public final class WorkloadNetworkPublicIpProvisioningState
         return fromString(name, WorkloadNetworkPublicIpProvisioningState.class);
     }
 
-    /** @return known WorkloadNetworkPublicIpProvisioningState values. */
+    /**
+     * Gets known WorkloadNetworkPublicIpProvisioningState values.
+     *
+     * @return known WorkloadNetworkPublicIpProvisioningState values.
+     */
     public static Collection<WorkloadNetworkPublicIpProvisioningState> values() {
         return values(WorkloadNetworkPublicIpProvisioningState.class);
     }

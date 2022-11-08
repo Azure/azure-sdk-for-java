@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedClusters ListClusterUserCredentials. */
 public final class ManagedClustersListClusterUserCredentialsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersListClusterUserCredentials.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/ManagedClustersListClusterUserCredentials.json
      */
     /**
      * Sample code: Get Managed Cluster.

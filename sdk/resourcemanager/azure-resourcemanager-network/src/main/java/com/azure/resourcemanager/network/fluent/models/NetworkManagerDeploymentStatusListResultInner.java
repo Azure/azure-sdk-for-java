@@ -25,6 +25,10 @@ public final class NetworkManagerDeploymentStatusListResultInner {
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
+    /** Creates an instance of NetworkManagerDeploymentStatusListResultInner class. */
+    public NetworkManagerDeploymentStatusListResultInner() {
+    }
+
     /**
      * Get the value property: Gets a page of Network Manager Deployment Status.
      *

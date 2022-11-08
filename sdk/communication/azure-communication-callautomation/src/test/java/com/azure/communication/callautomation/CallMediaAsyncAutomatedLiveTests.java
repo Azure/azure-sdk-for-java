@@ -3,15 +3,18 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
-import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
+import com.azure.communication.callautomation.models.HangUpOptions;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,6 +23,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -59,8 +63,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
             CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            CreateCallResult createCallResult = callAsyncClient.createCall(createCallOptions).block();
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+            Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
             assertNotNull(createCallResult.getCallConnectionProperties());
             String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
@@ -71,8 +77,9 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallResult answerCallResult = callAsyncClient.answerCall(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).block();
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+            AnswerCallResult answerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -80,20 +87,20 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnectedEvent callConnectedEvent = waitForEvent(CallConnectedEvent.class, callerConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // play media to all participants
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
             callMediaAsync.playToAll(new FileSource().setUri(MEDIA_SOURCE)).block();
-            PlayCompletedEvent playCompletedEvent = waitForEvent(PlayCompletedEvent.class, callerConnectionId, Duration.ofSeconds(20));
+            PlayCompleted playCompletedEvent = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(playCompletedEvent);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUp(true).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true).setRepeatabilityHeaders(null)).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.

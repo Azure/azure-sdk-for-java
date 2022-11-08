@@ -475,22 +475,6 @@ public final class GalleriesClientImpl implements GalleriesClient {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gallery.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GalleryInner get(String resourceGroupName, String devCenterName, String galleryName) {
-        return getAsync(resourceGroupName, devCenterName, galleryName).block();
-    }
-
-    /**
-     * Gets a gallery.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param galleryName The name of the gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -501,6 +485,22 @@ public final class GalleriesClientImpl implements GalleriesClient {
     public Response<GalleryInner> getWithResponse(
         String resourceGroupName, String devCenterName, String galleryName, Context context) {
         return getWithResponseAsync(resourceGroupName, devCenterName, galleryName, context).block();
+    }
+
+    /**
+     * Gets a gallery.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param galleryName The name of the gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a gallery.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GalleryInner get(String resourceGroupName, String devCenterName, String galleryName) {
+        return getWithResponse(resourceGroupName, devCenterName, galleryName, Context.NONE).getValue();
     }
 
     /**
@@ -1039,7 +1039,8 @@ public final class GalleriesClientImpl implements GalleriesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1075,7 +1076,8 @@ public final class GalleriesClientImpl implements GalleriesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

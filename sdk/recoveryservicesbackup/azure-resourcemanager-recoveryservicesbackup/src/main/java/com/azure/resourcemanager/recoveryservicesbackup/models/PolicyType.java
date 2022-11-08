@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyType. */
+/** Type of backup policy type. */
 public final class PolicyType extends ExpandableStringEnum<PolicyType> {
     /** Static value Invalid for PolicyType. */
     public static final PolicyType INVALID = fromString("Invalid");
@@ -27,6 +27,12 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
 
     /** Static value Incremental for PolicyType. */
     public static final PolicyType INCREMENTAL = fromString("Incremental");
+
+    /** Static value SnapshotFull for PolicyType. */
+    public static final PolicyType SNAPSHOT_FULL = fromString("SnapshotFull");
+
+    /** Static value SnapshotCopyOnlyFull for PolicyType. */
+    public static final PolicyType SNAPSHOT_COPY_ONLY_FULL = fromString("SnapshotCopyOnlyFull");
 
     /**
      * Creates or finds a PolicyType from its string representation.

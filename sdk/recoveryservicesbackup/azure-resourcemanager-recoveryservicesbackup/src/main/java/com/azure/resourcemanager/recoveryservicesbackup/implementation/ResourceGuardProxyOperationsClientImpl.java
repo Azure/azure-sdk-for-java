@@ -258,23 +258,6 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGuardProxyBaseResourceInner get(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName) {
-        return getAsync(vaultName, resourceGroupName, resourceGuardProxyName).block();
-    }
-
-    /**
-     * Returns ResourceGuardProxy under vault and with the name referenced in request.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,6 +268,23 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
     public Response<ResourceGuardProxyBaseResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName, context).block();
+    }
+
+    /**
+     * Returns ResourceGuardProxy under vault and with the name referenced in request.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceGuardProxyBaseResourceInner get(
+        String vaultName, String resourceGroupName, String resourceGuardProxyName) {
+        return getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE).getValue();
     }
 
     /**
@@ -445,27 +445,6 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
      * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGuardProxyBaseResourceInner put(
-        String vaultName,
-        String resourceGroupName,
-        String resourceGuardProxyName,
-        ResourceGuardProxyBaseResourceInner parameters) {
-        return putAsync(vaultName, resourceGroupName, resourceGuardProxyName, parameters).block();
-    }
-
-    /**
-     * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,6 +459,28 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
         ResourceGuardProxyBaseResourceInner parameters,
         Context context) {
         return putWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context).block();
+    }
+
+    /**
+     * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceGuardProxyBaseResourceInner put(
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters) {
+        return putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -613,21 +614,6 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String vaultName, String resourceGroupName, String resourceGuardProxyName) {
-        deleteAsync(vaultName, resourceGroupName, resourceGuardProxyName).block();
-    }
-
-    /**
-     * Delete ResourceGuardProxy under vault.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -638,6 +624,21 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
     public Response<Void> deleteWithResponse(
         String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName, context).block();
+    }
+
+    /**
+     * Delete ResourceGuardProxy under vault.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String vaultName, String resourceGroupName, String resourceGuardProxyName) {
+        deleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE);
     }
 
     /**
@@ -792,24 +793,6 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
      * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnlockDeleteResponseInner unlockDelete(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
-        return unlockDeleteAsync(vaultName, resourceGroupName, resourceGuardProxyName, parameters).block();
-    }
-
-    /**
-     * Secures delete ResourceGuardProxy operations.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -825,5 +808,24 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
         Context context) {
         return unlockDeleteWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context)
             .block();
+    }
+
+    /**
+     * Secures delete ResourceGuardProxy operations.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of Unlock Delete API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UnlockDeleteResponseInner unlockDelete(
+        String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
+        return unlockDeleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, parameters, Context.NONE)
+            .getValue();
     }
 }

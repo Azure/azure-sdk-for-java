@@ -35,6 +35,10 @@ public final class AzureIaaSvmErrorInfo {
     @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
+    /** Creates an instance of AzureIaaSvmErrorInfo class. */
+    public AzureIaaSvmErrorInfo() {
+    }
+
     /**
      * Get the errorCode property: Error code.
      *

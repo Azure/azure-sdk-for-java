@@ -23,6 +23,10 @@ public final class EffectiveRoutesParameters {
     @JsonProperty(value = "virtualWanResourceType")
     private String virtualWanResourceType;
 
+    /** Creates an instance of EffectiveRoutesParameters class. */
+    public EffectiveRoutesParameters() {
+    }
+
     /**
      * Get the resourceId property: The resource whose effective routes are being requested.
      *

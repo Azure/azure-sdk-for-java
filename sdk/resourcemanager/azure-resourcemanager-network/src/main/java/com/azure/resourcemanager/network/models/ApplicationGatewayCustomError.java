@@ -22,6 +22,10 @@ public final class ApplicationGatewayCustomError {
     @JsonProperty(value = "customErrorPageUrl")
     private String customErrorPageUrl;
 
+    /** Creates an instance of ApplicationGatewayCustomError class. */
+    public ApplicationGatewayCustomError() {
+    }
+
     /**
      * Get the statusCode property: Status code of the application gateway customer error.
      *
