@@ -317,8 +317,32 @@ public class EventGridCustomization extends Customization {
         customizeMediaJobOutputAsset(customization);
         customizeStorageDirectoryDeletedEventData(customization);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization);
+        customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(customization);
     }
 
+    public void customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventChannelArchiveHeartbeatEventData");
+        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);");
+
+        PropertyCustomization property = classCustomization.getProperty("channelLatencyMs");
+        property.generateGetterAndSetter();
+
+        classCustomization.getMethod("getChannelLatencyMs")
+            .rename("getChannelLatency")
+            .setReturnType("Duration", "")
+            .replaceBody("if (\"n/a\".equals(this.channelLatencyMs)) { return null; } Long channelLatencyMsLong; try { channelLatencyMsLong = Long.parseLong(this.channelLatencyMs); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; } return Duration.ofMillis(channelLatencyMsLong);", Arrays.asList("java.time.Duration"))
+            .getJavadoc()
+            .setDescription("Gets the duration of channel latency.")
+            .setReturn("the duration of channel latency.");
+
+        try {
+            classCustomization.removeMethod("setChannelLatencyMs");
+            classCustomization.removeMethod("setLatencyResultCode");
+            classCustomization.removeMethod("getLogger");
+        } catch (IllegalArgumentException none) {}
+    }
+    
     public void customizeAcsRecordingFileStatusUpdatedEventDataDuration(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("AcsRecordingFileStatusUpdatedEventData");
