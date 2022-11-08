@@ -2451,7 +2451,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             })
             .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
             .flatMap(cosmosItemResponse -> {
-                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(Arrays.asList(new Document(cosmosItemResponse.getItem().toString())), cosmosItemResponse.getResponseHeaders());
+                T item = cosmosItemResponse.getItem();
+                String itemString = item.toString();
+                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())), cosmosItemResponse.getResponseHeaders());
                 BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), Arrays.asList(BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
                 return Mono.just(feedResponse);
             });

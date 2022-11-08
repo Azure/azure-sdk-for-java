@@ -262,6 +262,28 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyWithPojoAndSingleTuple() throws Exception {
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+
+        SampleType document = new SampleType(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        container.createItem(document);
+
+        PartitionKey partitionKey = new PartitionKey(document.getMypk());
+        CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
+        cosmosItemIdentities.add(cosmosItemIdentity);
+
+        FeedResponse<SampleType> feedResponse = container.readMany(cosmosItemIdentities, SampleType.class);
+
+        assertThat(feedResponse.getResults()).isNotNull();
+        assertThat(feedResponse.getResults().size()).isEqualTo(1);
+        SampleType fetchedDocument = feedResponse.getResults().get(0);
+
+        assertThat(document.getId()).isEqualTo(fetchedDocument.getId());
+        assertThat(document.getMypk()).isEqualTo(fetchedDocument.getMypk());
+        assertThat(document.getVal()).isEqualTo(fetchedDocument.getVal());
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyWithSingleTuple() throws Exception {
         String partitionKeyValue = UUID.randomUUID().toString();
         ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
@@ -289,6 +311,11 @@ public class CosmosItemTest extends TestSuiteBase {
             assertThat(idSet.contains(feedResponse.getResults().get(0).getId())).isTrue();
         }
     }
+
+//    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+//    public void readManyOptimization() {
+//
+//    }
 
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -778,6 +805,7 @@ public class CosmosItemTest extends TestSuiteBase {
         SampleType(String id, String val, String mypk) {
             this.id = id;
             this.val = val;
+            this.mypk = mypk;
         }
 
         public String getId() {
