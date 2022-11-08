@@ -484,12 +484,6 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         return pipeline;
     }
 
-    String getEndpoint(boolean isStaticResource) {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
-            : (isStaticResource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT : AZURE_TEXT_ANALYTICS_ENDPOINT);
-    }
-
     /**
      * Create a client builder with endpoint and API key credential.
      *
@@ -512,14 +506,13 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         return clientBuilder;
     }
 
-    /**
-     * Get the string of API key value based on what running mode is on.
-     *
-     * @return the API key string
-     */
+    String getEndpoint(boolean isStaticResource) {
+        return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
+            : isStaticResource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT : AZURE_TEXT_ANALYTICS_ENDPOINT;
+    }
+
     String getApiKey(boolean isStaticSource) {
         return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
-            : Configuration.getGlobalConfiguration().get(
-                isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY);
+            : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 }

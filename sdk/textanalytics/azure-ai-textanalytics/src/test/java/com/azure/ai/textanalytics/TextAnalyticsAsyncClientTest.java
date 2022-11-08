@@ -2501,7 +2501,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeActionsAutoDetectedLanguageCustomTexts(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         analyzeActionsAutoDetectedLanguageCustomTextRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
