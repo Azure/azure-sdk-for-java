@@ -312,6 +312,11 @@ public class PerfStressProgram {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                printStatusHelper(status, newLine, needsExtraNewline);
+            }
+
+            @Override
+            public boolean cancel() {
                 if (printFinalStatus) {
                     printStatusHelper(status, newLine, needsExtraNewline);
                 }
@@ -320,6 +325,7 @@ public class PerfStressProgram {
                     System.out.println();
                 }
                 System.out.println();
+                return super.cancel();
             }
         }, 1000, 1000);
 
