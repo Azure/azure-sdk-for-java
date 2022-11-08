@@ -151,3 +151,6 @@ Error and warning level logs do not provide enough information. The period of at
 [SyncReceiveAndPrefetch]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 [Samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/src/samples
 [SUPPORT]: https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md
+[Logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
+[java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
+[qpid_proton_j_apache]: https://qpid.apache.org/proton/
