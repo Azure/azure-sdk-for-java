@@ -1,7 +1,7 @@
 ## Generate autorest code
 
 ```yaml
-use: '@autorest/java@4.1.5'
+use: '@autorest/java@4.1.7'
 input-file:
   - https://github.com/Azure/azure-rest-api-specs/blob/9685ef961fe7931fccdd9bf86afac8bca0b3ae88/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/devcenter.json
   - https://github.com/Azure/azure-rest-api-specs/blob/9685ef961fe7931fccdd9bf86afac8bca0b3ae88/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/devbox.json
