@@ -132,9 +132,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      *   <li>Configure {@link Configuration}.</li>
      *   <li>Configure retry.</li>
      *   <li>Configure proxy.</li>
-     *   <li>Configure credential.</li>
      *   <li>Configure connection string.</li>
-     *   <li>Configure default credential.</li>
+     *   <li>Configure credential.</li>
      * </ol>
      * @param builder The service client builder.
      */
