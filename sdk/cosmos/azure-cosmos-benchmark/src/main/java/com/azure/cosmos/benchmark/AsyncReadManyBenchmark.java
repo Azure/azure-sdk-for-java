@@ -8,9 +8,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-
 import java.util.ArrayList;
-import java.util.List;
 
 
 class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
