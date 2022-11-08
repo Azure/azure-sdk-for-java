@@ -211,7 +211,6 @@ io.opentelemetry:opentelemetry-exporter-logging;1.14.0
 io.opentelemetry:opentelemetry-exporter-jaeger;1.14.0
 io.opentelemetry:opentelemetry-exporter-otlp;1.14.0
 io.opentelemetry:opentelemetry-sdk-testing;1.14.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.14.0-alpha
 io.opentelemetry:opentelemetry-sdk-logs;1.14.0-alpha
 io.projectreactor:reactor-test;3.4.23
 junit:junit;4.13.2
