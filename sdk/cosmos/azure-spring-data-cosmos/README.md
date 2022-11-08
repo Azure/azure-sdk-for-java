@@ -149,10 +149,10 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
-
+    
     @Value("${azure.cosmos.maxBufferedItemCount}")
     private int maxBufferedItemCount;
-
+    
     @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
     private int responseContinuationTokenLimitInKb;
 
