@@ -33,6 +33,8 @@ public class EvaluationTests extends PersonalizerTestBase {
     public final void listEvaluationsTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
         PersonalizerAdministrationClient client = getAdministrationClient(httpClient, serviceVersion, true);
         PagedIterable<PersonalizerEvaluation> evaluations = client.listEvaluations();
+        assertNotNull(evaluations);
+        assertTrue(evaluations.stream().findAny().isPresent());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -50,7 +52,7 @@ public class EvaluationTests extends PersonalizerTestBase {
             .beginCreateEvaluation(evaluationOptions)
             .setPollInterval(durationTestMode)
             .getSyncPoller();
-        System.out.println("Created evaluation with Id: " + syncPoller.getFinalResult().getId());
+
         syncPoller.waitForCompletion();
 
         PersonalizerEvaluation evaluationResult = syncPoller.getFinalResult();
@@ -60,6 +62,5 @@ public class EvaluationTests extends PersonalizerTestBase {
         assertFalse(CoreUtils.isNullOrEmpty(evaluationResult.getOptimalPolicy()));
 
         client.deleteEvaluation(evaluationResult.getId()).block();
-        System.out.println("Deleted the evaluation with Id: " + evaluationResult.getId());
     }
 }
