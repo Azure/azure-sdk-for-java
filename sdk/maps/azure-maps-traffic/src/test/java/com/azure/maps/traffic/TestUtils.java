@@ -24,7 +24,7 @@ import com.azure.maps.traffic.models.TrafficIncidentViewport;
 import org.junit.jupiter.params.provider.Arguments;
 
 public class TestUtils {
-    static final String FAKE_API_KEY = "1234567890";
+    static final String FAKE_API_KEY = "fakeApiKey";
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     static TrafficFlowSegmentData getExpectedTrafficFlowSegment() throws IOException {
