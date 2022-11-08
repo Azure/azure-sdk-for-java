@@ -28,11 +28,14 @@ public final class FacetResult extends Facet {
     private int count;
 
     /*
-     * A JObject array or Table containing the desired facets. Only present if
-     * the facet is valid.
+     * A JObject array or Table containing the desired facets. Only present if the facet is valid.
      */
     @JsonProperty(value = "data", required = true)
     private Object data;
+
+    /** Creates an instance of FacetResult class. */
+    public FacetResult() {
+    }
 
     /**
      * Get the totalRecords property: Number of total records in the facet results.

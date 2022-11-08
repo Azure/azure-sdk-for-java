@@ -70,7 +70,7 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class GatewayAddressCache implements IAddressCache {
-    private final static Duration minDurationBeforeEnforcingCollectionRoutingMapRefresh = Duration.ofSeconds(30);
+    private static Duration minDurationBeforeEnforcingCollectionRoutingMapRefresh = Duration.ofSeconds(30);
 
     private final static Logger logger = LoggerFactory.getLogger(GatewayAddressCache.class);
     private final static String protocolFilterFormat = "%s eq %s";

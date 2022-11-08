@@ -24,6 +24,10 @@ public final class AzureSearchIndexDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureSearchIndexDatasetTypeProperties innerTypeProperties = new AzureSearchIndexDatasetTypeProperties();
 
+    /** Creates an instance of AzureSearchIndexDataset class. */
+    public AzureSearchIndexDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

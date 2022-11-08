@@ -49,6 +49,9 @@ public final class PageList {
     @JsonProperty(value = "NextMarker")
     private String nextMarker;
 
+    /** Creates an instance of PageList class. */
+    public PageList() {}
+
     /**
      * Get the pageRange property: The PageRange property.
      *

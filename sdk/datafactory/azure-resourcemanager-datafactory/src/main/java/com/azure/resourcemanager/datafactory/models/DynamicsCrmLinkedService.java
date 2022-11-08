@@ -24,6 +24,10 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private DynamicsCrmLinkedServiceTypeProperties innerTypeProperties = new DynamicsCrmLinkedServiceTypeProperties();
 
+    /** Creates an instance of DynamicsCrmLinkedService class. */
+    public DynamicsCrmLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Dynamics CRM linked service properties.
      *

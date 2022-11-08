@@ -60,6 +60,10 @@ public class Activity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of Activity class. */
+    public Activity() {
+    }
+
     /**
      * Get the name property: Activity name.
      *

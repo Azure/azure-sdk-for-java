@@ -24,6 +24,10 @@ public final class CouchbaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private CouchbaseLinkedServiceTypeProperties innerTypeProperties = new CouchbaseLinkedServiceTypeProperties();
 
+    /** Creates an instance of CouchbaseLinkedService class. */
+    public CouchbaseLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Couchbase server linked service properties.
      *

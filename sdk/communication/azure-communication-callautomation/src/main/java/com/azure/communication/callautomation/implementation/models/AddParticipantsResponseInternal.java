@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AddParticipantsResponseInternal model. */
+/** The response payload for adding participants to the call. */
 @Fluent
 public final class AddParticipantsResponseInternal {
     /*
-     * The participants property.
+     * List of current participants in the call.
      */
     @JsonProperty(value = "participants")
     private List<AcsCallParticipantInternal> participants;
@@ -24,7 +24,7 @@ public final class AddParticipantsResponseInternal {
     private String operationContext;
 
     /**
-     * Get the participants property: The participants property.
+     * Get the participants property: List of current participants in the call.
      *
      * @return the participants value.
      */
@@ -33,7 +33,7 @@ public final class AddParticipantsResponseInternal {
     }
 
     /**
-     * Set the participants property: The participants property.
+     * Set the participants property: List of current participants in the call.
      *
      * @param participants the participants value to set.
      * @return the AddParticipantsResponseInternal object itself.

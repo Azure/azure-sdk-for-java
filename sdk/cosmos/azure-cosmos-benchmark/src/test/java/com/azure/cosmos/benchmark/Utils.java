@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
@@ -33,10 +34,7 @@ public class Utils {
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
                         .withClientTelemetryConfig(
-                            ImplementationBridgeHelpers
-                                .CosmosClientTelemetryConfigHelper
-                                .getCosmosClientTelemetryConfigAccessor()
-                                .getDefaultConfig())
+                            new CosmosClientTelemetryConfig().sendClientTelemetryToService(false))
                         .build();
     }
 

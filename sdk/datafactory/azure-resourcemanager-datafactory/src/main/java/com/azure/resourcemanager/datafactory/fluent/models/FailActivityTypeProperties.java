@@ -25,6 +25,10 @@ public final class FailActivityTypeProperties {
     @JsonProperty(value = "errorCode", required = true)
     private Object errorCode;
 
+    /** Creates an instance of FailActivityTypeProperties class. */
+    public FailActivityTypeProperties() {
+    }
+
     /**
      * Get the message property: The error message that surfaced in the Fail activity. It can be dynamic content that's
      * evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).

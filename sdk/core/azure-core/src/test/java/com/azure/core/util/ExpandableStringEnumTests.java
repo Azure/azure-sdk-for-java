@@ -88,24 +88,40 @@ public class ExpandableStringEnumTests {
     }
 
     public static final class TestStringEnum extends ExpandableStringEnum<TestStringEnum> {
+        @Deprecated
+        public TestStringEnum() {
+        }
+
         static TestStringEnum fromString(String name) {
             return fromString(name, TestStringEnum.class);
         }
     }
 
     public static final class TestStringEnum2 extends ExpandableStringEnum<TestStringEnum2> {
+        @Deprecated
+        public TestStringEnum2() {
+        }
+
         static TestStringEnum2 fromString(String name) {
             return fromString(name, TestStringEnum2.class);
         }
     }
 
     private static final class PrivateStringEnum extends ExpandableStringEnum<PrivateStringEnum> {
+        @Deprecated
+        private PrivateStringEnum() {
+        }
+
         static PrivateStringEnum fromString(String name) {
             return fromString(name, PrivateStringEnum.class);
         }
     }
 
     public static final class ValuesTestStringEnum extends ExpandableStringEnum<ValuesTestStringEnum> {
+        @Deprecated
+        public ValuesTestStringEnum() {
+        }
+
         static ValuesTestStringEnum fromString(String name) {
             return fromString(name, ValuesTestStringEnum.class);
         }

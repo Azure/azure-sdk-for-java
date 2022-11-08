@@ -48,6 +48,10 @@ public final class WebApplicationFirewallCustomRule {
     @JsonProperty(value = "action", required = true)
     private WebApplicationFirewallAction action;
 
+    /** Creates an instance of WebApplicationFirewallCustomRule class. */
+    public WebApplicationFirewallCustomRule() {
+    }
+
     /**
      * Get the name property: The name of the resource that is unique within a policy. This name can be used to access
      * the resource.

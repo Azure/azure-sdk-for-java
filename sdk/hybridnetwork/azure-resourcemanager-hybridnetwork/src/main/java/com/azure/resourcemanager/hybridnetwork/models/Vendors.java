@@ -35,6 +35,18 @@ public interface Vendors {
      * Gets information about the specified vendor.
      *
      * @param vendorName The name of the vendor.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified vendor along with {@link Response}.
+     */
+    Response<Vendor> getWithResponse(String vendorName, Context context);
+
+    /**
+     * Gets information about the specified vendor.
+     *
+     * @param vendorName The name of the vendor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -43,23 +55,11 @@ public interface Vendors {
     Vendor get(String vendorName);
 
     /**
-     * Gets information about the specified vendor.
-     *
-     * @param vendorName The name of the vendor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor.
-     */
-    Response<Vendor> getWithResponse(String vendorName, Context context);
-
-    /**
      * Lists all the vendors in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Vendor> list();
 
@@ -70,7 +70,7 @@ public interface Vendors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Vendor> list(Context context);
 
@@ -81,7 +81,7 @@ public interface Vendors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor.
+     * @return information about the specified vendor along with {@link Response}.
      */
     Vendor getById(String id);
 
@@ -93,7 +93,7 @@ public interface Vendors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor.
+     * @return information about the specified vendor along with {@link Response}.
      */
     Response<Vendor> getByIdWithResponse(String id, Context context);
 

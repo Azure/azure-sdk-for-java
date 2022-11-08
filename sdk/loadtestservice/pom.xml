@@ -10,6 +10,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
-      <module>azure-resourcemanager-loadtestservice</module>
+    <module>azure-developer-loadtesting</module>
+    <module>azure-resourcemanager-loadtestservice</module>
   </modules>
 </project>

@@ -49,6 +49,10 @@ public final class XmlReadSettings extends FormatReadSettings {
     @JsonProperty(value = "namespacePrefixes")
     private Object namespacePrefixes;
 
+    /** Creates an instance of XmlReadSettings class. */
+    public XmlReadSettings() {
+    }
+
     /**
      * Get the compressionProperties property: Compression settings.
      *

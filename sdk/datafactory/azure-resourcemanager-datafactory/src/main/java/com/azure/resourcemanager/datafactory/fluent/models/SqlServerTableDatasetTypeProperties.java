@@ -28,6 +28,10 @@ public final class SqlServerTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of SqlServerTableDatasetTypeProperties class. */
+    public SqlServerTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

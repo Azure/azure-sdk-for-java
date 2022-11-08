@@ -14,6 +14,8 @@ import java.util.Optional;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
 class OpenTelemetryUtils {
+    private static boolean warnedOnContextType = false;
+    private static boolean warnedOnBuilderType = false;
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
     /**
@@ -55,11 +57,14 @@ class OpenTelemetryUtils {
             if (traceContextObj instanceof io.opentelemetry.context.Context) {
                 return (io.opentelemetry.context.Context) traceContextObj;
             } else if (traceContextObj != null) {
-                LOGGER.warning("Expected instance of `io.opentelemetry.context.Context` under `PARENT_TRACE_CONTEXT_KEY`, but got {}, ignoring it.", traceContextObj.getClass().getName());
+                // TODO (limolkova) somehow we can get shaded otel agent context here
+                if (!warnedOnContextType) {
+                    LOGGER.warning("Expected instance of `io.opentelemetry.context.Context` under `PARENT_TRACE_CONTEXT_KEY`, but got {}, ignoring it.", traceContextObj.getClass().getName());
+                    warnedOnContextType = true;
+                }
             }
         }
 
-        LOGGER.verbose("No context is found under `PARENT_TRACE_CONTEXT_KEY`, getting current context");
         return io.opentelemetry.context.Context.current();
     }
 
@@ -68,8 +73,9 @@ class OpenTelemetryUtils {
             return ((OpenTelemetryAttributes) attributesBuilder).get();
         }
 
-        if (attributesBuilder != null) {
+        if (attributesBuilder != null && !warnedOnBuilderType) {
             LOGGER.warning("Expected instance of `OpenTelemetryAttributeBuilder` in `attributeCollection`, but got {}, ignoring it.", attributesBuilder.getClass().getName());
+            warnedOnBuilderType = true;
         }
 
         return Attributes.empty();

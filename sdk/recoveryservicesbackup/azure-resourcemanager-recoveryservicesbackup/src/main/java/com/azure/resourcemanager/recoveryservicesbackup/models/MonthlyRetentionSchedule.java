@@ -42,6 +42,10 @@ public final class MonthlyRetentionSchedule {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
+    /** Creates an instance of MonthlyRetentionSchedule class. */
+    public MonthlyRetentionSchedule() {
+    }
+
     /**
      * Get the retentionScheduleFormatType property: Retention schedule format type for monthly retention policy.
      *

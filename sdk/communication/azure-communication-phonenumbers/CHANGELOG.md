@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.11 (Unreleased)
+## 1.1.0-beta.12 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.16 (2022-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`
+- Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`
+
+## 1.1.0-beta.11 (2022-10-18)
+
+### Features Added
+
+- Added SIP routing clients for handling Direct routing numbers.
+
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`
+- Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`
+
 
 ## 1.1.0-beta.10 (2022-09-13)
 

@@ -24,6 +24,10 @@ public final class SqlServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SqlServerLinkedServiceTypeProperties innerTypeProperties = new SqlServerLinkedServiceTypeProperties();
 
+    /** Creates an instance of SqlServerLinkedService class. */
+    public SqlServerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: SQL Server linked service properties.
      *

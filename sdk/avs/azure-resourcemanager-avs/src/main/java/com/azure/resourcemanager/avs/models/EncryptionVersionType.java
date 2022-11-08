@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionVersionType. */
+/** Property of the key if user provided or auto detected. */
 public final class EncryptionVersionType extends ExpandableStringEnum<EncryptionVersionType> {
     /** Static value Fixed for EncryptionVersionType. */
     public static final EncryptionVersionType FIXED = fromString("Fixed");
@@ -27,7 +27,11 @@ public final class EncryptionVersionType extends ExpandableStringEnum<Encryption
         return fromString(name, EncryptionVersionType.class);
     }
 
-    /** @return known EncryptionVersionType values. */
+    /**
+     * Gets known EncryptionVersionType values.
+     *
+     * @return known EncryptionVersionType values.
+     */
     public static Collection<EncryptionVersionType> values() {
         return values(EncryptionVersionType.class);
     }

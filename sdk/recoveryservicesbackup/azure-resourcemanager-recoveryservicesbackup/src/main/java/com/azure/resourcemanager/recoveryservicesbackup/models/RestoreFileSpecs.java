@@ -28,6 +28,10 @@ public final class RestoreFileSpecs {
     @JsonProperty(value = "targetFolderPath")
     private String targetFolderPath;
 
+    /** Creates an instance of RestoreFileSpecs class. */
+    public RestoreFileSpecs() {
+    }
+
     /**
      * Get the path property: Source File/Folder path.
      *

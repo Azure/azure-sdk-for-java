@@ -30,6 +30,10 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
+    /** Creates an instance of WebClientCertificateAuthentication class. */
+    public WebClientCertificateAuthentication() {
+    }
+
     /**
      * Get the pfx property: Base64-encoded contents of a PFX file.
      *

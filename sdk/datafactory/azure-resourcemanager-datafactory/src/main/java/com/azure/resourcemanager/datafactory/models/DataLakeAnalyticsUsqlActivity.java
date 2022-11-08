@@ -25,6 +25,10 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     private DataLakeAnalyticsUsqlActivityTypeProperties innerTypeProperties =
         new DataLakeAnalyticsUsqlActivityTypeProperties();
 
+    /** Creates an instance of DataLakeAnalyticsUsqlActivity class. */
+    public DataLakeAnalyticsUsqlActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Data Lake Analytics U-SQL activity properties.
      *

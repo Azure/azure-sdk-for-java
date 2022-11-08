@@ -82,6 +82,10 @@ public final class SsisParameter {
     @JsonProperty(value = "variable")
     private String variable;
 
+    /** Creates an instance of SsisParameter class. */
+    public SsisParameter() {
+    }
+
     /**
      * Get the id property: Parameter id.
      *

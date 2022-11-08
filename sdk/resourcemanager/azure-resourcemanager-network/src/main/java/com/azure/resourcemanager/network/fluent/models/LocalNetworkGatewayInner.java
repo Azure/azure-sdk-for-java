@@ -34,6 +34,10 @@ public final class LocalNetworkGatewayInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of LocalNetworkGatewayInner class. */
+    public LocalNetworkGatewayInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the local network gateway.
      *

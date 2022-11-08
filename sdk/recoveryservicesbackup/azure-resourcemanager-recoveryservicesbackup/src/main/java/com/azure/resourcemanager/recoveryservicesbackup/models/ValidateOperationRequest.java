@@ -21,6 +21,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ValidateOperationRequest {
+    /** Creates an instance of ValidateOperationRequest class. */
+    public ValidateOperationRequest() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network function vendor configuration. */
 @Fluent
 public final class NetworkFunctionVendorConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionVendorConfiguration.class);
-
     /*
      * The name of the vendor network function role.
      */
@@ -38,6 +34,10 @@ public final class NetworkFunctionVendorConfiguration {
      */
     @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterface> networkInterfaces;
+
+    /** Creates an instance of NetworkFunctionVendorConfiguration class. */
+    public NetworkFunctionVendorConfiguration() {
+    }
 
     /**
      * Get the roleName property: The name of the vendor network function role.

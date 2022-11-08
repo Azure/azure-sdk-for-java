@@ -142,6 +142,13 @@ public interface ScriptExecution {
     List<String> errors();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ScriptExecutionInner object.
      *
      * @return the inner object.
@@ -422,23 +429,23 @@ public interface ScriptExecution {
     /**
      * Return the logs for a script execution resource.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of a script executed by a user - custom or AVS.
-     */
-    ScriptExecution getExecutionLogs();
-
-    /**
-     * Return the logs for a script execution resource.
-     *
      * @param scriptOutputStreamType Name of the desired output stream to return. If not provided, will return all. An
      *     empty array will return nothing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of a script executed by a user - custom or AVS.
+     * @return an instance of a script executed by a user - custom or AVS along with {@link Response}.
      */
     Response<ScriptExecution> getExecutionLogsWithResponse(
         List<ScriptOutputStreamType> scriptOutputStreamType, Context context);
+
+    /**
+     * Return the logs for a script execution resource.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance of a script executed by a user - custom or AVS.
+     */
+    ScriptExecution getExecutionLogs();
 }

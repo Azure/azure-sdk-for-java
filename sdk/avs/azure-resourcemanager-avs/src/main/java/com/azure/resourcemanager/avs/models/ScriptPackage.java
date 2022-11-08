@@ -44,6 +44,20 @@ public interface ScriptPackage {
     String version();
 
     /**
+     * Gets the company property: Company that created and supports the package.
+     *
+     * @return the company value.
+     */
+    String company();
+
+    /**
+     * Gets the uri property: Link to support by the package vendor.
+     *
+     * @return the uri value.
+     */
+    String uri();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner object.
      *
      * @return the inner object.

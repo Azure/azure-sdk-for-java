@@ -15,4 +15,5 @@ module com.azure.communication.callautomation {
     opens com.azure.communication.callautomation to com.fasterxml.jackson.databind;
     opens com.azure.communication.callautomation.models to com.azure.core, com.fasterxml.jackson.databind;
     opens com.azure.communication.callautomation.models.events to com.fasterxml.jackson.databind;
+    opens com.azure.communication.callautomation.implementation.converters to com.azure.core, com.fasterxml.jackson.databind;
 }

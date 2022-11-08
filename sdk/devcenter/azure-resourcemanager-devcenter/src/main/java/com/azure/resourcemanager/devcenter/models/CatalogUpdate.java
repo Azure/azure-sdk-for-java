@@ -26,6 +26,10 @@ public final class CatalogUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of CatalogUpdate class. */
+    public CatalogUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Catalog properties for update.
      *
