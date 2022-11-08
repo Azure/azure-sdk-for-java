@@ -22,9 +22,11 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
-import com.azure.resourcemanager.test.utils.PlaybackTimeout;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.InvocationInterceptor;
+import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -37,6 +39,7 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -57,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -77,7 +81,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final String USE_SYSTEM_PROXY = "java.net.useSystemProxies";
     private static final String VALUE_TRUE = "true";
     private static final String PLAYBACK_URI = PLAYBACK_URI_BASE + "1234";
-    private static final String JUNIT5_TEST_TIMEOUT_KEY = "junit.jupiter.execution.timeout.test.method.default";
     private static final AzureProfile PLAYBACK_PROFILE = new AzureProfile(
         ZERO_TENANT,
         ZERO_SUBSCRIPTION,
@@ -94,6 +97,14 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private AzureProfile testProfile;
     private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
+
+    /**
+     * Sets upper bound execution timeout for each @Test method.
+     * {@link org.junit.jupiter.api.Timeout} annotation on test methods will only narrow the timeout, not affecting the upper
+     * bound.
+     */
+    @RegisterExtension
+    final PlaybackTimeoutInterceptor playbackTimeoutInterceptor = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(30));
 
     /**
      * Generates a random resource name.
@@ -359,27 +370,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     }
 
-    /**
-     * Initialize default playback time for each test method.
-     * If {@link PlaybackTimeout} is present on current test method, its timeout will be set accordingly.
-     * Otherwise, default playback timeout is set to 5 seconds.
-     *
-     * @param testInfo {@link TestInfo} to retrieve annotation on test method.
-     */
-    @BeforeEach
-    void initDefaultPlaybackTimeout(TestInfo testInfo) {
-        if (isPlaybackMode()) {
-            testInfo.getTestMethod().ifPresent(method -> {
-                if (method.isAnnotationPresent(PlaybackTimeout.class)) {
-                    PlaybackTimeout timeout = method.getAnnotation(PlaybackTimeout.class);
-                    setDefaultTestTimeout(Duration.of(timeout.value(), timeout.unit()));
-                } else {
-                    setDefaultTestTimeout(Duration.ofSeconds(5));
-                }
-            });
-        }
-    }
-
     private void addTextReplacementRules(Map<String, String> rules) {
         for (Map.Entry<String, String> entry : rules.entrySet()) {
             interceptorManager.addTextReplacementRule(entry.getKey(), entry.getValue());
@@ -480,19 +470,24 @@ public abstract class ResourceManagerTestBase extends TestBase {
      */
     protected abstract void cleanUpResources();
 
-    /**
-     * Default timeout for @Test methods.
-     * If test does not finish within the timeout, TimeoutException will be thrown.
-     * <p>This method should be called in @BeforeEach or @BeforeAll phase in order to take effect.</p>
-     *
-     * @param duration positive timeout duration
-     */
-    private void setDefaultTestTimeout(Duration duration) {
-        Objects.requireNonNull(duration);
-        if (duration.isNegative() || duration.isZero()) {
-            LOGGER.warning("Ignored non-positive test timeout.");
-            return;
+    private final class PlaybackTimeoutInterceptor implements InvocationInterceptor {
+
+        private final Duration duration;
+
+        private PlaybackTimeoutInterceptor(Supplier<Duration> timeoutSupplier) {
+            Objects.requireNonNull(timeoutSupplier);
+            this.duration = timeoutSupplier.get();
         }
-        System.setProperty(JUNIT5_TEST_TIMEOUT_KEY, String.format("%s ms", duration.toMillis()));
+
+        @Override
+        public void interceptTestMethod(Invocation<Void> invocation,
+                                        ReflectiveInvocationContext<Method> invocationContext,
+                                        ExtensionContext extensionContext) throws Throwable {
+            if (isPlaybackMode()) {
+                Assertions.assertTimeoutPreemptively(duration, invocation::proceed);
+            } else {
+                invocation.proceed();
+            }
+        }
     }
 }

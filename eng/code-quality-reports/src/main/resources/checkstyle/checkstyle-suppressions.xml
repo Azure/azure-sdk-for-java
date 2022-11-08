@@ -210,8 +210,6 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress external dependency checkstyle for test classes as JUnit 5 has TestInfo dependency injection and should be part of method args -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]core[/\\]test[/\\].*"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.resourcemanager.test.ResourceManagerTestBase"/>
 
   <!-- Temporary suppressions -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
