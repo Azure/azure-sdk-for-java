@@ -1506,7 +1506,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
                 .addKeyValue("mode", receiverOptions.getReceiveMode())
-                .addKeyValue("isSessionEnabled", !CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()))
+                .addKeyValue("isSessionEnabled", receiverOptions.isSessionReceiver())
                 .addKeyValue(ENTITY_TYPE_KEY, entityType)
                 .log("Created consumer for Service Bus resource.");
         });
