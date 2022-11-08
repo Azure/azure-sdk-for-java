@@ -26,7 +26,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
             + "\", \"catalogName\":\"" + catalogName
             + "\", \"environmentType\":\"" + environmentTypeName  + "\"}");
         SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-                environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me", "SdkTesting-Environment", environmentBody, null);
+                setPlaybackSyncPollerPollInterval(environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me", "SdkTesting-Environment", environmentBody, null));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
 
@@ -39,7 +39,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
 
         // Delete the environment when we're finished:
         SyncPoller<BinaryData, Void> environmentDeleteResponse =
-                        environmentsClient.beginDeleteEnvironment(projectName, "me", "SdkTesting-Environment", null);
+                        setPlaybackSyncPollerPollInterval(environmentsClient.beginDeleteEnvironment(projectName, "me", "SdkTesting-Environment", null));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentDeleteResponse.waitForCompletion().getStatus());
     }
