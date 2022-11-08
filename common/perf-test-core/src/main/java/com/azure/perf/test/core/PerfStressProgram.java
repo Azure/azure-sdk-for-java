@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,8 +76,7 @@ public class PerfStressProgram {
         PerfStressOptions[] options = classList.stream().map(c -> {
             try {
                 return c.getConstructors()[0].getParameterTypes()[0].getConstructors()[0].newInstance();
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                     | InvocationTargetException | SecurityException e) {
+            } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e);
             }
         }).toArray(i -> new PerfStressOptions[i]);
@@ -154,7 +152,7 @@ public class PerfStressProgram {
                     Flux.range(0, tests.length)
                         .parallel(tests.length)
                         .runOn(Schedulers.boundedElastic())
-                        .flatMap(i -> tests[i].postSetupAsync(), false, 1, 1)
+                        .flatMap(i -> tests[i].postSetupAsync(), false, Schedulers.DEFAULT_POOL_SIZE, 1)
                         .sequential()
                         .then()
                         .block();
@@ -254,8 +252,8 @@ public class PerfStressProgram {
 
                 forkJoinPool.shutdown();
 
-                // Wait 10 seconds for operations to shut down.
-                forkJoinPool.awaitTermination(10, TimeUnit.SECONDS);
+                // Wait 1 second for operations to shut down.
+                forkJoinPool.awaitTermination(1, TimeUnit.SECONDS);
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -269,7 +267,7 @@ public class PerfStressProgram {
                 Flux.range(0, parallel)
                     .parallel(parallel)
                     .runOn(Schedulers.boundedElastic())
-                    .flatMap(i -> tests[i].runAllAsync(endNanoTime), false, 1, 1)
+                    .flatMap(i -> tests[i].runAllAsync(endNanoTime), false, Schedulers.DEFAULT_POOL_SIZE, 1)
                     .sequential()
                     .then()
                     .block();
