@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "baseName": {
@@ -9,9 +9,14 @@
                 "description": "The base resource name."
             }
         },
-        "cognitiveServicesEndpointSuffix": {
-            "defaultValue": ".cognitiveservices.azure.com",
-            "type": "String"
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "metadata": {
+                    "description": "The location of the resource. By default, this is the same as the resource group."
+                }
+            }
         },
         "testApplicationOid": {
             "type": "String",
@@ -36,21 +41,26 @@
             "metadata": {
                 "description": "The application client secret used to run tests."
             }
+        },
+        "cognitiveServicesEndpointSuffix": {
+            "defaultValue": ".cognitiveservices.azure.com",
+            "type": "String"
         }
     },
     "variables": {
         "authorizationApiVersion": "2018-09-01-preview",
-        "textAnalyticsApiVersion": "2017-04-18",
-        "azureTextAnalyticsUrl": "[concat('https://', parameters('baseName'), parameters('cognitiveServicesEndpointSuffix'), '/')]",
+        "textAnalyticsBaseName": "[concat('textanalytics', parameters('baseName'))]",
+        "cognitiveServiceApiVersion": "2017-04-18",
+        "azureTextAnalyticsUrl": "[concat('https://', variables('textAnalyticsBaseName'), parameters('cognitiveServicesEndpointSuffix'))]",
         "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), parameters('baseName')))]",
+            "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), variables('textAnalyticsBaseName')))]",
             "dependsOn": [
-                "[parameters('baseName')]"
+                "[variables('textAnalyticsBaseName')]"
             ],
             "properties": {
                 "principalId": "[parameters('testApplicationOid')]",
@@ -59,15 +69,15 @@
         },
         {
             "type": "Microsoft.CognitiveServices/accounts",
-            "name": "[parameters('baseName')]",
-            "apiVersion": "[variables('textAnalyticsApiVersion')]",
+            "name": "[variables('textAnalyticsBaseName')]",
+            "apiVersion": "[variables('cognitiveServiceApiVersion')]",
             "sku": {
                 "name": "S"
             },
             "kind": "TextAnalytics",
             "location": "[resourceGroup().location]",
             "properties": {
-                "customSubDomainName": "[parameters('baseName')]"
+                "customSubDomainName": "[variables('textAnalyticsBaseName')]"
             }
         }
     ],
@@ -86,7 +96,7 @@
         },
         "AZURE_TEXT_ANALYTICS_API_KEY": {
             "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), variables('textAnalyticsApiVersion')).key1]"
+            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('textAnalyticsBaseName')), variables('cognitiveServiceApiVersion')).key1]"
         },
         "AZURE_TEXT_ANALYTICS_ENDPOINT": {
             "type": "string",
