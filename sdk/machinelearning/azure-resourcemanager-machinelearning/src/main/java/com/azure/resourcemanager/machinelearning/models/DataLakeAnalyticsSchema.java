@@ -16,6 +16,10 @@ public class DataLakeAnalyticsSchema {
     @JsonProperty(value = "properties")
     private DataLakeAnalyticsSchemaProperties properties;
 
+    /** Creates an instance of DataLakeAnalyticsSchema class. */
+    public DataLakeAnalyticsSchema() {
+    }
+
     /**
      * Get the properties property: The properties property.
      *

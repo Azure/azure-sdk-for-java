@@ -17,6 +17,10 @@ public final class ClusterUpdateProperties {
     @JsonProperty(value = "properties")
     private ScaleSettingsInformation properties;
 
+    /** Creates an instance of ClusterUpdateProperties class. */
+    public ClusterUpdateProperties() {
+    }
+
     /**
      * Get the properties property: Properties of ClusterUpdate.
      *

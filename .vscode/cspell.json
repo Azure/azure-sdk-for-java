@@ -399,6 +399,66 @@
   ],
   "overrides": [
     {
+      "filename": "sdk/maps/azure-maps-traffic/README.md",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/ProjectionStandard.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/SpeedUnit.java",
+      "words": [
+        "KMPH"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentOptions.java",
+      "words": [
+        "EPSG", "KMPH"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficAsyncClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentDataProperties.java",
+      "words": [
+        "openlr"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewport.java",
+      "words": [
+        "viewp"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/samples/java/com/azure/maps/traffic/samples/GetTrafficIncidentDetail.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewportOptions.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
       "filename": "**/pom.xml",
       "patterns": [
         {

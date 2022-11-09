@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Compute ListKeys. */
 public final class ComputeListKeysSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/listKeys.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/listKeys.json
      */
     /**
      * Sample code: List AKS Compute Keys.

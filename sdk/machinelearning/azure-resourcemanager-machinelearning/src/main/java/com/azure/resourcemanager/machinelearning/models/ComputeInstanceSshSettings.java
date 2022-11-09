@@ -11,10 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ComputeInstanceSshSettings {
     /*
-     * Access policy for SSH State of the public SSH port. Possible values are:
-     * Disabled - Indicates that the public ssh port is closed on this
-     * instance. Enabled - Indicates that the public ssh port is open and
-     * accessible according to the VNet/subnet policy if applicable.
+     * Access policy for SSH
+     *
+     * State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
+     * this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet
+     * policy if applicable.
      */
     @JsonProperty(value = "sshPublicAccess")
     private SshPublicAccess sshPublicAccess;
@@ -32,16 +33,22 @@ public final class ComputeInstanceSshSettings {
     private Integer sshPort;
 
     /*
-     * Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t
-     * rsa -b 2048" to generate your SSH key pairs.
+     * Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key
+     * pairs.
      */
     @JsonProperty(value = "adminPublicKey")
     private String adminPublicKey;
 
+    /** Creates an instance of ComputeInstanceSshSettings class. */
+    public ComputeInstanceSshSettings() {
+    }
+
     /**
-     * Get the sshPublicAccess property: Access policy for SSH State of the public SSH port. Possible values are:
-     * Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh
-     * port is open and accessible according to the VNet/subnet policy if applicable.
+     * Get the sshPublicAccess property: Access policy for SSH
+     *
+     * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
+     * this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet
+     * policy if applicable.
      *
      * @return the sshPublicAccess value.
      */
@@ -50,9 +57,11 @@ public final class ComputeInstanceSshSettings {
     }
 
     /**
-     * Set the sshPublicAccess property: Access policy for SSH State of the public SSH port. Possible values are:
-     * Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh
-     * port is open and accessible according to the VNet/subnet policy if applicable.
+     * Set the sshPublicAccess property: Access policy for SSH
+     *
+     * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
+     * this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet
+     * policy if applicable.
      *
      * @param sshPublicAccess the sshPublicAccess value to set.
      * @return the ComputeInstanceSshSettings object itself.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningStatus. */
+/** The current deployment state of schedule. */
 public final class ProvisioningStatus extends ExpandableStringEnum<ProvisioningStatus> {
     /** Static value Completed for ProvisioningStatus. */
     public static final ProvisioningStatus COMPLETED = fromString("Completed");

@@ -16,6 +16,10 @@ public final class DeploymentLogsInner {
     @JsonProperty(value = "content")
     private String content;
 
+    /** Creates an instance of DeploymentLogsInner class. */
+    public DeploymentLogsInner() {
+    }
+
     /**
      * Get the content property: The retrieved online deployment logs.
      *

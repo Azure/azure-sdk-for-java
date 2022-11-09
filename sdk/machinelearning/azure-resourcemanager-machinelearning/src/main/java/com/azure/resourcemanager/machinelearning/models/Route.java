@@ -23,6 +23,10 @@ public final class Route {
     @JsonProperty(value = "port", required = true)
     private int port;
 
+    /** Creates an instance of Route class. */
+    public Route() {
+    }
+
     /**
      * Get the path property: [Required] The path for the route.
      *
