@@ -27,7 +27,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
         return super.globalSetupAsync().then(
             Flux.range(0, options.getCount())
                 .parallel(options.getParallel())
-                .runOn(Schedulers.boundedElastic())
+                .runOn(Schedulers.parallel())
                 .flatMap(iteration -> blobContainerAsyncClient.getBlobAsyncClient("getblobstest-" + UUID.randomUUID())
                     .upload(Flux.empty(), null), false, 1, 1)
                 .sequential()
