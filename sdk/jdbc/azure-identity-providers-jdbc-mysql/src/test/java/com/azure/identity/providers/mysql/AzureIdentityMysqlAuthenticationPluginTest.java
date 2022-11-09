@@ -3,7 +3,6 @@
 
 package com.azure.identity.providers.mysql;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import com.mysql.cj.conf.PropertySet;
 import com.mysql.cj.protocol.Protocol;
@@ -24,7 +23,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AzureIdentityMysqlAuthenticationPluginTest {
-    protected static final String OSSRDBMS_SCOPES = "https://ossrdbms-aad.database.windows.net/.default";
     private static final String CLEAR_PASSWORD = "mysql_clear_password";
 
     Protocol<NativePacketPayload> protocol;
@@ -50,14 +48,6 @@ class AzureIdentityMysqlAuthenticationPluginTest {
         AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
         String protocolPluginName = plugin.getProtocolPluginName();
         assertEquals(CLEAR_PASSWORD, protocolPluginName);
-    }
-
-    @Test
-    void tokenAudienceShouldConfig() {
-        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
-        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin(template);
-        plugin.init(protocol);
-        assertEquals(OSSRDBMS_SCOPES, properties.getProperty(AuthProperty.SCOPES.getPropertyKey()));
     }
 
     @Test

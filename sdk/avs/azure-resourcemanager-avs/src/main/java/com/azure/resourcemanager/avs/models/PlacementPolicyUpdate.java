@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.PlacementPolicyUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An update of a DRS placement policy resource. */
 @Fluent
 public final class PlacementPolicyUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlacementPolicyUpdate.class);
-
     /*
      * The properties of a placement policy resource that may be updated
      */
     @JsonProperty(value = "properties")
     private PlacementPolicyUpdateProperties innerProperties;
+
+    /** Creates an instance of PlacementPolicyUpdate class. */
+    public PlacementPolicyUpdate() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a placement policy resource that may be updated.
@@ -97,6 +97,52 @@ public final class PlacementPolicyUpdate {
             this.innerProperties = new PlacementPolicyUpdateProperties();
         }
         this.innerProperties().withHostMembers(hostMembers);
+        return this;
+    }
+
+    /**
+     * Get the affinityStrength property: vm-host placement policy affinity strength (should/must).
+     *
+     * @return the affinityStrength value.
+     */
+    public AffinityStrength affinityStrength() {
+        return this.innerProperties() == null ? null : this.innerProperties().affinityStrength();
+    }
+
+    /**
+     * Set the affinityStrength property: vm-host placement policy affinity strength (should/must).
+     *
+     * @param affinityStrength the affinityStrength value to set.
+     * @return the PlacementPolicyUpdate object itself.
+     */
+    public PlacementPolicyUpdate withAffinityStrength(AffinityStrength affinityStrength) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PlacementPolicyUpdateProperties();
+        }
+        this.innerProperties().withAffinityStrength(affinityStrength);
+        return this;
+    }
+
+    /**
+     * Get the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
+     *
+     * @return the azureHybridBenefitType value.
+     */
+    public AzureHybridBenefitType azureHybridBenefitType() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureHybridBenefitType();
+    }
+
+    /**
+     * Set the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
+     *
+     * @param azureHybridBenefitType the azureHybridBenefitType value to set.
+     * @return the PlacementPolicyUpdate object itself.
+     */
+    public PlacementPolicyUpdate withAzureHybridBenefitType(AzureHybridBenefitType azureHybridBenefitType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PlacementPolicyUpdateProperties();
+        }
+        this.innerProperties().withAzureHybridBenefitType(azureHybridBenefitType);
         return this;
     }
 

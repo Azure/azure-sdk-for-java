@@ -13,20 +13,21 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public final class ShareRetentionPolicy {
 
     /*
-     * Indicates whether a retention policy is enabled for the File service. If
-     * false, metrics data is retained, and the user is responsible for
-     * deleting it.
+     * Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and
+     * the user is responsible for deleting it.
      */
     @JsonProperty(value = "Enabled", required = true)
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics data should be retained. All
-     * data older than this value will be deleted. Metrics data is deleted on a
-     * best-effort basis after the retention period expires.
+     * Indicates the number of days that metrics data should be retained. All data older than this value will be
+     * deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
      */
     @JsonProperty(value = "Days")
     private Integer days;
+
+    /** Creates an instance of ShareRetentionPolicy class. */
+    public ShareRetentionPolicy() {}
 
     /**
      * Get the enabled property: Indicates whether a retention policy is enabled for the File service. If false, metrics

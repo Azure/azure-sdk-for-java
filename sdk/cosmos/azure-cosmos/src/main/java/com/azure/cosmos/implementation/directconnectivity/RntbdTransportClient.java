@@ -14,11 +14,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -474,6 +470,13 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration sslHandshakeTimeoutMinDuration;
 
+        /**
+         * This property will be used in {@link RntbdClientChannelHealthChecker} to determine whether there is a readHang.
+         * If there is no successful reads for up to receiveHangDetectionTime, and the number of consecutive timeout has also reached this config,
+         * then SDK is going to treat the channel as unhealthy and close it.
+         */
+        @JsonProperty()
+        private final int transientTimeoutDetectionThreshold;
         // endregion
 
         // region Constructors
@@ -508,6 +511,7 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIdle = builder.tcpKeepIdle;
             this.preferTcpNative = builder.preferTcpNative;
             this.sslHandshakeTimeoutMinDuration = builder.sslHandshakeTimeoutMinDuration;
+            this.transientTimeoutDetectionThreshold = builder.transientTimeoutDetectionThreshold;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -541,6 +545,7 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
             this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
             this.sslHandshakeTimeoutMinDuration = Duration.ofSeconds(5);
+            this.transientTimeoutDetectionThreshold = 3;
             this.preferTcpNative = true;
         }
 
@@ -646,6 +651,11 @@ public class RntbdTransportClient extends TransportClient {
             return Math.max(this.sslHandshakeTimeoutMinDuration.toMillis(), this.connectTimeout.toMillis());
         }
 
+        public int transientTimeoutDetectionThreshold() {
+            return this.transientTimeoutDetectionThreshold;
+        }
+
+
         // endregion
 
         // region Methods
@@ -706,7 +716,8 @@ public class RntbdTransportClient extends TransportClient {
          *   "requestTimerResolution": "PT100MS",
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
-         *   "threadCount": 16
+         *   "threadCount": 16,
+         *   "transientTimeoutDetectionThreshold": 3
          * }}</pre>
          * </li>
          * </ol>
@@ -804,6 +815,7 @@ public class RntbdTransportClient extends TransportClient {
             private int tcpKeepIdle;
             private boolean preferTcpNative;
             private Duration sslHandshakeTimeoutMinDuration;
+            private int transientTimeoutDetectionThreshold;
 
             // endregion
 
@@ -838,6 +850,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.tcpKeepIdle = DEFAULT_OPTIONS.tcpKeepIdle;
                 this.preferTcpNative = DEFAULT_OPTIONS.preferTcpNative;
                 this.sslHandshakeTimeoutMinDuration = DEFAULT_OPTIONS.sslHandshakeTimeoutMinDuration;
+                this.transientTimeoutDetectionThreshold = DEFAULT_OPTIONS.transientTimeoutDetectionThreshold;
             }
 
             // endregion

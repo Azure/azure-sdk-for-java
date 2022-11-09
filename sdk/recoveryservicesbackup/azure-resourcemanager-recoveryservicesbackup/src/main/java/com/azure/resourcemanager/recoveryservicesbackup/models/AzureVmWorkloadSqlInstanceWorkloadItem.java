@@ -21,6 +21,10 @@ public final class AzureVmWorkloadSqlInstanceWorkloadItem extends AzureVmWorkloa
     @JsonProperty(value = "dataDirectoryPaths")
     private List<SqlDataDirectory> dataDirectoryPaths;
 
+    /** Creates an instance of AzureVmWorkloadSqlInstanceWorkloadItem class. */
+    public AzureVmWorkloadSqlInstanceWorkloadItem() {
+    }
+
     /**
      * Get the dataDirectoryPaths property: Data Directory Paths for default directories.
      *

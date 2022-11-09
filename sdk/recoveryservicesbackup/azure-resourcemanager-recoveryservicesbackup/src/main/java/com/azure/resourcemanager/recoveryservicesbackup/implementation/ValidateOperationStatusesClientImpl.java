@@ -205,24 +205,6 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID represents the operation whose status needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(String vaultName, String resourceGroupName, String operationId) {
-        return getAsync(vaultName, resourceGroupName, operationId).block();
-    }
-
-    /**
-     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
-     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
-     * method returns the list of errors obtained while validating the operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param operationId OperationID represents the operation whose status needs to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -233,5 +215,23 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
     public Response<OperationStatusInner> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
+    }
+
+    /**
+     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
+     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
+     * method returns the list of errors obtained while validating the operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param operationId OperationID represents the operation whose status needs to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner get(String vaultName, String resourceGroupName, String operationId) {
+        return getWithResponse(vaultName, resourceGroupName, operationId, Context.NONE).getValue();
     }
 }

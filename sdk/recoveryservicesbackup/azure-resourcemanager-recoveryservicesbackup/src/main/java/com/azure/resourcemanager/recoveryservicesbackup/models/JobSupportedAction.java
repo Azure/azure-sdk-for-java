@@ -33,6 +33,9 @@ public enum JobSupportedAction {
      */
     @JsonCreator
     public static JobSupportedAction fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         JobSupportedAction[] items = JobSupportedAction.values();
         for (JobSupportedAction item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum JobSupportedAction {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {
