@@ -518,7 +518,7 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * ASets context on the message.
+     * Sets context on the message.
      *
      * @param context Context to set.
      *
