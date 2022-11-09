@@ -149,10 +149,11 @@ public class PerfStressProgram {
                 if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
                     Timer recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
 
-                    Flux.range(0, tests.length)
-                        .parallel(tests.length)
+                    int parallel = tests.length;
+                    Flux.range(0, parallel)
+                        .parallel(parallel)
                         .runOn(Schedulers.parallel())
-                        .flatMap(i -> tests[i].postSetupAsync(), false, 1, 1)
+                        .flatMap(i -> tests[i].postSetupAsync(), false, Math.min(10000 / parallel, parallel), 1)
                         .sequential()
                         .then()
                         .block();
@@ -267,7 +268,7 @@ public class PerfStressProgram {
                 Flux.range(0, parallel)
                     .parallel(parallel)
                     .runOn(Schedulers.parallel())
-                    .flatMap(i -> tests[i].runAllAsync(endNanoTime), false, 1, 1)
+                    .flatMap(i -> tests[i].runAllAsync(endNanoTime), false, Math.min(10000 / parallel, parallel), 1)
                     .sequential()
                     .then()
                     .block();

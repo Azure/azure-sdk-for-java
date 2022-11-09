@@ -24,12 +24,13 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
         // drastically less CPU usage and throughput, there is ongoing discussions with Reactor Netty on what causes
         // this edge case, whether we had a design flaw in the performance tests, or if there is a configuration change
         // needed in Reactor Netty.
+        int parallel = options.getParallel();
         return super.globalSetupAsync().then(
             Flux.range(0, options.getCount())
-                .parallel(options.getParallel())
+                .parallel(parallel)
                 .runOn(Schedulers.parallel())
                 .flatMap(iteration -> blobContainerAsyncClient.getBlobAsyncClient("getblobstest-" + UUID.randomUUID())
-                    .upload(Flux.empty(), null), false, 1, 1)
+                    .upload(Flux.empty(), null), false, Math.min(1000 / parallel, parallel), 1)
                 .sequential()
                 .then());
     }
