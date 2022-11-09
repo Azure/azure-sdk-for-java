@@ -6,7 +6,11 @@
 
 - Supported `withCopyStart` method in `Snapshot` for copying incremental snapshot from incremental snapshot.
 - Supported `awaitCopyStartCompletion` and `awaitCopyStartCompletionAsync` method in `Snapshot`.
-- Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress. 
+- Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress.
+
+### Breaking Changes
+
+- Property `uri` removed from `GalleryArtifactVersionSource`. This property was non-functional.
 
 ### Other Changes
 
