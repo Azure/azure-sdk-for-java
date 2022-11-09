@@ -8,6 +8,9 @@ import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.MetricTelemetry;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +61,7 @@ public class RateMeter {
             rateMap.forEach((key, count) -> {
                 MetricTelemetry metricTelemetry = new MetricTelemetry();
                 metricTelemetry.setValue(count.getAndSet(0));
-                metricTelemetry.setTimestamp(new Date());
+                metricTelemetry.setTimestamp(Date.from(Instant.now()));
                 metricTelemetry.setName(key);
                 metricTelemetryList.add(metricTelemetry);
             });

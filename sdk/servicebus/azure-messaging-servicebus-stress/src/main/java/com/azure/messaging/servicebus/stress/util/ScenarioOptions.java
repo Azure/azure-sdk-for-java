@@ -3,10 +3,13 @@
 
 package com.azure.messaging.servicebus.stress.util;
 
-import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ *  The scenario options which use spring for configuration.
+ *  Hence, tester can change the options by environment variable or commandline arguments.
+ */
 @Configuration
 public class ScenarioOptions {
     @Value("${TEST_CLASS:#{null}}")
@@ -16,7 +19,7 @@ public class ScenarioOptions {
     private String servicebusConnectionString;
 
     @Value("${SERVICEBUS_ENTITY_TYPE:QUEUE}}")
-    private MessagingEntityType servicebusEntityType;
+    private EntityType servicebusEntityType;
 
     @Value("${SERVICEBUS_QUEUE_NAME:#{null}}")
     private String servicebusQueueName;
@@ -38,7 +41,7 @@ public class ScenarioOptions {
         return servicebusConnectionString;
     }
 
-    public MessagingEntityType getServicebusEntityType() {
+    public EntityType getServicebusEntityType() {
         return servicebusEntityType;
     }
 

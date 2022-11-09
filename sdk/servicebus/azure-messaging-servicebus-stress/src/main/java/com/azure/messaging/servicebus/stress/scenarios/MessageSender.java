@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.stress.scenarios;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -30,15 +30,17 @@ public class MessageSender extends ServiceBusScenario {
     @Value("${PAYLOAD_SIZE_IN_BYTE:4096}")
     private int payloadSize;
 
+    private final Random random = new Random();
+
     @Override
     public void run() {
         final String connectionString = options.getServicebusConnectionString();
-        final MessagingEntityType entityType = options.getServicebusEntityType();
+        final EntityType entityType = options.getServicebusEntityType();
         String queueName = null;
         String topicName = null;
-        if (entityType == MessagingEntityType.QUEUE) {
+        if (entityType == EntityType.QUEUE) {
             queueName = options.getServicebusQueueName();
-        } else if (entityType == MessagingEntityType.TOPIC) {
+        } else if (entityType == EntityType.TOPIC) {
             topicName = options.getServicebusTopicName();
         }
 
@@ -50,7 +52,7 @@ public class MessageSender extends ServiceBusScenario {
             .buildAsyncClient();
 
         final byte[] payload = new byte[payloadSize];
-        (new Random()).nextBytes(payload);
+        random.nextBytes(payload);
 
         Flux.range(0, sendTimes).concatMap(i -> {
             List<ServiceBusMessage> eventDataList = new ArrayList<>();

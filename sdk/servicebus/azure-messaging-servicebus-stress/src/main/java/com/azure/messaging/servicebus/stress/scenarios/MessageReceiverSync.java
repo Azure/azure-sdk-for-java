@@ -12,8 +12,8 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
-import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +32,13 @@ public class MessageReceiverSync extends ServiceBusScenario {
     @Override
     public void run() {
         final String connectionString = options.getServicebusConnectionString();
-        final MessagingEntityType entityType = options.getServicebusEntityType();
+        final EntityType entityType = options.getServicebusEntityType();
         String queueName = null;
         String topicName = null;
         String subscriptionName = null;
-        if (entityType == MessagingEntityType.QUEUE) {
+        if (entityType == EntityType.QUEUE) {
             queueName = options.getServicebusQueueName();
-        } else if (entityType == MessagingEntityType.TOPIC) {
+        } else if (entityType == EntityType.TOPIC) {
             topicName = options.getServicebusTopicName();
             subscriptionName = options.getServicebusSubscriptionName();
         }
