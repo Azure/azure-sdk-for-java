@@ -21,8 +21,8 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 
+import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
 import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.PLAYBACK_TEST_GROUP;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_CONTENT;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTestsBase.assertSchemaProperties;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTestsBase.assertSchemaRegistrySchema;

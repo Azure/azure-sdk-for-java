@@ -23,6 +23,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
+import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
+import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
 import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
 import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE;
 import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_GROUP;
@@ -34,14 +36,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link SchemaRegistryAsyncClient}.
+ * Tests for {@link SchemaFormat#AVRO} using {@link SchemaRegistryAsyncClient}.
  */
 public class SchemaRegistryAsyncClientTests extends TestBase {
     static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
-
-    // When we regenerate recordings, make sure that the schema group matches what we are persisting.
-    static final String PLAYBACK_TEST_GROUP = "azsdk_python_test_group";
-    static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
