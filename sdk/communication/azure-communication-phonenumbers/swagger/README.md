@@ -23,8 +23,8 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-phonenumber-2022-01-11-preview2
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/02fce64677f78021ba70d69bb8bd0d916d653927/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-phonenumber-2021-03-07
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/896d05e37dbb00712726620b8d679cc3c3be09fb/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
 custom-types-subpackage: models
@@ -34,7 +34,6 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.phonenumbers
 generate-client-as-impl: true
-service-interface-as-public: true
 sync-methods: all
 context-client-method-parameter: true
 ```
