@@ -9,6 +9,7 @@
 #### Bugs Fixed
 * Fixed a rare race condition for `query plan` cache exceeding the allowed size limit - See [PR 31859](https://github.com/Azure/azure-sdk-for-java/pull/31859)
 * Added improvement in `RntbdClientChannelHealthChecker` for detecting continuous transit timeout. - See [PR 31544](https://github.com/Azure/azure-sdk-for-java/pull/31544)
+* Fixed an edge case bug when issuing a DISTINCT query without VALUE. This was causing an error due to the use of DistinctContinuationToken. This is a valid query and is now supported with a normal ContinuationToken. - See [PR 32048](https://github.com/Azure/azure-sdk-for-java/pull/32048)
 
 #### Other Changes
 * Shaded `MurmurHash3` of apache `commons-codec` to enable removing of the `guava` dependency - CVE-2020-8908 - See [PR 31761](https://github.com/Azure/azure-sdk-for-java/pull/31761)
