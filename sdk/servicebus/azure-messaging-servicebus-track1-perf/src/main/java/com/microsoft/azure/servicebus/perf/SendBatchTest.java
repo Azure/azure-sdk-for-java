@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class BatchSendTest extends ServiceBatchTest<ServiceBusStressOptions> {
+public class SendBatchTest extends ServiceBatchTest<ServiceBusStressOptions> {
     private final List<IMessage> messages;
 
     /**
@@ -21,7 +21,7 @@ public class BatchSendTest extends ServiceBatchTest<ServiceBusStressOptions> {
      * @param options the options configured for the test.
      * @throws IllegalStateException if SSL context cannot be created.
      */
-    public BatchSendTest(ServiceBusStressOptions options) {
+    public SendBatchTest(ServiceBusStressOptions options) {
         super(options);
         String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
 
