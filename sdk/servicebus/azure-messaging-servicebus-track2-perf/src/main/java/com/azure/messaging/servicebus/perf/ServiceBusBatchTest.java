@@ -17,8 +17,8 @@ import com.azure.perf.test.core.BatchPerfTest;
  * Base class for batch performance test.
  * @param <TOptions> for performance configuration.
  */
-abstract class ServiceBatchTest<TOptions extends ServiceBusStressOptions> extends BatchPerfTest<TOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBatchTest.class);
+abstract class ServiceBusBatchTest<TOptions extends ServiceBusStressOptions> extends BatchPerfTest<TOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusBatchTest.class);
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
@@ -27,6 +27,7 @@ abstract class ServiceBatchTest<TOptions extends ServiceBusStressOptions> extend
     final ServiceBusReceiverAsyncClient receiverAsync;
     final ServiceBusSenderClient sender;
     final ServiceBusSenderAsyncClient senderAsync;
+    final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder;
 
     /**
      * Creates an instance of Batch performance test.
@@ -34,7 +35,7 @@ abstract class ServiceBatchTest<TOptions extends ServiceBusStressOptions> extend
      * @param options the options configured for the test.
      * @throws IllegalStateException if SSL context cannot be created.
      */
-    public ServiceBatchTest(TOptions options) {
+    public ServiceBusBatchTest(TOptions options) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
@@ -52,6 +53,7 @@ abstract class ServiceBatchTest<TOptions extends ServiceBusStressOptions> extend
         sender = builder.sender().queueName(queueName).buildClient();
         senderAsync = builder.sender().queueName(queueName).buildAsyncClient();
         ServiceBusReceiveMode receiveMode = options.getIsDeleteMode() ? ServiceBusReceiveMode.RECEIVE_AND_DELETE : ServiceBusReceiveMode.PEEK_LOCK;
+        receiverClientBuilder = builder.receiver().queueName(queueName).receiveMode(receiveMode);
         receiver = builder.receiver().queueName(queueName).receiveMode(receiveMode).buildClient();
         receiverAsync = builder.receiver().queueName(queueName).receiveMode(receiveMode).buildAsyncClient();
     }

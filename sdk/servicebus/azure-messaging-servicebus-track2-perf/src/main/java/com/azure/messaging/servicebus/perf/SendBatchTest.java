@@ -15,8 +15,8 @@ import java.util.UUID;
 /**
  * Test ServiceBus sender client send messages performance. After send success, return a count of messages to record.
  */
-public class BatchSendTest extends ServiceBatchTest<ServiceBusStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(BatchSendTest.class);
+public class SendBatchTest extends ServiceBusBatchTest<ServiceBusStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(SendBatchTest.class);
 
     /**
      * Creates an instance of Batch performance test.
@@ -24,7 +24,7 @@ public class BatchSendTest extends ServiceBatchTest<ServiceBusStressOptions> {
      * @param options the options configured for the test.
      * @throws IllegalStateException if SSL context cannot be created.
      */
-    public BatchSendTest(ServiceBusStressOptions options) {
+    public SendBatchTest(ServiceBusStressOptions options) {
         super(options);
     }
 

@@ -30,8 +30,9 @@ public class App {
             ReceiveAndLockMessageTest.class,
             SendMessageTest.class,
             SendMessagesTest.class,
-            BatchSendTest.class,
+            SendBatchTest.class,
             ReceiveMessagesTest.class,
+            ReceiveMessagesAsyncTest.class,
             ServiceBusProcessorTest.class
         };
 

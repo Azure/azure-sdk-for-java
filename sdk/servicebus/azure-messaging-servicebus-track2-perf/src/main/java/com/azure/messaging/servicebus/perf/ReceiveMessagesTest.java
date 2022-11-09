@@ -7,18 +7,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Test ServiceBus receiver client receive messages performance. After receive messages, return a count of messages to record.
  */
-public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOptions> {
+public class ReceiveMessagesTest extends ServiceBusBatchTest<ServiceBusStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(ReceiveMessagesTest.class);
 
     /**
@@ -49,18 +47,23 @@ public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOption
     @Override
     public Mono<Integer> runBatchAsync() {
         int receiveCount = options.getMessagesToReceive();
-        return receiverAsync
-            .receiveMessages()
-            .take(receiveCount)
-            .flatMap(message -> {
-                if (!options.getIsDeleteMode()) {
-                    return receiverAsync.complete(message);
-                }
-                return Mono.empty();
-            }, 1)
-            .then()
-            .thenReturn(receiveCount);
-
+        return Mono.using(
+            receiverClientBuilder::buildAsyncClient,
+            receiverAsync -> {
+                return receiverAsync.receiveMessages()
+                    .take(receiveCount)
+                    .flatMap(message -> {
+                        if (!options.getIsDeleteMode()) {
+                            return receiverAsync.complete(message);
+                        }
+                        return Mono.empty();
+                    }, 1)
+                    .then()
+                    .thenReturn(receiveCount);
+            },
+            ServiceBusReceiverAsyncClient::close,
+            true
+        );
     }
 
     @Override
