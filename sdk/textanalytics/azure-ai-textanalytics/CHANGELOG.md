@@ -1,14 +1,12 @@
 # Release History
 
-## 5.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 5.2.2 (2022-11-09)
 
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.34.0`.
+- Updated `azure-core-http-netty` to `1.12.7`.
 
 ## 5.2.1 (2022-10-12)
 
