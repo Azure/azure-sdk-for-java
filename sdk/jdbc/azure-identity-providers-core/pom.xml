@@ -132,6 +132,10 @@
                   ${project.basedir}/javadocTemp/README.md
                 </echo>
                 <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                <echo>Copying ${project.basedir}/element-list to
+                  ${project.basedir}/javadocTemp/element-list
+                </echo>
+                <copy file="${project.basedir}/element-list" tofile="${project.basedir}/javadocTemp/element-list"/>
               </target>
             </configuration>
             <goals>
