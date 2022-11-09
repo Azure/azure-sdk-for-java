@@ -301,10 +301,10 @@ public class DistinctQueryTests extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxBufferedItemCount(1);
 
-        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options,
-            JsonNode.class);
+        CosmosPagedFlux<String> queryObservable = createdCollection.queryItems(query, options,
+            String.class);
 
-        FeedResponse<JsonNode> response = queryObservable.byPage(1).blockFirst();
+        FeedResponse<String> response = queryObservable.byPage(1).blockFirst();
         assertThat(response.getResults().size()).isEqualTo(1);
         assertThat(response.getContinuationToken()).isNotNull();
 
