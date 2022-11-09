@@ -9,10 +9,14 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -148,6 +152,29 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     @Override
     public Mono<BinaryDataContent> toReplayableContentAsync() {
         return Mono.fromCallable(this::toReplayableContent);
+    }
+
+    @Override
+    public Mono<Void> writeToAsync(AsynchronousByteChannel channel) {
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        toFluxByteBuffer()
+            .publishOn(Schedulers.boundedElastic())
+            .flatMapSequential(buffer -> {
+                while (buffer.hasRemaining()) {
+                    try {
+                        channel.write(buffer);
+                    } catch (IOException ex) {
+                        return Mono.error(ex);
+                    }
+                }
+
+                return Mono.just(1);
+            })
+            .blockLast();
     }
 
     private byte[] getBytes() {

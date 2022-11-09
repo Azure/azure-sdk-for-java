@@ -12,6 +12,7 @@ import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProvider;
@@ -21,10 +22,14 @@ import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -173,7 +178,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
-    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final BinaryDataContent content;
 
     BinaryData(BinaryDataContent content) {
@@ -461,13 +465,13 @@ public final class BinaryData {
 
             return copy;
         })
-        .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
-        .map(buffers -> {
-            // TODO (alzimmer): What should be done when length != null but it differs from the true length
-            //  seen when doing the buffering.
-            return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
-                (length != null) ? length : trueLength[0], true));
-        });
+            .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
+            .map(buffers -> {
+                // TODO (alzimmer): What should be done when length != null but it differs from the true length
+                //  seen when doing the buffering.
+                return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
+                    (length != null) ? length : trueLength[0], true));
+            });
     }
 
     /**
@@ -1702,6 +1706,44 @@ public final class BinaryData {
             return Mono.just(this);
         } else {
             return content.toReplayableContentAsync().map(BinaryData::new);
+        }
+    }
+
+    /**
+     * Asynchronously writes the contents of this {@link BinaryData} to the {@link AsynchronousByteChannel}.
+     * <p>
+     * {@link IOUtils#toAsynchronousByteChannel(AsynchronousFileChannel, long)} can be used to convert an
+     * {@link AsynchronousFileChannel} to an {@link AsynchronousByteChannel} if writing to a file is required.
+     * <p>
+     * If the contents of this {@link BinaryData} isn't {@link #isReplayable() replayable} calling this method will
+     * consume the contents in completion. If the contents may need to be replayed later call
+     * {@link #toReplayableBinaryDataAsync()} before calling this method.
+     *
+     * @param channel The {@link AsynchronousByteChannel} where the contents of this {@link BinaryData} is being
+     * written.
+     * @return A {@link Mono} indicating completion of writing the contents, or the error that occurred during writing.
+     * @throws NullPointerException If {@code channel} is null.
+     */
+    public Mono<Void> writeToAsync(AsynchronousByteChannel channel) {
+        return content.writeToAsync(channel);
+    }
+
+    /**
+     * Synchronously writes the contents of this {@link BinaryData} to the {@link WritableByteChannel}.
+     * <p>
+     * If the contents of this {@link BinaryData} isn't {@link #isReplayable() replayable} calling this method will
+     * consume the contents in completion. If the contents may need to be replayed later call
+     * {@link #toReplayableBinaryData()} before calling this method.
+     *
+     * @param channel The {@link WritableByteChannel} where the contents of this {@link BinaryData} is being written.
+     * @throws NullPointerException If {@code channel} is null.
+     * @throws UncheckedIOException If writing to the {@link WritableByteChannel} fails.
+     */
+    public void writeTo(WritableByteChannel channel) {
+        try {
+            content.writeTo(channel);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 }

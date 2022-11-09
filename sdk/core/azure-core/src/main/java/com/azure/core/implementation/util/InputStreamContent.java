@@ -12,10 +12,14 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
@@ -130,6 +134,34 @@ public final class InputStreamContent extends BinaryDataContent {
         return Mono.just(inputStream)
             .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
             .map(is -> readAndBuffer(is, length));
+    }
+
+    @Override
+    public Mono<Void> writeToAsync(AsynchronousByteChannel channel) {
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        if (content instanceof FileInputStream) {
+            FileChannel fileChannel = ((FileInputStream) content).getChannel();
+            long position = fileChannel.position();
+            long length = fileChannel.size() - position;
+            long transferCount = 0;
+            while (transferCount < length) {
+                transferCount += fileChannel.transferTo(position + transferCount, length - transferCount, channel);
+            }
+        } else {
+            InputStream inputStream = content.get();
+            byte[] buffer = new byte[INITIAL_BUFFER_CHUNK_SIZE];
+            int read;
+            while ((read = inputStream.read(buffer)) >= 0) {
+                ByteBuffer byteBuffer = ByteBuffer.wrap(buffer, 0, read);
+                while (byteBuffer.hasRemaining()) {
+                    channel.write(byteBuffer);
+                }
+            }
+        }
     }
 
     private static boolean canMarkReset(InputStream inputStream, Long length) {

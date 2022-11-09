@@ -3,14 +3,18 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -83,6 +87,19 @@ public final class ByteBufferContent extends BinaryDataContent {
     @Override
     public Mono<BinaryDataContent> toReplayableContentAsync() {
         return Mono.just(this);
+    }
+
+    @Override
+    public Mono<Void> writeToAsync(AsynchronousByteChannel channel) {
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        ByteBuffer buffer = toByteBuffer();
+        while (buffer.hasRemaining()) {
+            channel.write(buffer);
+        }
     }
 
     private byte[] getBytes() {

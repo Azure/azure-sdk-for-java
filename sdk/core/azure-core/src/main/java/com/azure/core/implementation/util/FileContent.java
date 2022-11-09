@@ -18,8 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -158,19 +160,22 @@ public class FileContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.using(this::openAsynchronousFileChannel,
+        return Flux.using(
+            this::openAsynchronousFileChannel,
             channel -> FluxUtil.readFile(channel, chunkSize, position, length),
-            channel -> {
-                try {
-                    channel.close();
-                } catch (IOException ex) {
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
-                }
-            });
+            FileContent::closeAsynchronousFileChannel);
     }
 
     AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
         return AsynchronousFileChannel.open(file, StandardOpenOption.READ);
+    }
+
+    private static void closeAsynchronousFileChannel(AsynchronousFileChannel channel) {
+        try {
+            channel.close();
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
+        }
     }
 
     /**
@@ -204,6 +209,21 @@ public class FileContent extends BinaryDataContent {
     @Override
     public Mono<BinaryDataContent> toReplayableContentAsync() {
         return Mono.just(this);
+    }
+
+    @Override
+    public Mono<Void> writeToAsync(AsynchronousByteChannel channel) {
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        try (FileChannel fileChannel = FileChannel.open(file)) {
+            long transferCount = 0;
+            while (transferCount < length) {
+                transferCount += fileChannel.transferTo(position + transferCount, length - transferCount, channel);
+            }
+        }
     }
 
     private byte[] getBytes() {

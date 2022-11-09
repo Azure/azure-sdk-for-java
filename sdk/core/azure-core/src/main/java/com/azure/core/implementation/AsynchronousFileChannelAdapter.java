@@ -42,6 +42,10 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
         this.position = position;
     }
 
+    public AsynchronousFileChannel getAsynchronousFileChannel() {
+        return fileChannel;
+    }
+
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
         beginOperation(Operation.READ);
