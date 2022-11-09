@@ -9,6 +9,10 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
+  <properties>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
+  </properties>
+
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-providers-core</artifactId>
   <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
