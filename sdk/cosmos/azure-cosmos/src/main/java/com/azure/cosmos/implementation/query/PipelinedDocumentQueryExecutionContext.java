@@ -97,7 +97,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 createBaseComponent,
             QueryInfo queryInfo) {
 
-        if (queryInfo.hasDistinct()) {
+        if (queryInfo.hasDistinct() && queryInfo.getDistinctQueryType() == DistinctQueryType.ORDERED) {
             return
                 (continuationToken, documentQueryParams) ->
                     DistinctDocumentQueryExecutionContext.createAsync(createBaseComponent,

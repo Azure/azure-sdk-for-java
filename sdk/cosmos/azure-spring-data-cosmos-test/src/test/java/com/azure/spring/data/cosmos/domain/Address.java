@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@Container(ru = TestConstants.MULTI_PARTITION_THROUGHPUT, autoScale = true)
+@Container()
 public class Address {
 
     public static final Address TEST_ADDRESS1_PARTITION1 = new Address(

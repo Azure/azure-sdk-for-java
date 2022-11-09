@@ -325,20 +325,50 @@ public class AnnotatedQueryIT {
     }
 
     @Test
-    public void testAnnotatedQueryBug() {
-        final List<Address> addresses = new ArrayList<>();
-        for (int i=0; i<1000; i++) {
-            Address address = new Address(String.valueOf(10000+i), TestConstants.STREET, TestConstants.CITY+i);
-            addresses.add(address);
-            //addressRepository.save(address);
-        }
+    public void testPaginationWithDistinct() {
+        Address tempAddress1 = new Address("10000", TestConstants.STREET, TestConstants.CITY);
+        Address tempAddress2 = new Address("10001", TestConstants.STREET, TestConstants.CITY);
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, tempAddress1, tempAddress2);
         addressRepository.saveAll(addresses);
 
-        CosmosPageRequest pageRequest = new CosmosPageRequest(0, 100, null, Sort.by(Sort.Direction.ASC, "postalCode"));
+        CosmosPageRequest pageRequest = new CosmosPageRequest(0, 2, null, Sort.by(Sort.Direction.ASC, "postalCode"));
         final Page<JsonNode> resultsAsc = addressRepository.annotatedFindPostalCodeByStreetOrdered(TestConstants.STREET, pageRequest);
+        final List<String> actualPostalCodes = resultsAsc.getContent()
+            .stream()
+            .map(jsonNode -> jsonNode.get("postalCode").asText())
+            .collect(Collectors.toList());
+        assertThat(actualPostalCodes.size()).isEqualTo(2);
+        assertThat(actualPostalCodes.get(0)).isEqualTo(tempAddress1.getPostalCode());
+        assertThat(actualPostalCodes.get(1)).isEqualTo(tempAddress2.getPostalCode());
 
         String token = ((CosmosPageRequest)resultsAsc.getPageable()).getRequestContinuation();
-        CosmosPageRequest pageRequest2 = new CosmosPageRequest(1, 100, token, Sort.by(Sort.Direction.ASC, "postalCode"));
-        final Page<JsonNode> resultAsc2 = addressRepository.annotatedFindPostalCodeByStreetOrdered(TestConstants.STREET, pageRequest2);
+        CosmosPageRequest pageRequest2 = new CosmosPageRequest(1, 2, token, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<JsonNode> resultsAsc2 = addressRepository.annotatedFindPostalCodeByStreetOrdered(TestConstants.STREET, pageRequest2);
+        final List<String> actualPostalCodes2 = resultsAsc2.getContent()
+            .stream()
+            .map(jsonNode -> jsonNode.get("postalCode").asText())
+            .collect(Collectors.toList());
+        assertThat(actualPostalCodes2.size()).isEqualTo(1);
+        assertThat(actualPostalCodes2.get(0)).isEqualTo(Address.TEST_ADDRESS1_PARTITION1.getPostalCode());
+    }
+
+    @Test
+    public void testPaginationWithDistinctValue() {
+        Address tempAddress1 = new Address("10000", TestConstants.STREET, TestConstants.CITY);
+        Address tempAddress2 = new Address("10001", TestConstants.STREET, TestConstants.CITY);
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, tempAddress1, tempAddress2);
+        addressRepository.saveAll(addresses);
+
+        CosmosPageRequest pageRequest = new CosmosPageRequest(0, 2, null, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<String> resultsAsc = addressRepository.annotatedFindValuePostalCodeByStreetOrdered(TestConstants.STREET, pageRequest);
+        assertThat(resultsAsc.getContent().size()).isEqualTo(2);
+        assertThat(resultsAsc.getContent().get(0)).isEqualTo(tempAddress1.getPostalCode());
+        assertThat(resultsAsc.getContent().get(1)).isEqualTo(tempAddress2.getPostalCode());
+
+        String token = ((CosmosPageRequest)resultsAsc.getPageable()).getRequestContinuation();
+        CosmosPageRequest pageRequest2 = new CosmosPageRequest(1, 2, token, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<String> resultsAsc2 = addressRepository.annotatedFindValuePostalCodeByStreetOrdered(TestConstants.STREET, pageRequest2);
+        assertThat(resultsAsc2.getContent().size()).isEqualTo(1);
+        assertThat(resultsAsc2.getContent().get(0)).isEqualTo(Address.TEST_ADDRESS1_PARTITION1.getPostalCode());
     }
 }

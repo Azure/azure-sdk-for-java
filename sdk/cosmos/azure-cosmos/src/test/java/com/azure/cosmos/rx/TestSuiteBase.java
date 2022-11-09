@@ -1334,12 +1334,21 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
-    @DataProvider(name = "queryWithOrderByProvider")
-    public Object[][] queryWithOrderBy() {
+    @DataProvider(name = "queryWithValueAndOrderByProvider")
+    public Object[][] queryWithValueAndOrderBy() {
         return new Object[][]{
             // query wit orderby, matchedOrderByQuery
             { "SELECT DISTINCT VALUE c.id from c ORDER BY c.id DESC", true },
             { "SELECT DISTINCT VALUE c.id from c ORDER BY c._ts DESC", false }
+        };
+    }
+
+    @DataProvider(name = "queryWithoutValueWithOrderByProvider")
+    public Object[][] queryWithoutValueWithOrderBy() {
+        return new Object[][]{
+            // query wit orderby, matchedOrderByQuery
+            { "SELECT DISTINCT c.id from c ORDER BY c.id DESC", true },
+            { "SELECT DISTINCT c.id from c ORDER BY c._ts DESC", false }
         };
     }
 
