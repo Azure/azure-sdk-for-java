@@ -45,23 +45,50 @@
       "metadata": {
         "description": "The location of the resource. By default, this is the same as the resource group."
       }
+    },
+    "partitionsCount": {
+      "type": "int",
+      "defaultValue": 5,
+      "metadata": {
+        "description": "Number of partitions in the event hub"
+      }
+    },
+    "retentionTimeInDays": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Number of days a message will be retained for in the event hub"
+      }
     }
   },
   "variables": {
     "apiVersion": "2018-01-01-preview",
-    "schemaRegistryGroup": "azsdk_group",
-    "schemaRegistryEndpoint": "[format('https://{0}.servicebus.windows.net', parameters('baseName'))]"
+    "baseNameAvro": "[concat(parameters('baseName'), '-avro')]",
+    "baseNameCustom": "[concat(parameters('baseName'), '-custom')]",
+    "baseNameJson": "[concat(parameters('baseName'), '-json')]",
+    "schemaRegistryEndpointAvro": "[format('https://{0}.servicebus.windows.net', variables('baseNameAvro'))]",
+    "schemaRegistryEndpointCustom": "[format('https://{0}.servicebus.windows.net', variables('baseNameCustom'))]",
+    "schemaRegistryEndpointJson": "[format('https://{0}.servicebus.windows.net', variables('baseNameJson'))]",
+    "schemaRegistryGroup": "azsdk_java_group",
+
+    "authorizationNameAvro": "[concat(variables('baseNameAvro'), '/RootManageSharedAccessKey')]",
+    "authorizationNameCustom": "[concat(variables('baseNameCustom'), '/RootManageSharedAccessKey')]",
+    "authorizationNameJson": "[concat(variables('baseNameJson'), '/RootManageSharedAccessKey')]",
+
+    "eventHubNameFullAvro": "[concat(variables('baseNameAvro'), '/eventhub')]",
+    "eventHubNameFullJson": "[concat(variables('baseNameJson'), '/eventhub')]",
+    "eventHubNameFullCustom": "[concat(variables('baseNameCustom'), '/eventhub')]"
   },
   "resources": [
     {
       "type": "Microsoft.EventHub/namespaces",
       "apiVersion": "[variables('apiVersion')]",
-      "name": "[parameters('baseName')]",
+      "name": "[variables('baseNameAvro')]",
       "location": "[parameters('location')]",
       "sku": {
         "name": "Standard",
         "tier": "Standard",
-        "capacity": 5
+        "capacity": 1
       },
       "properties": {
         "zoneRedundant": false,
@@ -71,29 +98,105 @@
       }
     },
     {
-      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "type": "Microsoft.EventHub/namespaces",
       "apiVersion": "[variables('apiVersion')]",
-      "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
+      "name": "[variables('baseNameCustom')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 1
+      },
+      "properties": {
+        "zoneRedundant": false,
+        "isAutoInflateEnabled": false,
+        "maximumThroughputUnits": 0,
+        "kafkaEnabled": true
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('baseNameJson')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 1
+      },
+      "properties": {
+        "zoneRedundant": false,
+        "isAutoInflateEnabled": false,
+        "maximumThroughputUnits": 0,
+        "kafkaEnabled": true
+      }
+    },
+
+    {
+      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('authorizationNameAvro')]",
+      "location": "[parameters('location')]",
+      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('baseNameAvro'))]"],
+      "properties": {
+        "rights": ["Listen", "Manage", "Send"]
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('authorizationNameJson')]",
+      "location": "[parameters('location')]",
+      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('baseNameJson'))]"],
+      "properties": {
+        "rights": ["Listen", "Manage", "Send"]
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('authorizationNameCustom')]",
+      "location": "[parameters('location')]",
+      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('baseNameCustom'))]"],
+      "properties": {
+        "rights": ["Listen", "Manage", "Send"]
+      }
+    },
+
+    {
+      "type": "Microsoft.EventHub/namespaces/schemagroups",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[format('{0}/{1}', variables('baseNameAvro'), variables('schemaRegistryGroup'))]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces', parameters('baseName'))]"
+        "[resourceId('Microsoft.EventHub/namespaces', variables('baseNameAvro'))]"
       ],
       "properties": {
-        "messageRetentionInDays": 1,
-        "partitionCount": 5,
-        "status": "Active"
+        "schemaType": "avro"
       }
     },
     {
       "type": "Microsoft.EventHub/namespaces/schemagroups",
       "apiVersion": "[variables('apiVersion')]",
-      "name": "[format('{0}/{1}', parameters('baseName'), variables('schemaRegistryGroup'))]",
+      "name": "[format('{0}/{1}', variables('baseNameCustom'), variables('schemaRegistryGroup'))]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces',parameters('baseName'))]"
+        "[resourceId('Microsoft.EventHub/namespaces', variables('baseNameCustom'))]"
       ],
       "properties": {
-        "schemaType": "avro"
+        "schemaType": "custom"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/schemagroups",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[format('{0}/{1}', variables('baseNameJson'), variables('schemaRegistryGroup'))]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('baseNameJson'))]"
+      ],
+      "properties": {
+        "schemaType": "json"
       }
     }
   ],
@@ -110,17 +213,33 @@
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
-    "SCHEMA_REGISTRY_EVENT_HUB_NAME": {
+    "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE": {
       "type": "string",
-      "value": "[parameters('eventHubName')]"
+      "value": "[variables('schemaRegistryEndpointAvro')]"
+    },
+    "SCHEMA_REGISTRY_JSON_FULLY_QUALIFIED_NAMESPACE": {
+      "type": "string",
+      "value": "[variables('schemaRegistryEndpointJson')]"
+    },
+    "SCHEMA_REGISTRY_CUSTOM_FULLY_QUALIFIED_NAMESPACE": {
+      "type": "string",
+      "value": "[variables('schemaRegistryEndpointCustom')]"
+    },
+    "EVENTHUB_AVRO_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('baseNameAvro'), 'RootManageSharedAccessKey'), variables('apiVersion')).primaryConnectionString]"
+    },
+    "EVENTHUB_JSON_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('baseNameJson'), 'RootManageSharedAccessKey'), variables('apiVersion')).primaryConnectionString]"
+    },
+    "EVENTHUB_CUSTOM_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('baseNameCustom'), 'RootManageSharedAccessKey'), variables('apiVersion')).primaryConnectionString]"
     },
     "SCHEMA_REGISTRY_GROUP": {
       "type": "string",
       "value": "[variables('schemaRegistryGroup')]"
-    },
-    "SCHEMA_REGISTRY_ENDPOINT": {
-      "type": "string",
-      "value": "[variables('schemaRegistryEndpoint')]"
     }
   }
 }
