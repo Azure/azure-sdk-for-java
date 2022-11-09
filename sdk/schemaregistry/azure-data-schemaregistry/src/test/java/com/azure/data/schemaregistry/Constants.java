@@ -1,0 +1,26 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.data.schemaregistry;
+
+/**
+ * Shared constants.
+ */
+class Constants {
+    static final int RESOURCE_LENGTH = 16;
+
+    static final String SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE";
+
+    static final String SCHEMA_REGISTRY_CUSTOM_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_CUSTOM_FULLY_QUALIFIED_NAMESPACE";
+
+    static final String SCHEMA_REGISTRY_JSON_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_JSON_FULLY_QUALIFIED_NAMESPACE";
+
+    static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
+
+    static final String EVENTHUB_AVRO_CONNECTION_STRING = "EVENTHUB_AVRO_CONNECTION_STRING";
+
+    static final String EVENTHUB_CUSTOM_CONNECTION_STRING = "EVENTHUB_CUSTOM_CONNECTION_STRING";
+
+    static final String EVENTHUB_JSON_CONNECTION_STRING = "EVENTHUB_JSON_CONNECTION_STRING";
+
+}
