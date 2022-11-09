@@ -2,16 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
-import com.azure.spring.data.cosmos.domain.PersonCrossPartition;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
