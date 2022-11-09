@@ -19,6 +19,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
@@ -109,6 +111,8 @@ public final class TextAnalyticsAsyncClient {
     final AnalyzeHealthcareEntityAsyncClient analyzeHealthcareEntityAsyncClient;
     final AnalyzeActionsAsyncClient analyzeActionsAsyncClient;
 
+    final DynamicClassificationAsyncClient dynamicClassificationAsyncClient;
+
     /**
      * Creates a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics service's endpoint. Each
      * service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
@@ -135,6 +139,7 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(legacyService, serviceVersion);
         this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService, serviceVersion);
         this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(null, serviceVersion);
+        this.dynamicClassificationAsyncClient = new DynamicClassificationAsyncClient(null, serviceVersion);
     }
 
     TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
@@ -156,6 +161,7 @@ public final class TextAnalyticsAsyncClient {
             serviceVersion);
         this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service), serviceVersion);
         this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.dynamicClassificationAsyncClient = new DynamicClassificationAsyncClient(service, serviceVersion);
     }
 
     /**
@@ -199,7 +205,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link Mono} containing the {@link DetectedLanguage detected language} of the document.
      *
@@ -231,7 +237,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param countryHint Accepts 2-letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
      * {@code countryHint} = "" or "none".
@@ -296,7 +302,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
      * {@code countryHint} = "" or "none".
@@ -366,7 +372,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents The list of {@link DetectLanguageInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -413,7 +419,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link Mono} contains a {@link CategorizedEntityCollection recognized categorized entities collection}.
      *
@@ -449,7 +455,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document the text to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
@@ -493,7 +499,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -560,7 +566,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -607,7 +613,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link Mono} contains a {@link PiiEntityCollection recognized PII entities collection}.
      *
@@ -649,7 +655,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document the text to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
      * @return A {@link Mono} contains a {@link PiiEntityCollection recognized PII entities collection}.
@@ -694,7 +700,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document the text to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2-letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
@@ -753,7 +759,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
@@ -823,7 +829,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
@@ -872,7 +878,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link Mono} contains a {@link LinkedEntityCollection recognized linked entities collection}.
      *
@@ -909,7 +915,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
@@ -962,7 +968,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -1034,7 +1040,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -1074,7 +1080,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link Mono} contains a {@link KeyPhrasesCollection}.
      *
@@ -1104,7 +1110,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed. For text length limits, maximum batch size, and supported text
      * encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -1150,7 +1156,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -1217,7 +1223,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents}  to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -1269,7 +1275,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
      *
@@ -1309,7 +1315,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -1359,7 +1365,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
@@ -1436,7 +1442,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -1518,7 +1524,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
@@ -1593,7 +1599,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents}  to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -1669,7 +1675,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
      * analyzing sentiments.
      *
@@ -1686,6 +1692,134 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
+    }
+
+    /**
+     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
+     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
+     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Dynamic classification of each document in a list of {@link String document} with provided
+     * {@link DynamicClassificationOptions} options. Subscribes to the call asynchronously and prints out the
+     * dynamic classification details when a response is received.</p>
+     *
+     * <!-- src_embed AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
+     * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
+     * DynamicClassificationOptions options = new DynamicClassificationOptions&#40;&#41;
+     *     .setCategories&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;;
+     * textAnalyticsAsyncClient.dynamicClassificationBatch&#40;documents,  &quot;en&quot;, options&#41;
+     *     .subscribe&#40;
+     *         resultCollection -&gt; resultCollection.forEach&#40;documentResult -&gt; &#123;
+     *             System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *             for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                     classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;,
+     *         error -&gt; System.err.println&#40;&quot;There was an error analyzing dynamic classification of the documents. &quot; + error&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;End of analyzing dynamic classification.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
+     * analyzing dynamic classification.
+     *
+     * @return A {@link Mono} that contains a {@link DynamicClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code dynamicClassificationBatch} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * 2022-10-01-preview and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DynamicClassifyDocumentResultCollection> dynamicClassificationBatch(
+        Iterable<String> documents, String language, DynamicClassificationOptions options) {
+        try {
+            return dynamicClassificationBatchWithResponse(
+                mapByIndex(documents, (index, value) -> {
+                    final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                    textDocumentInput.setLanguage(language);
+                    return textDocumentInput;
+                }), options).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
+     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
+     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Dynamic classification of each document in a list of {@link TextDocumentInput document} with provided
+     * {@link DynamicClassificationOptions} options. Subscribes to the call asynchronously and prints out the
+     * dynamic classification details when a response is received.</p>
+     *
+     * <!-- src_embed AsyncClient.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * documents.add&#40;new TextDocumentInput&#40;&quot;1&quot;, &quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;&#41;;
+     * documents.add&#40;new TextDocumentInput&#40;&quot;2&quot;, &quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;&#41;;
+     * DynamicClassificationOptions options = new DynamicClassificationOptions&#40;&#41;
+     *     .setCategories&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;;
+     * textAnalyticsAsyncClient.dynamicClassificationBatchWithResponse&#40;documents, options&#41;
+     *     .subscribe&#40;
+     *         response -&gt; &#123;
+     *             &#47;&#47; Response's status code
+     *             System.out.printf&#40;&quot;Status code of request response: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *             DynamicClassifyDocumentResultCollection resultCollection = response.getValue&#40;&#41;;
+     *             &#47;&#47; Batch statistics
+     *             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics&#40;&#41;;
+     *             System.out.printf&#40;&quot;Batch statistics, transaction count: %s, valid document count: %s.%n&quot;,
+     *                 batchStatistics.getTransactionCount&#40;&#41;, batchStatistics.getValidDocumentCount&#40;&#41;&#41;;
+     *             resultCollection.forEach&#40;documentResult -&gt; &#123;
+     *                 System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                 for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                     System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                         classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                 &#125;
+     *             &#125;&#41;;
+     *         &#125;,
+     *         error -&gt; System.err.println&#40;
+     *             &quot;There was an error analyzing dynamic classification of the documents. &quot; + error&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;End of analyzing dynamic classification.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
+     * analyzing dynamic classification.
+     *
+     * @return A {@link Mono} contains a {@link Response} that contains a
+     * {@link DynamicClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code dynamicClassificationBatchWithResponse} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * 2022-10-01-preview and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(
+        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options) {
+        return dynamicClassificationAsyncClient.dynamicClassifyBatch(documents, options);
     }
 
     /**
@@ -1735,6 +1869,8 @@ public final class TextAnalyticsAsyncClient {
      *                             System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
      *                                 entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
      *                         &#125;&#41;;
+     *                         System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;,
+     *                             entityRelation.getConfidenceScore&#40;&#41;&#41;;
      *                     &#125;&#41;;
      *                 &#125;&#41;;
      *             &#125;&#41;&#41;;
@@ -1743,7 +1879,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>..
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>..
      *
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link PagedFlux} of
@@ -1793,8 +1929,8 @@ public final class TextAnalyticsAsyncClient {
      *                 TextDocumentBatchStatistics healthcareTaskStatistics =
      *                     analyzeHealthcareEntitiesResultCollection.getStatistics&#40;&#41;;
      *                 &#47;&#47; Batch statistics
-     *                 System.out.printf&#40;&quot;Documents statistics: document count = %s, erroneous document count = %s,&quot;
-     *                         + &quot; transaction count = %s, valid document count = %s.%n&quot;,
+     *                 System.out.printf&#40;&quot;Documents statistics: document count = %d, erroneous document count = %d,&quot;
+     *                         + &quot; transaction count = %d, valid document count = %d.%n&quot;,
      *                     healthcareTaskStatistics.getDocumentCount&#40;&#41;,
      *                     healthcareTaskStatistics.getInvalidDocumentCount&#40;&#41;,
      *                     healthcareTaskStatistics.getTransactionCount&#40;&#41;,
@@ -1826,6 +1962,8 @@ public final class TextAnalyticsAsyncClient {
      *                             System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
      *                                 entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
      *                         &#125;&#41;;
+     *                         System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;,
+     *                             entityRelation.getConfidenceScore&#40;&#41;&#41;;
      *                     &#125;&#41;;
      *                 &#125;&#41;;
      *             &#125;&#41;&#41;;
@@ -1834,7 +1972,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
@@ -1902,8 +2040,8 @@ public final class TextAnalyticsAsyncClient {
      *                 TextDocumentBatchStatistics healthcareTaskStatistics =
      *                     analyzeHealthcareEntitiesResultCollection.getStatistics&#40;&#41;;
      *                 &#47;&#47; Batch statistics
-     *                 System.out.printf&#40;&quot;Documents statistics: document count = %s, erroneous document count = %s,&quot;
-     *                                       + &quot; transaction count = %s, valid document count = %s.%n&quot;,
+     *                 System.out.printf&#40;&quot;Documents statistics: document count = %d, erroneous document count = %d,&quot;
+     *                                       + &quot; transaction count = %d, valid document count = %d.%n&quot;,
      *                     healthcareTaskStatistics.getDocumentCount&#40;&#41;,
      *                     healthcareTaskStatistics.getInvalidDocumentCount&#40;&#41;,
      *                     healthcareTaskStatistics.getTransactionCount&#40;&#41;,
@@ -1935,6 +2073,8 @@ public final class TextAnalyticsAsyncClient {
      *                             System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
      *                                 entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
      *                         &#125;&#41;;
+     *                         System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;,
+     *                             entityRelation.getConfidenceScore&#40;&#41;&#41;;
      *                     &#125;&#41;;
      *                 &#125;&#41;;
      *             &#125;&#41;&#41;;
@@ -2018,7 +2158,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      *
@@ -2092,7 +2232,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
@@ -2174,7 +2314,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param options The additional configurable {@link RecognizeCustomEntitiesOptions options} that may be passed
@@ -2255,7 +2395,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      *
@@ -2331,7 +2471,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
@@ -2414,7 +2554,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param options The additional configurable {@link SingleLabelClassifyOptions options} that may be passed
@@ -2489,7 +2629,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      *
@@ -2560,7 +2700,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
@@ -2639,7 +2779,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param options The additional configurable {@link SingleLabelClassifyOptions options} that may be passed
@@ -2716,7 +2856,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
      * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
      * inputs.
@@ -2793,7 +2933,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
      * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
      * inputs.
