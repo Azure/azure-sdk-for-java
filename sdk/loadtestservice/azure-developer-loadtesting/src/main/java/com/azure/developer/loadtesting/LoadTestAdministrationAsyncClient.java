@@ -20,20 +20,15 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationsImpl;
-import com.azure.developer.loadtesting.implementation.util.MultipartHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.time.Duration;
-import java.util.Random;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous LoadTestingClient type. */
 @ServiceClient(builder = LoadTestingClientBuilder.class, isAsync = true)
 public final class LoadTestAdministrationAsyncClient {
-
-    private static final Random RANDOM = new Random();
 
     @Generated private final LoadTestAdministrationsImpl serviceClient;
 
@@ -48,294 +43,6 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
-     * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
-     * given test will be overwritten. File should be provided in the request body as multipart/form-data.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>fileType</td><td>String</td><td>No</td><td>File type. Allowed values: "JMX_FILE", "USER_PROPERTIES", "ADDITIONAL_ARTIFACTS".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     fileId: String (Optional)
-     *     filename: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
-     * @param file The file to be uploaded as multipart form-data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws IOException thrown if the multipart/form-data body cannot be constructed from file.
-     * @return fileUrl Model along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> uploadFileWithResponse(
-            String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.uploadFileWithResponseAsync(testId, fileId, file, requestOptions);
-    }
-
-    /**
-     * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
-     * given test will be overwritten. File should be provided in the request body as multipart/form-data.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>fileType</td><td>String</td><td>No</td><td>File type. Allowed values: "JMX_FILE", "USER_PROPERTIES", "ADDITIONAL_ARTIFACTS".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     fileId: String (Optional)
-     *     filename: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
-     * @param fileName Name of test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
-     * @param file The file to be uploaded as multipart form-data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws IOException thrown if the multipart/form-data body cannot be constructed from file.
-     * @return fileUrl Model along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadFileWithResponse(
-            String testId, String fileId, String fileName, BinaryData file, RequestOptions requestOptions)
-            throws IOException {
-        String boundary = MultipartHelper.getMultipartBoundary(String.format("%6x", RANDOM.nextInt(0x1000000)));
-        if (requestOptions == null) {
-            requestOptions = new RequestOptions();
-        }
-        requestOptions.setHeader("Content-Type", "multipart/form-data;boundary=" + boundary);
-        BinaryData multipartBody = MultipartHelper.createMultipartBodyFromFile(fileName, file, boundary);
-        return this.serviceClient.uploadFileWithResponseAsync(testId, fileId, multipartBody, requestOptions);
-    }
-
-    /**
-     * Get test file by the file name.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     fileId: String (Optional)
-     *     filename: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test file by the file name along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getFileWithResponse(String testId, String fileId, RequestOptions requestOptions) {
-        return this.serviceClient.getFileWithResponseAsync(testId, fileId, requestOptions);
-    }
-
-    /**
-     * Delete file by the file name for a test.
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileWithResponse(String testId, String fileId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteFileWithResponseAsync(testId, fileId, requestOptions);
-    }
-
-    /**
-     * Get all test files.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             url: String (Optional)
-     *             fileId: String (Optional)
-     *             filename: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *             expireDateTime: OffsetDateTime (Optional)
-     *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all test files as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listFiles(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.listFilesAsync(testId, requestOptions);
-    }
-
-    public enum ValidationStatus {
-        /* Validation not initiated */
-        NOT_VALIDATED,
-        /* Validation successful */
-        VALIDATION_SUCCESS,
-        /* Validation failed */
-        VALIDATION_FAILURE,
-        /* Validation initiated */
-        VALIDATION_INITIATED,
-        /* Validation not required for file type */
-        VALIDATION_NOT_REQUIRED
-    }
-
-    /**
-     * Gets the validation status of the test script JMX file for a test.
-     *
-     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
-     * @param refreshTime The time in seconds to refresh the polling operation.
-     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
-     * @return A {@link PollerFlux} to poll on and retrieve the validation
-     *     status(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED).
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ValidationStatus, BinaryData> beginGetValidationStatus(String testId, int refreshTime) {
-        return new PollerFlux<>(
-                Duration.ofSeconds(refreshTime),
-                (context) -> Mono.empty(),
-                (context) -> {
-                    Mono<BinaryData> loadTestMono = getWithResponse(testId, null).flatMap(FluxUtil::toMono);
-                    return loadTestMono.flatMap(
-                            loadTestBinaryData -> {
-                                String validationStatus;
-                                JsonNode loadTest;
-                                try {
-                                    loadTest = new ObjectMapper().readTree(loadTestBinaryData.toString());
-                                    validationStatus =
-                                            loadTest.get("inputArtifacts")
-                                                    .get("testScriptUrl")
-                                                    .get("validationStatus")
-                                                    .asText();
-                                } catch (JsonProcessingException e) {
-                                    return Mono.error(
-                                            new RuntimeException(
-                                                    "Encountered exception while retriving validation status"));
-                                }
-                                LongRunningOperationStatus lroStatus;
-                                ValidationStatus validationStatusEnum;
-                                switch (validationStatus) {
-                                    case "VALIDATION_SUCCESS":
-                                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                                        validationStatusEnum = ValidationStatus.VALIDATION_SUCCESS;
-                                        break;
-                                    case "VALIDATION_FAILED":
-                                        lroStatus = LongRunningOperationStatus.FAILED;
-                                        validationStatusEnum = ValidationStatus.VALIDATION_SUCCESS;
-                                        break;
-                                    case "VALIDATION_INITIATED":
-                                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
-                                        validationStatusEnum = ValidationStatus.VALIDATION_INITIATED;
-                                        break;
-                                    case "VALIDATION_NOT_REQUIRED":
-                                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                                        validationStatusEnum = ValidationStatus.VALIDATION_NOT_REQUIRED;
-                                        break;
-                                    default:
-                                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                                        validationStatusEnum = ValidationStatus.NOT_VALIDATED;
-                                        break;
-                                }
-                                return Mono.just(new PollResponse<>(lroStatus, validationStatusEnum));
-                            });
-                },
-                (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                (context) -> getWithResponse(testId, null).flatMap(FluxUtil::toMono));
-    }
-
-    /**
      * Create a new test or update an existing test.
      *
      * <p><strong>Request Body Schema</strong>
@@ -345,7 +52,7 @@ public final class LoadTestAdministrationAsyncClient {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -376,7 +83,7 @@ public final class LoadTestAdministrationAsyncClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -384,7 +91,6 @@ public final class LoadTestAdministrationAsyncClient {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -417,7 +123,7 @@ public final class LoadTestAdministrationAsyncClient {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -448,7 +154,7 @@ public final class LoadTestAdministrationAsyncClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -456,7 +162,6 @@ public final class LoadTestAdministrationAsyncClient {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -527,7 +232,7 @@ public final class LoadTestAdministrationAsyncClient {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -558,7 +263,7 @@ public final class LoadTestAdministrationAsyncClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -566,7 +271,6 @@ public final class LoadTestAdministrationAsyncClient {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -616,8 +320,8 @@ public final class LoadTestAdministrationAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc.</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -635,7 +339,7 @@ public final class LoadTestAdministrationAsyncClient {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -666,7 +370,7 @@ public final class LoadTestAdministrationAsyncClient {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -674,7 +378,6 @@ public final class LoadTestAdministrationAsyncClient {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     fileId: String (Optional)
      *                     filename: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
@@ -716,6 +419,152 @@ public final class LoadTestAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
         return this.serviceClient.listAsync(requestOptions);
+    }
+
+    /**
+     * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
+     * given test will be overwritten. File should be provided in the request body as application/octet-stream.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>fileType</td><td>String</td><td>No</td><td>File type. Allowed values: "JMX_FILE", "USER_PROPERTIES", "ADDITIONAL_ARTIFACTS".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *     expireDateTime: OffsetDateTime (Optional)
+     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return file info along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> uploadFileWithResponse(
+            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.uploadFileWithResponseAsync(testId, fileName, body, requestOptions);
+    }
+
+    /**
+     * Get test file by the file name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *     expireDateTime: OffsetDateTime (Optional)
+     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param fileName File name with file extension like app.jmx.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test file by the file name along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileWithResponse(
+            String testId, String fileName, RequestOptions requestOptions) {
+        return this.serviceClient.getFileWithResponseAsync(testId, fileName, requestOptions);
+    }
+
+    /**
+     * Delete file by the file name for a test.
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param fileName File name with file extension like app.jmx.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteFileWithResponseAsync(testId, fileName, requestOptions);
+    }
+
+    /**
+     * Get all test files.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             filename: String (Optional)
+     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *             expireDateTime: OffsetDateTime (Optional)
+     *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all test files as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listFiles(String testId, RequestOptions requestOptions) {
+        return this.serviceClient.listFilesAsync(testId, requestOptions);
     }
 
     /**
@@ -785,6 +634,48 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Get associated app component (collection of azure resources) for the given test.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testId: String (Optional)
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return associated app component (collection of azure resources) for the given test along with {@link Response}
+     *     on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
+        return this.serviceClient.getAppComponentsWithResponseAsync(testId, requestOptions);
+    }
+
+    /**
      * Configure server metrics for a test.
      *
      * <p><strong>Request Body Schema</strong>
@@ -798,10 +689,7 @@ public final class LoadTestAdministrationAsyncClient {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -825,10 +713,7 @@ public final class LoadTestAdministrationAsyncClient {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -872,10 +757,7 @@ public final class LoadTestAdministrationAsyncClient {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -904,45 +786,81 @@ public final class LoadTestAdministrationAsyncClient {
         return this.serviceClient.getServerMetricsConfigWithResponseAsync(testId, requestOptions);
     }
 
+    /** Validation status of uploaded file */
+    public enum ValidationStatus {
+
+        /** Validation not initiated */
+        NOT_VALIDATED,
+        /** Validation successful */
+        VALIDATION_SUCCESS,
+        /** Validation failed */
+        VALIDATION_FAILURE,
+        /** Validation initiated */
+        VALIDATION_INITIATED,
+        /** Validation not required for file type */
+        VALIDATION_NOT_REQUIRED
+    }
+
     /**
-     * Get associated app component (collection of azure resources) for the given test.
+     * Gets the validation status of the test script JMX file for a test.
      *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testId: String (Optional)
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return associated app component (collection of azure resources) for the given test along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param refreshTime The time in seconds to refresh the polling operation.
+     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the validation
+     *     status(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED).
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.getAppComponentsWithResponseAsync(testId, requestOptions);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<ValidationStatus, BinaryData> beginGetValidationStatus(String testId, int refreshTime) {
+        return new PollerFlux<>(
+                Duration.ofSeconds(refreshTime),
+                (context) -> Mono.empty(),
+                (context) -> {
+                    Mono<BinaryData> loadTestMono = getWithResponse(testId, null).flatMap(FluxUtil::toMono);
+                    return loadTestMono.flatMap(
+                            loadTestBinaryData -> {
+                                String validationStatus;
+                                JsonNode loadTest;
+                                try {
+                                    loadTest = new ObjectMapper().readTree(loadTestBinaryData.toString());
+                                    validationStatus =
+                                            loadTest.get("inputArtifacts")
+                                                    .get("testScriptUrl")
+                                                    .get("validationStatus")
+                                                    .asText();
+                                } catch (JsonProcessingException e) {
+                                    return Mono.error(
+                                            new RuntimeException(
+                                                    "Encountered exception while retriving validation status"));
+                                }
+                                LongRunningOperationStatus lroStatus;
+                                ValidationStatus validationStatusEnum;
+                                switch (validationStatus) {
+                                    case "VALIDATION_SUCCESS":
+                                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                                        validationStatusEnum = ValidationStatus.VALIDATION_SUCCESS;
+                                        break;
+                                    case "VALIDATION_FAILED":
+                                        lroStatus = LongRunningOperationStatus.FAILED;
+                                        validationStatusEnum = ValidationStatus.VALIDATION_SUCCESS;
+                                        break;
+                                    case "VALIDATION_INITIATED":
+                                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+                                        validationStatusEnum = ValidationStatus.VALIDATION_INITIATED;
+                                        break;
+                                    case "VALIDATION_NOT_REQUIRED":
+                                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                                        validationStatusEnum = ValidationStatus.VALIDATION_NOT_REQUIRED;
+                                        break;
+                                    default:
+                                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                                        validationStatusEnum = ValidationStatus.NOT_VALIDATED;
+                                        break;
+                                }
+                                return Mono.just(new PollResponse<>(lroStatus, validationStatusEnum));
+                            });
+                },
+                (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+                (context) -> getWithResponse(testId, null).flatMap(FluxUtil::toMono));
     }
 }

@@ -125,7 +125,7 @@ public final class LoadTestRunsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/test-runs/{testRunId}/files/{fileId}")
+        @Get("/test-runs/{testRunId}/files/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -140,7 +140,7 @@ public final class LoadTestRunsImpl {
         Mono<Response<BinaryData>> getFile(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
-                @PathParam("fileId") String fileId,
+                @PathParam("fileName") String fileName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -243,7 +243,30 @@ public final class LoadTestRunsImpl {
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("metricname") String metricname,
                 @QueryParam("metricNamespace") String metricNamespace,
-                @QueryParam("resultType") String resultType,
+                @QueryParam("timespan") String timespan,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/test-runs/{testRunId}/metric-dimension/{name}/values")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getMetricDimensionValues(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("testRunId") String testRunId,
+                @PathParam("name") String name,
+                @QueryParam("metricname") String metricname,
+                @QueryParam("metricNamespace") String metricNamespace,
                 @QueryParam("timespan") String timespan,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -441,7 +464,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -495,7 +518,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -504,7 +527,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -531,7 +553,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -549,7 +571,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -603,7 +625,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -612,7 +634,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -639,7 +660,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -696,7 +717,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -750,7 +771,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -759,7 +780,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -786,7 +806,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -804,7 +824,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -858,7 +878,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -867,7 +887,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -894,7 +913,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -950,7 +969,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -1004,7 +1023,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -1013,7 +1032,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -1040,7 +1058,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1058,7 +1076,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -1112,7 +1130,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -1121,7 +1139,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -1148,7 +1165,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1185,7 +1202,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -1239,7 +1256,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -1248,7 +1265,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -1275,7 +1291,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1319,7 +1335,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -1373,7 +1389,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -1382,7 +1398,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -1409,7 +1424,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1453,7 +1468,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -1507,7 +1522,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -1516,7 +1531,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -1543,7 +1557,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1576,7 +1590,6 @@ public final class LoadTestRunsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -1586,8 +1599,7 @@ public final class LoadTestRunsImpl {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
-     * @param fileId Unique name for test run file, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
+     * @param fileName Test run file name with file extension.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1597,14 +1609,14 @@ public final class LoadTestRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileWithResponseAsync(
-            String testRunId, String fileId, RequestOptions requestOptions) {
+            String testRunId, String fileName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getFile(
                                 this.client.getEndpoint(),
                                 testRunId,
-                                fileId,
+                                fileName,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -1619,7 +1631,6 @@ public final class LoadTestRunsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -1629,8 +1640,7 @@ public final class LoadTestRunsImpl {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
-     * @param fileId Unique name for test run file, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
+     * @param fileName Test run file name with file extension.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1641,12 +1651,12 @@ public final class LoadTestRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileWithResponseAsync(
-            String testRunId, String fileId, RequestOptions requestOptions, Context context) {
+            String testRunId, String fileName, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getFile(
                 this.client.getEndpoint(),
                 testRunId,
-                fileId,
+                fileName,
                 this.client.getServiceVersion().getVersion(),
                 accept,
                 requestOptions,
@@ -1661,7 +1671,6 @@ public final class LoadTestRunsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -1671,8 +1680,7 @@ public final class LoadTestRunsImpl {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
-     * @param fileId Unique name for test run file, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
+     * @param fileName Test run file name with file extension.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1681,8 +1689,8 @@ public final class LoadTestRunsImpl {
      * @return test run file by file name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileWithResponse(String testRunId, String fileId, RequestOptions requestOptions) {
-        return getFileWithResponseAsync(testRunId, fileId, requestOptions).block();
+    public Response<BinaryData> getFileWithResponse(String testRunId, String fileName, RequestOptions requestOptions) {
+        return getFileWithResponseAsync(testRunId, fileName, requestOptions).block();
     }
 
     /**
@@ -1693,9 +1701,9 @@ public final class LoadTestRunsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -1714,7 +1722,7 @@ public final class LoadTestRunsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -1768,7 +1776,7 @@ public final class LoadTestRunsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -1777,7 +1785,6 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         fileId: String (Optional)
      *                         filename: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
@@ -1804,7 +1811,7 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -1856,9 +1863,9 @@ public final class LoadTestRunsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -1877,7 +1884,7 @@ public final class LoadTestRunsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -1931,7 +1938,7 @@ public final class LoadTestRunsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -1940,7 +1947,6 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         fileId: String (Optional)
      *                         filename: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
@@ -1967,7 +1973,7 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -2018,9 +2024,9 @@ public final class LoadTestRunsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -2039,7 +2045,7 @@ public final class LoadTestRunsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -2093,7 +2099,7 @@ public final class LoadTestRunsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -2102,7 +2108,6 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         fileId: String (Optional)
      *                         filename: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
@@ -2129,7 +2134,7 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -2170,9 +2175,9 @@ public final class LoadTestRunsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -2191,7 +2196,7 @@ public final class LoadTestRunsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -2245,7 +2250,7 @@ public final class LoadTestRunsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -2254,7 +2259,6 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         fileId: String (Optional)
      *                         filename: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
@@ -2281,7 +2285,7 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -2323,9 +2327,9 @@ public final class LoadTestRunsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -2344,7 +2348,7 @@ public final class LoadTestRunsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -2398,7 +2402,7 @@ public final class LoadTestRunsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -2407,7 +2411,6 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         fileId: String (Optional)
      *                         filename: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
@@ -2434,7 +2437,7 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -2470,7 +2473,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -2524,7 +2527,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -2533,7 +2536,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -2560,7 +2562,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -2604,7 +2606,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -2658,7 +2660,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -2667,7 +2669,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -2694,7 +2695,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -2738,7 +2739,7 @@ public final class LoadTestRunsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -2792,7 +2793,7 @@ public final class LoadTestRunsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -2801,7 +2802,6 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 fileId: String (Optional)
      *                 filename: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
@@ -2828,7 +2828,7 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
+     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -2862,8 +2862,8 @@ public final class LoadTestRunsImpl {
      * {
      *     value (Required): [
      *          (Required){
+     *             description: String (Optional)
      *             name: String (Optional)
-     *             metricNamespaceName: String (Optional)
      *         }
      *     ]
      * }
@@ -2903,8 +2903,8 @@ public final class LoadTestRunsImpl {
      * {
      *     value (Required): [
      *          (Required){
+     *             description: String (Optional)
      *             name: String (Optional)
-     *             metricNamespaceName: String (Optional)
      *         }
      *     ]
      * }
@@ -2943,8 +2943,8 @@ public final class LoadTestRunsImpl {
      * {
      *     value (Required): [
      *          (Required){
+     *             description: String (Optional)
      *             name: String (Optional)
-     *             metricNamespaceName: String (Optional)
      *         }
      *     ]
      * }
@@ -2975,14 +2975,14 @@ public final class LoadTestRunsImpl {
      *          (Required){
      *             dimensions (Optional): [
      *                  (Optional){
-     *                     localizedValue: String (Optional)
-     *                     value: String (Optional)
+     *                     description: String (Optional)
+     *                     name: String (Optional)
      *                 }
      *             ]
-     *             displayDescription: String (Optional)
-     *             name (Optional): (recursive schema, see name above)
+     *             description: String (Optional)
+     *             name: String (Optional)
      *             namespace: String (Optional)
-     *             primaryAggregationType: String(Average/Count/Minimum/Maximum/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
+     *             primaryAggregationType: String(Average/Count/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
      *             supportedAggregationTypes (Optional): [
      *                 String (Optional)
      *             ]
@@ -3035,14 +3035,14 @@ public final class LoadTestRunsImpl {
      *          (Required){
      *             dimensions (Optional): [
      *                  (Optional){
-     *                     localizedValue: String (Optional)
-     *                     value: String (Optional)
+     *                     description: String (Optional)
+     *                     name: String (Optional)
      *                 }
      *             ]
-     *             displayDescription: String (Optional)
-     *             name (Optional): (recursive schema, see name above)
+     *             description: String (Optional)
+     *             name: String (Optional)
      *             namespace: String (Optional)
-     *             primaryAggregationType: String(Average/Count/Minimum/Maximum/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
+     *             primaryAggregationType: String(Average/Count/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
      *             supportedAggregationTypes (Optional): [
      *                 String (Optional)
      *             ]
@@ -3094,14 +3094,14 @@ public final class LoadTestRunsImpl {
      *          (Required){
      *             dimensions (Optional): [
      *                  (Optional){
-     *                     localizedValue: String (Optional)
-     *                     value: String (Optional)
+     *                     description: String (Optional)
+     *                     name: String (Optional)
      *                 }
      *             ]
-     *             displayDescription: String (Optional)
-     *             name (Optional): (recursive schema, see name above)
+     *             description: String (Optional)
+     *             name: String (Optional)
      *             namespace: String (Optional)
-     *             primaryAggregationType: String(Average/Count/Minimum/Maximum/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
+     *             primaryAggregationType: String(Average/Count/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
      *             supportedAggregationTypes (Optional): [
      *                 String (Optional)
      *             ]
@@ -3140,7 +3140,7 @@ public final class LoadTestRunsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The list of aggregation types (comma separated) to retrieve.</td></tr>
+     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
      *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      *
@@ -3165,40 +3165,23 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
-     *     interval: String (Optional)
-     *     namespace: String (Optional)
-     *     timespan: String (Optional)
-     *     value (Optional): {
-     *         name (Optional): {
-     *             localizedValue: String (Optional)
-     *             value: String (Optional)
+     *     timeseries (Optional): [
+     *          (Optional){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: String (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
      *         }
-     *         timeseries (Optional): [
-     *              (Optional){
-     *                 data (Optional): [
-     *                      (Optional){
-     *                         average: Double (Optional)
-     *                         count: Double (Optional)
-     *                         maximum: Double (Optional)
-     *                         minimum: Double (Optional)
-     *                         timeStamp: String (Optional)
-     *                         total: Double (Optional)
-     *                         percentile90: Double (Optional)
-     *                         percentile95: Double (Optional)
-     *                         percentile99: Double (Optional)
-     *                     }
-     *                 ]
-     *                 metadatavalues (Optional): [
-     *                      (Optional){
-     *                         name (Optional): (recursive schema, see name above)
-     *                         value: String (Optional)
-     *                     }
-     *                 ]
-     *             }
-     *         ]
-     *         unit: String(NotSpecified/Percent/Count/Seconds/Milliseconds/Bytes/BytesPerSecond/CountPerSecond) (Optional)
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3206,8 +3189,6 @@ public final class LoadTestRunsImpl {
      *     or hyphen characters.
      * @param metricname Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     *     operation's description for details. Allowed values: "Data", "Metadata".
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3222,7 +3203,6 @@ public final class LoadTestRunsImpl {
             String testRunId,
             String metricname,
             String metricNamespace,
-            String resultType,
             String timespan,
             RequestOptions requestOptions) {
         final String accept = "application/json";
@@ -3233,7 +3213,6 @@ public final class LoadTestRunsImpl {
                                 testRunId,
                                 metricname,
                                 metricNamespace,
-                                resultType,
                                 timespan,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -3249,7 +3228,7 @@ public final class LoadTestRunsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The list of aggregation types (comma separated) to retrieve.</td></tr>
+     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
      *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      *
@@ -3274,40 +3253,23 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
-     *     interval: String (Optional)
-     *     namespace: String (Optional)
-     *     timespan: String (Optional)
-     *     value (Optional): {
-     *         name (Optional): {
-     *             localizedValue: String (Optional)
-     *             value: String (Optional)
+     *     timeseries (Optional): [
+     *          (Optional){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: String (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
      *         }
-     *         timeseries (Optional): [
-     *              (Optional){
-     *                 data (Optional): [
-     *                      (Optional){
-     *                         average: Double (Optional)
-     *                         count: Double (Optional)
-     *                         maximum: Double (Optional)
-     *                         minimum: Double (Optional)
-     *                         timeStamp: String (Optional)
-     *                         total: Double (Optional)
-     *                         percentile90: Double (Optional)
-     *                         percentile95: Double (Optional)
-     *                         percentile99: Double (Optional)
-     *                     }
-     *                 ]
-     *                 metadatavalues (Optional): [
-     *                      (Optional){
-     *                         name (Optional): (recursive schema, see name above)
-     *                         value: String (Optional)
-     *                     }
-     *                 ]
-     *             }
-     *         ]
-     *         unit: String(NotSpecified/Percent/Count/Seconds/Milliseconds/Bytes/BytesPerSecond/CountPerSecond) (Optional)
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3315,8 +3277,6 @@ public final class LoadTestRunsImpl {
      *     or hyphen characters.
      * @param metricname Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     *     operation's description for details. Allowed values: "Data", "Metadata".
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3332,7 +3292,6 @@ public final class LoadTestRunsImpl {
             String testRunId,
             String metricname,
             String metricNamespace,
-            String resultType,
             String timespan,
             RequestOptions requestOptions,
             Context context) {
@@ -3342,7 +3301,6 @@ public final class LoadTestRunsImpl {
                 testRunId,
                 metricname,
                 metricNamespace,
-                resultType,
                 timespan,
                 this.client.getServiceVersion().getVersion(),
                 accept,
@@ -3358,7 +3316,7 @@ public final class LoadTestRunsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The list of aggregation types (comma separated) to retrieve.</td></tr>
+     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
      *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      *
@@ -3383,40 +3341,23 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
-     *     interval: String (Optional)
-     *     namespace: String (Optional)
-     *     timespan: String (Optional)
-     *     value (Optional): {
-     *         name (Optional): {
-     *             localizedValue: String (Optional)
-     *             value: String (Optional)
+     *     timeseries (Optional): [
+     *          (Optional){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: String (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
      *         }
-     *         timeseries (Optional): [
-     *              (Optional){
-     *                 data (Optional): [
-     *                      (Optional){
-     *                         average: Double (Optional)
-     *                         count: Double (Optional)
-     *                         maximum: Double (Optional)
-     *                         minimum: Double (Optional)
-     *                         timeStamp: String (Optional)
-     *                         total: Double (Optional)
-     *                         percentile90: Double (Optional)
-     *                         percentile95: Double (Optional)
-     *                         percentile99: Double (Optional)
-     *                     }
-     *                 ]
-     *                 metadatavalues (Optional): [
-     *                      (Optional){
-     *                         name (Optional): (recursive schema, see name above)
-     *                         value: String (Optional)
-     *                     }
-     *                 ]
-     *             }
-     *         ]
-     *         unit: String(NotSpecified/Percent/Count/Seconds/Milliseconds/Bytes/BytesPerSecond/CountPerSecond) (Optional)
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3424,8 +3365,6 @@ public final class LoadTestRunsImpl {
      *     or hyphen characters.
      * @param metricname Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     *     operation's description for details. Allowed values: "Data", "Metadata".
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3440,10 +3379,183 @@ public final class LoadTestRunsImpl {
             String testRunId,
             String metricname,
             String metricNamespace,
-            String resultType,
             String timespan,
             RequestOptions requestOptions) {
-        return getMetricsWithResponseAsync(testRunId, metricname, metricNamespace, resultType, timespan, requestOptions)
+        return getMetricsWithResponseAsync(testRunId, metricname, metricNamespace, timespan, requestOptions).block();
+    }
+
+    /**
+     * Lists the dimension values for the given metric dimension name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *         String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param name Dimension name.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMetricDimensionValuesWithResponseAsync(
+            String testRunId,
+            String name,
+            String metricname,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getMetricDimensionValues(
+                                this.client.getEndpoint(),
+                                testRunId,
+                                name,
+                                metricname,
+                                metricNamespace,
+                                timespan,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Lists the dimension values for the given metric dimension name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *         String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param name Dimension name.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMetricDimensionValuesWithResponseAsync(
+            String testRunId,
+            String name,
+            String metricname,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions,
+            Context context) {
+        final String accept = "application/json";
+        return service.getMetricDimensionValues(
+                this.client.getEndpoint(),
+                testRunId,
+                name,
+                metricname,
+                metricNamespace,
+                timespan,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
+    }
+
+    /**
+     * Lists the dimension values for the given metric dimension name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *         String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param name Dimension name.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMetricDimensionValuesWithResponse(
+            String testRunId,
+            String name,
+            String metricname,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        return getMetricDimensionValuesWithResponseAsync(
+                        testRunId, name, metricname, metricNamespace, timespan, requestOptions)
                 .block();
     }
 
@@ -3817,10 +3929,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3844,10 +3953,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3901,10 +4007,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3928,10 +4031,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3984,10 +4084,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -4011,10 +4108,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -4057,10 +4151,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -4112,10 +4203,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -4166,10 +4254,7 @@ public final class LoadTestRunsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -4208,7 +4293,7 @@ public final class LoadTestRunsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -4262,7 +4347,7 @@ public final class LoadTestRunsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -4271,7 +4356,6 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         fileId: String (Optional)
      *                         filename: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
@@ -4298,7 +4382,7 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -4349,7 +4433,7 @@ public final class LoadTestRunsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -4403,7 +4487,7 @@ public final class LoadTestRunsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -4412,7 +4496,6 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         fileId: String (Optional)
      *                         filename: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
@@ -4439,7 +4522,7 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)

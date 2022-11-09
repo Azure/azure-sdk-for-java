@@ -145,8 +145,7 @@ public final class LoadTestAdministrationsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        // @Multipart not supported by RestProxy
-        @Put("/tests/{testId}/files/{fileId}")
+        @Put("/tests/{testId}/files/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -161,14 +160,14 @@ public final class LoadTestAdministrationsImpl {
         Mono<Response<BinaryData>> uploadFile(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
-                @PathParam("fileId") String fileId,
+                @PathParam("fileName") String fileName,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("multipart/form-data") BinaryData file,
+                @BodyParam("application/octet-stream") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/tests/{testId}/files/{fileId}")
+        @Get("/tests/{testId}/files/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -183,13 +182,13 @@ public final class LoadTestAdministrationsImpl {
         Mono<Response<BinaryData>> getFile(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
-                @PathParam("fileId") String fileId,
+                @PathParam("fileName") String fileName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/tests/{testId}/files/{fileId}")
+        @Delete("/tests/{testId}/files/{fileName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -204,7 +203,7 @@ public final class LoadTestAdministrationsImpl {
         Mono<Response<Void>> deleteFile(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
-                @PathParam("fileId") String fileId,
+                @PathParam("fileName") String fileName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -361,7 +360,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -392,7 +391,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -400,7 +399,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -433,7 +431,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -464,7 +462,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -472,7 +470,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -534,7 +531,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -565,7 +562,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -573,7 +570,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -606,7 +602,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -637,7 +633,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -645,7 +641,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -706,7 +701,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -737,7 +732,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -745,7 +740,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -778,7 +772,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -809,7 +803,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -817,7 +811,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -937,7 +930,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -968,7 +961,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -976,7 +969,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -1035,7 +1027,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -1066,7 +1058,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -1074,7 +1066,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -1133,7 +1124,7 @@ public final class LoadTestAdministrationsImpl {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
      *             String (Optional): {
-     *                 clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
@@ -1164,7 +1155,7 @@ public final class LoadTestAdministrationsImpl {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             vusers: Integer (Optional)
+     *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
      *         }
@@ -1172,7 +1163,6 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -1221,8 +1211,8 @@ public final class LoadTestAdministrationsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc.</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -1240,7 +1230,7 @@ public final class LoadTestAdministrationsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -1271,7 +1261,7 @@ public final class LoadTestAdministrationsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -1279,7 +1269,6 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     fileId: String (Optional)
      *                     filename: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
@@ -1348,8 +1337,8 @@ public final class LoadTestAdministrationsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc.</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -1367,7 +1356,7 @@ public final class LoadTestAdministrationsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -1398,7 +1387,7 @@ public final class LoadTestAdministrationsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -1406,7 +1395,6 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     fileId: String (Optional)
      *                     filename: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
@@ -1474,8 +1462,8 @@ public final class LoadTestAdministrationsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc.</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -1493,7 +1481,7 @@ public final class LoadTestAdministrationsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -1524,7 +1512,7 @@ public final class LoadTestAdministrationsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -1532,7 +1520,6 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     fileId: String (Optional)
      *                     filename: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
@@ -1591,8 +1578,8 @@ public final class LoadTestAdministrationsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc.</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -1610,7 +1597,7 @@ public final class LoadTestAdministrationsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -1641,7 +1628,7 @@ public final class LoadTestAdministrationsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -1649,7 +1636,6 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     fileId: String (Optional)
      *                     filename: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
@@ -1709,8 +1695,8 @@ public final class LoadTestAdministrationsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc.</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -1728,7 +1714,7 @@ public final class LoadTestAdministrationsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -1759,7 +1745,7 @@ public final class LoadTestAdministrationsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -1767,7 +1753,6 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     fileId: String (Optional)
      *                     filename: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
@@ -1812,7 +1797,7 @@ public final class LoadTestAdministrationsImpl {
 
     /**
      * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
-     * given test will be overwritten. File should be provided in the request body as multipart/form-data.
+     * given test will be overwritten. File should be provided in the request body as application/octet-stream.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -1835,7 +1820,6 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -1845,9 +1829,8 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
-     * @param file The file to be uploaded as multipart form-data.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1857,16 +1840,16 @@ public final class LoadTestAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> uploadFileWithResponseAsync(
-            String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
+            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.uploadFile(
                                 this.client.getEndpoint(),
                                 testId,
-                                fileId,
+                                fileName,
                                 this.client.getServiceVersion().getVersion(),
-                                file,
+                                body,
                                 accept,
                                 requestOptions,
                                 context));
@@ -1874,7 +1857,7 @@ public final class LoadTestAdministrationsImpl {
 
     /**
      * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
-     * given test will be overwritten. File should be provided in the request body as multipart/form-data.
+     * given test will be overwritten. File should be provided in the request body as application/octet-stream.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -1897,7 +1880,6 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -1907,9 +1889,8 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
-     * @param file The file to be uploaded as multipart form-data.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1920,14 +1901,14 @@ public final class LoadTestAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> uploadFileWithResponseAsync(
-            String testId, String fileId, BinaryData file, RequestOptions requestOptions, Context context) {
+            String testId, String fileName, BinaryData body, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.uploadFile(
                 this.client.getEndpoint(),
                 testId,
-                fileId,
+                fileName,
                 this.client.getServiceVersion().getVersion(),
-                file,
+                body,
                 accept,
                 requestOptions,
                 context);
@@ -1935,7 +1916,7 @@ public final class LoadTestAdministrationsImpl {
 
     /**
      * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
-     * given test will be overwritten. File should be provided in the request body as multipart/form-data.
+     * given test will be overwritten. File should be provided in the request body as application/octet-stream.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -1958,7 +1939,6 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -1968,9 +1948,8 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
-     * @param file The file to be uploaded as multipart form-data.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1980,8 +1959,8 @@ public final class LoadTestAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> uploadFileWithResponse(
-            String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
-        return uploadFileWithResponseAsync(testId, fileId, file, requestOptions).block();
+            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
+        return uploadFileWithResponseAsync(testId, fileName, body, requestOptions).block();
     }
 
     /**
@@ -1992,7 +1971,6 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -2002,8 +1980,7 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
+     * @param fileName File name with file extension like app.jmx.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2013,14 +1990,14 @@ public final class LoadTestAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileWithResponseAsync(
-            String testId, String fileId, RequestOptions requestOptions) {
+            String testId, String fileName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getFile(
                                 this.client.getEndpoint(),
                                 testId,
-                                fileId,
+                                fileName,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -2035,7 +2012,6 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -2045,8 +2021,7 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
+     * @param fileName File name with file extension like app.jmx.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2057,12 +2032,12 @@ public final class LoadTestAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileWithResponseAsync(
-            String testId, String fileId, RequestOptions requestOptions, Context context) {
+            String testId, String fileName, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getFile(
                 this.client.getEndpoint(),
                 testId,
-                fileId,
+                fileName,
                 this.client.getServiceVersion().getVersion(),
                 accept,
                 requestOptions,
@@ -2077,7 +2052,6 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     fileId: String (Optional)
      *     filename: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
@@ -2087,8 +2061,7 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
+     * @param fileName File name with file extension like app.jmx.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2097,8 +2070,8 @@ public final class LoadTestAdministrationsImpl {
      * @return test file by the file name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileWithResponse(String testId, String fileId, RequestOptions requestOptions) {
-        return getFileWithResponseAsync(testId, fileId, requestOptions).block();
+    public Response<BinaryData> getFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
+        return getFileWithResponseAsync(testId, fileName, requestOptions).block();
     }
 
     /**
@@ -2106,8 +2079,7 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
+     * @param fileName File name with file extension like app.jmx.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2117,14 +2089,14 @@ public final class LoadTestAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileWithResponseAsync(
-            String testId, String fileId, RequestOptions requestOptions) {
+            String testId, String fileName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteFile(
                                 this.client.getEndpoint(),
                                 testId,
-                                fileId,
+                                fileName,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -2136,8 +2108,7 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
+     * @param fileName File name with file extension like app.jmx.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2148,12 +2119,12 @@ public final class LoadTestAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileWithResponseAsync(
-            String testId, String fileId, RequestOptions requestOptions, Context context) {
+            String testId, String fileName, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.deleteFile(
                 this.client.getEndpoint(),
                 testId,
-                fileId,
+                fileName,
                 this.client.getServiceVersion().getVersion(),
                 accept,
                 requestOptions,
@@ -2165,8 +2136,7 @@ public final class LoadTestAdministrationsImpl {
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
-     * @param fileId Unique name for test file, must contain only lower-case alphabetic, numeric, underscore or hyphen
-     *     characters.
+     * @param fileName File name with file extension like app.jmx.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2175,8 +2145,8 @@ public final class LoadTestAdministrationsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteFileWithResponse(String testId, String fileId, RequestOptions requestOptions) {
-        return deleteFileWithResponseAsync(testId, fileId, requestOptions).block();
+    public Response<Void> deleteFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
+        return deleteFileWithResponseAsync(testId, fileName, requestOptions).block();
     }
 
     /**
@@ -2199,7 +2169,6 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -2262,7 +2231,6 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -2325,7 +2293,6 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -2377,7 +2344,6 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -2430,7 +2396,6 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -2823,10 +2788,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -2850,10 +2812,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -2906,10 +2865,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -2933,10 +2889,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -2988,10 +2941,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3015,10 +2965,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3061,10 +3008,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3116,10 +3060,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3170,10 +3111,7 @@ public final class LoadTestAdministrationsImpl {
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
      *             displayDescription: String (Optional)
-     *             name (Required): {
-     *                 localizedValue: String (Optional)
-     *                 value: String (Optional)
-     *             }
+     *             name: String (Required)
      *             aggregation: String (Required)
      *             unit: String (Optional)
      *             resourceType: String (Required)
@@ -3212,7 +3150,7 @@ public final class LoadTestAdministrationsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -3243,7 +3181,7 @@ public final class LoadTestAdministrationsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -3251,7 +3189,6 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     fileId: String (Optional)
      *                     filename: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
@@ -3317,7 +3254,7 @@ public final class LoadTestAdministrationsImpl {
      *             passFailCriteria (Optional): {
      *                 passFailMetrics (Optional): {
      *                     String (Optional): {
-     *                         clientmetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
@@ -3348,7 +3285,7 @@ public final class LoadTestAdministrationsImpl {
      *                 quickStartTest: Boolean (Optional)
      *                 optionalLoadTestConfig (Optional): {
      *                     endpointUrl: String (Optional)
-     *                     vusers: Integer (Optional)
+     *                     virtualUsers: Integer (Optional)
      *                     rampUpTime: Integer (Optional)
      *                     duration: Integer (Optional)
      *                 }
@@ -3356,7 +3293,6 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     fileId: String (Optional)
      *                     filename: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
@@ -3420,7 +3356,6 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
@@ -3468,7 +3403,6 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             fileId: String (Optional)
      *             filename: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)

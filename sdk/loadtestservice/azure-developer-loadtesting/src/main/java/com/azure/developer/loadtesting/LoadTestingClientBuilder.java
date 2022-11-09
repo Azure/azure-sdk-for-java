@@ -298,6 +298,16 @@ public final class LoadTestingClientBuilder
     }
 
     /**
+     * Builds an instance of LoadTestRunAsyncClient class.
+     *
+     * @return an instance of LoadTestRunAsyncClient.
+     */
+    @Generated
+    public LoadTestRunAsyncClient buildLoadTestRunAsyncClient() {
+        return new LoadTestRunAsyncClient(buildInnerClient().getLoadTestRuns());
+    }
+
+    /**
      * Builds an instance of LoadTestAdministrationClient class.
      *
      * @return an instance of LoadTestAdministrationClient.
@@ -306,16 +316,6 @@ public final class LoadTestingClientBuilder
     public LoadTestAdministrationClient buildLoadTestAdministrationClient() {
         return new LoadTestAdministrationClient(
                 new LoadTestAdministrationAsyncClient(buildInnerClient().getLoadTestAdministrations()));
-    }
-
-    /**
-     * Builds an instance of LoadTestRunAsyncClient class.
-     *
-     * @return an instance of LoadTestRunAsyncClient.
-     */
-    @Generated
-    public LoadTestRunAsyncClient buildLoadTestRunAsyncClient() {
-        return new LoadTestRunAsyncClient(buildInnerClient().getLoadTestRuns());
     }
 
     /**
