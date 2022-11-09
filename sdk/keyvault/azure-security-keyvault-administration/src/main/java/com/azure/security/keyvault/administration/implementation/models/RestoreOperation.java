@@ -46,6 +46,9 @@ public final class RestoreOperation {
     @JsonProperty(value = "endTime")
     private Long endTime;
 
+    /** Creates an instance of RestoreOperation class. */
+    public RestoreOperation() {}
+
     /**
      * Get the status property: Status of the restore operation.
      *
