@@ -8,46 +8,46 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Weekday. */
-public final class Weekday extends ExpandableStringEnum<Weekday> {
-    /** Static value Monday for Weekday. */
-    public static final Weekday MONDAY = fromString("Monday");
+/** Enum of weekday. */
+public final class WeekDay extends ExpandableStringEnum<WeekDay> {
+    /** Static value Monday for WeekDay. */
+    public static final WeekDay MONDAY = fromString("Monday");
 
-    /** Static value Tuesday for Weekday. */
-    public static final Weekday TUESDAY = fromString("Tuesday");
+    /** Static value Tuesday for WeekDay. */
+    public static final WeekDay TUESDAY = fromString("Tuesday");
 
-    /** Static value Wednesday for Weekday. */
-    public static final Weekday WEDNESDAY = fromString("Wednesday");
+    /** Static value Wednesday for WeekDay. */
+    public static final WeekDay WEDNESDAY = fromString("Wednesday");
 
-    /** Static value Thursday for Weekday. */
-    public static final Weekday THURSDAY = fromString("Thursday");
+    /** Static value Thursday for WeekDay. */
+    public static final WeekDay THURSDAY = fromString("Thursday");
 
-    /** Static value Friday for Weekday. */
-    public static final Weekday FRIDAY = fromString("Friday");
+    /** Static value Friday for WeekDay. */
+    public static final WeekDay FRIDAY = fromString("Friday");
 
-    /** Static value Saturday for Weekday. */
-    public static final Weekday SATURDAY = fromString("Saturday");
+    /** Static value Saturday for WeekDay. */
+    public static final WeekDay SATURDAY = fromString("Saturday");
 
-    /** Static value Sunday for Weekday. */
-    public static final Weekday SUNDAY = fromString("Sunday");
+    /** Static value Sunday for WeekDay. */
+    public static final WeekDay SUNDAY = fromString("Sunday");
 
     /**
-     * Creates or finds a Weekday from its string representation.
+     * Creates or finds a WeekDay from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding Weekday.
+     * @return the corresponding WeekDay.
      */
     @JsonCreator
-    public static Weekday fromString(String name) {
-        return fromString(name, Weekday.class);
+    public static WeekDay fromString(String name) {
+        return fromString(name, WeekDay.class);
     }
 
     /**
-     * Gets known Weekday values.
+     * Gets known WeekDay values.
      *
-     * @return known Weekday values.
+     * @return known WeekDay values.
      */
-    public static Collection<Weekday> values() {
-        return values(Weekday.class);
+    public static Collection<WeekDay> values() {
+        return values(WeekDay.class);
     }
 }

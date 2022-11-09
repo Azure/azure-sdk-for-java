@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.ModelVersionsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.ModelVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ModelVersionInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import com.azure.resourcemanager.machinelearning.models.ModelVersionResourceArmPaginatedResult;
 import reactor.core.publisher.Mono;
@@ -109,7 +109,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/models/{name}/versions/{version}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ModelVersionDataInner>> get(
+        Mono<Response<ModelVersionInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -126,7 +126,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/models/{name}/versions/{version}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ModelVersionDataInner>> createOrUpdate(
+        Mono<Response<ModelVersionInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -134,7 +134,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
             @PathParam("name") String name,
             @PathParam("version") String version,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ModelVersionDataInner body,
+            @BodyParam("application/json") ModelVersionInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -172,7 +172,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ModelVersionDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<ModelVersionInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -232,7 +232,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
                             listViewType,
                             accept,
                             context))
-            .<PagedResponse<ModelVersionDataInner>>map(
+            .<PagedResponse<ModelVersionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -268,7 +268,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ModelVersionDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<ModelVersionInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -360,7 +360,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ModelVersionDataInner> listAsync(
+    private PagedFlux<ModelVersionInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -405,7 +405,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ModelVersionDataInner> listAsync(String resourceGroupName, String workspaceName, String name) {
+    private PagedFlux<ModelVersionInner> listAsync(String resourceGroupName, String workspaceName, String name) {
         final String skip = null;
         final String orderBy = null;
         final Integer top = null;
@@ -458,7 +458,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ModelVersionDataInner> listAsync(
+    private PagedFlux<ModelVersionInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -505,7 +505,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelVersionDataInner> list(String resourceGroupName, String workspaceName, String name) {
+    public PagedIterable<ModelVersionInner> list(String resourceGroupName, String workspaceName, String name) {
         final String skip = null;
         final String orderBy = null;
         final Integer top = null;
@@ -556,7 +556,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelVersionDataInner> list(
+    public PagedIterable<ModelVersionInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -728,22 +728,6 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
      * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
-        deleteAsync(resourceGroupName, workspaceName, name, version).block();
-    }
-
-    /**
-     * Delete version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -754,6 +738,22 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, name, version, context).block();
+    }
+
+    /**
+     * Delete version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
+        deleteWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE);
     }
 
     /**
@@ -769,7 +769,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ModelVersionDataInner>> getWithResponseAsync(
+    private Mono<Response<ModelVersionInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, String version) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -828,7 +828,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ModelVersionDataInner>> getWithResponseAsync(
+    private Mono<Response<ModelVersionInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -883,27 +883,10 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ModelVersionDataInner> getAsync(
+    private Mono<ModelVersionInner> getAsync(
         String resourceGroupName, String workspaceName, String name, String version) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, version)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelVersionDataInner get(String resourceGroupName, String workspaceName, String name, String version) {
-        return getAsync(resourceGroupName, workspaceName, name, version).block();
     }
 
     /**
@@ -920,9 +903,26 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelVersionDataInner> getWithResponse(
+    public Response<ModelVersionInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, version, context).block();
+    }
+
+    /**
+     * Get version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelVersionInner get(String resourceGroupName, String workspaceName, String name, String version) {
+        return getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE).getValue();
     }
 
     /**
@@ -940,8 +940,8 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ModelVersionDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, String version, ModelVersionDataInner body) {
+    private Mono<Response<ModelVersionInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, String version, ModelVersionInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1007,12 +1007,12 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ModelVersionDataInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<ModelVersionInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        ModelVersionDataInner body,
+        ModelVersionInner body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1074,29 +1074,10 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ModelVersionDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, String version, ModelVersionDataInner body) {
+    private Mono<ModelVersionInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, String version, ModelVersionInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, version, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create or update version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelVersionDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, ModelVersionDataInner body) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, name, version, body).block();
     }
 
     /**
@@ -1114,20 +1095,41 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelVersionDataInner> createOrUpdateWithResponse(
+    public Response<ModelVersionInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        ModelVersionDataInner body,
+        ModelVersionInner body,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, version, body, context).block();
     }
 
     /**
+     * Create or update version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @param body Version entity to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Resource Manager resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelVersionInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, String version, ModelVersionInner body) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, body, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1135,7 +1137,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ModelVersionDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ModelVersionInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1148,7 +1150,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ModelVersionDataInner>>map(
+            .<PagedResponse<ModelVersionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1163,7 +1165,8 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1172,7 +1175,7 @@ public final class ModelVersionsClientImpl implements ModelVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ModelVersionDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ModelVersionInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

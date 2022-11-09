@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NCrossValidationsMode. */
+/** Determines how N-Cross validations value is determined. */
 public final class NCrossValidationsMode extends ExpandableStringEnum<NCrossValidationsMode> {
     /** Static value Auto for NCrossValidationsMode. */
     public static final NCrossValidationsMode AUTO = fromString("Auto");

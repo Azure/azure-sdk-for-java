@@ -30,11 +30,14 @@ public final class SharedPrivateLinkResourceProperty {
     private String requestMessage;
 
     /*
-     * Indicates whether the connection has been Approved/Rejected/Removed by
-     * the owner of the service.
+     * Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
      */
     @JsonProperty(value = "status")
     private PrivateEndpointServiceConnectionStatus status;
+
+    /** Creates an instance of SharedPrivateLinkResourceProperty class. */
+    public SharedPrivateLinkResourceProperty() {
+    }
 
     /**
      * Get the privateLinkResourceId property: The resource id that private link links to.

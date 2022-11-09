@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Status. */
+/**
+ * Update Workspace Quota Status.
+ *
+ * <p>Status of update workspace quota.
+ */
 public final class Status extends ExpandableStringEnum<Status> {
     /** Static value Undefined for Status. */
     public static final Status UNDEFINED = fromString("Undefined");
