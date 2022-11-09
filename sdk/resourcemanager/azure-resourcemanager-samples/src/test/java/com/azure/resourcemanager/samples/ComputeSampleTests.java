@@ -195,7 +195,6 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void testCloneVirtualMachineToNewRegion() {
         Assertions.assertTrue(CloneVirtualMachineToNewRegion.runSample(azureResourceManager));
     }

@@ -34,6 +34,9 @@
 
 ## 5.13.1 (2022-09-11)
 
+### Bugs Fixed
+- Fixed issue where EventProcessorClient stop running when load balance thrown 412 status code error. ([#29927](https://github.com/Azure/azure-sdk-for-java/issues/29927))
+
 ### Other Changes
 
 #### Dependency Updates

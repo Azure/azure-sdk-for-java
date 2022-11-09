@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiagnoseResultLevel. */
+/** Level of workspace setup error. */
 public final class DiagnoseResultLevel extends ExpandableStringEnum<DiagnoseResultLevel> {
     /** Static value Warning for DiagnoseResultLevel. */
     public static final DiagnoseResultLevel WARNING = fromString("Warning");

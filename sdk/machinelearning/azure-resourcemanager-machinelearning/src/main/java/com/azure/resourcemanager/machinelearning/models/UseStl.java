@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UseStl. */
+/** Configure STL Decomposition of the time-series target column. */
 public final class UseStl extends ExpandableStringEnum<UseStl> {
     /** Static value None for UseStl. */
     public static final UseStl NONE = fromString("None");

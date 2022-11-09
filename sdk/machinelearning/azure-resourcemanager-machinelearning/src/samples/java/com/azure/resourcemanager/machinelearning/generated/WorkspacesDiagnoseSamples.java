@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for Workspaces Diagnose. */
 public final class WorkspacesDiagnoseSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Workspace/diagnose.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Workspace/diagnose.json
      */
     /**
      * Sample code: Diagnose Workspace.

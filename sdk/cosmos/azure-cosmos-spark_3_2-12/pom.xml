@@ -142,7 +142,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
-      <scope>provided</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.micrometer</groupId>
@@ -397,6 +397,22 @@
                       <shadedPattern>${shadingPrefix}.com.fasterxml</shadedPattern>
                     </relocation>
                     <relocation>
+                      <pattern>io.netty</pattern>
+                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.ctc.wstx</pattern>
+                      <shadedPattern>${shadingPrefix}.com.ctc.wstx</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.codahale.metrics</pattern>
+                      <shadedPattern>${shadingPrefix}.com.codahale.metrics</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.thoughtworks.paranamer</pattern>
+                      <shadedPattern>${shadingPrefix}.com.thoughtworks.paranamer</shadedPattern>
+                    </relocation>
+                    <relocation>
                       <pattern>io.micrometer</pattern>
                       <shadedPattern>${shadingPrefix}.io.micrometer</shadedPattern>
                     </relocation>
@@ -419,10 +435,6 @@
                     <relocation>
                       <pattern>javax.activation</pattern>
                       <shadedPattern>${shadingPrefix}.javax.activation</shadedPattern>
-                    </relocation>
-                    <relocation>
-                      <pattern>javax.xml</pattern>
-                      <shadedPattern>${shadingPrefix}.javax.xml</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.microsoft.azure</pattern>

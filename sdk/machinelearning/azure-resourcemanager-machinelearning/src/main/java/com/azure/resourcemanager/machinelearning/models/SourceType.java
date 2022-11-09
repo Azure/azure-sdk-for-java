@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceType. */
+/** Data source type. */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
     /** Static value Dataset for SourceType. */
     public static final SourceType DATASET = fromString("Dataset");

@@ -16,6 +16,10 @@ public final class CosmosDbSettings {
     @JsonProperty(value = "collectionsThroughput")
     private Integer collectionsThroughput;
 
+    /** Creates an instance of CosmosDbSettings class. */
+    public CosmosDbSettings() {
+    }
+
     /**
      * Get the collectionsThroughput property: The throughput of the collections in cosmosdb database.
      *

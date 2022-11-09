@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BatchDeployments List. */
 public final class BatchDeploymentsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchDeployment/list.json
      */
     /**
      * Sample code: List Batch Deployment.

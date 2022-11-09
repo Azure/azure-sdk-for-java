@@ -16,6 +16,9 @@ public final class RoleDefinitionFilter {
     @JsonProperty(value = "roleName")
     private String roleName;
 
+    /** Creates an instance of RoleDefinitionFilter class. */
+    public RoleDefinitionFilter() {}
+
     /**
      * Get the roleName property: Returns role definition with the specific name.
      *

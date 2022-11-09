@@ -20,6 +20,10 @@ public final class CustomTargetRollingWindowSize extends TargetRollingWindowSize
     @JsonProperty(value = "value", required = true)
     private int value;
 
+    /** Creates an instance of CustomTargetRollingWindowSize class. */
+    public CustomTargetRollingWindowSize() {
+    }
+
     /**
      * Get the value property: [Required] TargetRollingWindowSize value.
      *
