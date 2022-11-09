@@ -3,10 +3,10 @@
 
 package com.azure.aot.graalvm.support.implementation;
 
-import com.oracle.svm.core.jdk.proxy.DynamicProxyRegistry;
 import org.graalvm.nativeimage.ImageSingletons;
 import org.graalvm.nativeimage.hosted.Feature;
 import org.graalvm.nativeimage.hosted.Feature.BeforeAnalysisAccess;
+import org.graalvm.nativeimage.hosted.RuntimeProxyCreation;
 import org.graalvm.nativeimage.hosted.RuntimeReflection;
 
 import java.io.IOException;
@@ -45,7 +45,7 @@ public final class GraalVMFeatureUtils {
             }
         }
         if (classList.size() == interfaces.length) {
-            ImageSingletons.lookup(DynamicProxyRegistry.class).addProxyClass(classList.toArray(new Class<?>[interfaces.length]));
+            RuntimeProxyCreation.register(classList.toArray(new Class<?>[interfaces.length]));
         }
     }
 

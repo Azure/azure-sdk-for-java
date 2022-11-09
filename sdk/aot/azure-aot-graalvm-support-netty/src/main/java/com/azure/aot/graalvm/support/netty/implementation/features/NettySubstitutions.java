@@ -22,8 +22,6 @@ import com.oracle.svm.core.annotate.RecomputeFieldValue;
 import com.oracle.svm.core.annotate.RecomputeFieldValue.Kind;
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
-import com.oracle.svm.core.jdk.JDK11OrLater;
-import com.oracle.svm.core.jdk.JDK8OrEarlier;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.embedded.EmbeddedChannel;
@@ -243,8 +241,7 @@ final class TargetIoNettyHandlerSslSslHandler$SslEngineType {
 }
 
 @TargetClass(
-        className = "io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator$AlpnWrapper",
-        onlyWith = JDK11OrLater.class)
+        className = "io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator$AlpnWrapper")
 @SuppressWarnings("deprecation")
 final class TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapper {
     @Substitute
@@ -258,52 +255,51 @@ final class TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapp
 
 }
 
+//@TargetClass(
+//        className = "io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator$AlpnWrapper",
+//        onlyWith = JDK8OrEarlier.class)
+//@SuppressWarnings("deprecation")
+//final class TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8 {
+//    @Substitute
+//    public SSLEngine wrapSslEngine(SSLEngine engine,
+//                                   ByteBufAllocator alloc,
+//                                   io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator,
+//                                   boolean isServer) {
+//        if (TargetIoNettyHandlerSslJettyAlpnSslEngine.isAvailable()) {
+//            return isServer
+//                    ? (SSLEngine) (Object) TargetIoNettyHandlerSslJettyAlpnSslEngine.newServerEngine(engine, applicationNegotiator)
+//                    : (SSLEngine) (Object) TargetIoNettyHandlerSslJettyAlpnSslEngine.newClientEngine(engine, applicationNegotiator);
+//        }
+//        throw new RuntimeException("Unable to wrap SSLEngine of type " + engine.getClass().getName());
+//    }
+//
+//}
+
+//@TargetClass(
+//        className = "io.netty.handler.ssl.JettyAlpnSslEngine",
+//        onlyWith = JDK8OrEarlier.class)
+//@SuppressWarnings("deprecation")
+//final class TargetIoNettyHandlerSslJettyAlpnSslEngine {
+//    @Substitute
+//    static boolean isAvailable() {
+//        return false;
+//    }
+//
+//    @Substitute
+//    static TargetIoNettyHandlerSslJettyAlpnSslEngine newClientEngine(
+//            SSLEngine engine, io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator) {
+//        return null;
+//    }
+//
+//    @Substitute
+//    static TargetIoNettyHandlerSslJettyAlpnSslEngine newServerEngine(
+//            SSLEngine engine, io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator) {
+//        return null;
+//    }
+//}
+
 @TargetClass(
-        className = "io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator$AlpnWrapper",
-        onlyWith = JDK8OrEarlier.class)
-@SuppressWarnings("deprecation")
-final class TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8 {
-    @Substitute
-    public SSLEngine wrapSslEngine(SSLEngine engine,
-                                   ByteBufAllocator alloc,
-                                   io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator,
-                                   boolean isServer) {
-        if (TargetIoNettyHandlerSslJettyAlpnSslEngine.isAvailable()) {
-            return isServer
-                    ? (SSLEngine) (Object) TargetIoNettyHandlerSslJettyAlpnSslEngine.newServerEngine(engine, applicationNegotiator)
-                    : (SSLEngine) (Object) TargetIoNettyHandlerSslJettyAlpnSslEngine.newClientEngine(engine, applicationNegotiator);
-        }
-        throw new RuntimeException("Unable to wrap SSLEngine of type " + engine.getClass().getName());
-    }
-
-}
-
-@TargetClass(
-        className = "io.netty.handler.ssl.JettyAlpnSslEngine",
-        onlyWith = JDK8OrEarlier.class)
-@SuppressWarnings("deprecation")
-final class TargetIoNettyHandlerSslJettyAlpnSslEngine {
-    @Substitute
-    static boolean isAvailable() {
-        return false;
-    }
-
-    @Substitute
-    static TargetIoNettyHandlerSslJettyAlpnSslEngine newClientEngine(
-            SSLEngine engine, io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator) {
-        return null;
-    }
-
-    @Substitute
-    static TargetIoNettyHandlerSslJettyAlpnSslEngine newServerEngine(
-            SSLEngine engine, io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator) {
-        return null;
-    }
-}
-
-@TargetClass(
-        className = "io.netty.handler.ssl.JdkAlpnSslEngine",
-        onlyWith = JDK11OrLater.class)
+        className = "io.netty.handler.ssl.JdkAlpnSslEngine")
 @SuppressWarnings("deprecation")
 final class TargetIoNettyHandlerSslJdkAlpnSslEngine {
     @Alias
@@ -451,8 +447,8 @@ final class HolderIoNettyUtilConcurrentScheduledFutureTask {
     static long START_TIME = System.nanoTime();
 }
 
-@TargetClass(className = "io.netty.util.concurrent.ScheduledFutureTask")
-final class TargetIoNettyUtilConcurrentScheduledFutureTask {
+@TargetClass(className = "io.netty.util.concurrent.AbstractScheduledEventExecutor")
+final class TargetIoNettyUtilConcurrentAbstractScheduledEventExecutor {
 
     // The START_TIME field is kept but not used.
     // All the accesses to it have been replaced with Holder_io_netty_util_concurrent_ScheduledFutureTask
@@ -463,19 +459,8 @@ final class TargetIoNettyUtilConcurrentScheduledFutureTask {
     }
 
     @Substitute
-    static long nanoTime() {
+    static long defaultCurrentTimeNanos() {
         return System.nanoTime() - HolderIoNettyUtilConcurrentScheduledFutureTask.START_TIME;
-    }
-
-    @Alias
-    public long deadlineNanos() {
-        return 0;
-    }
-
-    @Substitute
-    public long delayNanos(long currentTimeNanos) {
-        return Math.max(0,
-                deadlineNanos() - (currentTimeNanos - HolderIoNettyUtilConcurrentScheduledFutureTask.START_TIME));
     }
 }
 
