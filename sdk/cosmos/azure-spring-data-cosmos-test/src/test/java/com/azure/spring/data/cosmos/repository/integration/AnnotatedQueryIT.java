@@ -11,7 +11,6 @@ import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -47,8 +46,6 @@ public class AnnotatedQueryIT {
     @Autowired
     private CosmosTemplate template;
 
-    private static CosmosEntityInformation<Address, String> addressInfo;
-
     @Autowired
     private AuditableRepository auditableRepository;
 
@@ -58,7 +55,6 @@ public class AnnotatedQueryIT {
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class, AuditableEntity.class);
-        addressInfo = new CosmosEntityInformation<>(Address.class);
     }
 
     @Test
