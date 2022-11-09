@@ -175,6 +175,7 @@
     "sdk/remoterendering/azure-mixedreality-remoterendering/**",
     "sdk/schemaregistry/azure-data-schemaregistry/**",
     "sdk/schemaregistry/azure-data-schemaregistry-apacheavro/**",
+    "sdk/servicebus/azure-messaging-servicebus-stress/**",
     "sdk/servicebus/build/**",
     "sdk/spring/scripts/**",
     "sdk/spring/spring-cloud-azure-actuator/**",
