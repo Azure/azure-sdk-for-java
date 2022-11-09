@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MountAction. */
+/** Mount Action. */
 public final class MountAction extends ExpandableStringEnum<MountAction> {
     /** Static value Mount for MountAction. */
     public static final MountAction MOUNT = fromString("Mount");

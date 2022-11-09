@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NodeState. */
+/** State of the compute node. Values are idle, running, preparing, unusable, leaving and preempted. */
 public final class NodeState extends ExpandableStringEnum<NodeState> {
     /** Static value idle for NodeState. */
     public static final NodeState IDLE = fromString("idle");

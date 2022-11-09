@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReferenceType. */
+/** Enum to determine which reference method to use for an asset. */
 public final class ReferenceType extends ExpandableStringEnum<ReferenceType> {
     /** Static value Id for ReferenceType. */
     public static final ReferenceType ID = fromString("Id");

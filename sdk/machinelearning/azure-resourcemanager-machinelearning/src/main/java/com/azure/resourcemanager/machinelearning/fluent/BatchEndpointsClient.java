@@ -11,9 +11,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.machinelearning.fluent.models.BatchEndpointDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.BatchEndpointInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthKeysInner;
-import com.azure.resourcemanager.machinelearning.models.PartialBatchEndpointPartialTrackedResource;
+import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedResourceWithIdentity;
 
 /** An instance of this class provides access to all the operations defined in BatchEndpointsClient. */
 public interface BatchEndpointsClient {
@@ -28,7 +28,7 @@ public interface BatchEndpointsClient {
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchEndpointDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<BatchEndpointInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * Lists Batch inference endpoint in the workspace.
@@ -44,7 +44,7 @@ public interface BatchEndpointsClient {
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchEndpointDataInner> list(
+    PagedIterable<BatchEndpointInner> list(
         String resourceGroupName, String workspaceName, Integer count, String skip, Context context);
 
     /**
@@ -110,20 +110,6 @@ public interface BatchEndpointsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Name for the Batch Endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch inference endpoint by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchEndpointDataInner get(String resourceGroupName, String workspaceName, String endpointName);
-
-    /**
-     * Gets a batch inference endpoint by name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Name for the Batch Endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,10 +117,24 @@ public interface BatchEndpointsClient {
      * @return a batch inference endpoint by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BatchEndpointDataInner> getWithResponse(
+    Response<BatchEndpointInner> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
+     * Gets a batch inference endpoint by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Name for the Batch Endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch inference endpoint by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BatchEndpointInner get(String resourceGroupName, String workspaceName, String endpointName);
+
+    /**
      * Update a batch inference endpoint (asynchronous).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -147,11 +147,11 @@ public interface BatchEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginUpdate(
+    SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body);
+        PartialMinimalTrackedResourceWithIdentity body);
 
     /**
      * Update a batch inference endpoint (asynchronous).
@@ -167,11 +167,11 @@ public interface BatchEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginUpdate(
+    SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context);
 
     /**
@@ -187,11 +187,11 @@ public interface BatchEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchEndpointDataInner update(
+    BatchEndpointInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body);
+        PartialMinimalTrackedResourceWithIdentity body);
 
     /**
      * Update a batch inference endpoint (asynchronous).
@@ -207,11 +207,11 @@ public interface BatchEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchEndpointDataInner update(
+    BatchEndpointInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context);
 
     /**
@@ -227,8 +227,8 @@ public interface BatchEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointDataInner body);
+    SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body);
 
     /**
      * Creates a batch inference endpoint (asynchronous).
@@ -244,12 +244,8 @@ public interface BatchEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        BatchEndpointDataInner body,
-        Context context);
+    SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body, Context context);
 
     /**
      * Creates a batch inference endpoint (asynchronous).
@@ -264,8 +260,8 @@ public interface BatchEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchEndpointDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointDataInner body);
+    BatchEndpointInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body);
 
     /**
      * Creates a batch inference endpoint (asynchronous).
@@ -281,26 +277,8 @@ public interface BatchEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchEndpointDataInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        BatchEndpointDataInner body,
-        Context context);
-
-    /**
-     * Lists batch Inference Endpoint keys.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Inference Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointAuthKeysInner listKeys(String resourceGroupName, String workspaceName, String endpointName);
+    BatchEndpointInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body, Context context);
 
     /**
      * Lists batch Inference Endpoint keys.
@@ -317,4 +295,18 @@ public interface BatchEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EndpointAuthKeysInner> listKeysWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context);
+
+    /**
+     * Lists batch Inference Endpoint keys.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Inference Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keys for endpoint authentication.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EndpointAuthKeysInner listKeys(String resourceGroupName, String workspaceName, String endpointName);
 }
