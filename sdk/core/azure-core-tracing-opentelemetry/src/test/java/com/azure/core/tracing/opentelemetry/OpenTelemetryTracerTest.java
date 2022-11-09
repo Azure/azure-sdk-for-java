@@ -324,6 +324,58 @@ public class OpenTelemetryTracerTest {
     }
 
     @Test
+    public void startProcessSpanWithLinks() {
+        // Arrange
+        final Context spanBuilder = openTelemetryTracer.getSharedSpanBuilder("span", Context.NONE);
+
+        Span link1 = tracer.spanBuilder("link1").startSpan();
+        Span link2 = tracer.spanBuilder("link2").startSpan();
+
+        openTelemetryTracer.addLink(spanBuilder.addData(SPAN_CONTEXT_KEY, link1.getSpanContext()));
+        openTelemetryTracer.addLink(spanBuilder
+            .addData(SPAN_CONTEXT_KEY, link2.getSpanContext())
+            .addData(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE));
+
+        // Act
+        final Context spanCtx = openTelemetryTracer.start(METHOD_NAME, spanBuilder, ProcessKind.PROCESS);
+        openTelemetryTracer.end(null, null, spanCtx);
+
+        // Assert
+        ReadableSpan span = getSpan(spanCtx);
+        List<LinkData> links = span.toSpanData().getLinks();
+        assertEquals(2, links.size());
+        assertEquals(link1.getSpanContext().getTraceId(), links.get(0).getSpanContext().getTraceId());
+        assertEquals(link1.getSpanContext().getSpanId(),  links.get(0).getSpanContext().getSpanId());
+        assertEquals(0, links.get(0).getAttributes().size());
+
+        assertEquals(link2.getSpanContext().getTraceId(), links.get(1).getSpanContext().getTraceId());
+        assertEquals(link2.getSpanContext().getSpanId(),  links.get(1).getSpanContext().getSpanId());
+        Attributes linkAttributes = links.get(1).getAttributes();
+        assertEquals(1, linkAttributes.size());
+        assertEquals(MESSAGE_ENQUEUED_VALUE, linkAttributes.get(AttributeKey.longKey(MESSAGE_ENQUEUED_TIME)));
+    }
+
+    @Test
+    public void startConsumeSpanWitStartTimeInContext() {
+        // Arrange
+        final Context spanBuilder = openTelemetryTracer.getSharedSpanBuilder("span",
+            new Context("span-start-time", Instant.now().minusSeconds(1000)));
+
+        Span link = tracer.spanBuilder("link1").startSpan();
+
+        openTelemetryTracer.addLink(spanBuilder.addData(SPAN_CONTEXT_KEY, link.getSpanContext()));
+
+        // Act
+        final Context spanCtx = openTelemetryTracer.start(METHOD_NAME, spanBuilder, ProcessKind.PROCESS);
+        openTelemetryTracer.end(null, null, spanCtx);
+
+        // Assert
+        ReadableSpan span = getSpan(spanCtx);
+        assertEquals(1, span.toSpanData().getLinks().size());
+        assertEquals(span.getLatencyNanos() / 1000_000_000d, 1000d, 10);
+    }
+
+    @Test
     public void startSpanOverloadNullPointerException() {
 
         // Assert
@@ -930,7 +982,6 @@ public class OpenTelemetryTracerTest {
             Arguments.of(com.azure.core.util.tracing.SpanKind.SERVER, com.azure.core.util.tracing.SpanKind.PRODUCER, false),
             Arguments.of(com.azure.core.util.tracing.SpanKind.SERVER, com.azure.core.util.tracing.SpanKind.CONSUMER, false),
             Arguments.of(com.azure.core.util.tracing.SpanKind.SERVER, com.azure.core.util.tracing.SpanKind.SERVER, false));
-
     }
 
     @Test

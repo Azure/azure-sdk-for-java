@@ -15,20 +15,6 @@ public interface OperationOperations {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    ValidateOperationsResponse validate(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters);
-
-    /**
-     * Validate operation for specified backed up item. This is a synchronous operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters resource validate operation request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,4 +23,18 @@ public interface OperationOperations {
      */
     Response<ValidateOperationsResponse> validateWithResponse(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context);
+
+    /**
+     * Validate operation for specified backed up item. This is a synchronous operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters resource validate operation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    ValidateOperationsResponse validate(
+        String vaultName, String resourceGroupName, ValidateOperationRequest parameters);
 }

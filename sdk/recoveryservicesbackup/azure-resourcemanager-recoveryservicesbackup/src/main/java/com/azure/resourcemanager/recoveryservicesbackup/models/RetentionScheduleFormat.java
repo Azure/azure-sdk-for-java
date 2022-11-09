@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RetentionScheduleFormat. */
+/** Retention schedule format type for monthly retention policy. */
 public final class RetentionScheduleFormat extends ExpandableStringEnum<RetentionScheduleFormat> {
     /** Static value Invalid for RetentionScheduleFormat. */
     public static final RetentionScheduleFormat INVALID = fromString("Invalid");

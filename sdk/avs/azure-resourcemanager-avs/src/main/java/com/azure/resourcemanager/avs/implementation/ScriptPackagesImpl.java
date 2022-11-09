@@ -13,10 +13,9 @@ import com.azure.resourcemanager.avs.fluent.ScriptPackagesClient;
 import com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner;
 import com.azure.resourcemanager.avs.models.ScriptPackage;
 import com.azure.resourcemanager.avs.models.ScriptPackages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ScriptPackagesImpl implements ScriptPackages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptPackagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptPackagesImpl.class);
 
     private final ScriptPackagesClient innerClient;
 
@@ -39,15 +38,6 @@ public final class ScriptPackagesImpl implements ScriptPackages {
         return Utils.mapPage(inner, inner1 -> new ScriptPackageImpl(inner1, this.manager()));
     }
 
-    public ScriptPackage get(String resourceGroupName, String privateCloudName, String scriptPackageName) {
-        ScriptPackageInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, scriptPackageName);
-        if (inner != null) {
-            return new ScriptPackageImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ScriptPackage> getWithResponse(
         String resourceGroupName, String privateCloudName, String scriptPackageName, Context context) {
         Response<ScriptPackageInner> inner =
@@ -58,6 +48,15 @@ public final class ScriptPackagesImpl implements ScriptPackages {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ScriptPackageImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ScriptPackage get(String resourceGroupName, String privateCloudName, String scriptPackageName) {
+        ScriptPackageInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, scriptPackageName);
+        if (inner != null) {
+            return new ScriptPackageImpl(inner, this.manager());
         } else {
             return null;
         }

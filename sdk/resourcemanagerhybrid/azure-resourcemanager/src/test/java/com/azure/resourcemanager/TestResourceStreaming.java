@@ -55,7 +55,7 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                     virtualMachines.manager().resourceManager().internalContext().randomResourceName("pip", 20))
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
-                .withAdminPassword("12NewPA$$w0rd!")
+                .withAdminPassword("fakePasswordPlaceholder")
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewStorageAccount(storageCreatable)
                 .withNewAvailabilitySet(virtualMachines.manager().resourceManager().internalContext().randomResourceName("avset", 10))

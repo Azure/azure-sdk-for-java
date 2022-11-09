@@ -1,6 +1,20 @@
 # Release History
 
+## 1.17.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Reverted behavior changes of `claimOwnership` back to return empty when error occurred, to avoid throw out 412 status code error. ([#31672](https://github.com/Azure/azure-sdk-for-java/issues/31672))
+### Other Changes
+
 ## 1.16.0 (2022-10-13)
+
+### Breaking Changes
+
+- Remove `com.azure.messaging.eventhubs.checkpointstore.blob.Messages` from public API.
 
 ### Other Changes
 

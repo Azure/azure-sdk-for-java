@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupManagementType. */
+/** Backup management type to execute the current job. */
 public final class BackupManagementType extends ExpandableStringEnum<BackupManagementType> {
     /** Static value Invalid for BackupManagementType. */
     public static final BackupManagementType INVALID = fromString("Invalid");

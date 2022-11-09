@@ -39,6 +39,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupUsageSummar
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupWorkloadItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMoveOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.DeletedProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.FeatureSupportsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
@@ -696,6 +697,18 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         return this.backupProtectionContainers;
     }
 
+    /** The DeletedProtectionContainersClient object to access its operations. */
+    private final DeletedProtectionContainersClient deletedProtectionContainers;
+
+    /**
+     * Gets the DeletedProtectionContainersClient object to access its operations.
+     *
+     * @return the DeletedProtectionContainersClient object.
+     */
+    public DeletedProtectionContainersClient getDeletedProtectionContainers() {
+        return this.deletedProtectionContainers;
+    }
+
     /** The SecurityPINsClient object to access its operations. */
     private final SecurityPINsClient securityPINs;
 
@@ -766,7 +779,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-02-01";
+        this.apiVersion = "2022-09-01-preview";
         this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
         this.protectionIntents = new ProtectionIntentsClientImpl(this);
         this.backupStatus = new BackupStatusClientImpl(this);
@@ -813,6 +826,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.protectionPolicyOperationStatuses = new ProtectionPolicyOperationStatusesClientImpl(this);
         this.backupProtectableItems = new BackupProtectableItemsClientImpl(this);
         this.backupProtectionContainers = new BackupProtectionContainersClientImpl(this);
+        this.deletedProtectionContainers = new DeletedProtectionContainersClientImpl(this);
         this.securityPINs = new SecurityPINsClientImpl(this);
         this.recoveryPointsRecommendedForMoves = new RecoveryPointsRecommendedForMovesClientImpl(this);
         this.resourceGuardProxies = new ResourceGuardProxiesClientImpl(this);

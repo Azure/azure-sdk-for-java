@@ -419,7 +419,8 @@ public class Transforms {
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.NUMBER.equals(
             innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField,
-                Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
+                innerDocumentField.getValueNumber() == null
+                    ? null : Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.INTEGER.equals(
             innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueInteger());
@@ -499,7 +500,7 @@ public class Transforms {
             return innerDocumentSpans
                 .stream()
                 .map(Transforms::getDocumentSpan)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
         } else {
             return null;
         }

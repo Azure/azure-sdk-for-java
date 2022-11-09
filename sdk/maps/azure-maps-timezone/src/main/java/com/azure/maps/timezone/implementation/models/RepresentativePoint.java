@@ -22,6 +22,9 @@ public final class RepresentativePoint {
     @JsonProperty(value = "Longitude", access = JsonProperty.Access.WRITE_ONLY)
     private Float longitude;
 
+    /** Creates an instance of RepresentativePoint class. */
+    public RepresentativePoint() {}
+
     /**
      * Get the latitude property: Latitude property.
      *

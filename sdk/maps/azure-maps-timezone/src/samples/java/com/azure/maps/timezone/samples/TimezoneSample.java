@@ -6,18 +6,18 @@ package com.azure.maps.timezone.samples;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.maps.timezone.TimezoneAsyncClient;
-import com.azure.maps.timezone.TimezoneClient;
-import com.azure.maps.timezone.TimezoneClientBuilder;
+import com.azure.maps.timezone.TimeZoneAsyncClient;
+import com.azure.maps.timezone.TimeZoneClient;
+import com.azure.maps.timezone.TimeZoneClientBuilder;
 
 public class TimezoneSample {
-    public TimezoneClient createMapsSyncClientUsingAzureKeyCredential() {
+    public TimeZoneClient createMapsSyncClientUsingAzureKeyCredential() {
         // BEGIN: com.azure.maps.timezone.sync.builder.key.instantiation
         // Authenticates using subscription key
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
         // Creates a client
-        TimezoneClient client = new TimezoneClientBuilder() 
+        TimeZoneClient client = new TimeZoneClientBuilder() 
             .credential(keyCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
@@ -26,14 +26,14 @@ public class TimezoneSample {
         return client;
     }
 
-    public TimezoneClient createMapsSyncClientUsingAzureADCredential() {
+    public TimeZoneClient createMapsSyncClientUsingAzureADCredential() {
         // BEGIN: com.azure.maps.timezone.sync.builder.ad.instantiation
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Creates a client
-        TimezoneClient client = new TimezoneClientBuilder()
+        TimeZoneClient client = new TimeZoneClientBuilder()
             .credential(tokenCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
@@ -42,13 +42,13 @@ public class TimezoneSample {
         return client;
     }
 
-    public TimezoneAsyncClient createMapsSearchAsyncClientUsingAzureKeyCredential() {
+    public TimeZoneAsyncClient createMapsSearchAsyncClientUsingAzureKeyCredential() {
         // BEGIN: com.azure.maps.timezone.async.builder.key.instantiation
         // Authenticates using subscription key
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
         // Creates a client
-        TimezoneAsyncClient asyncClient = new TimezoneClientBuilder()
+        TimeZoneAsyncClient asyncClient = new TimeZoneClientBuilder()
             .credential(keyCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildAsyncClient();
@@ -58,14 +58,14 @@ public class TimezoneSample {
         return asyncClient;
     }
 
-    public TimezoneAsyncClient createMapsSearchAsyncClientUsingAzureADCredential() {
+    public TimeZoneAsyncClient createMapsSearchAsyncClientUsingAzureADCredential() {
         // BEGIN: com.azure.maps.timezone.async.builder.ad.instantiation
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Creates a client
-        TimezoneAsyncClient asyncClient = new TimezoneClientBuilder()
+        TimeZoneAsyncClient asyncClient = new TimeZoneClientBuilder()
             .credential(tokenCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildAsyncClient();

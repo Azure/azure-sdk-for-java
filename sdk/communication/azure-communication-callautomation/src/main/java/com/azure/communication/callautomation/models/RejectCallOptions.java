@@ -5,6 +5,9 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * The options for creating a call.
  */
@@ -32,7 +35,8 @@ public class RejectCallOptions {
      */
     public RejectCallOptions(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
-        callRejectReason = CallRejectReason.NONE;
+        this.callRejectReason = CallRejectReason.NONE;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**

@@ -20,6 +20,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "PrepareDataMoveResponse", value = PrepareDataMoveResponse.class)})
 @Immutable
 public class VaultStorageConfigOperationResultResponseInner {
+    /** Creates an instance of VaultStorageConfigOperationResultResponseInner class. */
+    public VaultStorageConfigOperationResultResponseInner() {
+    }
+
     /**
      * Validates the instance.
      *

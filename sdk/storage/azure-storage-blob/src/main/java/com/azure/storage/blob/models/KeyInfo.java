@@ -24,6 +24,9 @@ public final class KeyInfo {
     @JsonProperty(value = "Expiry", required = true)
     private String expiry;
 
+    /** Creates an instance of KeyInfo class. */
+    public KeyInfo() {}
+
     /**
      * Get the start property: The date-time the key is active in ISO 8601 UTC time.
      *

@@ -18,6 +18,10 @@ public final class ProtectionIntentResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<ProtectionIntentResourceInner> value;
 
+    /** Creates an instance of ProtectionIntentResourceList class. */
+    public ProtectionIntentResourceList() {
+    }
+
     /**
      * Get the value property: List of resources.
      *
