@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CallConnectionPropertiesInternal model. */
+/** Properties of a call connection. */
 @Fluent
 public final class CallConnectionPropertiesInternal {
     /*
@@ -24,7 +24,7 @@ public final class CallConnectionPropertiesInternal {
     private String serverCallId;
 
     /*
-     * The source of the call.
+     * The source of the call, which is the caller.
      */
     @JsonProperty(value = "source")
     private CallSourceInternal source;
@@ -94,7 +94,7 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Get the source property: The source of the call.
+     * Get the source property: The source of the call, which is the caller.
      *
      * @return the source value.
      */
@@ -103,7 +103,7 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Set the source property: The source of the call.
+     * Set the source property: The source of the call, which is the caller.
      *
      * @param source the source value to set.
      * @return the CallConnectionPropertiesInternal object itself.

@@ -1,6 +1,14 @@
 # Release History
 
-## 2.20.0-beta.1 (Unreleased)
+## 2.21.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `withCopyStart` method in `Snapshot` for copying incremental snapshot from incremental snapshot.
+- Supported `awaitCopyStartCompletion` and `awaitCopyStartCompletionAsync` method in `Snapshot`.
+- Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress. 
+
+## 2.20.0 (2022-10-26)
 
 ### Bugs Fixed
 

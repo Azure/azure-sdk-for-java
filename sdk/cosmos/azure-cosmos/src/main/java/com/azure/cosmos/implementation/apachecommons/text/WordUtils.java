@@ -26,14 +26,18 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class is shaded from version 1.10.0 of apache commons-text library
+ */
 public class WordUtils {
+
     /**
-     * <p>Converts all the whitespace separated words in a String into capitalized words,
+     * Converts all the whitespace separated words in a String into capitalized words,
      * that is each word is made up of a titlecase character and then a series of
-     * lowercase characters.  </p>
+     * lowercase characters.
      *
      * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.
-     * A <code>null</code> input String returns <code>null</code>.
+     * A {@code null} input String returns {@code null}.
      * Capitalization uses the Unicode title case, normally equivalent to
      * upper case.</p>
      *
@@ -44,22 +48,22 @@ public class WordUtils {
      * </pre>
      *
      * @param str  the String to capitalize, may be null
-     * @return capitalized String, <code>null</code> if null String input
+     * @return capitalized String, {@code null} if null String input
      */
     public static String capitalizeFully(final String str) {
         return capitalizeFully(str, null);
     }
 
     /**
-     * <p>Converts all the delimiter separated words in a String into capitalized words,
+     * Converts all the delimiter separated words in a String into capitalized words,
      * that is each word is made up of a titlecase character and then a series of
-     * lowercase characters. </p>
+     * lowercase characters.
      *
      * <p>The delimiters represent a set of characters understood to separate words.
      * The first string character and the first non-delimiter character after a
-     * delimiter will be capitalized. </p>
+     * delimiter will be capitalized.</p>
      *
-     * <p>A <code>null</code> input String returns <code>null</code>.
+     * <p>A {@code null} input String returns {@code null}.
      * Capitalization uses the Unicode title case, normally equivalent to
      * upper case.</p>
      *
@@ -73,7 +77,7 @@ public class WordUtils {
      *
      * @param str  the String to capitalize, may be null
      * @param delimiters  set of characters to determine capitalization, null means whitespace
-     * @return capitalized String, <code>null</code> if null String input
+     * @return capitalized String, {@code null} if null String input
      */
     public static String capitalizeFully(String str, final char... delimiters) {
         if (StringUtils.isEmpty(str)) {
@@ -84,16 +88,16 @@ public class WordUtils {
     }
 
     /**
-     * <p>Capitalizes all the delimiter separated words in a String.
+     * Capitalizes all the delimiter separated words in a String.
      * Only the first character of each word is changed. To convert the
      * rest of each word to lowercase at the same time,
-     * use {@link #capitalizeFully(String, char[])}.</p>
+     * use {@link #capitalizeFully(String, char[])}.
      *
      * <p>The delimiters represent a set of characters understood to separate words.
      * The first string character and the first non-delimiter character after a
-     * delimiter will be capitalized. </p>
+     * delimiter will be capitalized.</p>
      *
-     * <p>A <code>null</code> input String returns <code>null</code>.
+     * <p>A {@code null} input String returns {@code null}.
      * Capitalization uses the Unicode title case, normally equivalent to
      * upper case.</p>
      *
@@ -108,7 +112,7 @@ public class WordUtils {
      *
      * @param str  the String to capitalize, may be null
      * @param delimiters  set of characters to determine capitalization, null means whitespace
-     * @return capitalized String, <code>null</code> if null String input
+     * @return capitalized String, {@code null} if null String input
      * @see #capitalizeFully(String)
      */
     public static String capitalize(final String str, final char... delimiters) {
@@ -142,10 +146,8 @@ public class WordUtils {
     }
 
     /**
-     * <p>
      * Converts an array of delimiters to a hash set of code points. Code point of space(32) is added as the default
      * value if delimiters is null. The generated hash set provides O(1) lookup time.
-     * </p>
      *
      * @param delimiters set of characters to determine capitalization, null means whitespace
      * @return Set<Integer>

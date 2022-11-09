@@ -169,16 +169,16 @@ public final class ResourceGuardProxyBaseResourceImpl
         return this;
     }
 
-    public UnlockDeleteResponse unlockDelete(UnlockDeleteRequest parameters) {
-        return serviceManager
-            .resourceGuardProxyOperations()
-            .unlockDelete(vaultName, resourceGroupName, resourceGuardProxyName, parameters);
-    }
-
     public Response<UnlockDeleteResponse> unlockDeleteWithResponse(UnlockDeleteRequest parameters, Context context) {
         return serviceManager
             .resourceGuardProxyOperations()
             .unlockDeleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context);
+    }
+
+    public UnlockDeleteResponse unlockDelete(UnlockDeleteRequest parameters) {
+        return serviceManager
+            .resourceGuardProxyOperations()
+            .unlockDelete(vaultName, resourceGroupName, resourceGuardProxyName, parameters);
     }
 
     public ResourceGuardProxyBaseResourceImpl withRegion(Region location) {

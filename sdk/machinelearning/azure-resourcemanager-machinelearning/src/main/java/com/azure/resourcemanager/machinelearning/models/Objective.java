@@ -23,6 +23,10 @@ public final class Objective {
     @JsonProperty(value = "primaryMetric", required = true)
     private String primaryMetric;
 
+    /** Creates an instance of Objective class. */
+    public Objective() {
+    }
+
     /**
      * Get the goal property: [Required] Defines supported metric goals for hyperparameter tuning.
      *

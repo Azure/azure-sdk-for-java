@@ -21,6 +21,10 @@ public final class ServicePrincipalDatastoreSecrets extends DatastoreSecretsInne
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
+    /** Creates an instance of ServicePrincipalDatastoreSecrets class. */
+    public ServicePrincipalDatastoreSecrets() {
+    }
+
     /**
      * Get the clientSecret property: Service principal secret.
      *

@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
  * Representation of the data format for a {@link CloudEvent}.
@@ -16,6 +17,18 @@ import com.azure.core.util.ExpandableStringEnum;
  */
 public final class CloudEventDataFormat extends ExpandableStringEnum<CloudEventDataFormat> {
     /**
+     * Creates a new instance of {@link CloudEventDataFormat} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link CloudEventDataFormat} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CloudEventDataFormat() {
+    }
+
+    /**
      * Bytes format.
      */
     public static final CloudEventDataFormat BYTES = fromString("BYTES", CloudEventDataFormat.class);
@@ -24,4 +37,15 @@ public final class CloudEventDataFormat extends ExpandableStringEnum<CloudEventD
      * JSON format.
      */
     public static final CloudEventDataFormat JSON = fromString("JSON", CloudEventDataFormat.class);
+
+    /**
+     * Creates or gets a CloudEventDataFormat from its string representation.
+     *
+     * @param name Name of the CloudEventDataFormat.
+     * @return The corresponding CloudEventDataFormat.
+     */
+    @JsonCreator
+    public static CloudEventDataFormat fromString(String name) {
+        return fromString(name, CloudEventDataFormat.class);
+    }
 }

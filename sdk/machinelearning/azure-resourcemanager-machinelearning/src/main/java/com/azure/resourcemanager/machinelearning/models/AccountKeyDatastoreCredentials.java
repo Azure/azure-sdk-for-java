@@ -21,6 +21,10 @@ public final class AccountKeyDatastoreCredentials extends DatastoreCredentials {
     @JsonProperty(value = "secrets", required = true)
     private AccountKeyDatastoreSecrets secrets;
 
+    /** Creates an instance of AccountKeyDatastoreCredentials class. */
+    public AccountKeyDatastoreCredentials() {
+    }
+
     /**
      * Get the secrets property: [Required] Storage account secrets.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataMoveLevel. */
+/** DataMove Level. */
 public final class DataMoveLevel extends ExpandableStringEnum<DataMoveLevel> {
     /** Static value Invalid for DataMoveLevel. */
     public static final DataMoveLevel INVALID = fromString("Invalid");

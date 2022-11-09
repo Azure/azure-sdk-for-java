@@ -18,6 +18,9 @@ public final class BlobServiceStatistics {
     @JsonProperty(value = "GeoReplication")
     private GeoReplication geoReplication;
 
+    /** Creates an instance of BlobServiceStatistics class. */
+    public BlobServiceStatistics() {}
+
     /**
      * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.
      *

@@ -147,6 +147,14 @@ public class AmqpMetricsProvider {
     }
 
     /**
+     * Checks if request-response duration metric is enabled (for micro-optimizations).
+     */
+    public boolean isRequestResponseDurationEnabled() {
+        return isEnabled && sendDuration.isEnabled();
+    }
+
+
+    /**
      * Checks if prefetched sequence number is enabled (for micro-optimizations).
      */
     public boolean isPrefetchedSequenceNumberEnabled() {

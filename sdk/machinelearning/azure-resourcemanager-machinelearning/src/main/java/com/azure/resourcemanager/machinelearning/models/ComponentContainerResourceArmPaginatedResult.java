@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.ComponentContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ComponentContainerInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class ComponentContainerResourceArmPaginatedResult {
     /*
-     * The link to the next page of ComponentContainer objects. If null, there
-     * are no additional pages.
+     * The link to the next page of ComponentContainer objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class ComponentContainerResourceArmPaginatedResult {
      * An array of objects of type ComponentContainer.
      */
     @JsonProperty(value = "value")
-    private List<ComponentContainerDataInner> value;
+    private List<ComponentContainerInner> value;
+
+    /** Creates an instance of ComponentContainerResourceArmPaginatedResult class. */
+    public ComponentContainerResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of ComponentContainer objects. If null, there are no
@@ -52,7 +55,7 @@ public final class ComponentContainerResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<ComponentContainerDataInner> value() {
+    public List<ComponentContainerInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class ComponentContainerResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the ComponentContainerResourceArmPaginatedResult object itself.
      */
-    public ComponentContainerResourceArmPaginatedResult withValue(List<ComponentContainerDataInner> value) {
+    public ComponentContainerResourceArmPaginatedResult withValue(List<ComponentContainerInner> value) {
         this.value = value;
         return this;
     }

@@ -9,13 +9,10 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link ReferenceManager}.
@@ -36,11 +33,11 @@ public class ReferenceManagerTests {
 
         WrapperClass wrapperClass = new WrapperClass(wrappedBytes);
 
-        Runnable cleanupAction = mock(Runnable.class);
-        doAnswer(invocation -> {
+        AtomicInteger cleanupCalls = new AtomicInteger();
+        Runnable cleanupAction = () -> {
+            cleanupCalls.incrementAndGet();
             Arrays.fill(wrappedBytes, (byte) 0);
-            return null;
-        }).when(cleanupAction).run();
+        };
 
         ReferenceManager.INSTANCE.register(wrapperClass, cleanupAction);
 
@@ -56,14 +53,17 @@ public class ReferenceManagerTests {
 
         assertArrayEquals(expectedFinalBytes, wrappedBytes);
 
-        verify(cleanupAction, times(1)).run();
+        assertEquals(1, cleanupCalls.get());
     }
 
     @Test
     public void exceptionsInCleanupActionAreSwallowed() throws InterruptedException {
         WrapperClass wrapperClass = new WrapperClass(new byte[0]);
-        Runnable cleanupAction = mock(Runnable.class);
-        doThrow(IllegalStateException.class).when(cleanupAction).run();
+        AtomicInteger cleanupCalls = new AtomicInteger();
+        Runnable cleanupAction = () -> {
+            cleanupCalls.incrementAndGet();
+            throw new IllegalStateException();
+        };
 
         ReferenceManager.INSTANCE.register(wrapperClass, cleanupAction);
 
@@ -75,7 +75,7 @@ public class ReferenceManagerTests {
         // Give the cleanup action a moment to run.
         Thread.sleep(500);
 
-        verify(cleanupAction, times(1)).run();
+        assertEquals(1, cleanupCalls.get());
 
         // Then run the valid case to make sure the ReferenceManager thread continues working.
         cleanupActionIsPerformedWhenObjectIsPhantomReachable();

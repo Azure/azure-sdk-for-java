@@ -29,6 +29,10 @@ public final class DistributedNodesInfo {
     @JsonProperty(value = "errorDetail")
     private ErrorDetail errorDetail;
 
+    /** Creates an instance of DistributedNodesInfo class. */
+    public DistributedNodesInfo() {
+    }
+
     /**
      * Get the nodeName property: Name of the node under a distributed container.
      *

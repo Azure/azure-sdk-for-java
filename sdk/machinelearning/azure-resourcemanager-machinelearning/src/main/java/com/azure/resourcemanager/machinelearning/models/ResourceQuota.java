@@ -37,7 +37,9 @@ public interface ResourceQuota {
     ResourceName name();
 
     /**
-     * Gets the limit property: Limit. The maximum permitted quota of the resource.
+     * Gets the limit property: Limit.
+     *
+     * <p>The maximum permitted quota of the resource.
      *
      * @return the limit value.
      */

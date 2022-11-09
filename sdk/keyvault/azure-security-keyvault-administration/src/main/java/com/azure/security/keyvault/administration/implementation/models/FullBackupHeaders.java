@@ -5,6 +5,7 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FullBackupHeaders model. */
@@ -21,6 +22,20 @@ public final class FullBackupHeaders {
      */
     @JsonProperty(value = "Azure-AsyncOperation")
     private String azureAsyncOperation;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of FullBackupHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public FullBackupHeaders(HttpHeaders rawHeaders) {
+        String retryAfter = rawHeaders.getValue("Retry-After");
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.azureAsyncOperation = rawHeaders.getValue("Azure-AsyncOperation");
+    }
 
     /**
      * Get the retryAfter property: The Retry-After property.

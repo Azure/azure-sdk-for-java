@@ -24,6 +24,10 @@ public final class ManagedClusterSecurityProfileDefender {
     @JsonProperty(value = "securityMonitoring")
     private ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring;
 
+    /** Creates an instance of ManagedClusterSecurityProfileDefender class. */
+    public ManagedClusterSecurityProfileDefender() {
+    }
+
     /**
      * Get the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
      * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid workspace

@@ -16,6 +16,10 @@ public class VirtualMachineSchema {
     @JsonProperty(value = "properties")
     private VirtualMachineSchemaProperties properties;
 
+    /** Creates an instance of VirtualMachineSchema class. */
+    public VirtualMachineSchema() {
+    }
+
     /**
      * Get the properties property: The properties property.
      *

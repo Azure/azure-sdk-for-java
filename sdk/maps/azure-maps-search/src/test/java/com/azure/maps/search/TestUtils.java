@@ -39,10 +39,10 @@ import com.fasterxml.jackson.databind.DatabindException;
 
 public class TestUtils {
 
-    static final String FAKE_API_KEY = "1234567890";
+    static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
-    static MapsPolygon getPolygon(InputStream is) throws IOException { 
+    static MapsPolygon getPolygon(InputStream is) throws IOException {
         JsonSerializer serializer = JsonSerializerProviders.createInstance(true);
         TypeReference<MapsPolygon> interimType = new TypeReference<MapsPolygon>() { };
         byte[] data = null;

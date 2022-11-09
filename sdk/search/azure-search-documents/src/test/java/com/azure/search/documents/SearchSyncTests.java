@@ -276,7 +276,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
         NonNullableModel doc1 = new NonNullableModel()
-            .key("123")
+            .key("132")
             .count(3)
             .isEnabled(true)
             .rating(5)
@@ -1032,7 +1032,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     List<Map<String, Object>> createDocsListWithValueTypes() {
         Map<String, Object> element1 = new HashMap<>();
-        element1.put("Key", "123");
+        element1.put("Key", "132");
         element1.put("IntValue", 0);
 
         Map<String, Object> subElement1 = new HashMap<>();
