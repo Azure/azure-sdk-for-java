@@ -16,6 +16,10 @@ public class KubernetesSchema {
     @JsonProperty(value = "properties")
     private KubernetesProperties properties;
 
+    /** Creates an instance of KubernetesSchema class. */
+    public KubernetesSchema() {
+    }
+
     /**
      * Get the properties property: Properties of Kubernetes.
      *

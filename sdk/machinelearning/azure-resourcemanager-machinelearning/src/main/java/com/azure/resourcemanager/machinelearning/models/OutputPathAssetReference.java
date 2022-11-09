@@ -26,6 +26,10 @@ public final class OutputPathAssetReference extends AssetReferenceBase {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of OutputPathAssetReference class. */
+    public OutputPathAssetReference() {
+    }
+
     /**
      * Get the jobId property: ARM resource ID of the job.
      *

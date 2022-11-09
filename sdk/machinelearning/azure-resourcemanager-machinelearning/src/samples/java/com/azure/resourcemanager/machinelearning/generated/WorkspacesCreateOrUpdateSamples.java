@@ -20,7 +20,7 @@ import java.util.Map;
 /** Samples for Workspaces CreateOrUpdate. */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Workspace/create.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Workspace/create.json
      */
     /**
      * Sample code: Create Workspace.
@@ -59,10 +59,8 @@ public final class WorkspacesCreateOrUpdateSamples {
                                 "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"))
                     .withKeyVaultProperties(
                         new EncryptionKeyVaultProperties()
-                            .withKeyVaultArmId(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv")
-                            .withKeyIdentifier(
-                                "https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb")
+                            .withKeyVaultArmId("fakeTokenPlaceholder")
+                            .withKeyIdentifier("fakeTokenPlaceholder")
                             .withIdentityClientId("")))
             .withHbiWorkspace(false)
             .withSharedPrivateLinkResources(

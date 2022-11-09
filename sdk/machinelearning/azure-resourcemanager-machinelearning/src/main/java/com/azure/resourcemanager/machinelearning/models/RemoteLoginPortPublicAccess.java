@@ -8,7 +8,15 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RemoteLoginPortPublicAccess. */
+/**
+ * Close remote Login Access Port
+ *
+ * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all
+ * nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified
+ * - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all
+ * public nodes. It can be default only during cluster creation time, after creation it will be either enabled or
+ * disabled.
+ */
 public final class RemoteLoginPortPublicAccess extends ExpandableStringEnum<RemoteLoginPortPublicAccess> {
     /** Static value Enabled for RemoteLoginPortPublicAccess. */
     public static final RemoteLoginPortPublicAccess ENABLED = fromString("Enabled");
