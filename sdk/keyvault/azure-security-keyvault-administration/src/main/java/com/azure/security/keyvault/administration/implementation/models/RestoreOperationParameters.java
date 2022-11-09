@@ -17,11 +17,13 @@ public final class RestoreOperationParameters {
     private SASTokenParameter sasTokenParameters;
 
     /*
-     * The Folder name of the blob where the previous successful full backup
-     * was stored
+     * The Folder name of the blob where the previous successful full backup was stored
      */
     @JsonProperty(value = "folderToRestore", required = true)
     private String folderToRestore;
+
+    /** Creates an instance of RestoreOperationParameters class. */
+    public RestoreOperationParameters() {}
 
     /**
      * Get the sasTokenParameters property: The sasTokenParameters property.
