@@ -179,7 +179,7 @@ com.azure.spring:azure-spring-cloud-appconfiguration-config;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;2.8.0;2.9.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management;2.8.0;2.9.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;2.9.0;2.10.0-beta.1
-com.azure.spring:spring-cloud-azure-dependencies;6.0.0-beta.2;6.0.0-beta.3
+com.azure.spring:spring-cloud-azure-dependencies;6.0.0-beta.3;6.0.0-beta.4
 com.azure.spring:spring-messaging-azure;6.0.0-beta.3;6.0.0-beta.4
 com.azure.spring:spring-messaging-azure-eventhubs;6.0.0-beta.3;6.0.0-beta.4
 com.azure.spring:spring-messaging-azure-servicebus;6.0.0-beta.3;6.0.0-beta.4
