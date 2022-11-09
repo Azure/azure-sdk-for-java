@@ -68,7 +68,7 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface ProximityPlacementGroupsService {
+    public interface ProximityPlacementGroupsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"

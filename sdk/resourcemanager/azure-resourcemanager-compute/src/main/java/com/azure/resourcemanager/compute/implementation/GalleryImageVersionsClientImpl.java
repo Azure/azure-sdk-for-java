@@ -67,7 +67,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface GalleryImageVersionsService {
+    public interface GalleryImageVersionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"

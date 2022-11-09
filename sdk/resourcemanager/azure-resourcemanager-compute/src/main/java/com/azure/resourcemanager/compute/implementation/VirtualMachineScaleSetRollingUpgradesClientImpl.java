@@ -64,7 +64,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineScaleSetRollingUpgradesService {
+    public interface VirtualMachineScaleSetRollingUpgradesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"

@@ -56,7 +56,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface SharedGalleriesService {
+    public interface SharedGalleriesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries")
         @ExpectedResponses({200})

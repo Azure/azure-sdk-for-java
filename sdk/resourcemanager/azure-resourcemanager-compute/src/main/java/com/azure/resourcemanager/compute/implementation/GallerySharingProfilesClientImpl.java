@@ -57,7 +57,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface GallerySharingProfilesService {
+    public interface GallerySharingProfilesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"

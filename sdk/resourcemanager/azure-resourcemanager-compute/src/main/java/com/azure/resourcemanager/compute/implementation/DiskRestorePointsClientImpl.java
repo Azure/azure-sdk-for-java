@@ -64,7 +64,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface DiskRestorePointsService {
+    public interface DiskRestorePointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"

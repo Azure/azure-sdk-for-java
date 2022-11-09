@@ -71,7 +71,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineScaleSetVMRunCommandsService {
+    public interface VirtualMachineScaleSetVMRunCommandsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"

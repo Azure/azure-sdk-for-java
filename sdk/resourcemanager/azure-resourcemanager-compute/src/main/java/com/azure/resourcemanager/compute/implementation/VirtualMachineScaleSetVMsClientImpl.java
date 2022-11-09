@@ -73,7 +73,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineScaleSetVMsService {
+    public interface VirtualMachineScaleSetVMsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"

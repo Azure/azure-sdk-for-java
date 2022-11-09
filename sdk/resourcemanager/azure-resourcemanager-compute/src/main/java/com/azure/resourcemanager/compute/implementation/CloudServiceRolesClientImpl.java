@@ -55,7 +55,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CloudServiceRolesService {
+    public interface CloudServiceRolesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"

@@ -71,7 +71,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineRunCommandsService {
+    public interface VirtualMachineRunCommandsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands")
         @ExpectedResponses({200})

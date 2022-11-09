@@ -59,7 +59,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CommunityGalleryImageVersionsService {
+    public interface CommunityGalleryImageVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries"

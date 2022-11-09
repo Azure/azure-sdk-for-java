@@ -55,7 +55,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineExtensionImagesService {
+    public interface VirtualMachineExtensionImagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"

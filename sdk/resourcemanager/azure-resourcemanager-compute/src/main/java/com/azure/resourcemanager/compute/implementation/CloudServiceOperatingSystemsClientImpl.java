@@ -59,7 +59,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CloudServiceOperatingSystemsService {
+    public interface CloudServiceOperatingSystemsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/cloudServiceOsVersions"

@@ -56,7 +56,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineImagesEdgeZonesService {
+    public interface VirtualMachineImagesEdgeZonesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}"

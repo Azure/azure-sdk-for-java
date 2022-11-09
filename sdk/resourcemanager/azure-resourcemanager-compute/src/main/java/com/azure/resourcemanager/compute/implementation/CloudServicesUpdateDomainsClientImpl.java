@@ -64,7 +64,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CloudServicesUpdateDomainsService {
+    public interface CloudServicesUpdateDomainsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
