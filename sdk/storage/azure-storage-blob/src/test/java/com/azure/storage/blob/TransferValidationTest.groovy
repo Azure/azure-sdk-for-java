@@ -115,7 +115,7 @@ class TransferValidationTest extends APISpec {
         def blobName = generateBlobName()
         def bbClient = new SpecializedBlobClientBuilder().blobClient(getBlobClient(
             environment.primaryAccount.credential, cc.getBlobClient(blobName).getBlobUrl(),
-            RequestAssertionPolicy.getHeaderEqualsAssertionPolicy(checksumHeader, expectedChecksumBase64))
+            RequestAssertionPolicy.getHeaderExistsAssertionPolicy(checksumHeader, RequestAssertionPolicy::isStageBlock))
         ).buildBlockBlobClient()
 
         when:

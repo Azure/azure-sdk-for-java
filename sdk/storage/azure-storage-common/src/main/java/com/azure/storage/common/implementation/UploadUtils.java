@@ -156,6 +156,7 @@ public class UploadUtils {
      * @param logger Logger to log errors.
      * @return The data wrapped with its md5.
      */
+    // TODO (jaschrep): delete in favor of ChecksumUtils.checksumDataAsync()
     public static Mono<FluxMd5Wrapper> computeMd5(Flux<ByteBuffer> data, boolean computeMd5, ClientLogger logger) {
         if (computeMd5) {
             try {

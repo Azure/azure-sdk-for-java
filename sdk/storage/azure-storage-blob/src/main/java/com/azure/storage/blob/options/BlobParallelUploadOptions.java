@@ -12,6 +12,8 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
@@ -34,7 +36,8 @@ public class BlobParallelUploadOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
-    private boolean computeMd5;
+
+    private UploadTransferValidationOptions transferValidation;
     private Duration timeout;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
@@ -269,21 +272,32 @@ public class BlobParallelUploadOptions {
     }
 
     /**
-     * @return Whether or not the library should calculate the md5 and send it for the service to verify.
+     * @return Whether or not these options override client defaults to enforce md5 computation.
+     * @deprecated use {@link BlobParallelUploadOptions#getTransferValidation}
      */
+    @Deprecated
     public boolean isComputeMd5() {
-        return computeMd5;
+        // legacy facade can only return true or false, cannot determine whether we are relying on client defaults
+        // facade will only return status of the override
+        return transferValidation != null && transferValidation.getChecksumAlgorithm() == StorageChecksumAlgorithm.MD5
+            && transferValidation.getPrecalculatedChecksum() == null;
     }
 
     /**
-     * Sets the computeMd5 property.
+     * Sets the computeMd5 property. Explicitly setting false results in no calculations of any kind.
      *
      * @param computeMd5 Whether or not the library should calculate the md5 and send it for the service to
      * verify.
      * @return The updated options.
+     * @deprecated use {@link BlobParallelUploadOptions#setTransferValidation}
      */
+    @Deprecated
     public BlobParallelUploadOptions setComputeMd5(boolean computeMd5) {
-        this.computeMd5 = computeMd5;
+        this.transferValidation = computeMd5
+            ? new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
+            // if user explicitly sets false on this facade, they likely want to ensure no calculation rather than
+            // rely on client defaults
+            : new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.None);
         return this;
     }
 
@@ -348,6 +362,22 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
+        return this;
+    }
+
+    /**
+     * @return Override for this operation's transfer validation.
+     */
+    public UploadTransferValidationOptions getTransferValidation() {
+        return transferValidation;
+    }
+
+    /**
+     * @param transferValidation Override for this operation's transfer validation.
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions setTransferValidation(UploadTransferValidationOptions transferValidation) {
+        this.transferValidation = transferValidation;
         return this;
     }
 }

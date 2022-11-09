@@ -102,7 +102,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         BlockBlobOutputStreamOptions options, Context context) {
         options = options == null ? new BlockBlobOutputStreamOptions() : options;
         return new BlockBlobOutputStream(client, options.getParallelTransferOptions(), options.getHeaders(),
-            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(), context);
+            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(),
+            options.getTransferValidation(), context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -229,7 +230,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             Flux<ByteBuffer> body = this.sink.asFlux();
 
-            //TODO hook up transfer validatoin
+            //TODO (jaschrep): hook up transfer validation
 
             client.uploadWithResponse(new BlobParallelUploadOptions(body)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)

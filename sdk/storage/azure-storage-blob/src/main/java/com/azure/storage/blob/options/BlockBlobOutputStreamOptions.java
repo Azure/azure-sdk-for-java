@@ -7,7 +7,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.UploadTransferValidationOptions;
 
 import java.util.Map;

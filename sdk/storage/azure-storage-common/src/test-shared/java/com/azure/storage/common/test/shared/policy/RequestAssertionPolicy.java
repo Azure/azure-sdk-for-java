@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
+import java.net.URL;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -153,14 +154,27 @@ public final class RequestAssertionPolicy implements HttpPipelinePolicy {
     }
 
     public static boolean isStageBlock(HttpRequest request) {
-        return request.getUrl().getQuery().contains("comp=block");
+        URL url = request.getUrl();
+        String query = url.getQuery();
+        if (query == null) {
+            return false;
+        }
+        return query.contains("comp=block");
     }
 
     public static boolean isCommitBlockList(HttpRequest request) {
-        return request.getUrl().getQuery().contains("comp=blocklist");
+        String query = request.getUrl().getQuery();
+        if (query == null) {
+            return false;
+        }
+        return query.contains("comp=blocklist");
     }
 
     public static boolean isDataLakeAppend(HttpRequest request) {
-        return request.getUrl().getQuery().contains("action=append");
+        String query = request.getUrl().getQuery();
+        if (query == null) {
+            return false;
+        }
+        return query.contains("action=append");
     }
 }
