@@ -8,17 +8,17 @@
 - Supported `awaitCopyStartCompletion` and `awaitCopyStartCompletionAsync` method in `Snapshot`.
 - Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress. 
 
-## 2.20.0 (2022-10-26)
-
-### Bugs Fixed
-
-- Fixed bug where `getInstanceView()` in `VirtualMachineExtension` throws NPE if the VM is in deallocated state.
-
 ### Other Changes
 
 #### Dependency Updates
 
 - Updated Gallery to `2022-03-03`.
+
+## 2.20.0 (2022-10-26)
+
+### Bugs Fixed
+
+- Fixed bug where `getInstanceView()` in `VirtualMachineExtension` throws NPE if the VM is in deallocated state.
 
 ## 2.19.0 (2022-09-23)
 
