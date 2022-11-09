@@ -21,10 +21,10 @@ import java.time.Duration;
 public class MessageProcessor extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
 
-    @Value("${MAX_CONCURRENT_CALLS:50}")
+    @Value("${MAX_CONCURRENT_CALLS:20}")
     private int maxConcurrentCalls;
 
-    @Value("${PREFETCH_COUNT:10}")
+    @Value("${PREFETCH_COUNT:0}")
     private int prefetchCount;
 
     @Override
