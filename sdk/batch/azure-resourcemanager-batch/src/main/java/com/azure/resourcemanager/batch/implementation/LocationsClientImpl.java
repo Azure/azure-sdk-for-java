@@ -230,29 +230,7 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BatchLocationQuotaInner> getQuotasAsync(String locationName) {
-        return getQuotasWithResponseAsync(locationName)
-            .flatMap(
-                (Response<BatchLocationQuotaInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the Batch service quotas for the specified subscription at the given location.
-     *
-     * @param locationName The region for which to retrieve Batch service quotas.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch service quotas for the specified subscription at the given location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchLocationQuotaInner getQuotas(String locationName) {
-        return getQuotasAsync(locationName).block();
+        return getQuotasWithResponseAsync(locationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -269,6 +247,20 @@ public final class LocationsClientImpl implements LocationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchLocationQuotaInner> getQuotasWithResponse(String locationName, Context context) {
         return getQuotasWithResponseAsync(locationName, context).block();
+    }
+
+    /**
+     * Gets the Batch service quotas for the specified subscription at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service quotas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Batch service quotas for the specified subscription at the given location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchLocationQuotaInner getQuotas(String locationName) {
+        return getQuotasWithResponse(locationName, Context.NONE).getValue();
     }
 
     /**
@@ -795,30 +787,7 @@ public final class LocationsClientImpl implements LocationsClient {
     private Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
         String locationName, CheckNameAvailabilityParameters parameters) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters)
-            .flatMap(
-                (Response<CheckNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether the Batch account name is available in the specified region.
-     *
-     * @param locationName The desired region for the name check.
-     * @param parameters Properties needed to check the availability of a name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResultInner checkNameAvailability(
-        String locationName, CheckNameAvailabilityParameters parameters) {
-        return checkNameAvailabilityAsync(locationName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -839,9 +808,26 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
+     * Checks whether the Batch account name is available in the specified region.
+     *
+     * @param locationName The desired region for the name check.
+     * @param parameters Properties needed to check the availability of a name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckNameAvailability operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameAvailabilityResultInner checkNameAvailability(
+        String locationName, CheckNameAvailabilityParameters parameters) {
+        return checkNameAvailabilityWithResponse(locationName, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -879,7 +865,8 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -917,7 +904,8 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -955,7 +943,8 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

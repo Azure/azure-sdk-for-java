@@ -434,30 +434,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     private Mono<PrivateLinkResourceInner> getAsync(
         String resourceGroupName, String accountName, String privateLinkResourceName) {
         return getWithResponseAsync(resourceGroupName, accountName, privateLinkResourceName)
-            .flatMap(
-                (Response<PrivateLinkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about the specified private link resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param privateLinkResourceName The private link resource name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified private link resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceInner get(String resourceGroupName, String accountName, String privateLinkResourceName) {
-        return getAsync(resourceGroupName, accountName, privateLinkResourceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -479,9 +456,26 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
+     * Gets information about the specified private link resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param privateLinkResourceName The private link resource name. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified private link resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceInner get(String resourceGroupName, String accountName, String privateLinkResourceName) {
+        return getWithResponse(resourceGroupName, accountName, privateLinkResourceName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -518,7 +512,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

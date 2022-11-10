@@ -617,41 +617,6 @@ public final class PoolsClientImpl implements PoolsClient {
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Additional parameters for pool creation.
-     * @param ifMatch The entity state (ETag) version of the pool to update. A value of "*" can be used to apply the
-     *     operation only if the pool already exists. If omitted, this operation will always be applied.
-     * @param ifNoneMatch Set to '*' to allow a new pool to be created, but to prevent updating an existing pool. Other
-     *     values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        PoolInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
-        return createWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (PoolsCreateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a new pool inside the specified account.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Additional parameters for pool creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -663,33 +628,7 @@ public final class PoolsClientImpl implements PoolsClient {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return createWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (PoolsCreateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a new pool inside the specified account.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Additional parameters for pool creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner create(String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return createAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -721,6 +660,27 @@ public final class PoolsClientImpl implements PoolsClient {
         return createWithResponseAsync(
                 resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch, context)
             .block();
+    }
+
+    /**
+     * Creates a new pool inside the specified account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param poolName The pool name. This must be unique within the account.
+     * @param parameters Additional parameters for pool creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PoolInner create(String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return createWithResponse(
+                resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -862,35 +822,6 @@ public final class PoolsClientImpl implements PoolsClient {
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
      *     property not supplied will be unchanged.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     *     apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> updateAsync(
-        String resourceGroupName, String accountName, String poolName, PoolInner parameters, String ifMatch) {
-        return updateWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch)
-            .flatMap(
-                (PoolsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates the properties of an existing pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     *     property not supplied will be unchanged.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -901,33 +832,7 @@ public final class PoolsClientImpl implements PoolsClient {
         String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
         final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch)
-            .flatMap(
-                (PoolsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates the properties of an existing pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     *     property not supplied will be unchanged.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner update(String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
-        final String ifMatch = null;
-        return updateAsync(resourceGroupName, accountName, poolName, parameters, ifMatch).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -955,6 +860,26 @@ public final class PoolsClientImpl implements PoolsClient {
         String ifMatch,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, context).block();
+    }
+
+    /**
+     * Updates the properties of an existing pool.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param poolName The pool name. This must be unique within the account.
+     * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
+     *     property not supplied will be unchanged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PoolInner update(String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
+        final String ifMatch = null;
+        return updateWithResponse(resourceGroupName, accountName, poolName, parameters, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1325,30 +1250,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolInner> getAsync(String resourceGroupName, String accountName, String poolName) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName)
-            .flatMap(
-                (PoolsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about the specified pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner get(String resourceGroupName, String accountName, String poolName) {
-        return getAsync(resourceGroupName, accountName, poolName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1367,6 +1269,22 @@ public final class PoolsClientImpl implements PoolsClient {
     public PoolsGetResponse getWithResponse(
         String resourceGroupName, String accountName, String poolName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, context).block();
+    }
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param poolName The pool name. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PoolInner get(String resourceGroupName, String accountName, String poolName) {
+        return getWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
     }
 
     /**
@@ -1487,30 +1405,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolInner> disableAutoScaleAsync(String resourceGroupName, String accountName, String poolName) {
         return disableAutoScaleWithResponseAsync(resourceGroupName, accountName, poolName)
-            .flatMap(
-                (PoolsDisableAutoScaleResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Disables automatic scaling for a pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner disableAutoScale(String resourceGroupName, String accountName, String poolName) {
-        return disableAutoScaleAsync(resourceGroupName, accountName, poolName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1532,7 +1427,25 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * Disables automatic scaling for a pool.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param poolName The pool name. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PoolInner disableAutoScale(String resourceGroupName, String accountName, String poolName) {
+        return disableAutoScaleWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
+    }
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     *
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
@@ -1589,7 +1502,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * Stops an ongoing resize operation on the pool.
+     *
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
@@ -1644,7 +1559,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * Stops an ongoing resize operation on the pool.
+     *
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
@@ -1661,38 +1578,13 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolInner> stopResizeAsync(String resourceGroupName, String accountName, String poolName) {
         return stopResizeWithResponseAsync(resourceGroupName, accountName, poolName)
-            .flatMap(
-                (PoolsStopResizeResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
-     * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
-     * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
-     * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
-     * can also be used to halt the initial sizing of the pool when it is created.
+     * Stops an ongoing resize operation on the pool.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner stopResize(String resourceGroupName, String accountName, String poolName) {
-        return stopResizeAsync(resourceGroupName, accountName, poolName).block();
-    }
-
-    /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
@@ -1714,9 +1606,32 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * Stops an ongoing resize operation on the pool.
+     *
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
+     * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
+     * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
+     * can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param poolName The pool name. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PoolInner stopResize(String resourceGroupName, String accountName, String poolName) {
+        return stopResizeWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1753,7 +1668,8 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

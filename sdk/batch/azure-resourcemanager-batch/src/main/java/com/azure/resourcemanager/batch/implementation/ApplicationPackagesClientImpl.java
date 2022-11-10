@@ -325,38 +325,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
         String versionName,
         ActivateApplicationPackageParameters parameters) {
         return activateWithResponseAsync(resourceGroupName, accountName, applicationName, versionName, parameters)
-            .flatMap(
-                (Response<ApplicationPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
-     * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationPackageInner activate(
-        String resourceGroupName,
-        String accountName,
-        String applicationName,
-        String versionName,
-        ActivateApplicationPackageParameters parameters) {
-        return activateAsync(resourceGroupName, accountName, applicationName, versionName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -386,6 +355,32 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
         return activateWithResponseAsync(
                 resourceGroupName, accountName, applicationName, versionName, parameters, context)
             .block();
+    }
+
+    /**
+     * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
+     * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @param versionName The version of the application.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application package which represents a particular version of an application.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationPackageInner activate(
+        String resourceGroupName,
+        String accountName,
+        String applicationName,
+        String versionName,
+        ActivateApplicationPackageParameters parameters) {
+        return activateWithResponse(
+                resourceGroupName, accountName, applicationName, versionName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -538,40 +533,6 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
      * @param versionName The version of the application.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationPackageInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String applicationName,
-        String versionName,
-        ApplicationPackageInner parameters) {
-        return createWithResponseAsync(resourceGroupName, accountName, applicationName, versionName, parameters)
-            .flatMap(
-                (Response<ApplicationPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
-     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
-     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -583,35 +544,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
         String resourceGroupName, String accountName, String applicationName, String versionName) {
         final ApplicationPackageInner parameters = null;
         return createWithResponseAsync(resourceGroupName, accountName, applicationName, versionName, parameters)
-            .flatMap(
-                (Response<ApplicationPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
-     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
-     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationPackageInner create(
-        String resourceGroupName, String accountName, String applicationName, String versionName) {
-        final ApplicationPackageInner parameters = null;
-        return createAsync(resourceGroupName, accountName, applicationName, versionName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -642,6 +575,29 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
         return createWithResponseAsync(
                 resourceGroupName, accountName, applicationName, versionName, parameters, context)
             .block();
+    }
+
+    /**
+     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
+     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
+     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @param versionName The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application package which represents a particular version of an application.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationPackageInner create(
+        String resourceGroupName, String accountName, String applicationName, String versionName) {
+        final ApplicationPackageInner parameters = null;
+        return createWithResponse(
+                resourceGroupName, accountName, applicationName, versionName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -776,23 +732,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     private Mono<Void> deleteAsync(
         String resourceGroupName, String accountName, String applicationName, String versionName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, applicationName, versionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an application package record and its associated binary file.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String applicationName, String versionName) {
-        deleteAsync(resourceGroupName, accountName, applicationName, versionName).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -812,6 +752,22 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String applicationName, String versionName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, applicationName, versionName, context).block();
+    }
+
+    /**
+     * Deletes an application package record and its associated binary file.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @param versionName The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String applicationName, String versionName) {
+        deleteWithResponse(resourceGroupName, accountName, applicationName, versionName, Context.NONE);
     }
 
     /**
@@ -948,32 +904,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     private Mono<ApplicationPackageInner> getAsync(
         String resourceGroupName, String accountName, String applicationName, String versionName) {
         return getWithResponseAsync(resourceGroupName, accountName, applicationName, versionName)
-            .flatMap(
-                (Response<ApplicationPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about the specified application package.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application package.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationPackageInner get(
-        String resourceGroupName, String accountName, String applicationName, String versionName) {
-        return getAsync(resourceGroupName, accountName, applicationName, versionName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -993,6 +924,24 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     public Response<ApplicationPackageInner> getWithResponse(
         String resourceGroupName, String accountName, String applicationName, String versionName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, applicationName, versionName, context).block();
+    }
+
+    /**
+     * Gets information about the specified application package.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @param versionName The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified application package.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationPackageInner get(
+        String resourceGroupName, String accountName, String applicationName, String versionName) {
+        return getWithResponse(resourceGroupName, accountName, applicationName, versionName, Context.NONE).getValue();
     }
 
     /**
@@ -1226,7 +1175,8 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1262,7 +1212,8 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StorageAccountType. */
+/** The storage account type for use in creating data disks. */
 public enum StorageAccountType {
     /** Enum value Standard_LRS. */
     STANDARD_LRS("Standard_LRS"),
@@ -30,6 +30,9 @@ public enum StorageAccountType {
      */
     @JsonCreator
     public static StorageAccountType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StorageAccountType[] items = StorageAccountType.values();
         for (StorageAccountType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum StorageAccountType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {
