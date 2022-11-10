@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.VolumeResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** Represents the volume entity resolution model. */
@@ -11,22 +12,25 @@ public final class VolumeResolution extends BaseResolution {
     /*
      * The Volume Unit of measurement
      */
-    private final VolumeUnit unit;
+    private VolumeUnit unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
+    private double value;
 
-    /**
-     * Creates the volume entity resolution model.
-     *
-     * @param unit The Volume Unit of measurement.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public VolumeResolution(VolumeUnit unit, double value) {
-        this.unit = unit;
-        this.value = value;
+    static {
+        VolumeResolutionPropertiesHelper.setAccessor(new VolumeResolutionPropertiesHelper.VolumeResolutionAccessor() {
+            @Override
+            public void setUnit(VolumeResolution volumeResolution, VolumeUnit unit) {
+                volumeResolution.setUnit(unit);
+            }
+
+            @Override
+            public void setValue(VolumeResolution volumeResolution, double value) {
+                volumeResolution.setValue(value);
+            }
+        });
     }
 
     /**
@@ -45,5 +49,13 @@ public final class VolumeResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setUnit(VolumeUnit unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }

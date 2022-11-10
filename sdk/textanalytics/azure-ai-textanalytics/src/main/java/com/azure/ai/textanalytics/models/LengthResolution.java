@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.LengthResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** Represents the length entity resolution model. */
@@ -11,22 +12,25 @@ public final class LengthResolution extends BaseResolution {
     /*
      * The length Unit of measurement
      */
-    private final LengthUnit unit;
+    private LengthUnit unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
+    private double value;
 
-    /**
-     * Create a length entity resolution model.
-     *
-     * @param unit The length Unit of measurement.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public LengthResolution(LengthUnit unit, double value) {
-        this.unit = unit;
-        this.value = value;
+    static {
+        LengthResolutionPropertiesHelper.setAccessor(new LengthResolutionPropertiesHelper.LengthResolutionAccessor() {
+            @Override
+            public void setUnit(LengthResolution lengthResolution, LengthUnit unit) {
+                lengthResolution.setUnit(unit);
+            }
+
+            @Override
+            public void setValue(LengthResolution lengthResolution, double value) {
+                lengthResolution.setValue(value);
+            }
+        });
     }
 
     /**
@@ -45,5 +49,13 @@ public final class LengthResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setUnit(LengthUnit unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }

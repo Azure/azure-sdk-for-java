@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.BooleanResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** A resolution for boolean expressions. */
@@ -11,15 +12,10 @@ public final class BooleanResolution extends BaseResolution {
     /*
      * The value property.
      */
-    private final boolean value;
+    private boolean value;
 
-    /**
-     * Create a resolution for boolean expressions.
-     *
-     * @param value The value property.
-     */
-    public BooleanResolution(boolean value) {
-        this.value = value;
+    static {
+        BooleanResolutionPropertiesHelper.setAccessor((booleanResolution, value) -> booleanResolution.setValue(value));
     }
 
     /**
@@ -29,5 +25,9 @@ public final class BooleanResolution extends BaseResolution {
      */
     public boolean isValue() {
         return this.value;
+    }
+
+    private void setValue(boolean value) {
+        this.value = value;
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.SpeedResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** Represents the speed entity resolution model. */
@@ -11,22 +12,25 @@ public final class SpeedResolution extends BaseResolution {
     /*
      * The speed Unit of measurement
      */
-    private final SpeedUnit unit;
+    private SpeedUnit unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
+    private double value;
 
-    /**
-     * Create a speed entity resolution model.
-     *
-     * @param unit The speed Unit of measurement.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public SpeedResolution(SpeedUnit unit, double value) {
-        this.unit = unit;
-        this.value = value;
+    static {
+        SpeedResolutionPropertiesHelper.setAccessor(new SpeedResolutionPropertiesHelper.SpeedResolutionAccessor() {
+            @Override
+            public void setUnit(SpeedResolution speedResolution, SpeedUnit unit) {
+                speedResolution.setUnit(unit);
+            }
+
+            @Override
+            public void setValue(SpeedResolution speedResolution, double value) {
+                speedResolution.setValue(value);
+            }
+        });
     }
 
     /**
@@ -45,5 +49,13 @@ public final class SpeedResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setUnit(SpeedUnit unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }
