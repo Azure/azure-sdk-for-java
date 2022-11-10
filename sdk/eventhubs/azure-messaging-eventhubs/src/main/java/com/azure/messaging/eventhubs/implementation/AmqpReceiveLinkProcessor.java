@@ -673,7 +673,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             // many events to buffer on the client and also control the throughput. If users need higher throughput,
             // they can set a higher prefetch number and allocate larger heap size accordingly.
             if (currentLinkCredits < prefetch) {
-                logger.atInfo()
+                logger.atVerbose()
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(CREDITS_KEY, credits)
