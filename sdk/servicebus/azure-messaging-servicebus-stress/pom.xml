@@ -48,7 +48,14 @@
       <version>3.4.1</version>  <!-- {x-version-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
     </dependency>
 
-    <!-- Dependencies required for logback -->
+    <!-- Enable SDK metrics -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-metrics-opentelemetry</artifactId>
+      <version>1.0.0-beta.3</version> <!--{x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
+    </dependency>
+
+    <!-- Dependency required for logback -->
     <dependency>
       <groupId>org.codehaus.janino</groupId>
       <artifactId>janino</artifactId>
