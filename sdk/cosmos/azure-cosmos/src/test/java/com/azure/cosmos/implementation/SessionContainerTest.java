@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.GatewayTestUtils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
@@ -14,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.internal.util.collections.Sets;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -38,7 +38,8 @@ public class SessionContainerTest {
         int numPartitionKeyRangeIds = 5;
 
         for (int i = 0; i < numCollections; i++) {
-            String collectionResourceId = ResourceId.newDocumentCollectionId(getRandomDbId(), getRandomCollectionId() + i).getDocumentCollectionId().toString();
+            String collectionResourceId =
+                ResourceId.newDocumentCollectionId(getRandomDbId(), getRandomCollectionId() + i).getDocumentCollectionId().toString();
             String collectionFullName = "dbs/db1/colls/collName_" + i;
 
             for (int j = 0; j < numPartitionKeyRangeIds; j++) {
@@ -652,6 +653,104 @@ public class SessionContainerTest {
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, resolvedPKRange.getId());
         assertThat(sessionToken).isNull();
+    }
+
+    @Test(groups = "unit")
+    public void useParentSessionTokenAfterSplit() {
+        SessionContainer sessionContainer = new SessionContainer("127.0.0.1");
+
+        int randomCollectionId = getRandomCollectionId();
+        String documentCollectionId1 = ResourceId.newDocumentCollectionId(getRandomDbId(), randomCollectionId).getDocumentCollectionId().toString();
+        String collectionFullName = "dbs/db1/colls1/collName1";
+
+        // Set token for the parent
+        String parentPKRangeId = "0";
+        String parentSession = "1#100#4=90#5=1";
+        sessionContainer.setSessionToken(
+            documentCollectionId1,
+            collectionFullName,
+            ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, parentPKRangeId + ":" + parentSession));
+
+        // send requests for children
+        String childPKRangeId = "1";
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
+            documentCollectionId1, ResourceType.Document, new HashMap<>());
+        request.requestContext.resolvedPartitionKeyRange =
+            new PartitionKeyRange(
+                childPKRangeId,
+                "AA",
+                "BB",
+                Arrays.asList(parentPKRangeId));
+
+        ISessionToken sessionTokenForChild1 = sessionContainer.resolvePartitionLocalSessionToken(request, childPKRangeId);
+        assertThat(sessionTokenForChild1).isNotNull();
+        assertThat(sessionTokenForChild1.convertToString()).isEqualTo(parentSession);
+    }
+
+    @Test(groups = "unit")
+    public void useParentSessionTokenAfterMerge() {
+        SessionContainer sessionContainer = new SessionContainer("127.0.0.1");
+
+        int randomCollectionId = getRandomCollectionId();
+        String documentCollectionId1 = ResourceId.newDocumentCollectionId(getRandomDbId(), randomCollectionId).getDocumentCollectionId().toString();
+        String collectionFullName = "dbs/db1/colls1/collName1";
+
+        // Set token for the parent
+        // Set tokens for the parents
+        int maxGlobalLsn = 100;
+        int maxLsnRegion1 = 200;
+        int maxLsnRegion2 = 300;
+        int maxLsnRegion3 = 400;
+
+        // Generate 2 tokens, one has max global but lower regional, the other lower global but higher regional
+        // Expect the merge to contain all the maxes
+        String parent1PKRangeId = "0";
+        String parent1Session = String.format(
+            "1#%s#1=%s#2=%s#3=%s",
+            maxGlobalLsn,
+            maxLsnRegion1 - 1,
+            maxLsnRegion2,
+            maxLsnRegion3 - 1);
+
+        sessionContainer.setSessionToken(
+            documentCollectionId1,
+            collectionFullName,
+            ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, parent1PKRangeId + ":" + parent1Session));
+
+        String parent2PKRangeId = "1";
+        String parent2Session = String.format(
+            "1#%s#1=%s#2=%s#3=%s",
+            maxGlobalLsn - 1,
+            maxLsnRegion1,
+            maxLsnRegion2 - 1,
+            maxLsnRegion3);
+
+        sessionContainer.setSessionToken(
+            documentCollectionId1,
+            collectionFullName,
+            ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, parent2PKRangeId + ":" + parent2Session));
+
+        // send requests for children
+        String childPKRangeId = "2";
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
+            documentCollectionId1, ResourceType.Document, new HashMap<>());
+        request.requestContext.resolvedPartitionKeyRange =
+            new PartitionKeyRange(
+                childPKRangeId,
+                "AA",
+                "BB",
+                Arrays.asList(parent1PKRangeId, parent2PKRangeId));
+        ISessionToken sessionTokenForChild1 = sessionContainer.resolvePartitionLocalSessionToken(request, childPKRangeId);
+
+        String expectedChildSessionToken = String.format(
+            "1#%s#1=%s#2=%s#3=%s",
+            maxGlobalLsn,
+            maxLsnRegion1,
+            maxLsnRegion2,
+            maxLsnRegion3);
+
+        assertThat(sessionTokenForChild1).isNotNull();
+        assertThat(sessionTokenForChild1.convertToString()).isEqualTo(expectedChildSessionToken);
     }
 
     private static int getRandomCollectionId() {
