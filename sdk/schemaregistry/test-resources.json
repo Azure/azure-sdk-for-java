@@ -66,6 +66,7 @@
     "baseNameAvro": "[concat(parameters('baseName'), '-avro')]",
     "baseNameCustom": "[concat(parameters('baseName'), '-custom')]",
     "baseNameJson": "[concat(parameters('baseName'), '-json')]",
+
     "schemaRegistryEndpointAvro": "[format('https://{0}.servicebus.windows.net', variables('baseNameAvro'))]",
     "schemaRegistryEndpointCustom": "[format('https://{0}.servicebus.windows.net', variables('baseNameCustom'))]",
     "schemaRegistryEndpointJson": "[format('https://{0}.servicebus.windows.net', variables('baseNameJson'))]",
@@ -73,11 +74,7 @@
 
     "authorizationNameAvro": "[concat(variables('baseNameAvro'), '/RootManageSharedAccessKey')]",
     "authorizationNameCustom": "[concat(variables('baseNameCustom'), '/RootManageSharedAccessKey')]",
-    "authorizationNameJson": "[concat(variables('baseNameJson'), '/RootManageSharedAccessKey')]",
-
-    "eventHubNameFullAvro": "[concat(variables('baseNameAvro'), '/eventhub')]",
-    "eventHubNameFullJson": "[concat(variables('baseNameJson'), '/eventhub')]",
-    "eventHubNameFullCustom": "[concat(variables('baseNameCustom'), '/eventhub')]"
+    "authorizationNameJson": "[concat(variables('baseNameJson'), '/RootManageSharedAccessKey')]"
   },
   "resources": [
     {
