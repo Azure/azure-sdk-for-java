@@ -21,13 +21,13 @@ import java.util.stream.IntStream;
  */
 @Service("MessageSender")
 public class MessageSender extends ServiceBusScenario {
-    @Value("${SEND_TIMES:1000000}")
+    @Value("${SEND_TIMES:1000}")
     private int sendTimes;
 
     @Value("${SEND_MESSAGES:1000}")
     private int messagesToSend;
 
-    @Value("${PAYLOAD_SIZE_IN_BYTE:4096}")
+    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
     private int payloadSize;
 
     private final Random random = new Random();

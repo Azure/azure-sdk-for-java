@@ -34,7 +34,7 @@ public class MessageSessionSenderSync extends ServiceBusScenario {
     @Value("${SEND_MESSAGES:100}")
     private int messagesToSend;
 
-    @Value("${PAYLOAD_SIZE_IN_BYTE:4096}")
+    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
     private int payloadSize;
 
     private final Random random = new Random();
