@@ -1,0 +1,51 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/abe5f13a0abe5f13a314341556686a20c49c042849b9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.20.0-beta.2 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "005c4567-aa65-4d2d-81b8-0de7087619c0"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DAC34A00261E9C",
+      "Last-Modified" : "Thu, 10 Nov 2022 18:33:02 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d8efd5a6-901e-006d-5d32-f54a85000000",
+      "x-ms-client-request-id" : "005c4567-aa65-4d2d-81b8-0de7087619c0",
+      "Date" : "Thu, 10 Nov 2022 18:33:01 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/abe5f13a0abe5f13a314341556686a20c49c042849b9/abe5f13a1abe5f13a31496395439751a801f84f2a85f",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.20.0-beta.2 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "fbc02ab6-df49-478d-8629-0ff423942654",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Thu, 10 Nov 2022 18:33:02 GMT",
+      "x-ms-version-id" : "2022-11-10T18:33:02.6497235Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 10 Nov 2022 18:33:02 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "eTag" : "0x8DAC34A004EA6D3",
+      "x-ms-request-id" : "9bf31c12-101e-001a-4732-f5cfc4000000",
+      "x-ms-client-request-id" : "fbc02ab6-df49-478d-8629-0ff423942654"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "abe5f13a0abe5f13a314341556686a20c49c042849b9", "abe5f13a1abe5f13a31496395439751a801f84f2a85f" ]
+}

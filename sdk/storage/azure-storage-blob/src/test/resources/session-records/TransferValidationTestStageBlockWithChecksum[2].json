@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/95a7c1e8095a7c1e89570308311f13ad477f447119a6?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.20.0-beta.2 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7d691c4a-a43e-464a-a407-385355ed6524"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DAC34A00248915",
+      "Last-Modified" : "Thu, 10 Nov 2022 18:33:02 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "66365314-c01e-0018-1432-f5cd3e000000",
+      "x-ms-client-request-id" : "7d691c4a-a43e-464a-a407-385355ed6524",
+      "Date" : "Thu, 10 Nov 2022 18:33:01 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/95a7c1e8095a7c1e89570308311f13ad477f447119a6/95a7c1e8195a7c1e895767349e05df1f416924e13a1c?comp=block&blockid=bXlpZA%3D%3D",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.20.0-beta.2 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8afbcafb-6592-47d8-b836-fa76f37fd8d0",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a2ef2f87-701e-0001-4e32-f5e156000000",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-client-request-id" : "8afbcafb-6592-47d8-b836-fa76f37fd8d0",
+      "Date" : "Thu, 10 Nov 2022 18:33:02 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "95a7c1e8095a7c1e89570308311f13ad477f447119a6", "95a7c1e8195a7c1e895767349e05df1f416924e13a1c" ]
+}
