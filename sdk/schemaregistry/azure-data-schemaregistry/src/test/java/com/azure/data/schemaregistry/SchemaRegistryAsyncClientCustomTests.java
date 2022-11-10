@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
 import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
-import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE;
+import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_CUSTOM_FULLY_QUALIFIED_NAMESPACE;
 import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_GROUP;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,7 +53,7 @@ public class SchemaRegistryAsyncClientCustomTests extends TestBase {
             endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
+            endpoint = System.getenv(SCHEMA_REGISTRY_CUSTOM_FULLY_QUALIFIED_NAMESPACE);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
 
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
