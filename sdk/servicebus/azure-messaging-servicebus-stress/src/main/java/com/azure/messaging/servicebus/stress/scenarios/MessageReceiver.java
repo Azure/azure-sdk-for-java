@@ -37,7 +37,6 @@ public class MessageReceiver extends ServiceBusScenario {
 
         ServiceBusReceiverAsyncClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .clientOptions(clientOptions)
             .receiver()
             .queueName(queueName)
             .topicName(topicName)

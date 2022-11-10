@@ -54,7 +54,6 @@ public class MessageSessionSenderSync extends ServiceBusScenario {
         ServiceBusSenderClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .retryOptions(new AmqpRetryOptions().setMaxRetries(5).setMode(AmqpRetryMode.FIXED))
-            .clientOptions(clientOptions)
             .sender()
             .queueName(queueName)
             .topicName(topicName)
