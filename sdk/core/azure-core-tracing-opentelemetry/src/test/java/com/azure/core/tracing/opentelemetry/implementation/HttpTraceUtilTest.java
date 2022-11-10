@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opentelemetry.implementation;
 
+import com.azure.core.tracing.opentelemetry.OpenTelemetryUtils;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.sdk.trace.ReadableSpan;
@@ -37,7 +38,7 @@ public class HttpTraceUtilTest {
     @Test
     public void parseUnknownStatusCode() {
         // Act
-        HttpTraceUtil.setSpanStatus(parentSpan, 1, null);
+        OpenTelemetryUtils.setStatus(parentSpan, 1, null);
 
         // Assert
         verify(parentSpan, times(1))
@@ -48,7 +49,7 @@ public class HttpTraceUtilTest {
     public void parseUnauthenticatedStatusCode() {
 
         // Act
-        HttpTraceUtil.setSpanStatus(parentSpan, 401, null);
+        OpenTelemetryUtils.setStatus(parentSpan, 401, null);
 
         // Assert
         verify(parentSpan, times(1))
@@ -58,7 +59,7 @@ public class HttpTraceUtilTest {
     @Test
     public void parseNullError() {
         // Act
-        ReadableSpan span2 = (ReadableSpan) HttpTraceUtil.setSpanStatus(parentSpan, 504, null);
+        ReadableSpan span2 = (ReadableSpan) OpenTelemetryUtils.setStatus(parentSpan, 504, null);
 
         // Assert
         verify(parentSpan, times(1))

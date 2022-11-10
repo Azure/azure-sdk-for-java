@@ -8,6 +8,8 @@ import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.logging.ClientLogger;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
-class OpenTelemetryUtils {
+public class OpenTelemetryUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
     /**
@@ -99,5 +101,38 @@ class OpenTelemetryUtils {
         }
 
         return Attributes.empty();
+    }
+
+    /**
+     * Parses an OpenTelemetry Status from AMQP Error Condition.
+     *
+     * @param span the span to set the status for.
+     * @param statusMessage description for this error condition.
+     * @param throwable the error occurred during response transmission (optional).
+     * @return the corresponding OpenTelemetry {@link Span}.
+     */
+    public static Span setStatus(Span span, String statusMessage, Throwable throwable) {
+        if (throwable != null) {
+            span.recordException(throwable);
+            return span.setStatus(StatusCode.ERROR);
+        }
+        if (statusMessage != null) {
+            if ("success".equalsIgnoreCase(statusMessage)) {
+                return span.setStatus(StatusCode.OK);
+            } else if ("error".equalsIgnoreCase(statusMessage)) {
+                return span.setStatus(StatusCode.ERROR);
+            }
+        }
+
+        return span.setStatus(StatusCode.UNSET, statusMessage);
+    }
+
+    public static Span setStatus(Span span, int httpStatusCode, Throwable throwable) {
+        if (throwable != null) {
+            span.recordException(throwable);
+            return span.setStatus(StatusCode.ERROR);
+        }
+
+        return span.setStatus(httpStatusCode >= 400 ? StatusCode.ERROR : StatusCode.UNSET);
     }
 }

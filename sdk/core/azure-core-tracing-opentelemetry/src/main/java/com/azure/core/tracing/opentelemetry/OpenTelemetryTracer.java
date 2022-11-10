@@ -3,10 +3,7 @@
 
 package com.azure.core.tracing.opentelemetry;
 
-import com.azure.core.http.HttpRequest;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
-import com.azure.core.tracing.opentelemetry.implementation.AmqpTraceUtil;
-import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
@@ -25,8 +22,8 @@ import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
-import io.opentelemetry.context.propagation.TextMapSetter;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -89,7 +86,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         this.schemaVersion = otelSchemaVersion;
         this.tracer = otelProvider.tracerBuilder(libraryName)
             .setInstrumentationVersion(libraryVersion)
-            .setSchemaUrl("https://https://opentelemetry.io/schemas/" + otelSchemaVersion.toString())
+            .setSchemaUrl("https://opentelemetry.io/schemas/" + otelSchemaVersion.toString())
             .build();
     }
 
@@ -138,9 +135,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         return startSpanInternal(spanBuilder, isClientCall(spanKind), null, context);
     }
-
-    private final TextMapSetter<HttpRequest> contextSetter =
-        (request, key, value) -> request.getHeaders().set(key, value);
 
     @Override
     public void injectContext(BiConsumer<String, String> headerSetter, Context context) {
@@ -245,8 +239,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (span.isRecording()) {
-            HttpTraceUtil.setSpanStatus(span, responseCode, throwable);
+            OpenTelemetryUtils.setStatus(span, responseCode, throwable);
         }
+
         span.end();
     }
 
@@ -298,18 +293,16 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         Span span = getSpanOrNull(context);
-        if (span == null) {
-            return;
+        if (span != null) {
+            if (span.isRecording()) {
+                span = OpenTelemetryUtils.setStatus(span, statusMessage, throwable);
+            }
+
+            span.end();
+
+            // TODO (limolkova) remove once ServiceBus/EventHub start making span current explicitly.
+            endScope(context);
         }
-
-        if (span.isRecording()) {
-            span = AmqpTraceUtil.parseStatusMessage(span, statusMessage, throwable);
-        }
-
-        span.end();
-
-        // TODO (limolkova) remove once ServiceBus/EventHub start making span current explicitly.
-        endScope(context);
     }
 
     @Override
@@ -357,9 +350,18 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (!isEnabled) {
             return context;
         }
+        com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY, com.azure.core.util.tracing.SpanKind.class);
+        if (spanKind == null) {
+            spanKind = com.azure.core.util.tracing.SpanKind.CLIENT;
+        }
 
-        // this is used to create messaging send spanBuilder, and it's a CLIENT span
-        return context.addData(SPAN_BUILDER_KEY, createSpanBuilder(spanName, null, SpanKind.CLIENT, null, context));
+        SpanBuilder builder = createSpanBuilder(spanName, null, convertToOtelKind(spanKind), null, context);
+        Instant startTime = getOrNull(context, START_TIME_KEY, Instant.class);
+        if (startTime != null) {
+            builder.setStartTimestamp(startTime);
+        }
+
+        return context.addData(SPAN_BUILDER_KEY, builder);
     }
 
     /**

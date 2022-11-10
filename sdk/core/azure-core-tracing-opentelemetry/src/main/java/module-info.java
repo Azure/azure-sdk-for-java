@@ -1,4 +1,3 @@
-import com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracer;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider;
 
@@ -17,7 +16,4 @@ module com.azure.core.tracing.opentelemetry {
 
     provides com.azure.core.util.tracing.TracerProvider
         with OpenTelemetryTracerProvider;
-
-    provides com.azure.core.http.policy.AfterRetryPolicyProvider
-        with OpenTelemetryHttpPolicy;
 }

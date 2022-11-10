@@ -11,8 +11,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.InstrumentationPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
@@ -38,7 +36,6 @@ import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,20 +68,8 @@ public class OpenTelemetryHttpPolicyTests {
         tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider));
+        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions().setProvider(tracerProvider));
         tracer = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build().getTracer(testInfo.getDisplayName());
-    }
-
-    @Test
-    public void addAfterPolicyTest() {
-        // Arrange & Act
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        // Assert
-        assertEquals(1, policies.size());
-        assertEquals(InstrumentationPolicy.class, policies.get(0).getClass());
     }
 
     @Test
@@ -152,12 +137,11 @@ public class OpenTelemetryHttpPolicyTests {
             })
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions()
-            .setProvider(providerWithSampler));
-
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, "https://httpbin.org/hello?there#otel");
-        HttpResponse response =  createHttpPipeline(azTracer).send(request).block();
+        HttpResponse response =  createHttpPipeline(new OpenTelemetryTracer("test", null, null,
+                new OpenTelemetryTracingOptions().setProvider(providerWithSampler)))
+            .send(request).block();
 
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -195,10 +179,11 @@ public class OpenTelemetryHttpPolicyTests {
         AtomicReference<Span> currentSpanTry503 = new AtomicReference<>();
         AtomicReference<Span> currentSpanTry200 = new AtomicReference<>();
 
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
-            .policies(new InstrumentationPolicy("test", null, null, null, null))
-            .tracer(azTracer)
             .httpClient(request -> {
                 HttpHeaders headers = new HttpHeaders();
 
@@ -218,6 +203,7 @@ public class OpenTelemetryHttpPolicyTests {
                     return Mono.just(new MockHttpResponse(request, 400, headers));
                 }
             })
+            .tracer(azTracer)
             .build();
 
         // Start user parent span and populate context.
@@ -265,7 +251,6 @@ public class OpenTelemetryHttpPolicyTests {
     private static HttpPipeline createHttpPipeline(com.azure.core.util.tracing.Tracer azTracer, HttpPipelinePolicy... beforeRetryPolicies) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .policies(beforeRetryPolicies)
-            .policies(new InstrumentationPolicy("test", null, null, null, null))
             .httpClient(new SimpleMockHttpClient())
             .tracer(azTracer)
             .build();

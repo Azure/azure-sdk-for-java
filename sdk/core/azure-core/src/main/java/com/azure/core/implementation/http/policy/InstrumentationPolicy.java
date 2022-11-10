@@ -1,21 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.policy;
+package com.azure.core.implementation.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.ClientOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
@@ -38,8 +37,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private final Tracer tracer;
     private final ScalarPropagatingMono propagatingMono;
 
-    public InstrumentationPolicy(String sdkName, String sdkVersion, String resourceProviderNamespace, ClientOptions options, HttpLogOptions logOptions) {
-        this.tracer = TracerProvider.getDefaultProvider().createTracer(sdkName, sdkVersion, resourceProviderNamespace, options == null ? null : options.getTracingOptions());
+    public InstrumentationPolicy(Tracer tracer) {
+        this.tracer = tracer;
         this.propagatingMono = new ScalarPropagatingMono(tracer);
     }
 
@@ -55,8 +54,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return propagatingMono
             .flatMap(ignored -> next.process())
             .doOnEach(this::handleResponse)
-            .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY,
-                    startSpan(context, context.getTracer())));
+            .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpan(context)));
     }
 
     @Override
@@ -65,7 +63,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             return next.processSync();
         }
 
-        Context span = startSpan(context, context.getTracer());
+        Context span = startSpan(context);
         try (AutoCloseable scope = tracer.makeSpanCurrent(span)) {
             HttpResponse response = next.processSync();
             endSpan(response, null, span);
@@ -83,7 +81,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private Context startSpan(HttpPipelineCallContext azContext, Tracer tracer) {
+    private Context startSpan(HttpPipelineCallContext azContext) {
         HttpRequest request = azContext.getHttpRequest();
 
         // Build new child span representing this outgoing request.
@@ -135,8 +133,11 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             if (requestId != null) {
                 tracer.setAttribute(SERVICE_REQUEST_ID_ATTRIBUTE, requestId, span);
             }
+
+            tracer.end(statusCode, null, span);
         }
-        tracer.end("TODO", error, span);
+
+        tracer.end(null, error, span);
     }
 
     /**

@@ -57,6 +57,7 @@ module com.azure.core {
     opens com.azure.core.implementation.util to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.http.rest to com.fasterxml.jackson.databind;
     opens com.azure.core.http.rest to com.fasterxml.jackson.databind;
+    exports com.azure.core.implementation.http.policy;
 
     // Service Provider Interfaces
     uses com.azure.core.http.HttpClientProvider;

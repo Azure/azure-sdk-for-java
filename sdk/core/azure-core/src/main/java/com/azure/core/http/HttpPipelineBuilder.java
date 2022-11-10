@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.http.policy.InstrumentationPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
@@ -82,6 +83,7 @@ public class HttpPipelineBuilder {
             tracer = TracerProvider.getDefaultProvider().createTracer("azure-core", null, null, tracingOptions);
         }
 
+        policies.add(new InstrumentationPolicy(tracer));
         return new HttpPipeline(client, policies, tracer);
     }
 

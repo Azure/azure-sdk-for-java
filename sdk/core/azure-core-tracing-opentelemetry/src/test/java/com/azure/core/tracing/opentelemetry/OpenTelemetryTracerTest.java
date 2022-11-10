@@ -474,7 +474,7 @@ public class OpenTelemetryTracerTest {
 
         // Assert
         assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
-        assertEquals("Not Found", recordEventsSpan.toSpanData().getStatus().getDescription());
+        assertEquals("", recordEventsSpan.toSpanData().getStatus().getDescription());
 
         List<EventData> events = recordEventsSpan.toSpanData().getEvents();
         assertEquals(1, events.size());

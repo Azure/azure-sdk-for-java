@@ -9,6 +9,10 @@ import com.azure.core.util.ExpandableStringEnum;
  * OTel schema version.
  */
 public class OpenTelemetrySchemaVersion extends ExpandableStringEnum<OpenTelemetrySchemaVersion> {
+    @Deprecated
+    public OpenTelemetrySchemaVersion() {
+    }
+
     /**
      * 1.12.0 version.
      */

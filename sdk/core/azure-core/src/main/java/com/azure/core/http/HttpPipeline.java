@@ -85,7 +85,7 @@ public final class HttpPipeline {
      * upon completion.
      */
     public Mono<HttpResponse> send(HttpRequest request) {
-        return this.send(new HttpPipelineCallContext(request, tracer));
+        return this.send(new HttpPipelineCallContext(request));
     }
 
     /**
@@ -97,7 +97,7 @@ public final class HttpPipeline {
      * upon completion.
      */
     public Mono<HttpResponse> send(HttpRequest request, Context data) {
-        return this.send(new HttpPipelineCallContext(request, tracer, data));
+        return this.send(new HttpPipelineCallContext(request, data));
     }
 
 
@@ -127,7 +127,7 @@ public final class HttpPipeline {
      */
     public HttpResponse sendSync(HttpRequest request, Context data) {
         HttpPipelineNextSyncPolicy next = new HttpPipelineNextSyncPolicy(
-            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, tracer, data)));
+            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
         return next.processSync();
     }
 }

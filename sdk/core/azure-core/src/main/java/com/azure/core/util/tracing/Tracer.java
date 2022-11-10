@@ -63,7 +63,10 @@ public interface Tracer {
 
     /**
      * Key for {@link Context} the scope of code where the given Span is in the current Context.
+     *
+     * @deprecated use {@link Tracer#makeSpanCurrent(Context)} instead.
      */
+    @Deprecated
     String SCOPE_KEY = "scope";
 
     /**
@@ -215,6 +218,7 @@ public interface Tracer {
      *
      * @deprecated use {@link Tracer#start(String, StartSpanOptions, Context)} instead.
      */
+    @Deprecated
     Context start(String methodName, Context context, ProcessKind processKind);
 
     default void injectContext(BiConsumer<String, String> headerSetter, Context context) {
