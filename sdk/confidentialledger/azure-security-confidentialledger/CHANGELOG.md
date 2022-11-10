@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.4 (2022-11-08)
+## 1.0.4 (2022-11-10)
 ### Other Changes
 
 #### Dependency Updates
