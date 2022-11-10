@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.WeightResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** Represents the weight entity resolution model. */
@@ -11,22 +12,25 @@ public final class WeightResolution extends BaseResolution {
     /*
      * The weight Unit of measurement.
      */
-    private final WeightUnit unit;
+    private WeightUnit unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
+    private double value;
 
-    /**
-     * Create a weight entity resolution model.
-     *
-     * @param unit The weight Unit of measurement.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public WeightResolution(WeightUnit unit, double value) {
-        this.unit = unit;
-        this.value = value;
+    static {
+        WeightResolutionPropertiesHelper.setAccessor(new WeightResolutionPropertiesHelper.WeightResolutionAccessor() {
+            @Override
+            public void setUnit(WeightResolution weightResolution, WeightUnit unit) {
+                weightResolution.setUnit(unit);
+            }
+
+            @Override
+            public void setValue(WeightResolution weightResolution, double value) {
+                weightResolution.setValue(value);
+            }
+        });
     }
 
     /**
@@ -45,5 +49,13 @@ public final class WeightResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setUnit(WeightUnit unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }
