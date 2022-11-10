@@ -54,7 +54,7 @@ abstract class ServiceBusBatchTest<TOptions extends ServiceBusStressOptions> ext
         senderAsync = builder.sender().queueName(queueName).buildAsyncClient();
         ServiceBusReceiveMode receiveMode = options.getIsDeleteMode() ? ServiceBusReceiveMode.RECEIVE_AND_DELETE : ServiceBusReceiveMode.PEEK_LOCK;
         receiverClientBuilder = builder.receiver().queueName(queueName).receiveMode(receiveMode);
-        receiver = builder.receiver().queueName(queueName).receiveMode(receiveMode).buildClient();
-        receiverAsync = builder.receiver().queueName(queueName).receiveMode(receiveMode).buildAsyncClient();
+        receiver = receiverClientBuilder.buildClient();
+        receiverAsync = receiverClientBuilder.buildAsyncClient();
     }
 }

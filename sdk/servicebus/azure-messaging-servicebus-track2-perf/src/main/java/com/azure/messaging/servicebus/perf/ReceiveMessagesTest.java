@@ -54,7 +54,7 @@ public class ReceiveMessagesTest extends ServiceBusBatchTest<ServiceBusStressOpt
                     .take(receiveCount)
                     .flatMap(message -> {
                         if (!options.getIsDeleteMode()) {
-                            return receiverAsync.complete(message);
+                            receiverAsync.complete(message);
                         }
                         return Mono.empty();
                     }, 1)
