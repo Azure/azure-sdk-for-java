@@ -40,11 +40,12 @@ public final class SchemaRegistryHelper {
         accessor = Objects.requireNonNull(modelsAccessor, "'modelsAccessor' cannot be null.");
     }
 
-    public static SchemaProperties getSchemaProperties(SchemasRegisterResponse response) {
+    public static SchemaProperties getSchemaProperties(SchemasRegisterResponse response, SchemaFormat fallbackFormat) {
         final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
         final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
+        final SchemaFormat schemaFormat1 = schemaFormat != null ? schemaFormat : fallbackFormat;
 
-        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat1, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
