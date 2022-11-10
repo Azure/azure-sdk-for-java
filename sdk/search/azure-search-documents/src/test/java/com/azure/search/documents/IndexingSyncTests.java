@@ -105,7 +105,7 @@ public class IndexingSyncTests extends SearchTestBase {
 
         List<Book> books = new ArrayList<>();
         books.add(new Book()
-            .ISBN("132")
+            .ISBN("123")
             .title("Lord of the Rings")
             .author(new Author()
                 .firstName("J.R.R")
@@ -113,7 +113,7 @@ public class IndexingSyncTests extends SearchTestBase {
         );
 
         List<IndexingResult> result = client.uploadDocuments(books).getResults();
-        this.assertIndexActionSucceeded("132", result.get(0), 201);
+        this.assertIndexActionSucceeded("123", result.get(0), 201);
 
         waitForIndexing();
         assertEquals(1L, client.getDocumentCount());
@@ -319,11 +319,15 @@ public class IndexingSyncTests extends SearchTestBase {
     @Test
     public void indexWithInvalidDocumentThrowsException() {
         client = setupClient(this::createHotelIndex);
-        assert client != null;
 
-        List<SearchDocument> docs = Collections.singletonList(new SearchDocument());
+        List<SearchDocument> docs = new ArrayList<>();
+        docs.add(new SearchDocument());
 
-        assertHttpResponseException(() -> client.uploadDocuments(docs), HttpURLConnection.HTTP_BAD_REQUEST, null);
+        assertHttpResponseException(
+            () -> client.uploadDocuments(docs),
+            HttpURLConnection.HTTP_BAD_REQUEST,
+            "The request is invalid. Details: actions : 0: Document key cannot be missing or empty."
+        );
     }
 
     @Test
@@ -611,8 +615,8 @@ public class IndexingSyncTests extends SearchTestBase {
 
         LoudHotel updatedDoc = new LoudHotel()
             .HOTELID("1")
-            .DESCRIPTION(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
-            .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
+            .DESCRIPTION(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
             .TAGS(Arrays.asList("pool", "air conditioning"))
             .PARKINGINCLUDED(true)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))

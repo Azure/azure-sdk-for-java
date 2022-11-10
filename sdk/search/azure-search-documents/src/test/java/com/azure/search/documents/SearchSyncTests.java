@@ -276,11 +276,11 @@ public class SearchSyncTests extends SearchTestBase {
 
         Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
         NonNullableModel doc1 = new NonNullableModel()
-            .key("132")
+            .key("123")
             .count(3)
             .isEnabled(true)
             .rating(5)
-            .ratio(3.25)
+            .ratio(3.14)
             .startDate(new Date(startEpoch.getTime()))
             .endDate(new Date(startEpoch.getTime()))
             .topLevelBucket(new Bucket().bucketName("A").count(12))
@@ -406,8 +406,7 @@ public class SearchSyncTests extends SearchTestBase {
         client = getSearchClientBuilder(INDEX_NAME).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .setOrderBy("HotelId asc");
+            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
         SearchPagedIterable results = client.search("*", searchOptions, Context.NONE);
         assertNotNull(results);
 
@@ -629,8 +628,7 @@ public class SearchSyncTests extends SearchTestBase {
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
             .setScoringParameters(new ScoringParameter("myloc", new GeoPoint(-122.0, 49.0)))
-            .setFilter("Rating eq 5 or Rating eq 1")
-            .setOrderBy("HotelId desc");
+            .setFilter("Rating eq 5 or Rating eq 1");
 
         List<Map<String, Object>> response = getSearchResults(client.search("hotel", searchOptions, Context.NONE));
         assertEquals(2, response.size());
@@ -972,7 +970,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String createIndexWithNonNullableTypes() {
-        SearchIndex index = new SearchIndex(testResourceNamer.randomName("non-nullable-index", 64))
+        SearchIndex index = new SearchIndex("non-nullable-index")
             .setFields(Arrays.asList(
                 new SearchField("Key", SearchFieldDataType.STRING)
                     .setHidden(false)
@@ -1008,7 +1006,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String createIndexWithValueTypes() {
-        SearchIndex index = new SearchIndex(testResourceNamer.randomName("testindex", 64))
+        SearchIndex index = new SearchIndex("testindex")
             .setFields(Arrays.asList(
                 new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)
@@ -1032,7 +1030,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     List<Map<String, Object>> createDocsListWithValueTypes() {
         Map<String, Object> element1 = new HashMap<>();
-        element1.put("Key", "132");
+        element1.put("Key", "123");
         element1.put("IntValue", 0);
 
         Map<String, Object> subElement1 = new HashMap<>();

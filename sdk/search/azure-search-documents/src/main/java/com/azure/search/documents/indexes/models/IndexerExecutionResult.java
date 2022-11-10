@@ -22,18 +22,6 @@ public final class IndexerExecutionResult {
     private IndexerExecutionStatus status;
 
     /*
-     * The outcome of this indexer execution.
-     */
-    @JsonProperty(value = "statusDetail", access = JsonProperty.Access.WRITE_ONLY)
-    private IndexerExecutionStatusDetail statusDetail;
-
-    /*
-     * All of the state that defines and dictates the indexer's current execution.
-     */
-    @JsonProperty(value = "currentState", access = JsonProperty.Access.WRITE_ONLY)
-    private IndexerCurrentState currentState;
-
-    /*
      * The error message indicating the top-level error, if any.
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
@@ -123,24 +111,6 @@ public final class IndexerExecutionResult {
      */
     public IndexerExecutionStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Get the statusDetail property: The outcome of this indexer execution.
-     *
-     * @return the statusDetail value.
-     */
-    public IndexerExecutionStatusDetail getStatusDetail() {
-        return this.statusDetail;
-    }
-
-    /**
-     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
-     *
-     * @return the currentState value.
-     */
-    public IndexerCurrentState getCurrentState() {
-        return this.currentState;
     }
 
     /**

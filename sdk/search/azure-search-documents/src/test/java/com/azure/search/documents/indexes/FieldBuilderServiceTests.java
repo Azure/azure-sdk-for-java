@@ -35,7 +35,6 @@ public class FieldBuilderServiceTests extends SearchTestBase {
     @Override
     protected void afterTest() {
         super.afterTest();
-        assert client != null;
 
         for (String index : indexesToDelete) {
             client.deleteIndex(index);
@@ -47,9 +46,7 @@ public class FieldBuilderServiceTests extends SearchTestBase {
     @Test
     public void createIndexWithFieldBuilder() {
         SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
-        assert client != null;
         client.createSynonymMap(synonymMap);
-        assert index != null;
         index.setFields(SearchIndexClient.buildSearchFields(Hotel.class, new FieldBuilderOptions()
             .setJsonSerializer(new JacksonJsonSerializerBuilder().serializer(new ObjectMapper()
                 .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY))

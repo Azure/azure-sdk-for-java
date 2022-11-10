@@ -8,7 +8,7 @@ import com.azure.core.util.Configuration;
 /**
  * Get a single document based on its key
  * This sample is based on the hotels-sample index available to install from the portal.
- * See <a href="https://docs.microsoft.com/azure/search/search-get-started-portal">Search getting started portal</a>
+ * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
  */
 public class GetSingleDocumentExample {
 
@@ -31,6 +31,8 @@ public class GetSingleDocumentExample {
         // Retrieve a single document by key
         SearchDocument document = client.getDocument("3", SearchDocument.class);
 
-        document.forEach((key, value) -> System.out.println(key + ":" + value));
+        for (String key : document.keySet()) {
+            System.out.println(key + ":" + document.get(key));
+        }
     }
 }

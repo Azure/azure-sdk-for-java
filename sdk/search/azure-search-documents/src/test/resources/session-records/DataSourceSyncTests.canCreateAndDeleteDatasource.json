@@ -1,58 +1,58 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob11821c414')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob04421af1b')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "62c7cb83-a214-494e-859f-3d8ae9ed048d"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ca3f0b92-b077-4b89-a508-bef4fce2af37"
     },
     "Response" : {
       "content-length" : "137",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "62c7cb83-a214-494e-859f-3d8ae9ed048d",
+      "request-id" : "ca3f0b92-b077-4b89-a508-bef4fce2af37",
       "StatusCode" : "404",
-      "Date" : "Tue, 13 Jul 2021 19:23:18 GMT",
+      "Date" : "Thu, 27 May 2021 21:14:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "62c7cb83-a214-494e-859f-3d8ae9ed048d",
+      "client-request-id" : "ca3f0b92-b077-4b89-a508-bef4fce2af37",
       "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob11821c414' was found in a service named 'alzimmer-test'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob04421af1b' was found in a service named 'alzimmer-test'.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "62c7cb83-a214-494e-859f-3d8ae9ed048d",
+      "x-ms-client-request-id" : "ca3f0b92-b077-4b89-a508-bef4fce2af37",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob11821c414')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob04421af1b')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2f89ff9e-d218-4c8e-9597-13742c84238b"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "205f826b-7f8c-42c4-aadc-e87bcefa81d5"
     },
     "Response" : {
       "content-length" : "130",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2f89ff9e-d218-4c8e-9597-13742c84238b",
+      "request-id" : "205f826b-7f8c-42c4-aadc-e87bcefa81d5",
       "StatusCode" : "404",
-      "Date" : "Tue, 13 Jul 2021 19:23:18 GMT",
+      "Date" : "Thu, 27 May 2021 21:14:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "2f89ff9e-d218-4c8e-9597-13742c84238b",
-      "elapsed-time" : "14",
+      "client-request-id" : "205f826b-7f8c-42c4-aadc-e87bcefa81d5",
+      "elapsed-time" : "15",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob11821c414' was found in service 'alzimmer-test'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob04421af1b' was found in service 'alzimmer-test'.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "2f89ff9e-d218-4c8e-9597-13742c84238b",
+      "x-ms-client-request-id" : "205f826b-7f8c-42c4-aadc-e87bcefa81d5",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-java-test-blob11821c414" ]
+  "variables" : [ "azs-java-test-blob04421af1b" ]
 }
