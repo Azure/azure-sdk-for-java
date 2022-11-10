@@ -46,6 +46,7 @@ public class MessageSender extends ServiceBusScenario {
 
         ServiceBusSenderAsyncClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
+            .clientOptions(clientOptions)
             .sender()
             .queueName(queueName)
             .topicName(topicName)

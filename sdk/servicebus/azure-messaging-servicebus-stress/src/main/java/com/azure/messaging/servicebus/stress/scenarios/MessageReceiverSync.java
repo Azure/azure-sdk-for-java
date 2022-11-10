@@ -53,6 +53,7 @@ public class MessageReceiverSync extends ServiceBusScenario {
                 .setDelay(Duration.ofMillis(3000))
                 .setMode(AmqpRetryMode.FIXED)
             )
+            .clientOptions(clientOptions)
             .receiver()
             .queueName(queueName)
             .topicName(topicName)

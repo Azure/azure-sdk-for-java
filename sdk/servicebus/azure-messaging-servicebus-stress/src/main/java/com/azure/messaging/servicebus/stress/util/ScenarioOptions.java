@@ -33,6 +33,9 @@ public class ScenarioOptions {
     @Value("${METRIC_INTERVAL_SEC:60}")
     private String metricIntervalSec;
 
+    @Value("${CLIENT_METRICS_ENABLED:true}")
+    private boolean clientMetricsEnabled;
+
     public String getTestClass() {
         return testClass;
     }
@@ -59,5 +62,9 @@ public class ScenarioOptions {
 
     public String getMetricIntervalSec() {
         return metricIntervalSec;
+    }
+
+    public boolean isClientMetricsEnabled() {
+        return clientMetricsEnabled;
     }
 }

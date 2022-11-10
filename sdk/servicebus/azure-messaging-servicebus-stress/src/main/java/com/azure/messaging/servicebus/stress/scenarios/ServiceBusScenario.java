@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
+import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.stress.config.RateMeter;
 import com.azure.messaging.servicebus.stress.util.ScenarioOptions;
 import com.microsoft.applicationinsights.TelemetryClient;
@@ -20,6 +21,9 @@ public abstract class ServiceBusScenario {
 
     @Autowired
     protected RateMeter rateMeter;
+
+    @Autowired
+    protected ClientOptions clientOptions;
 
     /**
      * Run test scenario

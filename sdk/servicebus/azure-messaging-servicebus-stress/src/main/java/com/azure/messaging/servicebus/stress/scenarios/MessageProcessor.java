@@ -47,6 +47,7 @@ public class MessageProcessor extends ServiceBusScenario {
         ServiceBusProcessorClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
+            .clientOptions(clientOptions)
             .processor()
             .queueName(queueName)
             .topicName(topicName)
