@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.3 (2022-11-09)
+## 1.3.3 (2022-11-10)
 ### Other Changes
 #### Dependency Updates
 - Upgraded `azure-communication-common` to 1.2.3
