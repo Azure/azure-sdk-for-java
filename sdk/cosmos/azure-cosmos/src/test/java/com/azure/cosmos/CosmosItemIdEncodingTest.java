@@ -261,7 +261,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.OK,// Bug in Compute Gateway - check with Dmitri when fix is available
+                HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
