@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TargetRollingWindowSizeMode. */
+/** Target rolling windows size mode. */
 public final class TargetRollingWindowSizeMode extends ExpandableStringEnum<TargetRollingWindowSizeMode> {
     /** Static value Auto for TargetRollingWindowSizeMode. */
     public static final TargetRollingWindowSizeMode AUTO = fromString("Auto");

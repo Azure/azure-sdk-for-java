@@ -2066,10 +2066,6 @@ public abstract class RestProxyTests {
         @Head("voideagerreadoom")
         @ExpectedResponses({200})
         Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid();
-
-        @Head("voideagerreadoom")
-        @ExpectedResponses({200})
-        Flux<Void> headFluxVoid();
     }
 
     @ParameterizedTest
@@ -2084,10 +2080,62 @@ public abstract class RestProxyTests {
             Service28::headVoid,
             Service28::headResponseVoid,
             Service28::headResponseBaseVoid,
-            Service28::headMonoVoid,
-            Service28::headMonoResponseVoid,
-            Service28::headMonoResponseBaseVoid,
-            Service28::headFluxVoid
+            service28 -> service28.headMonoVoid().block(),
+            service28 -> service28.headMonoResponseVoid().block(),
+            service28 -> service28.headMonoResponseBaseVoid().block()
+        );
+    }
+
+    @Host("http://localhost")
+    @ServiceInterface(name = "Service29")
+    interface Service29 {
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        void headvoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Void headVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Response<Void> headResponseVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        ResponseBase<Void, Void> headResponseBaseVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Mono<Void> headMonoVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Mono<Response<Void>> headMonoResponseVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid();
+    }
+
+    @ParameterizedTest
+    @MethodSource("voidErrorReturnsErrorBodySupplier")
+    public void voidErrorReturnsErrorBody(Consumer<Service29> executable) {
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> executable.accept(createService(Service29.class)));
+
+        assertTrue(exception.getMessage().contains("void exception body thrown"));
+    }
+
+    private static Stream<Consumer<Service29>> voidErrorReturnsErrorBodySupplier() {
+        return Stream.of(
+            Service29::headvoid,
+            Service29::headVoid,
+            Service29::headResponseVoid,
+            Service29::headResponseBaseVoid,
+            service29 -> service29.headMonoVoid().block(),
+            service29 -> service29.headMonoResponseVoid().block(),
+            service29 -> service29.headMonoResponseBaseVoid().block()
         );
     }
 

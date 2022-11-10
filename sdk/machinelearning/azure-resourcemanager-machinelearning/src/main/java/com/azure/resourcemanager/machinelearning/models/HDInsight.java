@@ -20,6 +20,10 @@ public final class HDInsight extends Compute {
     @JsonProperty(value = "properties")
     private HDInsightProperties properties;
 
+    /** Creates an instance of HDInsight class. */
+    public HDInsight() {
+    }
+
     /**
      * Get the properties property: HDInsight compute properties.
      *
@@ -37,6 +41,13 @@ public final class HDInsight extends Compute {
      */
     public HDInsight withProperties(HDInsightProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsight withComputeLocation(String computeLocation) {
+        super.withComputeLocation(computeLocation);
         return this;
     }
 

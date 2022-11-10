@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Jobs Cancel. */
 public final class JobsCancelSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Job/cancel.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Job/cancel.json
      */
     /**
      * Sample code: Cancel Job.
@@ -17,6 +17,6 @@ public final class JobsCancelSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void cancelJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().cancelWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().cancel("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 }

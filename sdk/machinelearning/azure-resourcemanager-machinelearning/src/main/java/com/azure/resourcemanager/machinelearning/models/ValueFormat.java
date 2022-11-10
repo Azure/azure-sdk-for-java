@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ValueFormat. */
+/** format for the workspace connection value. */
 public final class ValueFormat extends ExpandableStringEnum<ValueFormat> {
     /** Static value JSON for ValueFormat. */
     public static final ValueFormat JSON = fromString("JSON");

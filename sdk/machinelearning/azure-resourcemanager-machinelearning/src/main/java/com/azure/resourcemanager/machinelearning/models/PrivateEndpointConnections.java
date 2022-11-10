@@ -43,19 +43,6 @@ public interface PrivateEndpointConnections {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the workspace.
-     */
-    PrivateEndpointConnection get(String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
-
-    /**
-     * Gets the specified private endpoint connection associated with the workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +53,7 @@ public interface PrivateEndpointConnections {
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Deletes the specified private endpoint connection associated with the workspace.
+     * Gets the specified private endpoint connection associated with the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
@@ -74,8 +61,9 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the workspace.
      */
-    void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
+    PrivateEndpointConnection get(String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the workspace.
@@ -91,6 +79,18 @@ public interface PrivateEndpointConnections {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Deletes the specified private endpoint connection associated with the workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
 
     /**
      * Gets the specified private endpoint connection associated with the workspace.

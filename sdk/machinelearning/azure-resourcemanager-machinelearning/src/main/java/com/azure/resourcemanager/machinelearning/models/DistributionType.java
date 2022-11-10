@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DistributionType. */
+/** Enum to determine the job distribution type. */
 public final class DistributionType extends ExpandableStringEnum<DistributionType> {
     /** Static value PyTorch for DistributionType. */
     public static final DistributionType PY_TORCH = fromString("PyTorch");

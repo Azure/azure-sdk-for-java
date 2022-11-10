@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduleStatus. */
+/** Is the schedule enabled or disabled?. */
 public final class ScheduleStatus extends ExpandableStringEnum<ScheduleStatus> {
     /** Static value Enabled for ScheduleStatus. */
     public static final ScheduleStatus ENABLED = fromString("Enabled");

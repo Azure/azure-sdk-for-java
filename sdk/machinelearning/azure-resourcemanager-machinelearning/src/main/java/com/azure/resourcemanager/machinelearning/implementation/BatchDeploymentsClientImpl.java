@@ -33,9 +33,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.BatchDeploymentsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentInner;
 import com.azure.resourcemanager.machinelearning.models.BatchDeploymentTrackedResourceArmPaginatedResult;
-import com.azure.resourcemanager.machinelearning.models.PartialBatchDeploymentPartialTrackedResource;
+import com.azure.resourcemanager.machinelearning.models.PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -111,7 +111,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BatchDeploymentDataInner>> get(
+        Mono<Response<BatchDeploymentInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -137,7 +137,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             @PathParam("endpointName") String endpointName,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PartialBatchDeploymentPartialTrackedResource body,
+            @BodyParam("application/json") PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -156,7 +156,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             @PathParam("endpointName") String endpointName,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BatchDeploymentDataInner body,
+            @BodyParam("application/json") BatchDeploymentInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -187,7 +187,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchDeploymentDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<BatchDeploymentInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -228,7 +228,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
                             skip,
                             accept,
                             context))
-            .<PagedResponse<BatchDeploymentDataInner>>map(
+            .<PagedResponse<BatchDeploymentInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -257,7 +257,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchDeploymentDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<BatchDeploymentInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -328,7 +328,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchDeploymentDataInner> listAsync(
+    private PagedFlux<BatchDeploymentInner> listAsync(
         String resourceGroupName, String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, endpointName, orderBy, top, skip),
@@ -347,7 +347,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchDeploymentDataInner> listAsync(
+    private PagedFlux<BatchDeploymentInner> listAsync(
         String resourceGroupName, String workspaceName, String endpointName) {
         final String orderBy = null;
         final Integer top = null;
@@ -373,7 +373,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchDeploymentDataInner> listAsync(
+    private PagedFlux<BatchDeploymentInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -398,7 +398,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchDeploymentDataInner> list(
+    public PagedIterable<BatchDeploymentInner> list(
         String resourceGroupName, String workspaceName, String endpointName) {
         final String orderBy = null;
         final Integer top = null;
@@ -422,7 +422,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchDeploymentDataInner> list(
+    public PagedIterable<BatchDeploymentInner> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -721,7 +721,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BatchDeploymentDataInner>> getWithResponseAsync(
+    private Mono<Response<BatchDeploymentInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -780,7 +780,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BatchDeploymentDataInner>> getWithResponseAsync(
+    private Mono<Response<BatchDeploymentInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -835,28 +835,10 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentDataInner> getAsync(
+    private Mono<BatchDeploymentInner> getAsync(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a batch inference deployment by id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Endpoint name.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch inference deployment by id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentDataInner get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        return getAsync(resourceGroupName, workspaceName, endpointName, deploymentName).block();
     }
 
     /**
@@ -873,9 +855,27 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BatchDeploymentDataInner> getWithResponse(
+    public Response<BatchDeploymentInner> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context).block();
+    }
+
+    /**
+     * Gets a batch inference deployment by id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Endpoint name.
+     * @param deploymentName The identifier for the Batch deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch inference deployment by id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchDeploymentInner get(
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+        return getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE).getValue();
     }
 
     /**
@@ -897,7 +897,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body) {
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -967,7 +967,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1029,21 +1029,21 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginUpdateAsync(
+    private PollerFlux<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body) {
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
         return this
             .client
-            .<BatchDeploymentDataInner, BatchDeploymentDataInner>getLroResult(
+            .<BatchDeploymentInner, BatchDeploymentInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                BatchDeploymentDataInner.class,
-                BatchDeploymentDataInner.class,
+                BatchDeploymentInner.class,
+                BatchDeploymentInner.class,
                 this.client.getContext());
     }
 
@@ -1062,24 +1062,20 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginUpdateAsync(
+    private PollerFlux<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
         return this
             .client
-            .<BatchDeploymentDataInner, BatchDeploymentDataInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BatchDeploymentDataInner.class,
-                BatchDeploymentDataInner.class,
-                context);
+            .<BatchDeploymentInner, BatchDeploymentInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BatchDeploymentInner.class, BatchDeploymentInner.class, context);
     }
 
     /**
@@ -1096,12 +1092,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginUpdate(
+    public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body) {
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).getSyncPoller();
     }
 
@@ -1120,12 +1116,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginUpdate(
+    public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
@@ -1145,12 +1141,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentDataInner> updateAsync(
+    private Mono<BatchDeploymentInner> updateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body) {
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1171,12 +1167,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentDataInner> updateAsync(
+    private Mono<BatchDeploymentInner> updateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .last()
@@ -1197,12 +1193,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentDataInner update(
+    public BatchDeploymentInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body) {
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
     }
 
@@ -1221,12 +1217,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentDataInner update(
+    public BatchDeploymentInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context).block();
     }
@@ -1250,7 +1246,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body) {
+        BatchDeploymentInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1320,7 +1316,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body,
+        BatchDeploymentInner body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1382,21 +1378,21 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginCreateOrUpdateAsync(
+    private PollerFlux<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body) {
+        BatchDeploymentInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
         return this
             .client
-            .<BatchDeploymentDataInner, BatchDeploymentDataInner>getLroResult(
+            .<BatchDeploymentInner, BatchDeploymentInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                BatchDeploymentDataInner.class,
-                BatchDeploymentDataInner.class,
+                BatchDeploymentInner.class,
+                BatchDeploymentInner.class,
                 this.client.getContext());
     }
 
@@ -1415,12 +1411,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginCreateOrUpdateAsync(
+    private PollerFlux<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body,
+        BatchDeploymentInner body,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1428,12 +1424,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
                 resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
         return this
             .client
-            .<BatchDeploymentDataInner, BatchDeploymentDataInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BatchDeploymentDataInner.class,
-                BatchDeploymentDataInner.class,
-                context);
+            .<BatchDeploymentInner, BatchDeploymentInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BatchDeploymentInner.class, BatchDeploymentInner.class, context);
     }
 
     /**
@@ -1450,12 +1442,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginCreateOrUpdate(
+    public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body) {
+        BatchDeploymentInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .getSyncPoller();
     }
@@ -1475,12 +1467,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginCreateOrUpdate(
+    public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body,
+        BatchDeploymentInner body,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
@@ -1500,12 +1492,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentDataInner> createOrUpdateAsync(
+    private Mono<BatchDeploymentInner> createOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body) {
+        BatchDeploymentInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1526,12 +1518,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentDataInner> createOrUpdateAsync(
+    private Mono<BatchDeploymentInner> createOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body,
+        BatchDeploymentInner body,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .last()
@@ -1552,12 +1544,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentDataInner createOrUpdate(
+    public BatchDeploymentInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body) {
+        BatchDeploymentInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
     }
 
@@ -1576,12 +1568,12 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentDataInner createOrUpdate(
+    public BatchDeploymentInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body,
+        BatchDeploymentInner body,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .block();
@@ -1590,7 +1582,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1598,7 +1591,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchDeploymentDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BatchDeploymentInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1611,7 +1604,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BatchDeploymentDataInner>>map(
+            .<PagedResponse<BatchDeploymentInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1626,7 +1619,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1635,7 +1629,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchDeploymentDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<BatchDeploymentInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

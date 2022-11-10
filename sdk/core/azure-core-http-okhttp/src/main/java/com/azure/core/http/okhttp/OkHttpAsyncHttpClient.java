@@ -27,7 +27,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -205,26 +204,25 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     private static HttpResponse toHttpResponse(HttpRequest request, okhttp3.Response response,
         boolean eagerlyReadResponse, boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
-        // Ignoring the response body takes precedent over eagerly reading the response body.
-        // Both should never be true at the same time but this is acts as a safeguard.
-        if (ignoreResponseBody) {
-            ResponseBody body = response.body();
-            if (body != null) {
-                if (body.contentLength() > 0) {
-                    LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-                        + "Response body will be ignored as directed.");
-                }
-                body.close();
-            }
-
-            return new OkHttpAsyncBufferedResponse(response, request, EMPTY_BODY, eagerlyConvertHeaders);
-        }
+        // For now, eagerlyReadResponse and ignoreResponseBody works the same.
+//        if (ignoreResponseBody) {
+//            ResponseBody body = response.body();
+//            if (body != null) {
+//                if (body.contentLength() > 0) {
+//                    LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+//                        + "Response body will be ignored as directed.");
+//                }
+//                body.close();
+//            }
+//
+//            return new OkHttpAsyncBufferedResponse(response, request, EMPTY_BODY, eagerlyConvertHeaders);
+//        }
 
         /*
          * Use a buffered response when we are eagerly reading the response from the network and the body isn't
          * empty.
          */
-        if (eagerlyReadResponse) {
+        if (eagerlyReadResponse || ignoreResponseBody) {
             try (ResponseBody body = response.body()) {
                 byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
                 return new OkHttpAsyncBufferedResponse(response, request, bytes, eagerlyConvertHeaders);

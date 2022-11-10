@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.WorkspaceConnectionsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.WorkspaceConnectionInner;
-import com.azure.resourcemanager.machinelearning.models.WorkspaceConnection;
+import com.azure.resourcemanager.machinelearning.fluent.models.WorkspaceConnectionPropertiesV2BasicResourceInner;
+import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2BasicResource;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnections;
 
 public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
@@ -28,44 +28,30 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkspaceConnection> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<WorkspaceConnectionInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new WorkspaceConnectionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<WorkspaceConnection> list(
-        String resourceGroupName, String workspaceName, String target, String category, Context context) {
-        PagedIterable<WorkspaceConnectionInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, target, category, context);
-        return Utils.mapPage(inner, inner1 -> new WorkspaceConnectionImpl(inner1, this.manager()));
-    }
-
-    public WorkspaceConnection get(String resourceGroupName, String workspaceName, String connectionName) {
-        WorkspaceConnectionInner inner = this.serviceClient().get(resourceGroupName, workspaceName, connectionName);
-        if (inner != null) {
-            return new WorkspaceConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<WorkspaceConnection> getWithResponse(
+    public Response<WorkspaceConnectionPropertiesV2BasicResource> getWithResponse(
         String resourceGroupName, String workspaceName, String connectionName, Context context) {
-        Response<WorkspaceConnectionInner> inner =
+        Response<WorkspaceConnectionPropertiesV2BasicResourceInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, connectionName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new WorkspaceConnectionImpl(inner.getValue(), this.manager()));
+                new WorkspaceConnectionPropertiesV2BasicResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String connectionName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, connectionName);
+    public WorkspaceConnectionPropertiesV2BasicResource get(
+        String resourceGroupName, String workspaceName, String connectionName) {
+        WorkspaceConnectionPropertiesV2BasicResourceInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, connectionName);
+        if (inner != null) {
+            return new WorkspaceConnectionPropertiesV2BasicResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -73,7 +59,27 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, connectionName, context);
     }
 
-    public WorkspaceConnection getById(String id) {
+    public void delete(String resourceGroupName, String workspaceName, String connectionName) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, connectionName);
+    }
+
+    public PagedIterable<WorkspaceConnectionPropertiesV2BasicResource> list(
+        String resourceGroupName, String workspaceName) {
+        PagedIterable<WorkspaceConnectionPropertiesV2BasicResourceInner> inner =
+            this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils
+            .mapPage(inner, inner1 -> new WorkspaceConnectionPropertiesV2BasicResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<WorkspaceConnectionPropertiesV2BasicResource> list(
+        String resourceGroupName, String workspaceName, String target, String category, Context context) {
+        PagedIterable<WorkspaceConnectionPropertiesV2BasicResourceInner> inner =
+            this.serviceClient().list(resourceGroupName, workspaceName, target, category, context);
+        return Utils
+            .mapPage(inner, inner1 -> new WorkspaceConnectionPropertiesV2BasicResourceImpl(inner1, this.manager()));
+    }
+
+    public WorkspaceConnectionPropertiesV2BasicResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -99,7 +105,7 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         return this.getWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE).getValue();
     }
 
-    public Response<WorkspaceConnection> getByIdWithResponse(String id, Context context) {
+    public Response<WorkspaceConnectionPropertiesV2BasicResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -185,7 +191,7 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         return this.serviceManager;
     }
 
-    public WorkspaceConnectionImpl define(String name) {
-        return new WorkspaceConnectionImpl(name, this.manager());
+    public WorkspaceConnectionPropertiesV2BasicResourceImpl define(String name) {
+        return new WorkspaceConnectionPropertiesV2BasicResourceImpl(name, this.manager());
     }
 }
