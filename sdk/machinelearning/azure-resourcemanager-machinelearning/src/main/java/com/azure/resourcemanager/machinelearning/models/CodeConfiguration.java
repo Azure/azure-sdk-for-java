@@ -23,6 +23,10 @@ public final class CodeConfiguration {
     @JsonProperty(value = "scoringScript", required = true)
     private String scoringScript;
 
+    /** Creates an instance of CodeConfiguration class. */
+    public CodeConfiguration() {
+    }
+
     /**
      * Get the codeId property: ARM resource ID of the code asset.
      *

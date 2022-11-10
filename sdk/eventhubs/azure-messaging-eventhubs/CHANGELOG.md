@@ -7,8 +7,9 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed incorrect proxy configuration using environment variables. ([24230](https://github.com/Azure/azure-sdk-for-java/issues/24230)) 
+- Fixed incorrect proxy configuration using environment variables. ([#24230](https://github.com/Azure/azure-sdk-for-java/issues/24230)) 
 ### Other Changes
+- Changed the log level for adding credits from Info to Debug. ([#20836](https://github.com/Azure/azure-sdk-for-java/issues/20836))
 
 ## 5.14.0 (2022-10-13)
 
@@ -22,8 +23,8 @@
 ### Bugs Fixed
 
 - Introducing ReactorShim to proxy certain reactive operations to appropriate Reactor operators, these are the operations for which recent Reactor versions have more optimized operators compared to an older version, or same operators with breaking change across Reactor versions
-- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
-- Fixed issue where FAIL_OVERFLOW when pushing events in EventHubBufferedProducerClient would result in a tight loop, so no more events would be published. ([30258](https://github.com/Azure/azure-sdk-for-java/issues/30258))
+- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([#23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
+- Fixed issue where FAIL_OVERFLOW when pushing events in EventHubBufferedProducerClient would result in a tight loop, so no more events would be published. ([#30258](https://github.com/Azure/azure-sdk-for-java/issues/30258))
 
 ### Other Changes
 
@@ -33,6 +34,9 @@
 - Upgraded `azure-core-amqp` to `2.7.2`.
 
 ## 5.13.1 (2022-09-11)
+
+### Bugs Fixed
+- Fixed issue where EventProcessorClient stop running when load balance thrown 412 status code error. ([#29927](https://github.com/Azure/azure-sdk-for-java/issues/29927))
 
 ### Other Changes
 
@@ -64,7 +68,7 @@
 ### Bugs Fixed
 
 - Introducing ReactorShim to proxy certain reactive operations to appropriate Reactor operators, these are the operations for which recent Reactor versions have more optimized operators compared to an older version, or same operators with breaking change across Reactor versions
-- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
+- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([#23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
 
 ## 5.12.2 (2022-07-07)
 

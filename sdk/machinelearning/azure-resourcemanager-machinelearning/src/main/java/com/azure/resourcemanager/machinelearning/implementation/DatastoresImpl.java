@@ -10,9 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.DatastoresClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
-import com.azure.resourcemanager.machinelearning.models.DatastoreData;
+import com.azure.resourcemanager.machinelearning.models.Datastore;
 import com.azure.resourcemanager.machinelearning.models.DatastoreSecrets;
 import com.azure.resourcemanager.machinelearning.models.Datastores;
 import java.util.List;
@@ -30,12 +30,12 @@ public final class DatastoresImpl implements Datastores {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<DatastoreData> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<DatastoreDataInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new DatastoreDataImpl(inner1, this.manager()));
+    public PagedIterable<Datastore> list(String resourceGroupName, String workspaceName) {
+        PagedIterable<DatastoreInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DatastoreData> list(
+    public PagedIterable<Datastore> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -46,7 +46,7 @@ public final class DatastoresImpl implements Datastores {
         String orderBy,
         Boolean orderByAsc,
         Context context) {
-        PagedIterable<DatastoreDataInner> inner =
+        PagedIterable<DatastoreInner> inner =
             this
                 .serviceClient()
                 .list(
@@ -60,11 +60,7 @@ public final class DatastoresImpl implements Datastores {
                     orderBy,
                     orderByAsc,
                     context);
-        return Utils.mapPage(inner, inner1 -> new DatastoreDataImpl(inner1, this.manager()));
-    }
-
-    public void delete(String resourceGroupName, String workspaceName, String name) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, name);
+        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
     public Response<Void> deleteWithResponse(
@@ -72,34 +68,29 @@ public final class DatastoresImpl implements Datastores {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, context);
     }
 
-    public DatastoreData get(String resourceGroupName, String workspaceName, String name) {
-        DatastoreDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name);
-        if (inner != null) {
-            return new DatastoreDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, String name) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, name);
     }
 
-    public Response<DatastoreData> getWithResponse(
+    public Response<Datastore> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
-        Response<DatastoreDataInner> inner =
+        Response<DatastoreInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new DatastoreDataImpl(inner.getValue(), this.manager()));
+                new DatastoreImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DatastoreSecrets listSecrets(String resourceGroupName, String workspaceName, String name) {
-        DatastoreSecretsInner inner = this.serviceClient().listSecrets(resourceGroupName, workspaceName, name);
+    public Datastore get(String resourceGroupName, String workspaceName, String name) {
+        DatastoreInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name);
         if (inner != null) {
-            return new DatastoreSecretsImpl(inner, this.manager());
+            return new DatastoreImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -120,7 +111,16 @@ public final class DatastoresImpl implements Datastores {
         }
     }
 
-    public DatastoreData getById(String id) {
+    public DatastoreSecrets listSecrets(String resourceGroupName, String workspaceName, String name) {
+        DatastoreSecretsInner inner = this.serviceClient().listSecrets(resourceGroupName, workspaceName, name);
+        if (inner != null) {
+            return new DatastoreSecretsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Datastore getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -146,7 +146,7 @@ public final class DatastoresImpl implements Datastores {
         return this.getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
     }
 
-    public Response<DatastoreData> getByIdWithResponse(String id, Context context) {
+    public Response<Datastore> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -232,7 +232,7 @@ public final class DatastoresImpl implements Datastores {
         return this.serviceManager;
     }
 
-    public DatastoreDataImpl define(String name) {
-        return new DatastoreDataImpl(name, this.manager());
+    public DatastoreImpl define(String name) {
+        return new DatastoreImpl(name, this.manager());
     }
 }

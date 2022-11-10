@@ -32,15 +32,13 @@ public class ImageModelDistributionSettings {
     private String augmentations;
 
     /*
-     * Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in
-     * the range [0, 1].
+     * Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "beta1")
     private String beta1;
 
     /*
-     * Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in
-     * the range [0, 1].
+     * Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "beta2")
     private String beta2;
@@ -58,16 +56,14 @@ public class ImageModelDistributionSettings {
     private String earlyStopping;
 
     /*
-     * Minimum number of epochs or validation evaluations to wait before
-     * primary metric improvement
+     * Minimum number of epochs or validation evaluations to wait before primary metric improvement
      * is tracked for early stopping. Must be a positive integer.
      */
     @JsonProperty(value = "earlyStoppingDelay")
     private String earlyStoppingDelay;
 
     /*
-     * Minimum number of epochs or validation evaluations with no primary
-     * metric improvement before
+     * Minimum number of epochs or validation evaluations with no primary metric improvement before
      * the run is stopped. Must be a positive integer.
      */
     @JsonProperty(value = "earlyStoppingPatience")
@@ -80,19 +76,15 @@ public class ImageModelDistributionSettings {
     private String enableOnnxNormalization;
 
     /*
-     * Frequency to evaluate validation dataset to get metric scores. Must be a
-     * positive integer.
+     * Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
      */
     @JsonProperty(value = "evaluationFrequency")
     private String evaluationFrequency;
 
     /*
-     * Gradient accumulation means running a configured number of
-     * "GradAccumulationStep"\  steps without
-     * updating the model weights while accumulating the gradients of those
-     * steps, and then using
-     * the accumulated gradients to compute the weight updates. Must be a
-     * positive integer.
+     * Gradient accumulation means running a configured number of "GradAccumulationStep"\  steps without
+     * updating the model weights while accumulating the gradients of those steps, and then using
+     * the accumulated gradients to compute the weight updates. Must be a positive integer.
      */
     @JsonProperty(value = "gradientAccumulationStep")
     private String gradientAccumulationStep;
@@ -100,10 +92,8 @@ public class ImageModelDistributionSettings {
     /*
      * Number of layers to freeze for the model. Must be a positive integer.
      * For instance, passing 2 as value for 'seresnext' means
-     * freezing layer0 and layer1. For a full list of models supported and
-     * details on layer freeze, please
-     * see:
-     * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+     * freezing layer0 and layer1. For a full list of models supported and details on layer freeze, please
+     * see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
      */
     @JsonProperty(value = "layersToFreeze")
     private String layersToFreeze;
@@ -122,16 +112,14 @@ public class ImageModelDistributionSettings {
 
     /*
      * Name of the model to use for training.
-     * For more information on the available models please visit the official
-     * documentation:
+     * For more information on the available models please visit the official documentation:
      * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
      */
     @JsonProperty(value = "modelName")
     private String modelName;
 
     /*
-     * Value of momentum when optimizer is 'sgd'. Must be a float in the range
-     * [0, 1].
+     * Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "momentum")
     private String momentum;
@@ -167,24 +155,13 @@ public class ImageModelDistributionSettings {
     private String randomSeed;
 
     /*
-     * If validation data is not defined, this specifies the split ratio for
-     * splitting
-     * train data into random train and validation subsets. Must be a float in
-     * the range [0, 1].
-     */
-    @JsonProperty(value = "splitRatio")
-    private String splitRatio;
-
-    /*
-     * Value of gamma when learning rate scheduler is 'step'. Must be a float
-     * in the range [0, 1].
+     * Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "stepLRGamma")
     private String stepLRGamma;
 
     /*
-     * Value of step size when learning rate scheduler is 'step'. Must be a
-     * positive integer.
+     * Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
      */
     @JsonProperty(value = "stepLRStepSize")
     private String stepLRStepSize;
@@ -202,25 +179,26 @@ public class ImageModelDistributionSettings {
     private String validationBatchSize;
 
     /*
-     * Value of cosine cycle when learning rate scheduler is 'warmup_cosine'.
-     * Must be a float in the range [0, 1].
+     * Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "warmupCosineLRCycles")
     private String warmupCosineLRCycles;
 
     /*
-     * Value of warmup epochs when learning rate scheduler is 'warmup_cosine'.
-     * Must be a positive integer.
+     * Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
      */
     @JsonProperty(value = "warmupCosineLRWarmupEpochs")
     private String warmupCosineLRWarmupEpochs;
 
     /*
-     * Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must
-     * be a float in the range[0, 1].
+     * Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
      */
     @JsonProperty(value = "weightDecay")
     private String weightDecay;
+
+    /** Creates an instance of ImageModelDistributionSettings class. */
+    public ImageModelDistributionSettings() {
+    }
 
     /**
      * Get the amsGradient property: Enable AMSGrad when optimizer is 'adam' or 'adamw'.
@@ -663,28 +641,6 @@ public class ImageModelDistributionSettings {
      */
     public ImageModelDistributionSettings withRandomSeed(String randomSeed) {
         this.randomSeed = randomSeed;
-        return this;
-    }
-
-    /**
-     * Get the splitRatio property: If validation data is not defined, this specifies the split ratio for splitting
-     * train data into random train and validation subsets. Must be a float in the range [0, 1].
-     *
-     * @return the splitRatio value.
-     */
-    public String splitRatio() {
-        return this.splitRatio;
-    }
-
-    /**
-     * Set the splitRatio property: If validation data is not defined, this specifies the split ratio for splitting
-     * train data into random train and validation subsets. Must be a float in the range [0, 1].
-     *
-     * @param splitRatio the splitRatio value to set.
-     * @return the ImageModelDistributionSettings object itself.
-     */
-    public ImageModelDistributionSettings withSplitRatio(String splitRatio) {
-        this.splitRatio = splitRatio;
         return this;
     }
 

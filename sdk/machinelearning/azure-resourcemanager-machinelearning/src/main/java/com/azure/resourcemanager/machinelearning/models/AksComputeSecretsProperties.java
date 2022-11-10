@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class AksComputeSecretsProperties {
     /*
-     * Content of kubeconfig file that can be used to connect to the Kubernetes
-     * cluster.
+     * Content of kubeconfig file that can be used to connect to the Kubernetes cluster.
      */
     @JsonProperty(value = "userKubeConfig")
     private String userKubeConfig;
 
     /*
-     * Content of kubeconfig file that can be used to connect to the Kubernetes
-     * cluster.
+     * Content of kubeconfig file that can be used to connect to the Kubernetes cluster.
      */
     @JsonProperty(value = "adminKubeConfig")
     private String adminKubeConfig;
@@ -29,6 +27,10 @@ public class AksComputeSecretsProperties {
      */
     @JsonProperty(value = "imagePullSecretName")
     private String imagePullSecretName;
+
+    /** Creates an instance of AksComputeSecretsProperties class. */
+    public AksComputeSecretsProperties() {
+    }
 
     /**
      * Get the userKubeConfig property: Content of kubeconfig file that can be used to connect to the Kubernetes

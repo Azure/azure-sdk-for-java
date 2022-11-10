@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataAction. */
+/** Supported permissions for data actions. */
 public final class DataAction extends ExpandableStringEnum<DataAction> {
     /** Static value Microsoft.KeyVault/managedHsm/keys/read/action for DataAction. */
     public static final DataAction READ_HSM_KEY = fromString("Microsoft.KeyVault/managedHsm/keys/read/action");
@@ -139,7 +139,11 @@ public final class DataAction extends ExpandableStringEnum<DataAction> {
         return fromString(name, DataAction.class);
     }
 
-    /** @return known DataAction values. */
+    /**
+     * Gets known DataAction values.
+     *
+     * @return known DataAction values.
+     */
     public static Collection<DataAction> values() {
         return values(DataAction.class);
     }

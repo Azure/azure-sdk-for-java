@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class AssetReferenceBase {
+    /** Creates an instance of AssetReferenceBase class. */
+    public AssetReferenceBase() {
+    }
+
     /**
      * Validates the instance.
      *

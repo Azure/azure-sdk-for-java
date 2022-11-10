@@ -21,7 +21,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataVersionBaseData> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<DataVersionBase> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List data versions in the data container.
@@ -42,7 +42,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataVersionBaseData> list(
+    PagedIterable<DataVersionBase> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -52,19 +52,6 @@ public interface DataVersions {
         String tags,
         ListViewType listViewType,
         Context context);
-
-    /**
-     * Delete version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name.
-     * @param version Version identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Delete version.
@@ -83,6 +70,35 @@ public interface DataVersions {
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
+     * Delete version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String name, String version);
+
+    /**
+     * Get version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return version along with {@link Response}.
+     */
+    Response<DataVersionBase> getWithResponse(
+        String resourceGroupName, String workspaceName, String name, String version, Context context);
+
+    /**
      * Get version.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -94,23 +110,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version.
      */
-    DataVersionBaseData get(String resourceGroupName, String workspaceName, String name, String version);
-
-    /**
-     * Get version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name.
-     * @param version Version identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version along with {@link Response}.
-     */
-    Response<DataVersionBaseData> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    DataVersionBase get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -121,7 +121,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    DataVersionBaseData getById(String id);
+    DataVersionBase getById(String id);
 
     /**
      * Get version.
@@ -133,7 +133,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<DataVersionBaseData> getByIdWithResponse(String id, Context context);
+    Response<DataVersionBase> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete version.
@@ -158,10 +158,10 @@ public interface DataVersions {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new DataVersionBaseData resource.
+     * Begins definition for a new DataVersionBase resource.
      *
      * @param name resource name.
-     * @return the first stage of the new DataVersionBaseData definition.
+     * @return the first stage of the new DataVersionBase definition.
      */
-    DataVersionBaseData.DefinitionStages.Blank define(String name);
+    DataVersionBase.DefinitionStages.Blank define(String name);
 }

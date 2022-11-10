@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EnvironmentVersions List. */
 public final class EnvironmentVersionsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/EnvironmentVersion/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/EnvironmentVersion/list.json
      */
     /**
      * Sample code: List Environment Version.

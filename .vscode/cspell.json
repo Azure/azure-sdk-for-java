@@ -130,6 +130,7 @@
     "sdk/core/azure-json-gson/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
     "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-spring-data-cosmos-test/**",
@@ -265,6 +266,11 @@
     "azurestackhci",
     "backoff",
     "boringssl",
+    "Dgpg",
+    "Dskip",
+    "mvnw",
+    "TBLPROPERTIES",
+    "Cyclomatic",
     "branchcoverage",
     "cacerts",
     "checkstyle",
@@ -295,6 +301,7 @@
     "eastus",
     "embedme",
     "encryptor",
+    "endtoend",
     "etag",
     "eventhub",
     "eventhubs",
@@ -391,6 +398,66 @@
     "XLint"
   ],
   "overrides": [
+    {
+      "filename": "sdk/maps/azure-maps-traffic/README.md",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/ProjectionStandard.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/SpeedUnit.java",
+      "words": [
+        "KMPH"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentOptions.java",
+      "words": [
+        "EPSG", "KMPH"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficAsyncClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentDataProperties.java",
+      "words": [
+        "openlr"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewport.java",
+      "words": [
+        "viewp"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/samples/java/com/azure/maps/traffic/samples/GetTrafficIncidentDetail.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewportOptions.java",
+      "words": [
+        "EPSG"
+      ]
+    },
     {
       "filename": "**/pom.xml",
       "patterns": [
@@ -657,6 +724,61 @@
       "filename": "sdk/storage/azure-storage-blob-cryptography/**",
       "words": [
         "akek"
+      ]
+    },
+    {
+      "filename": "NOTICE.txt",
+      "words": [
+        "Tatu",
+        "Saloranta",
+        "JAXB",
+        "Stax",
+        "Tene",
+        "Azul",
+        "rkuhn",
+        "benjchristensen",
+        "viktorklang",
+        "Klang",
+        "smaldini",
+        "Stephane",
+        "Maldini",
+        "savulchik",
+        "Savulchik",
+        "ktoso",
+        "Malawski",
+        "ouertani",
+        "Ouertani",
+        "Mickevičius",
+        "ldaley",
+        "colinrgodsey",
+        "Godsey",
+        "davidmoten",
+        "Moten",
+        "Mauswerks",
+        "rstoyanchev",
+        "Rossen",
+        "Stoyanchev",
+        "Bjorn",
+        "anthonyvdotbe",
+        "Vanelverdinghe",
+        "seratch",
+        "akarnokd",
+        "Karnok",
+        "egetman",
+        "Evgeniy",
+        "patriknw",
+        "Patrik",
+        "angelsanz",
+        "Ángel",
+        "Sanz",
+        "shenghaiyang",
+        "kiiadi",
+        "jroper",
+        "olegdokuka",
+        "Oleh",
+        "Dokuka",
+        "Netifi",
+        "Zaugg"
       ]
     },
     {
