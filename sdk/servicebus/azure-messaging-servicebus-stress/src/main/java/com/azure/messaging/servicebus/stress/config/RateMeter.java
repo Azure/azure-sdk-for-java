@@ -29,6 +29,7 @@ public class RateMeter {
     private final TelemetryClient telemetryClient;
     private final Duration periodicDuration;
     private final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
+    private static final String METRIC_NAMESPACE = "java.servicebus.stress";
 
     /**
      * Constructor to create RateMeter
@@ -58,9 +59,10 @@ public class RateMeter {
             final List<MetricTelemetry> metricTelemetryList = new ArrayList<>();
             rateMap.forEach((key, count) -> {
                 MetricTelemetry metricTelemetry = new MetricTelemetry();
+                metricTelemetry.setMetricNamespace(METRIC_NAMESPACE);
+                metricTelemetry.setName(key);
                 metricTelemetry.setValue(count.getAndSet(0));
                 metricTelemetry.setTimestamp(Date.from(Instant.now()));
-                metricTelemetry.setName(key);
                 metricTelemetryList.add(metricTelemetry);
             });
             metricTelemetryList.forEach(metricTelemetry -> {

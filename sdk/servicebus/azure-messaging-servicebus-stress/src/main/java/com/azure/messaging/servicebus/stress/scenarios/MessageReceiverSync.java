@@ -42,7 +42,9 @@ public class MessageReceiverSync extends ServiceBusScenario {
             topicName = options.getServicebusTopicName();
             subscriptionName = options.getServicebusSubscriptionName();
         }
-        final String metricKey = queueName != null ? queueName : topicName + "/" + subscriptionName;
+
+        final String receiveCounterKey = "Number of received messages - "
+            + (queueName != null ? queueName : topicName + "/" + subscriptionName);
 
         ServiceBusReceiverClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
@@ -59,7 +61,6 @@ public class MessageReceiverSync extends ServiceBusScenario {
             .disableAutoComplete()
             .buildClient();
 
-
         IterableStream<ServiceBusReceivedMessage> receivedMessages = client.receiveMessages(maxReceiveMessages);
         try {
             for (ServiceBusReceivedMessage receivedMessage : receivedMessages) {
@@ -68,7 +69,7 @@ public class MessageReceiverSync extends ServiceBusScenario {
                         receivedMessage.getMessageId(),
                         receivedMessage.getLockToken());
                     client.complete(receivedMessage);
-                    rateMeter.add(metricKey, 1);
+                    rateMeter.add(receiveCounterKey, 1);
                     LOGGER.verbose("After complete. messageId: {}, lockToken: {}",
                         receivedMessage.getMessageId(),
                         receivedMessage.getLockToken());

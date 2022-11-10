@@ -5,7 +5,7 @@ package com.azure.messaging.servicebus.stress.util;
 
 
 /**
- * Messaging types supported by Service Bus.
+ * Messaging entity types supported by Service Bus.
  */
 public enum EntityType {
     QUEUE(0),

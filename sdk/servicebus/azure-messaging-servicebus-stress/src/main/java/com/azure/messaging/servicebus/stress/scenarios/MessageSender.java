@@ -21,10 +21,10 @@ import java.util.stream.IntStream;
  */
 @Service("MessageSender")
 public class MessageSender extends ServiceBusScenario {
-    @Value("${SEND_TIMES:1000}")
+    @Value("${SEND_TIMES:100000}")
     private int sendTimes;
 
-    @Value("${SEND_MESSAGES:1000}")
+    @Value("${SEND_MESSAGES:10}")
     private int messagesToSend;
 
     @Value("${PAYLOAD_SIZE_IN_BYTE:8}")

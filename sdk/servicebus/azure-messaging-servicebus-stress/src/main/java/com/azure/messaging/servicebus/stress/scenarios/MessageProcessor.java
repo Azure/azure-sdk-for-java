@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 
 /**
- *  Test ServiceBusProcessorClient
+ * Test ServiceBusProcessorClient
  */
 @Service("MessageProcessor")
 public class MessageProcessor extends ServiceBusScenario {
@@ -40,7 +40,9 @@ public class MessageProcessor extends ServiceBusScenario {
             topicName = options.getServicebusTopicName();
             subscriptionName = options.getServicebusSubscriptionName();
         }
-        final String metricKey = queueName != null ? queueName : topicName + "/" + subscriptionName;
+
+        final String receiveCounterKey = "Number of received messages - "
+            + (queueName != null ? queueName : topicName + "/" + subscriptionName);
 
         ServiceBusProcessorClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
@@ -58,7 +60,7 @@ public class MessageProcessor extends ServiceBusScenario {
                     messageContext.getMessage().getMessageId(),
                     messageContext.getMessage().getLockToken());
                 messageContext.complete();
-                rateMeter.add(metricKey, 1);
+                rateMeter.add(receiveCounterKey, 1);
                 LOGGER.verbose("After complete. messageId: {}, lockToken: {}",
                     messageContext.getMessage().getMessageId(),
                     messageContext.getMessage().getLockToken());
