@@ -172,7 +172,7 @@ public final class SchemaRegistryAsyncClient {
         return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType, binaryData,
                 binaryData.getLength(), context)
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response);
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response, format);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
