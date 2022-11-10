@@ -6,7 +6,6 @@ Represents stress tests for Service Bus client.
 
 The stress tests for service bus client is developed from [azure-sdk-chaos][azure_sdk_chaos]. 
 
-
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk_link], version 8 or later.
@@ -97,12 +96,13 @@ See [Layout][stress_test_layout] section for details.
 Below is the current structure of project:
 ```
 .
-├── src/                         # Test code
-├── templates/                   # A directory of helm templates that will generate Kubernetes manifest files.
-├── Chart.yaml                   # A YAML file containing information about the helm chart and its dependencies
-├── Dockerfile                   # A Dockerfile for building the stress test image
+├── src/                           # Test code
+├── templates/                     # A directory of helm templates that will generate Kubernetes manifest files.
+├── Chart.yaml                     # A YAML file containing information about the helm chart and its dependencies
+├── scenarios-matrix.yaml          # A YAML file containing configuration and custom values for stress test(s)
+├── Dockerfile                     # A Dockerfile for building the stress test image
 ├── stress-test-resources.bicep    # An Azure Bicep for deploying stress test azure resources
-├── values.yaml                  # Any default helm template values for this chart, e.g. a `scenarios` list
+├── values.yaml                    # Any default helm template values for this chart, e.g. a `scenarios` list
 ├── pom.xml
 └── README.md
 ```
