@@ -6,7 +6,87 @@ Represents stress tests for Service Bus client.
 
 The stress tests for service bus client is developed from [azure-sdk-chaos][azure_sdk_chaos]. 
 
-Follow the same startup steps in [Event Hubs Stress Test - Getting started][event_hubs_stress_test_start].
+
+### Prerequisites
+
+- [Java Development Kit (JDK)][jdk_link], version 8 or later.
+- [Maven][maven]
+- [Docker][docker]
+- [Kubectl][kubectl]
+- [Helm][helm]
+- [Azure CLI][azure_cli]
+- [Powershell 7.0+][powershell]
+
+### Deploy Stress Test
+
+Build out the jar package:
+
+```shell
+cd <current project path>
+mvn clean install
+```
+
+Run command to deploy the package to cluster:
+
+```shell
+..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -Login -PushImage
+``` 
+
+### Validate Status
+
+Only the most frequently used commands are listed below. See [Deploying A Stress Test][deploy_stress_test] for more details.
+
+List deployed packages:
+
+```shell
+helm list -n <stress test namespace>
+```
+
+Get stress test pods and status:
+
+```shell
+kubectl get pods -n <stress test namespace>
+```
+
+Get stress test pod logs:
+
+```shell
+kubectl logs -n <stress test namespace> <stress test pod name>
+# Note that we may define multiple containers (for example, sender and receiver)
+kubectl logs -n <stress test namespace> <stress test pod name> -c <container name>
+```
+
+If stress test pod is in `Error` status, check logs from init container:
+
+```shell
+kubectl logs -n <stress test namespace> <stress test pod name> -c init-azure-deployer
+```
+
+If above command output is empty, there may have been startup failures:
+
+```shell
+kubectl describe pod -n <stress test namespace> <stress test pod name>
+```
+
+Stop and remove deployed package:
+
+```shell
+helm uninstall <stress test name> -n <stress test namespace>
+```
+
+### Configure Faults
+
+See [Config Faults][config_faults] section for details.
+
+### Configure Monitor
+
+We have configured Application Insights on cluster. The telemetry data can be monitored on the Application Insights provided by cluster.
+
+For local test, you can follow the [steps][enable_application_insights] to enable application insights. Make sure you have added below JVM parameters when you start the test.
+
+```yaml
+java -javaagent:<path to the downloaded jar>/applicationinsights-agent-3.4.1.jar 
+```
 
 ## Key concepts
 
@@ -28,10 +108,20 @@ Below is the current structure of project:
 ```
 
 ### Cluster Namespace 
+The cluster namespace is defined in `Chart.yaml`. The default value we set is `java-sb`.
 
-Similar with concepts in [Event Hubs Stress Test - Cluster Namespace][event_hubs_stress_test_namespace].
+```yaml
+name: <stress test name>
+...
+annotations:
+  namespace: <stress test namespace>
+```
 
-For Service Bus, the default value we set is `java-sb`.
+For local deployment with script, if the namespace option is not specified, the value will be overridden by the shell username.
+
+```shell
+..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -Namespace <stress test namespace>
+```
 
 ## Examples
 
@@ -43,13 +133,34 @@ If you haven't provided, the default value we are using is `QUEUE`.
 
 ### Add New Test Scenario
 
-See steps in [Event Hub Stress Test - Add New Test Scenario][event_hubs_stress_test_add_test].
+Add a new test class under `\scenarios`.
 
-The difference is that here we extend `ServiceBusScenarios` for new test scenarios.
+Extend `ServiceBusScenario` and implement test logic in `run()` method.
+
+Configure new class as bean and use class name as its bean name.
+
+Update `args` field in `job.yaml` to execute the new test class.
+
+Build out jar package and redeploy to cluster.
 
 ### Add New Scenario Option
 
-See steps in [Event Hub Stress Test - Add New Scenario Option][event_hubs_stress_test_add_option].
+We use [Spring][spring_configuration] to inject environment variable or
+command line arguments as the scenario options.
+
+You can add new scenario option in [ScenarioOptions][ScenarioOptions] with below format:
+
+```java
+@Value("NEW_OPTION: default value")
+private Type newOption;
+
+public Type getNewOption() {
+    return newOption;
+}
+```
+
+It is recommended to provide a default value for the new option, as it will not have any impact
+on the existing job configuration.
 
 ## Troubleshooting
 
@@ -67,8 +178,16 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- links -->
 [azure_sdk_chaos]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[maven]: https://maven.apache.org/
+[docker]: https://docs.docker.com/get-docker/
+[kubectl]: https://kubernetes.io/docs/tasks/tools/#kubectl
+[helm]: https://helm.sh/docs/intro/install/
+[azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
+[powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
+[enable_application_insights]: https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent#enable-azure-monitor-application-insights
+[deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
+[config_faults]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#configuring-faults
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
-[event_hubs_stress_test_start]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-stress#getting-started
-[event_hubs_stress_test_namespace]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-stress#cluster-namespace
-[event_hubs_stress_test_add_test]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-stress#add-new-test-scenario
-[event_hubs_stress_test_add_option]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-stress#add-new-scenario-option
+[spring_configuration]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config
+[ScenarioOptions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus-stress/src/main/java/com/azure/messaging/servicebus/stress/util/ScenarioOptions.java
