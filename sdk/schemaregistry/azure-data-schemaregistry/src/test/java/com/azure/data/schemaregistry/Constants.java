@@ -10,7 +10,7 @@ class Constants {
     static final int RESOURCE_LENGTH = 16;
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
-    static final String PLAYBACK_TEST_GROUP = "azsdk_python_test_group";
+    static final String PLAYBACK_TEST_GROUP = "azsdk_java_group";
 
     static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
