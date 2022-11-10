@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MedianStopping")
 @Fluent
 public final class MedianStoppingPolicy extends EarlyTerminationPolicy {
+    /** Creates an instance of MedianStoppingPolicy class. */
+    public MedianStoppingPolicy() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public MedianStoppingPolicy withDelayEvaluation(Integer delayEvaluation) {

@@ -52,6 +52,9 @@ public final class FullBackupOperation {
     @JsonProperty(value = "azureStorageBlobContainerUri")
     private String azureStorageBlobContainerUri;
 
+    /** Creates an instance of FullBackupOperation class. */
+    public FullBackupOperation() {}
+
     /**
      * Get the status property: Status of the backup operation.
      *

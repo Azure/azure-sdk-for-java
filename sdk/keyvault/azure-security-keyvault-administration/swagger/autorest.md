@@ -44,7 +44,7 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 generate-client-as-impl: true
 service-interface-as-public: true
-sync-methods: none
+enable-sync-stack: true
 add-context-parameter: true
 context-client-method-parameter: true
 ```

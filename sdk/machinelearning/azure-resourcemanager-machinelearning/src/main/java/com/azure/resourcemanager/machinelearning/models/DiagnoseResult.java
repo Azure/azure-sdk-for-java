@@ -28,6 +28,10 @@ public final class DiagnoseResult {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of DiagnoseResult class. */
+    public DiagnoseResult() {
+    }
+
     /**
      * Get the code property: Code for workspace setup error.
      *

@@ -21,6 +21,10 @@ public final class VirtualMachineSecrets extends ComputeSecretsInner {
     @JsonProperty(value = "administratorAccount")
     private VirtualMachineSshCredentials administratorAccount;
 
+    /** Creates an instance of VirtualMachineSecrets class. */
+    public VirtualMachineSecrets() {
+    }
+
     /**
      * Get the administratorAccount property: Admin credentials for virtual machine.
      *
