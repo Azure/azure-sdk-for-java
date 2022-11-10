@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecurrenceFrequency. */
+/** Enum to describe the frequency of a recurrence schedule. */
 public final class RecurrenceFrequency extends ExpandableStringEnum<RecurrenceFrequency> {
     /** Static value Minute for RecurrenceFrequency. */
     public static final RecurrenceFrequency MINUTE = fromString("Minute");

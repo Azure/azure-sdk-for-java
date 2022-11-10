@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingCurrency. */
+/**
+ * Billing currency
+ *
+ * <p>Three lettered code specifying the currency of the VM price. Example: USD.
+ */
 public final class BillingCurrency extends ExpandableStringEnum<BillingCurrency> {
     /** Static value USD for BillingCurrency. */
     public static final BillingCurrency USD = fromString("USD");

@@ -17,21 +17,14 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
      * These transformers shall not be used in featurization.
      */
     @JsonProperty(value = "blockedTransformers")
-    private List<String> blockedTransformers;
+    private List<BlockedTransformers> blockedTransformers;
 
     /*
-     * Dictionary of column name and its type (int, float, string, datetime
-     * etc).
+     * Dictionary of column name and its type (int, float, string, datetime etc).
      */
     @JsonProperty(value = "columnNameAndTypes")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> columnNameAndTypes;
-
-    /*
-     * Columns to be dropped from data during featurization.
-     */
-    @JsonProperty(value = "dropColumns")
-    private List<String> dropColumns;
 
     /*
      * Determines whether to use Dnn based featurizers for data featurization.
@@ -40,31 +33,32 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
     private Boolean enableDnnFeaturization;
 
     /*
-     * Featurization mode - User can keep the default 'Auto' mode and AutoML
-     * will take care of necessary transformation of the data in featurization
-     * phase.
+     * Featurization mode - User can keep the default 'Auto' mode and AutoML will take care of necessary transformation
+     * of the data in featurization phase.
      * If 'Off' is selected then no featurization is done.
-     * If 'Custom' is selected then user can specify additional inputs to
-     * customize how featurization is done.
+     * If 'Custom' is selected then user can specify additional inputs to customize how featurization is done.
      */
     @JsonProperty(value = "mode")
     private FeaturizationMode mode;
 
     /*
-     * User can specify additional transformers to be used along with the
-     * columns to which it would be applied and parameters for the transformer
-     * constructor.
+     * User can specify additional transformers to be used along with the columns to which it would be applied and
+     * parameters for the transformer constructor.
      */
     @JsonProperty(value = "transformerParams")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<ColumnTransformer>> transformerParams;
+
+    /** Creates an instance of TableVerticalFeaturizationSettings class. */
+    public TableVerticalFeaturizationSettings() {
+    }
 
     /**
      * Get the blockedTransformers property: These transformers shall not be used in featurization.
      *
      * @return the blockedTransformers value.
      */
-    public List<String> blockedTransformers() {
+    public List<BlockedTransformers> blockedTransformers() {
         return this.blockedTransformers;
     }
 
@@ -74,7 +68,7 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
      * @param blockedTransformers the blockedTransformers value to set.
      * @return the TableVerticalFeaturizationSettings object itself.
      */
-    public TableVerticalFeaturizationSettings withBlockedTransformers(List<String> blockedTransformers) {
+    public TableVerticalFeaturizationSettings withBlockedTransformers(List<BlockedTransformers> blockedTransformers) {
         this.blockedTransformers = blockedTransformers;
         return this;
     }
@@ -96,26 +90,6 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
      */
     public TableVerticalFeaturizationSettings withColumnNameAndTypes(Map<String, String> columnNameAndTypes) {
         this.columnNameAndTypes = columnNameAndTypes;
-        return this;
-    }
-
-    /**
-     * Get the dropColumns property: Columns to be dropped from data during featurization.
-     *
-     * @return the dropColumns value.
-     */
-    public List<String> dropColumns() {
-        return this.dropColumns;
-    }
-
-    /**
-     * Set the dropColumns property: Columns to be dropped from data during featurization.
-     *
-     * @param dropColumns the dropColumns value to set.
-     * @return the TableVerticalFeaturizationSettings object itself.
-     */
-    public TableVerticalFeaturizationSettings withDropColumns(List<String> dropColumns) {
-        this.dropColumns = dropColumns;
         return this;
     }
 
