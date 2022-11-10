@@ -24,18 +24,22 @@ public class DownloadChecksumRequest {
                     crc64 = true;
                     md5 = null;
                     break;
+                case None:
+                    crc64 = null;
+                    md5 = null;
+                    break;
                 default:
-                    throw new IllegalArgumentException(
-                        "DownloadChecksumRequest does not support the given algorithm.");
+                    throw new IllegalArgumentException(String.format(
+                        "DownloadChecksumRequest does not support the given algorithm %s.", algorithm.name()));
             }
         }
     }
 
-    public boolean requestMd5() {
+    public Boolean requestMd5() {
         return md5;
     }
 
-    public boolean requestCrc64() {
+    public Boolean requestCrc64() {
         return crc64;
     }
 }
