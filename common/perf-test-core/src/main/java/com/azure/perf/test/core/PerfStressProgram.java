@@ -237,24 +237,22 @@ public class PerfStressProgram {
 
         try {
             if (sync) {
-                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
-                List<Callable<Integer>> operations = new ArrayList<>(parallel);
-                for (PerfTestBase<?> test : tests) {
-                    operations.add(() -> {
-                        test.runAll(endNanoTime);
-                        return 1;
-                    });
+                if (parallel > 1) {
+                    ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
+                    List<Callable<Integer>> operations = new ArrayList<>(parallel);
+                    for (PerfTestBase<?> test : tests) {
+                        operations.add(() -> {
+                            test.runAll(endNanoTime);
+                            return 1;
+                        });
+                    }
+
+                    forkJoinPool.invokeAll(operations);
+
+                    forkJoinPool.awaitQuiescence(durationSeconds + 1, TimeUnit.SECONDS);
+                } else {
+                    tests[0].runAll(endNanoTime);
                 }
-
-                forkJoinPool.invokeAll(operations);
-
-                // Sleep until the tests complete.
-                Thread.sleep(durationSeconds * 1000L);
-
-                forkJoinPool.shutdown();
-
-                // Wait 1 second for operations to shut down.
-                forkJoinPool.awaitTermination(1, TimeUnit.SECONDS);
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -265,18 +263,18 @@ public class PerfStressProgram {
                     System.exit(1);
                 });
 
-                Flux.range(0, parallel)
-                    .parallel(parallel)
-                    .runOn(Schedulers.parallel())
-                    .flatMap(i -> tests[i].runAllAsync(endNanoTime))
-                    .sequential()
-                    .then()
-                    .block();
+                if (parallel > 1) {
+                    Flux.range(0, parallel)
+                        .parallel(parallel)
+                        .runOn(Schedulers.parallel())
+                        .flatMap(i -> tests[i].runAllAsync(endNanoTime))
+                        .sequential()
+                        .then()
+                        .block();
+                } else {
+                    tests[0].runAllAsync(endNanoTime).block();
+                }
             }
-        } catch (InterruptedException e) {
-            System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
-            e.printStackTrace(System.err);
-            throw new RuntimeException(e);
         } catch (Exception e) {
             System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
             e.printStackTrace(System.err);
