@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.schemaregistry.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
@@ -41,29 +42,33 @@ public final class SchemaRegistryHelper {
 
     public static SchemaProperties getSchemaProperties(SchemasRegisterResponse response) {
         final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
 
-        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
     public static SchemaProperties getSchemaProperties(SchemasGetByIdResponse response) {
         final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat schemaFormat = getSchemaFormat(headers.getContentType());
 
-        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
     public static SchemaProperties getSchemaProperties(SchemasQueryIdByContentResponse response) {
         final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
 
-        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
     public static SchemaProperties getSchemaProperties(SchemasGetSchemaVersionResponse response) {
         final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat schemaFormat = getSchemaFormat(headers.getContentType());
 
-        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
@@ -79,7 +84,7 @@ public final class SchemaRegistryHelper {
         }
     }
 
-    public static SchemaFormat getSchemaFormat(SchemaFormatImpl contentType) {
+    private static SchemaFormat getSchemaFormat(SchemaFormatImpl contentType) {
         Objects.requireNonNull(contentType, "'schemaFormat' cannot be null.'");
 
         if (contentType == SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO) {
@@ -89,6 +94,40 @@ public final class SchemaRegistryHelper {
         } else {
             return SchemaFormat.CUSTOM;
         }
+    }
+
+    /**
+     * Extracts "Content-Type" from HttpHeaders and translates it into {@link SchemaFormat}.
+     *
+     * @param headers Headers to read.
+     * @return The corresponding {@link SchemaFormat} or {@code null} if the header does not exist.
+     */
+    private static SchemaFormat getSchemaFormat(HttpHeaders headers) {
+        final String contentType = headers.getValue("Content-Type");
+        if (contentType != null) {
+            return getSchemaFormat(SchemaFormatImpl.fromString(contentType));
+        } else {
+            return null;
+        }
+    }
+
+    private static SchemaFormat getSchemaFormat(String mimeType) {
+        final int limit = 2;
+        final String[] parts = mimeType.split(";", limit);
+
+        if (parts.length < limit) {
+            return SchemaFormat.CUSTOM;
+        }
+
+        final String[] serializationParts = parts[1].split("=", limit);
+
+        if (serializationParts.length < limit) {
+            return SchemaFormat.CUSTOM;
+        }
+
+        final SchemaFormat schemaFormat = SchemaFormat.fromString(serializationParts[1]);
+
+        return schemaFormat != null ? schemaFormat : SchemaFormat.CUSTOM;
     }
 }
 
