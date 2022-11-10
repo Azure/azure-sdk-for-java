@@ -444,17 +444,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             .flatMap(tuple2 -> {
                 BinaryData bData = tuple2.getT1();
                 ChecksumValue finalValidation = tuple2.getT2();
-                // TODO (jaschrep): get crc in generated put blob
-                if (finalValidation.getCrc64() != null) {
-                    throw LOGGER.logExceptionAsError(new UnsupportedOperationException("crc not in generated code"));
-                }
                 return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
                     options.getLength(), bData, null, finalValidation.getMd5(), options.getMetadata(),
                     requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
                     requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                     requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                     tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-                    options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+                    options.isLegalHold(), finalValidation.getCrc64(), options.getHeaders(), getCustomerProvidedKey(),
                     encryptionScope, finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> {
                     BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();

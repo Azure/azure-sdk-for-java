@@ -79,8 +79,8 @@ class TransferValidationTest extends APISpec {
 
         where:
         algorithm                             | checksumHeader
-        //StorageChecksumAlgorithm.Auto         | "x-ms-content-crc64"
-        //StorageChecksumAlgorithm.StorageCrc64 | "x-ms-content-crc64"
+        StorageChecksumAlgorithm.Auto         | "x-ms-content-crc64"
+        StorageChecksumAlgorithm.StorageCrc64 | "x-ms-content-crc64"
         StorageChecksumAlgorithm.MD5          | "Content-MD5"
     }
 
@@ -130,8 +130,8 @@ class TransferValidationTest extends APISpec {
 
         where:
         algorithm                             | checksumHeader
-        //StorageChecksumAlgorithm.Auto         | "x-ms-content-crc64"
-        //StorageChecksumAlgorithm.StorageCrc64 | "x-ms-content-crc64"
+        StorageChecksumAlgorithm.Auto         | "x-ms-content-crc64"
+        StorageChecksumAlgorithm.StorageCrc64 | "x-ms-content-crc64"
         StorageChecksumAlgorithm.MD5          | "Content-MD5"
     }
 
