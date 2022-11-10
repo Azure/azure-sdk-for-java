@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * Contract that all tracers must implement to be pluggable into the SDK.
@@ -211,8 +212,13 @@ public interface Tracer {
      * @param processKind AMQP operation kind.
      * @return The updated {@link Context} object containing the returned span.
      * @throws NullPointerException if {@code methodName} or {@code context} or {@code processKind} is {@code null}.
+     *
+     * @deprecated use {@link Tracer#start(String, StartSpanOptions, Context)} instead.
      */
     Context start(String methodName, Context context, ProcessKind processKind);
+
+    default void injectContext(BiConsumer<String, String> headerSetter, Context context) {
+    }
 
     /**
      * Completes the current tracing span.
@@ -270,6 +276,10 @@ public interface Tracer {
      * @throws NullPointerException if {@code key} or {@code value} or {@code context} is {@code null}.
      */
     void setAttribute(String key, String value, Context context);
+
+    default void setAttribute(String key, int value, Context context) {
+        setAttribute(key, Integer.toString(value), context);
+    }
 
     /**
      * Sets the name for spans that are created.
@@ -429,7 +439,7 @@ public interface Tracer {
      * @return Closeable that should be closed in the same thread with try-with-resource statement.
      */
     default AutoCloseable makeSpanCurrent(Context context) {
-        return TracerProxy.NOOP_AUTOCLOSEABLE;
+        return NoopTracer.INSTANCE.makeSpanCurrent(context);
     }
 
     /**

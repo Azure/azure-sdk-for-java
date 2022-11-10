@@ -3,6 +3,7 @@
 
 package com.azure.core.tracing.opentelemetry;
 
+import com.azure.core.http.HttpRequest;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpTraceUtil;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
@@ -13,6 +14,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
@@ -20,13 +22,16 @@ import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.TracerProvider;
+import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.context.propagation.TextMapPropagator;
+import io.opentelemetry.context.propagation.TextMapSetter;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
@@ -45,6 +50,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private final String azNamespace;
 
     private final OpenTelemetrySchemaVersion schemaVersion;
+    private final static TextMapPropagator TRACE_CONTEXT_FORMAT = W3CTraceContextPropagator.getInstance();
 
     /**
      * Creates new {@link OpenTelemetryTracer} using default global tracer -
@@ -131,6 +137,34 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             attributes, context);
 
         return startSpanInternal(spanBuilder, isClientCall(spanKind), null, context);
+    }
+
+    private final TextMapSetter<HttpRequest> contextSetter =
+        (request, key, value) -> request.getHeaders().set(key, value);
+
+    @Override
+    public void injectContext(BiConsumer<String, String> headerSetter, Context context) {
+        io.opentelemetry.context.Context otelContext = getTraceContextOrDefault(context, null);
+        if (otelContext != null) {
+            TRACE_CONTEXT_FORMAT.inject(otelContext, null, (ignored, key, value) -> headerSetter.accept(key, value));
+        }
+    }
+
+    @Override
+    public void setAttribute(String key, int value, Context context) {
+        Objects.requireNonNull(context, "'context' cannot be null");
+        if (!isEnabled) {
+            return;
+        }
+
+        final Span span = getSpanOrNull(context);
+        if (span == null) {
+            return;
+        }
+
+        if (span.isRecording()) {
+            span.setAttribute(key, value);
+        }
     }
 
     /**
@@ -320,27 +354,12 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
-<<<<<<< HEAD
-        com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY, com.azure.core.util.tracing.SpanKind.class);
-        if (spanKind == null) {
-            spanKind = com.azure.core.util.tracing.SpanKind.CLIENT;
-        }
-
-        SpanBuilder builder = createSpanBuilder(spanName, null, convertToOtelKind(spanKind), null, context);
-        Instant startTime = getOrNull(context, START_TIME_KEY, Instant.class);
-        if (startTime != null) {
-            builder.setStartTimestamp(startTime);
-        }
-
-        return context.addData(SPAN_BUILDER_KEY, builder);
-=======
         if (!isEnabled) {
             return context;
         }
 
         // this is used to create messaging send spanBuilder, and it's a CLIENT span
-        return context.addData(SPAN_BUILDER_KEY, createSpanBuilder(spanName, null, SHARED_SPAN_BUILDER_KIND, null, context));
->>>>>>> 3e2485044a1 (tracing v2 proto)
+        return context.addData(SPAN_BUILDER_KEY, createSpanBuilder(spanName, null, SpanKind.CLIENT, null, context));
     }
 
     /**

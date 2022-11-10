@@ -12,12 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy.CLIENT_REQUEST_ID_ATTRIBUTE;
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy.HTTP_METHOD;
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy.HTTP_STATUS_CODE;
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy.HTTP_URL;
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy.HTTP_USER_AGENT;
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy.SERVICE_REQUEST_ID_ATTRIBUTE;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_BUS_DESTINATION;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.PEER_ENDPOINT;
@@ -27,6 +21,12 @@ import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.PEER_ENDP
  */
 class OpenTelemetryAttributes implements TelemetryAttributes {
     private static final Map<String, String> ATTRIBUTE_MAPPING_V1_12_0 = getMappingsV1200();
+    static final String HTTP_USER_AGENT = "http.user_agent";
+    static final String HTTP_METHOD = "http.method";
+    static final String HTTP_URL = "http.url";
+    static final String HTTP_STATUS_CODE = "http.status_code";
+    static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
+    static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
 
     private static Map<String, String> getMappingsV1200() {
         Map<String, String> mappings = new HashMap<>();

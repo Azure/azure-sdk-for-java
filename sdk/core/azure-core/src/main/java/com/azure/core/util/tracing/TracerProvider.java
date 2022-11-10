@@ -3,7 +3,6 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TracingOptions;
 
 /**
@@ -27,7 +26,7 @@ public interface TracerProvider {
      * @param libraryName Azure client library package name
      * @param libraryVersion Azure client library version
      * @param azNamespace Azure Resource Provider namespace.
-     * @param options instance of {@link MetricsOptions}
+     * @param options instance of {@link TracingOptions}
      * @return a meter instance.
      */
     Tracer createTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options);

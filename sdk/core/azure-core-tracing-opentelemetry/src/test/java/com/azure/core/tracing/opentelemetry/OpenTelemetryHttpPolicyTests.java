@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.InstrumentationPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
@@ -83,7 +84,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         // Assert
         assertEquals(1, policies.size());
-        assertEquals(OpenTelemetryHttpPolicy.class, policies.get(0).getClass());
+        assertEquals(InstrumentationPolicy.class, policies.get(0).getClass());
     }
 
     @Test
@@ -196,7 +197,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
-            .policies(new OpenTelemetryHttpPolicy())
+            .policies(new InstrumentationPolicy("test", null, null, null, null))
             .tracer(azTracer)
             .httpClient(request -> {
                 HttpHeaders headers = new HttpHeaders();
@@ -264,7 +265,7 @@ public class OpenTelemetryHttpPolicyTests {
     private static HttpPipeline createHttpPipeline(com.azure.core.util.tracing.Tracer azTracer, HttpPipelinePolicy... beforeRetryPolicies) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .policies(beforeRetryPolicies)
-            .policies(new OpenTelemetryHttpPolicy())
+            .policies(new InstrumentationPolicy("test", null, null, null, null))
             .httpClient(new SimpleMockHttpClient())
             .tracer(azTracer)
             .build();

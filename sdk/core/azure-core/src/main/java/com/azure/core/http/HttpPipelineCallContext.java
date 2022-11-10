@@ -16,6 +16,8 @@ public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;
     private Context data;
 
+    private Tracer tracer;
+
     /**
      * Package private ctr.
      *
@@ -44,7 +46,8 @@ public final class HttpPipelineCallContext {
         Objects.requireNonNull(data, "'data' cannot be null.");
         //
         this.httpRequest = httpRequest;
-        this.data = data.addData("tracer", tracer);
+        this.data = data;
+        this.tracer = tracer;
     }
 
     /**
@@ -98,5 +101,9 @@ public final class HttpPipelineCallContext {
     public HttpPipelineCallContext setHttpRequest(HttpRequest request) {
         this.httpRequest = request;
         return this;
+    }
+
+    public Tracer getTracer() {
+        return tracer;
     }
 }
