@@ -8,15 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoPosition;
-import com.azure.core.test.models.RecordedData;
-import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.maps.weather.models.ActiveStorm;
 import com.azure.maps.weather.models.ActiveStormResult;
 import com.azure.maps.weather.models.DailyDuration;
