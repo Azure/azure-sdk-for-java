@@ -107,6 +107,12 @@ public class ChecksumUtils {
             .setPrecalculatedChecksum(CoreUtils.clone(md5));
     }
 
+    public static byte[] md5FromOptions(UploadTransferValidationOptions transferValidation) {
+        return transferValidation != null && transferValidation.getChecksumAlgorithm() == StorageChecksumAlgorithm.MD5
+            ? CoreUtils.clone(transferValidation.getPrecalculatedChecksum())
+            : null;
+    }
+
     public static DownloadTransferValidationOptions requestMd5ToOptions(boolean requestMd5) {
         return requestMd5
             ? new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)

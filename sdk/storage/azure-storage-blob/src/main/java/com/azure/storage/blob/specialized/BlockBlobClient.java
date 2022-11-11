@@ -33,6 +33,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.ChecksumUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -696,7 +697,7 @@ public final class BlockBlobClient extends BlobClientBase {
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
         Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
-            fbb.subscribeOn(Schedulers.boundedElastic()), length, contentMd5, leaseId, context);
+            fbb.subscribeOn(Schedulers.boundedElastic()), length, ChecksumUtils.md5ToOptions(contentMd5), leaseId, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -732,7 +733,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
         Objects.requireNonNull(options, "options must not be null");
         Mono<Response<Void>> response = client.stageBlockWithResponse(
-            options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(), context);
+            options.getBase64BlockId(), options.getData(), options.getTransferValidation(), options.getLeaseId(), context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
