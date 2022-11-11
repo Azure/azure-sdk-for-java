@@ -132,6 +132,17 @@ public final class KeyVaultSettingsClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Patch("/settings/{setting-name}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
+        Response<Setting> updateSettingSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam("setting-name") String settingName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") UpdateSettingRequest parameters,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/settings/{setting-name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
@@ -142,10 +153,29 @@ public final class KeyVaultSettingsClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/settings/{setting-name}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
+        Response<Setting> getSettingSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam("setting-name") String settingName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/settings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<SettingsListResult>> getSettings(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/settings")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
+        Response<SettingsListResult> getSettingsSync(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -247,6 +277,28 @@ public final class KeyVaultSettingsClientImpl {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param value The value of the pool setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Setting> updateSettingSyncWithResponse(String vaultBaseUrl, String settingName, String value) {
+        final String accept = "application/json";
+        UpdateSettingRequest parameters = new UpdateSettingRequest();
+        parameters.setValue(value);
+        return service.updateSettingSync(
+                vaultBaseUrl, settingName, this.getApiVersion(), parameters, accept, Context.NONE);
+    }
+
+    /**
+     * Updates key vault account setting, stores it, then returns the setting name and value to the client.
+     *
+     * <p>Description of the pool setting to be updated.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param settingName The name of the account setting. Must be a valid settings option.
+     * @param value The value of the pool setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -254,9 +306,12 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Setting> updateSettingWithResponse(
+    public Response<Setting> updateSettingSyncWithResponse(
             String vaultBaseUrl, String settingName, String value, Context context) {
-        return updateSettingWithResponseAsync(vaultBaseUrl, settingName, value, context).block();
+        final String accept = "application/json";
+        UpdateSettingRequest parameters = new UpdateSettingRequest();
+        parameters.setValue(value);
+        return service.updateSettingSync(vaultBaseUrl, settingName, this.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -273,8 +328,27 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Setting updateSetting(String vaultBaseUrl, String settingName, String value) {
-        return updateSettingWithResponse(vaultBaseUrl, settingName, value, Context.NONE).getValue();
+    public Setting updateSettingSync(String vaultBaseUrl, String settingName, String value) {
+        return updateSettingSyncWithResponse(vaultBaseUrl, settingName, value, Context.NONE).getValue();
+    }
+
+    /**
+     * Updates key vault account setting, stores it, then returns the setting name and value to the client.
+     *
+     * <p>Description of the pool setting to be updated.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param settingName The name of the account setting. Must be a valid settings option.
+     * @param value The value of the pool setting.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Setting updateSettingSync(String vaultBaseUrl, String settingName, String value, Context context) {
+        return updateSettingSyncWithResponse(vaultBaseUrl, settingName, value, context).getValue();
     }
 
     /**
@@ -359,6 +433,24 @@ public final class KeyVaultSettingsClientImpl {
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param settingName The name of the account setting. Must be a valid settings option.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Setting> getSettingSyncWithResponse(String vaultBaseUrl, String settingName) {
+        final String accept = "application/json";
+        return service.getSettingSync(vaultBaseUrl, settingName, this.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Get specified account setting object.
+     *
+     * <p>Retrieves the setting object of a specified setting name.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param settingName The name of the account setting. Must be a valid settings option.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -366,8 +458,9 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Setting> getSettingWithResponse(String vaultBaseUrl, String settingName, Context context) {
-        return getSettingWithResponseAsync(vaultBaseUrl, settingName, context).block();
+    public Response<Setting> getSettingSyncWithResponse(String vaultBaseUrl, String settingName, Context context) {
+        final String accept = "application/json";
+        return service.getSettingSync(vaultBaseUrl, settingName, this.getApiVersion(), accept, context);
     }
 
     /**
@@ -383,8 +476,26 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Setting getSetting(String vaultBaseUrl, String settingName) {
-        return getSettingWithResponse(vaultBaseUrl, settingName, Context.NONE).getValue();
+    public Setting getSettingSync(String vaultBaseUrl, String settingName) {
+        return getSettingSyncWithResponse(vaultBaseUrl, settingName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get specified account setting object.
+     *
+     * <p>Retrieves the setting object of a specified setting name.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param settingName The name of the account setting. Must be a valid settings option.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Setting getSettingSync(String vaultBaseUrl, String settingName, Context context) {
+        return getSettingSyncWithResponse(vaultBaseUrl, settingName, context).getValue();
     }
 
     /**
@@ -462,6 +573,23 @@ public final class KeyVaultSettingsClientImpl {
      * <p>Retrieves a list of all the available account settings that can be configured.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the settings list result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SettingsListResult> getSettingsSyncWithResponse(String vaultBaseUrl) {
+        final String accept = "application/json";
+        return service.getSettingsSync(vaultBaseUrl, this.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * List account settings.
+     *
+     * <p>Retrieves a list of all the available account settings that can be configured.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -469,8 +597,9 @@ public final class KeyVaultSettingsClientImpl {
      * @return the settings list result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SettingsListResult> getSettingsWithResponse(String vaultBaseUrl, Context context) {
-        return getSettingsWithResponseAsync(vaultBaseUrl, context).block();
+    public Response<SettingsListResult> getSettingsSyncWithResponse(String vaultBaseUrl, Context context) {
+        final String accept = "application/json";
+        return service.getSettingsSync(vaultBaseUrl, this.getApiVersion(), accept, context);
     }
 
     /**
@@ -485,7 +614,24 @@ public final class KeyVaultSettingsClientImpl {
      * @return the settings list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SettingsListResult getSettings(String vaultBaseUrl) {
-        return getSettingsWithResponse(vaultBaseUrl, Context.NONE).getValue();
+    public SettingsListResult getSettingsSync(String vaultBaseUrl) {
+        return getSettingsSyncWithResponse(vaultBaseUrl, Context.NONE).getValue();
+    }
+
+    /**
+     * List account settings.
+     *
+     * <p>Retrieves a list of all the available account settings that can be configured.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the settings list result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SettingsListResult getSettingsSync(String vaultBaseUrl, Context context) {
+        return getSettingsSyncWithResponse(vaultBaseUrl, context).getValue();
     }
 }

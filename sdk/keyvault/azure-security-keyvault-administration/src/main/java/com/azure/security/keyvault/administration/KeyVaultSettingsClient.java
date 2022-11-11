@@ -78,7 +78,7 @@ public final class KeyVaultSettingsClient {
         }
 
         return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-            this.implClient.updateSetting(vaultUrl, setting.getName(), settingValueAsString));
+            this.implClient.updateSettingSync(vaultUrl, setting.getName(), settingValueAsString));
     }
 
     /**
@@ -107,7 +107,7 @@ public final class KeyVaultSettingsClient {
         }
 
         Response<Setting> response =
-            this.implClient.updateSettingWithResponse(vaultUrl, setting.getName(), settingValueAsString, context);
+            this.implClient.updateSettingSyncWithResponse(vaultUrl, setting.getName(), settingValueAsString, context);
 
         return new SimpleResponse<>(response,
             KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
@@ -129,7 +129,7 @@ public final class KeyVaultSettingsClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
         }
 
-        return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(this.implClient.getSetting(vaultUrl, name));
+        return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(this.implClient.getSettingSync(vaultUrl, name));
     }
 
     /**
@@ -150,7 +150,7 @@ public final class KeyVaultSettingsClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
         }
 
-        Response<Setting> response = this.implClient.getSettingWithResponse(vaultUrl, name, context);
+        Response<Setting> response = this.implClient.getSettingSyncWithResponse(vaultUrl, name, context);
 
         return new SimpleResponse<>(response,
             KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
@@ -168,7 +168,7 @@ public final class KeyVaultSettingsClient {
     public KeyVaultListSettingsResult listSettings() {
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-        this.implClient.getSettings(vaultUrl).getSettings()
+        this.implClient.getSettingsSync(vaultUrl).getSettings()
             .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
 
         return new KeyVaultListSettingsResult(keyVaultSettings);
@@ -186,7 +186,7 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultListSettingsResult> listSettingsWithResponse(Context context) {
-        Response<SettingsListResult> response = this.implClient.getSettingsWithResponse(vaultUrl, context);
+        Response<SettingsListResult> response = this.implClient.getSettingsSyncWithResponse(vaultUrl, context);
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
         response.getValue().getSettings()
