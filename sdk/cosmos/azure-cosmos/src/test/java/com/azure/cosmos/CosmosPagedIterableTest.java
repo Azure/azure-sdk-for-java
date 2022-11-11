@@ -24,10 +24,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.SynchronousSink;
 import reactor.util.concurrent.Queues;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -111,6 +115,66 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         cosmosPagedIterable.forEach(objectNode -> { });
 
         assertThat(handleCount.get() >= 1).isTrue();
+    }
+
+    @Test(groups = {"unit"})
+    public void validatePrefetchControl() {
+        AtomicInteger prefetchEager1 = new AtomicInteger();
+        Flux<FeedResponse<Long>> eagerDrain1 = validatePrefetchControl(10, 10, prefetchEager1)
+                .flatMapSequential(Flux::just, 1, 1)
+                .flatMap(Flux::just);
+        assertThat(validate(eagerDrain1, prefetchEager1).get()).isEqualTo(10);
+
+        AtomicInteger prefetchEager2 = new AtomicInteger();
+        List<Flux<FeedResponse<Long>>> fluxList1 = Arrays.asList(validatePrefetchControl(10, 10, prefetchEager2));
+        Flux<FeedResponse<Long>> fastDrain2 = Flux
+                .mergeSequential(fluxList1, 1, 1)
+                .flatMap(Flux::just);
+        assertThat(validate(fastDrain2, prefetchEager2).get()).isEqualTo(10);
+
+        AtomicInteger prefetchLazy1 = new AtomicInteger();
+        Flux<FeedResponse<Long>> lazyDrain1 = validatePrefetchControl(10, 10, prefetchLazy1)
+                .flatMapSequential(Flux::just, 1, 1)
+                .flatMap(Flux::just, 1, 1);
+        assertThat(validate(lazyDrain1, prefetchLazy1).get()).isLessThan(10);
+
+        AtomicInteger prefetchLazy2 = new AtomicInteger();
+        List<Flux<FeedResponse<Long>>> fluxList2 = Arrays.asList(validatePrefetchControl(10, 10, prefetchLazy2));
+        Flux<FeedResponse<Long>> lazyDrain2 = Flux
+                .mergeSequential(fluxList2, 1, 1)
+                .flatMap(Flux::just, 1, 1);
+        assertThat(validate(lazyDrain2, prefetchLazy2).get()).isLessThan(10);
+    }
+
+    private AtomicInteger validate(Flux<FeedResponse<Long>> flux, AtomicInteger pagesPrefetched) {
+        Boolean hasNext = flux.toIterable(1).iterator().hasNext();
+        return pagesPrefetched;
+    }
+
+    private Flux<FeedResponse<Long>> validatePrefetchControl(int numPages, int pageSize, AtomicInteger pagesFetched) {
+        return Flux.generate(Tuple::new, (Tuple state, SynchronousSink<FeedResponse<Long>> sink) -> {
+            if (state.pageIdx.get() < numPages) {
+                state.feedResponse = ModelBridgeInternal.createFeedResponse(LongStream.range(state.pageIdx.get(), state.pageIdx.get() + pageSize)
+                                .boxed()
+                                .collect(Collectors.toList()),
+                        new HashMap<>());
+                sink.next(state.feedResponse);
+                state.pageIdx.addAndGet(1);
+                pagesFetched.addAndGet(1);
+            } else {
+                sink.complete();
+            }
+            return state;
+        });
+    }
+    static class Tuple {
+        AtomicInteger pageIdx;
+        FeedResponse<Long> feedResponse;
+
+        Tuple() {
+            pageIdx = new AtomicInteger(0);
+            feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), new HashMap<>());
+        }
     }
 
     @Test(groups = { "unit" })
