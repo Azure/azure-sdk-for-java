@@ -4,7 +4,6 @@ package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.security.keyvault.administration.models.KeyVaultListSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
