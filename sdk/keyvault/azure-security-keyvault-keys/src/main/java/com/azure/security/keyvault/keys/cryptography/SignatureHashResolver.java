@@ -23,7 +23,8 @@ class SignatureHashResolver {
         DEFAULT.put(SignatureAlgorithm.PS256, HashAlgorithm.SHA_256);
         DEFAULT.put(SignatureAlgorithm.PS512, HashAlgorithm.SHA_512);
         DEFAULT.put(SignatureAlgorithm.PS384, HashAlgorithm.SHA_384);
-        DEFAULT.put(SignatureAlgorithm.EDDSA, HashAlgorithm.SHA_512);
+        // The specification says we should use SHA_512 but the service only supports SHA-256 for now for EdDSA.
+        DEFAULT.put(SignatureAlgorithm.EDDSA, HashAlgorithm.SHA_256);
     }
 
     private final ConcurrentMap<SignatureAlgorithm, HashAlgorithm> algorithms = new ConcurrentHashMap<>();
