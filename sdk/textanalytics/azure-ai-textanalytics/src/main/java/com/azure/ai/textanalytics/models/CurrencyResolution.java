@@ -19,27 +19,31 @@ public final class CurrencyResolution extends BaseResolution {
     /*
      * The unit of the amount captured in the extracted entity
      */
-    private final String unit;
+    private String unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
-
-    /**
-     * Create a currency entity resolution model.
-     *
-     * @param unit The unit of the amount captured in the extracted entity.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public CurrencyResolution(String unit, double value) {
-        this.unit = unit;
-        this.value = value;
-    }
+    private double value;
 
     static {
         CurrencyResolutionPropertiesHelper.setAccessor(
-                (currencyResolution, iso4217) -> currencyResolution.setISO4217(iso4217));
+            new CurrencyResolutionPropertiesHelper.CurrencyResolutionAccessor() {
+                @Override
+                public void setISO4217(CurrencyResolution currencyResolution, String iso4217) {
+                    currencyResolution.setISO4217(iso4217);
+                }
+
+                @Override
+                public void setUnit(CurrencyResolution currencyResolution, String unit) {
+                    currencyResolution.setUnit(unit);
+                }
+
+                @Override
+                public void setValue(CurrencyResolution currencyResolution, double value) {
+                    currencyResolution.setValue(value);
+                }
+            });
     }
 
     /**
@@ -51,18 +55,6 @@ public final class CurrencyResolution extends BaseResolution {
      */
     public String getISO4217() {
         return this.iSO4217;
-    }
-
-    /**
-     * Set the iSO4217 property: The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for
-     * country names. The first two letters of the ISO 4217 three-letter code are the same as the code for the country
-     * name, and, where possible, the third letter corresponds to the first letter of the currency name.
-     *
-     * @param iSO4217 the iSO4217 value to set.
-     * @return the CurrencyResolution object itself.
-     */
-    private void setISO4217(String iSO4217) {
-        this.iSO4217 = iSO4217;
     }
 
     /**
@@ -81,5 +73,17 @@ public final class CurrencyResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setISO4217(String iSO4217) {
+        this.iSO4217 = iSO4217;
+    }
+
+    private void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }

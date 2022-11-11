@@ -4,7 +4,7 @@
 module com.azure.identity.providers.mysql {
     requires com.azure.identity;
     requires com.azure.identity.providers.core;
-    requires mysql.connector.java;
+    requires mysql.connector.j;
 
     exports com.azure.identity.providers.mysql;
 }

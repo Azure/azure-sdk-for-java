@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.InformationResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** Represents the information (data) entity resolution model. */
@@ -11,22 +12,26 @@ public final class InformationResolution extends BaseResolution {
     /*
      * The information (data) Unit of measurement.
      */
-    private final InformationUnit unit;
+    private InformationUnit unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
+    private double value;
 
-    /**
-     * Create an information (data) entity resolution model.
-     *
-     * @param unit The information (data) Unit of measurement.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public InformationResolution(InformationUnit unit, double value) {
-        this.unit = unit;
-        this.value = value;
+    static {
+        InformationResolutionPropertiesHelper.setAccessor(
+            new InformationResolutionPropertiesHelper.InformationResolutionAccessor() {
+                @Override
+                public void setUnit(InformationResolution informationResolution, InformationUnit unit) {
+                    informationResolution.setUnit(unit);
+                }
+
+                @Override
+                public void setValue(InformationResolution informationResolution, double value) {
+                    informationResolution.setValue(value);
+                }
+            });
     }
 
     /**
@@ -45,5 +50,13 @@ public final class InformationResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setUnit(InformationUnit unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }

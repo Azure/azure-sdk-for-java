@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.OrdinalResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** A resolution for ordinal numbers entity instances. */
@@ -11,29 +12,36 @@ public final class OrdinalResolution extends BaseResolution {
     /*
      * The offset With respect to the reference (e.g., offset = -1 in "show me the second to last"
      */
-    private final String offset;
+    private String offset;
 
     /*
      * The reference point that the ordinal number denotes.
      */
-    private final RelativeTo relativeTo;
+    private RelativeTo relativeTo;
 
     /*
      * A simple arithmetic expression that the ordinal denotes.
      */
-    private final String value;
+    private String value;
 
-    /**
-     * Create a resolution for ordinal numbers entity instances.
-     *
-     * @param offset The offset With respect to the reference (e.g., offset = -1 in "show me the second to last".
-     * @param relativeTo The reference point that the ordinal number denotes.
-     * @param value A simple arithmetic expression that the ordinal denotes.
-     */
-    public OrdinalResolution(String offset, RelativeTo relativeTo, String value) {
-        this.offset = offset;
-        this.relativeTo = relativeTo;
-        this.value = value;
+    static {
+        OrdinalResolutionPropertiesHelper.setAccessor(
+            new OrdinalResolutionPropertiesHelper.OrdinalResolutionAccessor() {
+                @Override
+                public void setOffset(OrdinalResolution ordinalResolution, String offset) {
+                    ordinalResolution.setOffset(offset);
+                }
+
+                @Override
+                public void setRelativeTo(OrdinalResolution ordinalResolution, RelativeTo relativeTo) {
+                    ordinalResolution.setRelativeTo(relativeTo);
+                }
+
+                @Override
+                public void setValue(OrdinalResolution ordinalResolution, String value) {
+                    ordinalResolution.setValue(value);
+                }
+            });
     }
 
     /**
@@ -62,5 +70,17 @@ public final class OrdinalResolution extends BaseResolution {
      */
     public String getValue() {
         return this.value;
+    }
+
+    private void setOffset(String offset) {
+        this.offset = offset;
+    }
+
+    private void setRelativeTo(RelativeTo relativeTo) {
+        this.relativeTo = relativeTo;
+    }
+
+    private void setValue(String value) {
+        this.value = value;
     }
 }
