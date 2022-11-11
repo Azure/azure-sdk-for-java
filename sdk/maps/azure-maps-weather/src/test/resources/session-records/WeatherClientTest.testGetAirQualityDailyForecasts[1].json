@@ -12,13 +12,13 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 19C7DFFDE6D0435FB8C51801B0C6DA15 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:15Z",
-      "Date" : "Thu, 10 Nov 2022 18:31:15 GMT",
+      "X-MSEdge-Ref" : "Ref A: BFF6B98C944C47E39F1AF35EA910E4F6 Ref B: PAOEDGE0522 Ref C: 2022-11-11T06:53:16Z",
+      "Date" : "Fri, 11 Nov 2022 06:53:16 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "public, max-age=887",
       "Vary" : "Accept-Encoding",
-      "Expires" : "Thu, 10 Nov 2022 18:46:02 GMT",
-      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-10T08:00:00Z\",\"index\":65.5,\"globalIndex\":37.9,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"},{\"dateTime\":\"2022-11-11T08:00:00Z\",\"index\":69.6,\"globalIndex\":41.7,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"}]}",
+      "Expires" : "Fri, 11 Nov 2022 07:08:03 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-10T08:00:00Z\",\"index\":63.7,\"globalIndex\":34.0,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"},{\"dateTime\":\"2022-11-11T08:00:00Z\",\"index\":66.8,\"globalIndex\":39.1,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

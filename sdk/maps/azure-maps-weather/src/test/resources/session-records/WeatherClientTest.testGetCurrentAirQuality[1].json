@@ -12,13 +12,13 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 43FAD9CDC4904F31A1EAECB671955BA9 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:15Z",
-      "Date" : "Thu, 10 Nov 2022 18:31:15 GMT",
+      "X-MSEdge-Ref" : "Ref A: BDD9B07B8BB646B2B483AB7BC226A6CD Ref B: PAOEDGE0522 Ref C: 2022-11-11T06:53:16Z",
+      "Date" : "Fri, 11 Nov 2022 06:53:16 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "public, max-age=881",
       "Vary" : "Accept-Encoding",
-      "Expires" : "Thu, 10 Nov 2022 18:45:56 GMT",
-      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-10T17:00:00Z\",\"index\":58.9,\"globalIndex\":31.6,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Buena\",\"categoryColor\":\"#FFC300\",\"description\":\"La calidad del aire es generalmente aceptable para la mayoría de personas. Sin embargo, los grupos sensibles pueden experimentar síntomas de menores a a moderados por la exposición a largo plazo.\"}]}",
+      "Expires" : "Fri, 11 Nov 2022 07:07:57 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T06:00:00Z\",\"index\":63.5,\"globalIndex\":30.5,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Buena\",\"categoryColor\":\"#FFC300\",\"description\":\"La calidad del aire es generalmente aceptable para la mayoría de personas. Sin embargo, los grupos sensibles pueden experimentar síntomas de menores a a moderados por la exposición a largo plazo.\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

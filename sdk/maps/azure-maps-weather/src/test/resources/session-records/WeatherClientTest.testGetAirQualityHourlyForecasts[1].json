@@ -12,13 +12,13 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 77AC36FB667D46C48EE52253BA797B74 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:09Z",
-      "Date" : "Thu, 10 Nov 2022 18:31:09 GMT",
+      "X-MSEdge-Ref" : "Ref A: 266BF3F4952046528101D9ACB5993052 Ref B: PAOEDGE0522 Ref C: 2022-11-11T06:53:11Z",
+      "Date" : "Fri, 11 Nov 2022 06:53:11 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "public, max-age=886",
+      "Cache-Control" : "public, max-age=885",
       "Vary" : "Accept-Encoding",
-      "Expires" : "Thu, 10 Nov 2022 18:45:55 GMT",
-      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-10T19:00:00Z\",\"index\":58.7,\"globalIndex\":31.3,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Correct\",\"categoryColor\":\"#FFC300\",\"description\":\"La qualité d'air est généralement acceptable pour la plupart des individus. Cependant, les personnes sensibles risquent de faire l'expérience de symptômes légers à modérés en cas d'exposition à long terme.\"}]}",
+      "Expires" : "Fri, 11 Nov 2022 07:07:56 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T07:00:00Z\",\"index\":63.5,\"globalIndex\":30.5,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Correct\",\"categoryColor\":\"#FFC300\",\"description\":\"La qualité d'air est généralement acceptable pour la plupart des individus. Cependant, les personnes sensibles risquent de faire l'expérience de symptômes légers à modérés en cas d'exposition à long terme.\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

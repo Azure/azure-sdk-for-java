@@ -12,12 +12,12 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 7B333FBA6395414A899C8278A66485A9 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:16Z",
-      "Date" : "Thu, 10 Nov 2022 18:31:16 GMT",
+      "X-MSEdge-Ref" : "Ref A: 4E34880075D14B4D9E8ADDF46FAE2FD7 Ref B: PAOEDGE0522 Ref C: 2022-11-11T06:53:18Z",
+      "Date" : "Fri, 11 Nov 2022 06:53:18 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "public, max-age=446",
+      "Cache-Control" : "public, max-age=297",
       "Vary" : "Accept-Encoding",
-      "Expires" : "Thu, 10 Nov 2022 18:38:42 GMT",
+      "Expires" : "Fri, 11 Nov 2022 06:58:15 GMT",
       "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isSubtropical\":false}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -36,9 +36,9 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "X-MSEdge-Ref" : "Ref A: 4A63D767574540EEAFDA40EAE07C62C3 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:16Z",
+      "X-MSEdge-Ref" : "Ref A: F5322F0234F44C03AD91B6B924B113B9 Ref B: PAOEDGE0522 Ref C: 2022-11-11T06:53:18Z",
       "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"year should be in YYYY format\"}}",
-      "Date" : "Thu, 10 Nov 2022 18:31:16 GMT",
+      "Date" : "Fri, 11 Nov 2022 06:53:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
