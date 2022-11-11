@@ -18,7 +18,6 @@ import com.azure.security.keyvault.administration.implementation.models.Setting;
 import com.azure.security.keyvault.administration.implementation.models.SettingsListResult;
 import com.azure.security.keyvault.administration.models.KeyVaultListSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
-import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 
 import java.util.ArrayList;
 import java.util.List;
