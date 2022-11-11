@@ -868,7 +868,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     final int subStatusCode = Math.toIntExact(response.getHeader(RntbdResponseHeader.SubStatus));
 
                     switch (subStatusCode) {
-                        case SubStatusCodes.COMPLETING_SPLIT:
+                        case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
