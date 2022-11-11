@@ -134,6 +134,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Ignoring test until the service rolls out a fix for an issue with the "version" parameter of a release
+        // policy.
+        Assumptions.assumeTrue(serviceVersion != KeyServiceVersion.V7_4_PREVIEW_1);
         super.releaseKey(httpClient, serviceVersion);
     }
 }
