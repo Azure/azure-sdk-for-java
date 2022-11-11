@@ -963,9 +963,12 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
         ShareRequestConditions requestConditions, Context context) {
+//        return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
+//            channel -> getPropertiesWithResponse(requestConditions, context).flatMap(response ->
+//                downloadResponseInChunk(response, channel, range, requestConditions, context)), this::channelCleanUp);
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
-            channel -> getPropertiesWithResponse(requestConditions, context).flatMap(response ->
-                downloadResponseInChunk(response, channel, range, requestConditions, context)), this::channelCleanUp);
+            channel ->
+                downloadChunk(channel, range, requestConditions, context), this::channelCleanUp);
     }
 
     private Mono<Response<ShareFileProperties>> downloadResponseInChunk(Response<ShareFileProperties> response,
@@ -983,7 +986,8 @@ public class ShareFileAsyncClient {
                     chunks.add(new ShareFileRange(pos, pos + count - 1));
                 }
                 return chunks;
-            }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
+            }).flatMapMany(Flux::fromIterable)
+            .flatMap(chunk ->
                 downloadWithResponse(new ShareFileDownloadOptions().setRange(chunk).setRangeContentMd5Requested(false)
                     .setRequestConditions(requestConditions), context)
                 .map(ShareFileDownloadAsyncResponse::getValue)
@@ -994,6 +998,21 @@ public class ShareFileAsyncClient {
                     .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                         || throwable instanceof TimeoutException))))
             .then(Mono.just(response));
+    }
+
+    private Mono<Response<ShareFileProperties>> downloadChunk(AsynchronousFileChannel channel, ShareFileRange range,
+        ShareRequestConditions requestConditions, Context context) {
+
+        ShareFileRange finalRange = range == null ? new ShareFileRange(0, 4L * Constants.MB) : range;
+        return downloadWithResponse(new ShareFileDownloadOptions().setRange(finalRange).setRangeContentMd5Requested(false)
+            .setRequestConditions(requestConditions), context)
+//            .map(ShareFileDownloadAsyncResponse::getValue)
+            .subscribeOn(Schedulers.boundedElastic())
+            .flatMap(response ->
+                    FluxUtil.writeFile(response.getValue(), channel, finalRange.getStart() - (range == null ? 0 : range.getStart()))
+                    .subscribeOn(Schedulers.boundedElastic())
+                    .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
+                        || throwable instanceof TimeoutException)).then(Mono.just(ModelHelper.buildShareFilePropertiesResponse(response))));
     }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {

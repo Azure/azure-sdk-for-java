@@ -4,6 +4,8 @@
 package com.azure.storage.file.share.implementation.util;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
@@ -16,8 +18,10 @@ import com.azure.storage.file.share.implementation.models.InternalShareFileItemP
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
+import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
@@ -195,5 +199,29 @@ public class ModelHelper {
         }
         return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
+    }
+
+    public static Response<ShareFileProperties> buildShareFilePropertiesResponse(ShareFileDownloadAsyncResponse response) {
+        ShareFileDownloadHeaders headers = response.getDeserializedHeaders();
+        ShareFileProperties properties = new ShareFileProperties(
+            headers.getETag(),
+            headers.getLastModified(),
+            headers.getMetadata(),
+            headers.getContentType(),
+            headers.getContentLength(),
+            headers.getContentType(),
+            headers.getContentMd5(),
+            headers.getContentEncoding(),
+            headers.getCacheControl(),
+            headers.getContentDisposition(),
+            headers.getCopyCompletionTime(),
+            headers.getCopyStatusDescription(),
+            headers.getCopyId(),
+            headers.getCopyProgress(),
+            headers.getCopySource(),
+            headers.getCopyStatus(),
+            headers.isServerEncrypted(),
+            null);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }
 }
