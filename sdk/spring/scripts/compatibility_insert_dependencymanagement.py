@@ -27,7 +27,9 @@ def main():
     start_time = time.time()
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    add_dependency_management_for_all_poms_files_in_directory("./sdk/spring", get_args().spring_boot_dependencies_version, get_args().spring_cloud_dependencies_version)
+    work_directory = "./sdk/spring"
+    add_dependency_management_for_all_poms_files_in_directory(work_directory, get_args().spring_boot_dependencies_version, get_args().spring_cloud_dependencies_version)
+    downgrade_mysql_connector_dependency_for_all_poms_files_in_directory(work_directory, get_args().spring_boot_dependencies_version, get_args().spring_cloud_dependencies_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
@@ -43,6 +45,18 @@ def add_dependency_management_for_all_poms_files_in_directory(directory, spring_
             if file_name.startswith('pom') and file_name.endswith('.xml'):
                 file_path = root + os.sep + file_name
                 add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version)
+
+
+# Downgrade mysql connector when Spring Boot version is 2.5.14
+def downgrade_mysql_connector_dependency_for_all_poms_files_in_directory(directory, spring_boot_dependencies_version, spring_cloud_dependencies_version):
+    if not spring_boot_dependencies_version == '2.5.14':
+        return
+    log.info('Check downgrading mysql_connector dependency when Spring Boot version is {}.'.format(spring_boot_dependencies_version))
+    for root, dirs, files in os.walk(directory):
+        for file_name in files:
+            if file_name.startswith('pom') and file_name.endswith('.xml'):
+                file_path = root + os.sep + file_name
+                downgrade_mysql_connector_dependency_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version)
 
 
 def contains_repositories(pom_file_content):
@@ -70,7 +84,7 @@ def get_repo_content(pom_file_content):
     if contains_repositories(pom_file_content):
         return get_repo_content_without_tag()
     else:
-        return """  
+        return """
   <repositories>
     {}
   </repositories>
@@ -103,7 +117,7 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
         insert_position = pom_file_content.find('<dependencies>')
         if(insert_position == -1):
             # no dependencies section in pom, not adding <dependencyManagement> section
-            print("No dependencies section found in " + file_path + ". Not adding dependencyManagement.")
+            log.warn("No dependencies section found in " + file_path + ". Not adding dependencyManagement.")
             return
         insert_content = get_dependency_management_content()
         dependency_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
@@ -111,6 +125,7 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
         insert_content = get_prop_content(pom_file_content, spring_boot_dependencies_version, spring_cloud_dependencies_version)
         prop_content = dependency_content[:insert_position] + insert_content + dependency_content[insert_position:]
         with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
+            clear_pom_file(updated_pom_file)
             updated_pom_file.writelines(prop_content)
     if spring_cloud_version.endswith("-SNAPSHOT"):
         with open(file_path, 'r', encoding = 'utf-8') as pom_file:
@@ -119,7 +134,36 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
             insert_content = get_repo_content(pom_file_content)
             repo_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
             with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
+                clear_pom_file(updated_pom_file)
                 updated_pom_file.writelines(repo_content)
+
+
+def downgrade_mysql_connector_dependency_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version):
+    with open(file_path, 'r', encoding = 'utf-8') as pom_file:
+        pom_file_lines = pom_file.readlines()
+        for idx, line in enumerate(pom_file_lines):
+            if line.__contains__('<groupId>mysql</groupId>'):
+                log.info("Downgraded for mysql connector.")
+                return
+
+            if line.__contains__('<groupId>com.mysql</groupId>'):
+                downgrade_mysql_connector_dependency(file_path, idx, pom_file_lines)
+                return
+
+
+def downgrade_mysql_connector_dependency(file_path, idx, pom_file_lines):
+    log.info("Downgrade mysql connector dependency to file: " + file_path)
+    pom_file_lines[idx] = pom_file_lines[idx].replace('<groupId>com.mysql</groupId>', '<groupId>mysql</groupId>')
+    pom_file_lines[idx + 1] = pom_file_lines[idx + 1].replace('<artifactId>mysql-connector-j</artifactId>', '<artifactId>mysql-connector-java</artifactId>')
+    pom_file_lines[idx + 2] = '\n'
+    with open(file_path, 'r+', encoding='utf-8') as updated_pom_file:
+        clear_pom_file(updated_pom_file)
+        updated_pom_file.writelines(pom_file_lines)
+
+
+def clear_pom_file(pom_file):
+    pom_file.seek(0)
+    pom_file.truncate()
 
 
 def get_dependency_management_content():
@@ -142,7 +186,7 @@ def get_dependency_management_content():
       </dependency>
     </dependencies>
   </dependencyManagement>
-  
+
 """
 
 
@@ -151,7 +195,7 @@ def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_clo
   <properties>
     {}
   </properties>
-  
+
   """.format(get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version))
 
 
