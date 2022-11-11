@@ -39,7 +39,7 @@ public final class PiiResult extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public PiiResult setErrors(List<DocumentError> errors) {
+    public PiiResult setErrors(List<InputError> errors) {
         super.setErrors(errors);
         return this;
     }

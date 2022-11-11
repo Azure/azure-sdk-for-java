@@ -39,7 +39,7 @@ public final class HealthcareResult extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public HealthcareResult setErrors(List<DocumentError> errors) {
+    public HealthcareResult setErrors(List<InputError> errors) {
         super.setErrors(errors);
         return this;
     }

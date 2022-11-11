@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Auto")
 @Immutable
 public final class AutoTargetRollingWindowSize extends TargetRollingWindowSize {
+    /** Creates an instance of AutoTargetRollingWindowSize class. */
+    public AutoTargetRollingWindowSize() {
+    }
+
     /**
      * Validates the instance.
      *
