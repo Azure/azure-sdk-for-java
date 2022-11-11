@@ -8,8 +8,6 @@
 
 This is the 1.0.0 GA version of Azure identity JDBC MySQL plugin library for Java.
 
-### Features Added
-
 ### Breaking Changes
 
 Upgrade mysql from mysql:mysql-connector-java:8.0.30 to com.mysql:mysql-connector-j:8.0.31 [#32094](https://github.com/Azure/azure-sdk-for-java/pull/32094).
