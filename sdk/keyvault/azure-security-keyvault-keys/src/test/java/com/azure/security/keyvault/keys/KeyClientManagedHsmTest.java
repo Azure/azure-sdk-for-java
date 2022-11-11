@@ -139,4 +139,16 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         Assumptions.assumeTrue(serviceVersion != KeyServiceVersion.V7_4_PREVIEW_1);
         super.releaseKey(httpClient, serviceVersion);
     }
+
+    /**
+     * Tests that an RSA key is created.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+
+        createOkpKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createOkpKey(keyToCreate)));
+    }
 }

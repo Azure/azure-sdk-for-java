@@ -142,4 +142,16 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         Assumptions.assumeTrue(serviceVersion != KeyServiceVersion.V7_4_PREVIEW_1);
         super.releaseKey(httpClient, serviceVersion);
     }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        createOkpKeyRunner((keyToCreate) ->
+            StepVerifier.create(keyAsyncClient.createOkpKey(keyToCreate))
+                .assertNext(response -> assertKeyEquals(keyToCreate, response))
+                .verifyComplete());
+    }
 }
