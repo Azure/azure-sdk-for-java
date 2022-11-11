@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.common.StorageOutputStream;
+import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -101,7 +102,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         BlockBlobOutputStreamOptions options, Context context) {
         options = options == null ? new BlockBlobOutputStreamOptions() : options;
         return new BlockBlobOutputStream(client, options.getParallelTransferOptions(), options.getHeaders(),
-            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(), context);
+            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(),
+            options.getTransferValidation(), context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -216,7 +218,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
-            final BlobRequestConditions requestConditions, Context context) {
+            final BlobRequestConditions requestConditions, UploadTransferValidationOptions transferValidation,
+            Context context) {
             super(Integer.MAX_VALUE); // writeThreshold is effectively not used by BlockBlobOutputStream.
             // There is a bug in reactor core that does not handle converting Context.NONE to a reactor context.
             context = context == null || context.equals(Context.NONE) ? null : context;
@@ -229,7 +232,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             client.uploadWithResponse(new BlobParallelUploadOptions(body)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
+                .setTags(tags).setTier(tier).setRequestConditions(requestConditions)
+                .setTransferValidation(transferValidation))
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(e -> {
                     if (e instanceof IOException) {

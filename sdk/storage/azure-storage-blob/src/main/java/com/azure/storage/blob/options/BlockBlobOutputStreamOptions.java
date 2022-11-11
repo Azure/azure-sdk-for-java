@@ -7,6 +7,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.UploadTransferValidationOptions;
 
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class BlockBlobOutputStreamOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
+    private UploadTransferValidationOptions transferValidation;
 
     /**
      * @return {@link ParallelTransferOptions}
@@ -114,6 +116,22 @@ public class BlockBlobOutputStreamOptions {
      */
     public BlockBlobOutputStreamOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * @return Options to use for validating transfer integrity.
+     */
+    public UploadTransferValidationOptions getTransferValidation() {
+        return transferValidation;
+    }
+
+    /**
+     * @param transferValidation Options to use for validating transfer integrity.
+     * @return The updated options.
+     */
+    public BlockBlobOutputStreamOptions setTransferValidation(UploadTransferValidationOptions transferValidation) {
+        this.transferValidation = transferValidation;
         return this;
     }
 }

@@ -12,6 +12,8 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
@@ -34,7 +36,7 @@ public class BlobParallelUploadOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
-    private boolean computeMd5;
+    private UploadTransferValidationOptions transferValidation;
     private Duration timeout;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
@@ -272,7 +274,7 @@ public class BlobParallelUploadOptions {
      * @return Whether or not the library should calculate the md5 and send it for the service to verify.
      */
     public boolean isComputeMd5() {
-        return computeMd5;
+        return transferValidation != null && transferValidation.getChecksumAlgorithm() == StorageChecksumAlgorithm.MD5;
     }
 
     /**
@@ -283,7 +285,9 @@ public class BlobParallelUploadOptions {
      * @return The updated options.
      */
     public BlobParallelUploadOptions setComputeMd5(boolean computeMd5) {
-        this.computeMd5 = computeMd5;
+        this.transferValidation = computeMd5
+            ? new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
+            : null;
         return this;
     }
 
@@ -348,6 +352,22 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
+        return this;
+    }
+
+    /**
+     * @return Options to use for validating transfer integrity.
+     */
+    public UploadTransferValidationOptions getTransferValidation() {
+        return transferValidation;
+    }
+
+    /**
+     * @param transferValidation Options to use for validating transfer integrity.
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions setTransferValidation(UploadTransferValidationOptions transferValidation) {
+        this.transferValidation = transferValidation;
         return this;
     }
 }

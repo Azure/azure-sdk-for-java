@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/d9f09cb60d9f09cb63ce64956a030d7fc20a24583a98?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "cc611dd6-2c83-4dd1-bd78-99226a626aba"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DAC425401FFBC8",
+      "Last-Modified" : "Fri, 11 Nov 2022 20:42:29 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "4c43254b-f01e-005f-1a0e-f61255000000",
+      "Date" : "Fri, 11 Nov 2022 20:42:28 GMT",
+      "x-ms-client-request-id" : "cc611dd6-2c83-4dd1-bd78-99226a626aba"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/d9f09cb60d9f09cb63ce64956a030d7fc20a24583a98/d9f09cb61d9f09cb63ce544491b3b69c315bc4c649af?comp=block&blockid=bXlpZA%3D%3D",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5d91e54f-c2ac-4476-92bb-089514a73362",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "b321179d-a01e-0021-250e-f68d9a000000",
+      "Date" : "Fri, 11 Nov 2022 20:42:29 GMT",
+      "x-ms-client-request-id" : "5d91e54f-c2ac-4476-92bb-089514a73362"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "d9f09cb60d9f09cb63ce64956a030d7fc20a24583a98", "d9f09cb61d9f09cb63ce544491b3b69c315bc4c649af" ]
+}

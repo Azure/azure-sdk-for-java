@@ -46,6 +46,9 @@ public class ChecksumUtils {
 
     public static Mono<Tuple2<BinaryData, ChecksumValue>> checksumDataAsync(BinaryData data,
         UploadTransferValidationOptions validationOptions) {
+        if (validationOptions == null) {
+            return Mono.just(Tuples.of(data, new ChecksumValue(null, StorageChecksumAlgorithm.None)));
+        }
         boolean checksumCalculationNeeded = isAlgorithmSelected(validationOptions.getChecksumAlgorithm())
             && validationOptions.getPrecalculatedChecksum() == null;
 
@@ -117,5 +120,13 @@ public class ChecksumUtils {
         return requestMd5
             ? new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
             : null;
+    }
+
+    public static UploadTransferValidationOptions checksumValueToOptions(ChecksumValue checksum) {
+        if (checksum == null || checksum.getAlgorithm() == StorageChecksumAlgorithm.None) {
+            return null;
+        }
+        return new UploadTransferValidationOptions().setChecksumAlgorithm(checksum.getAlgorithm())
+            .setPrecalculatedChecksum(checksum.getChecksum());
     }
 }
