@@ -17,6 +17,7 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
@@ -41,6 +42,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -170,8 +172,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics();
         System.out.printf(
-            "Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s,"
-                + " valid document count = %s.%n",
+            "Documents statistics: document count = %d, erroneous document count = %d, transaction count = %d,"
+                + " valid document count = %d.%n",
             batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(),
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
@@ -889,6 +891,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                         System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
                     });
+                    System.out.printf("\tRelation confidence score: %f.%n",
+                        entityRelation.getConfidenceScore());
                 });
             });
         });
@@ -925,8 +929,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             TextDocumentBatchStatistics healthcareTaskStatistics =
                 analyzeHealthcareEntitiesResultCollection.getStatistics();
             // Batch statistics
-            System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
-                    + " transaction count = %s, valid document count = %s.%n",
+            System.out.printf("Documents statistics: document count = %d, erroneous document count = %d,"
+                    + " transaction count = %d, valid document count = %d.%n",
                 healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
                 healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
 
@@ -955,6 +959,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                         System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
                     });
+                    System.out.printf("\tRelation confidence score: %f.%n", entityRelation.getConfidenceScore());
                 });
             });
         });
@@ -997,8 +1002,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             TextDocumentBatchStatistics healthcareTaskStatistics =
                 analyzeHealthcareEntitiesResultCollection.getStatistics();
             // Batch statistics
-            System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
-                    + " transaction count = %s, valid document count = %s.%n",
+            System.out.printf("Documents statistics: document count = %d, erroneous document count = %d,"
+                    + " transaction count = %d, valid document count = %d.%n",
                 healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
                 healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
 
@@ -1027,6 +1032,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                         System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
                     });
+                    System.out.printf("\tRelation confidence score: %f.%n", entityRelation.getConfidenceScore());
                 });
             });
         });
@@ -1318,6 +1324,68 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             }
         });
         // END: Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context
+    }
+
+    // Dynamic classification
+    /**
+     * Code snippet for {@link TextAnalyticsClient#dynamicClassificationBatch(Iterable, String, DynamicClassificationOptions)}
+     */
+    public void dynamicClassificationStringInputWithLanguage() {
+        // BEGIN: Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+        List<String> documents = new ArrayList<>();
+        documents.add("The WHO is issuing a warning about Monkey Pox.");
+        documents.add("Mo Salah plays in Liverpool FC in England.");
+        DynamicClassificationOptions options = new DynamicClassificationOptions()
+            .setCategories("Health", "Politics", "Music", "Sport");
+
+        // Analyzing dynamic classification
+        DynamicClassifyDocumentResultCollection resultCollection =
+            textAnalyticsClient.dynamicClassificationBatch(documents, "en", options);
+
+        // Result of dynamic classification
+        resultCollection.forEach(documentResult -> {
+            System.out.println("Document ID: " + documentResult.getId());
+            for (ClassificationCategory classification : documentResult.getClassifications()) {
+                System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                    classification.getCategory(), classification.getConfidenceScore());
+            }
+        });
+        // END: Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#dynamicClassificationBatchWithResponse(Iterable, DynamicClassificationOptions, Context)}
+     */
+    public void dynamicClassificationMaxOverload() {
+        // BEGIN: Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context
+        List<TextDocumentInput> documents = new ArrayList<>();
+        documents.add(new TextDocumentInput("1", "The WHO is issuing a warning about Monkey Pox."));
+        documents.add(new TextDocumentInput("2", "Mo Salah plays in Liverpool FC in England."));
+        DynamicClassificationOptions options = new DynamicClassificationOptions()
+            .setCategories("Health", "Politics", "Music", "Sport");
+
+        // Analyzing dynamic classification
+        Response<DynamicClassifyDocumentResultCollection> response =
+            textAnalyticsClient.dynamicClassificationBatchWithResponse(documents, options, Context.NONE);
+
+        // Response's status code
+        System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+        DynamicClassifyDocumentResultCollection resultCollection = response.getValue();
+
+        // Batch statistics
+        TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+        System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
+            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+        // Result of dynamic classification
+        resultCollection.forEach(documentResult -> {
+            System.out.println("Document ID: " + documentResult.getId());
+            for (ClassificationCategory classification : documentResult.getClassifications()) {
+                System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                    classification.getCategory(), classification.getConfidenceScore());
+            }
+        });
+        // END: Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context
     }
 
     // Analyze actions

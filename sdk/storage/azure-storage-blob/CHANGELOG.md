@@ -514,7 +514,7 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Authentication using `azure-identity` credentials.
 
 ## 11.1.1 (2019.04.30)
-- Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unkown host errors.
+- Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unknown host errors.
 
 ## 11.0.0 (2019.03.22)
 - Upgraded to version 2.1.0 of the autorest-clientruntime which includes several important fixes to mitigate a commonly-seen "Connection reset by peer" error and other similar bugs.

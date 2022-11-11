@@ -64,7 +64,7 @@ public final class ReadmeSamples {
         
         // BEGIN: com.azure.developer.devcenter.readme.deleteDevBox
         // Tear down the Dev Box when we're finished:
-        SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
+        SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                         devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
         devBoxDeleteResponse.waitForCompletion();        
         // END: com.azure.developer.devcenter.readme.deleteDevBox
@@ -111,7 +111,7 @@ public final class ReadmeSamples {
         
         // BEGIN: com.azure.developer.devcenter.readme.deleteEnvironment
         // Delete the environment when we're finished:
-        SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
+        SyncPoller<BinaryData, Void> environmentDeleteResponse =
                         environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
         environmentDeleteResponse.waitForCompletion();
         // END: com.azure.developer.devcenter.readme.deleteEnvironment

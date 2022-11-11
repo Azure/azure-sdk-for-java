@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RegressionPrimaryMetrics. */
+/** Primary metrics for Regression task. */
 public final class RegressionPrimaryMetrics extends ExpandableStringEnum<RegressionPrimaryMetrics> {
     /** Static value SpearmanCorrelation for RegressionPrimaryMetrics. */
     public static final RegressionPrimaryMetrics SPEARMAN_CORRELATION = fromString("SpearmanCorrelation");

@@ -22,7 +22,7 @@ public class DevBoxesDeleteDevBox {
                         .buildClient();
         // BEGIN:com.azure.developer.devcenter.generated.devboxesdeletedevbox.devboxesdeletedevbox
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
+        SyncPoller<BinaryData, Void> response =
                 devBoxesClient.beginDeleteDevBox("myProject", "me", "MyDevBox", requestOptions);
         // END:com.azure.developer.devcenter.generated.devboxesdeletedevbox.devboxesdeletedevbox
     }

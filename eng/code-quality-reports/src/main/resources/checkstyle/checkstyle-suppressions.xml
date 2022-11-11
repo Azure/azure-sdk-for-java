@@ -100,6 +100,7 @@
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.TracingIntegrationTests.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.TracingIntegrationTests.java"/>
+  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.PublishEventsTracingWithCustomContextSample.java"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
     https://github.com/Azure/azure-sdk/issues/321 -->
@@ -479,9 +480,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="VisibilityModifier"
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
-
-  <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
-  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1000, 1004"/>
 
   <!-- These APIs have already leaked implementation and cannot be changed -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.eventhubs.LogPartitionProcessor"/>

@@ -6,8 +6,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cloud.stream.config.BinderProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -28,7 +30,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
             BindingServiceProperties bindingServiceProperties = (BindingServiceProperties) bean;
             if (bindingServiceProperties.getBinders().isEmpty()) {
                 BinderProperties kafkaBinderSourceProperty = new BinderProperties();
-                configureBinderSources(kafkaBinderSourceProperty, AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
+                configureBinderSources(readSpringMainPropertiesMap(kafkaBinderSourceProperty.getEnvironment()));
 
                 Map<String, BinderProperties> kafkaBinderPropertyMap = new HashMap<>();
                 kafkaBinderPropertyMap.put(KAKFA_BINDER_DEFAULT_NAME, kafkaBinderSourceProperty);
@@ -39,7 +41,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
                     if (entry.getKey() != null && entry.getValue() != null
                             && (KAKFA_BINDER_TYPE.equalsIgnoreCase(entry.getValue().getType())
                             || KAKFA_BINDER_DEFAULT_NAME.equalsIgnoreCase(entry.getKey()))) {
-                        configureBinderSources(entry.getValue(), buildKafkaBinderSources(entry.getValue()));
+                        configureBinderSources(readSpringMainPropertiesMap(entry.getValue().getEnvironment()));
                     }
                 }
             }
@@ -47,15 +49,31 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    private String buildKafkaBinderSources(BinderProperties binderProperties) {
+    void configureBinderSources(Map<String, Object> originalSources) {
         StringBuilder sources = new StringBuilder(AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
-        if (binderProperties.getEnvironment().get(SPRING_MAIN_SOURCES_PROPERTY) != null) {
-            sources.append("," + binderProperties.getEnvironment().get(SPRING_MAIN_SOURCES_PROPERTY));
+        if (StringUtils.hasText((String) originalSources.get("sources"))) {
+            sources.append("," + originalSources.get("sources"));
         }
-        return sources.toString();
+        originalSources.put("sources", sources.toString());
     }
 
-    private void configureBinderSources(BinderProperties binderProperties, String sources) {
-        binderProperties.getEnvironment().put(SPRING_MAIN_SOURCES_PROPERTY, sources);
+    @SuppressWarnings("unchecked")
+    Map<String, Object> readSpringMainPropertiesMap(Map<String, Object> map) {
+        if (map.containsKey("spring")) {
+            Map<String, Object> spring = (Map<String, Object>) map.get("spring");
+            if (spring.containsKey("main")) {
+                return (Map<String, Object>) spring.get("main");
+            } else {
+                LinkedHashMap<String, Object> main = new LinkedHashMap<>();
+                spring.put("main", main);
+                return main;
+            }
+        } else {
+            Map<String, Object> main = new LinkedHashMap<>();
+            Map<String, Object> spring = new LinkedHashMap<>();
+            spring.put("main", main);
+            map.put("spring", spring);
+            return main;
+        }
     }
 }

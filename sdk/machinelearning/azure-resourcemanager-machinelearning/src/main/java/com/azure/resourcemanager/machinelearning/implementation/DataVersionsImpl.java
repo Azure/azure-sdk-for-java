@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.DataVersionsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseDataInner;
-import com.azure.resourcemanager.machinelearning.models.DataVersionBaseData;
+import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseInner;
+import com.azure.resourcemanager.machinelearning.models.DataVersionBase;
 import com.azure.resourcemanager.machinelearning.models.DataVersions;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
@@ -29,13 +29,12 @@ public final class DataVersionsImpl implements DataVersions {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<DataVersionBaseData> list(String resourceGroupName, String workspaceName, String name) {
-        PagedIterable<DataVersionBaseDataInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, name);
-        return Utils.mapPage(inner, inner1 -> new DataVersionBaseDataImpl(inner1, this.manager()));
+    public PagedIterable<DataVersionBase> list(String resourceGroupName, String workspaceName, String name) {
+        PagedIterable<DataVersionBaseInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, name);
+        return Utils.mapPage(inner, inner1 -> new DataVersionBaseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DataVersionBaseData> list(
+    public PagedIterable<DataVersionBase> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -45,15 +44,11 @@ public final class DataVersionsImpl implements DataVersions {
         String tags,
         ListViewType listViewType,
         Context context) {
-        PagedIterable<DataVersionBaseDataInner> inner =
+        PagedIterable<DataVersionBaseInner> inner =
             this
                 .serviceClient()
                 .list(resourceGroupName, workspaceName, name, orderBy, top, skip, tags, listViewType, context);
-        return Utils.mapPage(inner, inner1 -> new DataVersionBaseDataImpl(inner1, this.manager()));
-    }
-
-    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, name, version);
+        return Utils.mapPage(inner, inner1 -> new DataVersionBaseImpl(inner1, this.manager()));
     }
 
     public Response<Void> deleteWithResponse(
@@ -61,31 +56,35 @@ public final class DataVersionsImpl implements DataVersions {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, version, context);
     }
 
-    public DataVersionBaseData get(String resourceGroupName, String workspaceName, String name, String version) {
-        DataVersionBaseDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name, version);
-        if (inner != null) {
-            return new DataVersionBaseDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, name, version);
     }
 
-    public Response<DataVersionBaseData> getWithResponse(
+    public Response<DataVersionBase> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
-        Response<DataVersionBaseDataInner> inner =
+        Response<DataVersionBaseInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, version, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new DataVersionBaseDataImpl(inner.getValue(), this.manager()));
+                new DataVersionBaseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DataVersionBaseData getById(String id) {
+    public DataVersionBase get(String resourceGroupName, String workspaceName, String name, String version) {
+        DataVersionBaseInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name, version);
+        if (inner != null) {
+            return new DataVersionBaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public DataVersionBase getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -118,7 +117,7 @@ public final class DataVersionsImpl implements DataVersions {
         return this.getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE).getValue();
     }
 
-    public Response<DataVersionBaseData> getByIdWithResponse(String id, Context context) {
+    public Response<DataVersionBase> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -225,7 +224,7 @@ public final class DataVersionsImpl implements DataVersions {
         return this.serviceManager;
     }
 
-    public DataVersionBaseDataImpl define(String name) {
-        return new DataVersionBaseDataImpl(name, this.manager());
+    public DataVersionBaseImpl define(String name) {
+        return new DataVersionBaseImpl(name, this.manager());
     }
 }
