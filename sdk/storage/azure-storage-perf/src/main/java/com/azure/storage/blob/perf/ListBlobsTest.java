@@ -31,7 +31,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
                 .runOn(Schedulers.parallel())
                 .flatMap(iteration -> blobContainerAsyncClient.getBlobAsyncClient("getblobstest-" + UUID.randomUUID())
                     .getBlockBlobAsyncClient()
-                    .upload(Flux.empty(), 0L), false, Math.min(1000 / parallel, parallel), 1)
+                    .upload(Flux.empty(), 0L), false, parallel, 1)
                 .sequential()
                 .then());
     }
