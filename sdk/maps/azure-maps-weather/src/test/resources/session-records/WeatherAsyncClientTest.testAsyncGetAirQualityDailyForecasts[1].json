@@ -12,13 +12,13 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 5C7BCCB84F864439BD43D4EEF58042A9 Ref B: PAOEDGE0508 Ref C: 2022-11-11T07:19:55Z",
-      "Date" : "Fri, 11 Nov 2022 07:19:55 GMT",
+      "X-MSEdge-Ref" : "Ref A: C321EDAE8C9C422DBF26E1B0B0FD992F Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:34Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:35 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "public, max-age=684",
+      "Cache-Control" : "public, max-age=900",
       "Vary" : "Accept-Encoding",
-      "Expires" : "Fri, 11 Nov 2022 07:31:19 GMT",
-      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-10T08:00:00Z\",\"index\":63.7,\"globalIndex\":34.0,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"},{\"dateTime\":\"2022-11-11T08:00:00Z\",\"index\":66.8,\"globalIndex\":39.1,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"}]}",
+      "Expires" : "Fri, 11 Nov 2022 13:34:35 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T08:00:00Z\",\"index\":41.6,\"globalIndex\":20.0,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"},{\"dateTime\":\"2022-11-12T08:00:00Z\",\"index\":53.5,\"globalIndex\":25.7,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

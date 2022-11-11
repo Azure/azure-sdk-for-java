@@ -6,19 +6,19 @@
       "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
     },
     "Response" : {
-      "content-length" : "386",
+      "content-length" : "317",
       "X-Cache" : "CONFIG_NOCACHE",
       "X-Content-Type-Options" : "nosniff",
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 2BA79F819F9047CD8637A59C528A9131 Ref B: PAOEDGE0620 Ref C: 2022-11-11T07:20:07Z",
-      "Date" : "Fri, 11 Nov 2022 07:20:07 GMT",
+      "X-MSEdge-Ref" : "Ref A: 96FC37C039F5479CB818B8696D3B04D6 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:50Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:50 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "public, max-age=666",
+      "Cache-Control" : "public, max-age=878",
       "Vary" : "Accept-Encoding",
-      "Expires" : "Fri, 11 Nov 2022 07:31:13 GMT",
-      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T06:00:00Z\",\"index\":63.5,\"globalIndex\":30.5,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Buena\",\"categoryColor\":\"#FFC300\",\"description\":\"La calidad del aire es generalmente aceptable para la mayoría de personas. Sin embargo, los grupos sensibles pueden experimentar síntomas de menores a a moderados por la exposición a largo plazo.\"}]}",
+      "Expires" : "Fri, 11 Nov 2022 13:34:28 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T12:00:00Z\",\"index\":31.3,\"globalIndex\":15.0,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Excelente\",\"categoryColor\":\"#00E39B\",\"description\":\"La calidad del aire es idónea para la mayoría de personas; puede disfrutar de sus actividades al aire libre con normalidad.\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
