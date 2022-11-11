@@ -27,12 +27,12 @@ Various documentation is available to help you get started
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-loadtestservice;current})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-loadtesting;current})
 ```xml
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
-    <artifactId>azure-resourcemanager-loadtestservice</artifactId>
-    <version>1.0.0-beta.2</version>
+    <artifactId>azure-resourcemanager-loadtesting</artifactId>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,7 +74,7 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
-[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-resourcemanager-loadtestservice/SAMPLE.md)
+[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-resourcemanager-loadtesting/SAMPLE.md)
 
 
 ## Troubleshooting
