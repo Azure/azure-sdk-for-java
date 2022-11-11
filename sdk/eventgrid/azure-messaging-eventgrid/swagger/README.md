@@ -364,7 +364,7 @@ public class EventGridCustomization extends Customization {
                     .getJavadoc()
                     .setDescription("Get the authorization property: The requested authorization for the operation.")
                     .setReturn("the authorization value.")
-                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#getResourceAuthorization())} instead.", className));
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#getResourceAuthorization()} instead.", className));
 
                 classCustomization.getMethod("setAuthorization")
                     .getJavadoc()
@@ -394,7 +394,7 @@ public class EventGridCustomization extends Customization {
     public void customizeMediaLiveEventIngestHeartbeatEventData(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventIngestHeartbeatEventData");
-        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);", Arrays.asList("com.azure.core.util.logging.ClientLogger"));
+        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);", Arrays.asList("com.azure.core.util.logging.ClientLogger"));
         classCustomization.getMethod("getIngestDriftValue")
             .setReturnType("Integer", "")
             .replaceBody("if (\"n/a\".equals(this.ingestDriftValue)) { return null; } try { return Integer.parseInt(this.ingestDriftValue); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; }");

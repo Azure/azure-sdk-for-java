@@ -390,7 +390,7 @@ public final class ResourceDeleteFailureEventData {
      *
      * @return the authorization value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteFailureEventData#getResourceAuthorization())} instead.
+     *     <p>Use {@link ResourceDeleteFailureEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {

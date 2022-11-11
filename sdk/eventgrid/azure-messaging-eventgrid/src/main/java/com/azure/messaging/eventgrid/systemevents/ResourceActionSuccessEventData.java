@@ -390,7 +390,7 @@ public final class ResourceActionSuccessEventData {
      *
      * @return the authorization value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceActionSuccessEventData#getResourceAuthorization())} instead.
+     *     <p>Use {@link ResourceActionSuccessEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {

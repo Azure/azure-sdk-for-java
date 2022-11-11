@@ -111,7 +111,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
     @JsonProperty(value = "healthy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean healthy;
 
-    static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);
+    static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);
 
     /**
      * Get the trackType property: Gets the type of the track (Audio / Video).
