@@ -47,6 +47,14 @@ import java.util.function.Consumer;
 public class EventProcessorWithOptions extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessorWithOptions.class);
 
+    // The max number of partitions that the producer client will send to
+    private static final int MAX_PARTITION_NUMBER = 64;
+    // The number of events to update checkpoint each time
+    private static final int UPDATE_CHECKPOINT_EVENT_NUMBER = 40;
+    // If the time exceeds the required threshold, then send event to application insights
+    private static final int UPDATE_TIME_THRESHOLD_IN_MILLIS = 1000;
+    private static final int SEND_TIME_THRESHOLD_IN_MILLIS = 5000;
+
     @Value("${NEED_UPDATE_CHECKPOINT:false}")
     private boolean needUpdateCheckpoint;
 
@@ -61,24 +69,6 @@ public class EventProcessorWithOptions extends EventHubsScenario {
 
     @Value("${BATCH_TIMEOUT_IN_MILLIS:0}")
     private int batchTimeoutInMs;
-
-    // The max number of partitions that the producer client will send to
-    private static final int MAX_PARTITION_NUMBER = 64;
-    // The number of events to update checkpoint each time
-    private static final int UPDATE_CHECKPOINT_EVENT_NUMBER = 40;
-    // If the time exceeds the required threshold, then send event to application insights
-    private static final int UPDATE_TIME_THRESHOLD_IN_MILLIS = 1000;
-    private static final int SEND_TIME_THRESHOLD_IN_MILLIS = 5000;
-
-    // Use enum for log process status
-    private enum ProcessStatus {
-        PROCESSING, PROCESSED
-    }
-
-    // Use enum for log process stage
-    private enum ProcessStage {
-        UPDATE_CHECKPOINT, SEND_EVENT_BATCH
-    }
 
     @Override
     public void run() {
@@ -102,7 +92,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
 
         // Config processEvent function
         Consumer<EventContext> processEvent = eventContext -> {
-            logProcessStatus(ProcessStatus.PROCESSING, eventContext);
+            logProcessEventStatus(ProcessStatus.PROCESSING, eventContext);
 
             if (needUpdateCheckpoint) {
                 final int partitionIndex = Integer.parseInt(eventContext.getPartitionContext().getPartitionId());
@@ -119,10 +109,11 @@ public class EventProcessorWithOptions extends EventHubsScenario {
                         }
                         long endTime = System.currentTimeMillis();
                         if (endTime - startTime > UPDATE_TIME_THRESHOLD_IN_MILLIS) {
-                            trackExceedTimeThresholdEvent(ProcessStage.UPDATE_CHECKPOINT, eventContext, startTime, endTime);
+                            trackExceedTimeThresholdEvent(ProcessStage.UPDATE_CHECKPOINT, eventContext, startTime,
+                                endTime);
                         }
                     } catch (Throwable t) {
-                        logProcessError(ProcessStage.UPDATE_CHECKPOINT, eventContext, t);
+                        logProcessEventError(ProcessStage.UPDATE_CHECKPOINT, eventContext, t);
                     }
                 }
 
@@ -133,22 +124,23 @@ public class EventProcessorWithOptions extends EventHubsScenario {
                         producerClient.send(eventsFromPartitions.get(partitionIndex));
                         long endTime = System.currentTimeMillis();
                         if (endTime - startTime > SEND_TIME_THRESHOLD_IN_MILLIS) {
-                            trackExceedTimeThresholdEvent(ProcessStage.SEND_EVENT_BATCH, eventContext, startTime, endTime);
+                            trackExceedTimeThresholdEvent(ProcessStage.SEND_EVENT_BATCH, eventContext, startTime,
+                                endTime);
                         }
                     } catch (Throwable t) {
-                        logProcessError(ProcessStage.SEND_EVENT_BATCH, eventContext, t);
+                        logProcessEventError(ProcessStage.SEND_EVENT_BATCH, eventContext, t);
                     }
                     eventsFromPartitions.get(partitionIndex).clear();
                 }
             }
 
             addCountMetric(eventContext);
-            logProcessStatus(ProcessStatus.PROCESSED, eventContext);
+            logProcessEventStatus(ProcessStatus.PROCESSED, eventContext);
         };
 
         Consumer<EventBatchContext> processEventBatch = eventContext -> {
             if (eventContext.getEvents().size() > 0) {
-                logProcessStatus(ProcessStatus.PROCESSING, eventContext);
+                logProcessEventStatus(ProcessStatus.PROCESSING, eventContext);
 
                 try {
                     long startTime = System.currentTimeMillis();
@@ -162,11 +154,11 @@ public class EventProcessorWithOptions extends EventHubsScenario {
                         trackExceedTimeThresholdEvent(ProcessStage.UPDATE_CHECKPOINT, eventContext, startTime, endTime);
                     }
                 } catch (Throwable t) {
-                    logProcessError(ProcessStage.UPDATE_CHECKPOINT, eventContext, t);
+                    logProcessEventError(ProcessStage.UPDATE_CHECKPOINT, eventContext, t);
                 }
 
                 addCountMetric(eventContext);
-                logProcessStatus(ProcessStatus.PROCESSED, eventContext);
+                logProcessEventStatus(ProcessStatus.PROCESSED, eventContext);
             }
         };
 
@@ -176,13 +168,8 @@ public class EventProcessorWithOptions extends EventHubsScenario {
                 errorContext.getPartitionContext().getConsumerGroup(),
                 errorContext.getPartitionContext().getPartitionId(),
                 getStackTrace(errorContext.getThrowable()));
-            telemetryClient.trackException(new Exception(errorContext.getThrowable()),
-                new HashMap<String, String>() {{
-                    put("EventHub", errorContext.getPartitionContext().getEventHubName());
-                    put("ConsumerGroup", errorContext.getPartitionContext().getConsumerGroup());
-                    put("Partition", errorContext.getPartitionContext().getPartitionId());
-                    put("ErrorTime", Instant.now().toString());
-                }}, null);
+
+            trackProcessErrorException(errorContext);
         };
 
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
@@ -217,7 +204,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         eventProcessorClient.start();
     }
 
-    private void logProcessStatus(ProcessStatus status, EventContext eventContext) {
+    private void logProcessEventStatus(ProcessStatus status, EventContext eventContext) {
         LOGGER.verbose(
             status + " event: Event Hub name = {}; consumer group name = {}; "
                 + "partition id = {}; sequence number = {}; offset = {}, enqueued time = {}",
@@ -230,7 +217,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         );
     }
 
-    private void logProcessStatus(ProcessStatus status, EventBatchContext eventContext) {
+    private void logProcessEventStatus(ProcessStatus status, EventBatchContext eventContext) {
         LOGGER.verbose(
             status + " event: Event Hub name = {}; consumer group name = {};"
                 + " partition id = {}; batch size = {}; last sequence number = {}",
@@ -241,7 +228,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
             eventContext.getEvents().size());
     }
 
-    private void logProcessError(ProcessStage stage, EventContext eventContext, Throwable t) {
+    private void logProcessEventError(ProcessStage stage, EventContext eventContext, Throwable t) {
         LOGGER.error(
             stage + " failed: Event Hub name = {}; consumer group name = {};"
                 + " partition id = {}; sequence number = {}; offset = {}, enqueued time = {}, error = {}",
@@ -254,7 +241,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
             getStackTrace(t));
     }
 
-    private void logProcessError(ProcessStage stage, EventBatchContext eventContext, Throwable t) {
+    private void logProcessEventError(ProcessStage stage, EventBatchContext eventContext, Throwable t) {
         LOGGER.error(
             stage + "  failed: Event Hub name = {}; consumer group name = {};"
                 + " partition id = {}; batch size = {}; last sequence number = {}",
@@ -266,28 +253,38 @@ public class EventProcessorWithOptions extends EventHubsScenario {
             getStackTrace(t));
     }
 
-    private void trackExceedTimeThresholdEvent(ProcessStage stage, EventContext eventContext, long startTime, long endTime) {
-        telemetryClient.trackEvent(
-            stage + " takes long",
-            new HashMap<String, String>() {{
-                put("Namespace", eventContext.getPartitionContext().getFullyQualifiedNamespace());
-                put("EventHub", eventContext.getPartitionContext().getEventHubName());
-                put("ConsumerGroup", eventContext.getPartitionContext().getConsumerGroup());
-                put("Partition", eventContext.getPartitionContext().getPartitionId());
-                put("TimeElapsed", String.valueOf(endTime - startTime));
-            }}, null);
+    private void trackExceedTimeThresholdEvent(ProcessStage stage, EventContext eventContext, long startTime,
+                                               long endTime) {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("Namespace", eventContext.getPartitionContext().getFullyQualifiedNamespace());
+        properties.put("EventHub", eventContext.getPartitionContext().getEventHubName());
+        properties.put("ConsumerGroup", eventContext.getPartitionContext().getConsumerGroup());
+        properties.put("Partition", eventContext.getPartitionContext().getPartitionId());
+        properties.put("TimeElapsed", String.valueOf(endTime - startTime));
+
+        telemetryClient.trackEvent(stage + " takes long", properties, null);
     }
 
-    private void trackExceedTimeThresholdEvent(ProcessStage stage, EventBatchContext eventContext, long startTime, long endTime) {
-        telemetryClient.trackEvent(
-            stage + " takes long",
-            new HashMap<String, String>() {{
-                put("Namespace", eventContext.getPartitionContext().getFullyQualifiedNamespace());
-                put("EventHub", eventContext.getPartitionContext().getEventHubName());
-                put("ConsumerGroup", eventContext.getPartitionContext().getConsumerGroup());
-                put("Partition", eventContext.getPartitionContext().getPartitionId());
-                put("TimeElapsed", String.valueOf(endTime - startTime));
-            }}, null);
+    private void trackExceedTimeThresholdEvent(ProcessStage stage, EventBatchContext eventContext, long startTime,
+                                               long endTime) {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("Namespace", eventContext.getPartitionContext().getFullyQualifiedNamespace());
+        properties.put("EventHub", eventContext.getPartitionContext().getEventHubName());
+        properties.put("ConsumerGroup", eventContext.getPartitionContext().getConsumerGroup());
+        properties.put("Partition", eventContext.getPartitionContext().getPartitionId());
+        properties.put("TimeElapsed", String.valueOf(endTime - startTime));
+
+        telemetryClient.trackEvent(stage + " takes long", properties, null);
+    }
+
+    private void trackProcessErrorException(ErrorContext errorContext) {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("EventHub", errorContext.getPartitionContext().getEventHubName());
+        properties.put("ConsumerGroup", errorContext.getPartitionContext().getConsumerGroup());
+        properties.put("Partition", errorContext.getPartitionContext().getPartitionId());
+        properties.put("ErrorTime", Instant.now().toString());
+
+        telemetryClient.trackException(new Exception(errorContext.getThrowable()), properties, null);
     }
 
     private void addCountMetric(EventContext eventContext) {
@@ -322,5 +319,15 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         PrintWriter pw = new PrintWriter(sw, true);
         throwable.printStackTrace(pw);
         return sw.getBuffer().toString();
+    }
+
+    // Use enum for log process status
+    private enum ProcessStatus {
+        PROCESSING, PROCESSED
+    }
+
+    // Use enum for log process stage
+    private enum ProcessStage {
+        UPDATE_CHECKPOINT, SEND_EVENT_BATCH
     }
 }

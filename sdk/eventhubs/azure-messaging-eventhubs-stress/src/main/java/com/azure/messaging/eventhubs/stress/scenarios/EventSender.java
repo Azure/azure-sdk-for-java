@@ -15,16 +15,21 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+/**
+ * Test for EventSender
+ */
 @Service("EventSender")
 public class EventSender extends EventHubsScenario {
+
+    private final Random random = new Random();
 
     @Value("${SEND_TIMES:1000000}")
     private int sendTimes;
 
-    @Value("${SEND_EVENTS:500}")
+    @Value("${SEND_EVENTS:100}")
     private int eventsToSend;
 
-    @Value("${PAYLOAD_SIZE_IN_BYTE:4096}")
+    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
     private int payloadSize;
 
     @Override
@@ -33,7 +38,7 @@ public class EventSender extends EventHubsScenario {
         final String eventHub = options.getEventhubsEventHubName();
 
         final byte[] payload = new byte[payloadSize];
-        (new Random()).nextBytes(payload);
+        random.nextBytes(payload);
 
         EventHubProducerAsyncClient client = new EventHubClientBuilder()
             .connectionString(eventHubConnStr, eventHub)

@@ -18,17 +18,22 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * Test for EventSenderBuffered
+ */
 @Service("EventSenderBuffered")
 public class EventSenderBuffered extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventSenderBuffered.class);
 
+    private final Random random = new Random();
+
     @Value("${SEND_TIMES:1000000}")
     private int sendTimes;
 
-    @Value("${SEND_EVENTS:500}")
+    @Value("${SEND_EVENTS:100}")
     private int eventsToSend;
 
-    @Value("${PAYLOAD_SIZE_IN_BYTE:4096}")
+    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
     private int payloadSize;
 
     @Override
@@ -59,7 +64,7 @@ public class EventSenderBuffered extends EventHubsScenario {
             .buildAsyncClient();
 
         final byte[] payload = new byte[payloadSize];
-        (new Random()).nextBytes(payload);
+        random.nextBytes(payload);
 
         Flux.range(0, sendTimes).concatMap(i -> {
             List<EventData> eventDataList = new ArrayList<>();

@@ -11,9 +11,12 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlobItem;
 import org.springframework.stereotype.Service;
 
+/**
+ * Test to reset blob checkpoint
+ */
 @Service("CheckpointReset")
-public class CheckpointReset extends EventHubsScenario{
-    private final ClientLogger LOGGER = new ClientLogger(CheckpointReset.class);
+public class CheckpointReset extends EventHubsScenario {
+    private static final ClientLogger LOGGER = new ClientLogger(CheckpointReset.class);
 
     @Override
     public void run() {

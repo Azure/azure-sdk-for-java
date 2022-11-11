@@ -12,6 +12,9 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Test for EventProcessorClient
+ */
 @Service("EventProcessor")
 public class EventProcessor extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessor.class);
