@@ -1,14 +1,10 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
+## 1.3.3 (2022-11-10)
 ### Other Changes
+#### Dependency Updates
+- Upgraded `azure-communication-common` to 1.2.3
+- Upgraded `azure-core` to 1.34.0
 
 ## 1.3.2 (2022-10-14)
 ### Other Changes
