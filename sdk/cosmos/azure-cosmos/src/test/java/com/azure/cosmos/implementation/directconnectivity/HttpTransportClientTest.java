@@ -402,7 +402,7 @@ public class HttpTransportClientTest {
                                 .withContent("").withStatus(410)
                                 .withHeaderLSN(lsn)
                                 .withHeaderPartitionKeyRangeId(partitionKeyRangeId)
-                                .withHeaderSubStatusCode(HttpConstants.SubStatusCodes.COMPLETING_SPLIT),
+                                .withHeaderSubStatusCode(HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE),
 
                         FailureValidator.builder()
                                 .instanceOf(PartitionKeyRangeIsSplittingException.class)
