@@ -697,69 +697,110 @@ public final class Utility {
     public static com.azure.ai.textanalytics.models.BaseResolution toBaseResolution(BaseResolution resolution) {
         if (resolution instanceof AgeResolution) {
             AgeResolution ageResolutionImpl = (AgeResolution) resolution;
-            return new com.azure.ai.textanalytics.models.AgeResolution(
-                    AgeUnit.fromString(ageResolutionImpl.getUnit().toString()), ageResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.AgeResolution ageResolution =
+                new com.azure.ai.textanalytics.models.AgeResolution();
+            AgeResolutionPropertiesHelper.setUnit(ageResolution,
+                AgeUnit.fromString(ageResolutionImpl.getUnit().toString()));
+            AgeResolutionPropertiesHelper.setValue(ageResolution, ageResolutionImpl.getValue());
+            return ageResolution;
         } else if (resolution instanceof VolumeResolution) {
             VolumeResolution volumeResolutionImpl = (VolumeResolution) resolution;
-            return new com.azure.ai.textanalytics.models.VolumeResolution(
-                    VolumeUnit.fromString(volumeResolutionImpl.getUnit().toString()), volumeResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.VolumeResolution volumeResolution =
+                new com.azure.ai.textanalytics.models.VolumeResolution();
+            VolumeResolutionPropertiesHelper.setUnit(volumeResolution,
+                VolumeUnit.fromString(volumeResolutionImpl.getUnit().toString()));
+            VolumeResolutionPropertiesHelper.setValue(volumeResolution, volumeResolutionImpl.getValue());
+            return volumeResolution;
         } else if (resolution instanceof SpeedResolution) {
             SpeedResolution speedResolutionImpl = (SpeedResolution) resolution;
-            return new com.azure.ai.textanalytics.models.SpeedResolution(
-                    SpeedUnit.fromString(speedResolutionImpl.getUnit().toString()), speedResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.SpeedResolution speedResolution =
+                new com.azure.ai.textanalytics.models.SpeedResolution();
+            SpeedResolutionPropertiesHelper.setUnit(speedResolution,
+                SpeedUnit.fromString(speedResolutionImpl.getUnit().toString()));
+            SpeedResolutionPropertiesHelper.setValue(speedResolution, speedResolutionImpl.getValue());
+            return speedResolution;
         } else if (resolution instanceof AreaResolution) {
             AreaResolution areaResolutionImpl = (AreaResolution) resolution;
-            return new com.azure.ai.textanalytics.models.AreaResolution(
-                    AreaUnit.fromString(areaResolutionImpl.getUnit().toString()), areaResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.AreaResolution areaResolution =
+                new com.azure.ai.textanalytics.models.AreaResolution();
+            AreaResolutionPropertiesHelper.setUnit(areaResolution,
+                AreaUnit.fromString(areaResolutionImpl.getUnit().toString()));
+            AreaResolutionPropertiesHelper.setValue(areaResolution, areaResolutionImpl.getValue());
+            return areaResolution;
         } else if (resolution instanceof LengthResolution) {
             LengthResolution lengthResolutionImpl = (LengthResolution) resolution;
-            return new com.azure.ai.textanalytics.models.LengthResolution(
-                    LengthUnit.fromString(lengthResolutionImpl.getUnit().toString()), lengthResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.LengthResolution lengthResolution =
+                new com.azure.ai.textanalytics.models.LengthResolution();
+            LengthResolutionPropertiesHelper.setUnit(lengthResolution,
+                LengthUnit.fromString(lengthResolutionImpl.getUnit().toString()));
+            LengthResolutionPropertiesHelper.setValue(lengthResolution, lengthResolutionImpl.getValue());
+            return lengthResolution;
         } else if (resolution instanceof InformationResolution) {
             InformationResolution informationResolutionImpl = (InformationResolution) resolution;
-            return new com.azure.ai.textanalytics.models.InformationResolution(
-                    InformationUnit.fromString(informationResolutionImpl.getUnit().toString()),
-                    informationResolutionImpl.getValue());
+            final com.azure.ai.textanalytics.models.InformationResolution informationResolution =
+                new com.azure.ai.textanalytics.models.InformationResolution();
+            InformationResolutionPropertiesHelper.setUnit(informationResolution,
+                InformationUnit.fromString(informationResolutionImpl.getUnit().toString()));
+            InformationResolutionPropertiesHelper.setValue(informationResolution, informationResolutionImpl.getValue());
+            return informationResolution;
         } else if (resolution instanceof TemperatureResolution) {
             TemperatureResolution temperatureResolutionImpl = (TemperatureResolution) resolution;
-            return new com.azure.ai.textanalytics.models.TemperatureResolution(
-                    TemperatureUnit.fromString(temperatureResolutionImpl.getUnit().toString()),
-                    temperatureResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.TemperatureResolution temperatureResolution =
+                new com.azure.ai.textanalytics.models.TemperatureResolution();
+            TemperatureResolutionPropertiesHelper.setUnit(temperatureResolution,
+                TemperatureUnit.fromString(temperatureResolutionImpl.getUnit().toString()));
+            TemperatureResolutionPropertiesHelper.setValue(temperatureResolution, temperatureResolutionImpl.getValue());
+            return temperatureResolution;
         } else if (resolution instanceof WeightResolution) {
             WeightResolution weightResolutionImpl = (WeightResolution) resolution;
-            return new com.azure.ai.textanalytics.models.WeightResolution(
-                    WeightUnit.fromString(weightResolutionImpl.getUnit().toString()),
-                    weightResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.WeightResolution weightResolution =
+                new com.azure.ai.textanalytics.models.WeightResolution();
+            WeightResolutionPropertiesHelper.setUnit(weightResolution,
+                WeightUnit.fromString(weightResolutionImpl.getUnit().toString()));
+            WeightResolutionPropertiesHelper.setValue(weightResolution, weightResolutionImpl.getValue());
+            return weightResolution;
         } else if (resolution instanceof CurrencyResolution) {
             CurrencyResolution currencyResolutionImpl = (CurrencyResolution) resolution;
             com.azure.ai.textanalytics.models.CurrencyResolution currencyResolution
-                    = new com.azure.ai.textanalytics.models.CurrencyResolution(
-                            currencyResolutionImpl.getUnit(), currencyResolutionImpl.getValue());
+                    = new com.azure.ai.textanalytics.models.CurrencyResolution();
             CurrencyResolutionPropertiesHelper.setISO4217(currencyResolution, currencyResolutionImpl.getISO4217());
+            CurrencyResolutionPropertiesHelper.setUnit(currencyResolution, currencyResolutionImpl.getUnit());
+            CurrencyResolutionPropertiesHelper.setValue(currencyResolution, currencyResolutionImpl.getValue());
             return currencyResolution;
         } else if (resolution instanceof BooleanResolution) {
             BooleanResolution booleanResolutionImpl = (BooleanResolution) resolution;
-            return new com.azure.ai.textanalytics.models.BooleanResolution(booleanResolutionImpl.isValue());
+            com.azure.ai.textanalytics.models.BooleanResolution booleanResolution =
+                new com.azure.ai.textanalytics.models.BooleanResolution();
+            BooleanResolutionPropertiesHelper.setValue(booleanResolution, booleanResolutionImpl.isValue());
+            return booleanResolution;
         } else if (resolution instanceof DateTimeResolution) {
             DateTimeResolution dateTimeResolutionImpl = (DateTimeResolution) resolution;
             com.azure.ai.textanalytics.models.DateTimeResolution dateTimeResolution
-                    = new com.azure.ai.textanalytics.models.DateTimeResolution(dateTimeResolutionImpl.getTimex(),
-                    DateTimeSubKind.fromString(dateTimeResolutionImpl.getDateTimeSubKind().toString()),
-                    dateTimeResolutionImpl.getValue());
+                    = new com.azure.ai.textanalytics.models.DateTimeResolution();
+            DateTimeResolutionPropertiesHelper.setTimex(dateTimeResolution, dateTimeResolutionImpl.getTimex());
+            DateTimeResolutionPropertiesHelper.setDateTimeSubKind(dateTimeResolution,
+                DateTimeSubKind.fromString(dateTimeResolutionImpl.getDateTimeSubKind().toString()));
+            DateTimeResolutionPropertiesHelper.setValue(dateTimeResolution, dateTimeResolutionImpl.getValue());
             DateTimeResolutionPropertiesHelper.setModifier(dateTimeResolution,
                     TemporalModifier.fromString(dateTimeResolutionImpl.getModifier().toString()));
             return dateTimeResolution;
         } else if (resolution instanceof NumberResolution) {
             NumberResolution numberResolutionImpl = (NumberResolution) resolution;
-            return new com.azure.ai.textanalytics.models.NumberResolution(
-                    NumberKind.fromString(numberResolutionImpl.getNumberKind().toString()),
-                    numberResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.NumberResolution numberResolution =
+                new com.azure.ai.textanalytics.models.NumberResolution();
+            NumberResolutionPropertiesHelper.setNumberKind(numberResolution,
+                NumberKind.fromString(numberResolutionImpl.getNumberKind().toString()));
+            NumberResolutionPropertiesHelper.setValue(numberResolution, numberResolutionImpl.getValue());
+            return numberResolution;
         } else if (resolution instanceof OrdinalResolution) {
             OrdinalResolution ordinalResolutionImpl = (OrdinalResolution) resolution;
-            return new com.azure.ai.textanalytics.models.OrdinalResolution(
-                    ordinalResolutionImpl.getOffset(),
-                    RelativeTo.fromString(ordinalResolutionImpl.getRelativeTo().toString()),
-                    ordinalResolutionImpl.getValue());
+            com.azure.ai.textanalytics.models.OrdinalResolution ordinalResolution =
+                new com.azure.ai.textanalytics.models.OrdinalResolution();
+            OrdinalResolutionPropertiesHelper.setOffset(ordinalResolution, ordinalResolutionImpl.getOffset());
+            OrdinalResolutionPropertiesHelper.setRelativeTo(ordinalResolution,
+                RelativeTo.fromString(ordinalResolutionImpl.getRelativeTo().toString()));
+            OrdinalResolutionPropertiesHelper.setValue(ordinalResolution, ordinalResolutionImpl.getValue());
+            return ordinalResolution;
         } else if (resolution instanceof TemporalSpanResolution) {
             TemporalSpanResolution temporalSpanResolutionImpl = (TemporalSpanResolution) resolution;
             com.azure.ai.textanalytics.models.TemporalSpanResolution temporalSpanResolution
@@ -775,9 +816,15 @@ public final class Utility {
             return temporalSpanResolution;
         } else if (resolution instanceof NumericRangeResolution) {
             NumericRangeResolution numericRangeResolutionImpl = (NumericRangeResolution) resolution;
-            return new com.azure.ai.textanalytics.models.NumericRangeResolution(
-                    RangeKind.fromString(numericRangeResolutionImpl.getRangeKind().toString()),
-                    numericRangeResolutionImpl.getMinimum(), numericRangeResolutionImpl.getMaximum());
+            com.azure.ai.textanalytics.models.NumericRangeResolution numericRangeResolution =
+                new com.azure.ai.textanalytics.models.NumericRangeResolution();
+            NumericRangeResolutionPropertiesHelper.setRangeKind(numericRangeResolution,
+                RangeKind.fromString(numericRangeResolutionImpl.getRangeKind().toString()));
+            NumericRangeResolutionPropertiesHelper.setMinimum(numericRangeResolution,
+                numericRangeResolutionImpl.getMinimum());
+            NumericRangeResolutionPropertiesHelper.setMaximum(numericRangeResolution,
+                numericRangeResolutionImpl.getMaximum());
+            return numericRangeResolution;
         } else {
             // else throw exception
             throw LOGGER.logExceptionAsError(new RuntimeException("Unknown Resolution type: " + resolution.getClass()));
