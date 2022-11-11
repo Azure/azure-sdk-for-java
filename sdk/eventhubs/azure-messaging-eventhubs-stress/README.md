@@ -105,6 +105,7 @@ Below is the current structure of project:
 ├── src/                         # Test code
 ├── templates/                   # A directory of helm templates that will generate Kubernetes manifest files.
 ├── Chart.yaml                   # A YAML file containing information about the helm chart and its dependencies
+├── scenarios-matrix.yaml        # A YAML file containing configuration and custom values for stress test(s)
 ├── Dockerfile                   # A Dockerfile for building the stress test image
 ├── stress-test-resouce.bicep    # An Azure Bicep for deploying stress test azure resources
 ├── values.yaml                  # Any default helm template values for this chart, e.g. a `scenarios` list

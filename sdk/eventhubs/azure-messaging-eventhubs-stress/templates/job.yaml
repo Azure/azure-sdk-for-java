@@ -10,7 +10,7 @@ spec:
     sku: 'highMem'
   containers:
     - name: sender
-      image: {{ .Values.image }}
+      image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
       command: ['sh', '-c']
       args:
@@ -29,7 +29,7 @@ spec:
           memory: "2G"
           cpu: "2"
     - name: receiver
-      image: {{ .Values.image }}
+      image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
       command: ['sh', '-c']
       args:
