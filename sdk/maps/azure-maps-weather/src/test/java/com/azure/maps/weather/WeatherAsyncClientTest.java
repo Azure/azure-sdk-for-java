@@ -8,12 +8,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoPosition;
+import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.maps.weather.models.ActiveStorm;
 import com.azure.maps.weather.models.ActiveStormResult;
 import com.azure.maps.weather.models.DailyDuration;
@@ -768,8 +771,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncGetDailyHistoricalActuals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        TestResourceNamer testResourceNamer = new TestResourceNamer(testContextManager, new RecordedData());
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalActuals(new GeoPosition(30.0734812, 62.6490341), before, today, null))
             .assertNext(actualResults -> {
                 try {
