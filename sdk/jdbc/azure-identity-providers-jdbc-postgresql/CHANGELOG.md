@@ -1,12 +1,16 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0
+
+This is the 1.0.0 GA version of Azure identity JDBC PostgreSQL plugin library for Java.
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+Fix passwordless feature doesn't work in AZURE_GERMANY,AZURE_CHINA,AZURE_GOVERNMENT cloud [#31600](https://github.com/Azure/azure-sdk-for-java/pull/31600).
 
 ### Other Changes
 
