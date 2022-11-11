@@ -16,6 +16,10 @@ public final class FqdnEndpoints {
     @JsonProperty(value = "properties")
     private FqdnEndpointsProperties properties;
 
+    /** Creates an instance of FqdnEndpoints class. */
+    public FqdnEndpoints() {
+    }
+
     /**
      * Get the properties property: The properties property.
      *

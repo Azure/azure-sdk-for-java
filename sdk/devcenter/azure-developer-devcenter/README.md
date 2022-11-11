@@ -80,7 +80,7 @@ Response<BinaryData> remoteConnectionResponse =
 System.out.println(remoteConnectionResponse.getValue());
 
 // Tear down the Dev Box when we're finished:
-SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
+SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                 devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
 devBoxDeleteResponse.waitForCompletion();        
 ```
@@ -120,7 +120,7 @@ for (BinaryData p: artifactListResponse) {
 
 
 // Delete the environment when we're finished:
-SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
+SyncPoller<BinaryData, Void> environmentDeleteResponse =
                 environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
 environmentDeleteResponse.waitForCompletion();
 ```

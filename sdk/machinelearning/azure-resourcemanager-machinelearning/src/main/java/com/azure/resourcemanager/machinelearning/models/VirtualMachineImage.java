@@ -17,6 +17,10 @@ public final class VirtualMachineImage {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of VirtualMachineImage class. */
+    public VirtualMachineImage() {
+    }
+
     /**
      * Get the id property: Virtual Machine image path.
      *

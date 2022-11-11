@@ -33,6 +33,10 @@ public final class SweepJobLimits extends JobLimits {
     @JsonProperty(value = "trialTimeout")
     private Duration trialTimeout;
 
+    /** Creates an instance of SweepJobLimits class. */
+    public SweepJobLimits() {
+    }
+
     /**
      * Get the maxConcurrentTrials property: Sweep Job max concurrent trials.
      *

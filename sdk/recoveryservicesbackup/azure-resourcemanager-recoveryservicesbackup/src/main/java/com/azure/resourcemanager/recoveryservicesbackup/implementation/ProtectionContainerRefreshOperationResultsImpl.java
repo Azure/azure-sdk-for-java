@@ -25,13 +25,13 @@ public final class ProtectionContainerRefreshOperationResultsImpl
         this.serviceManager = serviceManager;
     }
 
-    public void get(String vaultName, String resourceGroupName, String fabricName, String operationId) {
-        this.serviceClient().get(vaultName, resourceGroupName, fabricName, operationId);
-    }
-
     public Response<Void> getWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String operationId, Context context) {
         return this.serviceClient().getWithResponse(vaultName, resourceGroupName, fabricName, operationId, context);
+    }
+
+    public void get(String vaultName, String resourceGroupName, String fabricName, String operationId) {
+        this.serviceClient().get(vaultName, resourceGroupName, fabricName, operationId);
     }
 
     private ProtectionContainerRefreshOperationResultsClient serviceClient() {

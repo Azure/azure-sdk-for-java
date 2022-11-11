@@ -29,6 +29,10 @@ public final class ErrorDetail {
     @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
+    /** Creates an instance of ErrorDetail class. */
+    public ErrorDetail() {
+    }
+
     /**
      * Get the code property: Error code.
      *

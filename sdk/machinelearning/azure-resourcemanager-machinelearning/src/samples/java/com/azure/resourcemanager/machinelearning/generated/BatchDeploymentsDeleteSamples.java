@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BatchDeployments Delete. */
 public final class BatchDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchDeployment/delete.json
      */
     /**
      * Sample code: Delete Batch Deployment.

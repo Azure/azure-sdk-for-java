@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LastBackupStatus. */
+/** Last backup operation status. Possible values: Healthy, Unhealthy. */
 public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatus> {
     /** Static value Invalid for LastBackupStatus. */
     public static final LastBackupStatus INVALID = fromString("Invalid");

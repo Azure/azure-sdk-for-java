@@ -657,23 +657,6 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the managed OpenShift cluster with a specified resource group and name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenShiftManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Gets a OpenShift managed cluster.
-     *
-     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -685,6 +668,23 @@ public final class OpenShiftManagedClustersClientImpl
     public Response<OpenShiftManagedClusterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Gets a OpenShift managed cluster.
+     *
+     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the OpenShift managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the managed OpenShift cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenShiftManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**

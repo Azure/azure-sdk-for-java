@@ -37,30 +37,30 @@ public final class ProvisionedClustersTests {
         ProvisionedClusters model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"principalId\":\"kuofqweykhme\",\"tenantId\":\"vfyexfw\",\"type\":\"SystemAssigned\"},\"properties\":{\"enableRbac\":false,\"linuxProfile\":{\"adminUsername\":\"yvdcsitynnaa\"},\"features\":{},\"addonProfiles\":{\"qsc\":{\"config\":{},\"enabled\":true}},\"controlPlane\":{\"name\":\"hezrkgq\",\"count\":1290040732,\"availabilityZones\":[\"fovgmkqsleyyvxy\",\"jpkcattpng\"],\"maxCount\":1035421848,\"maxPods\":183805680,\"minCount\":957799467,\"mode\":\"LB\",\"nodeLabels\":{\"q\":\"vmdajvnysou\",\"yhltrpmopjmcm\":\"canoaeupf\",\"thfuiuaodsfcpkvx\":\"tuo\",\"dagfuaxbezyiuok\":\"dpuozmyz\"},\"nodeTaints\":[\"hrdxwzywqsmbs\",\"reximoryocfs\",\"ksymd\",\"ys\"],\"osType\":\"Linux\",\"nodeImageVersion\":\"uxh\",\"vmSize\":\"udxorrqn\"},\"kubernetesVersion\":\"czvyifq\",\"networkProfile\":{\"loadBalancerSku\":\"stacked-metallb\",\"dnsServiceIP\":\"sllr\",\"networkPolicy\":\"flannel\",\"podCidr\":\"f\",\"podCidrs\":[\"kpnpulexxbczwtr\"],\"serviceCidr\":\"iqzbq\",\"serviceCidrs\":[\"ovm\",\"okacspk\",\"lhzdobp\",\"jmflbvvnch\"]},\"nodeResourceGroup\":\"cciw\",\"agentPoolProfiles\":[{\"name\":\"qkhr\",\"count\":1877680716,\"availabilityZones\":[],\"maxCount\":288403017,\"maxPods\":1916962672,\"minCount\":972559338,\"mode\":\"LB\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Linux\",\"nodeImageVersion\":\"uimjmvx\",\"vmSize\":\"duugidyjr\"}],\"cloudProviderProfile\":{},\"provisioningState\":\"Created\",\"status\":{\"addonStatus\":{},\"errorMessage\":\"onpc\"},\"aadProfile\":{\"adminGroupObjectIDs\":[\"hslkevleggzf\",\"u\",\"fmvfaxkffeiit\"],\"clientAppID\":\"vmezy\",\"enableAzureRbac\":true,\"managed\":false,\"serverAppID\":\"sbbzo\",\"tenantID\":\"igrxwburvjxxjn\",\"serverAppSecret\":\"ydptkoen\"},\"windowsProfile\":{\"adminPassword\":\"knvudwtiukb\",\"adminUsername\":\"ngkpocipazy\",\"enableCsiProxy\":true,\"licenseType\":\"None\"},\"httpProxyConfig\":{\"password\":\"jnpiucgyg\",\"httpProxy\":\"qzntypm\",\"httpsProxy\":\"p\",\"noProxy\":[\"drqjsdpy\"],\"trustedCa\":\"fyhxde\",\"username\":\"jzicwifsjt\"}},\"extendedLocation\":{\"type\":\"bishcbkhajdeyea\",\"name\":\"p\"},\"location\":\"agalpbuxwgipwhon\",\"tags\":{\"injep\":\"gshwankixz\",\"iyqzrnk\":\"ttmrywnuzoqf\"},\"id\":\"qvyxlwhzlsicoho\",\"name\":\"qnwvlrya\",\"type\":\"w\"}")
+                    "{\"identity\":{\"principalId\":\"kuofqweykhme\",\"tenantId\":\"vfyexfw\",\"type\":\"SystemAssigned\"},\"properties\":{\"enableRbac\":false,\"linuxProfile\":{\"adminUsername\":\"fakeUsernamePlaceholder\"},\"features\":{},\"addonProfiles\":{\"qsc\":{\"config\":{},\"enabled\":true}},\"controlPlane\":{\"name\":\"hezrkgq\",\"count\":1290040732,\"availabilityZones\":[\"fovgmkqsleyyvxy\",\"jpkcattpng\"],\"maxCount\":1035421848,\"maxPods\":183805680,\"minCount\":957799467,\"mode\":\"LB\",\"nodeLabels\":{\"q\":\"vmdajvnysou\",\"yhltrpmopjmcm\":\"canoaeupf\",\"thfuiuaodsfcpkvx\":\"tuo\",\"dagfuaxbezyiuok\":\"dpuozmyz\"},\"nodeTaints\":[\"hrdxwzywqsmbs\",\"reximoryocfs\",\"ksymd\",\"ys\"],\"osType\":\"Linux\",\"nodeImageVersion\":\"uxh\",\"vmSize\":\"udxorrqn\"},\"kubernetesVersion\":\"czvyifq\",\"networkProfile\":{\"loadBalancerSku\":\"stacked-metallb\",\"dnsServiceIP\":\"sllr\",\"networkPolicy\":\"flannel\",\"podCidr\":\"f\",\"podCidrs\":[\"kpnpulexxbczwtr\"],\"serviceCidr\":\"iqzbq\",\"serviceCidrs\":[\"ovm\",\"okacspk\",\"lhzdobp\",\"jmflbvvnch\"]},\"nodeResourceGroup\":\"cciw\",\"agentPoolProfiles\":[{\"name\":\"qkhr\",\"count\":1877680716,\"availabilityZones\":[],\"maxCount\":288403017,\"maxPods\":1916962672,\"minCount\":972559338,\"mode\":\"LB\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Linux\",\"nodeImageVersion\":\"uimjmvx\",\"vmSize\":\"duugidyjr\"}],\"cloudProviderProfile\":{},\"provisioningState\":\"Created\",\"status\":{\"addonStatus\":{},\"errorMessage\":\"onpc\"},\"aadProfile\":{\"adminGroupObjectIDs\":[\"hslkevleggzf\",\"u\",\"fmvfaxkffeiit\"],\"clientAppID\":\"vmezy\",\"enableAzureRbac\":true,\"managed\":false,\"serverAppID\":\"sbbzo\",\"tenantID\":\"igrxwburvjxxjn\",\"serverAppSecret\":\"fakeSecretPlaceholder\"},\"windowsProfile\":{\"adminPassword\":\"fakePasswordPlaceholder\",\"adminUsername\":\"fakeUsernamePlaceholder\",\"enableCsiProxy\":true,\"licenseType\":\"None\"},\"httpProxyConfig\":{\"password\":\"fakePasswordPlaceholder\",\"httpProxy\":\"qzntypm\",\"httpsProxy\":\"p\",\"noProxy\":[\"drqjsdpy\"],\"trustedCa\":\"fyhxde\",\"username\":\"fakeUsernamePlaceholder\"}},\"extendedLocation\":{\"type\":\"bishcbkhajdeyea\",\"name\":\"p\"},\"location\":\"agalpbuxwgipwhon\",\"tags\":{\"injep\":\"gshwankixz\",\"iyqzrnk\":\"ttmrywnuzoqf\"},\"id\":\"qvyxlwhzlsicoho\",\"name\":\"qnwvlrya\",\"type\":\"w\"}")
                 .toObject(ProvisionedClusters.class);
         Assertions.assertEquals("agalpbuxwgipwhon", model.location());
         Assertions.assertEquals("gshwankixz", model.tags().get("injep"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ydptkoen", model.properties().aadProfile().serverAppSecret());
+        Assertions.assertEquals("fakeSecretPlaceholder", model.properties().aadProfile().serverAppSecret());
         Assertions.assertEquals("hslkevleggzf", model.properties().aadProfile().adminGroupObjectIDs().get(0));
         Assertions.assertEquals("vmezy", model.properties().aadProfile().clientAppId());
         Assertions.assertEquals(true, model.properties().aadProfile().enableAzureRbac());
         Assertions.assertEquals(false, model.properties().aadProfile().managed());
         Assertions.assertEquals("sbbzo", model.properties().aadProfile().serverAppId());
         Assertions.assertEquals("igrxwburvjxxjn", model.properties().aadProfile().tenantId());
-        Assertions.assertEquals("ngkpocipazy", model.properties().windowsProfile().adminUsername());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.properties().windowsProfile().adminUsername());
         Assertions.assertEquals(true, model.properties().windowsProfile().enableCsiProxy());
         Assertions.assertEquals(LicenseType.NONE, model.properties().windowsProfile().licenseType());
-        Assertions.assertEquals("knvudwtiukb", model.properties().windowsProfile().adminPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.properties().windowsProfile().adminPassword());
         Assertions.assertEquals("qzntypm", model.properties().httpProxyConfig().httpProxy());
         Assertions.assertEquals("p", model.properties().httpProxyConfig().httpsProxy());
         Assertions.assertEquals("drqjsdpy", model.properties().httpProxyConfig().noProxy().get(0));
         Assertions.assertEquals("fyhxde", model.properties().httpProxyConfig().trustedCa());
-        Assertions.assertEquals("jzicwifsjt", model.properties().httpProxyConfig().username());
-        Assertions.assertEquals("jnpiucgyg", model.properties().httpProxyConfig().password());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.properties().httpProxyConfig().username());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.properties().httpProxyConfig().password());
         Assertions.assertEquals(false, model.properties().enableRbac());
-        Assertions.assertEquals("yvdcsitynnaa", model.properties().linuxProfile().adminUsername());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.properties().linuxProfile().adminUsername());
         Assertions.assertEquals(true, model.properties().addonProfiles().get("qsc").enabled());
         Assertions.assertEquals(1290040732, model.properties().controlPlane().count());
         Assertions.assertEquals("fovgmkqsleyyvxy", model.properties().controlPlane().availabilityZones().get(0));
@@ -107,7 +107,7 @@ public final class ProvisionedClustersTests {
                     new ProvisionedClustersAllProperties()
                         .withAadProfile(
                             new AadProfile()
-                                .withServerAppSecret("ydptkoen")
+                                .withServerAppSecret("fakeSecretPlaceholder")
                                 .withAdminGroupObjectIDs(Arrays.asList("hslkevleggzf", "u", "fmvfaxkffeiit"))
                                 .withClientAppId("vmezy")
                                 .withEnableAzureRbac(true)
@@ -116,20 +116,20 @@ public final class ProvisionedClustersTests {
                                 .withTenantId("igrxwburvjxxjn"))
                         .withWindowsProfile(
                             new WindowsProfile()
-                                .withAdminUsername("ngkpocipazy")
+                                .withAdminUsername("fakeUsernamePlaceholder")
                                 .withEnableCsiProxy(true)
                                 .withLicenseType(LicenseType.NONE)
-                                .withAdminPassword("knvudwtiukb"))
+                                .withAdminPassword("fakePasswordPlaceholder"))
                         .withHttpProxyConfig(
                             new HttpProxyConfig()
                                 .withHttpProxy("qzntypm")
                                 .withHttpsProxy("p")
                                 .withNoProxy(Arrays.asList("drqjsdpy"))
                                 .withTrustedCa("fyhxde")
-                                .withUsername("jzicwifsjt")
-                                .withPassword("jnpiucgyg"))
+                                .withUsername("fakeUsernamePlaceholder")
+                                .withPassword("fakePasswordPlaceholder"))
                         .withEnableRbac(false)
-                        .withLinuxProfile(new LinuxProfileProperties().withAdminUsername("yvdcsitynnaa"))
+                        .withLinuxProfile(new LinuxProfileProperties().withAdminUsername("fakeUsernamePlaceholder"))
                         .withFeatures(new ProvisionedClustersCommonPropertiesFeatures())
                         .withAddonProfiles(mapOf("qsc", new AddonProfiles().withConfig(mapOf()).withEnabled(true)))
                         .withControlPlane(
@@ -189,25 +189,25 @@ public final class ProvisionedClustersTests {
         Assertions.assertEquals("agalpbuxwgipwhon", model.location());
         Assertions.assertEquals("gshwankixz", model.tags().get("injep"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ydptkoen", model.properties().aadProfile().serverAppSecret());
+        Assertions.assertEquals("fakeSecretPlaceholder", model.properties().aadProfile().serverAppSecret());
         Assertions.assertEquals("hslkevleggzf", model.properties().aadProfile().adminGroupObjectIDs().get(0));
         Assertions.assertEquals("vmezy", model.properties().aadProfile().clientAppId());
         Assertions.assertEquals(true, model.properties().aadProfile().enableAzureRbac());
         Assertions.assertEquals(false, model.properties().aadProfile().managed());
         Assertions.assertEquals("sbbzo", model.properties().aadProfile().serverAppId());
         Assertions.assertEquals("igrxwburvjxxjn", model.properties().aadProfile().tenantId());
-        Assertions.assertEquals("ngkpocipazy", model.properties().windowsProfile().adminUsername());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.properties().windowsProfile().adminUsername());
         Assertions.assertEquals(true, model.properties().windowsProfile().enableCsiProxy());
         Assertions.assertEquals(LicenseType.NONE, model.properties().windowsProfile().licenseType());
-        Assertions.assertEquals("knvudwtiukb", model.properties().windowsProfile().adminPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.properties().windowsProfile().adminPassword());
         Assertions.assertEquals("qzntypm", model.properties().httpProxyConfig().httpProxy());
         Assertions.assertEquals("p", model.properties().httpProxyConfig().httpsProxy());
         Assertions.assertEquals("drqjsdpy", model.properties().httpProxyConfig().noProxy().get(0));
         Assertions.assertEquals("fyhxde", model.properties().httpProxyConfig().trustedCa());
-        Assertions.assertEquals("jzicwifsjt", model.properties().httpProxyConfig().username());
-        Assertions.assertEquals("jnpiucgyg", model.properties().httpProxyConfig().password());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.properties().httpProxyConfig().username());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.properties().httpProxyConfig().password());
         Assertions.assertEquals(false, model.properties().enableRbac());
-        Assertions.assertEquals("yvdcsitynnaa", model.properties().linuxProfile().adminUsername());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.properties().linuxProfile().adminUsername());
         Assertions.assertEquals(true, model.properties().addonProfiles().get("qsc").enabled());
         Assertions.assertEquals(1290040732, model.properties().controlPlane().count());
         Assertions.assertEquals("fovgmkqsleyyvxy", model.properties().controlPlane().availabilityZones().get(0));

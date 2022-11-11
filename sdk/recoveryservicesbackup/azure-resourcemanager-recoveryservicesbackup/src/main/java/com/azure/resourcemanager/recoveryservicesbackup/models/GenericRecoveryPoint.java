@@ -39,6 +39,10 @@ public final class GenericRecoveryPoint extends RecoveryPoint {
     @JsonProperty(value = "recoveryPointAdditionalInfo")
     private String recoveryPointAdditionalInfo;
 
+    /** Creates an instance of GenericRecoveryPoint class. */
+    public GenericRecoveryPoint() {
+    }
+
     /**
      * Get the friendlyName property: Friendly name of the backup copy.
      *

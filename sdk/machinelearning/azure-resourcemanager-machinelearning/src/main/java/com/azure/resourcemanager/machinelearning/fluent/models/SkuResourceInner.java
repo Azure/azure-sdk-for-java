@@ -30,6 +30,10 @@ public final class SkuResourceInner {
     @JsonProperty(value = "sku")
     private SkuSetting sku;
 
+    /** Creates an instance of SkuResourceInner class. */
+    public SkuResourceInner() {
+    }
+
     /**
      * Get the capacity property: Gets or sets the Sku Capacity.
      *

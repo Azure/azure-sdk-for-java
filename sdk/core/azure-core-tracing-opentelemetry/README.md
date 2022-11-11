@@ -51,7 +51,7 @@ To enable Azure SDK tracing, add the latest `com.azure:azure-core-tracing-opente
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.29</version>
+  <version>1.0.0-beta.30</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -122,9 +122,13 @@ try {
 
 Send a single event/message using [azure-messaging-eventhubs][azure-messaging-eventhubs] with tracing enabled.
 
-Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] object:
+Users can additionally pass custom value of the trace context to the EventData object with key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] object.
 
-```java readme-sample-context-manual-propagation-amqp
+Please refer to [Event Hubs samples][event_hubs_samples]
+for more information.
+
+```java
+
 Flux<EventData> events = Flux.just(
     new EventData("EventData Sample 1"),
     new EventData("EventData Sample 2"));
@@ -151,6 +155,7 @@ events.collect(batchRef::get, (b, e) ->
         return ctx.put(PARENT_TRACE_CONTEXT_KEY, traceContextRef.updateAndGet(traceContext -> traceContext.with(span)));
     })
     .block();
+
 ```
 
 ## Troubleshooting
@@ -203,9 +208,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java#opentelemetry-for-java
 [sample_app_config]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/java/com/azure/core/tracing/opentelemetry/CreateConfigurationSettingLoggingExporterSample.java
 [sample_async_key_vault]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/java/com/azure/core/tracing/opentelemetry/ListKeyVaultSecretsAutoConfigurationSample.java
-[sample_eventhubs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/java/com/azure/core/tracing/opentelemetry/PublishEventsJaegerExporterSample.java
 [sample_key_vault]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/java/com/azure/core/tracing/opentelemetry/ListKeyVaultSecretsJaegerExporterSample.java
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src
+[event_hubs_samples](https://github.com/Azure/azure-sdk-for-java/blob/10a18ccc2f20cad6004ae90d64f22009d65e9ef7/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsTracingWithCustomContextSample.java)
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-tracing-opentelemetry%2FREADME.png)
