@@ -18,3 +18,5 @@ Arguments to run the tool in this mode.
 Arguments to run the tool in this mode.
         -mode=analyze -inputDir=<location_to_inputDir)>
 		This location includes the pom file for the BOM or any library.
+        
+Helping out Jim
