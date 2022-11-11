@@ -217,7 +217,7 @@ public final class AzureBlobStorageImplBuilder
     @Generated
     public AzureBlobStorageImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localVersion = (version != null) ? version : "2021-04-10";
+        String localVersion = (version != null) ? version : "2021-08-06";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureBlobStorageImpl client =
