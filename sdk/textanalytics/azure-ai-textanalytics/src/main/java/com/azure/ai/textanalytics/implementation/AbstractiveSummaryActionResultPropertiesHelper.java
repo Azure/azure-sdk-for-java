@@ -3,11 +3,11 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
-import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
+import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
+import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link AbstractiveSummaryActionResult} instance.
+ * The helper class to set the non-public properties of an {@link AbstractSummaryActionResult} instance.
  */
 public final class AbstractiveSummaryActionResultPropertiesHelper {
     private static AbstractiveSummaryActionResultAccessor accessor;
@@ -15,16 +15,16 @@ public final class AbstractiveSummaryActionResultPropertiesHelper {
     private AbstractiveSummaryActionResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link AbstractiveSummaryActionResult}
+     * Type defining the methods to set the non-public properties of an {@link AbstractSummaryActionResult}
      * instance.
      */
     public interface AbstractiveSummaryActionResultAccessor {
-        void setDocumentsResults(AbstractiveSummaryActionResult actionResult,
-                                 AbstractiveSummaryResultCollection documentsResults);
+        void setDocumentsResults(AbstractSummaryActionResult actionResult,
+                                 AbstractSummaryResultCollection documentsResults);
     }
 
     /**
-     * The method called from {@link AbstractiveSummaryActionResult} to set it's accessor.
+     * The method called from {@link AbstractSummaryActionResult} to set it's accessor.
      *
      * @param abstractiveSummaryActionResultAccessor The accessor.
      */
@@ -33,8 +33,8 @@ public final class AbstractiveSummaryActionResultPropertiesHelper {
         accessor = abstractiveSummaryActionResultAccessor;
     }
 
-    public static void setDocumentsResults(AbstractiveSummaryActionResult actionResult,
-                                           AbstractiveSummaryResultCollection documentsResults) {
+    public static void setDocumentsResults(AbstractSummaryActionResult actionResult,
+                                           AbstractSummaryResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

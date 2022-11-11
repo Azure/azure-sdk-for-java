@@ -4,13 +4,13 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.core.util.IterableStream;
 
 /**
- * The helper class to set the non-public properties of an {@link AbstractiveSummaryResult} instance.
+ * The helper class to set the non-public properties of an {@link AbstractSummaryResult} instance.
  */
 public final class AbstractiveSummaryResultPropertiesHelper {
     private static AbstractiveSummaryResultAccessor accessor;
@@ -18,17 +18,17 @@ public final class AbstractiveSummaryResultPropertiesHelper {
     private AbstractiveSummaryResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link AbstractiveSummaryResult}
+     * Type defining the methods to set the non-public properties of an {@link AbstractSummaryResult}
      * instance.
      */
     public interface AbstractiveSummaryResultAccessor {
-        void setDetectedLanguage(AbstractiveSummaryResult summaryResult, DetectedLanguage detectedLanguage);
-        void setWarnings(AbstractiveSummaryResult summaryResult, IterableStream<TextAnalyticsWarning> warnings);
-        void setSummaries(AbstractiveSummaryResult summaryResult, IterableStream<AbstractiveSummary> summaries);
+        void setDetectedLanguage(AbstractSummaryResult summaryResult, DetectedLanguage detectedLanguage);
+        void setWarnings(AbstractSummaryResult summaryResult, IterableStream<TextAnalyticsWarning> warnings);
+        void setSummaries(AbstractSummaryResult summaryResult, IterableStream<AbstractiveSummary> summaries);
     }
 
     /**
-     * The method called from {@link AbstractiveSummaryResult} to set it's accessor.
+     * The method called from {@link AbstractSummaryResult} to set it's accessor.
      *
      * @param abstractiveSummaryResultAccessor The accessor.
      */
@@ -36,16 +36,16 @@ public final class AbstractiveSummaryResultPropertiesHelper {
         accessor = abstractiveSummaryResultAccessor;
     }
 
-    public static void setDetectedLanguage(AbstractiveSummaryResult summaryResult, DetectedLanguage detectedLanguage) {
+    public static void setDetectedLanguage(AbstractSummaryResult summaryResult, DetectedLanguage detectedLanguage) {
         accessor.setDetectedLanguage(summaryResult, detectedLanguage);
     }
 
-    public static void setWarnings(AbstractiveSummaryResult summaryResult,
+    public static void setWarnings(AbstractSummaryResult summaryResult,
         IterableStream<TextAnalyticsWarning> warnings) {
         accessor.setWarnings(summaryResult, warnings);
     }
 
-    public static void setSummaries(AbstractiveSummaryResult summaryResult,
+    public static void setSummaries(AbstractSummaryResult summaryResult,
         IterableStream<AbstractiveSummary> summaries) {
         accessor.setSummaries(summaryResult, summaries);
     }

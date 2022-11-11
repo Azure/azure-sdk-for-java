@@ -95,7 +95,7 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhrase
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksOld;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksSentimentAnalysisTasksItem;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -1081,7 +1081,7 @@ class AnalyzeActionsAsyncClient {
         final List<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesActionResults = new ArrayList<>();
         final List<SingleLabelClassifyActionResult> singleLabelClassifyActionResults = new ArrayList<>();
         final List<MultiLabelClassifyActionResult> multiLabelClassifyActionResults = new ArrayList<>();
-        final List<AbstractiveSummaryActionResult> abstractiveSummaryActionResults = new ArrayList<>();
+        final List<AbstractSummaryActionResult> abstractSummaryActionResults = new ArrayList<>();
         final List<ExtractSummaryActionResult> extractSummaryActionResults = new ArrayList<>();
 
         if (!CoreUtils.isNullOrEmpty(tasksResults)) {
@@ -1231,7 +1231,7 @@ class AnalyzeActionsAsyncClient {
                 } else if (taskResult instanceof AbstractiveSummarizationLROResult) {
                     final AbstractiveSummarizationLROResult abstractiveSummarizationLROResult =
                         (AbstractiveSummarizationLROResult) taskResult;
-                    final AbstractiveSummaryActionResult actionResult = new AbstractiveSummaryActionResult();
+                    final AbstractSummaryActionResult actionResult = new AbstractSummaryActionResult();
                     final AbstractiveSummarizationResult results = abstractiveSummarizationLROResult.getResults();
                     if (results != null) {
                         AbstractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
@@ -1241,7 +1241,7 @@ class AnalyzeActionsAsyncClient {
                         abstractiveSummarizationLROResult.getTaskName());
                     TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                         abstractiveSummarizationLROResult.getLastUpdateDateTime());
-                    abstractiveSummaryActionResults.add(actionResult);
+                    abstractSummaryActionResults.add(actionResult);
                 } else {
                     throw logger.logExceptionAsError(new RuntimeException(
                         "Invalid Long running operation task result: " + taskResult.getClass()));
@@ -1280,7 +1280,7 @@ class AnalyzeActionsAsyncClient {
                     } else if (EXTRACTIVE_SUMMARIZATION.equals(taskName)) {
                         actionResult = extractSummaryActionResults.get(taskIndex);
                     } else if (ABSTRACTIVE_SUMMARIZATION.equals(taskName)) {
-                        actionResult = abstractiveSummaryActionResults.get(taskIndex);
+                        actionResult = abstractSummaryActionResults.get(taskIndex);
                     } else {
                         throw logger.logExceptionAsError(new RuntimeException(
                             "Invalid task name in target reference, " + taskName));
@@ -1316,7 +1316,7 @@ class AnalyzeActionsAsyncClient {
         AnalyzeActionsResultPropertiesHelper.setClassifyMultiCategoryResults(analyzeActionsResult,
             IterableStream.of(multiLabelClassifyActionResults));
         AnalyzeActionsResultPropertiesHelper.setAbstractiveSummaryResults(analyzeActionsResult,
-            IterableStream.of(abstractiveSummaryActionResults));
+            IterableStream.of(abstractSummaryActionResults));
         AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
             IterableStream.of(extractSummaryActionResults));
         return analyzeActionsResult;

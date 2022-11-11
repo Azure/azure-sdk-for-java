@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link AbstractiveSummaryResult} model.
+ * The {@link AbstractSummaryResult} model.
  */
 @Immutable
-public final class AbstractiveSummaryResult extends TextAnalyticsResult {
+public final class AbstractSummaryResult extends TextAnalyticsResult {
     private DetectedLanguage detectedLanguage;
     private IterableStream<AbstractiveSummary> summaries;
     private IterableStream<TextAnalyticsWarning> warnings;
@@ -20,19 +20,19 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
         AbstractiveSummaryResultPropertiesHelper.setAccessor(
                 new AbstractiveSummaryResultPropertiesHelper.AbstractiveSummaryResultAccessor() {
                     @Override
-                    public void setDetectedLanguage(AbstractiveSummaryResult summaryResult,
+                    public void setDetectedLanguage(AbstractSummaryResult summaryResult,
                         DetectedLanguage detectedLanguage) {
                         summaryResult.setDetectedLanguage(detectedLanguage);
                     }
 
                     @Override
-                    public void setWarnings(AbstractiveSummaryResult summaryResult,
+                    public void setWarnings(AbstractSummaryResult summaryResult,
                         IterableStream<TextAnalyticsWarning> warnings) {
                         summaryResult.setWarnings(warnings);
                     }
 
                     @Override
-                    public void setSummaries(AbstractiveSummaryResult summaryResult,
+                    public void setSummaries(AbstractSummaryResult summaryResult,
                         IterableStream<AbstractiveSummary> summaries) {
                         summaryResult.setSummaries(summaries);
                     }
@@ -40,13 +40,13 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Creates a {@link AbstractiveSummaryResult} model that describes the abstractive summarization result.
+     * Creates a {@link AbstractSummaryResult} model that describes the abstractive summarization result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public AbstractiveSummaryResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
+    public AbstractSummaryResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
 

@@ -3,27 +3,29 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link AbstractiveSummaryResult} along with model version and
+ * A collection model that contains a list of {@link AbstractSummaryResult} along with model version and
  * batch's statistics.
  */
-public class AbstractiveSummaryResultCollection extends IterableStream<AbstractiveSummaryResult> {
+@Immutable
+public final class AbstractSummaryResultCollection extends IterableStream<AbstractSummaryResult> {
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
 
     /**
-     * Creates a {@link AnalyzeSentimentResultCollection} model that maintains a list of {@link AbstractiveSummaryResult}
+     * Creates a {@link AnalyzeSentimentResultCollection} model that maintains a list of {@link AbstractSummaryResult}
      * along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link AbstractiveSummaryResult}.
+     * @param documentResults A list of {@link AbstractSummaryResult}.
      * @param modelVersion The model version trained in service for the request.
      * @param statistics The batch statistics of response.
      */
-    public AbstractiveSummaryResultCollection(Iterable<AbstractiveSummaryResult> documentResults, String modelVersion,
+    public AbstractSummaryResultCollection(Iterable<AbstractSummaryResult> documentResults, String modelVersion,
                                             TextDocumentBatchStatistics statistics) {
         super(documentResults);
         this.modelVersion = modelVersion;
