@@ -856,7 +856,6 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         LocalDate afterYears = beforeYears.plusDays(30);
         StepVerifier.create(client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-1000000, 39.952583), beforeYears, afterYears, null))
             .verifyErrorSatisfies(ex -> {
-                System.out.println("printed here " + ex);
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
             });
