@@ -910,6 +910,15 @@
               ""
             ]
           },
+           {
+            "label": "DevCenter",
+            "pathFilter": [
+              "sdk/devcenter/"
+            ],
+            "exclude": [
+              ""
+            ]
+          },
           {
             "label": "Digital Twins",
             "pathFilter": [
@@ -2079,6 +2088,16 @@
               "narula0781",
               "ashishonce",
               "romil07"
+            ]
+          },
+           {
+            "labels": [
+              "Service Attention",
+              "DevCenter"
+            ],
+            "mentionees": [
+              "sebrenna",
+              "mharlan"
             ]
           },
           {

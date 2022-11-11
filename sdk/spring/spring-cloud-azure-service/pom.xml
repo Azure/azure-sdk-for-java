@@ -50,7 +50,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.3.8</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.3.9</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -154,8 +154,6 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.kafka:kafka-clients:[3.1.2]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
-                <include>mysql:mysql-connector-java:[8.0.30]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.3.7]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

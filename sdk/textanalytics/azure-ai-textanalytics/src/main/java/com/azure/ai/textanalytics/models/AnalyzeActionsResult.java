@@ -21,6 +21,8 @@ public final class AnalyzeActionsResult {
     private IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults;
     private IterableStream<SingleLabelClassifyActionResult> singleLabelClassifyResults;
     private IterableStream<MultiLabelClassifyActionResult> multiLabelClassifyResults;
+    private IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults;
+    private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
 
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
@@ -79,6 +81,18 @@ public final class AnalyzeActionsResult {
                 public void setMultiCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<MultiLabelClassifyActionResult> multiCategoryClassifyResults) {
                     analyzeActionsResult.setMultiLabelClassifyResults(multiCategoryClassifyResults);
+                }
+
+                @Override
+                public void setAbstractiveSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+                                                         IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults) {
+                    analyzeActionsResult.setAbstractiveSummaryResults(abstractiveSummaryResults);
+                }
+
+                @Override
+                public void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+                                                     IterableStream<ExtractSummaryActionResult> extractSummaryResult) {
+                    analyzeActionsResult.setExtractSummaryResults(extractSummaryResult);
                 }
             });
     }
@@ -170,6 +184,25 @@ public final class AnalyzeActionsResult {
         return multiLabelClassifyResults;
     }
 
+
+    /**
+     * Gets the {@code abstractiveSummaryResults} property: the abstractive summarization actions results property.
+     *
+     * @return the abstractiveSummaryResults value.
+     */
+    public IterableStream<AbstractiveSummaryActionResult> getAbstractiveSummaryResults() {
+        return abstractiveSummaryResults;
+    }
+
+    /**
+     * Gets the {@code extractSummaryResults} property: the extractive summarization actions results property.
+     *
+     * @return the extractSummaryResults value.
+     */
+    public IterableStream<ExtractSummaryActionResult> getExtractSummaryResults() {
+        return extractSummaryResults;
+    }
+
     private void setRecognizeEntitiesResults(
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults) {
         this.recognizeEntitiesResults = recognizeEntitiesResults;
@@ -211,5 +244,14 @@ public final class AnalyzeActionsResult {
     private void setMultiLabelClassifyResults(
         IterableStream<MultiLabelClassifyActionResult> multiLabelClassifyResults) {
         this.multiLabelClassifyResults = multiLabelClassifyResults;
+    }
+
+    private void setAbstractiveSummaryResults(
+        IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults) {
+        this.abstractiveSummaryResults = abstractiveSummaryResults;
+    }
+
+    private void setExtractSummaryResults(IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
+        this.extractSummaryResults = extractSummaryResults;
     }
 }

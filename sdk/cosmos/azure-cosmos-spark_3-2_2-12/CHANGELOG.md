@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Fixed shading instructions to correct dependency issues in Azure Synapse with version 4.14.0 and 4.14.1. - See [PR 31980](https://github.com/Azure/azure-sdk-for-java/pull/31980)
 
 ### 4.14.1 (2022-10-07)
 > [!IMPORTANT]

@@ -25,7 +25,7 @@ import com.azure.maps.route.models.RouteRangeResult;
 import org.junit.jupiter.params.provider.Arguments;
 
 public class TestUtils {
-    static final String FAKE_API_KEY = "1234567890";
+    static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     /**

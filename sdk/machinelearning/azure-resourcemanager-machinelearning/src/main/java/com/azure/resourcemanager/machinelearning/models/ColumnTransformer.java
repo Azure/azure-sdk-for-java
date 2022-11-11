@@ -24,6 +24,10 @@ public final class ColumnTransformer {
     @JsonProperty(value = "parameters")
     private Object parameters;
 
+    /** Creates an instance of ColumnTransformer class. */
+    public ColumnTransformer() {
+    }
+
     /**
      * Get the fields property: Fields to apply transformer logic on.
      *

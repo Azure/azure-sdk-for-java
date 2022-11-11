@@ -16,6 +16,10 @@ public final class ScaleSettingsInformation {
     @JsonProperty(value = "scaleSettings")
     private ScaleSettings scaleSettings;
 
+    /** Creates an instance of ScaleSettingsInformation class. */
+    public ScaleSettingsInformation() {
+    }
+
     /**
      * Get the scaleSettings property: scale settings for AML Compute.
      *

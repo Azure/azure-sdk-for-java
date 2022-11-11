@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.CodeContainersClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerDataInner;
-import com.azure.resourcemanager.machinelearning.models.CodeContainerData;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerInner;
+import com.azure.resourcemanager.machinelearning.models.CodeContainer;
 import com.azure.resourcemanager.machinelearning.models.CodeContainers;
 
 public final class CodeContainersImpl implements CodeContainers {
@@ -28,20 +28,16 @@ public final class CodeContainersImpl implements CodeContainers {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<CodeContainerData> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<CodeContainerDataInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new CodeContainerDataImpl(inner1, this.manager()));
+    public PagedIterable<CodeContainer> list(String resourceGroupName, String workspaceName) {
+        PagedIterable<CodeContainerInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils.mapPage(inner, inner1 -> new CodeContainerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CodeContainerData> list(
+    public PagedIterable<CodeContainer> list(
         String resourceGroupName, String workspaceName, String skip, Context context) {
-        PagedIterable<CodeContainerDataInner> inner =
+        PagedIterable<CodeContainerInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, skip, context);
-        return Utils.mapPage(inner, inner1 -> new CodeContainerDataImpl(inner1, this.manager()));
-    }
-
-    public void delete(String resourceGroupName, String workspaceName, String name) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, name);
+        return Utils.mapPage(inner, inner1 -> new CodeContainerImpl(inner1, this.manager()));
     }
 
     public Response<Void> deleteWithResponse(
@@ -49,31 +45,35 @@ public final class CodeContainersImpl implements CodeContainers {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, context);
     }
 
-    public CodeContainerData get(String resourceGroupName, String workspaceName, String name) {
-        CodeContainerDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name);
-        if (inner != null) {
-            return new CodeContainerDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, String name) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, name);
     }
 
-    public Response<CodeContainerData> getWithResponse(
+    public Response<CodeContainer> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
-        Response<CodeContainerDataInner> inner =
+        Response<CodeContainerInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new CodeContainerDataImpl(inner.getValue(), this.manager()));
+                new CodeContainerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CodeContainerData getById(String id) {
+    public CodeContainer get(String resourceGroupName, String workspaceName, String name) {
+        CodeContainerInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name);
+        if (inner != null) {
+            return new CodeContainerImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CodeContainer getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -99,7 +99,7 @@ public final class CodeContainersImpl implements CodeContainers {
         return this.getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
     }
 
-    public Response<CodeContainerData> getByIdWithResponse(String id, Context context) {
+    public Response<CodeContainer> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -185,7 +185,7 @@ public final class CodeContainersImpl implements CodeContainers {
         return this.serviceManager;
     }
 
-    public CodeContainerDataImpl define(String name) {
-        return new CodeContainerDataImpl(name, this.manager());
+    public CodeContainerImpl define(String name) {
+        return new CodeContainerImpl(name, this.manager());
     }
 }

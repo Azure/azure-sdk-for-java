@@ -13,14 +13,14 @@ public final class WindowsProfilePasswordTests {
     @Test
     public void testDeserialize() {
         WindowsProfilePassword model =
-            BinaryData.fromString("{\"adminPassword\":\"ybyxc\"}").toObject(WindowsProfilePassword.class);
-        Assertions.assertEquals("ybyxc", model.adminPassword());
+            BinaryData.fromString("{\"adminPassword\":\"fakePasswordPlaceholder\"}").toObject(WindowsProfilePassword.class);
+        Assertions.assertEquals("fakePasswordPlaceholder", model.adminPassword());
     }
 
     @Test
     public void testSerialize() {
-        WindowsProfilePassword model = new WindowsProfilePassword().withAdminPassword("ybyxc");
+        WindowsProfilePassword model = new WindowsProfilePassword().withAdminPassword("fakePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(WindowsProfilePassword.class);
-        Assertions.assertEquals("ybyxc", model.adminPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.adminPassword());
     }
 }
