@@ -8,6 +8,7 @@ import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.MetricTelemetry;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,13 +29,26 @@ public class RateMeter {
     private final TelemetryClient telemetryClient;
     private final Duration periodicDuration;
     private final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
+    private static final String METRIC_NAMESPACE = "java.eventhubs.stress";
 
+    /**
+     * Constructor to create RateMeter
+     *
+     * @param telemetryClient The client to send metric telemetry
+     * @param periodicDuration The sending period
+     */
     public RateMeter(TelemetryClient telemetryClient, Duration periodicDuration) {
         this.telemetryClient = telemetryClient;
         this.periodicDuration = periodicDuration;
         this.runMetrics();
     }
 
+    /**
+     * Add count for specific key
+     *
+     * @param key The key to add count
+     * @param count The count to be added
+     */
     public void add(String key, int count) {
         rateMap.computeIfAbsent(key, name -> new AtomicInteger(0));
         rateMap.get(key).addAndGet(count);
@@ -45,9 +59,10 @@ public class RateMeter {
             final List<MetricTelemetry> metricTelemetryList = new ArrayList<>();
             rateMap.forEach((key, count) -> {
                 MetricTelemetry metricTelemetry = new MetricTelemetry();
-                metricTelemetry.setValue(count.getAndSet(0));
-                metricTelemetry.setTimestamp(new Date());
+                metricTelemetry.setMetricNamespace(METRIC_NAMESPACE);
                 metricTelemetry.setName(key);
+                metricTelemetry.setValue(count.getAndSet(0));
+                metricTelemetry.setTimestamp(Date.from(Instant.now()));
                 metricTelemetryList.add(metricTelemetry);
             });
             metricTelemetryList.forEach(metricTelemetry -> {

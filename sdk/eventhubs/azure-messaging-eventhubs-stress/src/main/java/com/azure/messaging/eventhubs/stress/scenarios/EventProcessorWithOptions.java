@@ -291,8 +291,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
     }
 
     private void addCountMetric(EventContext eventContext) {
-        String metricKey = String.format("%s/%s/%s/%s",
-            eventContext.getPartitionContext().getFullyQualifiedNamespace(),
+        String metricKey = String.format("Number of processed event - %s/%s/%s",
             eventContext.getPartitionContext().getEventHubName(),
             eventContext.getPartitionContext().getConsumerGroup(),
             eventContext.getPartitionContext().getPartitionId()
@@ -301,8 +300,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
     }
 
     private void addCountMetric(EventBatchContext eventContext) {
-        String metricKey = String.format("%s/%s/%s/%s",
-            eventContext.getPartitionContext().getFullyQualifiedNamespace(),
+        String metricKey = String.format("Number of processed event batch - %s/%s/%s",
             eventContext.getPartitionContext().getEventHubName(),
             eventContext.getPartitionContext().getConsumerGroup(),
             eventContext.getPartitionContext().getPartitionId()
