@@ -187,6 +187,7 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -318,8 +319,92 @@ public class EventGridCustomization extends Customization {
         customizeStorageDirectoryDeletedEventData(customization);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization);
         customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(customization);
+        customizeMediaLiveEventIngestHeartbeatEventData(customization);
+        customizeResourceEvents(customization, logger);
     }
 
+    public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+
+        Arrays.asList("Action", "Delete", "Write").forEach(action -> {
+            Arrays.asList("Cancel", "Failure", "Success").forEach(result -> {
+                String className = String.format("Resource%s%sEventData", action, result);
+                ClassCustomization classCustomization = packageModels.getClass(className);
+                classCustomization.addStaticBlock(String.format("static final ClientLogger LOGGER = new ClientLogger(%s.class);", className),
+                        Arrays.asList("com.azure.core.util.logging.ClientLogger"));
+                classCustomization.addStaticBlock("static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();",
+                        Arrays.asList("com.azure.core.util.serializer.JacksonAdapter", "com.azure.core.util.serializer.SerializerAdapter", "com.azure.core.util.serializer.SerializerEncoding"));
+                Arrays.asList("Authorization", "Claims", "HttpRequest").forEach(method -> {
+                    classCustomization.getMethod(String.format("get%s", method)).rename(String.format("getResource%s", method));
+                    classCustomization.getMethod(String.format("set%s", method)).rename(String.format("setResource%s", method));
+                });
+
+                classCustomization.addMethod("@Deprecated public String getClaims() { final Map<String, String> resourceClaims = getResourceClaims(); if (!resourceClaims.isEmpty()) { try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } } return null; }");
+                classCustomization.addMethod(String.format("@Deprecated public %s setClaims(String claims) { try { setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }", className), Arrays.asList("java.io.IOException", "java.io.UncheckedIOException"));
+                classCustomization.addMethod("@Deprecated public String getHttpRequest() { ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest(); try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } }");
+                classCustomization.addMethod(String.format("@Deprecated public %s setHttpRequest(String httpRequest) { try { setResourceHttpRequest( DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }", className));
+                classCustomization.addMethod("@Deprecated public String getAuthorization() { final ResourceAuthorization resourceAuthorization = getResourceAuthorization(); try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } }");
+                classCustomization.addMethod(String.format("@Deprecated public %s setAuthorization(String authorization) { try { setResourceAuthorization( DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }", className));
+
+
+                classCustomization.getMethod("getClaims")
+                    .getJavadoc()
+                    .setDescription("Get the claims property: The properties of the claims.")
+                    .setReturn("the claims value.")
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#getResourceClaims()} instead.", className));
+
+                classCustomization.getMethod("setClaims")
+                    .getJavadoc()
+                    .setDescription("Set the claims property: The properties of the claims.")
+                    .setParam("claims", "the claims value to set.")
+                    .setReturn(String.format("the %s object itself.", className))
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#setResourceClaims(Map)} instead.", className));
+
+                classCustomization.getMethod("getAuthorization")
+                    .getJavadoc()
+                    .setDescription("Get the authorization property: The requested authorization for the operation.")
+                    .setReturn("the authorization value.")
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#getResourceAuthorization())} instead.", className));
+
+                classCustomization.getMethod("setAuthorization")
+                    .getJavadoc()
+                    .setDescription("Set the authorization property: The requested authorization for the operation.")
+                    .setParam("authorization", "the authorization value to set.")
+                    .setReturn(String.format("the %s object itself.", className))
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#setResourceAuthorization(ResourceAuthorization)} instead.", className));
+
+                classCustomization.getMethod("getHttpRequest")
+                    .getJavadoc()
+                    .setDescription("Get the httpRequest property: The details of the operation.")
+                    .setReturn("the httpRequest value.")
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#getResourceHttpRequest()} instead.", className));
+
+                classCustomization.getMethod("setHttpRequest")
+                    .getJavadoc()
+                    .setDescription("Set the httpRequest property: The details of the operation.")
+                    .setParam("httpRequest", "the httpRequest value to set.")
+                    .setReturn(String.format("the %s object itself.", className))
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#setResourceHttpRequest(ResourceHttpRequest)} instead.", className));
+
+
+            });
+        });
+    }
+
+    public void customizeMediaLiveEventIngestHeartbeatEventData(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventIngestHeartbeatEventData");
+        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);", Arrays.asList("com.azure.core.util.logging.ClientLogger"));
+        classCustomization.getMethod("getIngestDriftValue")
+            .setReturnType("Integer", "")
+            .replaceBody("if (\"n/a\".equals(this.ingestDriftValue)) { return null; } try { return Integer.parseInt(this.ingestDriftValue); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; }");
+
+        classCustomization.getMethod("getLastFragmentArrivalTime")
+            .setReturnType("OffsetDateTime", "")
+            .replaceBody("return OffsetDateTime.parse(this.lastFragmentArrivalTime);", Arrays.asList("java.time.OffsetDateTime"));
+
+    }
+    
     public void customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventChannelArchiveHeartbeatEventData");
