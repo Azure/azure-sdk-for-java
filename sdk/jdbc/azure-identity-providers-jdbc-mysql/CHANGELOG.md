@@ -16,7 +16,6 @@ Upgrade mysql from mysql:mysql-connector-java:8.0.30 to com.mysql:mysql-connecto
 
 Fix passwordless feature doesn't work in AZURE_GERMANY,AZURE_CHINA,AZURE_GOVERNMENT cloud [#31600](https://github.com/Azure/azure-sdk-for-java/pull/31600).
 
-### Other Changes
 
 ## 1.0.0-beta.1 (2022-09-23)
 
