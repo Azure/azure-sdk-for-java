@@ -10,12 +10,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.*;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -98,6 +96,12 @@ public abstract class IdentityClientBase {
     static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
     static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
     static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
+    static String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
+    private static final String AZURE_IDENTITY_PROPERTIES = "azure-identity.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private final Map<String, String> properties;
+
 
     final IdentityClientOptions options;
     final String tenantId;
@@ -147,6 +151,8 @@ public abstract class IdentityClientBase {
         this.certificatePassword = certificatePassword;
         this.clientAssertionSupplier = clientAssertionSupplier;
         this.options = options;
+        properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
+
     }
 
     ConfidentialClientApplication getConfidentialClient() {
@@ -517,6 +523,15 @@ public abstract class IdentityClientBase {
     HttpPipeline setupPipeline(HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         HttpLogOptions httpLogOptions = new HttpLogOptions();
+
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+        Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
+
+        userAgent = UserAgentUtil.toUserAgentString(null, clientName, clientVersion, buildConfiguration);
+        policies.add(new UserAgentPolicy(userAgent));
+
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
