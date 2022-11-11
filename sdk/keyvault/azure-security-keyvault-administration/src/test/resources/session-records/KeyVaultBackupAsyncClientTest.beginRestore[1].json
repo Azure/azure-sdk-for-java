@@ -24,7 +24,7 @@
       "cache-control" : "no-cache",
       "x-ms-request-id" : "da29a5fe-61f7-11ed-9679-000d3a602e9a",
       "Body" : "{\"status\":\"InProgress\",\"statusDetails\":null,\"error\":null,\"startTime\":1668195266,\"endTime\":null,\"jobId\":\"4bdf02f2f36c4bd9a54c2f87f8471cc3\",\"azureStorageBlobContainerUri\":null}",
-      "azure-asyncoperation" : "https://vicolinakeyvaulthsm.managedhsm.azure.net/backup/4bdf02f2f36c4bd9a54c2f87f8471cc3/pending"
+      "azure-asyncoperation" : "https://azsdktests.managedhsm.azure.net/backup/4bdf02f2f36c4bd9a54c2f87f8471cc3/pending"
     },
     "Exception" : null
   }, {
@@ -159,7 +159,7 @@
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "df839ea6-61f7-11ed-9679-000d3a602e9a",
-      "Body" : "{\"azureStorageBlobContainerUri\":\"https://vicolinakeyvaultprim.blob.core.windows.net/backup/mhsm-vicolinakeyvaulthsm-2022111119342659\",\"endTime\":1668195275,\"error\":null,\"jobId\":\"4bdf02f2f36c4bd9a54c2f87f8471cc3\",\"startTime\":1668195266,\"status\":\"Succeeded\",\"statusDetails\":null}"
+      "Body" : "{\"azureStorageBlobContainerUri\":\"https://azsdktests.blob.core.windows.net/backup/mhsm-vicolinakeyvaulthsm-2022111119342659\",\"endTime\":1668195275,\"error\":null,\"jobId\":\"4bdf02f2f36c4bd9a54c2f87f8471cc3\",\"startTime\":1668195266,\"status\":\"Succeeded\",\"statusDetails\":null}"
     },
     "Exception" : null
   }, {
@@ -187,7 +187,7 @@
       "cache-control" : "no-cache",
       "x-ms-request-id" : "dff74946-61f7-11ed-9679-000d3a602e9a",
       "Body" : "{\"endTime\":null,\"error\":null,\"jobId\":\"2320c7a9af344095b30c0ba75f9b4a1e\",\"startTime\":1668195277,\"status\":\"InProgress\",\"statusDetails\":null}",
-      "azure-asyncoperation" : "https://vicolinakeyvaulthsm.managedhsm.azure.net/restore/2320c7a9af344095b30c0ba75f9b4a1e/pending"
+      "azure-asyncoperation" : "https://azsdktests.managedhsm.azure.net/restore/2320c7a9af344095b30c0ba75f9b4a1e/pending"
     },
     "Exception" : null
   }, {

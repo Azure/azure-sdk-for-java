@@ -24,7 +24,7 @@
       "cache-control" : "no-cache",
       "x-ms-request-id" : "af9b879e-61f7-11ed-9679-000d3a602e9a",
       "Body" : "{\"status\":\"InProgress\",\"statusDetails\":null,\"error\":null,\"startTime\":1668195196,\"endTime\":null,\"jobId\":\"a9fc485d5e7746fba071376e997d924e\",\"azureStorageBlobContainerUri\":null}",
-      "azure-asyncoperation" : "https://vicolinakeyvaulthsm.managedhsm.azure.net/backup/a9fc485d5e7746fba071376e997d924e/pending"
+      "azure-asyncoperation" : "https://azsdktests.managedhsm.azure.net/backup/a9fc485d5e7746fba071376e997d924e/pending"
     },
     "Exception" : null
   }, {
@@ -213,7 +213,7 @@
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "b7bf75e8-61f7-11ed-9679-000d3a602e9a",
-      "Body" : "{\"azureStorageBlobContainerUri\":\"https://vicolinakeyvaultprim.blob.core.windows.net/backup/mhsm-vicolinakeyvaulthsm-2022111119331806\",\"endTime\":1668195208,\"error\":null,\"jobId\":\"a9fc485d5e7746fba071376e997d924e\",\"startTime\":1668195196,\"status\":\"Succeeded\",\"statusDetails\":null}"
+      "Body" : "{\"azureStorageBlobContainerUri\":\"https://azsdktests.blob.core.windows.net/backup/mhsm-azsdktests-2022111119331806\",\"endTime\":1668195208,\"error\":null,\"jobId\":\"a9fc485d5e7746fba071376e997d924e\",\"startTime\":1668195196,\"status\":\"Succeeded\",\"statusDetails\":null}"
     },
     "Exception" : null
   } ],
