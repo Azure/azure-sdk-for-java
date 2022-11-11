@@ -635,7 +635,8 @@
         "property",
         "manifestEntries",
         "compilerArguments",
-        "annotationProcessors"
+        "annotationProcessors",
+        "failonerror"
       ]
     },
     {
