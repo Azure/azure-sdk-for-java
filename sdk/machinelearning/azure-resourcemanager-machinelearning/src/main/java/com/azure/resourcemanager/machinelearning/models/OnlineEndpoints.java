@@ -20,7 +20,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineEndpointData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<OnlineEndpoint> list(String resourceGroupName, String workspaceName);
 
     /**
      * List Online Endpoints.
@@ -42,7 +42,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineEndpointData> list(
+    PagedIterable<OnlineEndpoint> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -85,12 +85,14 @@ public interface OnlineEndpoints {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return online Endpoint.
+     * @return online Endpoint along with {@link Response}.
      */
-    OnlineEndpointData get(String resourceGroupName, String workspaceName, String endpointName);
+    Response<OnlineEndpoint> getWithResponse(
+        String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
      * Get Online Endpoint.
@@ -98,27 +100,12 @@ public interface OnlineEndpoints {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return online Endpoint along with {@link Response}.
+     * @return online Endpoint.
      */
-    Response<OnlineEndpointData> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, Context context);
-
-    /**
-     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
-    EndpointAuthKeys listKeys(String resourceGroupName, String workspaceName, String endpointName);
+    OnlineEndpoint get(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * List EndpointAuthKeys for an Endpoint using Key-based authentication.
@@ -134,6 +121,19 @@ public interface OnlineEndpoints {
      */
     Response<EndpointAuthKeys> listKeysWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context);
+
+    /**
+     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Online Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keys for endpoint authentication.
+     */
+    EndpointAuthKeys listKeys(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
@@ -174,19 +174,6 @@ public interface OnlineEndpoints {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Token.
-     */
-    EndpointAuthToken getToken(String resourceGroupName, String workspaceName, String endpointName);
-
-    /**
-     * Retrieve a valid AAD token for an Endpoint using AMLToken-based authentication.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Online Endpoint name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,6 +184,19 @@ public interface OnlineEndpoints {
         String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
+     * Retrieve a valid AAD token for an Endpoint using AMLToken-based authentication.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Online Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service Token.
+     */
+    EndpointAuthToken getToken(String resourceGroupName, String workspaceName, String endpointName);
+
+    /**
      * Get Online Endpoint.
      *
      * @param id the resource ID.
@@ -205,7 +205,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return online Endpoint along with {@link Response}.
      */
-    OnlineEndpointData getById(String id);
+    OnlineEndpoint getById(String id);
 
     /**
      * Get Online Endpoint.
@@ -217,7 +217,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return online Endpoint along with {@link Response}.
      */
-    Response<OnlineEndpointData> getByIdWithResponse(String id, Context context);
+    Response<OnlineEndpoint> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Online Endpoint (asynchronous).
@@ -241,10 +241,10 @@ public interface OnlineEndpoints {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new OnlineEndpointData resource.
+     * Begins definition for a new OnlineEndpoint resource.
      *
      * @param name resource name.
-     * @return the first stage of the new OnlineEndpointData definition.
+     * @return the first stage of the new OnlineEndpoint definition.
      */
-    OnlineEndpointData.DefinitionStages.Blank define(String name);
+    OnlineEndpoint.DefinitionStages.Blank define(String name);
 }

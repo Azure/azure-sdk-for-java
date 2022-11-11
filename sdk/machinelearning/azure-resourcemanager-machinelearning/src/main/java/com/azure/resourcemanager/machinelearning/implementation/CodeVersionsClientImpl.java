@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.CodeVersionsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionInner;
 import com.azure.resourcemanager.machinelearning.models.CodeVersionResourceArmPaginatedResult;
 import reactor.core.publisher.Mono;
 
@@ -101,7 +101,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions/{version}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CodeVersionDataInner>> get(
+        Mono<Response<CodeVersionInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -118,7 +118,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions/{version}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CodeVersionDataInner>> createOrUpdate(
+        Mono<Response<CodeVersionInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -126,7 +126,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             @PathParam("name") String name,
             @PathParam("version") String version,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CodeVersionDataInner body,
+            @BodyParam("application/json") CodeVersionInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -157,7 +157,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CodeVersionDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<CodeVersionInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String name, String orderBy, Integer top, String skip) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -198,7 +198,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
                             skip,
                             accept,
                             context))
-            .<PagedResponse<CodeVersionDataInner>>map(
+            .<PagedResponse<CodeVersionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -227,7 +227,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CodeVersionDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<CodeVersionInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -298,7 +298,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CodeVersionDataInner> listAsync(
+    private PagedFlux<CodeVersionInner> listAsync(
         String resourceGroupName, String workspaceName, String name, String orderBy, Integer top, String skip) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, name, orderBy, top, skip),
@@ -317,7 +317,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CodeVersionDataInner> listAsync(String resourceGroupName, String workspaceName, String name) {
+    private PagedFlux<CodeVersionInner> listAsync(String resourceGroupName, String workspaceName, String name) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -342,7 +342,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CodeVersionDataInner> listAsync(
+    private PagedFlux<CodeVersionInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -367,7 +367,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CodeVersionDataInner> list(String resourceGroupName, String workspaceName, String name) {
+    public PagedIterable<CodeVersionInner> list(String resourceGroupName, String workspaceName, String name) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -390,7 +390,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CodeVersionDataInner> list(
+    public PagedIterable<CodeVersionInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -540,22 +540,6 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
      * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
-        deleteAsync(resourceGroupName, workspaceName, name, version).block();
-    }
-
-    /**
-     * Delete version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -566,6 +550,22 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, name, version, context).block();
+    }
+
+    /**
+     * Delete version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
+        deleteWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE);
     }
 
     /**
@@ -581,7 +581,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CodeVersionDataInner>> getWithResponseAsync(
+    private Mono<Response<CodeVersionInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, String version) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -640,7 +640,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CodeVersionDataInner>> getWithResponseAsync(
+    private Mono<Response<CodeVersionInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -695,27 +695,10 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CodeVersionDataInner> getAsync(
+    private Mono<CodeVersionInner> getAsync(
         String resourceGroupName, String workspaceName, String name, String version) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, version)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CodeVersionDataInner get(String resourceGroupName, String workspaceName, String name, String version) {
-        return getAsync(resourceGroupName, workspaceName, name, version).block();
     }
 
     /**
@@ -732,9 +715,26 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CodeVersionDataInner> getWithResponse(
+    public Response<CodeVersionInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, version, context).block();
+    }
+
+    /**
+     * Get version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CodeVersionInner get(String resourceGroupName, String workspaceName, String name, String version) {
+        return getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE).getValue();
     }
 
     /**
@@ -752,8 +752,8 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CodeVersionDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, String version, CodeVersionDataInner body) {
+    private Mono<Response<CodeVersionInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, String version, CodeVersionInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -819,12 +819,12 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CodeVersionDataInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<CodeVersionInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        CodeVersionDataInner body,
+        CodeVersionInner body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -886,29 +886,10 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CodeVersionDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, String version, CodeVersionDataInner body) {
+    private Mono<CodeVersionInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, String version, CodeVersionInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, version, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create or update version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CodeVersionDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, CodeVersionDataInner body) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, name, version, body).block();
     }
 
     /**
@@ -926,20 +907,41 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CodeVersionDataInner> createOrUpdateWithResponse(
+    public Response<CodeVersionInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        CodeVersionDataInner body,
+        CodeVersionInner body,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, version, body, context).block();
     }
 
     /**
+     * Create or update version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @param body Version entity to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Resource Manager resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CodeVersionInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, String version, CodeVersionInner body) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, body, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -947,7 +949,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CodeVersionDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<CodeVersionInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -960,7 +962,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CodeVersionDataInner>>map(
+            .<PagedResponse<CodeVersionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -975,7 +977,8 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -984,7 +987,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CodeVersionDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<CodeVersionInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

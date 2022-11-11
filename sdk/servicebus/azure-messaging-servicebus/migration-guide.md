@@ -304,7 +304,7 @@ try {
 ```
 
 The new Java SDK provides a dedicated processor client to which you can pass your message and error handlers.
-Like the older SDK, this supports auto completion of messages and automatica renewal of message/session locks.
+Like the older SDK, this supports auto completion of messages and automatically renewal of message/session locks.
 
 For a more fine grained control and advanced features, you still have the `ServiceBusReceiverClient` and it's async 
 counterpart `ServiceBusReceiverAsyncClient`.

@@ -11,22 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class QueryRequestOptions {
     /*
-     * Continuation token for pagination, capturing the next page size and
-     * offset, as well as the context of the query.
+     * Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
      */
     @JsonProperty(value = "$skipToken")
     private String skipToken;
 
     /*
-     * The maximum number of rows that the query should return. Overrides the
-     * page size when ```$skipToken``` property is present.
+     * The maximum number of rows that the query should return. Overrides the page size when ```$skipToken``` property
+     * is present.
      */
     @JsonProperty(value = "$top")
     private Integer top;
 
     /*
-     * The number of rows to skip from the beginning of the results. Overrides
-     * the next page offset when ```$skipToken``` property is present.
+     * The number of rows to skip from the beginning of the results. Overrides the next page offset when
+     * ```$skipToken``` property is present.
      */
     @JsonProperty(value = "$skip")
     private Integer skip;
@@ -38,12 +37,15 @@ public final class QueryRequestOptions {
     private ResultFormat resultFormat;
 
     /*
-     * Only applicable for tenant and management group level queries to decide
-     * whether to allow partial scopes for result in case the number of
-     * subscriptions exceed allowed limits.
+     * Only applicable for tenant and management group level queries to decide whether to allow partial scopes for
+     * result in case the number of subscriptions exceed allowed limits.
      */
     @JsonProperty(value = "allowPartialScopes")
     private Boolean allowPartialScopes;
+
+    /** Creates an instance of QueryRequestOptions class. */
+    public QueryRequestOptions() {
+    }
 
     /**
      * Get the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well

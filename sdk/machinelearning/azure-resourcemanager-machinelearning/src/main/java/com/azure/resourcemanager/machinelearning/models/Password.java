@@ -22,6 +22,10 @@ public final class Password {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /** Creates an instance of Password class. */
+    public Password() {
+    }
+
     /**
      * Get the name property: The name property.
      *

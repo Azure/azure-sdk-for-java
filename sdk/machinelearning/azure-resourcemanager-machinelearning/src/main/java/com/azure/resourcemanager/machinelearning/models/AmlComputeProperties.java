@@ -6,11 +6,9 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 
 /** AML Compute properties. */
 @Fluent
@@ -52,8 +50,7 @@ public final class AmlComputeProperties {
     private ScaleSettings scaleSettings;
 
     /*
-     * Credentials for an administrator user account that will be created on
-     * each compute node.
+     * Credentials for an administrator user account that will be created on each compute node.
      */
     @JsonProperty(value = "userAccountCredentials")
     private UserAccountCredentials userAccountCredentials;
@@ -65,57 +62,59 @@ public final class AmlComputeProperties {
     private ResourceId subnet;
 
     /*
-     * Close remote Login Access Port State of the public SSH port. Possible
-     * values are: Disabled - Indicates that the public ssh port is closed on
-     * all nodes of the cluster. Enabled - Indicates that the public ssh port
-     * is open on all nodes of the cluster. NotSpecified - Indicates that the
-     * public ssh port is closed on all nodes of the cluster if VNet is
-     * defined, else is open all public nodes. It can be default only during
-     * cluster creation time, after creation it will be either enabled or
-     * disabled.
+     * Close remote Login Access Port
+     *
+     * State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
+     * all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster.
+     * NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else
+     * is open all public nodes. It can be default only during cluster creation time, after creation it will be either
+     * enabled or disabled.
      */
     @JsonProperty(value = "remoteLoginPortPublicAccess")
     private RemoteLoginPortPublicAccess remoteLoginPortPublicAccess;
 
     /*
-     * Allocation state. Allocation state of the compute. Possible values are:
-     * steady - Indicates that the compute is not resizing. There are no
-     * changes to the number of compute nodes in the compute in progress. A
-     * compute enters this state when it is created and when no operations are
-     * being performed on the compute to change the number of compute nodes.
-     * resizing - Indicates that the compute is resizing; that is, compute
-     * nodes are being added to or removed from the compute.
+     * Allocation state.
+     *
+     * Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There
+     * are no changes to the number of compute nodes in the compute in progress. A compute enters this state when it is
+     * created and when no operations are being performed on the compute to change the number of compute nodes.
+     * resizing - Indicates that the compute is resizing; that is, compute nodes are being added to or removed from the
+     * compute.
      */
     @JsonProperty(value = "allocationState", access = JsonProperty.Access.WRITE_ONLY)
     private AllocationState allocationState;
 
     /*
-     * Allocation state transition time. The time at which the compute entered
-     * its current allocation state.
+     * Allocation state transition time.
+     *
+     * The time at which the compute entered its current allocation state.
      */
     @JsonProperty(value = "allocationStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime allocationStateTransitionTime;
 
     /*
-     * Errors. Collection of errors encountered by various compute nodes during
-     * node setup.
+     * Errors.
+     *
+     * Collection of errors encountered by various compute nodes during node setup.
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagementError> errors;
 
     /*
-     * Current node count. The number of compute nodes currently assigned to
-     * the compute.
+     * Current node count.
+     *
+     * The number of compute nodes currently assigned to the compute.
      */
     @JsonProperty(value = "currentNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentNodeCount;
 
     /*
-     * Target node count. The target number of compute nodes for the compute.
-     * If the allocationState is resizing, this property denotes the target
-     * node count for the ongoing resize operation. If the allocationState is
-     * steady, this property denotes the target node count for the previous
-     * resize operation.
+     * Target node count.
+     *
+     * The target number of compute nodes for the compute. If the allocationState is resizing, this property denotes
+     * the target node count for the ongoing resize operation. If the allocationState is steady, this property denotes
+     * the target node count for the previous resize operation.
      */
     @JsonProperty(value = "targetNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetNodeCount;
@@ -127,11 +126,11 @@ public final class AmlComputeProperties {
     private NodeStateCounts nodeStateCounts;
 
     /*
-     * Enable node public IP. Enable or disable node public IP address
-     * provisioning. Possible values are: Possible values are: true - Indicates
-     * that the compute nodes will have public IPs provisioned. false -
-     * Indicates that the compute nodes will have a private endpoint and no
-     * public IPs.
+     * Enable node public IP.
+     *
+     * Enable or disable node public IP address provisioning. Possible values are: Possible values are: true -
+     * Indicates that the compute nodes will have public IPs provisioned. false - Indicates that the compute nodes will
+     * have a private endpoint and no public IPs.
      */
     @JsonProperty(value = "enableNodePublicIp")
     private Boolean enableNodePublicIp;
@@ -140,8 +139,11 @@ public final class AmlComputeProperties {
      * A property bag containing additional properties.
      */
     @JsonProperty(value = "propertyBag")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> propertyBag;
+    private Object propertyBag;
+
+    /** Creates an instance of AmlComputeProperties class. */
+    public AmlComputeProperties() {
+    }
 
     /**
      * Get the osType property: Compute OS Type.
@@ -306,11 +308,13 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Get the remoteLoginPortPublicAccess property: Close remote Login Access Port State of the public SSH port.
-     * Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled
-     * - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified - Indicates that the
-     * public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can
-     * be default only during cluster creation time, after creation it will be either enabled or disabled.
+     * Get the remoteLoginPortPublicAccess property: Close remote Login Access Port
+     *
+     * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
+     * all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster.
+     * NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else
+     * is open all public nodes. It can be default only during cluster creation time, after creation it will be either
+     * enabled or disabled.
      *
      * @return the remoteLoginPortPublicAccess value.
      */
@@ -319,11 +323,13 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Set the remoteLoginPortPublicAccess property: Close remote Login Access Port State of the public SSH port.
-     * Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled
-     * - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified - Indicates that the
-     * public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can
-     * be default only during cluster creation time, after creation it will be either enabled or disabled.
+     * Set the remoteLoginPortPublicAccess property: Close remote Login Access Port
+     *
+     * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
+     * all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster.
+     * NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else
+     * is open all public nodes. It can be default only during cluster creation time, after creation it will be either
+     * enabled or disabled.
      *
      * @param remoteLoginPortPublicAccess the remoteLoginPortPublicAccess value to set.
      * @return the AmlComputeProperties object itself.
@@ -335,11 +341,13 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Get the allocationState property: Allocation state. Allocation state of the compute. Possible values are: steady
-     * - Indicates that the compute is not resizing. There are no changes to the number of compute nodes in the compute
-     * in progress. A compute enters this state when it is created and when no operations are being performed on the
-     * compute to change the number of compute nodes. resizing - Indicates that the compute is resizing; that is,
-     * compute nodes are being added to or removed from the compute.
+     * Get the allocationState property: Allocation state.
+     *
+     * <p>Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing.
+     * There are no changes to the number of compute nodes in the compute in progress. A compute enters this state when
+     * it is created and when no operations are being performed on the compute to change the number of compute nodes.
+     * resizing - Indicates that the compute is resizing; that is, compute nodes are being added to or removed from the
+     * compute.
      *
      * @return the allocationState value.
      */
@@ -348,8 +356,9 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Get the allocationStateTransitionTime property: Allocation state transition time. The time at which the compute
-     * entered its current allocation state.
+     * Get the allocationStateTransitionTime property: Allocation state transition time.
+     *
+     * <p>The time at which the compute entered its current allocation state.
      *
      * @return the allocationStateTransitionTime value.
      */
@@ -358,7 +367,9 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Get the errors property: Errors. Collection of errors encountered by various compute nodes during node setup.
+     * Get the errors property: Errors.
+     *
+     * <p>Collection of errors encountered by various compute nodes during node setup.
      *
      * @return the errors value.
      */
@@ -367,8 +378,9 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Get the currentNodeCount property: Current node count. The number of compute nodes currently assigned to the
-     * compute.
+     * Get the currentNodeCount property: Current node count.
+     *
+     * <p>The number of compute nodes currently assigned to the compute.
      *
      * @return the currentNodeCount value.
      */
@@ -377,9 +389,11 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Get the targetNodeCount property: Target node count. The target number of compute nodes for the compute. If the
-     * allocationState is resizing, this property denotes the target node count for the ongoing resize operation. If the
-     * allocationState is steady, this property denotes the target node count for the previous resize operation.
+     * Get the targetNodeCount property: Target node count.
+     *
+     * <p>The target number of compute nodes for the compute. If the allocationState is resizing, this property denotes
+     * the target node count for the ongoing resize operation. If the allocationState is steady, this property denotes
+     * the target node count for the previous resize operation.
      *
      * @return the targetNodeCount value.
      */
@@ -397,9 +411,11 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Get the enableNodePublicIp property: Enable node public IP. Enable or disable node public IP address
-     * provisioning. Possible values are: Possible values are: true - Indicates that the compute nodes will have public
-     * IPs provisioned. false - Indicates that the compute nodes will have a private endpoint and no public IPs.
+     * Get the enableNodePublicIp property: Enable node public IP.
+     *
+     * <p>Enable or disable node public IP address provisioning. Possible values are: Possible values are: true -
+     * Indicates that the compute nodes will have public IPs provisioned. false - Indicates that the compute nodes will
+     * have a private endpoint and no public IPs.
      *
      * @return the enableNodePublicIp value.
      */
@@ -408,9 +424,11 @@ public final class AmlComputeProperties {
     }
 
     /**
-     * Set the enableNodePublicIp property: Enable node public IP. Enable or disable node public IP address
-     * provisioning. Possible values are: Possible values are: true - Indicates that the compute nodes will have public
-     * IPs provisioned. false - Indicates that the compute nodes will have a private endpoint and no public IPs.
+     * Set the enableNodePublicIp property: Enable node public IP.
+     *
+     * <p>Enable or disable node public IP address provisioning. Possible values are: Possible values are: true -
+     * Indicates that the compute nodes will have public IPs provisioned. false - Indicates that the compute nodes will
+     * have a private endpoint and no public IPs.
      *
      * @param enableNodePublicIp the enableNodePublicIp value to set.
      * @return the AmlComputeProperties object itself.
@@ -425,7 +443,7 @@ public final class AmlComputeProperties {
      *
      * @return the propertyBag value.
      */
-    public Map<String, Object> propertyBag() {
+    public Object propertyBag() {
         return this.propertyBag;
     }
 
@@ -435,7 +453,7 @@ public final class AmlComputeProperties {
      * @param propertyBag the propertyBag value to set.
      * @return the AmlComputeProperties object itself.
      */
-    public AmlComputeProperties withPropertyBag(Map<String, Object> propertyBag) {
+    public AmlComputeProperties withPropertyBag(Object propertyBag) {
         this.propertyBag = propertyBag;
         return this;
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterPurpose. */
+/** Intended usage of the cluster. */
 public final class ClusterPurpose extends ExpandableStringEnum<ClusterPurpose> {
     /** Static value FastProd for ClusterPurpose. */
     public static final ClusterPurpose FAST_PROD = fromString("FastProd");

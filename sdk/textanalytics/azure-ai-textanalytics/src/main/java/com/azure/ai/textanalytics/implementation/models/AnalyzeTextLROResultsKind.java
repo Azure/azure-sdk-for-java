@@ -32,6 +32,10 @@ public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<Analyz
     /** Static value HealthcareLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind HEALTHCARE_LRORESULTS = fromString("HealthcareLROResults");
 
+    /** Static value ExtractiveSummarizationLROResults for AnalyzeTextLROResultsKind. */
+    public static final AnalyzeTextLROResultsKind EXTRACTIVE_SUMMARIZATION_LRORESULTS =
+            fromString("ExtractiveSummarizationLROResults");
+
     /** Static value CustomEntityRecognitionLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind CUSTOM_ENTITY_RECOGNITION_LRORESULTS =
             fromString("CustomEntityRecognitionLROResults");
@@ -43,6 +47,10 @@ public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<Analyz
     /** Static value CustomMultiLabelClassificationLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind CUSTOM_MULTI_LABEL_CLASSIFICATION_LRORESULTS =
             fromString("CustomMultiLabelClassificationLROResults");
+
+    /** Static value AbstractiveSummarizationLROResults for AnalyzeTextLROResultsKind. */
+    public static final AnalyzeTextLROResultsKind ABSTRACTIVE_SUMMARIZATION_LRORESULTS =
+            fromString("AbstractiveSummarizationLROResults");
 
     /**
      * Creates or finds a AnalyzeTextLROResultsKind from its string representation.

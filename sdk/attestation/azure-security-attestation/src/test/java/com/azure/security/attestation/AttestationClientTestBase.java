@@ -27,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.provider.Arguments;
 
 import javax.security.auth.x500.X500Principal;
@@ -63,6 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * and accessing test environments.
  */
 @Execution(ExecutionMode.SAME_THREAD)
+@Isolated
 public class AttestationClientTestBase extends TestBase {
 
     protected final ClientLogger logger = new ClientLogger(AttestationClientTestBase.class);
@@ -83,6 +85,7 @@ public class AttestationClientTestBase extends TestBase {
     @Override
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
+        GlobalOpenTelemetry.resetForTest();
         super.setupTest(testInfo);
         String testMethod = testInfo.getTestMethod().isPresent()
             ? testInfo.getTestMethod().get().getName()

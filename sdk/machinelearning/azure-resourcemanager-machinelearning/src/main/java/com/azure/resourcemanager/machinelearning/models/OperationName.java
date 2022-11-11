@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationName. */
+/** Name of the last operation. */
 public final class OperationName extends ExpandableStringEnum<OperationName> {
     /** Static value Create for OperationName. */
     public static final OperationName CREATE = fromString("Create");

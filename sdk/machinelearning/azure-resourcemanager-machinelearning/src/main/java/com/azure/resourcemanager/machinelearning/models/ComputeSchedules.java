@@ -17,6 +17,10 @@ public final class ComputeSchedules {
     @JsonProperty(value = "computeStartStop")
     private List<ComputeStartStopSchedule> computeStartStop;
 
+    /** Creates an instance of ComputeSchedules class. */
+    public ComputeSchedules() {
+    }
+
     /**
      * Get the computeStartStop property: The list of compute start stop schedules to be applied.
      *

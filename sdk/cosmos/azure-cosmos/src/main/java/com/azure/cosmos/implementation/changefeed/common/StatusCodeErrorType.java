@@ -8,7 +8,7 @@ package com.azure.cosmos.implementation.changefeed.common;
 public enum StatusCodeErrorType {
     UNDEFINED,
     PARTITION_NOT_FOUND,
-    PARTITION_SPLIT,
+    PARTITION_SPLIT_OR_MERGE,
     TRANSIENT_ERROR,
     MAX_ITEM_COUNT_TOO_LARGE
 }

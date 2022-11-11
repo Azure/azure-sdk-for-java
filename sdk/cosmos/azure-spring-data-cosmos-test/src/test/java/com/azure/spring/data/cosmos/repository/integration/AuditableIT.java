@@ -2,10 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
+import com.azure.spring.data.cosmos.core.query.Criteria;
+import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AuditableIdGeneratedEntity;
+import com.azure.spring.data.cosmos.repository.AuditableConfig;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -16,17 +23,25 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestRepositoryConfig.class)
+@ContextConfiguration(classes = {
+    TestRepositoryConfig.class,
+    AuditableConfig.class
+})
 public class AuditableIT {
 
     @ClassRule
@@ -98,6 +113,23 @@ public class AuditableIT {
         assertThat(savedEntity.getCreatedDate()).isEqualTo(now);
         assertThat(savedEntity.getLastModifiedBy()).isEqualTo("created-by");
         assertThat(savedEntity.getLastModifiedByDate()).isEqualTo(now);
+    }
+
+    @Test
+    public void testRunQueryWithReturnTypeContainingLocalDateTime() {
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
+
+        auditableRepository.save(entity);
+
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
+        assertEquals(results.size(), 1);
+        AuditableEntity foundEntity = results.get(0);
+        assertEquals(entity.getId(), foundEntity.getId());
+        assertNotNull(foundEntity.getCreatedDate());
+        assertNotNull(foundEntity.getLastModifiedByDate());
     }
 
 }

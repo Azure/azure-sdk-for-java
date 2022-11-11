@@ -23,6 +23,10 @@ public final class UnlockDeleteRequest {
     @JsonProperty(value = "resourceToBeDeleted")
     private String resourceToBeDeleted;
 
+    /** Creates an instance of UnlockDeleteRequest class. */
+    public UnlockDeleteRequest() {
+    }
+
     /**
      * Get the resourceGuardOperationRequests property: The resourceGuardOperationRequests property.
      *

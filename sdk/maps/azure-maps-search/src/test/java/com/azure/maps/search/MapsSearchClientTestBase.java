@@ -39,7 +39,7 @@ import com.azure.maps.search.models.SearchAddressResult;
 import com.azure.maps.search.models.SearchAddressResultItem;
 
 public class MapsSearchClientTestBase extends TestBase {
-    static final String FAKE_API_KEY = "1234567890";
+    static final String FAKE_API_KEY = "fakeKeyPlaceholder";
 
     private final String endpoint = Configuration.getGlobalConfiguration().get("API-LEARN_ENDPOINT");
     Duration durationTestMode;

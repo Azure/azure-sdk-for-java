@@ -324,6 +324,58 @@ public final class ServicesImpl {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ShareItemInternal>> listSharesSegmentSinglePageAsync(
+            String prefix, String marker, Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted =
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                        context ->
+                                service.listSharesSegment(
+                                        this.client.getUrl(),
+                                        comp,
+                                        prefix,
+                                        marker,
+                                        maxresults,
+                                        includeConverted,
+                                        timeout,
+                                        this.client.getVersion(),
+                                        accept,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getShareItems(),
+                                        res.getValue().getNextMarker(),
+                                        res.getDeserializedHeaders()));
+    }
+
+    /**
+     * The List Shares Segment operation returns a list of the shares and share snapshots under the specified account.
+     *
+     * @param prefix Filters the results to return only entries whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -388,12 +440,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareItemInternal> listSharesSegmentAsync(
             String prefix, String marker, Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
-        // TODO (alzimmer): This wasn't passing context as there is no Context to pass.
-        //  There will be a fix for this in a future Autorest release but for now this was done manually.
-        // Adding this comment to make this obvious on diff.
-        return new PagedFlux<>(() -> FluxUtil.withContext(context ->
-            listSharesSegmentSinglePageAsync(prefix, marker, maxresults, include, timeout, context)),
-            nextLink -> FluxUtil.withContext(context -> listSharesSegmentNextSinglePageAsync(nextLink, context)));
+        return new PagedFlux<>(
+                () -> listSharesSegmentSinglePageAsync(prefix, marker, maxresults, include, timeout),
+                nextLink -> listSharesSegmentNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -427,6 +476,34 @@ public final class ServicesImpl {
         return new PagedFlux<>(
                 () -> listSharesSegmentSinglePageAsync(prefix, marker, maxresults, include, timeout, context),
                 nextLink -> listSharesSegmentNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ShareItemInternal>> listSharesSegmentNextSinglePageAsync(String nextLink) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listSharesSegmentNext(
+                                        nextLink, this.client.getUrl(), this.client.getVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getShareItems(),
+                                        res.getValue().getNextMarker(),
+                                        res.getDeserializedHeaders()));
     }
 
     /**
