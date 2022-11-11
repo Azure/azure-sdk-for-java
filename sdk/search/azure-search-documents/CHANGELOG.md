@@ -1,6 +1,6 @@
 # Release History
 
-## 11.6.0-beta.3 (2022-11-10)
+## 11.6.0-beta.3 (2022-11-11)
 
 ### Other Changes
 
