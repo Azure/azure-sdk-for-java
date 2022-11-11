@@ -74,14 +74,8 @@ public final class KeyVaultSettingsAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("Setting name cannot be null or empty"));
         }
 
-        String settingValueAsString = null;
-
-        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
-            settingValueAsString = setting.asBoolean().toString();
-        }
-
         try {
-            return this.implClient.updateSettingAsync(vaultUrl, setting.getName(), settingValueAsString)
+            return this.implClient.updateSettingAsync(vaultUrl, setting.getName(), setting.asString())
                 .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", setting.getName()))
                 .doOnSuccess(response -> logger.verbose("Updated account setting - {}", setting.getName()))
                 .doOnError(error -> logger.warning("Failed updating account setting - {}", setting.getName(), error))
@@ -115,47 +109,11 @@ public final class KeyVaultSettingsAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
         }
 
-        String settingValueAsString = null;
-
-        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
-            settingValueAsString = setting.asBoolean().toString();
-        }
-
         try {
-            return this.implClient.updateSettingWithResponseAsync(vaultUrl, setting.getName(), settingValueAsString)
+            return this.implClient.updateSettingWithResponseAsync(vaultUrl, setting.getName(), setting.asString())
                 .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", setting.getName()))
                 .doOnSuccess(response -> logger.verbose("Updated account setting - {}", setting.getName()))
                 .doOnError(error -> logger.warning("Failed updating account setting - {}", setting.getName(), error))
-                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(response -> new SimpleResponse<>(response, transformToKeyVaultSetting(response.getValue())));
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    /**
-     * Updates a given account setting with the provided value.
-     *
-     * @param name The name of the setting to update.
-     * @param value The value to set.
-     *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the updated
-     * {@link KeyVaultSetting account setting}.
-     *
-     * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
-     * @throws KeyVaultErrorException thrown if the request is rejected by the server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultSetting>> updateSettingWithResponse(String name, boolean value) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
-        }
-
-        try {
-            return this.implClient.updateSettingWithResponseAsync(vaultUrl, name, Boolean.toString(value))
-                .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", name))
-                .doOnSuccess(response -> logger.verbose("Updated account setting - {}", name))
-                .doOnError(error -> logger.warning("Failed updating account setting - {}", name, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> new SimpleResponse<>(response, transformToKeyVaultSetting(response.getValue())));
         } catch (RuntimeException e) {

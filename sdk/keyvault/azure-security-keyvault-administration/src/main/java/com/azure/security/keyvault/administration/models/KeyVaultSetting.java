@@ -67,7 +67,16 @@ public final class KeyVaultSetting {
                     + "type %s", KeyVaultSettingType.BOOLEAN, this.getType())));
         }
 
-        return (Boolean) this.value;
+        return this.value == null ? null : (Boolean) this.value;
+    }
+
+    /**
+     * Get the value of the {@link KeyVaultSetting} as a {@link String}.
+     *
+     * @return The value of the {@link KeyVaultSetting} as a {@link String}.
+     */
+    public String asString() {
+        return this.value == null ? null : this.value.toString();
     }
 
     /**

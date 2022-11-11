@@ -71,14 +71,8 @@ public final class KeyVaultSettingsClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("Setting name cannot be null or empty"));
         }
 
-        String settingValueAsString = null;
-
-        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
-            settingValueAsString = setting.asBoolean().toString();
-        }
-
         return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-            this.implClient.updateSettingSync(vaultUrl, setting.getName(), settingValueAsString));
+            this.implClient.updateSettingSync(vaultUrl, setting.getName(), setting.asString()));
     }
 
     /**
@@ -100,14 +94,8 @@ public final class KeyVaultSettingsClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("Setting name cannot be null or empty"));
         }
 
-        String settingValueAsString = null;
-
-        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
-            settingValueAsString = setting.asBoolean().toString();
-        }
-
         Response<Setting> response =
-            this.implClient.updateSettingSyncWithResponse(vaultUrl, setting.getName(), settingValueAsString, context);
+            this.implClient.updateSettingSyncWithResponse(vaultUrl, setting.getName(), setting.asString(), context);
 
         return new SimpleResponse<>(response,
             KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
