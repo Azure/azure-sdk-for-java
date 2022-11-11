@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
@@ -94,7 +94,7 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRec
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksOld;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksSentimentAnalysisTasksItem;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractSummaryAction;
 import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
@@ -406,8 +406,8 @@ class AnalyzeActionsAsyncClient {
             actions.getSingleLabelClassifyActions();
         final Iterable<MultiLabelClassifyAction> multiCategoryClassifyActions =
             actions.getMultiLabelClassifyActions();
-        final Iterable<AbstractiveSummaryAction> abstractiveSummaryActions =
-            actions.getAbstractiveSummaryActions();
+        final Iterable<AbstractSummaryAction> abstractSummaryActions =
+            actions.getAbstractSummaryActions();
         final Iterable<ExtractSummaryAction> extractSummaryActions = actions.getExtractSummaryActions();
 
         if (recognizeEntitiesActions != null) {
@@ -447,8 +447,8 @@ class AnalyzeActionsAsyncClient {
             multiCategoryClassifyActions.forEach(action -> tasks.add(toCustomMultiLabelClassificationLROTask(action)));
         }
 
-        if (abstractiveSummaryActions != null) {
-            abstractiveSummaryActions.forEach(action -> tasks.add(toAbstractiveSummarizationLROTask(action)));
+        if (abstractSummaryActions != null) {
+            abstractSummaryActions.forEach(action -> tasks.add(toAbstractiveSummarizationLROTask(action)));
         }
 
         if (extractSummaryActions != null) {
@@ -782,7 +782,7 @@ class AnalyzeActionsAsyncClient {
             .setSortBy(orderBy == null ? null : ExtractiveSummarizationSortingCriteria.fromString(orderBy.toString()));
     }
 
-    private AbstractiveSummarizationLROTask toAbstractiveSummarizationLROTask(AbstractiveSummaryAction action) {
+    private AbstractiveSummarizationLROTask toAbstractiveSummarizationLROTask(AbstractSummaryAction action) {
         if (action == null) {
             return null;
         }
@@ -792,7 +792,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private AbstractiveSummarizationTaskParameters getAbstractiveSummarizationTaskParameters(
-        AbstractiveSummaryAction action) {
+        AbstractSummaryAction action) {
         return new AbstractiveSummarizationTaskParameters()
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setSentenceCount(action.getMaxSentenceCount())
@@ -1234,7 +1234,7 @@ class AnalyzeActionsAsyncClient {
                     final AbstractSummaryActionResult actionResult = new AbstractSummaryActionResult();
                     final AbstractiveSummarizationResult results = abstractiveSummarizationLROResult.getResults();
                     if (results != null) {
-                        AbstractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        AbstractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
                             toAbstractiveSummaryResultCollection(results));
                     }
                     TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,

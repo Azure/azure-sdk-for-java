@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.core.annotation.Immutable;
 
@@ -15,7 +15,7 @@ public final class AbstractSummaryActionResult extends TextAnalyticsActionResult
     private AbstractSummaryResultCollection documentsResults;
 
     static {
-        AbstractiveSummaryActionResultPropertiesHelper.setAccessor(
+        AbstractSummaryActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 

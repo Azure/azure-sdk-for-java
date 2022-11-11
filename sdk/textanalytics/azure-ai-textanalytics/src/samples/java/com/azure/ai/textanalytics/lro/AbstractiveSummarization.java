@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractSummaryAction;
 import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
 import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
@@ -60,7 +60,7 @@ public class AbstractiveSummarization {
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions()
                     .setDisplayName("{tasks_display_name}")
-                    .setAbstractiveSummaryActions(new AbstractiveSummaryAction().setMaxSentenceCount(3)),
+                    .setAbstractSummaryActions(new AbstractSummaryAction().setMaxSentenceCount(3)),
                 "en",
                 new AnalyzeActionsOptions());
 

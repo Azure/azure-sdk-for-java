@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractSummaryAction;
 import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
 import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.AgeResolution;
@@ -1470,8 +1470,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void abstractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner, Integer maxSentenceCount) {
         testRunner.accept(SUMMARY_INPUTS,
             new TextAnalyticsActions()
-                .setAbstractiveSummaryActions(
-                    new AbstractiveSummaryAction().setMaxSentenceCount(maxSentenceCount)));
+                .setAbstractSummaryActions(
+                    new AbstractSummaryAction().setMaxSentenceCount(maxSentenceCount)));
     }
 
     // Dynamic classification
@@ -2087,7 +2087,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateExtractSummaryActionResults(showStatistics,
             expected.getExtractSummaryResults().stream().collect(Collectors.toList()),
             actual.getExtractSummaryResults().stream().collect(Collectors.toList()));
-        validateAbstractiveSummaryActionResults(showStatistics,
+        validateAbstractSummaryActionResults(showStatistics,
             expected.getAbstractSummaryResults().stream().collect(Collectors.toList()),
             actual.getAbstractSummaryResults().stream().collect(Collectors.toList()));
     }
@@ -2462,16 +2462,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return true;
     }
 
-    static void validateAbstractiveSummaryActionResults(boolean showStatistics,
-                                                        List<AbstractSummaryActionResult> expected,
-                                                        List<AbstractSummaryActionResult> actual) {
+    static void validateAbstractSummaryActionResults(boolean showStatistics,
+        List<AbstractSummaryActionResult> expected, List<AbstractSummaryActionResult> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
-            validateAbstractiveSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
+            validateAbstractSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
-    static void validateAbstractiveSummaryActionResult(boolean showStatistics,
+    static void validateAbstractSummaryActionResult(boolean showStatistics,
                                                        AbstractSummaryActionResult expected, AbstractSummaryActionResult actual) {
         assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {

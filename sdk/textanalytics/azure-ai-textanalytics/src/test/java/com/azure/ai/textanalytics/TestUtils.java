@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AbstractiveSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
@@ -1202,7 +1202,7 @@ final class TestUtils {
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
         IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults,
         IterableStream<ExtractSummaryActionResult> extractSummaryActionResults,
-        IterableStream<AbstractSummaryActionResult> abstractiveSummaryActionResults) {
+        IterableStream<AbstractSummaryActionResult> abstractSummaryActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
         AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesResults(analyzeActionsResult,
@@ -1220,7 +1220,7 @@ final class TestUtils {
         AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
             extractSummaryActionResults);
         AnalyzeActionsResultPropertiesHelper.setAbstractiveSummaryResults(analyzeActionsResult,
-            abstractiveSummaryActionResults);
+            abstractSummaryActionResults);
         return analyzeActionsResult;
     }
 
@@ -1425,7 +1425,7 @@ final class TestUtils {
         OffsetDateTime completeAt, AbstractSummaryResultCollection resultCollection,
         TextAnalyticsError actionError) {
         AbstractSummaryActionResult actionResult = new AbstractSummaryActionResult();
-        AbstractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        AbstractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);

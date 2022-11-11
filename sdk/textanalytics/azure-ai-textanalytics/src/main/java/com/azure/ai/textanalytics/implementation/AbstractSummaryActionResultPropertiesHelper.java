@@ -9,28 +9,28 @@ import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 /**
  * The helper class to set the non-public properties of an {@link AbstractSummaryActionResult} instance.
  */
-public final class AbstractiveSummaryActionResultPropertiesHelper {
-    private static AbstractiveSummaryActionResultAccessor accessor;
+public final class AbstractSummaryActionResultPropertiesHelper {
+    private static AbstractSummaryActionResultAccessor accessor;
 
-    private AbstractiveSummaryActionResultPropertiesHelper() { }
+    private AbstractSummaryActionResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AbstractSummaryActionResult}
      * instance.
      */
-    public interface AbstractiveSummaryActionResultAccessor {
+    public interface AbstractSummaryActionResultAccessor {
         void setDocumentsResults(AbstractSummaryActionResult actionResult,
-                                 AbstractSummaryResultCollection documentsResults);
+            AbstractSummaryResultCollection documentsResults);
     }
 
     /**
      * The method called from {@link AbstractSummaryActionResult} to set it's accessor.
      *
-     * @param abstractiveSummaryActionResultAccessor The accessor.
+     * @param abstractSummaryActionResultAccessor The accessor.
      */
     public static void setAccessor(
-        final AbstractiveSummaryActionResultAccessor abstractiveSummaryActionResultAccessor) {
-        accessor = abstractiveSummaryActionResultAccessor;
+        final AbstractSummaryActionResultAccessor abstractSummaryActionResultAccessor) {
+        accessor = abstractSummaryActionResultAccessor;
     }
 
     public static void setDocumentsResults(AbstractSummaryActionResult actionResult,

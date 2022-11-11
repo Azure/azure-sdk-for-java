@@ -18,7 +18,7 @@ public final class AbstractSummaryResultCollection extends IterableStream<Abstra
     private final TextDocumentBatchStatistics statistics;
 
     /**
-     * Creates a {@link AnalyzeSentimentResultCollection} model that maintains a list of {@link AbstractSummaryResult}
+     * Creates a {@link AbstractSummaryResultCollection} model that maintains a list of {@link AbstractSummaryResult}
      * along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link AbstractSummaryResult}.
