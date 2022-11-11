@@ -1,0 +1,63 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.common;
+
+import java.util.Objects;
+
+/**
+ * Options for additional content integrity checks on download.
+ */
+public class DownloadTransferValidationOptions {
+    private StorageChecksumAlgorithm checksumAlgorithm = StorageChecksumAlgorithm.None;
+    private boolean autoValidateChecksum = true;
+
+    /**
+     * Creates a new {@link DownloadTransferValidationOptions} with default parameters applied.
+     */
+    public DownloadTransferValidationOptions() {
+    }
+
+    /**
+     * Gets the identifier of the checksum algorithm to use.
+     * @return Checksum algorithm ID.
+     */
+    public StorageChecksumAlgorithm getChecksumAlgorithm() {
+        return checksumAlgorithm;
+    }
+
+    /**
+     * Sets the identifier of the checksum algorithm to use.
+     * @param checksumAlgorithm Checksum algorithm ID.
+     * @return The updated options
+     */
+    public DownloadTransferValidationOptions setChecksumAlgorithm(StorageChecksumAlgorithm checksumAlgorithm) {
+        Objects.requireNonNull(checksumAlgorithm, "'checksumAlgorithm' cannot be null.");
+        this.checksumAlgorithm = checksumAlgorithm;
+        return this;
+    }
+
+    /**
+     * Defaults to true. False can only be specified on specific operations and not at the client level.
+     * Indicates whether the SDK should validate the content body against the content hash before returning contents to
+     * the caller. If set to false, caller is responsible for extracting the hash out of the
+     * {@link com.azure.core.http.rest.Response} and validating the hash themselves.
+     * @return Behavior flag.
+     */
+    public boolean getAutoValidateChecksum() {
+        return autoValidateChecksum;
+    }
+
+    /**
+     * Defaults to true. False can only be specified on specific operations and not at the client level.
+     * Indicates whether the SDK should validate the content body against the content hash before returning contents to
+     * the caller. If set to false, caller is responsible for extracting the hash out of the
+     * {@link com.azure.core.http.rest.Response} and validating the hash themselves.
+     * @param  autoValidateChecksum Behavior flag.
+     * @return The updated options
+     */
+    public DownloadTransferValidationOptions setAutoValidateChecksum(boolean autoValidateChecksum) {
+        this.autoValidateChecksum = autoValidateChecksum;
+        return this;
+    }
+}
