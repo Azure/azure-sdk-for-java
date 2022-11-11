@@ -1,14 +1,10 @@
 # Release History
 
-## 4.6.0-beta.1 (Unreleased)
+## 4.6.0-beta.1 (2022-11-11)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for EdDSA keys.
+- Added support for service version `7.4-preview.1`.
 
 ## 4.5.2 (2022-11-10)
 
