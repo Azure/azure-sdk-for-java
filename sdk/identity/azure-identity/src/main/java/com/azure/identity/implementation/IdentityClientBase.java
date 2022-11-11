@@ -101,7 +101,6 @@ public abstract class IdentityClientBase {
     static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
     static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
     static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
-    static String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
     private static final String AZURE_IDENTITY_PROPERTIES = "azure-identity.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -119,6 +118,7 @@ public abstract class IdentityClientBase {
     final Supplier<String> clientAssertionSupplier;
     final String certificatePassword;
     HttpPipelineAdapter httpPipelineAdapter;
+    String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
 
     /**
      * Creates an IdentityClient with the given options.
