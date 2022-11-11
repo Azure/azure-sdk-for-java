@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/active/json?api-version=1.1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "109",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 96565485D19247DCB5B35C0603DD9EA3 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:14Z",
+      "Date" : "Thu, 10 Nov 2022 18:31:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=448",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Thu, 10 Nov 2022 18:38:42 GMT",
+      "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isSubtropical\":false}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/forecasts/json?api-version=1.1&year=2022&basinId=AL&govId=17&windowGeometry=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "3010",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 36965F7F9B8F4D63B9AF7C31E09FBE5E Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:14Z",
+      "Date" : "Thu, 10 Nov 2022 18:31:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=584",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Thu, 10 Nov 2022 18:40:58 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T00:00:00+00:00\",\"initializedDateTime\":\"2022-11-10T18:00:00+00:00\",\"location\":{\"latitude\":29.9,\"longitude\":-83.9},\"maxWindGust\":{\"value\":92.6,\"unit\":\"km/h\",\"unitType\":7},\"sustainedWind\":{\"value\":74.1,\"unit\":\"km/h\",\"unitType\":7},\"status\":\"Tropical Storm\",\"window\":{\"left\":{\"latitude\":29.6892,\"longitude\":-84.18142},\"right\":{\"latitude\":30.1102,\"longitude\":-83.61858},\"beginDateTime\":\"2022-11-10T18:00:00+00:00\",\"endDateTime\":\"2022-11-11T00:00:00+00:00\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-82.6,28.6],[-83.61858,30.1102],[-83.68908439684381,30.057595265330818],[-83.75954574657105,30.004984574528297],[-83.82996423081309,29.9523680107953],[-83.90034003081708,29.899745657187296],[-83.97067332744687,29.847117596613167],[-84.04096430118402,29.794483911835957],[-84.11121313212855,29.74184468547367],[-84.18142,29.6892],[-82.6,28.6]]]}}},{\"dateTime\":\"2022-11-11T12:00:00+00:00\",\"initializedDateTime\":\"2022-11-10T18:00:00+00:00\",\"location\":{\"latitude\":32.9,\"longitude\":-83.8},\"maxWindGust\":{\"value\":74.1,\"unit\":\"km/h\",\"unitType\":7},\"sustainedWind\":{\"value\":55.6,\"unit\":\"km/h\",\"unitType\":7},\"status\":\"Tropical Depression\",\"window\":{\"left\":{\"latitude\":32.91387,\"longitude\":-84.46473},\"right\":{\"latitude\":32.88262,\"longitude\":-83.13528},\"beginDateTime\":\"2022-11-11T00:00:00+00:00\",\"endDateTime\":\"2022-11-11T12:00:00+00:00\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-83.61858,30.1102],[-83.13528,32.88262],[-84.46473,32.91387],[-84.18142,29.6892],[-84.11121313212855,29.74184468547367],[-84.04096430118402,29.794483911835957],[-83.97067332744687,29.847117596613167],[-83.90034003081708,29.899745657187296],[-83.82996423081309,29.9523680107953],[-83.75954574657105,30.004984574528297],[-83.68908439684381,30.057595265330818],[-83.61858,30.1102]]]}}},{\"dateTime\":\"2022-11-12T00:00:00+00:00\",\"initializedDateTime\":\"2022-11-10T18:00:00+00:00\",\"location\":{\"latitude\":37.3,\"longitude\":-80.8},\"maxWindGust\":{\"value\":74.1,\"unit\":\"km/h\",\"unitType\":7},\"sustainedWind\":{\"value\":55.6,\"unit\":\"km/h\",\"unitType\":7},\"status\":\"Tropical Depression\",\"window\":{\"left\":{\"latitude\":37.67598,\"longitude\":-81.68548},\"right\":{\"latitude\":36.91743,\"longitude\":-79.91453},\"beginDateTime\":\"2022-11-11T12:00:00+00:00\",\"endDateTime\":\"2022-11-12T00:00:00+00:00\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-83.13528,32.88262],[-79.91453,36.91743],[-80.02441008481911,36.96526189656927],[-80.13439634781183,37.01303852987484],[-80.24448901817311,37.06075967134741],[-80.3546883245224,37.10842509200256],[-80.46499449489455,37.15603456244096],[-80.5754077567309,37.20358785284847],[-80.68592833687013,37.251084732996404],[-80.7965564615393,37.298524972241694],[-80.90729235634441,37.34590833952714],[-81.0181362462614,37.393234603381664],[-81.12908835562666,37.44050353192055],[-81.24014890812772,37.487714892845766],[-81.3513181267938,37.53486845344624],[-81.46259623398635,37.58196398059819],[-81.57398345138938,37.62900124076548],[-81.68548,37.67598],[-84.46473,32.91387],[-83.13528,32.88262]]]}}}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

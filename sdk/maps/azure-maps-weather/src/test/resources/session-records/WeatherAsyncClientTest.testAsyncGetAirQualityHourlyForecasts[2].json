@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/airQuality/forecasts/hourly/json?api-version=1.1&language=fr&query=47.632346%2C-122.138874&duration=1&pollutants=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "405",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: D2843BB968D54826B94521C26E6324A6 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:30:55Z",
+      "Date" : "Thu, 10 Nov 2022 18:30:55 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=900",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Thu, 10 Nov 2022 18:45:55 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-10T19:00:00Z\",\"index\":58.7,\"globalIndex\":31.3,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Correct\",\"categoryColor\":\"#FFC300\",\"description\":\"La qualité d'air est généralement acceptable pour la plupart des individus. Cependant, les personnes sensibles risquent de faire l'expérience de symptômes légers à modérés en cas d'exposition à long terme.\"}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

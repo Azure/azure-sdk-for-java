@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/active/json?api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "109",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 93849EF28991457BAB761E66AA2E54E3 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:12Z",
+      "Date" : "Thu, 10 Nov 2022 18:31:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=450",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Thu, 10 Nov 2022 18:38:42 GMT",
+      "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isSubtropical\":false}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/json?api-version=1.0&year=2022&basinId=AL&govId=17",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "127",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 3EE1F4E2744F4F86943ACDB40B3DF333 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:12Z",
+      "Date" : "Thu, 10 Nov 2022 18:31:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=589",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Thu, 10 Nov 2022 18:41:01 GMT",
+      "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isRetired\":false,\"isSubtropical\":false}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

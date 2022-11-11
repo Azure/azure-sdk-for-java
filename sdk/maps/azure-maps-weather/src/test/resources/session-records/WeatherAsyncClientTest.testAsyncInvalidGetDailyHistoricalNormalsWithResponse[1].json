@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/historical/normals/daily/json?api-version=1.0&query=62.6490341%2C-100000.0&startDate=2022-10-11&endDate=2022-11-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "138",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "X-MSEdge-Ref" : "Ref A: 34EE74B10A1B4D84A181DD42908665B4 Ref B: PAOEDGE0522 Ref C: 2022-11-10T18:31:04Z",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided coordinates in query are invalid, out of range, or not in the expected format\"}}",
+      "Date" : "Thu, 10 Nov 2022 18:31:04 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
