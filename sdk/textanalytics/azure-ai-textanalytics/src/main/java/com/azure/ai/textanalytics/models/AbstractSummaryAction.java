@@ -30,7 +30,7 @@ public final class AbstractSummaryAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link AnalyzeHealthcareEntitiesAction} object itself.
+     * @return The {@link AbstractSummaryAction} object itself.
      */
     public AbstractSummaryAction setActionName(String actionName) {
         this.actionName = actionName;

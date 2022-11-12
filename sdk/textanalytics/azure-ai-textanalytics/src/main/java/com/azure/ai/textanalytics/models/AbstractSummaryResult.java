@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractSummaryResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
@@ -17,24 +17,24 @@ public final class AbstractSummaryResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        AbstractiveSummaryResultPropertiesHelper.setAccessor(
-                new AbstractiveSummaryResultPropertiesHelper.AbstractiveSummaryResultAccessor() {
+        AbstractSummaryResultPropertiesHelper.setAccessor(
+                new AbstractSummaryResultPropertiesHelper.AbstractSummaryResultAccessor() {
                     @Override
-                    public void setDetectedLanguage(AbstractSummaryResult summaryResult,
+                    public void setDetectedLanguage(AbstractSummaryResult documentResult,
                         DetectedLanguage detectedLanguage) {
-                        summaryResult.setDetectedLanguage(detectedLanguage);
+                        documentResult.setDetectedLanguage(detectedLanguage);
                     }
 
                     @Override
-                    public void setWarnings(AbstractSummaryResult summaryResult,
+                    public void setWarnings(AbstractSummaryResult documentResult,
                         IterableStream<TextAnalyticsWarning> warnings) {
-                        summaryResult.setWarnings(warnings);
+                        documentResult.setWarnings(warnings);
                     }
 
                     @Override
-                    public void setSummaries(AbstractSummaryResult summaryResult,
+                    public void setSummaries(AbstractSummaryResult documentResult,
                         IterableStream<AbstractiveSummary> summaries) {
-                        summaryResult.setSummaries(summaries);
+                        documentResult.setSummaries(summaries);
                     }
                 });
     }

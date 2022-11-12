@@ -1556,17 +1556,17 @@ public final class Utility {
             null
         );
 
-        AbstractiveSummaryResultPropertiesHelper.setSummaries(summaryResult,
+        AbstractSummaryResultPropertiesHelper.setSummaries(summaryResult,
             new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries())));
         if (documentResult.getDetectedLanguage() != null) {
-            AbstractiveSummaryResultPropertiesHelper.setDetectedLanguage(summaryResult,
+            AbstractSummaryResultPropertiesHelper.setDetectedLanguage(summaryResult,
                 toDetectedLanguage(documentResult.getDetectedLanguage()));
         }
 
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
                 warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
-        AbstractiveSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
+        AbstractSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
 
         return summaryResult;
     }

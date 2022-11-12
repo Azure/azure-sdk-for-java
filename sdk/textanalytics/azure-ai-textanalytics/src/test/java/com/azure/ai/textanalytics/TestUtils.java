@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
@@ -1417,7 +1417,7 @@ final class TestUtils {
                         0, 1627)
         ));
 
-        AbstractiveSummaryResultPropertiesHelper.setSummaries(abstractSummaryResult, abstractiveSummaries);
+        AbstractSummaryResultPropertiesHelper.setSummaries(abstractSummaryResult, abstractiveSummaries);
         return abstractSummaryResult;
     }
 
