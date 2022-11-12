@@ -945,6 +945,7 @@ public class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(data, "Data cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
+
         return ensureValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return cryptographyServiceClient.verifyData(algorithm, data, signature, context);
@@ -954,6 +955,7 @@ public class CryptographyAsyncClient {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Verify operation is not allowed for key with id: %s", this.key.getId()))));
             }
+
             return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
         });
     }
@@ -994,8 +996,9 @@ public class CryptographyAsyncClient {
     private Mono<Boolean> ensureValidKeyAvailable() {
         boolean keyNotAvailable = (key == null && keyCollection != null);
         boolean keyNotValid = (key != null && !key.isValid());
+        boolean keyNotSupportedLocally = key != null && (key.getKeyType() == OKP || key.getKeyType() == OKP_HSM);
 
-        if (keyNotAvailable || keyNotValid) {
+        if (keyNotAvailable || keyNotValid || keyNotSupportedLocally) {
             if (keyCollection.equals(SECRETS_COLLECTION)) {
                 return getSecretKey().map(jsonWebKey -> {
                     key = (jsonWebKey);

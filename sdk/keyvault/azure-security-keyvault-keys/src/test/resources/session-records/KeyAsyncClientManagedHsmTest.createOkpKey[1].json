@@ -7,28 +7,6 @@
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "0",
-      "content-security-policy" : "default-src 'self'",
-      "x-content-type-options" : "nosniff",
-      "x-frame-options" : "SAMEORIGIN",
-      "www-authenticate" : "Bearer authorization=\"https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://managedhsm.azure.net\"",
-      "content-type" : "application/json; charset=utf-8",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "StatusCode" : "401",
-      "x-ms-request-id" : "47df2d3a-6216-11ed-a658-0022488d29c2",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "2"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/javakeytemp616987f/create?api-version=7.4-preview.1",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
       "content-length" : "448",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",

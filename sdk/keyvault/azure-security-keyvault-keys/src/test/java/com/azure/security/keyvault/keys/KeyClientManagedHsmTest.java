@@ -38,9 +38,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyClient(httpClient, serviceVersion);
-
-        createRsaKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createRsaKey(keyToCreate)));
+        super.createRsaKey(httpClient, serviceVersion);
     }
 
     /**
@@ -137,6 +135,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         // Ignoring test until the service rolls out a fix for an issue with the "version" parameter of a release
         // policy.
         Assumptions.assumeTrue(serviceVersion != KeyServiceVersion.V7_4_PREVIEW_1);
+
         super.releaseKey(httpClient, serviceVersion);
     }
 
@@ -147,8 +146,6 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyClient(httpClient, serviceVersion);
-
-        createOkpKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createOkpKey(keyToCreate)));
+        super.createOkpKey(httpClient, serviceVersion);
     }
 }

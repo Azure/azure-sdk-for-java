@@ -142,13 +142,13 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that an OKP key can be created.
+     * Tests that an OKP key can be created in the key vault.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // OKP keys are currently only supported in Managed HSM.
-        Assumptions.assumeTrue(!runManagedHsmTest);
+        Assumptions.assumeTrue(runManagedHsmTest);
 
         createKeyAsyncClient(httpClient, serviceVersion);
 

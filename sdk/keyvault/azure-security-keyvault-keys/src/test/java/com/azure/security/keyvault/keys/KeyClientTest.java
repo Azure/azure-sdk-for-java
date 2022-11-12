@@ -135,7 +135,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // OKP keys are currently only supported in Managed HSM.
-        Assumptions.assumeTrue(!runManagedHsmTest);
+        Assumptions.assumeTrue(runManagedHsmTest);
 
         createKeyClient(httpClient, serviceVersion);
 

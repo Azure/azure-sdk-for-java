@@ -38,12 +38,7 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyAsyncClient(httpClient, serviceVersion);
-
-        createRsaKeyRunner((keyToCreate) ->
-            StepVerifier.create(keyAsyncClient.createRsaKey(keyToCreate))
-                .assertNext(response -> assertKeyEquals(keyToCreate, response))
-                .verifyComplete());
+        super.createRsaKey(httpClient, serviceVersion);
     }
 
     /**
@@ -140,6 +135,7 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         // Ignoring test until the service rolls out a fix for an issue with the "version" parameter of a release
         // policy.
         Assumptions.assumeTrue(serviceVersion != KeyServiceVersion.V7_4_PREVIEW_1);
+
         super.releaseKey(httpClient, serviceVersion);
     }
 
@@ -147,11 +143,6 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyAsyncClient(httpClient, serviceVersion);
-
-        createOkpKeyRunner((keyToCreate) ->
-            StepVerifier.create(keyAsyncClient.createOkpKey(keyToCreate))
-                .assertNext(response -> assertKeyEquals(keyToCreate, response))
-                .verifyComplete());
+        super.createOkpKey(httpClient, serviceVersion);
     }
 }
