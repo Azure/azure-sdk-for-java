@@ -138,7 +138,43 @@ public final class DocumentAnalysisClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DocumentAnalysisClient buildClient() {
-        return new DocumentAnalysisClient(buildAsyncClient());
+        // Endpoint cannot be null, which is required in request authentication
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+        if (audience == null) {
+            audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
+        }
+        // Global Env configuration store
+        final Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        // Service Version
+        final DocumentAnalysisServiceVersion serviceVersion =
+            version != null ? version : DocumentAnalysisServiceVersion.getLatest();
+
+        HttpPipeline pipeline = httpPipeline;
+        // Create a default Pipeline if it is not given
+        if (pipeline == null) {
+            pipeline = Utility.buildHttpPipeline(
+                clientOptions,
+                httpLogOptions,
+                buildConfiguration,
+                retryPolicy,
+                retryOptions,
+                azureKeyCredential,
+                tokenCredential,
+                audience,
+                perCallPolicies,
+                perRetryPolicies,
+                httpClient);
+        }
+
+        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(pipeline)
+            .buildClient();
+
+        return new DocumentAnalysisClient(formRecognizerAPI);
     }
 
     /**

@@ -19,6 +19,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
@@ -229,6 +230,10 @@ public class Transforms {
         return analyzeResult;
     }
 
+    public static AnalyzeDocumentOptions getAnalyzeDocumentOptions(AnalyzeDocumentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new AnalyzeDocumentOptions() : userProvidedOptions;
+    }
+
     /**
      * Mapping a {@link ErrorResponseException} to {@link HttpResponseException}.
      *
@@ -237,18 +242,22 @@ public class Transforms {
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
-            ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
-            com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
-            if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-                error = (errorResponseException.getValue().getError());
-            }
-            return new HttpResponseException(
-                errorResponseException.getMessage(),
-                errorResponseException.getResponse(),
-                toResponseError(error)
-            );
+            return getHttpResponseException((ErrorResponseException) throwable);
         }
         return throwable;
+    }
+
+    public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
+        ErrorResponseException errorResponseException = throwable;
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
+        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
+            error = (errorResponseException.getValue().getError());
+        }
+        return new HttpResponseException(
+            errorResponseException.getMessage(),
+            errorResponseException.getResponse(),
+            toResponseError(error)
+        );
     }
 
     public static HttpResponseException mapResponseErrorToHttpResponseException(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
