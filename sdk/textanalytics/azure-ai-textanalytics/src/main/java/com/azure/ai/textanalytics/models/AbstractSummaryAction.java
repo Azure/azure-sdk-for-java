@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * set of documents.
  */
 @Fluent
-public final class AbstractiveSummaryAction {
+public final class AbstractSummaryAction {
     private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
@@ -30,9 +30,9 @@ public final class AbstractiveSummaryAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link AnalyzeHealthcareEntitiesAction} object itself.
+     * @return The {@link AbstractSummaryAction} object itself.
      */
-    public AbstractiveSummaryAction setActionName(String actionName) {
+    public AbstractSummaryAction setActionName(String actionName) {
         this.actionName = actionName;
         return this;
     }
@@ -52,9 +52,9 @@ public final class AbstractiveSummaryAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link AbstractiveSummaryAction} object itself.
+     * @return The {@link AbstractSummaryAction} object itself.
      */
-    public AbstractiveSummaryAction setModelVersion(String modelVersion) {
+    public AbstractSummaryAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
@@ -77,9 +77,9 @@ public final class AbstractiveSummaryAction {
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
      * solely to allow for troubleshooting issues.
      *
-     * @return The {@link AbstractiveSummaryAction} object itself.
+     * @return The {@link AbstractSummaryAction} object itself.
      */
-    public AbstractiveSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public AbstractSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }
@@ -97,9 +97,9 @@ public final class AbstractiveSummaryAction {
      * Set the maxSentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
      * @param maxSentenceCount the maxSentenceCount value to set.
-     * @return the AbstractiveSummaryAction object itself.
+     * @return the AbstractSummaryAction object itself.
      */
-    public AbstractiveSummaryAction setMaxSentenceCount(Integer maxSentenceCount) {
+    public AbstractSummaryAction setMaxSentenceCount(Integer maxSentenceCount) {
         this.maxSentenceCount = maxSentenceCount;
         return this;
     }

@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for TemperatureUnit. */
 public final class TemperatureUnit extends ExpandableStringEnum<TemperatureUnit> {
     /** Static value Unspecified for TemperatureUnit. */
@@ -32,14 +30,5 @@ public final class TemperatureUnit extends ExpandableStringEnum<TemperatureUnit>
      */
     public static TemperatureUnit fromString(String name) {
         return fromString(name, TemperatureUnit.class);
-    }
-
-    /**
-     * Gets known TemperatureUnit values.
-     *
-     * @return known TemperatureUnit values.
-     */
-    public static Collection<TemperatureUnit> values() {
-        return values(TemperatureUnit.class);
     }
 }

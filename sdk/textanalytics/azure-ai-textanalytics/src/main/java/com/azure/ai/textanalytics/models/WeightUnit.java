@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for WeightUnit. */
 public final class WeightUnit extends ExpandableStringEnum<WeightUnit> {
     /** Static value Unspecified for WeightUnit. */
@@ -65,14 +63,5 @@ public final class WeightUnit extends ExpandableStringEnum<WeightUnit> {
      */
     public static WeightUnit fromString(String name) {
         return fromString(name, WeightUnit.class);
-    }
-
-    /**
-     * Gets known WeightUnit values.
-     *
-     * @return known WeightUnit values.
-     */
-    public static Collection<WeightUnit> values() {
-        return values(WeightUnit.class);
     }
 }

@@ -6,8 +6,6 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.Collection;
-
 /** Defines values for AreaUnit. */
 public final class AreaUnit extends ExpandableStringEnum<AreaUnit> {
     /** Static value Unspecified for AreaUnit. */
@@ -58,14 +56,5 @@ public final class AreaUnit extends ExpandableStringEnum<AreaUnit> {
     @JsonCreator
     public static AreaUnit fromString(String name) {
         return fromString(name, AreaUnit.class);
-    }
-
-    /**
-     * Gets known AreaUnit values.
-     *
-     * @return known AreaUnit values.
-     */
-    public static Collection<AreaUnit> values() {
-        return values(AreaUnit.class);
     }
 }

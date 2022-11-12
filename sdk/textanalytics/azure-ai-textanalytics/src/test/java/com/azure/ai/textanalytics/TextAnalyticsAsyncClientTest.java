@@ -34,7 +34,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
+import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
@@ -3137,7 +3137,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getAbstractSummaryActionResult(false, null,
                         TIME_NOW,
-                        new AbstractiveSummaryResultCollection(
+                        new AbstractSummaryResultCollection(
                                 asList(getExpectedAbstractiveSummaryResult()), null, null),
                         null
                     )))
