@@ -186,6 +186,7 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
             return state;
         });
     }
+
     static class Tuple {
         AtomicInteger pageIdx;
         FeedResponse<Long> feedResponse;
