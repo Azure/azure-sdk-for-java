@@ -16,6 +16,10 @@ public class VirtualMachineSecretsSchema {
     @JsonProperty(value = "administratorAccount")
     private VirtualMachineSshCredentials administratorAccount;
 
+    /** Creates an instance of VirtualMachineSecretsSchema class. */
+    public VirtualMachineSecretsSchema() {
+    }
+
     /**
      * Get the administratorAccount property: Admin credentials for virtual machine.
      *

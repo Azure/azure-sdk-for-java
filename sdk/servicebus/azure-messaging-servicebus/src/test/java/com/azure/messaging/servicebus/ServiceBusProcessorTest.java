@@ -50,6 +50,8 @@ public class ServiceBusProcessorTest {
 
     private static final String NAMESPACE = "namespace";
     private static final String ENTITY_NAME = "entity";
+    private static final ServiceBusReceiverInstrumentation DEFAULT_INSTRUMENTATION =
+        new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_NAME, "subscription", false);
 
     /**
      * Tests receiving messages using a {@link ServiceBusProcessorClient}.
@@ -285,6 +287,7 @@ public class ServiceBusProcessorTest {
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
         doNothing().when(asyncClient).close();
 
         final AtomicInteger messageId = new AtomicInteger();
@@ -339,6 +342,7 @@ public class ServiceBusProcessorTest {
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
 
         doNothing().when(asyncClient).close();
 
@@ -495,6 +499,7 @@ public class ServiceBusProcessorTest {
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, false);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(
             new FluxTrace(messageFlux, instrumentation).publishOn(Schedulers.boundedElastic()));
+        when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
@@ -512,6 +517,7 @@ public class ServiceBusProcessorTest {
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
     }

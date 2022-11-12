@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.OrderString;
 /** Samples for OnlineEndpoints List. */
 public final class OnlineEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineEndpoint/list.json
      */
     /**
      * Sample code: List Online Endpoint.

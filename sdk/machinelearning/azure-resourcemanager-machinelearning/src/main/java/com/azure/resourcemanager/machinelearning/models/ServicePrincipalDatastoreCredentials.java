@@ -46,6 +46,10 @@ public final class ServicePrincipalDatastoreCredentials extends DatastoreCredent
     @JsonProperty(value = "tenantId", required = true)
     private UUID tenantId;
 
+    /** Creates an instance of ServicePrincipalDatastoreCredentials class. */
+    public ServicePrincipalDatastoreCredentials() {
+    }
+
     /**
      * Get the authorityUrl property: Authority URL used for authentication.
      *

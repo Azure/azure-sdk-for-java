@@ -22,6 +22,10 @@ public final class NotebookPreparationError {
     @JsonProperty(value = "statusCode")
     private Integer statusCode;
 
+    /** Creates an instance of NotebookPreparationError class. */
+    public NotebookPreparationError() {
+    }
+
     /**
      * Get the errorMessage property: The errorMessage property.
      *
