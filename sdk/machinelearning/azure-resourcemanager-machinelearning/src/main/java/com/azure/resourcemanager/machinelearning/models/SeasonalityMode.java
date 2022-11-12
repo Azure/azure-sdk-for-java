@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SeasonalityMode. */
+/** Forecasting seasonality mode. */
 public final class SeasonalityMode extends ExpandableStringEnum<SeasonalityMode> {
     /** Static value Auto for SeasonalityMode. */
     public static final SeasonalityMode AUTO = fromString("Auto");

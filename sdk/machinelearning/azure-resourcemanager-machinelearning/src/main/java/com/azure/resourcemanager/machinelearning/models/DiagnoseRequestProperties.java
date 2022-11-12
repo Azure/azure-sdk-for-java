@@ -75,6 +75,10 @@ public final class DiagnoseRequestProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> others;
 
+    /** Creates an instance of DiagnoseRequestProperties class. */
+    public DiagnoseRequestProperties() {
+    }
+
     /**
      * Get the udr property: Setting for diagnosing user defined routing.
      *

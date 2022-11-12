@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageAccountType. */
+/** type of this storage account. */
 public final class StorageAccountType extends ExpandableStringEnum<StorageAccountType> {
     /** Static value Standard_LRS for StorageAccountType. */
     public static final StorageAccountType STANDARD_LRS = fromString("Standard_LRS");

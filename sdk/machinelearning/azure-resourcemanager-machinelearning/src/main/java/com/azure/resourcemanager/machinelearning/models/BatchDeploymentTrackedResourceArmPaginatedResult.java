@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class BatchDeploymentTrackedResourceArmPaginatedResult {
     /*
-     * The link to the next page of BatchDeployment objects. If null, there are
-     * no additional pages.
+     * The link to the next page of BatchDeployment objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class BatchDeploymentTrackedResourceArmPaginatedResult {
      * An array of objects of type BatchDeployment.
      */
     @JsonProperty(value = "value")
-    private List<BatchDeploymentDataInner> value;
+    private List<BatchDeploymentInner> value;
+
+    /** Creates an instance of BatchDeploymentTrackedResourceArmPaginatedResult class. */
+    public BatchDeploymentTrackedResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of BatchDeployment objects. If null, there are no additional
@@ -52,7 +55,7 @@ public final class BatchDeploymentTrackedResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<BatchDeploymentDataInner> value() {
+    public List<BatchDeploymentInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class BatchDeploymentTrackedResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the BatchDeploymentTrackedResourceArmPaginatedResult object itself.
      */
-    public BatchDeploymentTrackedResourceArmPaginatedResult withValue(List<BatchDeploymentDataInner> value) {
+    public BatchDeploymentTrackedResourceArmPaginatedResult withValue(List<BatchDeploymentInner> value) {
         this.value = value;
         return this;
     }

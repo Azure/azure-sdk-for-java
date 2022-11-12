@@ -1,11 +1,11 @@
 ## Generate autorest code
 
 ```yaml
-use: '@autorest/java@4.1.5'
+use: '@autorest/java@4.1.7'
 input-file:
-  - https://github.com/Azure/azure-rest-api-specs/blob/75a8d8dcc9f6d0ec626bdeb32f5154f20c8c61cd/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/devcenter.json
-  - https://github.com/Azure/azure-rest-api-specs/blob/75a8d8dcc9f6d0ec626bdeb32f5154f20c8c61cd/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/devbox.json
-  - https://github.com/Azure/azure-rest-api-specs/blob/75a8d8dcc9f6d0ec626bdeb32f5154f20c8c61cd/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/environments.json
+  - https://github.com/Azure/azure-rest-api-specs/blob/9685ef961fe7931fccdd9bf86afac8bca0b3ae88/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/devcenter.json
+  - https://github.com/Azure/azure-rest-api-specs/blob/9685ef961fe7931fccdd9bf86afac8bca0b3ae88/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/devbox.json
+  - https://github.com/Azure/azure-rest-api-specs/blob/9685ef961fe7931fccdd9bf86afac8bca0b3ae88/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/environments.json
 output-folder: ../
 java: true
 regenerate-pom: false

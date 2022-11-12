@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/forecast/minute/json?api-version=1.1&query=47.632346%2C-122.138874&interval=15",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "1511",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 172ABFE173104DD8BEB4E4B8DA78A92F Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:37Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=59",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 11 Nov 2022 13:20:36 GMT",
+      "Body" : "{\"summary\":{\"briefPhrase60\":\"No precipitation for at least 60 min\",\"shortPhrase\":\"No precip for 120 min\",\"briefPhrase\":\"No precipitation for at least 120 min\",\"longPhrase\":\"No precipitation for at least 120 min\",\"iconCode\":7},\"intervalSummaries\":[{\"startMinute\":0,\"endMinute\":119,\"totalMinutes\":120,\"shortPhrase\":\"No precip for %MINUTE_VALUE min\",\"briefPhrase\":\"No precipitation for at least %MINUTE_VALUE min\",\"longPhrase\":\"No precipitation for at least %MINUTE_VALUE min\",\"iconCode\":7}],\"intervals\":[{\"startTime\":\"2022-11-11T05:19:00-08:00\",\"minute\":0,\"dbz\":0.0,\"shortPhrase\":\"No Precipitation\",\"iconCode\":7,\"cloudCover\":98},{\"startTime\":\"2022-11-11T05:34:00-08:00\",\"minute\":15,\"dbz\":0.0,\"shortPhrase\":\"No Precipitation\",\"iconCode\":7,\"cloudCover\":98},{\"startTime\":\"2022-11-11T05:49:00-08:00\",\"minute\":30,\"dbz\":0.0,\"shortPhrase\":\"No Precipitation\",\"iconCode\":7,\"cloudCover\":98},{\"startTime\":\"2022-11-11T06:04:00-08:00\",\"minute\":45,\"dbz\":0.0,\"shortPhrase\":\"No Precipitation\",\"iconCode\":7,\"cloudCover\":98},{\"startTime\":\"2022-11-11T06:19:00-08:00\",\"minute\":60,\"dbz\":0.0,\"shortPhrase\":\"No Precipitation\",\"iconCode\":7,\"cloudCover\":98},{\"startTime\":\"2022-11-11T06:34:00-08:00\",\"minute\":75,\"dbz\":0.0,\"shortPhrase\":\"No Precipitation\",\"iconCode\":7,\"cloudCover\":97},{\"startTime\":\"2022-11-11T06:49:00-08:00\",\"minute\":90,\"dbz\":0.0,\"shortPhrase\":\"No Precipitation\",\"iconCode\":7,\"cloudCover\":94},{\"startTime\":\"2022-11-11T07:04:00-08:00\",\"minute\":105,\"dbz\":0.0,\"shortPhrase\":\"No Precipitation\",\"iconCode\":7,\"cloudCover\":95}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
