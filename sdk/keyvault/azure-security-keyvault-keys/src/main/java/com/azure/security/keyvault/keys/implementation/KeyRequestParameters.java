@@ -51,7 +51,7 @@ public final class KeyRequestParameters {
 
     /**
      * Elliptic curve name. For valid values, see KeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521',
-     * 'P-256K'.
+     * 'P-256K', 'Ed25519'.
      */
     @JsonProperty(value = "crv")
     private KeyCurveName curve;
