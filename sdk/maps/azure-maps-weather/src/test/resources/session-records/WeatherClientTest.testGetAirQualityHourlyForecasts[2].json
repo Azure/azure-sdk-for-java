@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/airQuality/forecasts/hourly/json?api-version=1.1&language=fr&query=47.632346%2C-122.138874&duration=1&pollutants=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "308",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 25EEAC4D21F3443AB4096249ACA58EC3 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:43Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=884",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 11 Nov 2022 13:34:27 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T14:00:00Z\",\"index\":31.1,\"globalIndex\":14.9,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Excellent\",\"categoryColor\":\"#00E39B\",\"description\":\"La qualité d'air est idéale pour la plupart des individus ; profitez de vos activités en extérieur habituelles.\"}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

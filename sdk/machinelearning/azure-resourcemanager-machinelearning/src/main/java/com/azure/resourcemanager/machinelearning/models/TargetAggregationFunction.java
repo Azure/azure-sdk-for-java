@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TargetAggregationFunction. */
+/** Target aggregate function. */
 public final class TargetAggregationFunction extends ExpandableStringEnum<TargetAggregationFunction> {
     /** Static value None for TargetAggregationFunction. */
     public static final TargetAggregationFunction NONE = fromString("None");

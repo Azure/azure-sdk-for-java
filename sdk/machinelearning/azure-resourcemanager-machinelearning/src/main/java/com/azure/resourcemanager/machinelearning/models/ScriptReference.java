@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ScriptReference {
     /*
-     * The storage source of the script: inline, workspace.
+     * The storage source of the script: workspace.
      */
     @JsonProperty(value = "scriptSource")
     private String scriptSource;
@@ -34,8 +34,12 @@ public final class ScriptReference {
     @JsonProperty(value = "timeout")
     private String timeout;
 
+    /** Creates an instance of ScriptReference class. */
+    public ScriptReference() {
+    }
+
     /**
-     * Get the scriptSource property: The storage source of the script: inline, workspace.
+     * Get the scriptSource property: The storage source of the script: workspace.
      *
      * @return the scriptSource value.
      */
@@ -44,7 +48,7 @@ public final class ScriptReference {
     }
 
     /**
-     * Set the scriptSource property: The storage source of the script: inline, workspace.
+     * Set the scriptSource property: The storage source of the script: workspace.
      *
      * @param scriptSource the scriptSource value to set.
      * @return the ScriptReference object itself.

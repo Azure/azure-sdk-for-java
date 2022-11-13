@@ -25,7 +25,6 @@ import reactor.core.publisher.Mono;
  * Operations allowed by the client are viewing and editing the properties, policy, model, running evaluations.
  *
  * <p><strong>Instantiating a synchronous Personalizer Admin Client</strong></p>
- * <p>
  * <!-- src_embed com.azure.ai.personalizer.PersonalizerAdministrationClient.instantiation -->
  * <pre>
  * PersonalizerAdministrationClient adminClient = new PersonalizerAdministrationClientBuilder&#40;&#41;

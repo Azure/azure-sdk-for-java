@@ -5,7 +5,7 @@
     "snapshot" : true,
     "supportStatus" : "TODO",
     "spring-boot-version" : "3.0.0-SNAPSHOT",
-    "spring-cloud-version" : "2022.0.0-M5"
+    "spring-cloud-version" : "2022.0.0-RC1"
   },
   {
     "current" : false,
@@ -13,7 +13,7 @@
     "snapshot" : false,
     "supportStatus" : "TODO",
     "spring-boot-version" : "3.0.0-RC1",
-    "spring-cloud-version" : "2022.0.0-M5"
+    "spring-cloud-version" : "2022.0.0-RC1"
   },
   {
     "current" : false,
@@ -45,7 +45,7 @@
     "snapshot" : true,
     "supportStatus" : "TODO",
     "spring-boot-version" : "2.7.6-SNAPSHOT",
-    "spring-cloud-version" : "2021.0.4"
+    "spring-cloud-version" : "2021.0.5"
   },
   {
     "current" : true,
@@ -53,7 +53,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.7.5",
-    "spring-cloud-version" : "2021.0.4"
+    "spring-cloud-version" : "2021.0.5"
   },
   {
     "current" : false,
@@ -141,7 +141,7 @@
     "snapshot" : true,
     "supportStatus" : "TODO",
     "spring-boot-version" : "2.6.14-SNAPSHOT",
-    "spring-cloud-version" : "2021.0.4"
+    "spring-cloud-version" : "2021.0.5"
   },
   {
     "current" : false,
@@ -149,7 +149,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.6.13",
-    "spring-cloud-version" : "2021.0.4"
+    "spring-cloud-version" : "2021.0.5"
   },
   {
     "current" : false,

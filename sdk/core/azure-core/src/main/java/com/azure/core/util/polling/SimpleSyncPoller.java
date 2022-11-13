@@ -153,7 +153,7 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
                 .apply(currentTerminalPollContext);
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollingUtil.pollingLoop(pollingContext, null, null, pollOperation, pollInterval);
+            PollingUtil.pollingLoop(context, null, null, pollOperation, pollInterval);
             this.terminalPollContext = context;
             return getFinalResult();
         }

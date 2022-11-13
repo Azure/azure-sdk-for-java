@@ -16,6 +16,8 @@
     <module>azure-maps-timezone</module>
     <module>azure-maps-geolocation</module>
     <module>azure-maps-elevation</module>
+    <module>azure-maps-traffic</module>
+    <module>azure-maps-weather</module>
     <module>azure-resourcemanager-maps</module>
   </modules>
 </project>
