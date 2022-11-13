@@ -178,13 +178,12 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
                                 .collect(Collectors.toList()),
                         new HashMap<>());
                 sink.next(state.feedResponse);
-                pagesFetched.addAndGet(1);
                 state.pageIdx.addAndGet(1);
             } else {
                 sink.complete();
             }
             return state;
-        });
+        }).doOnNext(response -> pagesFetched.addAndGet(1));
     }
 
     static class Tuple {

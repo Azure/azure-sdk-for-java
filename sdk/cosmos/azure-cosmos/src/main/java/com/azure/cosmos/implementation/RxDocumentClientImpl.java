@@ -951,7 +951,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     }
                     return tFeedResponse;
                 });
-        }, 1, 1);
+        }/*, 1, 1*/);
     }
 
     @Override
