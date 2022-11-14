@@ -464,7 +464,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizeLinkedEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Key Phrases
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @Test
     abstract void extractKeyPhrasesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
@@ -477,8 +476,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void extractKeyPhrasesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @Test
     abstract void extractKeyPhrasesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
@@ -486,17 +483,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void extractKeyPhrasesForBatchInputShowStatistics(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @Test
     abstract void extractKeyPhrasesForBatchStringInput(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @Test
     abstract void extractKeyPhrasesForListLanguageHint(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @Test
     abstract void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
@@ -618,15 +612,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void healthcareStringInputWithoutOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @Test
     abstract void healthcareStringInputWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @Test
     abstract void healthcareMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @Test
     abstract void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
@@ -1532,7 +1523,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
         if (getTestMode() == TestMode.RECORD) {
-
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         if (getTestMode() == TestMode.PLAYBACK) {
