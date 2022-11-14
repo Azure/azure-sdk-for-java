@@ -91,11 +91,11 @@ public final class ReactorShim {
             // 'java.lang.invoke' throws Throwable. Given 'Error' category represents a serious
             // abnormal thread state throw it immediately else throw via standard azure-core Logger.
             if (err instanceof Error) {
-                throw (Error) err;
+                return Mono.error(err);
             } else if (err instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) err);
+                return Mono.error(LOGGER.logExceptionAsError((RuntimeException) err));
             } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(err));
+                return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(err)));
             }
         }
     }
