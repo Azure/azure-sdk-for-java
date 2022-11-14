@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.SoftwareInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the software inventory of the virtual machine. */
 @Fluent
 public final class SoftwaresList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwaresList.class);
-
     /*
      * The value property.
      */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectAuthKind. */
+/** The authentication kind used to poll the data. */
 public final class ConnectAuthKind extends ExpandableStringEnum<ConnectAuthKind> {
     /** Static value Basic for ConnectAuthKind. */
     public static final ConnectAuthKind BASIC = fromString("Basic");

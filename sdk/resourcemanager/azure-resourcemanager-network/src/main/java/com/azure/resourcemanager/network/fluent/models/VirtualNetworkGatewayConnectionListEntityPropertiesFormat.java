@@ -155,6 +155,17 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     @JsonProperty(value = "expressRouteGatewayBypass")
     private Boolean expressRouteGatewayBypass;
 
+    /*
+     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
+     * must be enabled.
+     */
+    @JsonProperty(value = "enablePrivateLinkFastPath")
+    private Boolean enablePrivateLinkFastPath;
+
+    /** Creates an instance of VirtualNetworkGatewayConnectionListEntityPropertiesFormat class. */
+    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat() {
+    }
+
     /**
      * Get the authorizationKey property: The authorizationKey.
      *
@@ -539,6 +550,29 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     public VirtualNetworkGatewayConnectionListEntityPropertiesFormat withExpressRouteGatewayBypass(
         Boolean expressRouteGatewayBypass) {
         this.expressRouteGatewayBypass = expressRouteGatewayBypass;
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.enablePrivateLinkFastPath;
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat withEnablePrivateLinkFastPath(
+        Boolean enablePrivateLinkFastPath) {
+        this.enablePrivateLinkFastPath = enablePrivateLinkFastPath;
         return this;
     }
 

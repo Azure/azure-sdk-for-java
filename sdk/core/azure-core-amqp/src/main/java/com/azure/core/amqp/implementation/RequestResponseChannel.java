@@ -504,7 +504,7 @@ public class RequestResponseChannel implements AsyncCloseable {
      * Captures current time in mono context - used to report send metric
      */
     private Mono<Message> captureStartTime(Message toSend, Mono<Message> publisher) {
-        if (metricsProvider.isSendDeliveryEnabled()) {
+        if (metricsProvider.isRequestResponseDurationEnabled()) {
             String operationName = "unknown";
             if (toSend != null && toSend.getApplicationProperties() != null && toSend.getApplicationProperties().getValue() != null) {
                 Map<String, Object> properties = toSend.getApplicationProperties().getValue();
@@ -532,7 +532,7 @@ public class RequestResponseChannel implements AsyncCloseable {
      * Records send call duration metric.
      **/
     private void recordDelivery(ContextView context, Message response) {
-        if (metricsProvider.isSendDeliveryEnabled()) {
+        if (metricsProvider.isRequestResponseDurationEnabled()) {
             Object startTimestamp = context.getOrDefault(START_SEND_TIME_CONTEXT_KEY, null);
             Object operationName = context.getOrDefault(OPERATION_CONTEXT_KEY, null);
             AmqpResponseCode responseCode = response == null ? null : RequestResponseUtils.getStatusCode(response);

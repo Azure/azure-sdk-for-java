@@ -26,6 +26,8 @@ public class CosmosProperties {
 
     private int maxBufferedItemCount;
 
+    private int responseContinuationTokenLimitInKb;
+
     public String getUri() {
         return uri;
     }
@@ -74,11 +76,19 @@ public class CosmosProperties {
         return maxBufferedItemCount;
     }
 
+    public int getResponseContinuationTokenLimitInKb() {
+        return responseContinuationTokenLimitInKb;
+    }
+
     public void setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
     }
 
     public void setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
+    }
+
+    public void setResponseContinuationTokenLimitInKb(int responseContinuationTokenLimitInKb) {
+        this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
     }
 }

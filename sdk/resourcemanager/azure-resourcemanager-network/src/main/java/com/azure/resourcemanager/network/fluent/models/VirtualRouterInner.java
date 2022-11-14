@@ -33,6 +33,10 @@ public final class VirtualRouterInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VirtualRouterInner class. */
+    public VirtualRouterInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Virtual Router.
      *

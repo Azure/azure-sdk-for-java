@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineScaleSetRollingUpgrades Cancel. */
 public final class VirtualMachineScaleSetRollingUpgradesCancelSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrades_Cancel_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrades_Cancel_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetRollingUpgrades_Cancel_MinimumSet_Gen.
@@ -27,7 +27,7 @@ public final class VirtualMachineScaleSetRollingUpgradesCancelSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrades_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrades_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetRollingUpgrades_Cancel_MaximumSet_Gen.

@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -11,9 +11,11 @@ import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfi
 
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.buildAzureProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.configureOAuthProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.needConfigureSaslOAuth;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.buildAzureProperties;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureKafkaUserAgent;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureOAuthProperties;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.logConfigureOAuthProperties;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.needConfigureSaslOAuth;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertAzurePropertiesToConfigMap;
 import static org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProvisioner.normalalizeBootPropsWithBinder;
 
@@ -35,30 +37,37 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor implements BeanPostPro
             KafkaBinderConfigurationProperties binderConfigurationProperties = (KafkaBinderConfigurationProperties) bean;
             Map<String, Object> mergedConsumerConfiguration = binderConfigurationProperties.mergedConsumerConfiguration();
             Map<String, String> sourceConsumerProperties = binderConfigurationProperties.getConsumerProperties();
-            configureKafkaBinderProperties(mergedConsumerConfiguration, sourceConsumerProperties);
+            if (needConfigureSaslOAuth(mergedConsumerConfiguration)) {
+                configureKafkaBinderProperties(mergedConsumerConfiguration, sourceConsumerProperties);
+                configureKafkaUserAgent();
+            }
 
             Map<String, Object> mergedProducerConfiguration = binderConfigurationProperties.mergedProducerConfiguration();
             Map<String, String> sourceProducerProperties = binderConfigurationProperties.getProducerProperties();
-            configureKafkaBinderProperties(mergedProducerConfiguration, sourceProducerProperties);
-
+            if (needConfigureSaslOAuth(mergedProducerConfiguration)) {
+                configureKafkaBinderProperties(mergedProducerConfiguration, sourceProducerProperties);
+                configureKafkaUserAgent();
+            }
             //Should configure admin at last since the highest priority properties for admin is the binder configuration,
             //which is one of the property sources for consumer and producer binder properties,
             //thus if we change it then it might influence the final raw properties for consumer and producer.
             KafkaProperties kafkaProperties = binderConfigurationProperties.getKafkaProperties();
             Map<String, Object> adminProperties = kafkaProperties.buildAdminProperties();
             normalalizeBootPropsWithBinder(adminProperties, kafkaProperties, binderConfigurationProperties);
-            configureKafkaBinderProperties(adminProperties, binderConfigurationProperties.getConfiguration());
+            if (needConfigureSaslOAuth(adminProperties)) {
+                configureKafkaBinderProperties(adminProperties, binderConfigurationProperties.getConfiguration());
+                configureKafkaUserAgent();
+            }
         }
         return bean;
     }
 
     private void configureKafkaBinderProperties(Map<String, Object> mergedConfiguration, Map<String, String> sourceProperties) {
-        if (needConfigureSaslOAuth(mergedConfiguration)) {
-            AzureKafkaProperties azureKafkaProperties =
-                buildAzureProperties(mergedConfiguration, azureGlobalProperties);
-            convertAzurePropertiesToConfigMap(azureKafkaProperties, sourceProperties);
-            configureOAuthProperties(sourceProperties);
-        }
+        AzurePasswordlessProperties azurePasswordlessProperties =
+            buildAzureProperties(mergedConfiguration, azureGlobalProperties);
+        convertAzurePropertiesToConfigMap(azurePasswordlessProperties, sourceProperties);
+        configureOAuthProperties(sourceProperties);
+        logConfigureOAuthProperties();
     }
 
 }

@@ -71,6 +71,8 @@ final class ObjectMapperFactory {
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
             .addModule(new JavaTimeModule())
+            .addModule(BinaryDataSerializer.getModule())
+            .addModule(BinaryDataDeserializer.getModule())
             .addModule(ByteArraySerializer.getModule())
             .addModule(Base64UrlSerializer.getModule())
             .addModule(DateTimeSerializer.getModule())

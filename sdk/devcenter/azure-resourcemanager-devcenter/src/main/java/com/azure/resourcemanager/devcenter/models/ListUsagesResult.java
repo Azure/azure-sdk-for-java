@@ -24,6 +24,10 @@ public final class ListUsagesResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ListUsagesResult class. */
+    public ListUsagesResult() {
+    }
+
     /**
      * Get the value property: The array page of Usages.
      *

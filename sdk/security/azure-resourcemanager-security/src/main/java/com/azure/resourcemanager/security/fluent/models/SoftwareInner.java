@@ -5,72 +5,28 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.EndOfSupportStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a software data. */
-@JsonFlatten
 @Fluent
-public class SoftwareInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareInner.class);
-
+public final class SoftwareInner extends ProxyResource {
     /*
-     * Unique identifier for the virtual machine in the service.
+     * Properties of the Software Inventory resource
      */
-    @JsonProperty(value = "properties.deviceId")
-    private String deviceId;
+    @JsonProperty(value = "properties", required = true)
+    private SoftwareProperties innerProperties = new SoftwareProperties();
 
-    /*
-     * Platform of the operating system running on the device.
+    /**
+     * Get the innerProperties property: Properties of the Software Inventory resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.osPlatform")
-    private String osPlatform;
-
-    /*
-     * Name of the software vendor.
-     */
-    @JsonProperty(value = "properties.vendor")
-    private String vendor;
-
-    /*
-     * Name of the software product.
-     */
-    @JsonProperty(value = "properties.softwareName")
-    private String softwareName;
-
-    /*
-     * Version number of the software product.
-     */
-    @JsonProperty(value = "properties.version")
-    private String version;
-
-    /*
-     * End of support status.
-     */
-    @JsonProperty(value = "properties.endOfSupportStatus")
-    private EndOfSupportStatus endOfSupportStatus;
-
-    /*
-     * The end of support date in case the product is upcoming end of support.
-     */
-    @JsonProperty(value = "properties.endOfSupportDate")
-    private String endOfSupportDate;
-
-    /*
-     * Number of weaknesses.
-     */
-    @JsonProperty(value = "properties.numberOfKnownVulnerabilities")
-    private Integer numberOfKnownVulnerabilities;
-
-    /*
-     * First time that the software was seen in the device.
-     */
-    @JsonProperty(value = "properties.firstSeenAt")
-    private String firstSeenAt;
+    private SoftwareProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the deviceId property: Unique identifier for the virtual machine in the service.
@@ -78,7 +34,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the deviceId value.
      */
     public String deviceId() {
-        return this.deviceId;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceId();
     }
 
     /**
@@ -88,7 +44,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withDeviceId(deviceId);
         return this;
     }
 
@@ -98,7 +57,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the osPlatform value.
      */
     public String osPlatform() {
-        return this.osPlatform;
+        return this.innerProperties() == null ? null : this.innerProperties().osPlatform();
     }
 
     /**
@@ -108,7 +67,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withOsPlatform(String osPlatform) {
-        this.osPlatform = osPlatform;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withOsPlatform(osPlatform);
         return this;
     }
 
@@ -118,7 +80,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the vendor value.
      */
     public String vendor() {
-        return this.vendor;
+        return this.innerProperties() == null ? null : this.innerProperties().vendor();
     }
 
     /**
@@ -128,7 +90,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withVendor(String vendor) {
-        this.vendor = vendor;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withVendor(vendor);
         return this;
     }
 
@@ -138,7 +103,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the softwareName value.
      */
     public String softwareName() {
-        return this.softwareName;
+        return this.innerProperties() == null ? null : this.innerProperties().softwareName();
     }
 
     /**
@@ -148,7 +113,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withSoftwareName(String softwareName) {
-        this.softwareName = softwareName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withSoftwareName(softwareName);
         return this;
     }
 
@@ -158,7 +126,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -168,7 +136,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withVersion(String version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -178,7 +149,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the endOfSupportStatus value.
      */
     public EndOfSupportStatus endOfSupportStatus() {
-        return this.endOfSupportStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().endOfSupportStatus();
     }
 
     /**
@@ -188,7 +159,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withEndOfSupportStatus(EndOfSupportStatus endOfSupportStatus) {
-        this.endOfSupportStatus = endOfSupportStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withEndOfSupportStatus(endOfSupportStatus);
         return this;
     }
 
@@ -198,7 +172,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the endOfSupportDate value.
      */
     public String endOfSupportDate() {
-        return this.endOfSupportDate;
+        return this.innerProperties() == null ? null : this.innerProperties().endOfSupportDate();
     }
 
     /**
@@ -208,7 +182,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withEndOfSupportDate(String endOfSupportDate) {
-        this.endOfSupportDate = endOfSupportDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withEndOfSupportDate(endOfSupportDate);
         return this;
     }
 
@@ -218,7 +195,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the numberOfKnownVulnerabilities value.
      */
     public Integer numberOfKnownVulnerabilities() {
-        return this.numberOfKnownVulnerabilities;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfKnownVulnerabilities();
     }
 
     /**
@@ -228,7 +205,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withNumberOfKnownVulnerabilities(Integer numberOfKnownVulnerabilities) {
-        this.numberOfKnownVulnerabilities = numberOfKnownVulnerabilities;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withNumberOfKnownVulnerabilities(numberOfKnownVulnerabilities);
         return this;
     }
 
@@ -238,7 +218,7 @@ public class SoftwareInner extends ProxyResource {
      * @return the firstSeenAt value.
      */
     public String firstSeenAt() {
-        return this.firstSeenAt;
+        return this.innerProperties() == null ? null : this.innerProperties().firstSeenAt();
     }
 
     /**
@@ -248,7 +228,10 @@ public class SoftwareInner extends ProxyResource {
      * @return the SoftwareInner object itself.
      */
     public SoftwareInner withFirstSeenAt(String firstSeenAt) {
-        this.firstSeenAt = firstSeenAt;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareProperties();
+        }
+        this.innerProperties().withFirstSeenAt(firstSeenAt);
         return this;
     }
 
@@ -258,5 +241,14 @@ public class SoftwareInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model SoftwareInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SoftwareInner.class);
 }

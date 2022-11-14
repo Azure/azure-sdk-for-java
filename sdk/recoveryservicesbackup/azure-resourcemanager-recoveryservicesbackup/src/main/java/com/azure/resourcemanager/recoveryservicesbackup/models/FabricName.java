@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FabricName. */
+/** Specifies the fabric name - Azure or AD. */
 public final class FabricName extends ExpandableStringEnum<FabricName> {
     /** Static value Invalid for FabricName. */
     public static final FabricName INVALID = fromString("Invalid");

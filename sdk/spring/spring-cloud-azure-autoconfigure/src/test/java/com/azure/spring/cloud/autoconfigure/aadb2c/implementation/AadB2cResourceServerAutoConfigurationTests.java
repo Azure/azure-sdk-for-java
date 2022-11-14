@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
+import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
-import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;

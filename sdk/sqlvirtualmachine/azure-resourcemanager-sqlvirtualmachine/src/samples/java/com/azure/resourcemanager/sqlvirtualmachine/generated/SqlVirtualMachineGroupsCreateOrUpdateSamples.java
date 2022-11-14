@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
+import com.azure.resourcemanager.sqlvirtualmachine.models.ClusterSubnetType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVmGroupImageSku;
 import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainProfile;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Map;
 /** Samples for SqlVirtualMachineGroups CreateOrUpdate. */
 public final class SqlVirtualMachineGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/CreateOrUpdateSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine group.
@@ -37,7 +38,8 @@ public final class SqlVirtualMachineGroupsCreateOrUpdateSamples {
                     .withClusterOperatorAccount("testrp@testdomain.com")
                     .withSqlServiceAccount("sqlservice@testdomain.com")
                     .withStorageAccountUrl("https://storgact.blob.core.windows.net/")
-                    .withStorageAccountPrimaryKey("<primary storage access key>"))
+                    .withStorageAccountPrimaryKey("<primary storage access key>")
+                    .withClusterSubnetType(ClusterSubnetType.MULTI_SUBNET))
             .create();
     }
 

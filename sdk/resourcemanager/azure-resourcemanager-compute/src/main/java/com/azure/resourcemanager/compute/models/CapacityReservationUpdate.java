@@ -82,6 +82,18 @@ public final class CapacityReservationUpdate extends UpdateResource {
     }
 
     /**
+     * Get the platformFaultDomainCount property: Specifies the value of fault domain count that Capacity Reservation
+     * supports for requested VM size.&lt;br&gt;NOTE: The fault domain count specified for a resource (like virtual
+     * machines scale set) must be less than or equal to this value if it deploys using capacity
+     * reservation.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-08-01.
+     *
+     * @return the platformFaultDomainCount value.
+     */
+    public Integer platformFaultDomainCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().platformFaultDomainCount();
+    }
+
+    /**
      * Get the virtualMachinesAssociated property: A list of all virtual machine resource ids that are associated with
      * the capacity reservation.
      *
@@ -120,7 +132,7 @@ public final class CapacityReservationUpdate extends UpdateResource {
 
     /**
      * Get the timeCreated property: Specifies the time at which the Capacity Reservation resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

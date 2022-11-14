@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("LogAnalytics")
 @Immutable
 public final class LogAnalyticsIdentifier extends ResourceIdentifier {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsIdentifier.class);
-
     /*
      * The LogAnalytics workspace id that stores this alert.
      */
@@ -25,22 +21,19 @@ public final class LogAnalyticsIdentifier extends ResourceIdentifier {
     private String workspaceId;
 
     /*
-     * The azure subscription id for the LogAnalytics workspace storing this
-     * alert.
+     * The azure subscription id for the LogAnalytics workspace storing this alert.
      */
     @JsonProperty(value = "workspaceSubscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceSubscriptionId;
 
     /*
-     * The azure resource group for the LogAnalytics workspace storing this
-     * alert
+     * The azure resource group for the LogAnalytics workspace storing this alert
      */
     @JsonProperty(value = "workspaceResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceResourceGroup;
 
     /*
-     * (optional) The LogAnalytics agent id reporting the event that this alert
-     * is based on.
+     * (optional) The LogAnalytics agent id reporting the event that this alert is based on.
      */
     @JsonProperty(value = "agentId", access = JsonProperty.Access.WRITE_ONLY)
     private String agentId;

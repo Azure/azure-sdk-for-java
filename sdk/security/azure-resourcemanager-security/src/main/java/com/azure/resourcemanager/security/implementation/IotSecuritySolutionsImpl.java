@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionModelInner;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionModel;
 import com.azure.resourcemanager.security.models.IotSecuritySolutions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotSecuritySolutionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IotSecuritySolutionsImpl.class);
 
     private final IotSecuritySolutionsClient innerClient;
 
@@ -86,7 +85,7 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
     public IoTSecuritySolutionModel getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
         }
         String solutionName = Utils.getValueFromIdByName(id, "iotSecuritySolutions");
         if (solutionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
     public Response<IoTSecuritySolutionModel> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +115,7 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
         }
         String solutionName = Utils.getValueFromIdByName(id, "iotSecuritySolutions");
         if (solutionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
         }
         String solutionName = Utils.getValueFromIdByName(id, "iotSecuritySolutions");
         if (solutionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,13 +145,13 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
                                 "The resource ID '%s' is not valid. Missing path segment 'iotSecuritySolutions'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, solutionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -160,7 +159,7 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
         }
         String solutionName = Utils.getValueFromIdByName(id, "iotSecuritySolutions");
         if (solutionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

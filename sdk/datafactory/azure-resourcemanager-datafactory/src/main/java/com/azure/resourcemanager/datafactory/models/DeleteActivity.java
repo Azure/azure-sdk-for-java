@@ -23,6 +23,10 @@ public final class DeleteActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private DeleteActivityTypeProperties innerTypeProperties = new DeleteActivityTypeProperties();
 
+    /** Creates an instance of DeleteActivity class. */
+    public DeleteActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Delete activity properties.
      *

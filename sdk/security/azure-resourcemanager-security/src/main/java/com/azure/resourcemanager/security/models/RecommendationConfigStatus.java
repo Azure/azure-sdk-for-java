@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecommendationConfigStatus. */
+/** Recommendation status. When the recommendation status is disabled recommendations are not generated. */
 public final class RecommendationConfigStatus extends ExpandableStringEnum<RecommendationConfigStatus> {
     /** Static value Disabled for RecommendationConfigStatus. */
     public static final RecommendationConfigStatus DISABLED = fromString("Disabled");
@@ -27,7 +27,11 @@ public final class RecommendationConfigStatus extends ExpandableStringEnum<Recom
         return fromString(name, RecommendationConfigStatus.class);
     }
 
-    /** @return known RecommendationConfigStatus values. */
+    /**
+     * Gets known RecommendationConfigStatus values.
+     *
+     * @return known RecommendationConfigStatus values.
+     */
     public static Collection<RecommendationConfigStatus> values() {
         return values(RecommendationConfigStatus.class);
     }

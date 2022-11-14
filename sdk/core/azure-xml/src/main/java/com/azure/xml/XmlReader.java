@@ -8,7 +8,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Reads an XML encoded value as a stream of tokens.
@@ -144,12 +143,21 @@ public abstract class XmlReader implements AutoCloseable {
      * @param converter Function that converts the attribute text value to the nullable type.
      * @param <T> Type of the attribute.
      * @return The converted text value, or null if the attribute didn't have a value.
+     * @throws XMLStreamException If the nullable attribute cannot be read.
      */
     public final <T> T getNullableAttribute(String namespaceUri, String localName,
-        Function<String, T> converter) {
+        ReadValueCallback<String, T> converter) throws XMLStreamException {
         String textValue = getStringAttribute(namespaceUri, localName);
 
-        return textValue == null ? null : converter.apply(textValue);
+        if (textValue == null) {
+            return null;
+        }
+
+        try {
+            return converter.read(textValue);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     /**
@@ -232,7 +240,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The converted text value, or null if the element didn't have a value.
      * @throws XMLStreamException If the nullable element cannot be read.
      */
-    public final <T> T getNullableElement(XMLStreamExceptionFunction<String, T> converter) throws XMLStreamException {
+    public final <T> T getNullableElement(ReadValueCallback<String, T> converter) throws XMLStreamException {
         String textValue = getStringElement();
 
         if (textValue == null) {
@@ -240,7 +248,7 @@ public abstract class XmlReader implements AutoCloseable {
         }
 
         try {
-            return converter.apply(textValue);
+            return converter.read(textValue);
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }
@@ -261,7 +269,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @throws XMLStreamException If the object cannot be read.
      */
     public final <T> T readObject(String localName,
-        XMLStreamExceptionFunction<XmlReader, T> converter) throws XMLStreamException {
+        ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
         return readObject(null, localName, converter);
     }
 
@@ -281,12 +289,12 @@ public abstract class XmlReader implements AutoCloseable {
      * @throws XMLStreamException If the object cannot be read.
      */
     public final <T> T readObject(String namespaceUri, String localName,
-        XMLStreamExceptionFunction<XmlReader, T> converter) throws XMLStreamException {
+        ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
         return readObject(new QName(namespaceUri, localName), converter);
     }
 
     private <T> T readObject(QName startTagName,
-        XMLStreamExceptionFunction<XmlReader, T> converter) throws XMLStreamException {
+        ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
         if (currentToken() != XmlToken.START_ELEMENT) {
             nextElement();
         }
@@ -303,7 +311,7 @@ public abstract class XmlReader implements AutoCloseable {
         }
 
         try {
-            return converter.apply(this);
+            return converter.read(this);
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }

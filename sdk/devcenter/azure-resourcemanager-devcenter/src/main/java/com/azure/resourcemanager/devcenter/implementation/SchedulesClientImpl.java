@@ -522,26 +522,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> getAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top) {
-        return getWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a schedule resource.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -553,24 +533,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
         final Integer top = null;
         return getWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a schedule resource.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner get(String resourceGroupName, String projectName, String poolName, String scheduleName) {
-        final Integer top = null;
-        return getAsync(resourceGroupName, projectName, poolName, scheduleName, top).block();
     }
 
     /**
@@ -596,6 +558,24 @@ public final class SchedulesClientImpl implements SchedulesClient {
         Integer top,
         Context context) {
         return getWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top, context).block();
+    }
+
+    /**
+     * Gets a schedule resource.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param scheduleName The name of the schedule that uniquely identifies it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a schedule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScheduleInner get(String resourceGroupName, String projectName, String poolName, String scheduleName) {
+        final Integer top = null;
+        return getWithResponse(resourceGroupName, projectName, poolName, scheduleName, top, Context.NONE).getValue();
     }
 
     /**
@@ -785,6 +765,35 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
      * @param body Represents a scheduled task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of represents a Schedule to execute a task.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body) {
+        final Integer top = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
+        return this
+            .client
+            .<ScheduleInner, ScheduleInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ScheduleInner.class,
+                ScheduleInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates or updates a Schedule.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param scheduleName The name of the schedule that uniquely identifies it.
+     * @param body Represents a scheduled task.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -818,7 +827,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
      * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -826,12 +834,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top) {
+        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body) {
+        final Integer top = null;
         return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
             .getSyncPoller();
     }
@@ -940,31 +944,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
         return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a Schedule.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Schedule to execute a task.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top) {
-        return createOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).block();
     }
 
     /**
@@ -1195,6 +1174,31 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
      * @param body Represents a scheduled task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
+        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
+        final Integer top = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Partially updates a Scheduled.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param scheduleName The name of the schedule that uniquely identifies it.
+     * @param body Represents a scheduled task.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1227,7 +1231,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
      * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1235,12 +1238,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top) {
+        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
+        final Integer top = null;
         return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).getSyncPoller();
     }
 
@@ -1348,30 +1347,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
         return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Partially updates a Scheduled.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top) {
-        updateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).block();
     }
 
     /**
@@ -1573,6 +1548,30 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String projectName, String poolName, String scheduleName) {
+        final Integer top = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a Scheduled.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param scheduleName The name of the schedule that uniquely identifies it.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1603,7 +1602,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1611,7 +1609,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top) {
+        String resourceGroupName, String projectName, String poolName, String scheduleName) {
+        final Integer top = null;
         return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top).getSyncPoller();
     }
 
@@ -1715,24 +1714,6 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top) {
-        deleteAsync(resourceGroupName, projectName, poolName, scheduleName, top).block();
-    }
-
-    /**
-     * Deletes a Scheduled.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1770,7 +1751,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1806,7 +1788,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

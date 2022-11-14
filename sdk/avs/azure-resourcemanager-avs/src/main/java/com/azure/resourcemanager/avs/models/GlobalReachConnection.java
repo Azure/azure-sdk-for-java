@@ -77,6 +77,13 @@ public interface GlobalReachConnection {
     String expressRouteId();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.GlobalReachConnectionInner object.
      *
      * @return the inner object.

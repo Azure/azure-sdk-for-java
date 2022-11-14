@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Virtual Machine Extension. */
@@ -73,7 +74,7 @@ public final class VirtualMachineExtensionUpdateProperties {
      * The extensions protected settings that are passed by reference, and consumed from key vault
      */
     @JsonProperty(value = "protectedSettingsFromKeyVault")
-    private Object protectedSettingsFromKeyVault;
+    private KeyVaultSecretReference protectedSettingsFromKeyVault;
 
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
@@ -275,7 +276,7 @@ public final class VirtualMachineExtensionUpdateProperties {
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.protectedSettingsFromKeyVault;
     }
 
@@ -287,7 +288,7 @@ public final class VirtualMachineExtensionUpdateProperties {
      * @return the VirtualMachineExtensionUpdateProperties object itself.
      */
     public VirtualMachineExtensionUpdateProperties withProtectedSettingsFromKeyVault(
-        Object protectedSettingsFromKeyVault) {
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         this.protectedSettingsFromKeyVault = protectedSettingsFromKeyVault;
         return this;
     }
@@ -298,5 +299,8 @@ public final class VirtualMachineExtensionUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (protectedSettingsFromKeyVault() != null) {
+            protectedSettingsFromKeyVault().validate();
+        }
     }
 }

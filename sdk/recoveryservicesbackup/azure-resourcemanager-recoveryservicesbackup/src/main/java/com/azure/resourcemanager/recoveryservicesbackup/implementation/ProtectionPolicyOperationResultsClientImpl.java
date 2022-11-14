@@ -215,24 +215,6 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
      * @param operationId Operation ID which represents the operation whose result needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionPolicyResourceInner get(
-        String vaultName, String resourceGroupName, String policyName, String operationId) {
-        return getAsync(vaultName, resourceGroupName, policyName, operationId).block();
-    }
-
-    /**
-     * Provides the result of an operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param policyName Backup policy name whose operation's result needs to be fetched.
-     * @param operationId Operation ID which represents the operation whose result needs to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -243,5 +225,23 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
     public Response<ProtectionPolicyResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId, context).block();
+    }
+
+    /**
+     * Provides the result of an operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param policyName Backup policy name whose operation's result needs to be fetched.
+     * @param operationId Operation ID which represents the operation whose result needs to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for backup policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectionPolicyResourceInner get(
+        String vaultName, String resourceGroupName, String policyName, String operationId) {
+        return getWithResponse(vaultName, resourceGroupName, policyName, operationId, Context.NONE).getValue();
     }
 }

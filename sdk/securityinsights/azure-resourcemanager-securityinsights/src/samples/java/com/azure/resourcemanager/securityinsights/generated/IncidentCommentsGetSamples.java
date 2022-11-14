@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IncidentComments Get. */
 public final class IncidentCommentsGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/incidents/comments/GetIncidentCommentById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/comments/GetIncidentCommentById.json
      */
     /**
      * Sample code: Get an incident comment.

@@ -43,6 +43,9 @@ public class AzureStorageBlobProperties extends AzureStorageProperties implement
     }
 
     private String buildEndpointFromAccountName() {
+        if (accountName == null || profile.getCloudType() == null) {
+            return null;
+        }
         return String.format(BLOB_ENDPOINT_PATTERN, accountName, profile.getEnvironment().getStorageEndpointSuffix());
     }
 

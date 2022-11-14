@@ -16,6 +16,10 @@ public final class UnlockDeleteResponseInner {
     @JsonProperty(value = "unlockDeleteExpiryTime")
     private String unlockDeleteExpiryTime;
 
+    /** Creates an instance of UnlockDeleteResponseInner class. */
+    public UnlockDeleteResponseInner() {
+    }
+
     /**
      * Get the unlockDeleteExpiryTime property: This is the time when unlock delete privileges will get expired.
      *

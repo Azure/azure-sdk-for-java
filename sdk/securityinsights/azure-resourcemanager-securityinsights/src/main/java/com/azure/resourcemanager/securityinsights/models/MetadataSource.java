@@ -18,8 +18,7 @@ public final class MetadataSource {
     private SourceKind kind;
 
     /*
-     * Name of the content source.  The repo name, solution name, LA workspace
-     * name etc.
+     * Name of the content source.  The repo name, solution name, LA workspace name etc.
      */
     @JsonProperty(value = "name")
     private String name;

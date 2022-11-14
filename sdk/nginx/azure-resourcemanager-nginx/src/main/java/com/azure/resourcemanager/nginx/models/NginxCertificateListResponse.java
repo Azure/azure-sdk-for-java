@@ -24,6 +24,10 @@ public final class NginxCertificateListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NginxCertificateListResponse class. */
+    public NginxCertificateListResponse() {
+    }
+
     /**
      * Get the value property: The value property.
      *

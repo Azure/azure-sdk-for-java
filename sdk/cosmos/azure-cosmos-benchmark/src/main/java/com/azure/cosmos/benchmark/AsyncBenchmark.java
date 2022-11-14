@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -13,6 +12,8 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
@@ -76,6 +77,11 @@ abstract class AsyncBenchmark<T> {
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
     AsyncBenchmark(Configuration cfg) {
+
+        logger = LoggerFactory.getLogger(this.getClass());
+        configuration = cfg;
+        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
+
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
@@ -83,6 +89,20 @@ abstract class AsyncBenchmark<T> {
             .consistencyLevel(cfg.getConsistencyLevel())
             .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
             .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+
+        if (registry != null) {
+            CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+                .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
+            cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
+        }
+
+        registry = configuration.getGraphiteMeterRegistry();
+
+        if (registry != null) {
+            CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+                .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
+            cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
+        }
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
@@ -92,8 +112,6 @@ abstract class AsyncBenchmark<T> {
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
-        configuration = cfg;
-        logger = LoggerFactory.getLogger(this.getClass());
 
         try {
             cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
@@ -220,18 +238,6 @@ abstract class AsyncBenchmark<T> {
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .build();
-        }
-
-        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
-
-        if (registry != null) {
-            BridgeInternal.monitorTelemetry(registry);
-        }
-
-        registry = configuration.getGraphiteMeterRegistry();
-
-        if (registry != null) {
-            BridgeInternal.monitorTelemetry(registry);
         }
     }
 

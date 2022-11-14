@@ -366,6 +366,7 @@ class AzurePropertiesUtilsTests {
     void testCopyPropertiesIgnoreNullToObjectWithDifferentFieldsSetShouldMerge() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.credential.setClientId("client-id-A");
+        source.getProfile().setCloudType(AZURE);
 
         AzurePropertiesB target = new AzurePropertiesB();
         target.credential.setClientSecret("client-secret-B");
@@ -400,6 +401,7 @@ class AzurePropertiesUtilsTests {
     void testCopyPropertiesSourceNotChanged() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.credential.setClientId("client-id-A");
+        source.getProfile().setCloudType(AZURE);
 
         AzurePropertiesB target = new AzurePropertiesB();
 

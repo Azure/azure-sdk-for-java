@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SecureScoresClient;
 import com.azure.resourcemanager.security.fluent.models.SecureScoreItemInner;
 import com.azure.resourcemanager.security.models.SecureScoresList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecureScoresClient. */
 public final class SecureScoresClientImpl implements SecureScoresClient {
-    private final ClientLogger logger = new ClientLogger(SecureScoresClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecureScoresService service;
 
@@ -94,11 +91,11 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * List secure scores for all your Security Center initiatives within your current scope.
+     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreItemInner>> listSinglePageAsync() {
@@ -134,13 +131,13 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * List secure scores for all your Security Center initiatives within your current scope.
+     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreItemInner>> listSinglePageAsync(Context context) {
@@ -173,11 +170,11 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * List secure scores for all your Security Center initiatives within your current scope.
+     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreItemInner> listAsync() {
@@ -185,13 +182,13 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * List secure scores for all your Security Center initiatives within your current scope.
+     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreItemInner> listAsync(Context context) {
@@ -200,11 +197,11 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * List secure scores for all your Security Center initiatives within your current scope.
+     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreItemInner> list() {
@@ -212,13 +209,13 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * List secure scores for all your Security Center initiatives within your current scope.
+     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreItemInner> list(Context context) {
@@ -226,15 +223,16 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * Get secure score for a specific Security Center initiative within your current scope. For the ASC Default
-     * initiative, use 'ascScore'.
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Security Center initiative within your current scope.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecureScoreItemInner>> getWithResponseAsync(String secureScoreName) {
@@ -271,8 +269,8 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * Get secure score for a specific Security Center initiative within your current scope. For the ASC Default
-     * initiative, use 'ascScore'.
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
@@ -280,7 +278,8 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Security Center initiative within your current scope.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecureScoreItemInner>> getWithResponseAsync(String secureScoreName, Context context) {
@@ -314,39 +313,32 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * Get secure score for a specific Security Center initiative within your current scope. For the ASC Default
-     * initiative, use 'ascScore'.
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Security Center initiative within your current scope.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecureScoreItemInner> getAsync(String secureScoreName) {
-        return getWithResponseAsync(secureScoreName)
-            .flatMap(
-                (Response<SecureScoreItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(secureScoreName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get secure score for a specific Security Center initiative within your current scope. For the ASC Default
-     * initiative, use 'ascScore'.
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Security Center initiative within your current scope.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecureScoreItemInner get(String secureScoreName) {
@@ -354,8 +346,8 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     }
 
     /**
-     * Get secure score for a specific Security Center initiative within your current scope. For the ASC Default
-     * initiative, use 'ascScore'.
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
@@ -363,7 +355,8 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Security Center initiative within your current scope.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecureScoreItemInner> getWithResponse(String secureScoreName, Context context) {
@@ -373,11 +366,12 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreItemInner>> listNextSinglePageAsync(String nextLink) {
@@ -408,12 +402,13 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreItemInner>> listNextSinglePageAsync(String nextLink, Context context) {

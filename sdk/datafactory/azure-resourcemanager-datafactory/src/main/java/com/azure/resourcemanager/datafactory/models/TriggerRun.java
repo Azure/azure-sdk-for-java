@@ -86,6 +86,10 @@ public final class TriggerRun {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of TriggerRun class. */
+    public TriggerRun() {
+    }
+
     /**
      * Get the triggerRunId property: Trigger run id.
      *

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineScaleSetVMExtensions Get. */
 public final class VirtualMachineScaleSetVMExtensionsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtensions_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtensions_Get.json
      */
     /**
      * Sample code: Get VirtualMachineScaleSet VM extension.

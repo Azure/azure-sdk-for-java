@@ -75,6 +75,13 @@ public final class CreationData {
     @JsonProperty(value = "securityDataUri")
     private String securityDataUri;
 
+    /*
+     * Set this flag to true to get a boost on the performance target of the disk deployed, see here on the respective
+     * performance target. This flag can only be set on disk creation time and cannot be disabled after enabled.
+     */
+    @JsonProperty(value = "performancePlus")
+    private Boolean performancePlus;
+
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
      *
@@ -278,6 +285,30 @@ public final class CreationData {
      */
     public CreationData withSecurityDataUri(String securityDataUri) {
         this.securityDataUri = securityDataUri;
+        return this;
+    }
+
+    /**
+     * Get the performancePlus property: Set this flag to true to get a boost on the performance target of the disk
+     * deployed, see here on the respective performance target. This flag can only be set on disk creation time and
+     * cannot be disabled after enabled.
+     *
+     * @return the performancePlus value.
+     */
+    public Boolean performancePlus() {
+        return this.performancePlus;
+    }
+
+    /**
+     * Set the performancePlus property: Set this flag to true to get a boost on the performance target of the disk
+     * deployed, see here on the respective performance target. This flag can only be set on disk creation time and
+     * cannot be disabled after enabled.
+     *
+     * @param performancePlus the performancePlus value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withPerformancePlus(Boolean performancePlus) {
+        this.performancePlus = performancePlus;
         return this;
     }
 

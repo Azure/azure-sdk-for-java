@@ -37,6 +37,10 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of ServiceEndpointPolicyDefinitionInner class. */
+    public ServiceEndpointPolicyDefinitionInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the service endpoint policy definition.
      *

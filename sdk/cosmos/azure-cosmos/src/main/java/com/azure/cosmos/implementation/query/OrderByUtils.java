@@ -2,23 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
-import com.azure.cosmos.implementation.BadRequestException;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.RequestChargeTracker;
-import com.azure.cosmos.implementation.ResourceId;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -85,16 +85,8 @@ class OrderByUtils {
                 clientSideRequestStatisticsList.addAll(
                     BridgeInternal.getClientSideRequestStatisticsList(documentProducerFeedResponse
                                                                    .pageResult.getCosmosDiagnostics()));
-
-                for (String key : BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult)
-                                      .keySet()) {
-                    if (queryMetricsMap.containsKey(key)) {
-                        QueryMetrics qm = BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key);
-                        queryMetricsMap.get(key).add(qm);
-                    } else {
-                        queryMetricsMap.put(key, BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key));
-                    }
-                }
+                QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
+                                                  BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));
                 List<Document> results = documentProducerFeedResponse.pageResult.getResults();
                 OrderByContinuationToken orderByContinuationToken =
                     targetRangeToOrderByContinuationTokenMap.get(documentProducerFeedResponse.sourceFeedRange);

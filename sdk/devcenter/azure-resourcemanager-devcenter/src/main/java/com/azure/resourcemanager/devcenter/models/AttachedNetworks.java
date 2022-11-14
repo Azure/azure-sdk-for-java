@@ -43,20 +43,6 @@ public interface AttachedNetworks {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attached NetworkConnection.
-     */
-    AttachedNetworkConnection getByProject(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName);
-
-    /**
-     * Gets an attached NetworkConnection.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,6 +51,20 @@ public interface AttachedNetworks {
      */
     Response<AttachedNetworkConnection> getByProjectWithResponse(
         String resourceGroupName, String projectName, String attachedNetworkConnectionName, Context context);
+
+    /**
+     * Gets an attached NetworkConnection.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an attached NetworkConnection.
+     */
+    AttachedNetworkConnection getByProject(
+        String resourceGroupName, String projectName, String attachedNetworkConnectionName);
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
@@ -99,20 +99,6 @@ public interface AttachedNetworks {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attached NetworkConnection.
-     */
-    AttachedNetworkConnection getByDevCenter(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName);
-
-    /**
-     * Gets an attached NetworkConnection.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,6 +107,20 @@ public interface AttachedNetworks {
      */
     Response<AttachedNetworkConnection> getByDevCenterWithResponse(
         String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context);
+
+    /**
+     * Gets an attached NetworkConnection.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an attached NetworkConnection.
+     */
+    AttachedNetworkConnection getByDevCenter(
+        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName);
 
     /**
      * Un-attach a NetworkConnection.

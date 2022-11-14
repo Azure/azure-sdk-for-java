@@ -33,6 +33,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     implements EventHubsNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
+    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net";
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsProperties.class);
 
     /**
@@ -42,6 +43,10 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
     private final Processor processor = new Processor();
+
+    public AzureEventHubsProperties() {
+        this.setDomainName(DEFAULT_DOMAIN_NAME);
+    }
 
     public Producer buildProducerProperties() {
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
@@ -121,7 +126,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
         propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
         propertyMapper.from(this.processor.loadBalancing.getUpdateInterval()).to(properties.loadBalancing::setUpdateInterval);
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.processor.checkpointStore, properties.checkpointStore);
+        AzurePropertiesUtils.mergeAzureCommonProperties(properties, this.processor.getCheckpointStore(), properties.checkpointStore);
         BeanUtils.copyProperties(this.processor.checkpointStore, properties.checkpointStore);
 
         return properties;

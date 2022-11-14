@@ -58,6 +58,10 @@ public final class ManagedClusterAadProfile {
     @JsonProperty(value = "tenantID")
     private String tenantId;
 
+    /** Creates an instance of ManagedClusterAadProfile class. */
+    public ManagedClusterAadProfile() {
+    }
+
     /**
      * Get the managed property: Whether to enable managed AAD.
      *

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.SubAssessmentsClient;
 import com.azure.resourcemanager.security.fluent.models.SecuritySubAssessmentInner;
 import com.azure.resourcemanager.security.models.SecuritySubAssessment;
 import com.azure.resourcemanager.security.models.SubAssessments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubAssessmentsImpl implements SubAssessments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubAssessmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubAssessmentsImpl.class);
 
     private final SubAssessmentsClient innerClient;
 

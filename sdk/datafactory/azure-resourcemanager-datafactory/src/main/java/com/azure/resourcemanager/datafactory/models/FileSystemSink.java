@@ -20,6 +20,10 @@ public final class FileSystemSink extends CopySink {
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
+    /** Creates an instance of FileSystemSink class. */
+    public FileSystemSink() {
+    }
+
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
      *

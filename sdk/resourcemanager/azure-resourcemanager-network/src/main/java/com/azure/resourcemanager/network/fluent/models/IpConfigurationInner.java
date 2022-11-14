@@ -31,6 +31,10 @@ public final class IpConfigurationInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of IpConfigurationInner class. */
+    public IpConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the IP configuration.
      *

@@ -13,12 +13,10 @@ import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsAnalyticsRe
 import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedRecommendationInner;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedRecommendation;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionsAnalyticsRecommendations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IotSecuritySolutionsAnalyticsRecommendationsImpl
     implements IotSecuritySolutionsAnalyticsRecommendations {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IotSecuritySolutionsAnalyticsRecommendationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IotSecuritySolutionsAnalyticsRecommendationsImpl.class);
 
     private final IotSecuritySolutionsAnalyticsRecommendationsClient innerClient;
 

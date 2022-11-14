@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSets PowerOff. */
 public final class VirtualMachineScaleSetsPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_PowerOff_MinimumSet_Gen.
@@ -29,7 +29,7 @@ public final class VirtualMachineScaleSetsPowerOffSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_PowerOff_MaximumSet_Gen.

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -87,7 +88,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
      * The extensions protected settings that are passed by reference, and consumed from key vault
      */
     @JsonProperty(value = "protectedSettingsFromKeyVault")
-    private Object protectedSettingsFromKeyVault;
+    private KeyVaultSecretReference protectedSettingsFromKeyVault;
 
     /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
@@ -321,7 +322,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.protectedSettingsFromKeyVault;
     }
 
@@ -333,7 +334,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
     public VirtualMachineScaleSetExtensionProperties withProtectedSettingsFromKeyVault(
-        Object protectedSettingsFromKeyVault) {
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         this.protectedSettingsFromKeyVault = protectedSettingsFromKeyVault;
         return this;
     }
@@ -344,5 +345,8 @@ public final class VirtualMachineScaleSetExtensionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (protectedSettingsFromKeyVault() != null) {
+            protectedSettingsFromKeyVault().validate();
+        }
     }
 }

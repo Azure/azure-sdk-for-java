@@ -19,8 +19,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +33,8 @@ import java.util.function.Function;
 
 /**
  * A class that keeps track of network calls by either reading the data from an existing test session record or
- * recording the network calls in memory. Test session records are saved or read from: "<i>session-records/{@code
- * testName}.json</i>"
+ * recording the network calls in memory. Test session records are saved or read from:
+ * "<i>session-records/{@code testName}.json</i>"
  *
  * <ul>
  *     <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
@@ -131,9 +134,9 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
-     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
-     * NetworkCallRecord#getResponse()}.
+     * Creates a new InterceptorManager that replays test session records. It takes a set of
+     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
+     * {@link NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
      *
@@ -151,9 +154,9 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
-     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
-     * NetworkCallRecord#getResponse()}.
+     * Creates a new InterceptorManager that replays test session records. It takes a set of
+     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
+     * {@link NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
      *
@@ -172,9 +175,9 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
-     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
-     * NetworkCallRecord#getResponse()}.
+     * Creates a new InterceptorManager that replays test session records. It takes a set of
+     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
+     * {@link NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
      *
@@ -231,8 +234,8 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Gets a new HTTP pipeline policy that records network calls and its data is managed by {@link
-     * InterceptorManager}.
+     * Gets a new HTTP pipeline policy that records network calls and its data is managed by
+     * {@link InterceptorManager}.
      *
      * @return HttpPipelinePolicy to record network calls.
      */
@@ -241,11 +244,11 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Gets a new HTTP pipeline policy that records network calls. The recorded content is redacted by the given list
-     * of redactor functions to hide sensitive information.
+     * Gets a new HTTP pipeline policy that records network calls. The recorded content is redacted by the given list of
+     * redactor functions to hide sensitive information.
      *
      * @param recordingRedactors The custom redactor functions that are applied in addition to the default redactor
-     *                           functions defined in {@link RecordingRedactor}.
+     * functions defined in {@link RecordingRedactor}.
      * @return {@link HttpPipelinePolicy} to record network calls.
      */
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
@@ -294,7 +297,32 @@ public class InterceptorManager implements AutoCloseable {
      */
     private File getRecordFolder() {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(RECORD_FOLDER);
-        return new File(folderUrl.getPath());
+        if (folderUrl != null) {
+            // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
+            // URI-based constructor of File.
+            return new File(toURI(folderUrl, logger));
+        }
+
+        // session-record folder doesn't exist, create it.
+        folderUrl = InterceptorManager.class.getClassLoader().getResource("");
+
+        // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
+        // URI-based constructor of File.
+        Path recordFolder = new File(toURI(folderUrl, logger)).toPath().resolve(RECORD_FOLDER);
+        try {
+            Files.createDirectory(recordFolder);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return recordFolder.toFile();
+    }
+
+    private static URI toURI(URL url, ClientLogger logger) {
+        try {
+            return url.toURI();
+        } catch (URISyntaxException ex) {
+            throw logger.logExceptionAsError(new IllegalStateException(ex));
+        }
     }
 
     /*
@@ -341,8 +369,8 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Add text replacement rule (regex as key, the replacement text as value) into {@link
-     * InterceptorManager#textReplacementRules}
+     * Add text replacement rule (regex as key, the replacement text as value) into
+     * {@link InterceptorManager#textReplacementRules}
      *
      * @param regex the pattern to locate the position of replacement
      * @param replacement the replacement text

@@ -23,6 +23,10 @@ public final class VerificationIpFlowResultInner {
     @JsonProperty(value = "ruleName")
     private String ruleName;
 
+    /** Creates an instance of VerificationIpFlowResultInner class. */
+    public VerificationIpFlowResultInner() {
+    }
+
     /**
      * Get the access property: Indicates whether the traffic is allowed or denied.
      *

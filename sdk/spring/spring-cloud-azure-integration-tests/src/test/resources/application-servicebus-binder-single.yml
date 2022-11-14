@@ -1,6 +1,10 @@
 spring:
   cloud:
+    azure:
+      servicebus:
+        namespace: ${AZURE_SERVICE_BUS_NAMESPACE1}
     stream:
+      default-binder: servicebus
       function:
         definition: queueConsume;queueSupply;topicConsume;topicSupply;
       bindings:
@@ -10,29 +14,22 @@ spring:
         topicSupply-out-0:
           destination: topic1
         queueConsume-in-0:
-          binder: servicebus-2
           destination: queue1
         queueSupply-out-0:
-          binder: servicebus-2
           destination: queue1
-      binders:
-        servicebus-1:
-          type: servicebus
-          default-candidate: true
-          environment:
-            spring:
-              cloud:
-                azure:
-                  servicebus:
-                    namespace: ${AZURE_SERVICE_BUS_NAMESPACE1}
-                    entity-type: topic
-        servicebus-2:
-          type: servicebus
-          default-candidate: false
-          environment:
-            spring:
-              cloud:
-                azure:
-                  servicebus:
-                    namespace: ${AZURE_SERVICE_BUS_NAMESPACE1}
-                    entity-type: queue
+      servicebus:
+        bindings:
+          queueConsume-in-0:
+            consumer:
+              entity-type: queue
+          topicConsume-in-0:
+            consumer:
+              entity-type: topic
+          topicSupply-out-0:
+            producer:
+              entity-type: topic
+          queueSupply-out-0:
+            producer:
+              entity-type: queue
+
+

@@ -119,9 +119,9 @@ private class ChangeFeedTable(val session: SparkSession,
                           userConfig: Map[String, String]): StructType = {
 
     val defaultSchema: StructType = changeFeedConfig.changeFeedMode match {
-      case ChangeFeedModes.Incremental =>
+      case ChangeFeedModes.Incremental | ChangeFeedModes.LatestVersion =>
         ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled
-      case ChangeFeedModes.FullFidelity =>
+      case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes =>
         ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled
     }
 

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineSizes List. */
 public final class VirtualMachineSizesListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/VirtualMachineSize/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/VirtualMachineSize/list.json
      */
     /**
      * Sample code: List VM Sizes.

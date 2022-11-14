@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.head;
@@ -68,6 +69,20 @@ public final class RestProxyTestsWireMockServer {
         server.stubFor(delete("delete"));
         server.stubFor(patch(urlPathMatching("/patch")));
         server.stubFor(get("/get"));
+
+        // Validates a bug where a void, or Void, response type would previously attempt to eagerly read the response
+        // body. This resulted in OutOfMemoryErrors or high memory usage in APIs such as the getProperties on Blobs,
+        // Datalake, and Files where the size of the resource is the Content-Length header value. So, there could be
+        // an attempt to create a byte[] large enough to hold the response.
+        //
+        // This uses a size too large for a byte[], so if the incorrect handling is used an OutOfMemoryError will be
+        // thrown.
+        server.stubFor(head(urlPathMatching("/voideagerreadoom")).willReturn(aResponse()
+            .withHeader("Content-Length", "10737418240")));
+
+        server.stubFor(put("/voiderrorreturned").willReturn(aResponse()
+            .withStatus(400)
+            .withBody("void exception body thrown")));
 
         return server;
     }

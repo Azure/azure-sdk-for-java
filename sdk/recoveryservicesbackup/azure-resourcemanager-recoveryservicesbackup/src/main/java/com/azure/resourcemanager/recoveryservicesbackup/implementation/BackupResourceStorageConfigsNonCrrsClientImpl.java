@@ -222,21 +222,6 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource storage details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupResourceConfigResourceInner get(String vaultName, String resourceGroupName) {
-        return getAsync(vaultName, resourceGroupName).block();
-    }
-
-    /**
-     * Fetches resource storage config.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -247,6 +232,21 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     public Response<BackupResourceConfigResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, context).block();
+    }
+
+    /**
+     * Fetches resource storage config.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource storage details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupResourceConfigResourceInner get(String vaultName, String resourceGroupName) {
+        return getWithResponse(vaultName, resourceGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -381,23 +381,6 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource storage details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupResourceConfigResourceInner update(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
-        return updateAsync(vaultName, resourceGroupName, parameters).block();
-    }
-
-    /**
-     * Updates vault storage model type.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters Vault storage config request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -408,6 +391,23 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     public Response<BackupResourceConfigResourceInner> updateWithResponse(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+    }
+
+    /**
+     * Updates vault storage model type.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters Vault storage config request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource storage details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupResourceConfigResourceInner update(
+        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+        return updateWithResponse(vaultName, resourceGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -541,21 +541,6 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void patch(String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
-        patchAsync(vaultName, resourceGroupName, parameters).block();
-    }
-
-    /**
-     * Updates vault storage model type.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters Vault storage config request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -566,5 +551,20 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     public Response<Void> patchWithResponse(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context) {
         return patchWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+    }
+
+    /**
+     * Updates vault storage model type.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters Vault storage config request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void patch(String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+        patchWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 }

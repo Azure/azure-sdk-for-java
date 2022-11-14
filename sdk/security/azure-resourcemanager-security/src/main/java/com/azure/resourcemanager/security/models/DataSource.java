@@ -24,7 +24,11 @@ public final class DataSource extends ExpandableStringEnum<DataSource> {
         return fromString(name, DataSource.class);
     }
 
-    /** @return known DataSource values. */
+    /**
+     * Gets known DataSource values.
+     *
+     * @return known DataSource values.
+     */
     public static Collection<DataSource> values() {
         return values(DataSource.class);
     }

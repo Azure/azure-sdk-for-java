@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Bayesian")
 @Immutable
 public final class BayesianSamplingAlgorithm extends SamplingAlgorithm {
+    /** Creates an instance of BayesianSamplingAlgorithm class. */
+    public BayesianSamplingAlgorithm() {
+    }
+
     /**
      * Validates the instance.
      *

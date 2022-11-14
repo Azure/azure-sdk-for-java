@@ -7,7 +7,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ServiceBusReceiverUserAgentTests {
@@ -48,8 +48,8 @@ class ServiceBusReceiverUserAgentTests {
                 assertThat(context).hasSingleBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
 
                 ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder = context.getBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
-                ServiceBusClientBuilder builder = (ServiceBusClientBuilder) UserAgentTestUtil.getPrivateFieldValue(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class, "this$0", receiverClientBuilder);
-                ClientOptions options = (ClientOptions) UserAgentTestUtil.getPrivateFieldValue(ServiceBusClientBuilder.class, "clientOptions", builder);
+                ServiceBusClientBuilder builder = (ServiceBusClientBuilder) getField(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class, "this$0", receiverClientBuilder);
+                ClientOptions options = (ClientOptions) getField(ServiceBusClientBuilder.class, "clientOptions", builder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS, options.getApplicationId());
 

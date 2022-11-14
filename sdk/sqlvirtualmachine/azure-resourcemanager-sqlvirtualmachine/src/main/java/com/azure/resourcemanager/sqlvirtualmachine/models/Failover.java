@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Failover. */
+/** Replica failover mode in availability group. */
 public final class Failover extends ExpandableStringEnum<Failover> {
     /** Static value AUTOMATIC for Failover. */
     public static final Failover AUTOMATIC = fromString("AUTOMATIC");
@@ -27,7 +27,11 @@ public final class Failover extends ExpandableStringEnum<Failover> {
         return fromString(name, Failover.class);
     }
 
-    /** @return known Failover values. */
+    /**
+     * Gets known Failover values.
+     *
+     * @return known Failover values.
+     */
     public static Collection<Failover> values() {
         return values(Failover.class);
     }

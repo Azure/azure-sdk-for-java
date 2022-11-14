@@ -10,14 +10,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.AssessmentsClient;
-import com.azure.resourcemanager.security.fluent.models.SecurityAssessmentInner;
+import com.azure.resourcemanager.security.fluent.models.SecurityAssessmentResponseInner;
 import com.azure.resourcemanager.security.models.Assessments;
 import com.azure.resourcemanager.security.models.ExpandEnum;
-import com.azure.resourcemanager.security.models.SecurityAssessment;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.security.models.SecurityAssessmentResponse;
 
 public final class AssessmentsImpl implements Assessments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssessmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AssessmentsImpl.class);
 
     private final AssessmentsClient innerClient;
 
@@ -29,35 +28,35 @@ public final class AssessmentsImpl implements Assessments {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<SecurityAssessment> list(String scope) {
-        PagedIterable<SecurityAssessmentInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new SecurityAssessmentImpl(inner1, this.manager()));
+    public PagedIterable<SecurityAssessmentResponse> list(String scope) {
+        PagedIterable<SecurityAssessmentResponseInner> inner = this.serviceClient().list(scope);
+        return Utils.mapPage(inner, inner1 -> new SecurityAssessmentResponseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SecurityAssessment> list(String scope, Context context) {
-        PagedIterable<SecurityAssessmentInner> inner = this.serviceClient().list(scope, context);
-        return Utils.mapPage(inner, inner1 -> new SecurityAssessmentImpl(inner1, this.manager()));
+    public PagedIterable<SecurityAssessmentResponse> list(String scope, Context context) {
+        PagedIterable<SecurityAssessmentResponseInner> inner = this.serviceClient().list(scope, context);
+        return Utils.mapPage(inner, inner1 -> new SecurityAssessmentResponseImpl(inner1, this.manager()));
     }
 
-    public SecurityAssessment get(String resourceId, String assessmentName) {
-        SecurityAssessmentInner inner = this.serviceClient().get(resourceId, assessmentName);
+    public SecurityAssessmentResponse get(String resourceId, String assessmentName) {
+        SecurityAssessmentResponseInner inner = this.serviceClient().get(resourceId, assessmentName);
         if (inner != null) {
-            return new SecurityAssessmentImpl(inner, this.manager());
+            return new SecurityAssessmentResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<SecurityAssessment> getWithResponse(
+    public Response<SecurityAssessmentResponse> getWithResponse(
         String resourceId, String assessmentName, ExpandEnum expand, Context context) {
-        Response<SecurityAssessmentInner> inner =
+        Response<SecurityAssessmentResponseInner> inner =
             this.serviceClient().getWithResponse(resourceId, assessmentName, expand, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new SecurityAssessmentImpl(inner.getValue(), this.manager()));
+                new SecurityAssessmentResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -71,13 +70,13 @@ public final class AssessmentsImpl implements Assessments {
         return this.serviceClient().deleteWithResponse(resourceId, assessmentName, context);
     }
 
-    public SecurityAssessment getById(String id) {
+    public SecurityAssessmentResponse getById(String id) {
         String resourceId =
             Utils
                 .getValueFromIdByParameterName(
                     id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -87,7 +86,7 @@ public final class AssessmentsImpl implements Assessments {
                 .getValueFromIdByParameterName(
                     id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
         if (assessmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
@@ -96,13 +95,13 @@ public final class AssessmentsImpl implements Assessments {
         return this.getWithResponse(resourceId, assessmentName, localExpand, Context.NONE).getValue();
     }
 
-    public Response<SecurityAssessment> getByIdWithResponse(String id, ExpandEnum expand, Context context) {
+    public Response<SecurityAssessmentResponse> getByIdWithResponse(String id, ExpandEnum expand, Context context) {
         String resourceId =
             Utils
                 .getValueFromIdByParameterName(
                     id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -112,7 +111,7 @@ public final class AssessmentsImpl implements Assessments {
                 .getValueFromIdByParameterName(
                     id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
         if (assessmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
@@ -126,7 +125,7 @@ public final class AssessmentsImpl implements Assessments {
                 .getValueFromIdByParameterName(
                     id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -136,12 +135,12 @@ public final class AssessmentsImpl implements Assessments {
                 .getValueFromIdByParameterName(
                     id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
         if (assessmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
         }
-        this.deleteWithResponse(resourceId, assessmentName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceId, assessmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -150,7 +149,7 @@ public final class AssessmentsImpl implements Assessments {
                 .getValueFromIdByParameterName(
                     id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -160,7 +159,7 @@ public final class AssessmentsImpl implements Assessments {
                 .getValueFromIdByParameterName(
                     id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
         if (assessmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
@@ -176,7 +175,7 @@ public final class AssessmentsImpl implements Assessments {
         return this.serviceManager;
     }
 
-    public SecurityAssessmentImpl define(String name) {
-        return new SecurityAssessmentImpl(name, this.manager());
+    public SecurityAssessmentResponseImpl define(String name) {
+        return new SecurityAssessmentResponseImpl(name, this.manager());
     }
 }

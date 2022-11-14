@@ -15,6 +15,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestOperations;
 
 import java.net.URL;
@@ -22,6 +23,8 @@ import java.security.Key;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
  * Selecting key candidates for processing a signed JWT which provides access to the JWT claims set in addition to the
@@ -40,10 +43,10 @@ public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<
      *
      * @param trustedIssuerRepo the AAD trusted issuer repository
      */
-    public AadIssuerJwsKeySelector(RestOperations restOperations,
+    public AadIssuerJwsKeySelector(RestTemplateBuilder restTemplateBuilder,
                                    AadTrustedIssuerRepository trustedIssuerRepo,
                                    ResourceRetriever resourceRetriever) {
-        this.restOperations = restOperations;
+        this.restOperations = createRestTemplate(restTemplateBuilder);
         this.trustedIssuerRepo = trustedIssuerRepo;
         this.resourceRetriever = resourceRetriever;
     }

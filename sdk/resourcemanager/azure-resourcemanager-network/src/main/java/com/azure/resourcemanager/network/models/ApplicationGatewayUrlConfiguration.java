@@ -30,6 +30,10 @@ public final class ApplicationGatewayUrlConfiguration {
     @JsonProperty(value = "reroute")
     private Boolean reroute;
 
+    /** Creates an instance of ApplicationGatewayUrlConfiguration class. */
+    public ApplicationGatewayUrlConfiguration() {
+    }
+
     /**
      * Get the modifiedPath property: Url path which user has provided for url rewrite. Null means no path will be
      * updated. Default value is null.

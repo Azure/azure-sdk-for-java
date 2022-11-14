@@ -7,6 +7,7 @@ package com.azure.resourcemanager.security.implementation;
 import com.azure.resourcemanager.security.fluent.models.AlertInner;
 import com.azure.resourcemanager.security.models.Alert;
 import com.azure.resourcemanager.security.models.AlertEntity;
+import com.azure.resourcemanager.security.models.AlertPropertiesSupportingEvidence;
 import com.azure.resourcemanager.security.models.AlertSeverity;
 import com.azure.resourcemanager.security.models.AlertStatus;
 import com.azure.resourcemanager.security.models.Intent;
@@ -36,6 +37,10 @@ public final class AlertImpl implements Alert {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String version() {
+        return this.innerModel().version();
     }
 
     public String alertType() {
@@ -153,6 +158,28 @@ public final class AlertImpl implements Alert {
 
     public String compromisedEntity() {
         return this.innerModel().compromisedEntity();
+    }
+
+    public List<String> techniques() {
+        List<String> inner = this.innerModel().techniques();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> subTechniques() {
+        List<String> inner = this.innerModel().subTechniques();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public AlertPropertiesSupportingEvidence supportingEvidence() {
+        return this.innerModel().supportingEvidence();
     }
 
     public AlertInner innerModel() {

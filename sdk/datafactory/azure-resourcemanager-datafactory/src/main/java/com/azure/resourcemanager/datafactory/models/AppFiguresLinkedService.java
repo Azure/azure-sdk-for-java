@@ -24,6 +24,10 @@ public final class AppFiguresLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AppFiguresLinkedServiceTypeProperties innerTypeProperties = new AppFiguresLinkedServiceTypeProperties();
 
+    /** Creates an instance of AppFiguresLinkedService class. */
+    public AppFiguresLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: AppFigures linked service properties.
      *

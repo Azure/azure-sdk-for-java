@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 /** Samples for VirtualMachines Reimage. */
 public final class VirtualMachinesReimageSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachine_Reimage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Reimage.json
      */
     /**
      * Sample code: Reimage a Virtual Machine.

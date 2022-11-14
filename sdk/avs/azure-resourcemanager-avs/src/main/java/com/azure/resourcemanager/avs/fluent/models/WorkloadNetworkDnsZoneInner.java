@@ -6,22 +6,22 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX DNS Zone. */
 @Fluent
 public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkDnsZoneInner.class);
-
     /*
      * DNS Zone properties
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkDnsZoneProperties innerProperties;
+
+    /** Creates an instance of WorkloadNetworkDnsZoneInner class. */
+    public WorkloadNetworkDnsZoneInner() {
+    }
 
     /**
      * Get the innerProperties property: DNS Zone properties.

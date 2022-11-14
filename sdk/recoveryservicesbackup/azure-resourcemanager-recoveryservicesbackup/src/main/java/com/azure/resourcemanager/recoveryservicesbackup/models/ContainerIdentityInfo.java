@@ -34,6 +34,10 @@ public final class ContainerIdentityInfo {
     @JsonProperty(value = "audience")
     private String audience;
 
+    /** Creates an instance of ContainerIdentityInfo class. */
+    public ContainerIdentityInfo() {
+    }
+
     /**
      * Get the uniqueName property: Unique name of the container.
      *

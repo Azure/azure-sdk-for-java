@@ -16,6 +16,10 @@ public final class ProjectProperties extends ProjectUpdateProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of ProjectProperties class. */
+    public ProjectProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

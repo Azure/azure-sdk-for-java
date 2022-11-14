@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CodeVersions List. */
 public final class CodeVersionsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/CodeVersion/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/CodeVersion/list.json
      */
     /**
      * Sample code: List Code Version.

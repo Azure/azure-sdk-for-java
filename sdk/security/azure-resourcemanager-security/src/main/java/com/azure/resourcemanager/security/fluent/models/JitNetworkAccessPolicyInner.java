@@ -5,37 +5,20 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyVirtualMachine;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JitNetworkAccessPolicy model. */
-@JsonFlatten
 @Fluent
-public class JitNetworkAccessPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessPolicyInner.class);
-
+public final class JitNetworkAccessPolicyInner extends ProxyResource {
     /*
-     * Configurations for Microsoft.Compute/virtualMachines resource type.
+     * The properties property.
      */
-    @JsonProperty(value = "properties.virtualMachines", required = true)
-    private List<JitNetworkAccessPolicyVirtualMachine> virtualMachines;
-
-    /*
-     * The requests property.
-     */
-    @JsonProperty(value = "properties.requests")
-    private List<JitNetworkAccessRequestInner> requests;
-
-    /*
-     * Gets the provisioning state of the Just-in-Time policy.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties", required = true)
+    private JitNetworkAccessPolicyProperties innerProperties = new JitNetworkAccessPolicyProperties();
 
     /*
      * Kind of the resource
@@ -50,52 +33,12 @@ public class JitNetworkAccessPolicyInner extends ProxyResource {
     private String location;
 
     /**
-     * Get the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
+     * Get the innerProperties property: The properties property.
      *
-     * @return the virtualMachines value.
+     * @return the innerProperties value.
      */
-    public List<JitNetworkAccessPolicyVirtualMachine> virtualMachines() {
-        return this.virtualMachines;
-    }
-
-    /**
-     * Set the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
-     *
-     * @param virtualMachines the virtualMachines value to set.
-     * @return the JitNetworkAccessPolicyInner object itself.
-     */
-    public JitNetworkAccessPolicyInner withVirtualMachines(List<JitNetworkAccessPolicyVirtualMachine> virtualMachines) {
-        this.virtualMachines = virtualMachines;
-        return this;
-    }
-
-    /**
-     * Get the requests property: The requests property.
-     *
-     * @return the requests value.
-     */
-    public List<JitNetworkAccessRequestInner> requests() {
-        return this.requests;
-    }
-
-    /**
-     * Set the requests property: The requests property.
-     *
-     * @param requests the requests value to set.
-     * @return the JitNetworkAccessPolicyInner object itself.
-     */
-    public JitNetworkAccessPolicyInner withRequests(List<JitNetworkAccessRequestInner> requests) {
-        this.requests = requests;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the Just-in-Time policy.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
+    private JitNetworkAccessPolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -128,21 +71,75 @@ public class JitNetworkAccessPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
+     *
+     * @return the virtualMachines value.
+     */
+    public List<JitNetworkAccessPolicyVirtualMachine> virtualMachines() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachines();
+    }
+
+    /**
+     * Set the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
+     *
+     * @param virtualMachines the virtualMachines value to set.
+     * @return the JitNetworkAccessPolicyInner object itself.
+     */
+    public JitNetworkAccessPolicyInner withVirtualMachines(List<JitNetworkAccessPolicyVirtualMachine> virtualMachines) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JitNetworkAccessPolicyProperties();
+        }
+        this.innerProperties().withVirtualMachines(virtualMachines);
+        return this;
+    }
+
+    /**
+     * Get the requests property: The requests property.
+     *
+     * @return the requests value.
+     */
+    public List<JitNetworkAccessRequestInner> requests() {
+        return this.innerProperties() == null ? null : this.innerProperties().requests();
+    }
+
+    /**
+     * Set the requests property: The requests property.
+     *
+     * @param requests the requests value to set.
+     * @return the JitNetworkAccessPolicyInner object itself.
+     */
+    public JitNetworkAccessPolicyInner withRequests(List<JitNetworkAccessRequestInner> requests) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JitNetworkAccessPolicyProperties();
+        }
+        this.innerProperties().withRequests(requests);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Gets the provisioning state of the Just-in-Time policy.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (virtualMachines() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property virtualMachines in model JitNetworkAccessPolicyInner"));
+                        "Missing required property innerProperties in model JitNetworkAccessPolicyInner"));
         } else {
-            virtualMachines().forEach(e -> e.validate());
-        }
-        if (requests() != null) {
-            requests().forEach(e -> e.validate());
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessPolicyInner.class);
 }

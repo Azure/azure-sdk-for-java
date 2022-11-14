@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SuppressionAlertsScope model. */
 @Fluent
 public final class SuppressionAlertsScope {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SuppressionAlertsScope.class);
-
     /*
      * All the conditions inside need to be true in order to suppress the alert
      */
@@ -48,11 +45,13 @@ public final class SuppressionAlertsScope {
      */
     public void validate() {
         if (allOf() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property allOf in model SuppressionAlertsScope"));
         } else {
             allOf().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SuppressionAlertsScope.class);
 }

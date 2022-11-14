@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupEngines List. */
 public final class BackupEnginesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Dpm/BackupEngines_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Dpm/BackupEngines_List.json
      */
     /**
      * Sample code: List Dpm/AzureBackupServer/Lajolla Backup Engines.

@@ -24,6 +24,10 @@ public final class SapOdpResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private SapOdpResourceDatasetTypeProperties innerTypeProperties = new SapOdpResourceDatasetTypeProperties();
 
+    /** Creates an instance of SapOdpResourceDataset class. */
+    public SapOdpResourceDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: SAP ODP Resource properties.
      *

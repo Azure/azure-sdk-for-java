@@ -17,7 +17,8 @@ public interface SecureScoreControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SecureScoreControlDetails> listBySecureScore(String secureScoreName);
 
@@ -31,7 +32,8 @@ public interface SecureScoreControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SecureScoreControlDetails> listBySecureScore(
         String secureScoreName, ExpandControlsEnum expand, Context context);
@@ -41,7 +43,7 @@ public interface SecureScoreControls {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecureScoreControlDetails> list();
 
@@ -53,7 +55,7 @@ public interface SecureScoreControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecureScoreControlDetails> list(ExpandControlsEnum expand, Context context);
 }

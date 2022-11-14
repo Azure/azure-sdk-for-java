@@ -27,6 +27,10 @@ public final class TimeSpan {
     @JsonProperty(value = "end")
     private OffsetDateTime end;
 
+    /** Creates an instance of TimeSpan class. */
+    public TimeSpan() {
+    }
+
     /**
      * Get the start property: The start of a time span.
      *

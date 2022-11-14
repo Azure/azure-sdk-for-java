@@ -164,6 +164,12 @@ public final class DiskProperties {
     private String diskAccessId;
 
     /*
+     * Latest time when bursting was last enabled on a disk.
+     */
+    @JsonProperty(value = "burstingEnabledTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime burstingEnabledTime;
+
+    /*
      * Performance tier of the disk (e.g, P4, S10) as described here:
      * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
      */
@@ -212,6 +218,15 @@ public final class DiskProperties {
      */
     @JsonProperty(value = "dataAccessAuthMode")
     private DataAccessAuthMode dataAccessAuthMode;
+
+    /*
+     * Setting this property to true improves reliability and performance of data disks that are frequently (more than
+     * 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for
+     * disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of
+     * the virtual machine.
+     */
+    @JsonProperty(value = "optimizedForFrequentAttach")
+    private Boolean optimizedForFrequentAttach;
 
     /**
      * Get the timeCreated property: The time when the disk was created.
@@ -597,6 +612,15 @@ public final class DiskProperties {
     }
 
     /**
+     * Get the burstingEnabledTime property: Latest time when bursting was last enabled on a disk.
+     *
+     * @return the burstingEnabledTime value.
+     */
+    public OffsetDateTime burstingEnabledTime() {
+        return this.burstingEnabledTime;
+    }
+
+    /**
      * Get the tier property: Performance tier of the disk (e.g, P4, S10) as described here:
      * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
      *
@@ -750,6 +774,32 @@ public final class DiskProperties {
      */
     public DiskProperties withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
         this.dataAccessAuthMode = dataAccessAuthMode;
+        return this;
+    }
+
+    /**
+     * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @return the optimizedForFrequentAttach value.
+     */
+    public Boolean optimizedForFrequentAttach() {
+        return this.optimizedForFrequentAttach;
+    }
+
+    /**
+     * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
+     * @return the DiskProperties object itself.
+     */
+    public DiskProperties withOptimizedForFrequentAttach(Boolean optimizedForFrequentAttach) {
+        this.optimizedForFrequentAttach = optimizedForFrequentAttach;
         return this;
     }
 

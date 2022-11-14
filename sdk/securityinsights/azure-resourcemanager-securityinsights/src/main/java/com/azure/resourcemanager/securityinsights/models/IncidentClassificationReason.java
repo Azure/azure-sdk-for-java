@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IncidentClassificationReason. */
+/** The classification reason the incident was closed with. */
 public final class IncidentClassificationReason extends ExpandableStringEnum<IncidentClassificationReason> {
     /** Static value SuspiciousActivity for IncidentClassificationReason. */
     public static final IncidentClassificationReason SUSPICIOUS_ACTIVITY = fromString("SuspiciousActivity");

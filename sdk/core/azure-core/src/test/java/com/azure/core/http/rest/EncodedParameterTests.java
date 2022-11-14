@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EncodedParameterTests {
     @Test
     public void constructor() {
-        final EncodedParameter ep = new EncodedParameter("ABC", "123");
+        final EncodedParameter ep = new EncodedParameter("ABC", "132");
         assertEquals("ABC", ep.getName());
-        assertEquals("123", ep.getEncodedValue());
+        assertEquals("132", ep.getEncodedValue());
     }
 }

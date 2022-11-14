@@ -28,6 +28,10 @@ public final class SapCloudForCustomerSink extends CopySink {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
+    /** Creates an instance of SapCloudForCustomerSink class. */
+    public SapCloudForCustomerSink() {
+    }
+
     /**
      * Get the writeBehavior property: The write behavior for the operation. Default is 'Insert'.
      *

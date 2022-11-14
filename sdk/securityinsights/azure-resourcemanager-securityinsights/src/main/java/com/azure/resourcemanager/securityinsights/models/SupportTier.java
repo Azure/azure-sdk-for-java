@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SupportTier. */
+/** Type of support for content item. */
 public final class SupportTier extends ExpandableStringEnum<SupportTier> {
     /** Static value Microsoft for SupportTier. */
     public static final SupportTier MICROSOFT = fromString("Microsoft");

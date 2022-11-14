@@ -13,7 +13,6 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.adapter.JdkFlowAdapter;
 
 import java.net.http.HttpRequest;
@@ -27,8 +26,6 @@ import static java.net.http.HttpRequest.BodyPublishers.ofInputStream;
 import static java.net.http.HttpRequest.BodyPublishers.ofString;
 
 final class BodyPublisherUtils {
-    private static final ClientLogger LOGGER = new ClientLogger(BodyPublisherUtils.class);
-
     private BodyPublisherUtils() {
     }
 
@@ -37,7 +34,7 @@ final class BodyPublisherUtils {
      * If progress reporter is not null, configures it to track request body upload.
      *
      * @param request {@link com.azure.core.http.HttpRequest} instance
-     * @progressReporter optional progress reporter.
+     * @param progressReporter optional progress reporter.
      * @return the request BodyPublisher
      */
     public static HttpRequest.BodyPublisher toBodyPublisher(com.azure.core.http.HttpRequest request, ProgressReporter progressReporter) {
@@ -46,7 +43,7 @@ final class BodyPublisherUtils {
             return noBody();
         }
 
-        HttpRequest.BodyPublisher publisher = null;
+        HttpRequest.BodyPublisher publisher;
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
         if (bodyContent instanceof ByteArrayContent) {
             publisher = ofByteArray(bodyContent.toBytes());

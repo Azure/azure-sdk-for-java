@@ -14,33 +14,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImageModelSettingsClassification extends ImageModelSettings {
     /*
-     * Image crop size that is input to the neural network for the training
-     * dataset. Must be a positive integer.
+     * Image crop size that is input to the neural network for the training dataset. Must be a positive integer.
      */
     @JsonProperty(value = "trainingCropSize")
     private Integer trainingCropSize;
 
     /*
-     * Image crop size that is input to the neural network for the validation
-     * dataset. Must be a positive integer.
+     * Image crop size that is input to the neural network for the validation dataset. Must be a positive integer.
      */
     @JsonProperty(value = "validationCropSize")
     private Integer validationCropSize;
 
     /*
-     * Image size to which to resize before cropping for validation dataset.
-     * Must be a positive integer.
+     * Image size to which to resize before cropping for validation dataset. Must be a positive integer.
      */
     @JsonProperty(value = "validationResizeSize")
     private Integer validationResizeSize;
 
     /*
      * Weighted loss. The accepted values are 0 for no weighted loss.
-     * 1 for weighted loss with sqrt.(class_weights). 2 for weighted loss with
-     * class_weights. Must be 0 or 1 or 2.
+     * 1 for weighted loss with sqrt.(class_weights). 2 for weighted loss with class_weights. Must be 0 or 1 or 2.
      */
     @JsonProperty(value = "weightedLoss")
     private Integer weightedLoss;
+
+    /** Creates an instance of ImageModelSettingsClassification class. */
+    public ImageModelSettingsClassification() {
+    }
 
     /**
      * Get the trainingCropSize property: Image crop size that is input to the neural network for the training dataset.
@@ -167,22 +167,15 @@ public final class ImageModelSettingsClassification extends ImageModelSettings {
 
     /** {@inheritDoc} */
     @Override
-    public ImageModelSettingsClassification withCheckpointDatasetId(String checkpointDatasetId) {
-        super.withCheckpointDatasetId(checkpointDatasetId);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ImageModelSettingsClassification withCheckpointFilename(String checkpointFilename) {
-        super.withCheckpointFilename(checkpointFilename);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public ImageModelSettingsClassification withCheckpointFrequency(Integer checkpointFrequency) {
         super.withCheckpointFrequency(checkpointFrequency);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageModelSettingsClassification withCheckpointModel(MLFlowModelJobInput checkpointModel) {
+        super.withCheckpointModel(checkpointModel);
         return this;
     }
 
@@ -309,13 +302,6 @@ public final class ImageModelSettingsClassification extends ImageModelSettings {
     @Override
     public ImageModelSettingsClassification withRandomSeed(Integer randomSeed) {
         super.withRandomSeed(randomSeed);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ImageModelSettingsClassification withSplitRatio(Float splitRatio) {
-        super.withSplitRatio(splitRatio);
         return this;
     }
 

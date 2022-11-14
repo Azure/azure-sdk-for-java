@@ -5,49 +5,26 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Secure score item data model. */
-@JsonFlatten
 @Immutable
-public class SecureScoreItemInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoreItemInner.class);
-
+public final class SecureScoreItemInner extends ProxyResource {
     /*
-     * The initiative’s name
+     * Secure score item
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private SecureScoreItemProperties innerProperties;
 
-    /*
-     * The relative weight for each subscription. Used when calculating an
-     * aggregated secure score for multiple subscriptions.
+    /**
+     * Get the innerProperties property: Secure score item.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.weight", access = JsonProperty.Access.WRITE_ONLY)
-    private Long weight;
-
-    /*
-     * Maximum score available
-     */
-    @JsonProperty(value = "properties.score.max", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer max;
-
-    /*
-     * Current score
-     */
-    @JsonProperty(value = "properties.score.current", access = JsonProperty.Access.WRITE_ONLY)
-    private Double current;
-
-    /*
-     * Ratio of the current score divided by the maximum. Rounded to 4 digits
-     * after the decimal point
-     */
-    @JsonProperty(value = "properties.score.percentage", access = JsonProperty.Access.WRITE_ONLY)
-    private Double percentage;
+    private SecureScoreItemProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: The initiative’s name.
@@ -55,7 +32,7 @@ public class SecureScoreItemInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -65,7 +42,7 @@ public class SecureScoreItemInner extends ProxyResource {
      * @return the weight value.
      */
     public Long weight() {
-        return this.weight;
+        return this.innerProperties() == null ? null : this.innerProperties().weight();
     }
 
     /**
@@ -74,7 +51,7 @@ public class SecureScoreItemInner extends ProxyResource {
      * @return the max value.
      */
     public Integer max() {
-        return this.max;
+        return this.innerProperties() == null ? null : this.innerProperties().max();
     }
 
     /**
@@ -83,7 +60,7 @@ public class SecureScoreItemInner extends ProxyResource {
      * @return the current value.
      */
     public Double current() {
-        return this.current;
+        return this.innerProperties() == null ? null : this.innerProperties().current();
     }
 
     /**
@@ -93,7 +70,7 @@ public class SecureScoreItemInner extends ProxyResource {
      * @return the percentage value.
      */
     public Double percentage() {
-        return this.percentage;
+        return this.innerProperties() == null ? null : this.innerProperties().percentage();
     }
 
     /**
@@ -102,5 +79,8 @@ public class SecureScoreItemInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

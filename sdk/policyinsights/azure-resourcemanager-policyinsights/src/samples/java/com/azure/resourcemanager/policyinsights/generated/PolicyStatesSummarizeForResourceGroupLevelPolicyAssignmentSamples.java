@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResourceType;
 
 /** Samples for PolicyStates SummarizeForResourceGroupLevelPolicyAssignment. */
 public final class PolicyStatesSummarizeForResourceGroupLevelPolicyAssignmentSamples {
@@ -21,6 +22,7 @@ public final class PolicyStatesSummarizeForResourceGroupLevelPolicyAssignmentSam
         manager
             .policyStates()
             .summarizeForResourceGroupLevelPolicyAssignmentWithResponse(
+                PolicyStatesSummaryResourceType.LATEST,
                 "fffedd8f-ffff-fffd-fffd-fffed2f84852",
                 "myResourceGroup",
                 "b7a1ca2596524e3ab19597f2",

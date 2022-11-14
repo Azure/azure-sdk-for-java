@@ -24,6 +24,10 @@ public final class HdfsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HdfsLinkedServiceTypeProperties innerTypeProperties = new HdfsLinkedServiceTypeProperties();
 
+    /** Creates an instance of HdfsLinkedService class. */
+    public HdfsLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDFS linked service properties.
      *

@@ -112,6 +112,7 @@ public abstract class KeyClientTestBase extends TestBase {
                 .clientSecret(clientKey)
                 .clientId(clientId)
                 .tenantId(tenantId)
+                .additionallyAllowedTenants("*")
                 .build();
         }
 
@@ -127,7 +128,7 @@ public abstract class KeyClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential));
+            policies.add(new KeyVaultCredentialPolicy(credential, false));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);

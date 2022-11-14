@@ -22,7 +22,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithConnectionStringAsyncClient(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
         deleteRecording(callAutomationAsyncClient);
     }
@@ -34,7 +34,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithTokenCredentialAsyncClient(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingTokenCredential(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
         deleteRecording(callAutomationAsyncClient);
     }
@@ -54,7 +54,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording401Async(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingInvalidTokenCredential(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
         StepVerifier.create(callAutomationAsyncClient
                 .getCallRecordingAsync()
@@ -70,7 +70,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording404Async(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
         StepVerifier.create(callAutomationAsyncClient
                 .getCallRecordingAsync()

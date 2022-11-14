@@ -143,6 +143,15 @@ public final class DiskUpdateProperties {
     @JsonProperty(value = "dataAccessAuthMode")
     private DataAccessAuthMode dataAccessAuthMode;
 
+    /*
+     * Setting this property to true improves reliability and performance of data disks that are frequently (more than
+     * 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for
+     * disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of
+     * the virtual machine.
+     */
+    @JsonProperty(value = "optimizedForFrequentAttach")
+    private Boolean optimizedForFrequentAttach;
+
     /**
      * Get the osType property: the Operating System type.
      *
@@ -538,6 +547,32 @@ public final class DiskUpdateProperties {
      */
     public DiskUpdateProperties withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
         this.dataAccessAuthMode = dataAccessAuthMode;
+        return this;
+    }
+
+    /**
+     * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @return the optimizedForFrequentAttach value.
+     */
+    public Boolean optimizedForFrequentAttach() {
+        return this.optimizedForFrequentAttach;
+    }
+
+    /**
+     * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
+     * @return the DiskUpdateProperties object itself.
+     */
+    public DiskUpdateProperties withOptimizedForFrequentAttach(Boolean optimizedForFrequentAttach) {
+        this.optimizedForFrequentAttach = optimizedForFrequentAttach;
         return this;
     }
 

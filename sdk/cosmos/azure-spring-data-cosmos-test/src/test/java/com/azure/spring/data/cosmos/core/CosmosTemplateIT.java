@@ -116,8 +116,6 @@ public class CosmosTemplateIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
-    @Autowired
-    private AuditableRepository auditableRepository;
 
     @Before
     public void setUp() throws ClassNotFoundException {
@@ -817,23 +815,6 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void testRunQueryWithReturnTypeContainingLocalDateTime() {
-        final AuditableEntity entity = new AuditableEntity();
-        entity.setId(UUID.randomUUID().toString());
-
-        auditableRepository.save(entity);
-
-        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
-        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
-        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
-        assertEquals(results.size(), 1);
-        AuditableEntity foundEntity = results.get(0);
-        assertEquals(entity.getId(), foundEntity.getId());
-        assertNotNull(foundEntity.getCreatedDate());
-        assertNotNull(foundEntity.getLastModifiedByDate());
-    }
-
-    @Test
     public void testSliceQuery() {
         cosmosTemplate.insert(TEST_PERSON_2,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
@@ -938,6 +919,24 @@ public class CosmosTemplateIT {
         final long count = maxBufferedItemCountCosmosTemplate.count(query, containerName);
 
         assertEquals((int) ReflectionTestUtils.getField(maxBufferedItemCountCosmosTemplate, "maxBufferedItemCount"), 500);
+    }
+
+    @Test
+    public void queryWithResponseContinuationTokenLimitInKb() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .responseContinuationTokenLimitInKb(2000)
+            .build();
+        final CosmosTemplate responseContinuationTokenLimitInKbCosmosTemplate =
+            createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = responseContinuationTokenLimitInKbCosmosTemplate.count(query, containerName);
+
+        assertEquals((int) ReflectionTestUtils.getField(responseContinuationTokenLimitInKbCosmosTemplate,
+            "responseContinuationTokenLimitInKb"), 2000);
     }
 
     @Test

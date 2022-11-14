@@ -75,28 +75,12 @@ import java.util.Map;
  * <pre>
  * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
  *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .addPolicy&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation -->
- *
- * <p>Alternatively, a custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies
- * can be specified. It provides finer control over the construction of {@link CryptographyAsyncClient} and
- * {@link CryptographyClient}</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
- *     .build&#40;&#41;;
- * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
  *
  * <p>The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to
  * build {@link CryptographyClient} are {@link JsonWebKey jsonWebKey} or
@@ -149,6 +133,7 @@ public final class CryptographyClientBuilder implements
     private RetryOptions retryOptions;
     private String keyId;
     private TokenCredential credential;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * The constructor with defaults.
@@ -263,7 +248,7 @@ public final class CryptographyClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -290,7 +275,9 @@ public final class CryptographyClientBuilder implements
     }
 
     /**
-     * Sets the Azure Key Vault key identifier of the JSON Web Key to be used for cryptography operations.
+     * Sets the Azure Key Vault key identifier of the JSON Web Key to be used for cryptography operations. You should
+     * validate that this URL references a valid Key Vault or Managed HSM resource. Refer to the following
+     * <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
      * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} or {@link CryptographyClient} created
@@ -543,6 +530,18 @@ public final class CryptographyClientBuilder implements
     @Override
     public CryptographyClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    public CryptographyClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }

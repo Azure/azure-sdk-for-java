@@ -283,7 +283,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
     }
 
@@ -295,7 +295,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withProtectedSettingsFromKeyVault(
-        Object protectedSettingsFromKeyVault) {
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
