@@ -154,7 +154,8 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         Thread.sleep(5 * 1000);
     }
 
-    // TODO: Investigate scenario
+    // TODO: Check if eager prefetch can be avoided
+    // TODO: when concurrency is set to 256
     @Test(groups = {"unit"}, enabled = false)
     public void validatePrefetchControl() {
         AtomicInteger prefetchEager1 = new AtomicInteger();
