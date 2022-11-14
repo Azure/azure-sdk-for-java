@@ -35,6 +35,11 @@ public final class KeyCurveName extends ExpandableStringEnum<KeyCurveName> {
     public static final KeyCurveName P_256K = fromString("P-256K");
 
     /**
+     * Static value Ed25519 for KeyCurve.
+     */
+    public static final KeyCurveName ED25519 = fromString("Ed25519");
+
+    /**
      * Creates or finds a KeyCurveName from its string representation.
      *
      * @param name a name to look for.
