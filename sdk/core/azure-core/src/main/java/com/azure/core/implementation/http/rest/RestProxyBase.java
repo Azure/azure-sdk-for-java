@@ -94,6 +94,10 @@ public abstract class RestProxyBase {
                 context = context.addData("azure-eagerly-read-response", true);
             }
 
+            if (methodParser.isResponseBodyIgnored()) {
+                context = context.addData("azure-ignore-response-body", true);
+            }
+
             if (methodParser.isHeadersEagerlyConverted()) {
                 context = context.addData("azure-eagerly-convert-headers", true);
             }

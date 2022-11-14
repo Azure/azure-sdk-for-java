@@ -4,12 +4,17 @@
 
 ### Features Added
 - Added rule manager client to manage rules for ServiceBus subscription with listen claims. ([#27711](https://github.com/Azure/azure-sdk-for-java/issues/27711))
-
+- Added ability to create a subscription with default rule. ([#29885](https://github.com/Azure/azure-sdk-for-java/issues/29885))
+- `ServiceBusAdministrationClientBuilder` now supports using `AzureSasCredential`. ([#30255](https://github.com/Azure/azure-sdk-for-java/issues/30255))
+- `EntityPath` and `FullyQualifiedNamespace` properties are now readable from `ServiceBusReceivedMessageContext`. ([#29089](https://github.com/Azure/azure-sdk-for-java/issues/29089))
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed `listQueues`, `listTopics`, `listRules`, `listSubscriptions`, `createQueue` and `createSubscriptionWithResponse` in `ServiceBusAdministrationClient` class. ([#31712](https://github.com/Azure/azure-sdk-for-java/issues/31712))
+- Fixed `ServiceBusReceiverClient` release messages if the prefetch is disabled and there is no active receive call in `RECEIVE_AND_DELETE` mode. ([#30861](https://github.com/Azure/azure-sdk-for-java/issues/30861))
+- Fixed incorrect proxy configuration using environment variables. ([#24230](https://github.com/Azure/azure-sdk-for-java/issues/24230))
+
 ### Other Changes
+- Changed the log level for adding credits from Info to Debug. ([#20836](https://github.com/Azure/azure-sdk-for-java/issues/20836))
 
 ## 7.12.1 (2022-10-25)
 
@@ -327,7 +332,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 
 ### Breaking Changes
 - Changed `receiveMessages` API to return `ServiceBusReceivedMessage` instead of ServiceBusReceivedMessageContext in 
-  `ServiceBusReceiverAsynClient` and `ServiceBusReceiverClient`.
+  `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient`.
 - Removed `SendVia` option from `ServiceBusClientBuilder`. See issue for more detail 
   [16942](https://github.com/Azure/azure-sdk-for-java/pull/16942).
 - Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` as creating receiver clients bound to a 
@@ -337,7 +342,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
   `ServiceBusSessionProcessorClientBuilder` as the feature of receiving messages from multiple sessions is moved from 
   the receiver client to the new `ServiceBusSessionProcessorClient`.
 - Renamed `tryAdd` to `tryAddMessage` in `ServiceBusMessageBatch`.
-- Removed `sessionId` specific methods from `ServiceBusReceiverAsynClient` and `ServiceBusReceiverClient` because now 
+- Removed `sessionId` specific methods from `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient` because now 
   receiver client is always tied to one session. 
   
 ### Bug Fixes

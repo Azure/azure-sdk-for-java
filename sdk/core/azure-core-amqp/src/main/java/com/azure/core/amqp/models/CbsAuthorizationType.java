@@ -11,6 +11,18 @@ import com.azure.core.util.ExpandableStringEnum;
  */
 public final class CbsAuthorizationType extends ExpandableStringEnum<CbsAuthorizationType> {
     /**
+     * Creates a new instance of {@link CbsAuthorizationType} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link CbsAuthorizationType} which doesn't have a
+     * String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String, Class)} factory method.
+     */
+    @Deprecated
+    public CbsAuthorizationType() {
+    }
+
+    /**
      * Authorize with CBS through a shared access signature.
      */
     public static final CbsAuthorizationType SHARED_ACCESS_SIGNATURE =
@@ -18,7 +30,7 @@ public final class CbsAuthorizationType extends ExpandableStringEnum<CbsAuthoriz
 
     /**
      * Authorize with CBS using a JSON web token.
-     *
+     * <p>
      * This is used in the case where Azure Active Directory is used for authentication and the authenticated user
      * wants to authorize with Azure Event Hubs.
      */

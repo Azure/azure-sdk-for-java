@@ -12,15 +12,13 @@ import java.time.Duration;
 @Fluent
 public final class OnlineRequestSettings {
     /*
-     * The number of maximum concurrent requests per node allowed per
-     * deployment. Defaults to 1.
+     * The number of maximum concurrent requests per node allowed per deployment. Defaults to 1.
      */
     @JsonProperty(value = "maxConcurrentRequestsPerInstance")
     private Integer maxConcurrentRequestsPerInstance;
 
     /*
-     * The maximum amount of time a request will stay in the queue in ISO 8601
-     * format.
+     * The maximum amount of time a request will stay in the queue in ISO 8601 format.
      * Defaults to 500ms.
      */
     @JsonProperty(value = "maxQueueWait")
@@ -32,6 +30,10 @@ public final class OnlineRequestSettings {
      */
     @JsonProperty(value = "requestTimeout")
     private Duration requestTimeout;
+
+    /** Creates an instance of OnlineRequestSettings class. */
+    public OnlineRequestSettings() {
+    }
 
     /**
      * Get the maxConcurrentRequestsPerInstance property: The number of maximum concurrent requests per node allowed per

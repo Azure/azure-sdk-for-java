@@ -15,7 +15,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "datastoreType")
 @JsonTypeName("AzureFile")
 @Fluent
-public final class AzureFileDatastore extends DatastoreDetails {
+public final class AzureFileDatastore extends DatastoreProperties {
     /*
      * [Required] Storage account name.
      */
@@ -29,8 +29,7 @@ public final class AzureFileDatastore extends DatastoreDetails {
     private String endpoint;
 
     /*
-     * [Required] The name of the Azure file share that the datastore points
-     * to.
+     * [Required] The name of the Azure file share that the datastore points to.
      */
     @JsonProperty(value = "fileShareName", required = true)
     private String fileShareName;
@@ -42,11 +41,14 @@ public final class AzureFileDatastore extends DatastoreDetails {
     private String protocol;
 
     /*
-     * Indicates which identity to use to authenticate service data access to
-     * customer's storage.
+     * Indicates which identity to use to authenticate service data access to customer's storage.
      */
     @JsonProperty(value = "serviceDataAccessAuthIdentity")
     private ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity;
+
+    /** Creates an instance of AzureFileDatastore class. */
+    public AzureFileDatastore() {
+    }
 
     /**
      * Get the accountName property: [Required] Storage account name.

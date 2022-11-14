@@ -4,38 +4,24 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.machinelearning.models.BatchDeploymentData;
-import com.azure.resourcemanager.machinelearning.models.BatchLoggingLevel;
-import com.azure.resourcemanager.machinelearning.models.BatchOutputAction;
-import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.machinelearning.models.BatchDeployment;
 import com.azure.resourcemanager.machinelearning.models.PartialBatchDeployment;
-import com.azure.resourcemanager.machinelearning.models.PartialBatchRetrySettings;
-import com.azure.resourcemanager.machinelearning.models.PartialCodeConfiguration;
-import com.azure.resourcemanager.machinelearning.models.PartialIdAssetReference;
-import com.azure.resourcemanager.machinelearning.models.PartialManagedServiceIdentity;
-import com.azure.resourcemanager.machinelearning.models.PartialSku;
-import com.azure.resourcemanager.machinelearning.models.SkuTier;
-import java.io.IOException;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for BatchDeployments Update. */
 public final class BatchDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchDeployment/update.json
      */
     /**
      * Sample code: Update Batch Deployment.
      *
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager)
-        throws IOException {
-        BatchDeploymentData resource =
+    public static void updateBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        BatchDeployment resource =
             manager
                 .batchDeployments()
                 .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE)
@@ -43,41 +29,7 @@ public final class BatchDeploymentsUpdateSamples {
         resource
             .update()
             .withTags(mapOf())
-            .withIdentity(
-                new PartialManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "string",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withKind("string")
-            .withProperties(
-                new PartialBatchDeployment()
-                    .withCodeConfiguration(
-                        new PartialCodeConfiguration().withCodeId("string").withScoringScript("string"))
-                    .withCompute("string")
-                    .withDescription("string")
-                    .withEnvironmentId("string")
-                    .withEnvironmentVariables(mapOf("string", "string"))
-                    .withErrorThreshold(1)
-                    .withLoggingLevel(BatchLoggingLevel.INFO)
-                    .withMaxConcurrencyPerInstance(1)
-                    .withMiniBatchSize(1L)
-                    .withModel(new PartialIdAssetReference().withAssetId("string"))
-                    .withOutputAction(BatchOutputAction.SUMMARY_ONLY)
-                    .withOutputFileName("string")
-                    .withProperties(mapOf("string", "string"))
-                    .withRetrySettings(
-                        new PartialBatchRetrySettings().withMaxRetries(1).withTimeout(Duration.parse("PT5M"))))
-            .withSku(
-                new PartialSku()
-                    .withCapacity(1)
-                    .withFamily("string")
-                    .withName("string")
-                    .withSize("string")
-                    .withTier(SkuTier.FREE))
+            .withProperties(new PartialBatchDeployment().withDescription("string"))
             .apply();
     }
 

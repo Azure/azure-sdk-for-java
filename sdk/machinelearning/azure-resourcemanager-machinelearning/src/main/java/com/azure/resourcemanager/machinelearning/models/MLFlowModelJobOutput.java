@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The MLFlowModelJobOutput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobOutputType")
-@JsonTypeName("MLFlowModel")
+@JsonTypeName("mlflow_model")
 @Fluent
 public final class MLFlowModelJobOutput extends JobOutput {
     /*
@@ -25,6 +25,10 @@ public final class MLFlowModelJobOutput extends JobOutput {
      */
     @JsonProperty(value = "uri")
     private String uri;
+
+    /** Creates an instance of MLFlowModelJobOutput class. */
+    public MLFlowModelJobOutput() {
+    }
 
     /**
      * Get the mode property: Output Asset Delivery Mode.
