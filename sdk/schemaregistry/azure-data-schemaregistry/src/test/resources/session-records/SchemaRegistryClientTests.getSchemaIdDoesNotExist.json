@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_python_test_group/schemas/bar:get-id?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/bar:get-id?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d4681cf8-80ff-4f7a-9c04-02e6982092cd",
+      "x-ms-client-request-id" : "e0046414-d461-4396-b354-1d54d0e28210",
       "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
@@ -14,8 +14,8 @@
       "x-ms-error-code" : "ItemNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema azsdk_python_test_group\\/bar does not exist. TrackingId:03657880-85c1-4459-9c82-b627e22db328_G27, SystemTracker:swathipschemaregistry-avro.servicebus.windows.net:$schemaGroups\\/azsdk_python_test_group\\/schemas\\/bar:get-id, Timestamp:2022-11-07T22:56:55\"}}",
-      "Date" : "Mon, 07 Nov 2022 22:56:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema azsdk_java_group\\/bar does not exist. TrackingId:6a1a1c76-c094-4f3d-afce-4552ce4fbdf7_G27, SystemTracker:conniey4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/bar:get-id, Timestamp:2022-11-14T23:15:37\"}}",
+      "Date" : "Mon, 14 Nov 2022 23:15:36 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

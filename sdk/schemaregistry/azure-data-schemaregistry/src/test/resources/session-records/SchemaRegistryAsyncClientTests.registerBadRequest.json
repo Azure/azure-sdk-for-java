@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_python_test_group/schemas/sch341897867?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch46649e482?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6062bb3b-5670-4080-a977-5a575b23a644",
+      "x-ms-client-request-id" : "7c6f27bd-c805-4095-9246-9e3c71b894c7",
       "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
@@ -14,11 +14,11 @@
       "x-ms-error-code" : "InvalidRequest",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Json schema validation failed: 'type' was not found for field: name at 'fields[1]'. TrackingId:b0b012a7-b743-4e0a-9bdf-635d1d1d39fc_G5, SystemTracker:swathipschemaregistry-avro.servicebus.windows.net:$schemaGroups\\/azsdk_python_test_group\\/schemas\\/sch341897867, Timestamp:2022-11-07T22:57:03\"}}",
-      "Date" : "Mon, 07 Nov 2022 22:57:03 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Json schema validation failed: 'type' was not found for field: name at 'fields[1]'. TrackingId:eb0d316d-694a-411e-aaf6-a86d773f6bba_G27, SystemTracker:conniey4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch46649e482, Timestamp:2022-11-14T23:15:51\"}}",
+      "Date" : "Mon, 14 Nov 2022 23:15:51 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch341897867" ]
+  "variables" : [ "sch46649e482" ]
 }

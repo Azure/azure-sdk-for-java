@@ -1,34 +1,34 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_python_test_group/schemas/sch74496f1c6?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch602914d60?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "40eafb48-3c93-42ed-a242-93f9588e98e6",
+      "x-ms-client-request-id" : "d16af1a7-9067-4fa6-89b9-97d2f9852293",
       "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
       "content-length" : "0",
       "Schema-Version" : "1",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch74496f1c6",
+      "Schema-Name" : "sch602914d60",
       "retry-after" : "0",
-      "Schema-Id-Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/$schemas/c22f3bc60db04f02b90b9a6651e6e872?api-version=2022-10",
+      "Schema-Id-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/$schemas/57e14b0b70f6424bae39730abe2696e5?api-version=2022-10",
       "StatusCode" : "204",
-      "Date" : "Mon, 07 Nov 2022 22:57:03 GMT",
+      "Date" : "Mon, 14 Nov 2022 23:15:52 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "c22f3bc60db04f02b90b9a6651e6e872",
-      "Schema-Group-Name" : "azsdk_python_test_group",
-      "Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/azsdk_python_test_group/schemas/sch74496f1c6/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/azsdk_python_test_group/schemas/sch74496f1c6/versions?api-version=2022-10"
+      "Schema-Id" : "57e14b0b70f6424bae39730abe2696e5",
+      "Schema-Group-Name" : "azsdk_java_group",
+      "Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch602914d60/versions/1?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch602914d60/versions?api-version=2022-10"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_python_test_group/schemas/sch74496f1c6:get-id?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch602914d60:get-id?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0becee27-bc94-47d3-ab22-70c74ee6e24b",
+      "x-ms-client-request-id" : "ef4940cb-e70a-4c96-8fec-b0bcbc2e5d1b",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Response" : {
@@ -38,11 +38,11 @@
       "x-ms-error-code" : "InvalidSchemaType",
       "retry-after" : "0",
       "StatusCode" : "415",
-      "Body" : "{\"error\":{\"code\":\"InvalidSchemaType\",\"message\":\"Invalid schema type for POST request. '' is not supported. TrackingId:27510370-9e0a-4b95-b15a-eb290c535dff_G27, SystemTracker:swathipschemaregistry-avro.servicebus.windows.net:$schemaGroups\\/azsdk_python_test_group\\/schemas\\/sch74496f1c6:get-id, Timestamp:2022-11-07T22:57:06\"}}",
-      "Date" : "Mon, 07 Nov 2022 22:57:06 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidSchemaType\",\"message\":\"Invalid schema type for POST request. '' is not supported. TrackingId:9bf807d2-8ba9-4018-ad3f-6a8cf4dcd826_G10, SystemTracker:conniey4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch602914d60:get-id, Timestamp:2022-11-14T23:15:54\"}}",
+      "Date" : "Mon, 14 Nov 2022 23:15:54 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch74496f1c6" ]
+  "variables" : [ "sch602914d60" ]
 }

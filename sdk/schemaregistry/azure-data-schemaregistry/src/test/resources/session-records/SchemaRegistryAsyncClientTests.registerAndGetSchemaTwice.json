@@ -1,77 +1,77 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_python_test_group/schemas/sch73406da29?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch21544eb4c?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c0e5fa90-9e9e-4f2f-aeee-dd9bed3a7e00",
+      "x-ms-client-request-id" : "00c75659-609d-4d82-8fe7-2fa37db5c36b",
       "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
       "content-length" : "0",
       "Schema-Version" : "1",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch73406da29",
+      "Schema-Name" : "sch21544eb4c",
       "retry-after" : "0",
-      "Schema-Id-Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/$schemas/d96cb348ec284d2aa24f493ae2721c0f?api-version=2022-10",
+      "Schema-Id-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/$schemas/9a30f977948a4bcb831fd84afa03d122?api-version=2022-10",
       "StatusCode" : "204",
-      "Date" : "Mon, 07 Nov 2022 22:56:55 GMT",
+      "Date" : "Mon, 14 Nov 2022 23:15:37 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "d96cb348ec284d2aa24f493ae2721c0f",
-      "Schema-Group-Name" : "azsdk_python_test_group",
-      "Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/azsdk_python_test_group/schemas/sch73406da29/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/azsdk_python_test_group/schemas/sch73406da29/versions?api-version=2022-10"
+      "Schema-Id" : "9a30f977948a4bcb831fd84afa03d122",
+      "Schema-Group-Name" : "azsdk_java_group",
+      "Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch21544eb4c/versions/1?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch21544eb4c/versions?api-version=2022-10"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_python_test_group/schemas/sch73406da29?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch21544eb4c?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "dd7bab14-892b-40b9-b1ac-b6d08826e85e",
+      "x-ms-client-request-id" : "3129cf7e-6de7-4c16-91a6-fd4fd5dcc335",
       "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
       "content-length" : "0",
       "Schema-Version" : "2",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch73406da29",
+      "Schema-Name" : "sch21544eb4c",
       "retry-after" : "0",
-      "Schema-Id-Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/$schemas/b2df641bc2b24794b8c9bd12fa4c0980?api-version=2022-10",
+      "Schema-Id-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/$schemas/c147d6f0a4f04e41ba1cac98a6d5fa6d?api-version=2022-10",
       "StatusCode" : "204",
-      "Date" : "Mon, 07 Nov 2022 22:56:56 GMT",
+      "Date" : "Mon, 14 Nov 2022 23:15:37 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "b2df641bc2b24794b8c9bd12fa4c0980",
-      "Schema-Group-Name" : "azsdk_python_test_group",
-      "Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/azsdk_python_test_group/schemas/sch73406da29/versions/2?api-version=2022-10",
-      "Schema-Versions-Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/azsdk_python_test_group/schemas/sch73406da29/versions?api-version=2022-10"
+      "Schema-Id" : "c147d6f0a4f04e41ba1cac98a6d5fa6d",
+      "Schema-Group-Name" : "azsdk_java_group",
+      "Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch21544eb4c/versions/2?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch21544eb4c/versions?api-version=2022-10"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/b2df641bc2b24794b8c9bd12fa4c0980?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/c147d6f0a4f04e41ba1cac98a6d5fa6d?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "37d28d4f-e74c-483a-8236-ec741b5b7430"
+      "x-ms-client-request-id" : "af90fa14-fd9b-4fd9-8eee-2b5eb5baa04a"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Schema-Version" : "2",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch73406da29",
+      "Schema-Name" : "sch21544eb4c",
       "retry-after" : "0",
-      "Schema-Id-Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/$schemas/b2df641bc2b24794b8c9bd12fa4c0980?api-version=2022-10",
+      "Schema-Id-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/$schemas/c147d6f0a4f04e41ba1cac98a6d5fa6d?api-version=2022-10",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Nov 2022 22:56:59 GMT",
+      "Date" : "Mon, 14 Nov 2022 23:15:43 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "b2df641bc2b24794b8c9bd12fa4c0980",
-      "Schema-Group-Name" : "azsdk_python_test_group",
+      "Schema-Id" : "c147d6f0a4f04e41ba1cac98a6d5fa6d",
+      "Schema-Group-Name" : "azsdk_java_group",
       "Body" : "{\"type\":\"record\",\"namespace\":\"TestSchema\",\"name\":\"Employee\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"Age\",\"type\":\"int\"},{\"name\":\"Sign\",\"type\":\"string\"}]}",
       "Content-Type" : "application/json;serialization=Avro",
-      "Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/azsdk_python_test_group/schemas/sch73406da29/versions/2?api-version=2022-10",
-      "Schema-Versions-Location" : "https://swathipschemaregistry-avro.servicebus.windows.net:443/$schemagroups/azsdk_python_test_group/schemas/sch73406da29/versions?api-version=2022-10"
+      "Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch21544eb4c/versions/2?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch21544eb4c/versions?api-version=2022-10"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch73406da29" ]
+  "variables" : [ "sch21544eb4c" ]
 }
