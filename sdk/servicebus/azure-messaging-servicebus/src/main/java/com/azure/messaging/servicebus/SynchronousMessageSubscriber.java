@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Operators;
@@ -37,6 +38,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
+    private final boolean isReceiveDeleteMode;
 
     private volatile SynchronousReceiveWork currentWork;
 
@@ -78,6 +80,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
         this.isPrefetchDisabled = isPrefetchDisabled;
+        this.isReceiveDeleteMode = asyncClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.RECEIVE_AND_DELETE;
         if (initialWork.getNumberOfEvents() < 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
@@ -200,6 +203,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 boolean isEmitted = false;
                 while (!isEmitted) {
                     currentDownstream = getOrUpdateCurrentWork();
+                    // If no downstream and is RECEIVE_AND_DELETE mode, re-buffer message and return.
+                    if (currentDownstream == null && isReceiveDeleteMode) {
+                        bufferMessages.addFirst(message);
+                        return;
+                    }
                     if (currentDownstream == null) {
                         break;
                     }
@@ -208,10 +216,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 }
 
                 if (!isEmitted) {
-                    // The only reason we can't emit was the downstream(s) were terminated hence nobody
-                    // to receive the message.
                     if (isPrefetchDisabled) {
-                        // release is enabled only for no-prefetch scenario.
+                        // When Prefetch is disabled, for the receive mode that influences the delivery count
+                        // (today, only PeekLock ReceiveMode), we try to release undelivered messages to adjust
+                        // the delivery count on the broker.
                         asyncClient.release(message).subscribe(__ -> { },
                             error -> LOGGER.atWarning()
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
