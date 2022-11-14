@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 
 /**
@@ -24,6 +25,10 @@ public final class MessageDigestChecksum implements Checksum {
         digest.update(b, off, len);
     }
 
+    @Override
+    public void update(ByteBuffer buffer) {
+        digest.update(buffer);
+    }
 
     public byte[] getValue() {
         return digest.digest();

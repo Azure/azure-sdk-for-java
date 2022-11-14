@@ -503,6 +503,15 @@
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
+  <!-- Internal methods feed directly into autorest apis that expect null if the header should be omitted. -->
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.common.implementation.ChecksumUtils"/>
+      <Class name="com.azure.storage.common.implementation.ChecksumValue"/>
+    </Or>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
   <!-- The public field already exists in the public API surface area -->
   <Match>
     <Class name="~com\.microsoft\.azure\.servicebus\.(TransactionContext|management\.ManagementClientConstants)"/>

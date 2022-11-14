@@ -3,6 +3,8 @@
 
 package com.azure.storage.common;
 
+import com.azure.core.util.CoreUtils;
+
 /**
  * Options for additional content integrity checks on upload.
  */
@@ -42,7 +44,7 @@ public class UploadTransferValidationOptions {
      * @return the checksum value.
      */
     public byte[] getPrecalculatedChecksum() {
-        return precalculatedChecksum;
+        return CoreUtils.clone(precalculatedChecksum);
     }
 
     /**
@@ -54,7 +56,7 @@ public class UploadTransferValidationOptions {
      * @return The updated options
      */
     public UploadTransferValidationOptions setPrecalculatedChecksum(byte[] precalculatedChecksum) {
-        this.precalculatedChecksum = precalculatedChecksum;
+        this.precalculatedChecksum = CoreUtils.clone(precalculatedChecksum);
         return this;
     }
 }

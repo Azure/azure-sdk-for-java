@@ -22,6 +22,8 @@ public final class StorageCrc64Checksum implements Checksum {
         crc = StorageCrc64Calculator.computeSlicedSafe(b, off, len, crc);
     }
 
+    // TODO (jaschrep): convert StorageCrc64Calculator to use ByteBuffer for optimization
+
     @Override
     public byte[] getValue() {
         return getCrcBytes(crc);

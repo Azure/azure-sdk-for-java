@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.UploadTransferValidationOptions;
 
@@ -34,7 +35,7 @@ public class ChecksumValue {
      * @return Bytes of the checksum.
      */
     public byte[] getChecksum() {
-        return checksum;
+        return CoreUtils.clone(checksum);
     }
 
     /**
@@ -51,7 +52,7 @@ public class ChecksumValue {
      */
     public byte[] getMd5() {
         return algorithm == StorageChecksumAlgorithm.MD5
-            ? checksum : null;
+            ? getChecksum() : null;
     }
 
     /**
@@ -60,6 +61,6 @@ public class ChecksumValue {
      */
     public byte[] getCrc64() {
         return algorithm == StorageChecksumAlgorithm.StorageCrc64
-            ? checksum : null;
+            ? getChecksum() : null;
     }
 }
