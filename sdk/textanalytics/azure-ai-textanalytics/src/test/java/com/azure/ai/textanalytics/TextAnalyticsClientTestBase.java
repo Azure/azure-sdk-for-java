@@ -4,9 +4,9 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.AgeResolution;
 import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -70,7 +70,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.WeightResolution;
 import com.azure.ai.textanalytics.models.WeightUnit;
-import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
+import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
@@ -1470,8 +1470,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void abstractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner, Integer maxSentenceCount) {
         testRunner.accept(SUMMARY_INPUTS,
             new TextAnalyticsActions()
-                .setAbstractiveSummaryActions(
-                    new AbstractiveSummaryAction().setMaxSentenceCount(maxSentenceCount)));
+                .setAbstractSummaryActions(
+                    new AbstractSummaryAction().setMaxSentenceCount(maxSentenceCount)));
     }
 
     // Dynamic classification
@@ -2087,9 +2087,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateExtractSummaryActionResults(showStatistics,
             expected.getExtractSummaryResults().stream().collect(Collectors.toList()),
             actual.getExtractSummaryResults().stream().collect(Collectors.toList()));
-        validateAbstractiveSummaryActionResults(showStatistics,
-            expected.getAbstractiveSummaryResults().stream().collect(Collectors.toList()),
-            actual.getAbstractiveSummaryResults().stream().collect(Collectors.toList()));
+        validateAbstractSummaryActionResults(showStatistics,
+            expected.getAbstractSummaryResults().stream().collect(Collectors.toList()),
+            actual.getAbstractSummaryResults().stream().collect(Collectors.toList()));
     }
 
     // Action results validation
@@ -2462,17 +2462,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return true;
     }
 
-    static void validateAbstractiveSummaryActionResults(boolean showStatistics,
-                                                        List<AbstractiveSummaryActionResult> expected,
-                                                        List<AbstractiveSummaryActionResult> actual) {
+    static void validateAbstractSummaryActionResults(boolean showStatistics,
+        List<AbstractSummaryActionResult> expected, List<AbstractSummaryActionResult> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
-            validateAbstractiveSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
+            validateAbstractSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
-    static void validateAbstractiveSummaryActionResult(boolean showStatistics,
-                                                       AbstractiveSummaryActionResult expected, AbstractiveSummaryActionResult actual) {
+    static void validateAbstractSummaryActionResult(boolean showStatistics,
+                                                       AbstractSummaryActionResult expected, AbstractSummaryActionResult actual) {
         assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
             if (expected.getError() == null) {
@@ -2488,13 +2487,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void validateAbstractiveSummaryResultCollection(boolean showStatistics,
-                                                           AbstractiveSummaryResultCollection expected, AbstractiveSummaryResultCollection actual) {
+                                                           AbstractSummaryResultCollection expected, AbstractSummaryResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual,
                 (expectedItem, actualItem) -> validateDocumentAbstractiveSummaryResult(expectedItem, actualItem));
     }
 
-    static void validateDocumentAbstractiveSummaryResult(AbstractiveSummaryResult expect,
-                                                         AbstractiveSummaryResult actual) {
+    static void validateDocumentAbstractiveSummaryResult(AbstractSummaryResult expect,
+                                                         AbstractSummaryResult actual) {
         validateAbstractiveSummaries(
                 expect.getSummaries().stream().collect(Collectors.toList()),
                 actual.getSummaries().stream().collect(Collectors.toList())
@@ -2511,8 +2510,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateAbstractiveSummary(AbstractiveSummary expect, AbstractiveSummary actual) {
         assertEquals(expect.getText(), actual.getText());
         validateSummaryContextList(
-                expect.getSummaryContexts().stream().collect(Collectors.toList()),
-                actual.getSummaryContexts().stream().collect(Collectors.toList()));
+                expect.getContexts().stream().collect(Collectors.toList()),
+                actual.getContexts().stream().collect(Collectors.toList()));
     }
 
     static void validateSummaryContextList(List<SummaryContext> expect, List<SummaryContext> actual) {

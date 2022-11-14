@@ -39,32 +39,32 @@ public final class TemporalSpanResolution extends BaseResolution {
 
     static {
         TemporalSpanResolutionPropertiesHelper.setAccessor(
-                new TemporalSpanResolutionPropertiesHelper.TemporalSpanResolutionAccessor() {
-                    @Override
-                    public void setBegin(TemporalSpanResolution temporalSpanResolution, String begin) {
-                        temporalSpanResolution.setBegin(begin);
-                    }
+            new TemporalSpanResolutionPropertiesHelper.TemporalSpanResolutionAccessor() {
+                @Override
+                public void setBegin(TemporalSpanResolution temporalSpanResolution, String begin) {
+                    temporalSpanResolution.setBegin(begin);
+                }
 
-                    @Override
-                    public void setEnd(TemporalSpanResolution temporalSpanResolution, String end) {
-                        temporalSpanResolution.setEnd(end);
-                    }
+                @Override
+                public void setEnd(TemporalSpanResolution temporalSpanResolution, String end) {
+                    temporalSpanResolution.setEnd(end);
+                }
 
-                    @Override
-                    public void setDuration(TemporalSpanResolution temporalSpanResolution, String duration) {
-                        temporalSpanResolution.setDuration(duration);
-                    }
+                @Override
+                public void setDuration(TemporalSpanResolution temporalSpanResolution, String duration) {
+                    temporalSpanResolution.setDuration(duration);
+                }
 
-                    @Override
-                    public void setModifier(TemporalSpanResolution temporalSpanResolution, TemporalModifier modifier) {
-                        temporalSpanResolution.setModifier(modifier);
-                    }
+                @Override
+                public void setModifier(TemporalSpanResolution temporalSpanResolution, TemporalModifier modifier) {
+                    temporalSpanResolution.setModifier(modifier);
+                }
 
-                    @Override
-                    public void setTimex(TemporalSpanResolution temporalSpanResolution, String timex) {
-                        temporalSpanResolution.setTimex(timex);
-                    }
-                });
+                @Override
+                public void setTimex(TemporalSpanResolution temporalSpanResolution, String timex) {
+                    temporalSpanResolution.setTimex(timex);
+                }
+            });
     }
 
     /**

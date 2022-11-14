@@ -171,13 +171,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
                     sink.complete();
                 }
             })
-            .flatMap(ignored -> {
-                if (System.nanoTime() < endNanoTime) {
-                    return runTestAsync();
-                } else {
-                    return Mono.just(0);
-                }
-            }, 1)
+            .flatMap(ignored -> runTestAsync(), 1)
             .doOnNext(result -> {
                 completedOperations += result;
                 lastCompletionNanoTime = System.nanoTime() - startNanoTime;
