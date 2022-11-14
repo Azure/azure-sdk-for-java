@@ -58,6 +58,10 @@ public final class NotebookAccessTokenResultInner {
     @JsonProperty(value = "scope", access = JsonProperty.Access.WRITE_ONLY)
     private String scope;
 
+    /** Creates an instance of NotebookAccessTokenResultInner class. */
+    public NotebookAccessTokenResultInner() {
+    }
+
     /**
      * Get the notebookResourceId property: The notebookResourceId property.
      *

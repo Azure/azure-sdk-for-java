@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Compute List. */
 public final class ComputeListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/list.json
      */
     /**
      * Sample code: Get Computes.

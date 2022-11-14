@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ModelSize. */
+/** Image model size. */
 public final class ModelSize extends ExpandableStringEnum<ModelSize> {
     /** Static value None for ModelSize. */
     public static final ModelSize NONE = fromString("None");

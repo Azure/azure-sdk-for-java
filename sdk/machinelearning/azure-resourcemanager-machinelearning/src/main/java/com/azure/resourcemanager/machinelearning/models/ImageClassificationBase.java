@@ -18,11 +18,14 @@ public class ImageClassificationBase extends ImageVertical {
     private ImageModelSettingsClassification modelSettings;
 
     /*
-     * Search space for sampling different combinations of models and their
-     * hyperparameters.
+     * Search space for sampling different combinations of models and their hyperparameters.
      */
     @JsonProperty(value = "searchSpace")
     private List<ImageModelDistributionSettingsClassification> searchSpace;
+
+    /** Creates an instance of ImageClassificationBase class. */
+    public ImageClassificationBase() {
+    }
 
     /**
      * Get the modelSettings property: Settings used for training the model.
@@ -68,13 +71,6 @@ public class ImageClassificationBase extends ImageVertical {
 
     /** {@inheritDoc} */
     @Override
-    public ImageClassificationBase withDataSettings(ImageVerticalDataSettings dataSettings) {
-        super.withDataSettings(dataSettings);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public ImageClassificationBase withLimitSettings(ImageLimitSettings limitSettings) {
         super.withLimitSettings(limitSettings);
         return this;
@@ -84,6 +80,20 @@ public class ImageClassificationBase extends ImageVertical {
     @Override
     public ImageClassificationBase withSweepSettings(ImageSweepSettings sweepSettings) {
         super.withSweepSettings(sweepSettings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageClassificationBase withValidationData(MLTableJobInput validationData) {
+        super.withValidationData(validationData);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageClassificationBase withValidationDataSize(Double validationDataSize) {
+        super.withValidationDataSize(validationDataSize);
         return this;
     }
 

@@ -136,19 +136,21 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
                 Mono<SnapshotInner> result = Mono.just(inner);
                 if (inner.copyCompletionError() != null) { // service error
                     result = Mono.error(new ManagementException(inner.copyCompletionError().errorMessage(), null));
-                } else if (inner.completionPercent() == null || inner.completionPercent() != 100) { // in progress
-                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.",
-                        inner.name(), inner.completionPercent());
-                    result = Mono.empty();
                 }
                 return result;
             })
-            .repeatWhenEmpty(longFlux ->
-                longFlux
-                    .flatMap(
-                        index ->
-                            Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
-                                manager().serviceClient().getDefaultPollInterval()))))
+            .delaySubscription(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
+                manager().serviceClient().getDefaultPollInterval()))
+            .repeat()
+            .takeUntil(inner -> {
+                if (Float.valueOf(100).equals(inner.completionPercent())) {
+                    return true;
+                } else { // in progress
+                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.",
+                        inner.name(), inner.completionPercent());
+                    return false;
+                }
+            })
             .then();
     }
 

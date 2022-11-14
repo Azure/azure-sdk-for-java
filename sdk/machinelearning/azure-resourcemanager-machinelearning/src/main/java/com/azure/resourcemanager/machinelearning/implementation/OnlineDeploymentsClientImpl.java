@@ -35,11 +35,11 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.OnlineDeploymentsClient;
 import com.azure.resourcemanager.machinelearning.fluent.models.DeploymentLogsInner;
-import com.azure.resourcemanager.machinelearning.fluent.models.OnlineDeploymentDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.OnlineDeploymentInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.SkuResourceInner;
 import com.azure.resourcemanager.machinelearning.models.DeploymentLogsRequest;
 import com.azure.resourcemanager.machinelearning.models.OnlineDeploymentTrackedResourceArmPaginatedResult;
-import com.azure.resourcemanager.machinelearning.models.PartialOnlineDeploymentPartialTrackedResource;
+import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedResourceWithSku;
 import com.azure.resourcemanager.machinelearning.models.SkuResourceArmPaginatedResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -116,7 +116,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OnlineDeploymentDataInner>> get(
+        Mono<Response<OnlineDeploymentInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -142,7 +142,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             @PathParam("endpointName") String endpointName,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PartialOnlineDeploymentPartialTrackedResource body,
+            @BodyParam("application/json") PartialMinimalTrackedResourceWithSku body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -161,7 +161,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             @PathParam("endpointName") String endpointName,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") OnlineDeploymentDataInner body,
+            @BodyParam("application/json") OnlineDeploymentInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -241,7 +241,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineDeploymentDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<OnlineDeploymentInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -282,7 +282,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
                             skip,
                             accept,
                             context))
-            .<PagedResponse<OnlineDeploymentDataInner>>map(
+            .<PagedResponse<OnlineDeploymentInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -311,7 +311,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineDeploymentDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<OnlineDeploymentInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -382,7 +382,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineDeploymentDataInner> listAsync(
+    private PagedFlux<OnlineDeploymentInner> listAsync(
         String resourceGroupName, String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, endpointName, orderBy, top, skip),
@@ -401,7 +401,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineDeploymentDataInner> listAsync(
+    private PagedFlux<OnlineDeploymentInner> listAsync(
         String resourceGroupName, String workspaceName, String endpointName) {
         final String orderBy = null;
         final Integer top = null;
@@ -427,7 +427,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineDeploymentDataInner> listAsync(
+    private PagedFlux<OnlineDeploymentInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -452,7 +452,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OnlineDeploymentDataInner> list(
+    public PagedIterable<OnlineDeploymentInner> list(
         String resourceGroupName, String workspaceName, String endpointName) {
         final String orderBy = null;
         final Integer top = null;
@@ -476,7 +476,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OnlineDeploymentDataInner> list(
+    public PagedIterable<OnlineDeploymentInner> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -775,7 +775,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OnlineDeploymentDataInner>> getWithResponseAsync(
+    private Mono<Response<OnlineDeploymentInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -834,7 +834,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OnlineDeploymentDataInner>> getWithResponseAsync(
+    private Mono<Response<OnlineDeploymentInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -889,28 +889,10 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentDataInner> getAsync(
+    private Mono<OnlineDeploymentInner> getAsync(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get Inference Deployment Deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Inference endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inference Deployment Deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentDataInner get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        return getAsync(resourceGroupName, workspaceName, endpointName, deploymentName).block();
     }
 
     /**
@@ -927,9 +909,27 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OnlineDeploymentDataInner> getWithResponse(
+    public Response<OnlineDeploymentInner> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context).block();
+    }
+
+    /**
+     * Get Inference Deployment Deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Inference endpoint name.
+     * @param deploymentName Inference Endpoint Deployment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return inference Deployment Deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OnlineDeploymentInner get(
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+        return getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE).getValue();
     }
 
     /**
@@ -951,7 +951,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithSku body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1021,7 +1021,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithSku body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1083,21 +1083,21 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginUpdateAsync(
+    private PollerFlux<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithSku body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
         return this
             .client
-            .<OnlineDeploymentDataInner, OnlineDeploymentDataInner>getLroResult(
+            .<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                OnlineDeploymentDataInner.class,
-                OnlineDeploymentDataInner.class,
+                OnlineDeploymentInner.class,
+                OnlineDeploymentInner.class,
                 this.client.getContext());
     }
 
@@ -1116,24 +1116,20 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginUpdateAsync(
+    private PollerFlux<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithSku body,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
         return this
             .client
-            .<OnlineDeploymentDataInner, OnlineDeploymentDataInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OnlineDeploymentDataInner.class,
-                OnlineDeploymentDataInner.class,
-                context);
+            .<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(
+                mono, this.client.getHttpPipeline(), OnlineDeploymentInner.class, OnlineDeploymentInner.class, context);
     }
 
     /**
@@ -1150,12 +1146,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginUpdate(
+    public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithSku body) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).getSyncPoller();
     }
 
@@ -1174,12 +1170,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginUpdate(
+    public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithSku body,
         Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
@@ -1199,12 +1195,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentDataInner> updateAsync(
+    private Mono<OnlineDeploymentInner> updateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithSku body) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1225,12 +1221,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentDataInner> updateAsync(
+    private Mono<OnlineDeploymentInner> updateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithSku body,
         Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .last()
@@ -1251,12 +1247,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentDataInner update(
+    public OnlineDeploymentInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithSku body) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
     }
 
@@ -1275,12 +1271,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentDataInner update(
+    public OnlineDeploymentInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithSku body,
         Context context) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context).block();
     }
@@ -1304,7 +1300,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body) {
+        OnlineDeploymentInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1374,7 +1370,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body,
+        OnlineDeploymentInner body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1436,21 +1432,21 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginCreateOrUpdateAsync(
+    private PollerFlux<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body) {
+        OnlineDeploymentInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
         return this
             .client
-            .<OnlineDeploymentDataInner, OnlineDeploymentDataInner>getLroResult(
+            .<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                OnlineDeploymentDataInner.class,
-                OnlineDeploymentDataInner.class,
+                OnlineDeploymentInner.class,
+                OnlineDeploymentInner.class,
                 this.client.getContext());
     }
 
@@ -1469,12 +1465,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginCreateOrUpdateAsync(
+    private PollerFlux<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body,
+        OnlineDeploymentInner body,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1482,12 +1478,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
                 resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
         return this
             .client
-            .<OnlineDeploymentDataInner, OnlineDeploymentDataInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OnlineDeploymentDataInner.class,
-                OnlineDeploymentDataInner.class,
-                context);
+            .<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(
+                mono, this.client.getHttpPipeline(), OnlineDeploymentInner.class, OnlineDeploymentInner.class, context);
     }
 
     /**
@@ -1504,12 +1496,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginCreateOrUpdate(
+    public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body) {
+        OnlineDeploymentInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .getSyncPoller();
     }
@@ -1529,12 +1521,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginCreateOrUpdate(
+    public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body,
+        OnlineDeploymentInner body,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
@@ -1554,12 +1546,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentDataInner> createOrUpdateAsync(
+    private Mono<OnlineDeploymentInner> createOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body) {
+        OnlineDeploymentInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1580,12 +1572,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentDataInner> createOrUpdateAsync(
+    private Mono<OnlineDeploymentInner> createOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body,
+        OnlineDeploymentInner body,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .last()
@@ -1606,12 +1598,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentDataInner createOrUpdate(
+    public OnlineDeploymentInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body) {
+        OnlineDeploymentInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
     }
 
@@ -1630,12 +1622,12 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentDataInner createOrUpdate(
+    public OnlineDeploymentInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body,
+        OnlineDeploymentInner body,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .block();
@@ -1810,29 +1802,6 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @param endpointName Inference endpoint name.
      * @param deploymentName The name and identifier for the endpoint.
      * @param body The request containing parameters for retrieving logs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentLogsInner getLogs(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body) {
-        return getLogsAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
-    }
-
-    /**
-     * Polls an Endpoint operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Inference endpoint name.
-     * @param deploymentName The name and identifier for the endpoint.
-     * @param body The request containing parameters for retrieving logs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1849,6 +1818,30 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         Context context) {
         return getLogsWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .block();
+    }
+
+    /**
+     * Polls an Endpoint operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Inference endpoint name.
+     * @param deploymentName The name and identifier for the endpoint.
+     * @param body The request containing parameters for retrieving logs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentLogsInner getLogs(
+        String resourceGroupName,
+        String workspaceName,
+        String endpointName,
+        String deploymentName,
+        DeploymentLogsRequest body) {
+        return getLogsWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2136,7 +2129,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2144,7 +2138,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineDeploymentDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<OnlineDeploymentInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2157,7 +2151,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OnlineDeploymentDataInner>>map(
+            .<PagedResponse<OnlineDeploymentInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -2172,7 +2166,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2181,7 +2176,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineDeploymentDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<OnlineDeploymentInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2209,7 +2204,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2245,7 +2241,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

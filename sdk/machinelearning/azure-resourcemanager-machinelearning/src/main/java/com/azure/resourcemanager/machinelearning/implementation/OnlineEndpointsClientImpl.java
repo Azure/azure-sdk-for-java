@@ -36,11 +36,11 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.OnlineEndpointsClient;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthKeysInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthTokenInner;
-import com.azure.resourcemanager.machinelearning.fluent.models.OnlineEndpointDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.OnlineEndpointInner;
 import com.azure.resourcemanager.machinelearning.models.EndpointComputeType;
 import com.azure.resourcemanager.machinelearning.models.OnlineEndpointTrackedResourceArmPaginatedResult;
 import com.azure.resourcemanager.machinelearning.models.OrderString;
-import com.azure.resourcemanager.machinelearning.models.PartialOnlineEndpointPartialTrackedResource;
+import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedResourceWithIdentity;
 import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -116,7 +116,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OnlineEndpointDataInner>> get(
+        Mono<Response<OnlineEndpointInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -139,7 +139,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             @PathParam("workspaceName") String workspaceName,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PartialOnlineEndpointPartialTrackedResource body,
+            @BodyParam("application/json") PartialMinimalTrackedResourceWithIdentity body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -156,7 +156,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             @PathParam("workspaceName") String workspaceName,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") OnlineEndpointDataInner body,
+            @BodyParam("application/json") OnlineEndpointInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -243,7 +243,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineEndpointDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<OnlineEndpointInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -292,7 +292,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
                             orderBy,
                             accept,
                             context))
-            .<PagedResponse<OnlineEndpointDataInner>>map(
+            .<PagedResponse<OnlineEndpointInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -326,7 +326,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineEndpointDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<OnlineEndpointInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -405,7 +405,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineEndpointDataInner> listAsync(
+    private PagedFlux<OnlineEndpointInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -433,7 +433,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineEndpointDataInner> listAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<OnlineEndpointInner> listAsync(String resourceGroupName, String workspaceName) {
         final String name = null;
         final Integer count = null;
         final EndpointComputeType computeType = null;
@@ -469,7 +469,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineEndpointDataInner> listAsync(
+    private PagedFlux<OnlineEndpointInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -507,7 +507,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OnlineEndpointDataInner> list(String resourceGroupName, String workspaceName) {
+    public PagedIterable<OnlineEndpointInner> list(String resourceGroupName, String workspaceName) {
         final String name = null;
         final Integer count = null;
         final EndpointComputeType computeType = null;
@@ -540,7 +540,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OnlineEndpointDataInner> list(
+    public PagedIterable<OnlineEndpointInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -820,7 +820,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return online Endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OnlineEndpointDataInner>> getWithResponseAsync(
+    private Mono<Response<OnlineEndpointInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String endpointName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -874,7 +874,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return online Endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OnlineEndpointDataInner>> getWithResponseAsync(
+    private Mono<Response<OnlineEndpointInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -924,26 +924,9 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return online Endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineEndpointDataInner> getAsync(
-        String resourceGroupName, String workspaceName, String endpointName) {
+    private Mono<OnlineEndpointInner> getAsync(String resourceGroupName, String workspaceName, String endpointName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get Online Endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return online Endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineEndpointDataInner get(String resourceGroupName, String workspaceName, String endpointName) {
-        return getAsync(resourceGroupName, workspaceName, endpointName).block();
     }
 
     /**
@@ -959,9 +942,25 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return online Endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OnlineEndpointDataInner> getWithResponse(
+    public Response<OnlineEndpointInner> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, context).block();
+    }
+
+    /**
+     * Get Online Endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Online Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return online Endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OnlineEndpointInner get(String resourceGroupName, String workspaceName, String endpointName) {
+        return getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
     }
 
     /**
@@ -981,7 +980,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1045,7 +1044,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1102,20 +1101,20 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginUpdateAsync(
+    private PollerFlux<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, body);
         return this
             .client
-            .<OnlineEndpointDataInner, OnlineEndpointDataInner>getLroResult(
+            .<OnlineEndpointInner, OnlineEndpointInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                OnlineEndpointDataInner.class,
-                OnlineEndpointDataInner.class,
+                OnlineEndpointInner.class,
+                OnlineEndpointInner.class,
                 this.client.getContext());
     }
 
@@ -1133,23 +1132,19 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginUpdateAsync(
+    private PollerFlux<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, body, context);
         return this
             .client
-            .<OnlineEndpointDataInner, OnlineEndpointDataInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OnlineEndpointDataInner.class,
-                OnlineEndpointDataInner.class,
-                context);
+            .<OnlineEndpointInner, OnlineEndpointInner>getLroResult(
+                mono, this.client.getHttpPipeline(), OnlineEndpointInner.class, OnlineEndpointInner.class, context);
     }
 
     /**
@@ -1165,11 +1160,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginUpdate(
+    public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
@@ -1187,11 +1182,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginUpdate(
+    public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
     }
@@ -1209,11 +1204,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineEndpointDataInner> updateAsync(
+    private Mono<OnlineEndpointInner> updateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1233,11 +1228,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineEndpointDataInner> updateAsync(
+    private Mono<OnlineEndpointInner> updateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context)
             .last()
@@ -1257,11 +1252,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineEndpointDataInner update(
+    public OnlineEndpointInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, body).block();
     }
 
@@ -1279,11 +1274,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineEndpointDataInner update(
+    public OnlineEndpointInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, body, context).block();
     }
@@ -1302,7 +1297,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointDataInner body) {
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1366,7 +1361,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        OnlineEndpointDataInner body,
+        OnlineEndpointInner body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1423,17 +1418,17 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointDataInner body) {
+    private PollerFlux<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, body);
         return this
             .client
-            .<OnlineEndpointDataInner, OnlineEndpointDataInner>getLroResult(
+            .<OnlineEndpointInner, OnlineEndpointInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                OnlineEndpointDataInner.class,
-                OnlineEndpointDataInner.class,
+                OnlineEndpointInner.class,
+                OnlineEndpointInner.class,
                 this.client.getContext());
     }
 
@@ -1451,23 +1446,19 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginCreateOrUpdateAsync(
+    private PollerFlux<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        OnlineEndpointDataInner body,
+        OnlineEndpointInner body,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, body, context);
         return this
             .client
-            .<OnlineEndpointDataInner, OnlineEndpointDataInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OnlineEndpointDataInner.class,
-                OnlineEndpointDataInner.class,
-                context);
+            .<OnlineEndpointInner, OnlineEndpointInner>getLroResult(
+                mono, this.client.getHttpPipeline(), OnlineEndpointInner.class, OnlineEndpointInner.class, context);
     }
 
     /**
@@ -1483,8 +1474,8 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointDataInner body) {
+    public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
@@ -1502,11 +1493,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginCreateOrUpdate(
+    public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        OnlineEndpointDataInner body,
+        OnlineEndpointInner body,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
     }
@@ -1524,8 +1515,8 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineEndpointDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointDataInner body) {
+    private Mono<OnlineEndpointInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1545,11 +1536,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineEndpointDataInner> createOrUpdateAsync(
+    private Mono<OnlineEndpointInner> createOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        OnlineEndpointDataInner body,
+        OnlineEndpointInner body,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context)
             .last()
@@ -1569,8 +1560,8 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineEndpointDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointDataInner body) {
+    public OnlineEndpointInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body).block();
     }
 
@@ -1588,11 +1579,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineEndpointDataInner createOrUpdate(
+    public OnlineEndpointInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        OnlineEndpointDataInner body,
+        OnlineEndpointInner body,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).block();
     }
@@ -1725,22 +1716,6 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointAuthKeysInner listKeys(String resourceGroupName, String workspaceName, String endpointName) {
-        return listKeysAsync(resourceGroupName, workspaceName, endpointName).block();
-    }
-
-    /**
-     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Online Endpoint name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1751,6 +1726,22 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     public Response<EndpointAuthKeysInner> listKeysWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, workspaceName, endpointName, context).block();
+    }
+
+    /**
+     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Online Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keys for endpoint authentication.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EndpointAuthKeysInner listKeys(String resourceGroupName, String workspaceName, String endpointName) {
+        return listKeysWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
     }
 
     /**
@@ -2179,22 +2170,6 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Token.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointAuthTokenInner getToken(String resourceGroupName, String workspaceName, String endpointName) {
-        return getTokenAsync(resourceGroupName, workspaceName, endpointName).block();
-    }
-
-    /**
-     * Retrieve a valid AAD token for an Endpoint using AMLToken-based authentication.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Online Endpoint name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2208,9 +2183,26 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     }
 
     /**
+     * Retrieve a valid AAD token for an Endpoint using AMLToken-based authentication.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Online Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service Token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EndpointAuthTokenInner getToken(String resourceGroupName, String workspaceName, String endpointName) {
+        return getTokenWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2218,7 +2210,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineEndpointDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<OnlineEndpointInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2231,7 +2223,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OnlineEndpointDataInner>>map(
+            .<PagedResponse<OnlineEndpointInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -2246,7 +2238,8 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2255,7 +2248,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineEndpointDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<OnlineEndpointInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

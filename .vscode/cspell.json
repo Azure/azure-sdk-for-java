@@ -1,3 +1,4 @@
+
 {
   "version": "0.2",
   "language": "en",
@@ -130,6 +131,7 @@
     "sdk/core/azure-json-gson/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
     "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-spring-data-cosmos-test/**",
@@ -265,6 +267,11 @@
     "azurestackhci",
     "backoff",
     "boringssl",
+    "Dgpg",
+    "Dskip",
+    "mvnw",
+    "TBLPROPERTIES",
+    "Cyclomatic",
     "branchcoverage",
     "cacerts",
     "checkstyle",
@@ -295,6 +302,7 @@
     "eastus",
     "embedme",
     "encryptor",
+    "endtoend",
     "etag",
     "eventhub",
     "eventhubs",
@@ -391,6 +399,78 @@
     "XLint"
   ],
   "overrides": [
+    {
+      "filename": "sdk/maps/azure-maps-traffic/README.md",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/ProjectionStandard.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/SpeedUnit.java",
+      "words": [
+        "KMPH"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentOptions.java",
+      "words": [
+        "EPSG", "KMPH"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficAsyncClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentDataProperties.java",
+      "words": [
+        "openlr"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewport.java",
+      "words": [
+        "viewp"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/samples/java/com/azure/maps/traffic/samples/GetTrafficIncidentDetail.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewportOptions.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/UnitType.java",
+      "words": [
+        "HECTO"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
+      "words": [
+        "Decibles"
+      ]
+    },
     {
       "filename": "**/pom.xml",
       "patterns": [

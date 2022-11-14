@@ -32,33 +32,16 @@ public class ImageModelSettings {
     private String augmentations;
 
     /*
-     * Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in
-     * the range [0, 1].
+     * Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "beta1")
     private Float beta1;
 
     /*
-     * Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in
-     * the range [0, 1].
+     * Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "beta2")
     private Float beta2;
-
-    /*
-     * FileDataset id for pretrained checkpoint(s) for incremental training.
-     * Make sure to pass CheckpointFilename along with CheckpointDatasetId.
-     */
-    @JsonProperty(value = "checkpointDatasetId")
-    private String checkpointDatasetId;
-
-    /*
-     * The pretrained checkpoint filename in FileDataset for incremental
-     * training.
-     * Make sure to pass CheckpointDatasetId along with CheckpointFilename.
-     */
-    @JsonProperty(value = "checkpointFilename")
-    private String checkpointFilename;
 
     /*
      * Frequency to store model checkpoints. Must be a positive integer.
@@ -67,8 +50,13 @@ public class ImageModelSettings {
     private Integer checkpointFrequency;
 
     /*
-     * The id of a previous run that has a pretrained checkpoint for
-     * incremental training.
+     * The pretrained checkpoint model for incremental training.
+     */
+    @JsonProperty(value = "checkpointModel")
+    private MLFlowModelJobInput checkpointModel;
+
+    /*
+     * The id of a previous run that has a pretrained checkpoint for incremental training.
      */
     @JsonProperty(value = "checkpointRunId")
     private String checkpointRunId;
@@ -86,16 +74,14 @@ public class ImageModelSettings {
     private Boolean earlyStopping;
 
     /*
-     * Minimum number of epochs or validation evaluations to wait before
-     * primary metric improvement
+     * Minimum number of epochs or validation evaluations to wait before primary metric improvement
      * is tracked for early stopping. Must be a positive integer.
      */
     @JsonProperty(value = "earlyStoppingDelay")
     private Integer earlyStoppingDelay;
 
     /*
-     * Minimum number of epochs or validation evaluations with no primary
-     * metric improvement before
+     * Minimum number of epochs or validation evaluations with no primary metric improvement before
      * the run is stopped. Must be a positive integer.
      */
     @JsonProperty(value = "earlyStoppingPatience")
@@ -108,19 +94,15 @@ public class ImageModelSettings {
     private Boolean enableOnnxNormalization;
 
     /*
-     * Frequency to evaluate validation dataset to get metric scores. Must be a
-     * positive integer.
+     * Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
      */
     @JsonProperty(value = "evaluationFrequency")
     private Integer evaluationFrequency;
 
     /*
-     * Gradient accumulation means running a configured number of
-     * "GradAccumulationStep"\  steps without
-     * updating the model weights while accumulating the gradients of those
-     * steps, and then using
-     * the accumulated gradients to compute the weight updates. Must be a
-     * positive integer.
+     * Gradient accumulation means running a configured number of "GradAccumulationStep"\  steps without
+     * updating the model weights while accumulating the gradients of those steps, and then using
+     * the accumulated gradients to compute the weight updates. Must be a positive integer.
      */
     @JsonProperty(value = "gradientAccumulationStep")
     private Integer gradientAccumulationStep;
@@ -128,10 +110,8 @@ public class ImageModelSettings {
     /*
      * Number of layers to freeze for the model. Must be a positive integer.
      * For instance, passing 2 as value for 'seresnext' means
-     * freezing layer0 and layer1. For a full list of models supported and
-     * details on layer freeze, please
-     * see:
-     * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+     * freezing layer0 and layer1. For a full list of models supported and details on layer freeze, please
+     * see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
      */
     @JsonProperty(value = "layersToFreeze")
     private Integer layersToFreeze;
@@ -150,16 +130,14 @@ public class ImageModelSettings {
 
     /*
      * Name of the model to use for training.
-     * For more information on the available models please visit the official
-     * documentation:
+     * For more information on the available models please visit the official documentation:
      * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
      */
     @JsonProperty(value = "modelName")
     private String modelName;
 
     /*
-     * Value of momentum when optimizer is 'sgd'. Must be a float in the range
-     * [0, 1].
+     * Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "momentum")
     private Float momentum;
@@ -195,24 +173,13 @@ public class ImageModelSettings {
     private Integer randomSeed;
 
     /*
-     * If validation data is not defined, this specifies the split ratio for
-     * splitting
-     * train data into random train and validation subsets. Must be a float in
-     * the range [0, 1].
-     */
-    @JsonProperty(value = "splitRatio")
-    private Float splitRatio;
-
-    /*
-     * Value of gamma when learning rate scheduler is 'step'. Must be a float
-     * in the range [0, 1].
+     * Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "stepLRGamma")
     private Float stepLRGamma;
 
     /*
-     * Value of step size when learning rate scheduler is 'step'. Must be a
-     * positive integer.
+     * Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
      */
     @JsonProperty(value = "stepLRStepSize")
     private Integer stepLRStepSize;
@@ -230,25 +197,26 @@ public class ImageModelSettings {
     private Integer validationBatchSize;
 
     /*
-     * Value of cosine cycle when learning rate scheduler is 'warmup_cosine'.
-     * Must be a float in the range [0, 1].
+     * Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
      */
     @JsonProperty(value = "warmupCosineLRCycles")
     private Float warmupCosineLRCycles;
 
     /*
-     * Value of warmup epochs when learning rate scheduler is 'warmup_cosine'.
-     * Must be a positive integer.
+     * Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
      */
     @JsonProperty(value = "warmupCosineLRWarmupEpochs")
     private Integer warmupCosineLRWarmupEpochs;
 
     /*
-     * Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must
-     * be a float in the range[0, 1].
+     * Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
      */
     @JsonProperty(value = "weightDecay")
     private Float weightDecay;
+
+    /** Creates an instance of ImageModelSettings class. */
+    public ImageModelSettings() {
+    }
 
     /**
      * Get the advancedSettings property: Settings for advanced scenarios.
@@ -355,50 +323,6 @@ public class ImageModelSettings {
     }
 
     /**
-     * Get the checkpointDatasetId property: FileDataset id for pretrained checkpoint(s) for incremental training. Make
-     * sure to pass CheckpointFilename along with CheckpointDatasetId.
-     *
-     * @return the checkpointDatasetId value.
-     */
-    public String checkpointDatasetId() {
-        return this.checkpointDatasetId;
-    }
-
-    /**
-     * Set the checkpointDatasetId property: FileDataset id for pretrained checkpoint(s) for incremental training. Make
-     * sure to pass CheckpointFilename along with CheckpointDatasetId.
-     *
-     * @param checkpointDatasetId the checkpointDatasetId value to set.
-     * @return the ImageModelSettings object itself.
-     */
-    public ImageModelSettings withCheckpointDatasetId(String checkpointDatasetId) {
-        this.checkpointDatasetId = checkpointDatasetId;
-        return this;
-    }
-
-    /**
-     * Get the checkpointFilename property: The pretrained checkpoint filename in FileDataset for incremental training.
-     * Make sure to pass CheckpointDatasetId along with CheckpointFilename.
-     *
-     * @return the checkpointFilename value.
-     */
-    public String checkpointFilename() {
-        return this.checkpointFilename;
-    }
-
-    /**
-     * Set the checkpointFilename property: The pretrained checkpoint filename in FileDataset for incremental training.
-     * Make sure to pass CheckpointDatasetId along with CheckpointFilename.
-     *
-     * @param checkpointFilename the checkpointFilename value to set.
-     * @return the ImageModelSettings object itself.
-     */
-    public ImageModelSettings withCheckpointFilename(String checkpointFilename) {
-        this.checkpointFilename = checkpointFilename;
-        return this;
-    }
-
-    /**
      * Get the checkpointFrequency property: Frequency to store model checkpoints. Must be a positive integer.
      *
      * @return the checkpointFrequency value.
@@ -415,6 +339,26 @@ public class ImageModelSettings {
      */
     public ImageModelSettings withCheckpointFrequency(Integer checkpointFrequency) {
         this.checkpointFrequency = checkpointFrequency;
+        return this;
+    }
+
+    /**
+     * Get the checkpointModel property: The pretrained checkpoint model for incremental training.
+     *
+     * @return the checkpointModel value.
+     */
+    public MLFlowModelJobInput checkpointModel() {
+        return this.checkpointModel;
+    }
+
+    /**
+     * Set the checkpointModel property: The pretrained checkpoint model for incremental training.
+     *
+     * @param checkpointModel the checkpointModel value to set.
+     * @return the ImageModelSettings object itself.
+     */
+    public ImageModelSettings withCheckpointModel(MLFlowModelJobInput checkpointModel) {
+        this.checkpointModel = checkpointModel;
         return this;
     }
 
@@ -801,28 +745,6 @@ public class ImageModelSettings {
     }
 
     /**
-     * Get the splitRatio property: If validation data is not defined, this specifies the split ratio for splitting
-     * train data into random train and validation subsets. Must be a float in the range [0, 1].
-     *
-     * @return the splitRatio value.
-     */
-    public Float splitRatio() {
-        return this.splitRatio;
-    }
-
-    /**
-     * Set the splitRatio property: If validation data is not defined, this specifies the split ratio for splitting
-     * train data into random train and validation subsets. Must be a float in the range [0, 1].
-     *
-     * @param splitRatio the splitRatio value to set.
-     * @return the ImageModelSettings object itself.
-     */
-    public ImageModelSettings withSplitRatio(Float splitRatio) {
-        this.splitRatio = splitRatio;
-        return this;
-    }
-
-    /**
      * Get the stepLRGamma property: Value of gamma when learning rate scheduler is 'step'. Must be a float in the range
      * [0, 1].
      *
@@ -978,5 +900,8 @@ public class ImageModelSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (checkpointModel() != null) {
+            checkpointModel().validate();
+        }
     }
 }

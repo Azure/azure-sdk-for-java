@@ -21,7 +21,7 @@ public interface ComponentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ComponentVersionData> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<ComponentVersion> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List component versions.
@@ -39,7 +39,7 @@ public interface ComponentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ComponentVersionData> list(
+    PagedIterable<ComponentVersion> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -48,19 +48,6 @@ public interface ComponentVersions {
         String skip,
         ListViewType listViewType,
         Context context);
-
-    /**
-     * Delete version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name.
-     * @param version Version identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Delete version.
@@ -79,6 +66,35 @@ public interface ComponentVersions {
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
+     * Delete version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String name, String version);
+
+    /**
+     * Get version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return version along with {@link Response}.
+     */
+    Response<ComponentVersion> getWithResponse(
+        String resourceGroupName, String workspaceName, String name, String version, Context context);
+
+    /**
      * Get version.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -90,23 +106,7 @@ public interface ComponentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version.
      */
-    ComponentVersionData get(String resourceGroupName, String workspaceName, String name, String version);
-
-    /**
-     * Get version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name.
-     * @param version Version identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version along with {@link Response}.
-     */
-    Response<ComponentVersionData> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    ComponentVersion get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -117,7 +117,7 @@ public interface ComponentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    ComponentVersionData getById(String id);
+    ComponentVersion getById(String id);
 
     /**
      * Get version.
@@ -129,7 +129,7 @@ public interface ComponentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<ComponentVersionData> getByIdWithResponse(String id, Context context);
+    Response<ComponentVersion> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete version.
@@ -154,10 +154,10 @@ public interface ComponentVersions {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new ComponentVersionData resource.
+     * Begins definition for a new ComponentVersion resource.
      *
      * @param name resource name.
-     * @return the first stage of the new ComponentVersionData definition.
+     * @return the first stage of the new ComponentVersion definition.
      */
-    ComponentVersionData.DefinitionStages.Blank define(String name);
+    ComponentVersion.DefinitionStages.Blank define(String name);
 }
