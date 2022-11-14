@@ -110,7 +110,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistrySchema schema1 = client2.getSchema(schemaIdToGet);
 
         // Assert
-        assertSchemaRegistrySchema(schema1, schemaIdToGet, SchemaFormat.AVRO, SCHEMA_CONTENT);
+        assertSchemaRegistrySchema(schema1, schemaIdToGet, schemaFormat, SCHEMA_CONTENT);
     }
 
     /**
