@@ -21,7 +21,7 @@ public class ChecksumValue {
                     throw new IllegalArgumentException("UploadChecksumValue does not support the given algorithm.");
                 }
         }
-        this.checksum = checksum;
+        this.checksum = CoreUtils.clone(checksum);
         this.algorithm = algorithm;
     }
 
