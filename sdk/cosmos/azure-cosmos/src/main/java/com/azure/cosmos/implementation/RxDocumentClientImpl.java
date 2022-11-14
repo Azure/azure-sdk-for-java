@@ -953,7 +953,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return tFeedResponse;
                 });
             // concurrency is set to the default to
-            // not affect latency by minimizing concurrency and prefetch
+            // not affect latency by minimizing prefetch
         }, Queues.SMALL_BUFFER_SIZE, 1);
     }
 
