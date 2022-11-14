@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
@@ -48,7 +48,7 @@ public final class AnalyzeActionsResultPropertiesHelper {
         void setMultiCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<MultiLabelClassifyActionResult> multiCategoryClassifyResults);
         void setAbstractiveSummaryResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults);
+            IterableStream<AbstractSummaryActionResult> abstractiveSummaryResults);
         void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
                                       IterableStream<ExtractSummaryActionResult> extractSummaryResults);
 
@@ -109,7 +109,7 @@ public final class AnalyzeActionsResultPropertiesHelper {
         accessor.setMultiCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoriesResults);
     }
     public static void setAbstractiveSummaryResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults) {
+        IterableStream<AbstractSummaryActionResult> abstractiveSummaryResults) {
         accessor.setAbstractiveSummaryResults(analyzeActionsResult, abstractiveSummaryResults);
     }
 

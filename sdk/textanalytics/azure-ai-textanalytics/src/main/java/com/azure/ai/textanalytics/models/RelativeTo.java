@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for RelativeTo. */
 public final class RelativeTo extends ExpandableStringEnum<RelativeTo> {
     /** Static value Current for RelativeTo. */
@@ -26,14 +24,5 @@ public final class RelativeTo extends ExpandableStringEnum<RelativeTo> {
      */
     public static RelativeTo fromString(String name) {
         return fromString(name, RelativeTo.class);
-    }
-
-    /**
-     * Gets known RelativeTo values.
-     *
-     * @return known RelativeTo values.
-     */
-    public static Collection<RelativeTo> values() {
-        return values(RelativeTo.class);
     }
 }

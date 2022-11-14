@@ -16,8 +16,8 @@
   `InformationUnit`, `LengthUnit`, `NumberKind`, `RangeKind`, `RelativeTo`, `SpeedUnit`, `TemperatureUnit`,
   `VolumeUnit`, and `WeightUnit`.
 - Added the Extractive Summarization feature and related models: `ExtractSummaryAction`, `ExtractSummaryActionResult`,
-  `ExtractSummaryResultCollection`, `ExtractSummaryResult`, `SummarySentenceCollection`, `SummarySentence` 
-  and `SummarySentenceOrder`. Access the feature through the `beginAnalyzeActions` API.
+  `ExtractSummaryResultCollection`, `ExtractSummaryResult`, `SummarySentence` and `SummarySentencesOrder`. 
+  Access the feature through the `beginAnalyzeActions` API.
 - Added the Abstractive Summarization feature and related models: `AbstractSummaryAction`, `AbstractSummaryActionResult`,
  `AbstractSummaryResultCollection`, `AbstractSummaryResult`, `AbstractiveSummary`, and `SummaryContext`. 
   Access the feature through the `beginAnalyzeActions` API.

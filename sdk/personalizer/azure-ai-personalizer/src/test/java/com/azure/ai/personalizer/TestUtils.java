@@ -39,13 +39,6 @@ public final class TestUtils {
 
     public static final String INVALID_KEY = "invalid key";
 
-    public static final String AZURE_CLIENT_ID
-        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID");
-    public static final String AZURE_TENANT_ID
-        = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
-    public static final String AZURE_PERSONALIZER_CLIENT_SECRET
-        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
-
     public static PersonalizerAudience getAudience(String endpoint) {
         String authority = getAuthority(endpoint);
         switch (authority) {
