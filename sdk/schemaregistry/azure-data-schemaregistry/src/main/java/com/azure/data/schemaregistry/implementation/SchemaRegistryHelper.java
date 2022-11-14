@@ -15,13 +15,25 @@ import com.azure.data.schemaregistry.implementation.models.SchemasRegisterRespon
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
  * Helper to access private-package methods of models.
  */
 public final class SchemaRegistryHelper {
+    private static final HashMap<String, SchemaFormatImpl> SCHEMA_FORMAT_HASH_MAP = new HashMap<>();
     private static SchemaRegistryModelsAccessor accessor;
+
+    static {
+        SchemaFormatImpl.values().forEach(value -> {
+            final String mimeTypeLower = value.toString().replaceAll("\\s", "")
+                .toLowerCase(Locale.ROOT);
+
+            SCHEMA_FORMAT_HASH_MAP.put(mimeTypeLower, value);
+        });
+    }
 
     /**
      * Accessor interface.
@@ -88,9 +100,9 @@ public final class SchemaRegistryHelper {
     private static SchemaFormat getSchemaFormat(SchemaFormatImpl contentType) {
         Objects.requireNonNull(contentType, "'schemaFormat' cannot be null.'");
 
-        if (contentType == SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO) {
+        if (SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO.equals(contentType)) {
             return SchemaFormat.AVRO;
-        } else if (contentType == SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON) {
+        } else if (SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON.equals(contentType)) {
             return SchemaFormat.JSON;
         } else {
             return SchemaFormat.CUSTOM;
@@ -105,30 +117,18 @@ public final class SchemaRegistryHelper {
      */
     private static SchemaFormat getSchemaFormat(HttpHeaders headers) {
         final String contentType = headers.getValue("Content-Type");
-        if (contentType != null) {
-            return getSchemaFormat(SchemaFormatImpl.fromString(contentType));
-        } else {
+
+        if (contentType == null) {
             return null;
         }
-    }
 
-    private static SchemaFormat getSchemaFormat(String mimeType) {
-        final int limit = 2;
-        final String[] parts = mimeType.split(";", limit);
+        final String replaced = contentType.replaceAll("\\s", "").toLowerCase(Locale.ROOT);
 
-        if (parts.length < limit) {
-            return SchemaFormat.CUSTOM;
-        }
+        // Default value if nothing matches is CUSTOM.
+        final SchemaFormatImpl implementationFormat = SCHEMA_FORMAT_HASH_MAP
+            .getOrDefault(replaced, SchemaFormatImpl.TEXT_PLAIN_CHARSET_UTF8);
 
-        final String[] serializationParts = parts[1].split("=", limit);
-
-        if (serializationParts.length < limit) {
-            return SchemaFormat.CUSTOM;
-        }
-
-        final SchemaFormat schemaFormat = SchemaFormat.fromString(serializationParts[1]);
-
-        return schemaFormat != null ? schemaFormat : SchemaFormat.CUSTOM;
+        return getSchemaFormat(implementationFormat);
     }
 }
 
