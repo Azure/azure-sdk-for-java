@@ -127,14 +127,13 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaFormat schemaFormat = SchemaFormat.AVRO;
 
         // Act & Assert
-        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SchemaFormat.AVRO);
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, schemaFormat);
         assertSchemaProperties(response, null, schemaFormat, schemaGroup, schemaName);
 
         // Expected that the second time we call this method, it will return a different schema because the contents
         // are different.
         final SchemaProperties response2 = client1.registerSchema(schemaGroup, schemaName, schemaContentModified,
-            SchemaFormat.AVRO);
+            schemaFormat);
         assertSchemaProperties(response2, null, schemaFormat, schemaGroup, schemaName);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
