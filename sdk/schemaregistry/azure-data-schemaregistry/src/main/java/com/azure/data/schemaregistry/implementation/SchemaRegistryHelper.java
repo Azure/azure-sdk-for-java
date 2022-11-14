@@ -54,24 +54,27 @@ public final class SchemaRegistryHelper {
 
     public static SchemaProperties getSchemaProperties(SchemasRegisterResponse response, SchemaFormat fallbackFormat) {
         final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
-        final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
-        final SchemaFormat schemaFormat1 = schemaFormat != null ? schemaFormat : fallbackFormat;
-
-        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat1, headers.getSchemaGroupName(),
-            headers.getSchemaName(), headers.getSchemaVersion());
-    }
-
-    public static SchemaProperties getSchemaProperties(SchemasGetByIdResponse response) {
-        final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
-        final SchemaFormat schemaFormat = getSchemaFormat(headers.getContentType());
+        final SchemaFormat responseFormat = getSchemaFormat(response.getHeaders());
+        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : fallbackFormat;
 
         return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
-    public static SchemaProperties getSchemaProperties(SchemasQueryIdByContentResponse response) {
-        final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
+    public static SchemaProperties getSchemaProperties(SchemasGetByIdResponse response) {
+        final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
         final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
+
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
+            headers.getSchemaName(), headers.getSchemaVersion());
+    }
+
+    public static SchemaProperties getSchemaProperties(SchemasQueryIdByContentResponse response,
+        SchemaFormat fallbackFormat) {
+
+        final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat responseFormat = getSchemaFormat(response.getHeaders());
+        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : fallbackFormat;
 
         return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
@@ -79,7 +82,7 @@ public final class SchemaRegistryHelper {
 
     public static SchemaProperties getSchemaProperties(SchemasGetSchemaVersionResponse response) {
         final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
-        final SchemaFormat schemaFormat = getSchemaFormat(headers.getContentType());
+        final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
 
         return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
@@ -94,18 +97,6 @@ public final class SchemaRegistryHelper {
             return SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON;
         } else {
             return SchemaFormatImpl.TEXT_PLAIN_CHARSET_UTF8;
-        }
-    }
-
-    private static SchemaFormat getSchemaFormat(SchemaFormatImpl contentType) {
-        Objects.requireNonNull(contentType, "'schemaFormat' cannot be null.'");
-
-        if (SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO.equals(contentType)) {
-            return SchemaFormat.AVRO;
-        } else if (SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON.equals(contentType)) {
-            return SchemaFormat.JSON;
-        } else {
-            return SchemaFormat.CUSTOM;
         }
     }
 
@@ -128,7 +119,13 @@ public final class SchemaRegistryHelper {
         final SchemaFormatImpl implementationFormat = SCHEMA_FORMAT_HASH_MAP
             .getOrDefault(replaced, SchemaFormatImpl.TEXT_PLAIN_CHARSET_UTF8);
 
-        return getSchemaFormat(implementationFormat);
+        if (SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO.equals(implementationFormat)) {
+            return SchemaFormat.AVRO;
+        } else if (SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON.equals(implementationFormat)) {
+            return SchemaFormat.JSON;
+        } else {
+            return SchemaFormat.CUSTOM;
+        }
     }
 }
 

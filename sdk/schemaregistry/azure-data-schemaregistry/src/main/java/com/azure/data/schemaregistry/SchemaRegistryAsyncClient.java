@@ -406,7 +406,7 @@ public final class SchemaRegistryAsyncClient {
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response);
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response, format);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
