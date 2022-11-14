@@ -496,7 +496,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                1000
             );
 
             this.validateMetrics(
