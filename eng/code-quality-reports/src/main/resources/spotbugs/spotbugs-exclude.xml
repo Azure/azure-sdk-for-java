@@ -512,6 +512,14 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+  <!-- Nonsensical warning -->
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.common.implementation.Checksum"/>
+    </Or>
+    <Bug pattern="UCF_USELESS_CONTROL_FLOW"/>
+  </Match>
+
   <!-- The public field already exists in the public API surface area -->
   <Match>
     <Class name="~com\.microsoft\.azure\.servicebus\.(TransactionContext|management\.ManagementClientConstants)"/>
