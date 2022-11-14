@@ -3,7 +3,7 @@
 input-file:
   - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/AnomalyDetector/preview/v1.1-preview.1/AnomalyDetector.json
   - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/AnomalyDetector/preview/v1.1-preview.1/MultivariateAnomalyDetector.json
-use: '@autorest/java@4.1.6'
+use: '@autorest/java@4.1.7'
 java: true
 output-folder: ../
 namespace: com.azure.ai.anomalydetector

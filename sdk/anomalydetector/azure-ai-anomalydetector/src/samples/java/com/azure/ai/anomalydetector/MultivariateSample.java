@@ -5,6 +5,7 @@ package com.azure.ai.anomalydetector;
 
 import com.azure.ai.anomalydetector.models.AlignMode;
 import com.azure.ai.anomalydetector.models.AlignPolicy;
+import com.azure.ai.anomalydetector.models.DetectAnomalyHeaders;
 import com.azure.ai.anomalydetector.models.DetectAnomalyResponse;
 import com.azure.ai.anomalydetector.models.DetectionRequest;
 import com.azure.ai.anomalydetector.models.DetectionResult;
@@ -14,6 +15,7 @@ import com.azure.ai.anomalydetector.models.Model;
 import com.azure.ai.anomalydetector.models.ModelInfo;
 import com.azure.ai.anomalydetector.models.ModelSnapshot;
 import com.azure.ai.anomalydetector.models.ModelStatus;
+import com.azure.ai.anomalydetector.models.TrainMultivariateModelHeaders;
 import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
 import com.azure.ai.anomalydetector.models.LastDetectionRequest;
 import com.azure.ai.anomalydetector.models.LastDetectionResult;
@@ -32,7 +34,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
@@ -90,7 +94,8 @@ public class MultivariateSample {
     }
 
     private static UUID getMetricId(AnomalyDetectorClient client, ModelInfo request) {
-        TrainMultivariateModelResponse trainMultivariateModelResponse = client.trainMultivariateModelWithResponse(request, Context.NONE);
+        ResponseBase<TrainMultivariateModelHeaders, Void>
+            trainMultivariateModelResponse = client.trainMultivariateModelWithResponse(request, Context.NONE);
         String header = trainMultivariateModelResponse.getDeserializedHeaders().getLocation();
         String[] model_ids = header.split("/");
         UUID model_id = UUID.fromString(model_ids[model_ids.length - 1]);
@@ -104,7 +109,8 @@ public class MultivariateSample {
     }
 
     private static UUID getResultId(AnomalyDetectorClient client, UUID modelId, DetectionRequest detectionRequest) {
-        DetectAnomalyResponse detectAnomalyResponse = client.detectAnomalyWithResponse(modelId, detectionRequest, Context.NONE);
+        ResponseBase<DetectAnomalyHeaders, Void>
+            detectAnomalyResponse = client.detectAnomalyWithResponse(modelId, detectionRequest, Context.NONE);
         String response = detectAnomalyResponse.getDeserializedHeaders().getLocation();
         String[] result = response.split("/");
         UUID resultId = UUID.fromString(result[result.length - 1]);
@@ -118,8 +124,8 @@ public class MultivariateSample {
     }
 
     private static void ExportResult(AnomalyDetectorClient client, UUID modelId, String path) throws FileNotFoundException {
-        StreamResponse response = client.exportModelWithResponse(modelId, Context.NONE);
-        Flux<ByteBuffer> value = response.getValue();
+        Response<BinaryData> response = client.exportModelWithResponse(modelId, Context.NONE);
+        Flux<ByteBuffer> value = response.getValue().toFluxByteBuffer();
         FileOutputStream bw = new FileOutputStream(path);
         value.subscribe(s -> write(bw, s), (e) -> close(bw), () -> close(bw));
     }

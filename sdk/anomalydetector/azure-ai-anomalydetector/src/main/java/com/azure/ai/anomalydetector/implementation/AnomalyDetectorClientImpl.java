@@ -502,25 +502,6 @@ public final class AnomalyDetectorClientImpl {
      * detection can give user an overall status of the time series.
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of entire anomaly detection along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntireDetectResponse> detectEntireSeriesSyncWithResponse(DetectRequest body) {
-        final String accept = "application/json";
-        return service.detectEntireSeriesSync(this.getEndpoint(), this.getApiVersion(), body, accept, Context.NONE);
-    }
-
-    /**
-     * Detect anomalies for the entire series in batch.
-     *
-     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
-     * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
-     * detection can give user an overall status of the time series.
-     *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
@@ -528,7 +509,7 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of entire anomaly detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntireDetectResponse> detectEntireSeriesSyncWithResponse(DetectRequest body, Context context) {
+    public Response<EntireDetectResponse> detectEntireSeriesWithResponse(DetectRequest body, Context context) {
         final String accept = "application/json";
         return service.detectEntireSeriesSync(this.getEndpoint(), this.getApiVersion(), body, accept, context);
     }
@@ -547,27 +528,8 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of entire anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntireDetectResponse detectEntireSeriesSync(DetectRequest body) {
-        return detectEntireSeriesSyncWithResponse(body, Context.NONE).getValue();
-    }
-
-    /**
-     * Detect anomalies for the entire series in batch.
-     *
-     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
-     * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
-     * detection can give user an overall status of the time series.
-     *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of entire anomaly detection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntireDetectResponse detectEntireSeriesSync(DetectRequest body, Context context) {
-        return detectEntireSeriesSyncWithResponse(body, context).getValue();
+    public EntireDetectResponse detectEntireSeries(DetectRequest body) {
+        return detectEntireSeriesWithResponse(body, Context.NONE).getValue();
     }
 
     /**
@@ -657,25 +619,6 @@ public final class AnomalyDetectorClientImpl {
      * scenario of real-time monitoring of business metrics.
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of last anomaly detection along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LastDetectResponse> detectLastPointSyncWithResponse(DetectRequest body) {
-        final String accept = "application/json";
-        return service.detectLastPointSync(this.getEndpoint(), this.getApiVersion(), body, accept, Context.NONE);
-    }
-
-    /**
-     * Detect anomaly status of the latest point in time series.
-     *
-     * <p>This operation generates a model using points before the latest one. With this method, only historical points
-     * are used to determine whether the target point is an anomaly. The latest point detecting operation matches the
-     * scenario of real-time monitoring of business metrics.
-     *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
@@ -683,7 +626,7 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of last anomaly detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LastDetectResponse> detectLastPointSyncWithResponse(DetectRequest body, Context context) {
+    public Response<LastDetectResponse> detectLastPointWithResponse(DetectRequest body, Context context) {
         final String accept = "application/json";
         return service.detectLastPointSync(this.getEndpoint(), this.getApiVersion(), body, accept, context);
     }
@@ -702,27 +645,8 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of last anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LastDetectResponse detectLastPointSync(DetectRequest body) {
-        return detectLastPointSyncWithResponse(body, Context.NONE).getValue();
-    }
-
-    /**
-     * Detect anomaly status of the latest point in time series.
-     *
-     * <p>This operation generates a model using points before the latest one. With this method, only historical points
-     * are used to determine whether the target point is an anomaly. The latest point detecting operation matches the
-     * scenario of real-time monitoring of business metrics.
-     *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of last anomaly detection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LastDetectResponse detectLastPointSync(DetectRequest body, Context context) {
-        return detectLastPointSyncWithResponse(body, context).getValue();
+    public LastDetectResponse detectLastPoint(DetectRequest body) {
+        return detectLastPointWithResponse(body, Context.NONE).getValue();
     }
 
     /**
@@ -808,24 +732,6 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of change point detection along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChangePointDetectResponse> detectChangePointSyncWithResponse(ChangePointDetectRequest body) {
-        final String accept = "application/json";
-        return service.detectChangePointSync(this.getEndpoint(), this.getApiVersion(), body, accept, Context.NONE);
-    }
-
-    /**
-     * Detect change point for the entire series
-     *
-     * <p>Evaluate change point score of every series point.
-     *
-     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
-     *     request if needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
@@ -833,7 +739,7 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of change point detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChangePointDetectResponse> detectChangePointSyncWithResponse(
+    public Response<ChangePointDetectResponse> detectChangePointWithResponse(
             ChangePointDetectRequest body, Context context) {
         final String accept = "application/json";
         return service.detectChangePointSync(this.getEndpoint(), this.getApiVersion(), body, accept, context);
@@ -852,26 +758,8 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of change point detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChangePointDetectResponse detectChangePointSync(ChangePointDetectRequest body) {
-        return detectChangePointSyncWithResponse(body, Context.NONE).getValue();
-    }
-
-    /**
-     * Detect change point for the entire series
-     *
-     * <p>Evaluate change point score of every series point.
-     *
-     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
-     *     request if needed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of change point detection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChangePointDetectResponse detectChangePointSync(ChangePointDetectRequest body, Context context) {
-        return detectChangePointSyncWithResponse(body, context).getValue();
+    public ChangePointDetectResponse detectChangePoint(ChangePointDetectRequest body) {
+        return detectChangePointWithResponse(body, Context.NONE).getValue();
     }
 
     /**
@@ -968,26 +856,6 @@ public final class AnomalyDetectorClientImpl {
      * which the first column is timestamp and the second column is value.
      *
      * @param body Training request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TrainMultivariateModelHeaders, Void> trainMultivariateModelSyncWithResponse(ModelInfo body) {
-        final String accept = "application/json";
-        return service.trainMultivariateModelSync(this.getEndpoint(), this.getApiVersion(), body, accept, Context.NONE);
-    }
-
-    /**
-     * Train a Multivariate Anomaly Detection Model
-     *
-     * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
-     * indicate an externally accessible Azure storage Uri (preferably a Shared Access Signature Uri). All time-series
-     * used in generate the model must be zipped into one single file. Each time-series will be in a single CSV file in
-     * which the first column is timestamp and the second column is value.
-     *
-     * @param body Training request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -995,7 +863,7 @@ public final class AnomalyDetectorClientImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TrainMultivariateModelHeaders, Void> trainMultivariateModelSyncWithResponse(
+    public ResponseBase<TrainMultivariateModelHeaders, Void> trainMultivariateModelWithResponse(
             ModelInfo body, Context context) {
         final String accept = "application/json";
         return service.trainMultivariateModelSync(this.getEndpoint(), this.getApiVersion(), body, accept, context);
@@ -1015,27 +883,8 @@ public final class AnomalyDetectorClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trainMultivariateModelSync(ModelInfo body) {
-        trainMultivariateModelSyncWithResponse(body, Context.NONE);
-    }
-
-    /**
-     * Train a Multivariate Anomaly Detection Model
-     *
-     * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
-     * indicate an externally accessible Azure storage Uri (preferably a Shared Access Signature Uri). All time-series
-     * used in generate the model must be zipped into one single file. Each time-series will be in a single CSV file in
-     * which the first column is timestamp and the second column is value.
-     *
-     * @param body Training request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trainMultivariateModelSync(ModelInfo body, Context context) {
-        trainMultivariateModelSyncWithResponse(body, context);
+    public void trainMultivariateModel(ModelInfo body) {
+        trainMultivariateModelWithResponse(body, Context.NONE);
     }
 
     /**
@@ -1149,7 +998,7 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ModelSnapshot> listMultivariateModelSyncSinglePage(Integer skip, Integer top) {
+    public PagedResponse<ModelSnapshot> listMultivariateModelSinglePage(Integer skip, Integer top) {
         final String accept = "application/json";
         Response<ModelList> res =
                 service.listMultivariateModelSync(
@@ -1177,8 +1026,7 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ModelSnapshot> listMultivariateModelSyncSinglePage(
-            Integer skip, Integer top, Context context) {
+    public PagedResponse<ModelSnapshot> listMultivariateModelSinglePage(Integer skip, Integer top, Context context) {
         final String accept = "application/json";
         Response<ModelList> res =
                 service.listMultivariateModelSync(this.getEndpoint(), this.getApiVersion(), skip, top, accept, context);
@@ -1204,10 +1052,10 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelSnapshot> listMultivariateModelSync(Integer skip, Integer top) {
+    public PagedIterable<ModelSnapshot> listMultivariateModel(Integer skip, Integer top) {
         return new PagedIterable<>(
-                () -> listMultivariateModelSyncSinglePage(skip, top, Context.NONE),
-                nextLink -> listMultivariateModelNextSyncSinglePage(nextLink));
+                () -> listMultivariateModelSinglePage(skip, top, Context.NONE),
+                nextLink -> listMultivariateModelNextSinglePage(nextLink));
     }
 
     /**
@@ -1224,10 +1072,10 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelSnapshot> listMultivariateModelSync(Integer skip, Integer top, Context context) {
+    public PagedIterable<ModelSnapshot> listMultivariateModel(Integer skip, Integer top, Context context) {
         return new PagedIterable<>(
-                () -> listMultivariateModelSyncSinglePage(skip, top, context),
-                nextLink -> listMultivariateModelNextSyncSinglePage(nextLink, context));
+                () -> listMultivariateModelSinglePage(skip, top, context),
+                nextLink -> listMultivariateModelNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1311,25 +1159,6 @@ public final class AnomalyDetectorClientImpl {
      * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
      *
      * @param modelId Model identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of multivariate model, including the training status and variables used in the model
-     *     along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Model> getMultivariateModelSyncWithResponse(UUID modelId) {
-        final String accept = "application/json";
-        return service.getMultivariateModelSync(
-                this.getEndpoint(), this.getApiVersion(), modelId, accept, Context.NONE);
-    }
-
-    /**
-     * Get Multivariate Model
-     *
-     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
-     *
-     * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1338,7 +1167,7 @@ public final class AnomalyDetectorClientImpl {
      *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Model> getMultivariateModelSyncWithResponse(UUID modelId, Context context) {
+    public Response<Model> getMultivariateModelWithResponse(UUID modelId, Context context) {
         final String accept = "application/json";
         return service.getMultivariateModelSync(this.getEndpoint(), this.getApiVersion(), modelId, accept, context);
     }
@@ -1356,26 +1185,8 @@ public final class AnomalyDetectorClientImpl {
      *     model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Model getMultivariateModelSync(UUID modelId) {
-        return getMultivariateModelSyncWithResponse(modelId, Context.NONE).getValue();
-    }
-
-    /**
-     * Get Multivariate Model
-     *
-     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
-     *
-     * @param modelId Model identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of multivariate model, including the training status and variables used in the
-     *     model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Model getMultivariateModelSync(UUID modelId, Context context) {
-        return getMultivariateModelSyncWithResponse(modelId, context).getValue();
+    public Model getMultivariateModel(UUID modelId) {
+        return getMultivariateModelWithResponse(modelId, Context.NONE).getValue();
     }
 
     /**
@@ -1455,24 +1266,6 @@ public final class AnomalyDetectorClientImpl {
      * <p>Delete an existing multivariate model according to the modelId.
      *
      * @param modelId Model identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteMultivariateModelSyncWithResponse(UUID modelId) {
-        final String accept = "application/json";
-        return service.deleteMultivariateModelSync(
-                this.getEndpoint(), this.getApiVersion(), modelId, accept, Context.NONE);
-    }
-
-    /**
-     * Delete Multivariate Model
-     *
-     * <p>Delete an existing multivariate model according to the modelId.
-     *
-     * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1480,7 +1273,7 @@ public final class AnomalyDetectorClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteMultivariateModelSyncWithResponse(UUID modelId, Context context) {
+    public Response<Void> deleteMultivariateModelWithResponse(UUID modelId, Context context) {
         final String accept = "application/json";
         return service.deleteMultivariateModelSync(this.getEndpoint(), this.getApiVersion(), modelId, accept, context);
     }
@@ -1496,24 +1289,8 @@ public final class AnomalyDetectorClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteMultivariateModelSync(UUID modelId) {
-        deleteMultivariateModelSyncWithResponse(modelId, Context.NONE);
-    }
-
-    /**
-     * Delete Multivariate Model
-     *
-     * <p>Delete an existing multivariate model according to the modelId.
-     *
-     * @param modelId Model identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteMultivariateModelSync(UUID modelId, Context context) {
-        deleteMultivariateModelSyncWithResponse(modelId, context);
+    public void deleteMultivariateModel(UUID modelId) {
+        deleteMultivariateModelWithResponse(modelId, Context.NONE);
     }
 
     /**
@@ -1625,29 +1402,6 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param modelId Model identifier.
      * @param body Detect anomaly request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DetectAnomalyHeaders, Void> detectAnomalySyncWithResponse(UUID modelId, DetectionRequest body) {
-        final String accept = "application/json";
-        return service.detectAnomalySync(this.getEndpoint(), this.getApiVersion(), modelId, body, accept, Context.NONE);
-    }
-
-    /**
-     * Detect Multivariate Anomaly
-     *
-     * <p>Submit detection multivariate anomaly task with the trained model of modelId, the input schema should be the
-     * same with the training request. Thus request will be complete asynchronously and will return a resultId for
-     * querying the detection result.The request should be a source link to indicate an externally accessible Azure
-     * storage Uri (preferably a Shared Access Signature Uri). All time-series used in generate the model must be zipped
-     * into one single file. Each time-series will be as follows: the first column is timestamp and the second column is
-     * value.
-     *
-     * @param modelId Model identifier.
-     * @param body Detect anomaly request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1655,7 +1409,7 @@ public final class AnomalyDetectorClientImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DetectAnomalyHeaders, Void> detectAnomalySyncWithResponse(
+    public ResponseBase<DetectAnomalyHeaders, Void> detectAnomalyWithResponse(
             UUID modelId, DetectionRequest body, Context context) {
         final String accept = "application/json";
         return service.detectAnomalySync(this.getEndpoint(), this.getApiVersion(), modelId, body, accept, context);
@@ -1678,30 +1432,8 @@ public final class AnomalyDetectorClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detectAnomalySync(UUID modelId, DetectionRequest body) {
-        detectAnomalySyncWithResponse(modelId, body, Context.NONE);
-    }
-
-    /**
-     * Detect Multivariate Anomaly
-     *
-     * <p>Submit detection multivariate anomaly task with the trained model of modelId, the input schema should be the
-     * same with the training request. Thus request will be complete asynchronously and will return a resultId for
-     * querying the detection result.The request should be a source link to indicate an externally accessible Azure
-     * storage Uri (preferably a Shared Access Signature Uri). All time-series used in generate the model must be zipped
-     * into one single file. Each time-series will be as follows: the first column is timestamp and the second column is
-     * value.
-     *
-     * @param modelId Model identifier.
-     * @param body Detect anomaly request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detectAnomalySync(UUID modelId, DetectionRequest body, Context context) {
-        detectAnomalySyncWithResponse(modelId, body, context);
+    public void detectAnomaly(UUID modelId, DetectionRequest body) {
+        detectAnomalyWithResponse(modelId, body, Context.NONE);
     }
 
     /**
@@ -1785,24 +1517,6 @@ public final class AnomalyDetectorClientImpl {
      * <p>Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
      *
      * @param resultId Result identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectionResult> getDetectionResultSyncWithResponse(UUID resultId) {
-        final String accept = "application/json";
-        return service.getDetectionResultSync(this.getEndpoint(), this.getApiVersion(), resultId, accept, Context.NONE);
-    }
-
-    /**
-     * Get Multivariate Anomaly Detection Result
-     *
-     * <p>Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
-     *
-     * @param resultId Result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1811,7 +1525,7 @@ public final class AnomalyDetectorClientImpl {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectionResult> getDetectionResultSyncWithResponse(UUID resultId, Context context) {
+    public Response<DetectionResult> getDetectionResultWithResponse(UUID resultId, Context context) {
         final String accept = "application/json";
         return service.getDetectionResultSync(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
     }
@@ -1828,25 +1542,8 @@ public final class AnomalyDetectorClientImpl {
      * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectionResult getDetectionResultSync(UUID resultId) {
-        return getDetectionResultSyncWithResponse(resultId, Context.NONE).getValue();
-    }
-
-    /**
-     * Get Multivariate Anomaly Detection Result
-     *
-     * <p>Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
-     *
-     * @param resultId Result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectionResult getDetectionResultSync(UUID resultId, Context context) {
-        return getDetectionResultSyncWithResponse(resultId, context).getValue();
+    public DetectionResult getDetectionResult(UUID resultId) {
+        return getDetectionResultWithResponse(resultId, Context.NONE).getValue();
     }
 
     /**
@@ -1924,23 +1621,6 @@ public final class AnomalyDetectorClientImpl {
      * <p>Export multivariate anomaly detection model based on modelId.
      *
      * @param modelId Model identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> exportModelSyncWithResponse(UUID modelId) {
-        final String accept = "application/zip, application/json";
-        return service.exportModelSync(this.getEndpoint(), this.getApiVersion(), modelId, accept, Context.NONE);
-    }
-
-    /**
-     * Export Multivariate Anomaly Detection Model as Zip file
-     *
-     * <p>Export multivariate anomaly detection model based on modelId.
-     *
-     * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1948,7 +1628,7 @@ public final class AnomalyDetectorClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> exportModelSyncWithResponse(UUID modelId, Context context) {
+    public Response<BinaryData> exportModelWithResponse(UUID modelId, Context context) {
         final String accept = "application/zip, application/json";
         return service.exportModelSync(this.getEndpoint(), this.getApiVersion(), modelId, accept, context);
     }
@@ -1965,25 +1645,8 @@ public final class AnomalyDetectorClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData exportModelSync(UUID modelId) {
-        return exportModelSyncWithResponse(modelId, Context.NONE).getValue();
-    }
-
-    /**
-     * Export Multivariate Anomaly Detection Model as Zip file
-     *
-     * <p>Export multivariate anomaly detection model based on modelId.
-     *
-     * @param modelId Model identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData exportModelSync(UUID modelId, Context context) {
-        return exportModelSyncWithResponse(modelId, context).getValue();
+    public BinaryData exportModel(UUID modelId) {
+        return exportModelWithResponse(modelId, Context.NONE).getValue();
     }
 
     /**
@@ -2071,25 +1734,6 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param modelId Model identifier.
      * @param body Request for last detection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LastDetectionResult> lastDetectAnomalySyncWithResponse(UUID modelId, LastDetectionRequest body) {
-        final String accept = "application/json";
-        return service.lastDetectAnomalySync(
-                this.getEndpoint(), this.getApiVersion(), modelId, body, accept, Context.NONE);
-    }
-
-    /**
-     * Detect anomalies in the last a few points of the request body.
-     *
-     * <p>Synchronized API for anomaly detection.
-     *
-     * @param modelId Model identifier.
-     * @param body Request for last detection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2097,7 +1741,7 @@ public final class AnomalyDetectorClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LastDetectionResult> lastDetectAnomalySyncWithResponse(
+    public Response<LastDetectionResult> lastDetectAnomalyWithResponse(
             UUID modelId, LastDetectionRequest body, Context context) {
         final String accept = "application/json";
         return service.lastDetectAnomalySync(this.getEndpoint(), this.getApiVersion(), modelId, body, accept, context);
@@ -2116,26 +1760,8 @@ public final class AnomalyDetectorClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LastDetectionResult lastDetectAnomalySync(UUID modelId, LastDetectionRequest body) {
-        return lastDetectAnomalySyncWithResponse(modelId, body, Context.NONE).getValue();
-    }
-
-    /**
-     * Detect anomalies in the last a few points of the request body.
-     *
-     * <p>Synchronized API for anomaly detection.
-     *
-     * @param modelId Model identifier.
-     * @param body Request for last detection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LastDetectionResult lastDetectAnomalySync(UUID modelId, LastDetectionRequest body, Context context) {
-        return lastDetectAnomalySyncWithResponse(modelId, body, context).getValue();
+    public LastDetectionResult lastDetectAnomaly(UUID modelId, LastDetectionRequest body) {
+        return lastDetectAnomalyWithResponse(modelId, body, Context.NONE).getValue();
     }
 
     /**
@@ -2204,7 +1830,7 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ModelSnapshot> listMultivariateModelNextSyncSinglePage(String nextLink) {
+    public PagedResponse<ModelSnapshot> listMultivariateModelNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<ModelList> res =
                 service.listMultivariateModelNextSync(
@@ -2230,7 +1856,7 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ModelSnapshot> listMultivariateModelNextSyncSinglePage(String nextLink, Context context) {
+    public PagedResponse<ModelSnapshot> listMultivariateModelNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<ModelList> res =
                 service.listMultivariateModelNextSync(
