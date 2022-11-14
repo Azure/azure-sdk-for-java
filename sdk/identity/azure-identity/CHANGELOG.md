@@ -1,14 +1,10 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.7.1 (2022-11-14)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added user-agent header to Identity requests
 
 ## 1.7.0 (2022-11-04)
 
