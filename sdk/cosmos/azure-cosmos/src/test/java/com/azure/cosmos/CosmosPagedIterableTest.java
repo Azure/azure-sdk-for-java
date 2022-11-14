@@ -155,7 +155,8 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
     }
 
     // TODO: Check if eager prefetch can be avoided
-    // TODO: when concurrency is set to 256
+    // TODO: when concurrency is set to 256 on a downstream flatMap
+    // TODO: the unit tests can be enabled then
     @Test(groups = {"unit"}, enabled = false)
     public void validatePrefetchControl() {
         AtomicInteger prefetchEager1 = new AtomicInteger();
