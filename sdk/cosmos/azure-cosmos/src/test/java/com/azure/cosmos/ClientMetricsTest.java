@@ -504,7 +504,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Batch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
                 1,
-                100
+                1000
             );
         } finally {
             this.afterTest();
