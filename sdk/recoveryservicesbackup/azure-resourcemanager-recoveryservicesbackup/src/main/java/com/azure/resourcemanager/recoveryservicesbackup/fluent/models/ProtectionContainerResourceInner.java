@@ -25,6 +25,10 @@ public final class ProtectionContainerResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of ProtectionContainerResourceInner class. */
+    public ProtectionContainerResourceInner() {
+    }
+
     /**
      * Get the properties property: ProtectionContainerResource properties.
      *

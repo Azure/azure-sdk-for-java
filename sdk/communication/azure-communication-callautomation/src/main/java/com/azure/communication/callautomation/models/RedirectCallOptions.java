@@ -6,6 +6,9 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * The options for creating a call.
  */
@@ -35,6 +38,7 @@ public class RedirectCallOptions {
     public RedirectCallOptions(String incomingCallContext, CommunicationIdentifier target) {
         this.incomingCallContext = incomingCallContext;
         this.target = target;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**

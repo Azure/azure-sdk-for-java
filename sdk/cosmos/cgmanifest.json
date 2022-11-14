@@ -37,7 +37,7 @@
         "Maven": {
           "ArtifactId": "commons-text",
           "GroupId": "org.apache.commons",
-          "Version": "1.6"
+          "Version": "1.10.0"
         }
       }
     },
@@ -58,6 +58,16 @@
           "ArtifactId": "java-uuid-generator",
           "GroupId": "com.fasterxml.uuid",
           "Version": "4.0.1"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "commons-codec",
+          "GroupId": "commons-codec",
+          "Version": "1.14"
         }
       }
     }

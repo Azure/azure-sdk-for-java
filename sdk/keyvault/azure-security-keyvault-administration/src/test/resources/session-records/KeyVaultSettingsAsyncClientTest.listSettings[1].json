@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/settings?api-version=7.4-preview.1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "97",
+      "x-frame-options" : "SAMEORIGIN",
+      "x-ms-build-version" : "1.0.20221020-1-945ffe56-develop",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-server-latency" : "1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "northus",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "acf2aacc-6201-11ed-94f1-000d3a602e9a",
+      "Body" : "{\"settings\":[{\"name\":\"AllowKeyManagementOperationsThroughARM\",\"type\":\"boolean\",\"value\":\"false\"}]}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

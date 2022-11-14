@@ -34,6 +34,10 @@ public final class SkuCapacity {
     @JsonProperty(value = "scaleType")
     private SkuScaleType scaleType;
 
+    /** Creates an instance of SkuCapacity class. */
+    public SkuCapacity() {
+    }
+
     /**
      * Get the defaultProperty property: Gets or sets the default capacity.
      *

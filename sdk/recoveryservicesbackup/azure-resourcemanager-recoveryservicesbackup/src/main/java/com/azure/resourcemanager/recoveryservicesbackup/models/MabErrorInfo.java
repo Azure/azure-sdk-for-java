@@ -23,6 +23,10 @@ public final class MabErrorInfo {
     @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
+    /** Creates an instance of MabErrorInfo class. */
+    public MabErrorInfo() {
+    }
+
     /**
      * Get the errorString property: Localized error string.
      *

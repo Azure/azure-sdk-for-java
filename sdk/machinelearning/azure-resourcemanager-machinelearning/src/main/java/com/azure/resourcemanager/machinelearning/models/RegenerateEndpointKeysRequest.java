@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RegenerateEndpointKeysRequest {
     /*
-     * [Required] Specification for which type of key to generate. Primary or
-     * Secondary.
+     * [Required] Specification for which type of key to generate. Primary or Secondary.
      */
     @JsonProperty(value = "keyType", required = true)
     private KeyType keyType;
@@ -23,6 +22,10 @@ public final class RegenerateEndpointKeysRequest {
      */
     @JsonProperty(value = "keyValue")
     private String keyValue;
+
+    /** Creates an instance of RegenerateEndpointKeysRequest class. */
+    public RegenerateEndpointKeysRequest() {
+    }
 
     /**
      * Get the keyType property: [Required] Specification for which type of key to generate. Primary or Secondary.

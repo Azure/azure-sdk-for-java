@@ -24,13 +24,13 @@ public final class JobOperationResultsImpl implements JobOperationResults {
         this.serviceManager = serviceManager;
     }
 
-    public void get(String vaultName, String resourceGroupName, String jobName, String operationId) {
-        this.serviceClient().get(vaultName, resourceGroupName, jobName, operationId);
-    }
-
     public Response<Void> getWithResponse(
         String vaultName, String resourceGroupName, String jobName, String operationId, Context context) {
         return this.serviceClient().getWithResponse(vaultName, resourceGroupName, jobName, operationId, context);
+    }
+
+    public void get(String vaultName, String resourceGroupName, String jobName, String operationId) {
+        this.serviceClient().get(vaultName, resourceGroupName, jobName, operationId);
     }
 
     private JobOperationResultsClient serviceClient() {

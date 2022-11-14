@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnvironmentType. */
+/** Environment type is either user created or curated by Azure ML service. */
 public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType> {
     /** Static value Curated for EnvironmentType. */
     public static final EnvironmentType CURATED = fromString("Curated");

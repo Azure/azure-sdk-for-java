@@ -27,7 +27,6 @@ import java.util.List;
  * slot as well as multi-slot scenarios.
  *
  * <p><strong>Instantiating a synchronous Personalizer Client</strong></p>
- * <p>
  * <!-- src_embed com.azure.ai.personalizer.PersonalizerClient.instantiation -->
  * <pre>
  * PersonalizerClient personalizerClient = new PersonalizerClientBuilder&#40;&#41;

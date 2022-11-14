@@ -40,6 +40,10 @@ public final class DpmProtectedItem extends ProtectedItem {
     @JsonProperty(value = "extendedInfo")
     private DpmProtectedItemExtendedInfo extendedInfo;
 
+    /** Creates an instance of DpmProtectedItem class. */
+    public DpmProtectedItem() {
+    }
+
     /**
      * Get the friendlyName property: Friendly name of the managed item.
      *
@@ -117,20 +121,6 @@ public final class DpmProtectedItem extends ProtectedItem {
      */
     public DpmProtectedItem withExtendedInfo(DpmProtectedItemExtendedInfo extendedInfo) {
         this.extendedInfo = extendedInfo;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DpmProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DpmProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
         return this;
     }
 
@@ -229,6 +219,13 @@ public final class DpmProtectedItem extends ProtectedItem {
     @Override
     public DpmProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DpmProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

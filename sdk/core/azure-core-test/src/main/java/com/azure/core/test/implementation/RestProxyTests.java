@@ -76,6 +76,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -1531,6 +1532,8 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
@@ -1543,6 +1546,8 @@ public abstract class RestProxyTests {
         final ResponseBase<HttpBinHeaders, byte[]> response = createService(Service20.class).getBytes100BodyAndHeaders();
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
+
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
 
         final byte[] body = response.getValue();
         assertNotNull(body);
@@ -1559,6 +1564,8 @@ public abstract class RestProxyTests {
     public void service20GetBytesOnlyStatus() {
         final Response<Void> response = createService(Service20.class).getBytesOnlyStatus();
 
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }
@@ -1566,6 +1573,8 @@ public abstract class RestProxyTests {
     @Test
     public void service20GetBytesOnlyHeaders() {
         final Response<Void> response = createService(Service20.class).getBytes100OnlyRawHeaders();
+
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -1579,6 +1588,8 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
@@ -1591,6 +1602,8 @@ public abstract class RestProxyTests {
         final ResponseBase<HttpBinHeaders, HttpBinJSON> response = createService(Service20.class).putBodyAndHeaders("body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
+
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
 
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
@@ -2021,6 +2034,109 @@ public abstract class RestProxyTests {
         assertTrue(response.data() instanceof String);
         assertEquals("42", response.data());
         assertEquals("randomValue2", response.getHeaderValue("randomHeader"));
+    }
+
+    @Host("http://localhost")
+    @ServiceInterface(name = "Service28")
+    interface Service28 {
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        void headvoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Void headVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Response<Void> headResponseVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        ResponseBase<Void, Void> headResponseBaseVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Mono<Void> headMonoVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Mono<Response<Void>> headMonoResponseVoid();
+
+        @Head("voideagerreadoom")
+        @ExpectedResponses({200})
+        Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid();
+    }
+
+    @ParameterizedTest
+    @MethodSource("voidDoesNotEagerlyReadResponseSupplier")
+    public void voidDoesNotEagerlyReadResponse(Consumer<Service28> executable) {
+        assertDoesNotThrow(() -> executable.accept(createService(Service28.class)));
+    }
+
+    private static Stream<Consumer<Service28>> voidDoesNotEagerlyReadResponseSupplier() {
+        return Stream.of(
+            Service28::headvoid,
+            Service28::headVoid,
+            Service28::headResponseVoid,
+            Service28::headResponseBaseVoid,
+            service28 -> service28.headMonoVoid().block(),
+            service28 -> service28.headMonoResponseVoid().block(),
+            service28 -> service28.headMonoResponseBaseVoid().block()
+        );
+    }
+
+    @Host("http://localhost")
+    @ServiceInterface(name = "Service29")
+    interface Service29 {
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        void headvoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Void headVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Response<Void> headResponseVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        ResponseBase<Void, Void> headResponseBaseVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Mono<Void> headMonoVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Mono<Response<Void>> headMonoResponseVoid();
+
+        @Put("voiderrorreturned")
+        @ExpectedResponses({200})
+        Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid();
+    }
+
+    @ParameterizedTest
+    @MethodSource("voidErrorReturnsErrorBodySupplier")
+    public void voidErrorReturnsErrorBody(Consumer<Service29> executable) {
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> executable.accept(createService(Service29.class)));
+
+        assertTrue(exception.getMessage().contains("void exception body thrown"));
+    }
+
+    private static Stream<Consumer<Service29>> voidErrorReturnsErrorBodySupplier() {
+        return Stream.of(
+            Service29::headvoid,
+            Service29::headVoid,
+            Service29::headResponseVoid,
+            Service29::headResponseBaseVoid,
+            service29 -> service29.headMonoVoid().block(),
+            service29 -> service29.headMonoResponseVoid().block(),
+            service29 -> service29.headMonoResponseBaseVoid().block()
+        );
     }
 
     // Helpers

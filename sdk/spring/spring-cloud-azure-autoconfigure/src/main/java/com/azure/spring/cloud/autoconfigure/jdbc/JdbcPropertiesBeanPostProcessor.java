@@ -4,6 +4,7 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringEnhancer;
@@ -32,6 +33,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreTargetNonNull;
 import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME;
 
 
@@ -51,9 +53,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DataSourceProperties) {
             DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
+            AzurePasswordlessProperties properties = buildAzureProperties();
 
-            AzurePasswordlessProperties properties = Binder.get(environment)
-                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
             if (!properties.isPasswordlessEnabled()) {
                 LOGGER.debug("Feature passwordless authentication is not enabled, skip enhancing jdbc url.");
                 return bean;
@@ -129,6 +130,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         }
 
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
+        AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
         databaseType.setDefaultEnhancedProperties(result);
 
@@ -143,5 +145,14 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = (GenericApplicationContext) applicationContext;
+    }
+
+    private AzurePasswordlessProperties buildAzureProperties() {
+        AzureGlobalProperties azureGlobalProperties = applicationContext.getBean(AzureGlobalProperties.class);
+        AzurePasswordlessProperties azurePasswordlessProperties = Binder.get(environment)
+                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
+        copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getProfile(), azurePasswordlessProperties.getProfile());
+        copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getCredential(), azurePasswordlessProperties.getCredential());
+        return azurePasswordlessProperties;
     }
 }
