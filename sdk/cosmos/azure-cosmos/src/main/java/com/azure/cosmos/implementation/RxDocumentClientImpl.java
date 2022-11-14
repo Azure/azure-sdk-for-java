@@ -72,6 +72,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.concurrent.Queues;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -951,7 +952,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     }
                     return tFeedResponse;
                 });
-        }, 1, 1);
+            // concurrency is set to the default to
+            // not affect latency by minimizing concurrency and prefetch
+        }, Queues.SMALL_BUFFER_SIZE, 1);
     }
 
     @Override
