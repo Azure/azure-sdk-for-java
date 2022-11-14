@@ -5,6 +5,7 @@ import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.perf.core.ServiceBatchTest;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
+import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOption
             if (messages.size() <= 0) {
                 throw new RuntimeException("Error. Should have received some messages.");
             }
-        } catch (Exception e) {
+        } catch (InterruptedException | ServiceBusException e) {
             throw new RuntimeException(e);
         }
         return messages.size();
