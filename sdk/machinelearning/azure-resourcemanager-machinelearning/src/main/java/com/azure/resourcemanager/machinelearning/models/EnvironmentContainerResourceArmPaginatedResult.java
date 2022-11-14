@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentContainerInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class EnvironmentContainerResourceArmPaginatedResult {
     /*
-     * The link to the next page of EnvironmentContainer objects. If null,
-     * there are no additional pages.
+     * The link to the next page of EnvironmentContainer objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class EnvironmentContainerResourceArmPaginatedResult {
      * An array of objects of type EnvironmentContainer.
      */
     @JsonProperty(value = "value")
-    private List<EnvironmentContainerDataInner> value;
+    private List<EnvironmentContainerInner> value;
+
+    /** Creates an instance of EnvironmentContainerResourceArmPaginatedResult class. */
+    public EnvironmentContainerResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of EnvironmentContainer objects. If null, there are no
@@ -52,7 +55,7 @@ public final class EnvironmentContainerResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<EnvironmentContainerDataInner> value() {
+    public List<EnvironmentContainerInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class EnvironmentContainerResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the EnvironmentContainerResourceArmPaginatedResult object itself.
      */
-    public EnvironmentContainerResourceArmPaginatedResult withValue(List<EnvironmentContainerDataInner> value) {
+    public EnvironmentContainerResourceArmPaginatedResult withValue(List<EnvironmentContainerInner> value) {
         this.value = value;
         return this;
     }

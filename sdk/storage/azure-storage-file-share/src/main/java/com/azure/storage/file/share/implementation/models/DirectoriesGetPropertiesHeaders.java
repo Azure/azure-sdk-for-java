@@ -59,7 +59,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-server-encrypted property.
@@ -113,37 +113,44 @@ public final class DirectoriesGetPropertiesHeaders {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.xMsFilePermissionKey = rawHeaders.getValue("x-ms-file-permission-key");
         this.xMsFileId = rawHeaders.getValue("x-ms-file-id");
-        if (rawHeaders.getValue("x-ms-file-creation-time") != null) {
-            this.xMsFileCreationTime = OffsetDateTime.parse(rawHeaders.getValue("x-ms-file-creation-time"));
+        String xMsFileCreationTime = rawHeaders.getValue("x-ms-file-creation-time");
+        if (xMsFileCreationTime != null) {
+            this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
         }
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        String xMsServerEncrypted = rawHeaders.getValue("x-ms-server-encrypted");
+        if (xMsServerEncrypted != null) {
+            this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
+        }
+        this.eTag = rawHeaders.getValue("ETag");
+        this.xMsFileAttributes = rawHeaders.getValue("x-ms-file-attributes");
+        String xMsFileChangeTime = rawHeaders.getValue("x-ms-file-change-time");
+        if (xMsFileChangeTime != null) {
+            this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
+        }
+        this.xMsFileParentId = rawHeaders.getValue("x-ms-file-parent-id");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        String xMsFileLastWriteTime = rawHeaders.getValue("x-ms-file-last-write-time");
+        if (xMsFileLastWriteTime != null) {
+            this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }
         Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
-            if (!header.getName().startsWith("x-ms-meta-")) {
-                continue;
+            String headerName = header.getName();
+            if (headerName.startsWith("x-ms-meta-")) {
+                xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
             }
-            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
         }
+
         this.xMsMeta = xMsMetaHeaderCollection;
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
-        }
-        if (rawHeaders.getValue("x-ms-server-encrypted") != null) {
-            this.xMsServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-server-encrypted"));
-        }
-        this.eTag = rawHeaders.getValue("ETag");
-        this.xMsFileAttributes = rawHeaders.getValue("x-ms-file-attributes");
-        if (rawHeaders.getValue("x-ms-file-change-time") != null) {
-            this.xMsFileChangeTime = OffsetDateTime.parse(rawHeaders.getValue("x-ms-file-change-time"));
-        }
-        this.xMsFileParentId = rawHeaders.getValue("x-ms-file-parent-id");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        if (rawHeaders.getValue("x-ms-file-last-write-time") != null) {
-            this.xMsFileLastWriteTime = OffsetDateTime.parse(rawHeaders.getValue("x-ms-file-last-write-time"));
-        }
     }
 
     /**
@@ -274,28 +281,28 @@ public final class DirectoriesGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
-    public DirectoriesGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public DirectoriesGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

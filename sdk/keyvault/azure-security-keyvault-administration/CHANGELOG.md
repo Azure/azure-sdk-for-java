@@ -1,14 +1,26 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
+## 4.3.0-beta.1 (2022-11-11)
 
 ### Features Added
+- Added `KeyVaultSettingsClient` and `KeyVaultSettingsAsyncClient` to get and update Managed HSM settings.
+- Added support for service version `7.4-preview.1`.
 
-### Breaking Changes
-
-### Bugs Fixed
+## 4.2.2 (2022-11-10)
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
+## 4.2.1 (2022-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 
 ## 4.2.0 (2022-09-20)
 

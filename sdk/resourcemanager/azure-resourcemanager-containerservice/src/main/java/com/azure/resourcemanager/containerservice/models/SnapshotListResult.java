@@ -24,6 +24,10 @@ public final class SnapshotListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SnapshotListResult class. */
+    public SnapshotListResult() {
+    }
+
     /**
      * Get the value property: The list of snapshots.
      *

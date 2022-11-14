@@ -46,6 +46,10 @@ public final class VirtualMachineSchemaProperties {
     @JsonProperty(value = "isNotebookInstanceCompute")
     private Boolean isNotebookInstanceCompute;
 
+    /** Creates an instance of VirtualMachineSchemaProperties class. */
+    public VirtualMachineSchemaProperties() {
+    }
+
     /**
      * Get the virtualMachineSize property: Virtual Machine size.
      *

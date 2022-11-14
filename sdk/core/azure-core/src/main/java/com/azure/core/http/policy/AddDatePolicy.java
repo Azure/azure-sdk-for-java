@@ -39,6 +39,12 @@ public class AddDatePolicy implements HttpPipelinePolicy {
         }
     };
 
+    /**
+     * Creates a new instance of {@link AddDatePolicy}.
+     */
+    public AddDatePolicy() {
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return INNER.process(context, next);

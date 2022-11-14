@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-providers-core</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Providers Core</name>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.7.0-beta.2</version> <!-- {x-version-update;unreleased_com.azure:azure-identity;dependency} -->
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
 
     <!-- test   -->
@@ -57,6 +57,18 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.azure.identity.providers.core</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>

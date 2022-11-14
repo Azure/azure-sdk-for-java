@@ -23,6 +23,9 @@ public final class RoleDefinitionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RoleDefinitionListResult class. */
+    public RoleDefinitionListResult() {}
+
     /**
      * Get the value property: Role definition list.
      *

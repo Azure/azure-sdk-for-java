@@ -26,11 +26,11 @@ public class DatasourceCredentialSample {
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
-        final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
+        final String mockSecret = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
         DataSourceCredentialEntity datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecret)
             .setTenantId(tId)
             .setSecretNameForDataSourceClientId("DSClientID_1")
             .setSecretNameForDataSourceClientSecret("DSClientSer_1");

@@ -22,6 +22,10 @@ public final class OperationStatusError {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of OperationStatusError class. */
+    public OperationStatusError() {
+    }
+
     /**
      * Get the code property: Error code of the operation failure.
      *

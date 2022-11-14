@@ -28,7 +28,11 @@ public final class FullBackupResponse extends ResponseBase<FullBackupHeaders, Fu
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public FullBackupOperation getValue() {
         return super.getValue();

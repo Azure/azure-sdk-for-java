@@ -104,12 +104,27 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated HttpHeaders object.
      */
     public HttpHeaders add(String name, String value) {
-        String caseInsensitiveName = HttpHeadersHelper.formatKey(name);
-        if (caseInsensitiveName == null || value == null) {
+        return addInternal(HttpHeadersHelper.formatKey(name), name, value);
+    }
+
+    /**
+     * Adds a {@link HttpHeader header} with the given name and value if a header with that name doesn't already exist,
+     * otherwise adds the {@code value} to the existing header.
+     *
+     * @param name The name of the header.
+     * @param value The value of the header.
+     * @return The updated HttpHeaders object.
+     */
+    public HttpHeaders add(HttpHeaderName name, String value) {
+        return addInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), value);
+    }
+
+    private HttpHeaders addInternal(String formattedName, String name, String value) {
+        if (name == null || value == null) {
             return this;
         }
 
-        headers.compute(caseInsensitiveName, (key, header) -> {
+        headers.compute(formattedName, (key, header) -> {
             if (header == null) {
                 return new HttpHeader(name, value);
             } else {
@@ -149,6 +164,19 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return setInternal(HttpHeadersHelper.formatKey(name), name, value);
     }
 
+    /**
+     * Sets a {@link HttpHeader header} with the given name and value. If a header with same name already exists then
+     * the value will be overwritten. If the given value is null, the header with the given name will be removed.
+     *
+     * @param name the name to set in the header. If it is null, this method will return with no changes to the
+     * headers.
+     * @param value the value
+     * @return The updated HttpHeaders object
+     */
+    public HttpHeaders set(HttpHeaderName name, String value) {
+        return setInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), value);
+    }
+
     private HttpHeaders setInternal(String formattedName, String name, String value) {
         if (name == null) {
             return this;
@@ -172,14 +200,31 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated HttpHeaders object
      */
     public HttpHeaders set(String name, List<String> values) {
-        if (name == null) {
+        return setInternal(HttpHeadersHelper.formatKey(name), name, values);
+    }
+
+    /**
+     * Sets a {@link HttpHeader header} with the given name and the list of values provided, such that the given values
+     * will be comma-separated when necessary. If a header with same name already exists then the values will be
+     * overwritten. If the given values list is null, the header with the given name will be removed.
+     *
+     * @param name the name
+     * @param values the values that will be comma-separated as appropriate
+     * @return The updated HttpHeaders object
+     */
+    public HttpHeaders set(HttpHeaderName name, List<String> values) {
+        return setInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), values);
+    }
+
+    private HttpHeaders setInternal(String formattedName, String name, List<String> values) {
+        if (formattedName == null) {
             return this;
         }
-        String caseInsensitiveName = HttpHeadersHelper.formatKey(name);
+
         if (CoreUtils.isNullOrEmpty(values)) {
-            removeInternal(caseInsensitiveName);
+            removeInternal(formattedName);
         } else {
-            headers.put(caseInsensitiveName, new HttpHeader(name, values));
+            headers.put(formattedName, new HttpHeader(name, values));
         }
         return this;
     }
@@ -210,6 +255,17 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return getInternal(HttpHeadersHelper.formatKey(name));
     }
 
+    /**
+     * Gets the {@link HttpHeader header} for the provided header name. {@code Null} is returned if the header isn't
+     * found.
+     *
+     * @param name the name of the header to find.
+     * @return the header if found, null otherwise.
+     */
+    public HttpHeader get(HttpHeaderName name) {
+        return getInternal(name.getCaseInsensitiveName());
+    }
+
     private HttpHeader getInternal(String formattedName) {
         return headers.get(formattedName);
     }
@@ -225,8 +281,19 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return removeInternal(HttpHeadersHelper.formatKey(name));
     }
 
-    private HttpHeader removeInternal(String lowerCaseName) {
-        return headers.remove(lowerCaseName);
+    /**
+     * Removes the {@link HttpHeader header} with the provided header name. {@code Null} is returned if the header isn't
+     * found.
+     *
+     * @param name the name of the header to remove.
+     * @return the header if removed, null otherwise.
+     */
+    public HttpHeader remove(HttpHeaderName name) {
+        return removeInternal(name.getCaseInsensitiveName());
+    }
+
+    private HttpHeader removeInternal(String formattedName) {
+        return headers.remove(formattedName);
     }
 
     /**
@@ -237,6 +304,16 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public String getValue(String name) {
         return getValueInternal(HttpHeadersHelper.formatKey(name));
+    }
+
+    /**
+     * Get the value for the provided header name. {@code Null} is returned if the header name isn't found.
+     *
+     * @param name the name of the header whose value is being retrieved.
+     * @return the value of the header, or null if the header isn't found
+     */
+    public String getValue(HttpHeaderName name) {
+        return getValueInternal(name.getCaseInsensitiveName());
     }
 
     private String getValueInternal(String formattedName) {
@@ -253,7 +330,23 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the values of the header, or null if the header isn't found
      */
     public String[] getValues(String name) {
-        final HttpHeader header = get(name);
+        return getValuesInternal(HttpHeadersHelper.formatKey(name));
+    }
+
+    /**
+     * Get the values for the provided header name. {@code Null} is returned if the header name isn't found.
+     *
+     * <p>This returns {@link #getValue(String) getValue} split by {@code comma}.</p>
+     *
+     * @param name the name of the header whose value is being retrieved.
+     * @return the values of the header, or null if the header isn't found
+     */
+    public String[] getValues(HttpHeaderName name) {
+        return getValuesInternal(name.getCaseInsensitiveName());
+    }
+
+    private String[] getValuesInternal(String formattedName) {
+        final HttpHeader header = getInternal(formattedName);
         return header == null ? null : header.getValues();
     }
 

@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for Datastores List. */
 public final class DatastoresListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Datastore/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/list.json
      */
     /**
      * Sample code: List datastores.

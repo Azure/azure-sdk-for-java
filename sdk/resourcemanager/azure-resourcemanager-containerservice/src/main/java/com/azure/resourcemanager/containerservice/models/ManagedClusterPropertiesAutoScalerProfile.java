@@ -158,6 +158,10 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     @JsonProperty(value = "skip-nodes-with-system-pods")
     private String skipNodesWithSystemPods;
 
+    /** Creates an instance of ManagedClusterPropertiesAutoScalerProfile class. */
+    public ManagedClusterPropertiesAutoScalerProfile() {
+    }
+
     /**
      * Get the balanceSimilarNodeGroups property: Detects similar node pools and balances the number of nodes between
      * them.
