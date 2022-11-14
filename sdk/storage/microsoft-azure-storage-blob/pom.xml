@@ -90,7 +90,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -103,7 +103,6 @@
       <scope>test</scope>
     </dependency>
 
-<<<<<<< HEAD
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
@@ -111,14 +110,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-=======
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-test</artifactId>
-          <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-          <scope>test</scope>
-        </dependency>
->>>>>>> 6c75da052a98f9c73468f05809c26bfb8ef1b2f9
 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
