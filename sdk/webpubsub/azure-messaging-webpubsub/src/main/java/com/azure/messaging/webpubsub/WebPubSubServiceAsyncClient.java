@@ -4,11 +4,15 @@
 
 package com.azure.messaging.webpubsub;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -67,6 +71,9 @@ public final class WebPubSubServiceAsyncClient {
             if (CoreUtils.isNullOrEmpty(options.getRoles())) {
                 requestOptions.addQueryParam("role", options.getRoles().stream().collect(Collectors.joining(",")));
             }
+            if (CoreUtils.isNullOrEmpty(options.getGroups())) {
+                requestOptions.addQueryParam("group", options.getGroups().stream().collect(Collectors.joining(",")));
+            }
             requestOptions.addQueryParam("api-version", version.getVersion());
             return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
                     .map(Response::getValue)
@@ -95,7 +102,7 @@ public final class WebPubSubServiceAsyncClient {
      *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
      *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
      *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>No</td><td>Api Version</td></tr>
+     *     <tr><td>group</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it connects. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -134,7 +141,7 @@ public final class WebPubSubServiceAsyncClient {
         }
         requestOptions.setHeader("Content-Type", contentType.toString());
         requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
-        return this.serviceClient.sendToAllWithResponseAsync(hub, message, requestOptions);
+        return this.serviceClient.sendToAllWithResponseAsync(hub, "", message, requestOptions);
     }
 
     /**
@@ -148,7 +155,7 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAllWithResponse(BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToAllWithResponseAsync(hub, message, requestOptions);
+        return this.serviceClient.sendToAllWithResponseAsync(hub, "", message, requestOptions);
     }
 
     /**
@@ -222,7 +229,7 @@ public final class WebPubSubServiceAsyncClient {
         requestOptions.setHeader("Content-Type", contentType.toString());
         requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToConnectionWithResponseAsync(
-                hub, connectionId, message, requestOptions);
+                hub, connectionId, "", message, requestOptions);
     }
 
     /**
@@ -238,7 +245,7 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToConnectionWithResponse(
             String connectionId, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToConnectionWithResponseAsync(hub, connectionId, message, requestOptions);
+        return this.serviceClient.sendToConnectionWithResponseAsync(hub, connectionId, "", message, requestOptions);
     }
 
     /**
@@ -297,7 +304,7 @@ public final class WebPubSubServiceAsyncClient {
         requestOptions.setHeader("Content-Type", contentType.toString());
         requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToGroupWithResponseAsync(
-                hub, group, message, requestOptions);
+                hub, group, "", message, requestOptions);
     }
 
     /**
@@ -313,7 +320,7 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToGroupWithResponse(
             String group, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToGroupWithResponseAsync(hub, group, message, requestOptions);
+        return this.serviceClient.sendToGroupWithResponseAsync(hub, group, "", message, requestOptions);
     }
 
     /**
@@ -366,6 +373,27 @@ public final class WebPubSubServiceAsyncClient {
     }
 
     /**
+     * Remove a connection from all groups.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param connectionId Target connection Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeConnectionFromAllGroupsWithResponse(
+        String hub, String connectionId, RequestOptions requestOptions) {
+        return this.serviceClient.removeConnectionFromAllGroupsWithResponseAsync(hub, connectionId, requestOptions);
+    }
+
+    /**
      * Check if there are any client connections connected for the given user.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -404,7 +432,7 @@ public final class WebPubSubServiceAsyncClient {
         requestOptions.setHeader("Content-Type", contentType.toString());
         requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToUserWithResponseAsync(
-                hub, userId, message, requestOptions);
+                hub, userId, "", message, requestOptions);
     }
 
     /**
@@ -420,7 +448,7 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToUserWithResponse(
             String userId, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToUserWithResponseAsync(hub, userId, message, requestOptions);
+        return this.serviceClient.sendToUserWithResponseAsync(hub, userId, "", message, requestOptions);
     }
 
     /**
