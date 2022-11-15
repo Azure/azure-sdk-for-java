@@ -18,6 +18,7 @@ spec:
           set -a &&
           source $ENV_FILE &&
           export CONTAINER_NAME=sender &&
+          export APPLICATIONINSIGHTS_ROLE_NAME=sender &&
           java "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=MessageSender
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
@@ -37,6 +38,7 @@ spec:
           set -a &&
           source $ENV_FILE &&
           export CONTAINER_NAME=receiver &&
+          export APPLICATIONINSIGHTS_ROLE_NAME=receiver &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           -Dreactor.schedulers.defaultBoundedElasticSize=100 \
           "org.springframework.boot.loader.JarLauncher" \
