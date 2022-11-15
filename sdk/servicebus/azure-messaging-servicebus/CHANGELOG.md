@@ -12,6 +12,7 @@
 ### Bugs Fixed
 - Fixed `ServiceBusReceiverClient` release messages if the prefetch is disabled and there is no active receive call in `RECEIVE_AND_DELETE` mode. ([#30861](https://github.com/Azure/azure-sdk-for-java/issues/30861))
 - Fixed incorrect proxy configuration using environment variables. ([#24230](https://github.com/Azure/azure-sdk-for-java/issues/24230))
+- Fixed incorrect queue description item order. ([#30880](https://github.com/Azure/azure-sdk-for-java/issues/30880))
 
 ### Other Changes
 - Changed the log level for adding credits from Info to Debug. ([#20836](https://github.com/Azure/azure-sdk-for-java/issues/20836))
