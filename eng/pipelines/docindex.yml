@@ -52,6 +52,7 @@ jobs:
             -ClientId '$(opensource-aad-app-id)'
             -ClientSecret '$(opensource-aad-secret)'
         displayName: Generate Service Level Readme
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
       - task: Powershell@2
         inputs:
@@ -121,7 +122,7 @@ jobs:
             -TenantId '$(opensource-aad-tenant-id)'
             -ClientId '$(opensource-aad-app-id)'
             -ClientSecret '$(opensource-aad-secret)'
-        displayName: Generate Service Level Readme
+        displayName: Generate Service Level Readme for Daily Branches
       - task: Powershell@2
         inputs:
           pwsh: true
