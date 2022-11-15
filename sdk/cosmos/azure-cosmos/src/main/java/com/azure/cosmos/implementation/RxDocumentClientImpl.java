@@ -910,7 +910,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return ObservableHelper.fluxInlineIfPossibleAsObs(
             () -> createQueryInternal(
-                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId).log("913"),
+                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId),
             invalidPartitionExceptionRetryPolicy);
     }
 
@@ -937,7 +937,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             QueryInfo finalQueryInfo = queryInfo;
-            return iDocumentQueryExecutionContext.executeAsync().log("940")
+            return iDocumentQueryExecutionContext.executeAsync()
                 .map(tFeedResponse -> {
                     if (finalQueryInfo != null) {
                         if (finalQueryInfo.hasSelectValue()) {
