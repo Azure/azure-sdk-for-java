@@ -20,6 +20,7 @@ import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -47,7 +48,7 @@ public class AzureStorageQueueAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
-    AzureStorageQueueProperties azureStorageQueueProperties(AzureStorageProperties azureStorageProperties) {
+    AzureStorageQueueProperties azureStorageQueueProperties(@Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
         return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageQueueProperties());
     }
 

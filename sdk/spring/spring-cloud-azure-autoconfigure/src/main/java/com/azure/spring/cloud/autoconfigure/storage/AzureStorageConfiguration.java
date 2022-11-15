@@ -22,7 +22,7 @@ public class AzureStorageConfiguration extends AzureServiceConfigurationBase {
         super(azureGlobalProperties);
     }
 
-    @Bean
+    @Bean(name = "azureStorageProperties")
     @ConfigurationProperties(AzureStorageProperties.PREFIX)
     AzureStorageProperties azureStorageProperties() {
         return loadProperties(getAzureGlobalProperties(), new AzureStorageProperties());
