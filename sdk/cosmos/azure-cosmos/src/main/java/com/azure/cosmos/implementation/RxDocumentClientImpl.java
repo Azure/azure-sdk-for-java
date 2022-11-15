@@ -953,8 +953,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return tFeedResponse;
                 });
             // concurrency is set to Queues.SMALL_BUFFER_SIZE to
-            // maximize the IDocumentQueryExecutionContext instances to subscribe to concurrently
-            // prefetch is set to 1 to minimize the no. of requested pages (result of merged executeAsync invocations)
+            // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
+            // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
     }
 
