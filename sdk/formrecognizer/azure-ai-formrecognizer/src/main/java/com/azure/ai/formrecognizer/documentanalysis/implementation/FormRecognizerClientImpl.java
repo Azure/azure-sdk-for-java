@@ -645,42 +645,6 @@ public final class FormRecognizerClientImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param analyzeRequest Analyze request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocumentSyncWithResponse(
-            String modelId,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            AnalyzeDocumentRequest analyzeRequest) {
-        final String accept = "application/json";
-        return service.analyzeDocumentSync(
-                this.getEndpoint(),
-                modelId,
-                pages,
-                locale,
-                stringIndexType,
-                this.getApiVersion(),
-                analyzeRequest,
-                accept,
-                Context.NONE);
-    }
-
-    /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
-     *
-     * @param modelId Unique document model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -688,7 +652,7 @@ public final class FormRecognizerClientImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocumentSyncWithResponse(
+    public ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(
             String modelId,
             String pages,
             String locale,
@@ -724,40 +688,13 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeDocumentSync(
+    public void analyzeDocument(
             String modelId,
             String pages,
             String locale,
             StringIndexType stringIndexType,
             AnalyzeDocumentRequest analyzeRequest) {
-        analyzeDocumentSyncWithResponse(modelId, pages, locale, stringIndexType, analyzeRequest, Context.NONE);
-    }
-
-    /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
-     *
-     * @param modelId Unique document model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeDocumentSync(
-            String modelId,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            AnalyzeDocumentRequest analyzeRequest,
-            Context context) {
-        analyzeDocumentSyncWithResponse(modelId, pages, locale, stringIndexType, analyzeRequest, context);
+        analyzeDocumentWithResponse(modelId, pages, locale, stringIndexType, analyzeRequest, Context.NONE);
     }
 
     /**
@@ -1081,48 +1018,6 @@ public final class FormRecognizerClientImpl {
      * @param stringIndexType Method used to compute string offset and length.
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocumentSyncWithResponse(
-            String modelId,
-            ContentType contentType,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            BinaryData analyzeRequest,
-            Long contentLength) {
-        final String accept = "application/json";
-        return service.analyzeDocumentSync(
-                this.getEndpoint(),
-                modelId,
-                pages,
-                locale,
-                stringIndexType,
-                this.getApiVersion(),
-                contentType,
-                analyzeRequest,
-                contentLength,
-                accept,
-                Context.NONE);
-    }
-
-    /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
-     *
-     * @param modelId Unique document model name.
-     * @param contentType Upload file type.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1130,7 +1025,7 @@ public final class FormRecognizerClientImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocumentSyncWithResponse(
+    public ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(
             String modelId,
             ContentType contentType,
             String pages,
@@ -1172,7 +1067,7 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeDocumentSync(
+    public void analyzeDocument(
             String modelId,
             ContentType contentType,
             String pages,
@@ -1180,40 +1075,8 @@ public final class FormRecognizerClientImpl {
             StringIndexType stringIndexType,
             BinaryData analyzeRequest,
             Long contentLength) {
-        analyzeDocumentSyncWithResponse(
+        analyzeDocumentWithResponse(
                 modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, Context.NONE);
-    }
-
-    /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
-     *
-     * @param modelId Unique document model name.
-     * @param contentType Upload file type.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeDocumentSync(
-            String modelId,
-            ContentType contentType,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            BinaryData analyzeRequest,
-            Long contentLength,
-            Context context) {
-        analyzeDocumentSyncWithResponse(
-                modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, context);
     }
 
     /**
@@ -1304,25 +1167,6 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of document analysis along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeResultOperation> getAnalyzeDocumentResultSyncWithResponse(String modelId, String resultId) {
-        final String accept = "application/json";
-        return service.getAnalyzeDocumentResultSync(
-                this.getEndpoint(), modelId, resultId, this.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Get analyze result
-     *
-     * <p>Gets the result of document analysis.
-     *
-     * @param modelId Unique document model name.
-     * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1330,7 +1174,7 @@ public final class FormRecognizerClientImpl {
      * @return the result of document analysis along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeResultOperation> getAnalyzeDocumentResultSyncWithResponse(
+    public Response<AnalyzeResultOperation> getAnalyzeDocumentResultWithResponse(
             String modelId, String resultId, Context context) {
         final String accept = "application/json";
         return service.getAnalyzeDocumentResultSync(
@@ -1350,26 +1194,8 @@ public final class FormRecognizerClientImpl {
      * @return the result of document analysis.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeResultOperation getAnalyzeDocumentResultSync(String modelId, String resultId) {
-        return getAnalyzeDocumentResultSyncWithResponse(modelId, resultId, Context.NONE).getValue();
-    }
-
-    /**
-     * Get analyze result
-     *
-     * <p>Gets the result of document analysis.
-     *
-     * @param modelId Unique document model name.
-     * @param resultId Analyze operation result ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of document analysis.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeResultOperation getAnalyzeDocumentResultSync(String modelId, String resultId, Context context) {
-        return getAnalyzeDocumentResultSyncWithResponse(modelId, resultId, context).getValue();
+    public AnalyzeResultOperation getAnalyzeDocumentResult(String modelId, String resultId) {
+        return getAnalyzeDocumentResultWithResponse(modelId, resultId, Context.NONE).getValue();
     }
 
     /**
@@ -1451,25 +1277,6 @@ public final class FormRecognizerClientImpl {
      * <p>Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<BuildDocumentModelHeaders, Void> buildDocumentModelSyncWithResponse(
-            BuildDocumentModelRequest buildRequest) {
-        final String accept = "application/json";
-        return service.buildDocumentModelSync(
-                this.getEndpoint(), this.getApiVersion(), buildRequest, accept, Context.NONE);
-    }
-
-    /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
-     *
-     * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1477,7 +1284,7 @@ public final class FormRecognizerClientImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<BuildDocumentModelHeaders, Void> buildDocumentModelSyncWithResponse(
+    public ResponseBase<BuildDocumentModelHeaders, Void> buildDocumentModelWithResponse(
             BuildDocumentModelRequest buildRequest, Context context) {
         final String accept = "application/json";
         return service.buildDocumentModelSync(this.getEndpoint(), this.getApiVersion(), buildRequest, accept, context);
@@ -1494,24 +1301,8 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void buildDocumentModelSync(BuildDocumentModelRequest buildRequest) {
-        buildDocumentModelSyncWithResponse(buildRequest, Context.NONE);
-    }
-
-    /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
-     *
-     * @param buildRequest Building request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void buildDocumentModelSync(BuildDocumentModelRequest buildRequest, Context context) {
-        buildDocumentModelSyncWithResponse(buildRequest, context);
+    public void buildDocumentModel(BuildDocumentModelRequest buildRequest) {
+        buildDocumentModelWithResponse(buildRequest, Context.NONE);
     }
 
     /**
@@ -1593,25 +1384,6 @@ public final class FormRecognizerClientImpl {
      * <p>Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ComposeDocumentModelHeaders, Void> composeDocumentModelSyncWithResponse(
-            ComposeDocumentModelRequest composeRequest) {
-        final String accept = "application/json";
-        return service.composeDocumentModelSync(
-                this.getEndpoint(), this.getApiVersion(), composeRequest, accept, Context.NONE);
-    }
-
-    /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
-     *
-     * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1619,7 +1391,7 @@ public final class FormRecognizerClientImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ComposeDocumentModelHeaders, Void> composeDocumentModelSyncWithResponse(
+    public ResponseBase<ComposeDocumentModelHeaders, Void> composeDocumentModelWithResponse(
             ComposeDocumentModelRequest composeRequest, Context context) {
         final String accept = "application/json";
         return service.composeDocumentModelSync(
@@ -1637,24 +1409,8 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void composeDocumentModelSync(ComposeDocumentModelRequest composeRequest) {
-        composeDocumentModelSyncWithResponse(composeRequest, Context.NONE);
-    }
-
-    /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
-     *
-     * @param composeRequest Compose request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void composeDocumentModelSync(ComposeDocumentModelRequest composeRequest, Context context) {
-        composeDocumentModelSyncWithResponse(composeRequest, context);
+    public void composeDocumentModel(ComposeDocumentModelRequest composeRequest) {
+        composeDocumentModelWithResponse(composeRequest, Context.NONE);
     }
 
     /**
@@ -1749,27 +1505,6 @@ public final class FormRecognizerClientImpl {
      * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CopyAuthorization> authorizeCopyDocumentModelSyncWithResponse(
-            AuthorizeCopyRequest authorizeCopyRequest) {
-        final String accept = "application/json";
-        return service.authorizeCopyDocumentModelSync(
-                this.getEndpoint(), this.getApiVersion(), authorizeCopyRequest, accept, Context.NONE);
-    }
-
-    /**
-     * Generate copy authorization
-     *
-     * <p>Generates authorization to copy a document model to this location with specified modelId and optional
-     * description.
-     *
-     * @param authorizeCopyRequest Authorize copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1778,7 +1513,7 @@ public final class FormRecognizerClientImpl {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CopyAuthorization> authorizeCopyDocumentModelSyncWithResponse(
+    public Response<CopyAuthorization> authorizeCopyDocumentModelWithResponse(
             AuthorizeCopyRequest authorizeCopyRequest, Context context) {
         final String accept = "application/json";
         return service.authorizeCopyDocumentModelSync(
@@ -1798,27 +1533,8 @@ public final class FormRecognizerClientImpl {
      * @return authorization to copy a document model to the specified target resource and modelId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CopyAuthorization authorizeCopyDocumentModelSync(AuthorizeCopyRequest authorizeCopyRequest) {
-        return authorizeCopyDocumentModelSyncWithResponse(authorizeCopyRequest, Context.NONE).getValue();
-    }
-
-    /**
-     * Generate copy authorization
-     *
-     * <p>Generates authorization to copy a document model to this location with specified modelId and optional
-     * description.
-     *
-     * @param authorizeCopyRequest Authorize copy request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a document model to the specified target resource and modelId.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CopyAuthorization authorizeCopyDocumentModelSync(
-            AuthorizeCopyRequest authorizeCopyRequest, Context context) {
-        return authorizeCopyDocumentModelSyncWithResponse(authorizeCopyRequest, context).getValue();
+    public CopyAuthorization authorizeCopyDocumentModel(AuthorizeCopyRequest authorizeCopyRequest) {
+        return authorizeCopyDocumentModelWithResponse(authorizeCopyRequest, Context.NONE).getValue();
     }
 
     /**
@@ -1906,26 +1622,6 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CopyDocumentModelToHeaders, Void> copyDocumentModelToSyncWithResponse(
-            String modelId, CopyAuthorization copyToRequest) {
-        final String accept = "application/json";
-        return service.copyDocumentModelToSync(
-                this.getEndpoint(), modelId, this.getApiVersion(), copyToRequest, accept, Context.NONE);
-    }
-
-    /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
-     *
-     * @param modelId Unique document model name.
-     * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1933,7 +1629,7 @@ public final class FormRecognizerClientImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CopyDocumentModelToHeaders, Void> copyDocumentModelToSyncWithResponse(
+    public ResponseBase<CopyDocumentModelToHeaders, Void> copyDocumentModelToWithResponse(
             String modelId, CopyAuthorization copyToRequest, Context context) {
         final String accept = "application/json";
         return service.copyDocumentModelToSync(
@@ -1952,25 +1648,8 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void copyDocumentModelToSync(String modelId, CopyAuthorization copyToRequest) {
-        copyDocumentModelToSyncWithResponse(modelId, copyToRequest, Context.NONE);
-    }
-
-    /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
-     *
-     * @param modelId Unique document model name.
-     * @param copyToRequest Copy to request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void copyDocumentModelToSync(String modelId, CopyAuthorization copyToRequest, Context context) {
-        copyDocumentModelToSyncWithResponse(modelId, copyToRequest, context);
+    public void copyDocumentModelTo(String modelId, CopyAuthorization copyToRequest) {
+        copyDocumentModelToWithResponse(modelId, copyToRequest, Context.NONE);
     }
 
     /**
@@ -2069,7 +1748,7 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<OperationSummary> getOperationsSyncSinglePage() {
+    public PagedResponse<OperationSummary> getOperationsSinglePage() {
         final String accept = "application/json";
         Response<GetOperationsResponse> res =
                 service.getOperationsSync(this.getEndpoint(), this.getApiVersion(), accept, Context.NONE);
@@ -2094,7 +1773,7 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<OperationSummary> getOperationsSyncSinglePage(Context context) {
+    public PagedResponse<OperationSummary> getOperationsSinglePage(Context context) {
         final String accept = "application/json";
         Response<GetOperationsResponse> res =
                 service.getOperationsSync(this.getEndpoint(), this.getApiVersion(), accept, context);
@@ -2117,9 +1796,9 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationSummary> getOperationsSync() {
+    public PagedIterable<OperationSummary> getOperations() {
         return new PagedIterable<>(
-                () -> getOperationsSyncSinglePage(Context.NONE), nextLink -> getOperationsNextSyncSinglePage(nextLink));
+                () -> getOperationsSinglePage(Context.NONE), nextLink -> getOperationsNextSinglePage(nextLink));
     }
 
     /**
@@ -2134,10 +1813,9 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationSummary> getOperationsSync(Context context) {
+    public PagedIterable<OperationSummary> getOperations(Context context) {
         return new PagedIterable<>(
-                () -> getOperationsSyncSinglePage(context),
-                nextLink -> getOperationsNextSyncSinglePage(nextLink, context));
+                () -> getOperationsSinglePage(context), nextLink -> getOperationsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2216,23 +1894,6 @@ public final class FormRecognizerClientImpl {
      * <p>Gets operation info.
      *
      * @param operationId Unique operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation info along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationDetails> getOperationSyncWithResponse(String operationId) {
-        final String accept = "application/json";
-        return service.getOperationSync(this.getEndpoint(), operationId, this.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Get operation
-     *
-     * <p>Gets operation info.
-     *
-     * @param operationId Unique operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2240,7 +1901,7 @@ public final class FormRecognizerClientImpl {
      * @return operation info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationDetails> getOperationSyncWithResponse(String operationId, Context context) {
+    public Response<OperationDetails> getOperationWithResponse(String operationId, Context context) {
         final String accept = "application/json";
         return service.getOperationSync(this.getEndpoint(), operationId, this.getApiVersion(), accept, context);
     }
@@ -2257,25 +1918,8 @@ public final class FormRecognizerClientImpl {
      * @return operation info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationDetails getOperationSync(String operationId) {
-        return getOperationSyncWithResponse(operationId, Context.NONE).getValue();
-    }
-
-    /**
-     * Get operation
-     *
-     * <p>Gets operation info.
-     *
-     * @param operationId Unique operation ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation info.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationDetails getOperationSync(String operationId, Context context) {
-        return getOperationSyncWithResponse(operationId, context).getValue();
+    public OperationDetails getOperation(String operationId) {
+        return getOperationWithResponse(operationId, Context.NONE).getValue();
     }
 
     /**
@@ -2374,7 +2018,7 @@ public final class FormRecognizerClientImpl {
      * @return list document models response object along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DocumentModelSummary> getDocumentModelsSyncSinglePage() {
+    public PagedResponse<DocumentModelSummary> getDocumentModelsSinglePage() {
         final String accept = "application/json";
         Response<GetDocumentModelsResponse> res =
                 service.getDocumentModelsSync(this.getEndpoint(), this.getApiVersion(), accept, Context.NONE);
@@ -2399,7 +2043,7 @@ public final class FormRecognizerClientImpl {
      * @return list document models response object along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DocumentModelSummary> getDocumentModelsSyncSinglePage(Context context) {
+    public PagedResponse<DocumentModelSummary> getDocumentModelsSinglePage(Context context) {
         final String accept = "application/json";
         Response<GetDocumentModelsResponse> res =
                 service.getDocumentModelsSync(this.getEndpoint(), this.getApiVersion(), accept, context);
@@ -2422,10 +2066,9 @@ public final class FormRecognizerClientImpl {
      * @return list document models response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentModelSummary> getDocumentModelsSync() {
+    public PagedIterable<DocumentModelSummary> getDocumentModels() {
         return new PagedIterable<>(
-                () -> getDocumentModelsSyncSinglePage(Context.NONE),
-                nextLink -> getDocumentModelsNextSyncSinglePage(nextLink));
+                () -> getDocumentModelsSinglePage(Context.NONE), nextLink -> getDocumentModelsNextSinglePage(nextLink));
     }
 
     /**
@@ -2440,10 +2083,10 @@ public final class FormRecognizerClientImpl {
      * @return list document models response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentModelSummary> getDocumentModelsSync(Context context) {
+    public PagedIterable<DocumentModelSummary> getDocumentModels(Context context) {
         return new PagedIterable<>(
-                () -> getDocumentModelsSyncSinglePage(context),
-                nextLink -> getDocumentModelsNextSyncSinglePage(nextLink, context));
+                () -> getDocumentModelsSinglePage(context),
+                nextLink -> getDocumentModelsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2522,23 +2165,6 @@ public final class FormRecognizerClientImpl {
      * <p>Gets detailed document model information.
      *
      * @param modelId Unique document model name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed document model information along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentModelDetails> getDocumentModelSyncWithResponse(String modelId) {
-        final String accept = "application/json";
-        return service.getDocumentModelSync(this.getEndpoint(), modelId, this.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Get document model
-     *
-     * <p>Gets detailed document model information.
-     *
-     * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2546,7 +2172,7 @@ public final class FormRecognizerClientImpl {
      * @return detailed document model information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentModelDetails> getDocumentModelSyncWithResponse(String modelId, Context context) {
+    public Response<DocumentModelDetails> getDocumentModelWithResponse(String modelId, Context context) {
         final String accept = "application/json";
         return service.getDocumentModelSync(this.getEndpoint(), modelId, this.getApiVersion(), accept, context);
     }
@@ -2563,25 +2189,8 @@ public final class FormRecognizerClientImpl {
      * @return detailed document model information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentModelDetails getDocumentModelSync(String modelId) {
-        return getDocumentModelSyncWithResponse(modelId, Context.NONE).getValue();
-    }
-
-    /**
-     * Get document model
-     *
-     * <p>Gets detailed document model information.
-     *
-     * @param modelId Unique document model name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed document model information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentModelDetails getDocumentModelSync(String modelId, Context context) {
-        return getDocumentModelSyncWithResponse(modelId, context).getValue();
+    public DocumentModelDetails getDocumentModel(String modelId) {
+        return getDocumentModelWithResponse(modelId, Context.NONE).getValue();
     }
 
     /**
@@ -2661,23 +2270,6 @@ public final class FormRecognizerClientImpl {
      * <p>Deletes document model.
      *
      * @param modelId Unique document model name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDocumentModelSyncWithResponse(String modelId) {
-        final String accept = "application/json";
-        return service.deleteDocumentModelSync(this.getEndpoint(), modelId, this.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Delete document model
-     *
-     * <p>Deletes document model.
-     *
-     * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2685,7 +2277,7 @@ public final class FormRecognizerClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDocumentModelSyncWithResponse(String modelId, Context context) {
+    public Response<Void> deleteDocumentModelWithResponse(String modelId, Context context) {
         final String accept = "application/json";
         return service.deleteDocumentModelSync(this.getEndpoint(), modelId, this.getApiVersion(), accept, context);
     }
@@ -2701,24 +2293,8 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDocumentModelSync(String modelId) {
-        deleteDocumentModelSyncWithResponse(modelId, Context.NONE);
-    }
-
-    /**
-     * Delete document model
-     *
-     * <p>Deletes document model.
-     *
-     * @param modelId Unique document model name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDocumentModelSync(String modelId, Context context) {
-        deleteDocumentModelSyncWithResponse(modelId, context);
+    public void deleteDocumentModel(String modelId) {
+        deleteDocumentModelWithResponse(modelId, Context.NONE);
     }
 
     /**
@@ -2791,21 +2367,6 @@ public final class FormRecognizerClientImpl {
      *
      * <p>Return information about the current resource.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return general information regarding the current resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceDetails> getResourceDetailsSyncWithResponse() {
-        final String accept = "application/json";
-        return service.getResourceDetailsSync(this.getEndpoint(), this.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Get resource info
-     *
-     * <p>Return information about the current resource.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2813,7 +2374,7 @@ public final class FormRecognizerClientImpl {
      * @return general information regarding the current resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceDetails> getResourceDetailsSyncWithResponse(Context context) {
+    public Response<ResourceDetails> getResourceDetailsWithResponse(Context context) {
         final String accept = "application/json";
         return service.getResourceDetailsSync(this.getEndpoint(), this.getApiVersion(), accept, context);
     }
@@ -2828,24 +2389,8 @@ public final class FormRecognizerClientImpl {
      * @return general information regarding the current resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceDetails getResourceDetailsSync() {
-        return getResourceDetailsSyncWithResponse(Context.NONE).getValue();
-    }
-
-    /**
-     * Get resource info
-     *
-     * <p>Return information about the current resource.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return general information regarding the current resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceDetails getResourceDetailsSync(Context context) {
-        return getResourceDetailsSyncWithResponse(context).getValue();
+    public ResourceDetails getResourceDetails() {
+        return getResourceDetailsWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -2912,7 +2457,7 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<OperationSummary> getOperationsNextSyncSinglePage(String nextLink) {
+    public PagedResponse<OperationSummary> getOperationsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<GetOperationsResponse> res =
                 service.getOperationsNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
@@ -2937,7 +2482,7 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<OperationSummary> getOperationsNextSyncSinglePage(String nextLink, Context context) {
+    public PagedResponse<OperationSummary> getOperationsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<GetOperationsResponse> res =
                 service.getOperationsNextSync(nextLink, this.getEndpoint(), accept, context);
@@ -3016,7 +2561,7 @@ public final class FormRecognizerClientImpl {
      * @return list document models response object along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DocumentModelSummary> getDocumentModelsNextSyncSinglePage(String nextLink) {
+    public PagedResponse<DocumentModelSummary> getDocumentModelsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<GetDocumentModelsResponse> res =
                 service.getDocumentModelsNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
@@ -3041,7 +2586,7 @@ public final class FormRecognizerClientImpl {
      * @return list document models response object along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DocumentModelSummary> getDocumentModelsNextSyncSinglePage(String nextLink, Context context) {
+    public PagedResponse<DocumentModelSummary> getDocumentModelsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<GetDocumentModelsResponse> res =
                 service.getDocumentModelsNextSync(nextLink, this.getEndpoint(), accept, context);

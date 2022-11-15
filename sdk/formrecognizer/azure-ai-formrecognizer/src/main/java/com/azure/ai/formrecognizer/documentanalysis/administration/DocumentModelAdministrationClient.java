@@ -299,7 +299,7 @@ public final class DocumentModelAdministrationClient {
     public Response<ResourceDetails> getResourceDetailsWithResponse(Context context) {
         try {
             Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.ResourceDetails> response =
-                service.getResourceDetailsSyncWithResponse(enableSyncRestProxy(getTracingContext(context)));
+                service.getResourceDetailsWithResponse(enableSyncRestProxy(getTracingContext(context)));
 
             return new SimpleResponse<>(response, Transforms.toAccountProperties(response.getValue()));
         } catch (ErrorResponseException ex) {
@@ -355,7 +355,7 @@ public final class DocumentModelAdministrationClient {
         }
         try {
             return
-                service.deleteDocumentModelSyncWithResponse(modelId, enableSyncRestProxy(getTracingContext(context)));
+                service.deleteDocumentModelWithResponse(modelId, enableSyncRestProxy(getTracingContext(context)));
         } catch (ErrorResponseException ex) {
             throw logger.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -442,7 +442,7 @@ public final class DocumentModelAdministrationClient {
 
         try {
             Response<CopyAuthorization> response =
-                service.authorizeCopyDocumentModelSyncWithResponse(authorizeCopyRequest,
+                service.authorizeCopyDocumentModelWithResponse(authorizeCopyRequest,
                     enableSyncRestProxy(getTracingContext(context)));
 
             return new SimpleResponse<>(response, Transforms.toCopyAuthorization(response.getValue()));
@@ -740,7 +740,7 @@ public final class DocumentModelAdministrationClient {
     private PagedResponse<DocumentModelSummary> listFirstPageModelInfo(Context context) {
         try {
             PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary> res =
-                service.getDocumentModelsSyncSinglePage(context);
+                service.getDocumentModelsSinglePage(context);
             return new PagedResponseBase<>(
                     res.getRequest(),
                     res.getStatusCode(),
@@ -759,7 +759,7 @@ public final class DocumentModelAdministrationClient {
         }
         try {
             PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary>
-                res = service.getDocumentModelsNextSyncSinglePage(nextPageLink, context);
+                res = service.getDocumentModelsNextSinglePage(nextPageLink, context);
             return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -841,7 +841,7 @@ public final class DocumentModelAdministrationClient {
         }
         try {
             Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails> response =
-                service.getDocumentModelSyncWithResponse(modelId, enableSyncRestProxy(getTracingContext(context)));
+                service.getDocumentModelWithResponse(modelId, enableSyncRestProxy(getTracingContext(context)));
 
             return new SimpleResponse<>(response, Transforms.toDocumentModelDetails(response.getValue()));
         } catch (ErrorResponseException ex) {
@@ -916,7 +916,7 @@ public final class DocumentModelAdministrationClient {
         }
         try {
             Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails> response =
-                service.getOperationSyncWithResponse(operationId, enableSyncRestProxy(getTracingContext(context)));
+                service.getOperationWithResponse(operationId, enableSyncRestProxy(getTracingContext(context)));
 
             return new SimpleResponse<>(response, Transforms.toOperationDetails(response.getValue()));
         } catch (ErrorResponseException ex) {
@@ -991,7 +991,7 @@ public final class DocumentModelAdministrationClient {
     private PagedResponse<OperationSummary> listFirstPageOperationInfo(Context context) {
         try {
             PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> res =
-                service.getOperationsSyncSinglePage(context);
+                service.getOperationsSinglePage(context);
 
             return new PagedResponseBase<>(
                 res.getRequest(),
@@ -1011,7 +1011,7 @@ public final class DocumentModelAdministrationClient {
         }
         try {
             PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> res =
-                service.getOperationsNextSyncSinglePage(nextPageLink, context);
+                service.getOperationsNextSinglePage(nextPageLink, context);
 
             return new PagedResponseBase<>(
                 res.getRequest(),
@@ -1035,7 +1035,7 @@ public final class DocumentModelAdministrationClient {
                         buildDocumentModelOptions);
 
                 ResponseBase<BuildDocumentModelHeaders, Void>
-                    response = service.buildDocumentModelSyncWithResponse(buildDocumentModelRequest, context);
+                    response = service.buildDocumentModelWithResponse(buildDocumentModelRequest, context);
                 return Transforms.toDocumentOperationResult(
                     response.getDeserializedHeaders().getOperationLocation());
             } catch (ErrorResponseException ex) {
@@ -1051,9 +1051,9 @@ public final class DocumentModelAdministrationClient {
                 PollResponse<OperationResult> operationResultPollResponse =
                     pollingContext.getLatestResponse();
                 String modelId = operationResultPollResponse.getValue().getOperationId();
-                com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails
-                    modelSimpleResponse = service.getOperationSync(modelId, context);
-                return processBuildingModelResponse(modelSimpleResponse, operationResultPollResponse);
+                Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails>
+                    modelSimpleResponse = service.getOperationWithResponse(modelId, context);
+                return processBuildingModelResponse(modelSimpleResponse.getValue(), operationResultPollResponse);
             } catch (ErrorResponseException ex) {
                 throw logger.logExceptionAsError(getHttpResponseException(ex));
             }
@@ -1098,7 +1098,7 @@ public final class DocumentModelAdministrationClient {
             try {
                 final String modelId = pollingContext.getLatestResponse().getValue().getOperationId();
                 return
-                    Transforms.toDocumentModelFromOperationId(service.getOperationSyncWithResponse(modelId,
+                    Transforms.toDocumentModelFromOperationId(service.getOperationWithResponse(modelId,
                         context).getValue());
             } catch (ErrorResponseException ex) {
                 throw logger.logExceptionAsError(getHttpResponseException(ex));
@@ -1111,7 +1111,7 @@ public final class DocumentModelAdministrationClient {
         return (pollingContext) -> {
             try {
                 ResponseBase<ComposeDocumentModelHeaders, Void>
-                    response = service.composeDocumentModelSyncWithResponse(composeRequest, context);
+                    response = service.composeDocumentModelWithResponse(composeRequest, context);
                 return Transforms.toDocumentOperationResult(
                     response.getDeserializedHeaders().getOperationLocation());
             } catch (ErrorResponseException ex) {
@@ -1130,7 +1130,7 @@ public final class DocumentModelAdministrationClient {
                 com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization copyRequest
                     = getInnerCopyAuthorization(target);
                 ResponseBase<CopyDocumentModelToHeaders, Void>
-                    response = service.copyDocumentModelToSyncWithResponse(modelId, copyRequest, context);
+                    response = service.copyDocumentModelToWithResponse(modelId, copyRequest, context);
                 return Transforms.toDocumentOperationResult(
                             response.getDeserializedHeaders().getOperationLocation());
             }  catch (ErrorResponseException ex) {

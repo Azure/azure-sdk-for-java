@@ -308,7 +308,7 @@ public final class DocumentAnalysisClient {
         BinaryData document, String documentUrl, Context context) {
         try {
             if (documentUrl == null) {
-                return service.analyzeDocumentSyncWithResponse(modelId,
+                return service.analyzeDocumentWithResponse(modelId,
                     null,
                     CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
                     locale,
@@ -317,7 +317,7 @@ public final class DocumentAnalysisClient {
                     document.getLength(),
                     context);
             } else {
-                return service.analyzeDocumentSyncWithResponse(modelId,
+                return service.analyzeDocumentWithResponse(modelId,
                     CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
@@ -342,7 +342,7 @@ public final class DocumentAnalysisClient {
             final PollResponse<OperationResult> operationResultPollResponse
                 = pollingContext.getLatestResponse();
             final String resultId = operationResultPollResponse.getValue().getOperationId();
-            Response<AnalyzeResultOperation> modelResponse = service.getAnalyzeDocumentResultSyncWithResponse(
+            Response<AnalyzeResultOperation> modelResponse = service.getAnalyzeDocumentResultWithResponse(
                 modelId, resultId, finalContext);
             return processAnalyzeModelResponse(modelResponse, operationResultPollResponse);
         };
@@ -376,7 +376,7 @@ public final class DocumentAnalysisClient {
         String modelId, Context finalContext) {
         return pollingContext -> {
             final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
-            return Transforms.toAnalyzeResultOperation(service.getAnalyzeDocumentResultSyncWithResponse(
+            return Transforms.toAnalyzeResultOperation(service.getAnalyzeDocumentResultWithResponse(
                     modelId,
                     resultId,
                     finalContext)
