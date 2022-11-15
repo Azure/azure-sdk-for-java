@@ -11,7 +11,6 @@ data-plane: true
 generate-tests: true
 artifact-id: azure-ai-anomalydetector
 generate-samples: true
-license-header: MICROSOFT_MIT_NO_CODEGEN
 namespace: com.azure.ai.anomalydetector
 service-versions:
 - v1.1
