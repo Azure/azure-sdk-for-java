@@ -25,6 +25,10 @@ public final class ScriptActivityTypeProperties {
     @JsonProperty(value = "logSettings")
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
+    /** Creates an instance of ScriptActivityTypeProperties class. */
+    public ScriptActivityTypeProperties() {
+    }
+
     /**
      * Get the scripts property: Array of script blocks. Type: array.
      *

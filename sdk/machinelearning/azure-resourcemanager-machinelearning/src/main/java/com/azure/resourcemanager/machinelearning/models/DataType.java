@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataType. */
+/** Enum to determine the type of data. */
 public final class DataType extends ExpandableStringEnum<DataType> {
-    /** Static value UriFile for DataType. */
-    public static final DataType URI_FILE = fromString("UriFile");
+    /** Static value uri_file for DataType. */
+    public static final DataType URI_FILE = fromString("uri_file");
 
-    /** Static value UriFolder for DataType. */
-    public static final DataType URI_FOLDER = fromString("UriFolder");
+    /** Static value uri_folder for DataType. */
+    public static final DataType URI_FOLDER = fromString("uri_folder");
 
-    /** Static value MLTable for DataType. */
-    public static final DataType MLTABLE = fromString("MLTable");
+    /** Static value mltable for DataType. */
+    public static final DataType MLTABLE = fromString("mltable");
 
     /**
      * Creates or finds a DataType from its string representation.

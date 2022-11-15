@@ -94,6 +94,10 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of AzureBlobStorageLinkedServiceTypeProperties class. */
+    public AzureBlobStorageLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri, serviceEndpoint
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.

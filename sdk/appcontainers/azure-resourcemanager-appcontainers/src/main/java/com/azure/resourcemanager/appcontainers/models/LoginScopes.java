@@ -17,6 +17,10 @@ public final class LoginScopes {
     @JsonProperty(value = "scopes")
     private List<String> scopes;
 
+    /** Creates an instance of LoginScopes class. */
+    public LoginScopes() {
+    }
+
     /**
      * Get the scopes property: A list of the scopes that should be requested while authenticating.
      *

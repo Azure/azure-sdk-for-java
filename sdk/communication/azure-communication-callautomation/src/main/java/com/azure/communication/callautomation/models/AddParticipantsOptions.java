@@ -9,7 +9,9 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The options for adding participants.
@@ -39,12 +41,18 @@ public final class AddParticipantsOptions {
     private Duration invitationTimeout;
 
     /**
+     * Repeatability Headers Configuration
+     */
+    private RepeatabilityHeaders repeatabilityHeaders;
+
+    /**
      * Constructor
      *
      * @param participants The list of participants to invite.
      */
     public AddParticipantsOptions(List<CommunicationIdentifier> participants) {
         this.participants = participants;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -81,6 +89,26 @@ public final class AddParticipantsOptions {
      */
     public Duration getInvitationTimeout() {
         return invitationTimeout;
+    }
+
+    /**
+     * Get the Repeatability headers configuration.
+     *
+     * @return the repeatabilityHeaders
+     */
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
+    }
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
+        return this;
     }
 
     /**

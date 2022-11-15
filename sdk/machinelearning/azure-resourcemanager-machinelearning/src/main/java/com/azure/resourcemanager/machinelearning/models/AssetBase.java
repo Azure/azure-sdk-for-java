@@ -23,6 +23,10 @@ public class AssetBase extends ResourceBase {
     @JsonProperty(value = "isArchived")
     private Boolean isArchived;
 
+    /** Creates an instance of AssetBase class. */
+    public AssetBase() {
+    }
+
     /**
      * Get the isAnonymous property: If the name version are system generated (anonymous registration).
      *

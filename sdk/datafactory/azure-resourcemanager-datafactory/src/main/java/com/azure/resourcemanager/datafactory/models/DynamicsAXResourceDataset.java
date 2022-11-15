@@ -24,6 +24,10 @@ public final class DynamicsAXResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private DynamicsAXResourceDatasetTypeProperties innerTypeProperties = new DynamicsAXResourceDatasetTypeProperties();
 
+    /** Creates an instance of DynamicsAXResourceDataset class. */
+    public DynamicsAXResourceDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Dynamics AX OData resource dataset properties.
      *

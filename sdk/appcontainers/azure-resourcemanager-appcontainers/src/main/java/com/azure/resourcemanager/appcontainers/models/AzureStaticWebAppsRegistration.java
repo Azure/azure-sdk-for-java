@@ -16,6 +16,10 @@ public final class AzureStaticWebAppsRegistration {
     @JsonProperty(value = "clientId")
     private String clientId;
 
+    /** Creates an instance of AzureStaticWebAppsRegistration class. */
+    public AzureStaticWebAppsRegistration() {
+    }
+
     /**
      * Get the clientId property: The Client ID of the app used for login.
      *

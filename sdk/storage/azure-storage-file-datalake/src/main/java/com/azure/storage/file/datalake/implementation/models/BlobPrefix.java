@@ -18,6 +18,9 @@ public final class BlobPrefix {
     @JsonProperty(value = "Name", required = true)
     private String name;
 
+    /** Creates an instance of BlobPrefix class. */
+    public BlobPrefix() {}
+
     /**
      * Get the name property: The Name property.
      *

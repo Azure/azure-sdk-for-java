@@ -25,6 +25,10 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     private SapCloudForCustomerLinkedServiceTypeProperties innerTypeProperties =
         new SapCloudForCustomerLinkedServiceTypeProperties();
 
+    /** Creates an instance of SapCloudForCustomerLinkedService class. */
+    public SapCloudForCustomerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: SAP Cloud for Customer linked service properties.
      *

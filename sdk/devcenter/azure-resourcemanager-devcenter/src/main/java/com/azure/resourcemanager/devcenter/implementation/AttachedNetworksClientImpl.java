@@ -525,23 +525,6 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attached NetworkConnection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedNetworkConnectionInner getByProject(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName) {
-        return getByProjectAsync(resourceGroupName, projectName, attachedNetworkConnectionName).block();
-    }
-
-    /**
-     * Gets an attached NetworkConnection.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -553,6 +536,24 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         String resourceGroupName, String projectName, String attachedNetworkConnectionName, Context context) {
         return getByProjectWithResponseAsync(resourceGroupName, projectName, attachedNetworkConnectionName, context)
             .block();
+    }
+
+    /**
+     * Gets an attached NetworkConnection.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an attached NetworkConnection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttachedNetworkConnectionInner getByProject(
+        String resourceGroupName, String projectName, String attachedNetworkConnectionName) {
+        return getByProjectWithResponse(resourceGroupName, projectName, attachedNetworkConnectionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -900,23 +901,6 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attached NetworkConnection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedNetworkConnectionInner getByDevCenter(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
-        return getByDevCenterAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName).block();
-    }
-
-    /**
-     * Gets an attached NetworkConnection.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -928,6 +912,24 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
         return getByDevCenterWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
             .block();
+    }
+
+    /**
+     * Gets an attached NetworkConnection.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an attached NetworkConnection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttachedNetworkConnectionInner getByDevCenter(
+        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
+        return getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1533,7 +1535,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1569,7 +1572,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1607,7 +1611,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1643,7 +1648,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

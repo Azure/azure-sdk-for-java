@@ -46,7 +46,7 @@ public class DeadletterQueueSample {
         new Person("Faraday", "Michael"),
         new Person("Galilei", "Galileo"),
         new Person("Kepler", "Johannes"),
-        new Person("Kopernikus", "Nikolaus")
+        new Person("Copernicus", "Nikola")
     );
 
     /**

@@ -460,32 +460,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
      * @param linkedService Linked service resource definition.
-     * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LinkedServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String linkedServiceName,
-        LinkedServiceResourceInner linkedService,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, factoryName, linkedServiceName, linkedService, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a linked service.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -501,28 +475,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, linkedServiceName, linkedService, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a linked service.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkedServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String linkedServiceName,
-        LinkedServiceResourceInner linkedService) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, factoryName, linkedServiceName, linkedService, ifMatch).block();
     }
 
     /**
@@ -551,6 +503,30 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, linkedServiceName, linkedService, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a linked service.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param linkedServiceName The linked service name.
+     * @param linkedService Linked service resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return linked service resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedServiceResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String linkedServiceName,
+        LinkedServiceResourceInner linkedService) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, factoryName, linkedServiceName, linkedService, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -671,26 +647,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LinkedServiceResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String linkedServiceName, String ifNoneMatch) {
-        return getWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a linked service.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -702,23 +658,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a linked service.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkedServiceResourceInner get(String resourceGroupName, String factoryName, String linkedServiceName) {
-        final String ifNoneMatch = null;
-        return getAsync(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch).block();
     }
 
     /**
@@ -739,6 +678,23 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     public Response<LinkedServiceResourceInner> getWithResponse(
         String resourceGroupName, String factoryName, String linkedServiceName, String ifNoneMatch, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch, context).block();
+    }
+
+    /**
+     * Gets a linked service.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param linkedServiceName The linked service name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a linked service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedServiceResourceInner get(String resourceGroupName, String factoryName, String linkedServiceName) {
+        final String ifNoneMatch = null;
+        return getWithResponse(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
@@ -870,21 +826,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName, String linkedServiceName) {
-        deleteAsync(resourceGroupName, factoryName, linkedServiceName).block();
-    }
-
-    /**
-     * Deletes a linked service.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -895,6 +836,21 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String linkedServiceName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, context).block();
+    }
+
+    /**
+     * Deletes a linked service.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param linkedServiceName The linked service name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, String linkedServiceName) {
+        deleteWithResponse(resourceGroupName, factoryName, linkedServiceName, Context.NONE);
     }
 
     /**

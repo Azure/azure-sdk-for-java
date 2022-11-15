@@ -19,6 +19,10 @@ public final class UserRoleAssignmentValue {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, EnvironmentRole> roles;
 
+    /** Creates an instance of UserRoleAssignmentValue class. */
+    public UserRoleAssignmentValue() {
+    }
+
     /**
      * Get the roles property: A map of roles to assign to the parent user.
      *

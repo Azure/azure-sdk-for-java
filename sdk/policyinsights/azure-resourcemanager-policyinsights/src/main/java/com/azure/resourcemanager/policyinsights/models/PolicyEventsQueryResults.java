@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.fluent.models.PolicyEventInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Query results. */
 @Fluent
 public final class PolicyEventsQueryResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyEventsQueryResults.class);
-
     /*
-     * OData context string; used by OData clients to resolve type information
-     * based on metadata.
+     * OData context string; used by OData clients to resolve type information based on metadata.
      */
     @JsonProperty(value = "@odata.context")
     private String odataContext;
 
     /*
-     * OData entity count; represents the number of policy event records
-     * returned.
+     * OData entity count; represents the number of policy event records returned.
      */
     @JsonProperty(value = "@odata.count")
     private Integer odataCount;
@@ -41,6 +35,10 @@ public final class PolicyEventsQueryResults {
      */
     @JsonProperty(value = "value")
     private List<PolicyEventInner> value;
+
+    /** Creates an instance of PolicyEventsQueryResults class. */
+    public PolicyEventsQueryResults() {
+    }
 
     /**
      * Get the odataContext property: OData context string; used by OData clients to resolve type information based on

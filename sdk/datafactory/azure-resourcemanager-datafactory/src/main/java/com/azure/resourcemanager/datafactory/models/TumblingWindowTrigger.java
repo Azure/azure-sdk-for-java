@@ -33,6 +33,10 @@ public final class TumblingWindowTrigger extends Trigger {
     @JsonProperty(value = "typeProperties", required = true)
     private TumblingWindowTriggerTypeProperties innerTypeProperties = new TumblingWindowTriggerTypeProperties();
 
+    /** Creates an instance of TumblingWindowTrigger class. */
+    public TumblingWindowTrigger() {
+    }
+
     /**
      * Get the pipeline property: Pipeline for which runs are created when an event is fired for trigger window that is
      * ready.

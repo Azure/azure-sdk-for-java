@@ -18,6 +18,10 @@ public final class RecoveryPointResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<RecoveryPointResourceInner> value;
 
+    /** Creates an instance of RecoveryPointResourceList class. */
+    public RecoveryPointResourceList() {
+    }
+
     /**
      * Get the value property: List of resources.
      *

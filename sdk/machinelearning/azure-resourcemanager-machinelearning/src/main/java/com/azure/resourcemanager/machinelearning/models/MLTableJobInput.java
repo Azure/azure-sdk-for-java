@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The MLTableJobInput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobInputType")
-@JsonTypeName("MLTable")
+@JsonTypeName("mltable")
 @Fluent
 public final class MLTableJobInput extends JobInput {
     /*
@@ -26,6 +26,10 @@ public final class MLTableJobInput extends JobInput {
      */
     @JsonProperty(value = "uri", required = true)
     private String uri;
+
+    /** Creates an instance of MLTableJobInput class. */
+    public MLTableJobInput() {
+    }
 
     /**
      * Get the mode property: Input Asset Delivery Mode.

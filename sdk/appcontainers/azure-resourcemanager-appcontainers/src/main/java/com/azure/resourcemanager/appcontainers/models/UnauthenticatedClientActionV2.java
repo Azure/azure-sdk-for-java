@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for UnauthenticatedClientActionV2. */
+/** The action to take when an unauthenticated client attempts to access the app. */
 public enum UnauthenticatedClientActionV2 {
     /** Enum value RedirectToLoginPage. */
     REDIRECT_TO_LOGIN_PAGE("RedirectToLoginPage"),
@@ -36,6 +36,9 @@ public enum UnauthenticatedClientActionV2 {
      */
     @JsonCreator
     public static UnauthenticatedClientActionV2 fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         UnauthenticatedClientActionV2[] items = UnauthenticatedClientActionV2.values();
         for (UnauthenticatedClientActionV2 item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum UnauthenticatedClientActionV2 {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -62,6 +62,10 @@ public final class HubspotLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of HubspotLinkedServiceTypeProperties class. */
+    public HubspotLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the clientId property: The client ID associated with your Hubspot application.
      *

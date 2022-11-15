@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class DistributionConfiguration {
+    /** Creates an instance of DistributionConfiguration class. */
+    public DistributionConfiguration() {
+    }
+
     /**
      * Validates the instance.
      *

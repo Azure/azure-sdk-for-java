@@ -28,7 +28,7 @@ public enum SasProtocol {
     }
 
     /**
-     * Parses a {@code String} into a {@code SASProtocl} value if possible.
+     * Parses a {@code String} into a {@code SASProtocol} value if possible.
      *
      * @param str The value to try to parse.
      *

@@ -135,3 +135,25 @@ spring:
   config:
     activate:
       on-profile: sync
+---
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        processor:
+          checkpoint-store:
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC}
+    stream:
+      bindings:
+        consume-in-0:
+          destination: notexists
+        supply-out-0:
+          destination: notexists
+      eventhubs:
+        bindings:
+          supply-out-0:
+            producer:
+              sync: true
+  config:
+    activate:
+      on-profile: produceerror

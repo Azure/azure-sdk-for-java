@@ -7,7 +7,6 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,14 +14,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class EventDataBatchTest {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
-
+    private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
     @Mock
     private ErrorContextProvider errorContextProvider;
 
@@ -34,7 +31,7 @@ public class EventDataBatchTest {
     @Test
     public void nullEventData() {
         assertThrows(NullPointerException.class, () -> {
-            final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null, null, null, null);
+            final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null, DEFAULT_INSTRUMENTATION);
             batch.tryAdd(null);
         });
     }
@@ -47,7 +44,7 @@ public class EventDataBatchTest {
         when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
         final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider,
-            new TracerProvider(Collections.emptyList()), null, null);
+            DEFAULT_INSTRUMENTATION);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
         try {
             batch.tryAdd(tooBig);
@@ -65,7 +62,7 @@ public class EventDataBatchTest {
     public void withinPayloadSize() {
         final int maxSize = ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY,
-            null, new TracerProvider(Collections.emptyList()), null, null);
+            null, DEFAULT_INSTRUMENTATION);
         final EventData within = new EventData(new byte[1024]);
 
         Assertions.assertEquals(maxSize, batch.getMaxSizeInBytes());
@@ -83,7 +80,7 @@ public class EventDataBatchTest {
 
         // Act
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, partitionId,
-            PARTITION_KEY, null, null, null, null);
+            PARTITION_KEY, null, DEFAULT_INSTRUMENTATION);
 
         // Assert
         Assertions.assertEquals(PARTITION_KEY, batch.getPartitionKey());

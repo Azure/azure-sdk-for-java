@@ -13,10 +13,9 @@ import com.azure.resourcemanager.avs.fluent.CloudLinksClient;
 import com.azure.resourcemanager.avs.fluent.models.CloudLinkInner;
 import com.azure.resourcemanager.avs.models.CloudLink;
 import com.azure.resourcemanager.avs.models.CloudLinks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CloudLinksImpl implements CloudLinks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudLinksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CloudLinksImpl.class);
 
     private final CloudLinksClient innerClient;
 
@@ -37,15 +36,6 @@ public final class CloudLinksImpl implements CloudLinks {
         return Utils.mapPage(inner, inner1 -> new CloudLinkImpl(inner1, this.manager()));
     }
 
-    public CloudLink get(String resourceGroupName, String privateCloudName, String cloudLinkName) {
-        CloudLinkInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, cloudLinkName);
-        if (inner != null) {
-            return new CloudLinkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CloudLink> getWithResponse(
         String resourceGroupName, String privateCloudName, String cloudLinkName, Context context) {
         Response<CloudLinkInner> inner =
@@ -56,6 +46,15 @@ public final class CloudLinksImpl implements CloudLinks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CloudLinkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CloudLink get(String resourceGroupName, String privateCloudName, String cloudLinkName) {
+        CloudLinkInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, cloudLinkName);
+        if (inner != null) {
+            return new CloudLinkImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -72,7 +71,7 @@ public final class CloudLinksImpl implements CloudLinks {
     public CloudLink getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -80,14 +79,14 @@ public final class CloudLinksImpl implements CloudLinks {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String cloudLinkName = Utils.getValueFromIdByName(id, "cloudLinks");
         if (cloudLinkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'cloudLinks'.", id)));
@@ -98,7 +97,7 @@ public final class CloudLinksImpl implements CloudLinks {
     public Response<CloudLink> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,14 +105,14 @@ public final class CloudLinksImpl implements CloudLinks {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String cloudLinkName = Utils.getValueFromIdByName(id, "cloudLinks");
         if (cloudLinkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'cloudLinks'.", id)));
@@ -124,7 +123,7 @@ public final class CloudLinksImpl implements CloudLinks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,14 +131,14 @@ public final class CloudLinksImpl implements CloudLinks {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String cloudLinkName = Utils.getValueFromIdByName(id, "cloudLinks");
         if (cloudLinkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'cloudLinks'.", id)));
@@ -150,7 +149,7 @@ public final class CloudLinksImpl implements CloudLinks {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,14 +157,14 @@ public final class CloudLinksImpl implements CloudLinks {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String cloudLinkName = Utils.getValueFromIdByName(id, "cloudLinks");
         if (cloudLinkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'cloudLinks'.", id)));

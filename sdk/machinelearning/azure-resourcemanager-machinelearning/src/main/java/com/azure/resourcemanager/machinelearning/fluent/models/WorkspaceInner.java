@@ -54,11 +54,14 @@ public final class WorkspaceInner extends ProxyResource {
     private Sku sku;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of WorkspaceInner class. */
+    public WorkspaceInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the machine learning workspace.
@@ -599,6 +602,31 @@ public final class WorkspaceInner extends ProxyResource {
      */
     public String mlFlowTrackingUri() {
         return this.innerProperties() == null ? null : this.innerProperties().mlFlowTrackingUri();
+    }
+
+    /**
+     * Get the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @return the v1LegacyMode value.
+     */
+    public Boolean v1LegacyMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().v1LegacyMode();
+    }
+
+    /**
+     * Set the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @param v1LegacyMode the v1LegacyMode value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withV1LegacyMode(Boolean v1LegacyMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withV1LegacyMode(v1LegacyMode);
+        return this;
     }
 
     /**

@@ -24,6 +24,10 @@ public final class ResponsysLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ResponsysLinkedServiceTypeProperties innerTypeProperties = new ResponsysLinkedServiceTypeProperties();
 
+    /** Creates an instance of ResponsysLinkedService class. */
+    public ResponsysLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Responsys linked service properties.
      *

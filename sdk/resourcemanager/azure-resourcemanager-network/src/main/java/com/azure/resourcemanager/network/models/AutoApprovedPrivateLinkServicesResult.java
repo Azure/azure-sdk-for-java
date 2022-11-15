@@ -24,6 +24,10 @@ public final class AutoApprovedPrivateLinkServicesResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AutoApprovedPrivateLinkServicesResult class. */
+    public AutoApprovedPrivateLinkServicesResult() {
+    }
+
     /**
      * Get the value property: An array of auto approved private link service.
      *

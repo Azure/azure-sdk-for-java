@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class Seasonality {
+    /** Creates an instance of Seasonality class. */
+    public Seasonality() {
+    }
+
     /**
      * Validates the instance.
      *

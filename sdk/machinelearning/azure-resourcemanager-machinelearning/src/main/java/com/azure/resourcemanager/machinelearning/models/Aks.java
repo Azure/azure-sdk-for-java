@@ -20,6 +20,10 @@ public final class Aks extends Compute {
     @JsonProperty(value = "properties")
     private AksSchemaProperties properties;
 
+    /** Creates an instance of Aks class. */
+    public Aks() {
+    }
+
     /**
      * Get the properties property: AKS properties.
      *
@@ -37,6 +41,13 @@ public final class Aks extends Compute {
      */
     public Aks withProperties(AksSchemaProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Aks withComputeLocation(String computeLocation) {
+        super.withComputeLocation(computeLocation);
         return this;
     }
 
