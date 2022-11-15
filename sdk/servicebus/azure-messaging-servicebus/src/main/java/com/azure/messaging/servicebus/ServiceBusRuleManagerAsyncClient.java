@@ -144,24 +144,6 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
-     *
-     * @param ruleName Name of rule.
-     * @param filter The filter expression against which messages will be matched.
-     * @return A Mono that completes when the rule is created.
-     *
-     * @throws NullPointerException if {@code filter}, {@code ruleName} is null.
-     * @throws IllegalStateException if client is disposed.
-     * @throws IllegalArgumentException if ruleName is empty string, {@code filter} is not instanceof {@link SqlRuleFilter} or
-     * {@link CorrelationRuleFilter}.
-     * @throws ServiceBusException if filter matches {@code ruleName} is already created in subscription.
-     */
-    public Mono<Void> createRule(String ruleName, RuleFilter filter) {
-        CreateRuleOptions options = new CreateRuleOptions(filter);
-        return createRuleInternal(ruleName, options);
-    }
-
-    /**
      * Fetches all rules associated with the topic and subscription.
      *
      * @return A list of rules associated with the topic and subscription.
@@ -169,7 +151,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if client is disposed.
      * @throws UnsupportedOperationException if client cannot support filter with descriptor in message body.
      */
-    public Flux<RuleProperties> getRules() {
+    public Flux<RuleProperties> listRules() {
         if (isDisposed.get()) {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "getRules")
@@ -178,7 +160,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(ServiceBusManagementNode::getRules);
+            .flatMapMany(ServiceBusManagementNode::listRules);
     }
 
     /**

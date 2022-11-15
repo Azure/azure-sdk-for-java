@@ -121,20 +121,6 @@ public class ServiceBusRuleManagerAsyncClientTest {
     }
 
     /**
-     * Verifies that create a rule with a {@link RuleFilter}.
-     */
-    @Test
-    void createRuleWithFilter() {
-        // Arrange
-        when(managementNode.createRule(eq(RULE_NAME), any(CreateRuleOptions.class))).thenReturn(Mono.empty());
-
-        // Act & Assert
-        StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleFilter))
-            .expectComplete()
-            .verify();
-    }
-
-    /**
      * Verifies that create a rule with a {@link CreateRuleOptions}.
      */
     @Test
@@ -150,10 +136,10 @@ public class ServiceBusRuleManagerAsyncClientTest {
     @Test
     void getRules() {
         // Arrange
-        when(managementNode.getRules()).thenReturn(Flux.fromArray(new RuleProperties[]{ruleProperties1, ruleProperties2}));
+        when(managementNode.listRules()).thenReturn(Flux.fromArray(new RuleProperties[]{ruleProperties1, ruleProperties2}));
 
         // Act & Assert
-        StepVerifier.create(ruleManager.getRules()).expectNext(ruleProperties1, ruleProperties2).verifyComplete();
+        StepVerifier.create(ruleManager.listRules()).expectNext(ruleProperties1, ruleProperties2).verifyComplete();
     }
 
     @Test

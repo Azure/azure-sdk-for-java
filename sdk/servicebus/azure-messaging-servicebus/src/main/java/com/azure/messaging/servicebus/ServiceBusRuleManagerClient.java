@@ -84,22 +84,6 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
     }
 
     /**
-     * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
-     *
-     * @param ruleName Name of rule.
-     * @param filter The filter expression against which messages will be matched.
-     *
-     * @throws NullPointerException if {@code filter}, {@code ruleName} is null.
-     * @throws IllegalStateException if client is disposed.
-     * @throws IllegalArgumentException if ruleName is empty string, {@code filter} is not instanceof {@link SqlRuleFilter} or
-     * {@link CorrelationRuleFilter}.
-     * @throws ServiceBusException if filter matches {@code ruleName} is already created in subscription.
-     */
-    public void createRule(String ruleName, RuleFilter filter) {
-        asyncClient.createRule(ruleName, filter).block(operationTimeout);
-    }
-
-    /**
      * Fetches all rules associated with the topic and subscription.
      *
      * @return A list of rules associated with the topic and subscription.
@@ -107,8 +91,8 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
      * @throws IllegalStateException if client is disposed.
      * @throws UnsupportedOperationException if client cannot support filter with descriptor in message body.
      */
-    public IterableStream<RuleProperties> getRules() {
-        return new IterableStream<>(asyncClient.getRules());
+    public IterableStream<RuleProperties> listRules() {
+        return new IterableStream<>(asyncClient.listRules());
     }
 
     /**
