@@ -22,8 +22,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -37,7 +39,6 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -393,10 +394,15 @@ public class ContainerRegistryBlobAsyncClient {
         }
 
         return this.blobsImpl.deleteBlobWithResponseAsync(repositoryName, digest, context)
-            .flatMap(streamResponse -> {
-                Mono<Response<Void>> res = deleteResponseToSuccess(streamResponse);
-                return res;
-            })
+            .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
+            .onErrorResume(
+                ex -> ex instanceof HttpResponseException && ((HttpResponseException) ex).getResponse().getStatusCode() == 404,
+                ex -> {
+                    HttpResponse response = ((HttpResponseException) ex).getResponse();
+                    // In case of 404, we still convert it to success i.e. no-op.
+                    return Mono.just(new SimpleResponse<Void>(response.getRequest(), 202,
+                        response.getHeaders(), null));
+                })
             .onErrorMap(UtilsImpl::mapException);
     }
 

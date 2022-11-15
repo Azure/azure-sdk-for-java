@@ -534,19 +534,6 @@ public final class ContainerRegistriesImpl {
     /**
      * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
      *
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> checkDockerV2SupportSyncWithResponse() {
-        final String accept = "application/json";
-        return service.checkDockerV2SupportSync(this.client.getUrl(), accept, Context.NONE);
-    }
-
-    /**
-     * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -554,7 +541,7 @@ public final class ContainerRegistriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> checkDockerV2SupportSyncWithResponse(Context context) {
+    public Response<Void> checkDockerV2SupportWithResponse(Context context) {
         final String accept = "application/json";
         return service.checkDockerV2SupportSync(this.client.getUrl(), accept, context);
     }
@@ -566,21 +553,8 @@ public final class ContainerRegistriesImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkDockerV2SupportSync() {
-        checkDockerV2SupportSyncWithResponse(Context.NONE);
-    }
-
-    /**
-     * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkDockerV2SupportSync(Context context) {
-        checkDockerV2SupportSyncWithResponse(context);
+    public void checkDockerV2Support() {
+        checkDockerV2SupportWithResponse(Context.NONE);
     }
 
     /**
@@ -669,25 +643,6 @@ public final class ContainerRegistriesImpl {
      * @param reference A tag or a digest, pointing to a specific image.
      * @param accept Accept header string delimited by comma. For example,
      *     application/vnd.docker.distribution.manifest.v2+json.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManifestWrapper> getManifestSyncWithResponse(String name, String reference, String accept) {
-        final String acceptParam = "application/json";
-        return service.getManifestSync(this.client.getUrl(), name, reference, accept, acceptParam, Context.NONE);
-    }
-
-    /**
-     * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference A tag or a digest, pointing to a specific image.
-     * @param accept Accept header string delimited by comma. For example,
-     *     application/vnd.docker.distribution.manifest.v2+json.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -696,7 +651,7 @@ public final class ContainerRegistriesImpl {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManifestWrapper> getManifestSyncWithResponse(
+    public Response<ManifestWrapper> getManifestWithResponse(
             String name, String reference, String accept, Context context) {
         final String acceptParam = "application/json";
         return service.getManifestSync(this.client.getUrl(), name, reference, accept, acceptParam, context);
@@ -715,26 +670,8 @@ public final class ContainerRegistriesImpl {
      * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManifestWrapper getManifestSync(String name, String reference, String accept) {
-        return getManifestSyncWithResponse(name, reference, accept, Context.NONE).getValue();
-    }
-
-    /**
-     * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference A tag or a digest, pointing to a specific image.
-     * @param accept Accept header string delimited by comma. For example,
-     *     application/vnd.docker.distribution.manifest.v2+json.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManifestWrapper getManifestSync(String name, String reference, String accept, Context context) {
-        return getManifestSyncWithResponse(name, reference, accept, context).getValue();
+    public ManifestWrapper getManifest(String name, String reference, String accept) {
+        return getManifestWithResponse(name, reference, accept, Context.NONE).getValue();
     }
 
     /**
@@ -951,27 +888,6 @@ public final class ContainerRegistriesImpl {
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
      * @param contentLength The Content-Length header for the request.
      * @param contentType The manifest's Content-Type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistriesCreateManifestResponse createManifestSyncWithResponse(
-            String name, String reference, BinaryData payload, long contentLength, String contentType) {
-        final String accept = "application/json";
-        return service.createManifestSync(
-                this.client.getUrl(), name, reference, contentType, payload, contentLength, accept, Context.NONE);
-    }
-
-    /**
-     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference A tag or a digest, pointing to a specific image.
-     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
-     * @param contentLength The Content-Length header for the request.
-     * @param contentType The manifest's Content-Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -979,7 +895,7 @@ public final class ContainerRegistriesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistriesCreateManifestResponse createManifestSyncWithResponse(
+    public ContainerRegistriesCreateManifestResponse createManifestWithResponse(
             String name,
             String reference,
             BinaryData payload,
@@ -1004,33 +920,9 @@ public final class ContainerRegistriesImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createManifestSync(
+    public void createManifest(
             String name, String reference, BinaryData payload, long contentLength, String contentType) {
-        createManifestSyncWithResponse(name, reference, payload, contentLength, contentType, Context.NONE);
-    }
-
-    /**
-     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference A tag or a digest, pointing to a specific image.
-     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
-     * @param contentLength The Content-Length header for the request.
-     * @param contentType The manifest's Content-Type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createManifestSync(
-            String name,
-            String reference,
-            BinaryData payload,
-            long contentLength,
-            String contentType,
-            Context context) {
-        createManifestSyncWithResponse(name, reference, payload, contentLength, contentType, context);
+        createManifestWithResponse(name, reference, payload, contentLength, contentType, Context.NONE);
     }
 
     /**
@@ -1103,22 +995,6 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param reference Digest of a BLOB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteManifestSyncWithResponse(String name, String reference) {
-        final String accept = "application/json";
-        return service.deleteManifestSync(this.client.getUrl(), name, reference, accept, Context.NONE);
-    }
-
-    /**
-     * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference Digest of a BLOB.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1126,7 +1002,7 @@ public final class ContainerRegistriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteManifestSyncWithResponse(String name, String reference, Context context) {
+    public Response<Void> deleteManifestWithResponse(String name, String reference, Context context) {
         final String accept = "application/json";
         return service.deleteManifestSync(this.client.getUrl(), name, reference, accept, context);
     }
@@ -1141,23 +1017,8 @@ public final class ContainerRegistriesImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteManifestSync(String name, String reference) {
-        deleteManifestSyncWithResponse(name, reference, Context.NONE);
-    }
-
-    /**
-     * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference Digest of a BLOB.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteManifestSync(String name, String reference, Context context) {
-        deleteManifestSyncWithResponse(name, reference, context);
+    public void deleteManifest(String name, String reference) {
+        deleteManifestWithResponse(name, reference, Context.NONE);
     }
 
     /**
@@ -1219,7 +1080,7 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getRepositoriesSyncSinglePage(String last, Integer n, Context context) {
+    public PagedResponse<String> getRepositoriesSinglePage(String last, Integer n, Context context) {
         final String accept = "application/json";
         ContainerRegistriesGetRepositoriesResponse res =
                 service.getRepositoriesSync(
@@ -1246,10 +1107,10 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getRepositoriesSync(String last, Integer n, Context context) {
+    public PagedIterable<String> getRepositories(String last, Integer n, Context context) {
         return new PagedIterable<>(
-                () -> getRepositoriesSyncSinglePage(last, n, context),
-                nextLink -> getRepositoriesNextSyncSinglePage(nextLink, context));
+                () -> getRepositoriesSinglePage(last, n, context),
+                nextLink -> getRepositoriesNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1319,21 +1180,6 @@ public final class ContainerRegistriesImpl {
      * Get repository attributes.
      *
      * @param name Name of the image (including the namespace).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerRepositoryProperties> getPropertiesSyncWithResponse(String name) {
-        final String accept = "application/json";
-        return service.getPropertiesSync(this.client.getUrl(), name, this.client.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Get repository attributes.
-     *
-     * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1341,7 +1187,7 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerRepositoryProperties> getPropertiesSyncWithResponse(String name, Context context) {
+    public Response<ContainerRepositoryProperties> getPropertiesWithResponse(String name, Context context) {
         final String accept = "application/json";
         return service.getPropertiesSync(this.client.getUrl(), name, this.client.getApiVersion(), accept, context);
     }
@@ -1356,23 +1202,8 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRepositoryProperties getPropertiesSync(String name) {
-        return getPropertiesSyncWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Get repository attributes.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRepositoryProperties getPropertiesSync(String name, Context context) {
-        return getPropertiesSyncWithResponse(name, context).getValue();
+    public ContainerRepositoryProperties getProperties(String name) {
+        return getPropertiesWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -1442,22 +1273,6 @@ public final class ContainerRegistriesImpl {
      * Delete the repository identified by `name`.
      *
      * @param name Name of the image (including the namespace).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteRepositoryResult> deleteRepositorySyncWithResponse(String name) {
-        final String accept = "application/json";
-        return service.deleteRepositorySync(
-                this.client.getUrl(), name, this.client.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Delete the repository identified by `name`.
-     *
-     * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1465,7 +1280,7 @@ public final class ContainerRegistriesImpl {
      * @return deleted repository along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteRepositoryResult> deleteRepositorySyncWithResponse(String name, Context context) {
+    public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String name, Context context) {
         final String accept = "application/json";
         return service.deleteRepositorySync(this.client.getUrl(), name, this.client.getApiVersion(), accept, context);
     }
@@ -1480,23 +1295,8 @@ public final class ContainerRegistriesImpl {
      * @return deleted repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteRepositoryResult deleteRepositorySync(String name) {
-        return deleteRepositorySyncWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Delete the repository identified by `name`.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteRepositoryResult deleteRepositorySync(String name, Context context) {
-        return deleteRepositorySyncWithResponse(name, context).getValue();
+    public DeleteRepositoryResult deleteRepository(String name) {
+        return deleteRepositoryWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -1575,24 +1375,6 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param value Repository attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of this repository along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerRepositoryProperties> updatePropertiesSyncWithResponse(
-            String name, RepositoryWriteableProperties value) {
-        final String accept = "application/json";
-        return service.updatePropertiesSync(
-                this.client.getUrl(), name, this.client.getApiVersion(), value, accept, Context.NONE);
-    }
-
-    /**
-     * Update the attribute identified by `name` where `reference` is the name of the repository.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param value Repository attribute value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1600,7 +1382,7 @@ public final class ContainerRegistriesImpl {
      * @return properties of this repository along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerRepositoryProperties> updatePropertiesSyncWithResponse(
+    public Response<ContainerRepositoryProperties> updatePropertiesWithResponse(
             String name, RepositoryWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updatePropertiesSync(
@@ -1618,25 +1400,8 @@ public final class ContainerRegistriesImpl {
      * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRepositoryProperties updatePropertiesSync(String name, RepositoryWriteableProperties value) {
-        return updatePropertiesSyncWithResponse(name, value, Context.NONE).getValue();
-    }
-
-    /**
-     * Update the attribute identified by `name` where `reference` is the name of the repository.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param value Repository attribute value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of this repository.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRepositoryProperties updatePropertiesSync(
-            String name, RepositoryWriteableProperties value, Context context) {
-        return updatePropertiesSyncWithResponse(name, value, context).getValue();
+    public ContainerRepositoryProperties updateProperties(String name, RepositoryWriteableProperties value) {
+        return updatePropertiesWithResponse(name, value, Context.NONE).getValue();
     }
 
     /**
@@ -1718,7 +1483,7 @@ public final class ContainerRegistriesImpl {
      * @return list of tag details along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<TagAttributesBase> getTagsSyncSinglePage(
+    public PagedResponse<TagAttributesBase> getTagsSinglePage(
             String name, String last, Integer n, String orderBy, String digest, Context context) {
         final String accept = "application/json";
         ContainerRegistriesGetTagsResponse res =
@@ -1757,11 +1522,11 @@ public final class ContainerRegistriesImpl {
      * @return list of tag details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TagAttributesBase> getTagsSync(
+    public PagedIterable<TagAttributesBase> getTags(
             String name, String last, Integer n, String orderBy, String digest, Context context) {
         return new PagedIterable<>(
-                () -> getTagsSyncSinglePage(name, last, n, orderBy, digest, context),
-                nextLink -> getTagsNextSyncSinglePage(nextLink, context));
+                () -> getTagsSinglePage(name, last, n, orderBy, digest, context),
+                nextLink -> getTagsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1839,23 +1604,6 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag attributes by tag along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> getTagPropertiesSyncWithResponse(String name, String reference) {
-        final String accept = "application/json";
-        return service.getTagPropertiesSync(
-                this.client.getUrl(), name, reference, this.client.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Get tag attributes by tag.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference Tag name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1863,7 +1611,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes by tag along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> getTagPropertiesSyncWithResponse(
+    public Response<ArtifactTagProperties> getTagPropertiesWithResponse(
             String name, String reference, Context context) {
         final String accept = "application/json";
         return service.getTagPropertiesSync(
@@ -1881,24 +1629,8 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes by tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactTagProperties getTagPropertiesSync(String name, String reference) {
-        return getTagPropertiesSyncWithResponse(name, reference, Context.NONE).getValue();
-    }
-
-    /**
-     * Get tag attributes by tag.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference Tag name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag attributes by tag.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactTagProperties getTagPropertiesSync(String name, String reference, Context context) {
-        return getTagPropertiesSyncWithResponse(name, reference, context).getValue();
+    public ArtifactTagProperties getTagProperties(String name, String reference) {
+        return getTagPropertiesWithResponse(name, reference, Context.NONE).getValue();
     }
 
     /**
@@ -1991,25 +1723,6 @@ public final class ContainerRegistriesImpl {
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param value Tag attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag attributes along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> updateTagAttributesSyncWithResponse(
-            String name, String reference, TagWriteableProperties value) {
-        final String accept = "application/json";
-        return service.updateTagAttributesSync(
-                this.client.getUrl(), name, reference, this.client.getApiVersion(), value, accept, Context.NONE);
-    }
-
-    /**
-     * Update tag attributes.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference Tag name.
-     * @param value Tag attribute value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -2017,7 +1730,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> updateTagAttributesSyncWithResponse(
+    public Response<ArtifactTagProperties> updateTagAttributesWithResponse(
             String name, String reference, TagWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updateTagAttributesSync(
@@ -2036,26 +1749,8 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactTagProperties updateTagAttributesSync(String name, String reference, TagWriteableProperties value) {
-        return updateTagAttributesSyncWithResponse(name, reference, value, Context.NONE).getValue();
-    }
-
-    /**
-     * Update tag attributes.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference Tag name.
-     * @param value Tag attribute value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactTagProperties updateTagAttributesSync(
-            String name, String reference, TagWriteableProperties value, Context context) {
-        return updateTagAttributesSyncWithResponse(name, reference, value, context).getValue();
+    public ArtifactTagProperties updateTagAttributes(String name, String reference, TagWriteableProperties value) {
+        return updateTagAttributesWithResponse(name, reference, value, Context.NONE).getValue();
     }
 
     /**
@@ -2130,23 +1825,6 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTagSyncWithResponse(String name, String reference) {
-        final String accept = "application/json";
-        return service.deleteTagSync(
-                this.client.getUrl(), name, reference, this.client.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Delete tag.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference Tag name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -2154,7 +1832,7 @@ public final class ContainerRegistriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTagSyncWithResponse(String name, String reference, Context context) {
+    public Response<Void> deleteTagWithResponse(String name, String reference, Context context) {
         final String accept = "application/json";
         return service.deleteTagSync(
                 this.client.getUrl(), name, reference, this.client.getApiVersion(), accept, context);
@@ -2170,23 +1848,8 @@ public final class ContainerRegistriesImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTagSync(String name, String reference) {
-        deleteTagSyncWithResponse(name, reference, Context.NONE);
-    }
-
-    /**
-     * Delete tag.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param reference Tag name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTagSync(String name, String reference, Context context) {
-        deleteTagSyncWithResponse(name, reference, context);
+    public void deleteTag(String name, String reference) {
+        deleteTagWithResponse(name, reference, Context.NONE);
     }
 
     /**
@@ -2257,7 +1920,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ManifestAttributesBase> getManifestsSyncSinglePage(
+    public PagedResponse<ManifestAttributesBase> getManifestsSinglePage(
             String name, String last, Integer n, String orderBy, Context context) {
         final String accept = "application/json";
         ContainerRegistriesGetManifestsResponse res =
@@ -2287,11 +1950,11 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManifestAttributesBase> getManifestsSync(
+    public PagedIterable<ManifestAttributesBase> getManifests(
             String name, String last, Integer n, String orderBy, Context context) {
         return new PagedIterable<>(
-                () -> getManifestsSyncSinglePage(name, last, n, orderBy, context),
-                nextLink -> getManifestsNextSyncSinglePage(nextLink, context));
+                () -> getManifestsSinglePage(name, last, n, orderBy, context),
+                nextLink -> getManifestsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2370,23 +2033,6 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return manifest attributes along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactManifestProperties> getManifestPropertiesSyncWithResponse(String name, String digest) {
-        final String accept = "application/json";
-        return service.getManifestPropertiesSync(
-                this.client.getUrl(), name, digest, this.client.getApiVersion(), accept, Context.NONE);
-    }
-
-    /**
-     * Get manifest attributes.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -2394,7 +2040,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactManifestProperties> getManifestPropertiesSyncWithResponse(
+    public Response<ArtifactManifestProperties> getManifestPropertiesWithResponse(
             String name, String digest, Context context) {
         final String accept = "application/json";
         return service.getManifestPropertiesSync(
@@ -2412,24 +2058,8 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactManifestProperties getManifestPropertiesSync(String name, String digest) {
-        return getManifestPropertiesSyncWithResponse(name, digest, Context.NONE).getValue();
-    }
-
-    /**
-     * Get manifest attributes.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return manifest attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactManifestProperties getManifestPropertiesSync(String name, String digest, Context context) {
-        return getManifestPropertiesSyncWithResponse(name, digest, context).getValue();
+    public ArtifactManifestProperties getManifestProperties(String name, String digest) {
+        return getManifestPropertiesWithResponse(name, digest, Context.NONE).getValue();
     }
 
     /**
@@ -2522,25 +2152,6 @@ public final class ContainerRegistriesImpl {
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param value Manifest attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return manifest attributes details along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactManifestProperties> updateManifestPropertiesSyncWithResponse(
-            String name, String digest, ManifestWriteableProperties value) {
-        final String accept = "application/json";
-        return service.updateManifestPropertiesSync(
-                this.client.getUrl(), name, digest, this.client.getApiVersion(), value, accept, Context.NONE);
-    }
-
-    /**
-     * Update properties of a manifest.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param value Manifest attribute value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -2548,7 +2159,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactManifestProperties> updateManifestPropertiesSyncWithResponse(
+    public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(
             String name, String digest, ManifestWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updateManifestPropertiesSync(
@@ -2567,27 +2178,9 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactManifestProperties updateManifestPropertiesSync(
+    public ArtifactManifestProperties updateManifestProperties(
             String name, String digest, ManifestWriteableProperties value) {
-        return updateManifestPropertiesSyncWithResponse(name, digest, value, Context.NONE).getValue();
-    }
-
-    /**
-     * Update properties of a manifest.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param value Manifest attribute value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return manifest attributes details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactManifestProperties updateManifestPropertiesSync(
-            String name, String digest, ManifestWriteableProperties value, Context context) {
-        return updateManifestPropertiesSyncWithResponse(name, digest, value, context).getValue();
+        return updateManifestPropertiesWithResponse(name, digest, value, Context.NONE).getValue();
     }
 
     /**
@@ -2628,7 +2221,7 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getRepositoriesNextSyncSinglePage(String nextLink, Context context) {
+    public PagedResponse<String> getRepositoriesNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         ContainerRegistriesGetRepositoriesNextResponse res =
                 service.getRepositoriesNextSync(nextLink, this.client.getUrl(), accept, context);
@@ -2679,7 +2272,7 @@ public final class ContainerRegistriesImpl {
      * @return list of tag details along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<TagAttributesBase> getTagsNextSyncSinglePage(String nextLink, Context context) {
+    public PagedResponse<TagAttributesBase> getTagsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         ContainerRegistriesGetTagsNextResponse res =
                 service.getTagsNextSync(nextLink, this.client.getUrl(), accept, context);
@@ -2731,7 +2324,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ManifestAttributesBase> getManifestsNextSyncSinglePage(String nextLink, Context context) {
+    public PagedResponse<ManifestAttributesBase> getManifestsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         ContainerRegistriesGetManifestsNextResponse res =
                 service.getManifestsNextSync(nextLink, this.client.getUrl(), accept, context);

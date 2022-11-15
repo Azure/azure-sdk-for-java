@@ -389,22 +389,6 @@ public final class ContainerRegistryBlobsImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBlobSyncWithResponse(String name, String digest) {
-        final String accept = "application/octet-stream";
-        return service.getBlobSync(this.client.getUrl(), name, digest, accept, Context.NONE);
-    }
-
-    /**
-     * Retrieve the blob from the registry identified by digest.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -412,7 +396,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBlobSyncWithResponse(String name, String digest, Context context) {
+    public Response<BinaryData> getBlobWithResponse(String name, String digest, Context context) {
         final String accept = "application/octet-stream";
         return service.getBlobSync(this.client.getUrl(), name, digest, accept, context);
     }
@@ -428,24 +412,8 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getBlobSync(String name, String digest) {
-        return getBlobSyncWithResponse(name, digest, Context.NONE).getValue();
-    }
-
-    /**
-     * Retrieve the blob from the registry identified by digest.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getBlobSync(String name, String digest, Context context) {
-        return getBlobSyncWithResponse(name, digest, context).getValue();
+    public BinaryData getBlob(String name, String digest) {
+        return getBlobWithResponse(name, digest, Context.NONE).getValue();
     }
 
     /**
@@ -520,22 +488,6 @@ public final class ContainerRegistryBlobsImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsCheckBlobExistsResponse checkBlobExistsSyncWithResponse(String name, String digest) {
-        final String accept = "application/json";
-        return service.checkBlobExistsSync(this.client.getUrl(), name, digest, accept, Context.NONE);
-    }
-
-    /**
-     * Same as GET, except only the headers are returned.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -543,7 +495,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsCheckBlobExistsResponse checkBlobExistsSyncWithResponse(
+    public ContainerRegistryBlobsCheckBlobExistsResponse checkBlobExistsWithResponse(
             String name, String digest, Context context) {
         final String accept = "application/json";
         return service.checkBlobExistsSync(this.client.getUrl(), name, digest, accept, context);
@@ -559,23 +511,8 @@ public final class ContainerRegistryBlobsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkBlobExistsSync(String name, String digest) {
-        checkBlobExistsSyncWithResponse(name, digest, Context.NONE);
-    }
-
-    /**
-     * Same as GET, except only the headers are returned.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkBlobExistsSync(String name, String digest, Context context) {
-        checkBlobExistsSyncWithResponse(name, digest, context);
+    public void checkBlobExists(String name, String digest) {
+        checkBlobExistsWithResponse(name, digest, Context.NONE);
     }
 
     /**
@@ -648,22 +585,6 @@ public final class ContainerRegistryBlobsImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteBlobSyncWithResponse(String name, String digest) {
-        final String accept = "application/octet-stream";
-        return service.deleteBlobSync(this.client.getUrl(), name, digest, accept, Context.NONE);
-    }
-
-    /**
-     * Removes an already uploaded blob.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -671,7 +592,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteBlobSyncWithResponse(String name, String digest, Context context) {
+    public Response<BinaryData> deleteBlobWithResponse(String name, String digest, Context context) {
         final String accept = "application/octet-stream";
         return service.deleteBlobSync(this.client.getUrl(), name, digest, accept, context);
     }
@@ -687,24 +608,8 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData deleteBlobSync(String name, String digest) {
-        return deleteBlobSyncWithResponse(name, digest, Context.NONE).getValue();
-    }
-
-    /**
-     * Removes an already uploaded blob.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData deleteBlobSync(String name, String digest, Context context) {
-        return deleteBlobSyncWithResponse(name, digest, context).getValue();
+    public BinaryData deleteBlob(String name, String digest) {
+        return deleteBlobWithResponse(name, digest, Context.NONE).getValue();
     }
 
     /**
@@ -784,23 +689,6 @@ public final class ContainerRegistryBlobsImpl {
      * @param name Name of the image (including the namespace).
      * @param from Name of the source repository.
      * @param mount Digest of blob to mount from the source repository.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsMountBlobResponse mountBlobSyncWithResponse(String name, String from, String mount) {
-        final String accept = "application/json";
-        return service.mountBlobSync(this.client.getUrl(), name, from, mount, accept, Context.NONE);
-    }
-
-    /**
-     * Mount a blob identified by the `mount` parameter from another repository.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param from Name of the source repository.
-     * @param mount Digest of blob to mount from the source repository.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -808,7 +696,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsMountBlobResponse mountBlobSyncWithResponse(
+    public ContainerRegistryBlobsMountBlobResponse mountBlobWithResponse(
             String name, String from, String mount, Context context) {
         final String accept = "application/json";
         return service.mountBlobSync(this.client.getUrl(), name, from, mount, accept, context);
@@ -825,24 +713,8 @@ public final class ContainerRegistryBlobsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void mountBlobSync(String name, String from, String mount) {
-        mountBlobSyncWithResponse(name, from, mount, Context.NONE);
-    }
-
-    /**
-     * Mount a blob identified by the `mount` parameter from another repository.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param from Name of the source repository.
-     * @param mount Digest of blob to mount from the source repository.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void mountBlobSync(String name, String from, String mount, Context context) {
-        mountBlobSyncWithResponse(name, from, mount, context);
+    public void mountBlob(String name, String from, String mount) {
+        mountBlobWithResponse(name, from, mount, Context.NONE);
     }
 
     /**
@@ -921,23 +793,6 @@ public final class ContainerRegistryBlobsImpl {
      *
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
      *     substring(1) ).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsGetUploadStatusResponse getUploadStatusSyncWithResponse(String nextLink) {
-        final String accept = "application/json";
-        return service.getUploadStatusSync(this.client.getUrl(), nextLink, accept, Context.NONE);
-    }
-
-    /**
-     * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
-     * status of a resumable upload.
-     *
-     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -945,8 +800,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsGetUploadStatusResponse getUploadStatusSyncWithResponse(
-            String nextLink, Context context) {
+    public ContainerRegistryBlobsGetUploadStatusResponse getUploadStatusWithResponse(String nextLink, Context context) {
         final String accept = "application/json";
         return service.getUploadStatusSync(this.client.getUrl(), nextLink, accept, context);
     }
@@ -962,24 +816,8 @@ public final class ContainerRegistryBlobsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getUploadStatusSync(String nextLink) {
-        getUploadStatusSyncWithResponse(nextLink, Context.NONE);
-    }
-
-    /**
-     * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
-     * status of a resumable upload.
-     *
-     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getUploadStatusSync(String nextLink, Context context) {
-        getUploadStatusSyncWithResponse(nextLink, context);
+    public void getUploadStatus(String nextLink) {
+        getUploadStatusWithResponse(nextLink, Context.NONE);
     }
 
     /**
@@ -1139,25 +977,6 @@ public final class ContainerRegistryBlobsImpl {
      *     substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsUploadChunkResponse uploadChunkSyncWithResponse(
-            String nextLink, BinaryData value, long contentLength) {
-        final String accept = "application/json";
-        return service.uploadChunkSync(this.client.getUrl(), nextLink, value, contentLength, accept, Context.NONE);
-    }
-
-    /**
-     * Upload a stream of data without completing the upload.
-     *
-     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
-     * @param value Raw data of blob.
-     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1165,7 +984,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsUploadChunkResponse uploadChunkSyncWithResponse(
+    public ContainerRegistryBlobsUploadChunkResponse uploadChunkWithResponse(
             String nextLink, BinaryData value, long contentLength, Context context) {
         final String accept = "application/json";
         return service.uploadChunkSync(this.client.getUrl(), nextLink, value, contentLength, accept, context);
@@ -1183,25 +1002,8 @@ public final class ContainerRegistryBlobsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void uploadChunkSync(String nextLink, BinaryData value, long contentLength) {
-        uploadChunkSyncWithResponse(nextLink, value, contentLength, Context.NONE);
-    }
-
-    /**
-     * Upload a stream of data without completing the upload.
-     *
-     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
-     * @param value Raw data of blob.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void uploadChunkSync(String nextLink, BinaryData value, long contentLength, Context context) {
-        uploadChunkSyncWithResponse(nextLink, value, contentLength, context);
+    public void uploadChunk(String nextLink, BinaryData value, long contentLength) {
+        uploadChunkWithResponse(nextLink, value, contentLength, Context.NONE);
     }
 
     /**
@@ -1387,28 +1189,6 @@ public final class ContainerRegistryBlobsImpl {
      *     substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsCompleteUploadResponse completeUploadSyncWithResponse(
-            String digest, String nextLink, BinaryData value, Long contentLength) {
-        final String accept = "application/json";
-        return service.completeUploadSync(
-                this.client.getUrl(), digest, nextLink, value, contentLength, accept, Context.NONE);
-    }
-
-    /**
-     * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
-     * complete the upload with previously uploaded content.
-     *
-     * @param digest Digest of a BLOB.
-     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
-     * @param value Optional raw data of blob.
-     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1416,7 +1196,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsCompleteUploadResponse completeUploadSyncWithResponse(
+    public ContainerRegistryBlobsCompleteUploadResponse completeUploadWithResponse(
             String digest, String nextLink, BinaryData value, Long contentLength, Context context) {
         final String accept = "application/json";
         return service.completeUploadSync(
@@ -1437,28 +1217,8 @@ public final class ContainerRegistryBlobsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void completeUploadSync(String digest, String nextLink, BinaryData value, Long contentLength) {
-        completeUploadSyncWithResponse(digest, nextLink, value, contentLength, Context.NONE);
-    }
-
-    /**
-     * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
-     * complete the upload with previously uploaded content.
-     *
-     * @param digest Digest of a BLOB.
-     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
-     * @param value Optional raw data of blob.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void completeUploadSync(
-            String digest, String nextLink, BinaryData value, Long contentLength, Context context) {
-        completeUploadSyncWithResponse(digest, nextLink, value, contentLength, context);
+    public void completeUpload(String digest, String nextLink, BinaryData value, Long contentLength) {
+        completeUploadWithResponse(digest, nextLink, value, contentLength, Context.NONE);
     }
 
     /**
@@ -1535,23 +1295,6 @@ public final class ContainerRegistryBlobsImpl {
      *
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
      *     substring(1) ).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelUploadSyncWithResponse(String nextLink) {
-        final String accept = "application/json";
-        return service.cancelUploadSync(this.client.getUrl(), nextLink, accept, Context.NONE);
-    }
-
-    /**
-     * Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
-     * uploads will eventually timeout.
-     *
-     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1559,7 +1302,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelUploadSyncWithResponse(String nextLink, Context context) {
+    public Response<Void> cancelUploadWithResponse(String nextLink, Context context) {
         final String accept = "application/json";
         return service.cancelUploadSync(this.client.getUrl(), nextLink, accept, context);
     }
@@ -1575,24 +1318,8 @@ public final class ContainerRegistryBlobsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelUploadSync(String nextLink) {
-        cancelUploadSyncWithResponse(nextLink, Context.NONE);
-    }
-
-    /**
-     * Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
-     * uploads will eventually timeout.
-     *
-     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelUploadSync(String nextLink, Context context) {
-        cancelUploadSyncWithResponse(nextLink, context);
+    public void cancelUpload(String nextLink) {
+        cancelUploadWithResponse(nextLink, Context.NONE);
     }
 
     /**
@@ -1659,21 +1386,6 @@ public final class ContainerRegistryBlobsImpl {
      * Initiate a resumable blob upload with an empty request body.
      *
      * @param name Name of the image (including the namespace).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsStartUploadResponse startUploadSyncWithResponse(String name) {
-        final String accept = "application/json";
-        return service.startUploadSync(this.client.getUrl(), name, accept, Context.NONE);
-    }
-
-    /**
-     * Initiate a resumable blob upload with an empty request body.
-     *
-     * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1681,7 +1393,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsStartUploadResponse startUploadSyncWithResponse(String name, Context context) {
+    public ContainerRegistryBlobsStartUploadResponse startUploadWithResponse(String name, Context context) {
         final String accept = "application/json";
         return service.startUploadSync(this.client.getUrl(), name, accept, context);
     }
@@ -1695,22 +1407,8 @@ public final class ContainerRegistryBlobsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startUploadSync(String name) {
-        startUploadSyncWithResponse(name, Context.NONE);
-    }
-
-    /**
-     * Initiate a resumable blob upload with an empty request body.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startUploadSync(String name, Context context) {
-        startUploadSyncWithResponse(name, context);
+    public void startUpload(String name) {
+        startUploadWithResponse(name, Context.NONE);
     }
 
     /**
@@ -1800,25 +1498,6 @@ public final class ContainerRegistryBlobsImpl {
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getChunkSyncWithResponse(String name, String digest, String range) {
-        final String accept = "application/octet-stream";
-        return service.getChunkSync(this.client.getUrl(), name, digest, range, accept, Context.NONE);
-    }
-
-    /**
-     * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
-     * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
-     * returned, range requests can be used to fetch partial content.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1826,7 +1505,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getChunkSyncWithResponse(String name, String digest, String range, Context context) {
+    public Response<BinaryData> getChunkWithResponse(String name, String digest, String range, Context context) {
         final String accept = "application/octet-stream";
         return service.getChunkSync(this.client.getUrl(), name, digest, range, accept, context);
     }
@@ -1845,27 +1524,8 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getChunkSync(String name, String digest, String range) {
-        return getChunkSyncWithResponse(name, digest, range, Context.NONE).getValue();
-    }
-
-    /**
-     * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
-     * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
-     * returned, range requests can be used to fetch partial content.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getChunkSync(String name, String digest, String range, Context context) {
-        return getChunkSyncWithResponse(name, digest, range, context).getValue();
+    public BinaryData getChunk(String name, String digest, String range) {
+        return getChunkWithResponse(name, digest, range, Context.NONE).getValue();
     }
 
     /**
@@ -1945,24 +1605,6 @@ public final class ContainerRegistryBlobsImpl {
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsCheckChunkExistsResponse checkChunkExistsSyncWithResponse(
-            String name, String digest, String range) {
-        final String accept = "application/json";
-        return service.checkChunkExistsSync(this.client.getUrl(), name, digest, range, accept, Context.NONE);
-    }
-
-    /**
-     * Same as GET, except only the headers are returned.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1970,7 +1612,7 @@ public final class ContainerRegistryBlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistryBlobsCheckChunkExistsResponse checkChunkExistsSyncWithResponse(
+    public ContainerRegistryBlobsCheckChunkExistsResponse checkChunkExistsWithResponse(
             String name, String digest, String range, Context context) {
         final String accept = "application/json";
         return service.checkChunkExistsSync(this.client.getUrl(), name, digest, range, accept, context);
@@ -1987,23 +1629,7 @@ public final class ContainerRegistryBlobsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkChunkExistsSync(String name, String digest, String range) {
-        checkChunkExistsSyncWithResponse(name, digest, range, Context.NONE);
-    }
-
-    /**
-     * Same as GET, except only the headers are returned.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkChunkExistsSync(String name, String digest, String range, Context context) {
-        checkChunkExistsSyncWithResponse(name, digest, range, context);
+    public void checkChunkExists(String name, String digest, String range) {
+        checkChunkExistsWithResponse(name, digest, range, Context.NONE);
     }
 }
