@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch750190c58?api-version=2022-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "391de5bb-50fc-4eb0-b8be-bd2eeddf78a9",
+      "Content-Type" : "application/json; serialization=Json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "sch750190c58",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey4-json.servicebus.windows.net:443/$schemagroups/$schemas/afdda4ae78bd4a31be7ea6dabf9ed003?api-version=2022-10",
+      "StatusCode" : "204",
+      "Date" : "Mon, 14 Nov 2022 23:15:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "afdda4ae78bd4a31be7ea6dabf9ed003",
+      "Schema-Group-Name" : "azsdk_java_group",
+      "Location" : "https://conniey4-json.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch750190c58/versions/1?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey4-json.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch750190c58/versions?api-version=2022-10"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch750190c58?api-version=2022-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3bb11118-3a96-461c-8517-9f891c8bfcf5",
+      "Content-Type" : "application/json; serialization=Json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidRequest",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Json schema validation failed: Invalid JSON schema type: record. TrackingId:fd1df9f2-54de-4c14-8d39-d6ef49c1c1c4_G29, SystemTracker:conniey4-json.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch750190c58, Timestamp:2022-11-14T23:15:38\"}}",
+      "Date" : "Mon, 14 Nov 2022 23:15:37 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sch750190c58" ]
+}

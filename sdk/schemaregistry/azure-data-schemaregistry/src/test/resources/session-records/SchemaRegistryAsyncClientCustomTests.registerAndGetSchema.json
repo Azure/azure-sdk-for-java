@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch159108734?api-version=2022-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4dd51088-48fb-459e-afae-abf3be8bd7e4",
+      "Content-Type" : "text/plain; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidRequest",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Missing required header for PUT request. Schema\\/serialization type must be provided. TrackingId:bc66f0ac-23ae-4b61-ab2f-7040262b2e4f_G23, SystemTracker:conniey4-custom.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch159108734, Timestamp:2022-11-15T00:03:20\"}}",
+      "Date" : "Tue, 15 Nov 2022 00:03:20 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sch159108734" ]
+}
