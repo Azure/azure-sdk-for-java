@@ -23,7 +23,8 @@ public class AzureCoreFeature implements GraalVMFeature {
     public Set<ClassReflectionAttributes> getReflectionClasses() {
         return setOf(
             createWithAllDeclared("com.azure.core.util.DateTimeRfc1123"),
-            createWithAllDeclared("com.azure.core.http.rest.StreamResponse")
+            createWithAllDeclared("com.azure.core.http.rest.StreamResponse"),
+            createWithAllDeclared("com.azure.core.http.rest.ResponseBase")
         );
     }
 }
