@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public final class ClientEncryptionPolicy {
     private List<ClientEncryptionIncludedPath> includedPaths;
 
     @JsonProperty("policyFormatVersion")
-    private int policyFormatVersion;
+    private final int policyFormatVersion;
 
     /**
      * Constructor.
@@ -58,13 +57,6 @@ public final class ClientEncryptionPolicy {
         this.policyFormatVersion = policyFormatVersion;
         validateIncludedPaths(paths, policyFormatVersion);
         this.includedPaths = paths;
-    }
-
-    /**
-     * Constructor.
-     */
-    public ClientEncryptionPolicy() {
-        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
