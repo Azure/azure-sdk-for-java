@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for ScriptKind. */
 public final class ScriptKind extends ExpandableStringEnum<ScriptKind> {
     /** Static value Latin for ScriptKind. */
@@ -20,14 +18,5 @@ public final class ScriptKind extends ExpandableStringEnum<ScriptKind> {
      */
     public static ScriptKind fromString(String name) {
         return fromString(name, ScriptKind.class);
-    }
-
-    /**
-     * Gets known ScriptKind values.
-     *
-     * @return known ScriptKind values.
-     */
-    public static Collection<ScriptKind> values() {
-        return values(ScriptKind.class);
     }
 }

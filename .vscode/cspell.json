@@ -1,3 +1,4 @@
+
 {
   "version": "0.2",
   "language": "en",
@@ -457,6 +458,18 @@
       "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewportOptions.java",
       "words": [
         "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/UnitType.java",
+      "words": [
+        "HECTO"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
+      "words": [
+        "Decibles"
       ]
     },
     {

@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9bc55c9a-4109-4044-9cbb-26555e17fd67",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "186",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/57de3b2b-9f66-4890-b454-1fe7dd6e8d3c?api-version=2022-10-01-preview",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "3528f638-bec9-443c-b481-1217087a69fb",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 14 Nov 2022 19:42:45 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/57de3b2b-9f66-4890-b454-1fe7dd6e8d3c?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5d09044e-2bed-478d-bc76-110b43f81dbf"
+    },
+    "Response" : {
+      "content-length" : "590",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "113",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "9a839027-b517-4368-a0d5-3eec838ed0f4",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"57de3b2b-9f66-4890-b454-1fe7dd6e8d3c\",\"lastUpdateDateTime\":\"2022-11-14T19:42:47Z\",\"createdDateTime\":\"2022-11-14T19:42:46Z\",\"expirationDateTime\":\"2022-11-15T19:42:46Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"HealthcareLROResults\",\"lastUpdateDateTime\":\"2022-11-14T19:42:47.9943541Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":21,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-03-01\"}}]}}",
+      "Date" : "Mon, 14 Nov 2022 19:43:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/57de3b2b-9f66-4890-b454-1fe7dd6e8d3c?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6b4bb81d-2b2f-4d07-a0d6-75b1968cbc10"
+    },
+    "Response" : {
+      "content-length" : "590",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "36",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fc9d665b-73c4-4498-9d01-02c637b55498",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"57de3b2b-9f66-4890-b454-1fe7dd6e8d3c\",\"lastUpdateDateTime\":\"2022-11-14T19:42:47Z\",\"createdDateTime\":\"2022-11-14T19:42:46Z\",\"expirationDateTime\":\"2022-11-15T19:42:46Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"HealthcareLROResults\",\"lastUpdateDateTime\":\"2022-11-14T19:42:47.9943541Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":21,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-03-01\"}}]}}",
+      "Date" : "Mon, 14 Nov 2022 19:43:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

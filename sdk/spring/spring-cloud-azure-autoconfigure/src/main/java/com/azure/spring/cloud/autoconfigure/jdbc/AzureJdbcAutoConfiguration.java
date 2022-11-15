@@ -20,7 +20,7 @@ import org.springframework.context.annotation.DependsOn;
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Identify JDBC support.
  * Provide Azure AD based authentication with Azure managed MySql and Postgresql services.
  *
- * @since 4.4.0
+ * @since 4.5.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(DataSourceProperties.class)

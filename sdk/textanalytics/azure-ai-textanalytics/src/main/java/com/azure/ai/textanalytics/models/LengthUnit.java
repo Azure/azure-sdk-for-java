@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for LengthUnit. */
 public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
     /** Static value Unspecified for LengthUnit. */
@@ -68,14 +66,5 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
      */
     public static LengthUnit fromString(String name) {
         return fromString(name, LengthUnit.class);
-    }
-
-    /**
-     * Gets known LengthUnit values.
-     *
-     * @return known LengthUnit values.
-     */
-    public static Collection<LengthUnit> values() {
-        return values(LengthUnit.class);
     }
 }
