@@ -910,7 +910,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return ObservableHelper.fluxInlineIfPossibleAsObs(
             () -> createQueryInternal(
-                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId),
+                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId).log("913"),
             invalidPartitionExceptionRetryPolicy);
     }
 
@@ -937,7 +937,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             QueryInfo finalQueryInfo = queryInfo;
-            return iDocumentQueryExecutionContext.executeAsync()
+            return iDocumentQueryExecutionContext.executeAsync().log("940")
                 .map(tFeedResponse -> {
                     if (finalQueryInfo != null) {
                         if (finalQueryInfo.hasSelectValue()) {
@@ -952,8 +952,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     }
                     return tFeedResponse;
                 });
-            // concurrency is set to the default to
-            // not affect latency by minimizing prefetch
+            // concurrency is set to Queues.SMALL_BUFFER_SIZE to
+            // maximize the IDocumentQueryExecutionContext instances to subscribe to concurrently
+            // prefetch is set to 1 to minimize the no. of requested pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
     }
 

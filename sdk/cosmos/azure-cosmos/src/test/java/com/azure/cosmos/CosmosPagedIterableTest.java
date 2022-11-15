@@ -154,36 +154,32 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         Thread.sleep(5 * 1000);
     }
 
-    // TODO: Check if eager prefetch can be avoided
-    // TODO: when concurrency is set to 256 on a downstream flatMap
-    // TODO: the unit tests can be enabled then
-    @Test(groups = {"unit"}, enabled = false)
+    @Test(groups = {"unit"})
     public void validatePrefetchControl() {
         AtomicInteger prefetchEager1 = new AtomicInteger();
         int bathSize1 = 1;
         int numPages1 = 100;
-        Flux<FeedResponse<Long>> eagerDrain1 = validatePrefetchControl(numPages1, 10, prefetchEager1)
-                .flatMapSequential(Flux::just, 1, 1)
-                .flatMap(Flux::just);
-        // assert all pages are fetched eagerly
-        assertThat(validate(eagerDrain1, prefetchEager1, bathSize1).get()).isEqualTo(numPages1);
+        Flux<FeedResponse<Long>> eagerDrain1 = Flux.fromIterable(Arrays.asList(1))
+                .flatMap(x -> validatePrefetchControl(numPages1, 10, prefetchEager1)
+                        .flatMapSequential(Flux::just, 1, 1));
+        // assert 32 to 37 pages are fetched eagerly even though batchSize is set to 1
+        assertThat(validate(eagerDrain1, prefetchEager1, bathSize1).get()).isBetween(32, 37);
 
         int bathSize2 = 1;
         int numPages2 = 100;
         AtomicInteger prefetchEager2 = new AtomicInteger();
         List<Flux<FeedResponse<Long>>> fluxList1 = Arrays.asList(validatePrefetchControl(numPages2, 10, prefetchEager2));
-        Flux<FeedResponse<Long>> fastDrain2 = Flux
-                .mergeSequential(fluxList1, 1, 1)
-                .flatMap(Flux::just);
-        // assert all pages are fetched eagerly
-        assertThat(validate(fastDrain2, prefetchEager2, bathSize2).get()).isEqualTo(numPages2);
+        Flux<FeedResponse<Long>> fastDrain2 = Flux.fromIterable(Arrays.asList(1))
+                .flatMap(x -> Flux.mergeSequential(fluxList1, 1, 1));
+        // assert 32 to 37 pages are fetched eagerly even though batchSize is set to 1
+        assertThat(validate(fastDrain2, prefetchEager2, bathSize2).get()).isBetween(32, 37);
 
         int batchSize3 = 19;
         int numPages3 = 100;
         AtomicInteger prefetchLazy1 = new AtomicInteger();
-        Flux<FeedResponse<Long>> lazyDrain1 = validatePrefetchControl(numPages3, 10, prefetchLazy1)
-                .flatMapSequential(Flux::just, 1, 1)
-                .flatMap(Flux::just, Queues.SMALL_BUFFER_SIZE, 1);
+        Flux<FeedResponse<Long>> lazyDrain1 = Flux.fromIterable(Arrays.asList(1))
+                .flatMap(x -> validatePrefetchControl(numPages3, 10, prefetchLazy1)
+                        .flatMapSequential(Flux::just, 1, 1), Queues.SMALL_BUFFER_SIZE, 1);
         // assert that no. of pages fetched is close to the batch size
         assertThat(validate(lazyDrain1, prefetchLazy1, batchSize3).get())
                 .isLessThan(4 + batchSize3)
@@ -193,9 +189,9 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         int numPages4 = 100;
         AtomicInteger prefetchLazy2 = new AtomicInteger();
         List<Flux<FeedResponse<Long>>> fluxList2 = Arrays.asList(validatePrefetchControl(numPages4, 10, prefetchLazy2));
-        Flux<FeedResponse<Long>> lazyDrain2 = Flux
-                .mergeSequential(fluxList2, 1, 1)
-                .flatMap(Flux::just, Queues.SMALL_BUFFER_SIZE, 1);
+        Flux<FeedResponse<Long>> lazyDrain2 = Flux.just(Arrays.asList(1))
+                .flatMap(x -> Flux
+                        .mergeSequential(fluxList2, 1, 1), Queues.SMALL_BUFFER_SIZE, 1);
         // assert that no. of pages fetched is close to the batch size
         assertThat(validate(lazyDrain2, prefetchLazy2, batchSize4).get())
                 .isLessThan(4 + batchSize4)
