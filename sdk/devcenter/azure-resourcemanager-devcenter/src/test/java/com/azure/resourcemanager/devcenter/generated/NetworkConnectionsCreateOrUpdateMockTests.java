@@ -34,7 +34,7 @@ public final class NetworkConnectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"healthCheckStatus\":\"Running\",\"networkingResourceGroupName\":\"ov\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"ashcxlpmjerbdk\",\"domainName\":\"vidizozsdb\",\"organizationUnit\":\"xjmonf\",\"domainUsername\":\"nwncypuuw\",\"domainPassword\":\"tvuqjctzenkeifzz\"},\"location\":\"kdasvflyhbxcudch\",\"tags\":{\"ldforobwj\":\"rb\",\"vacqpbtuodxesz\":\"vizbfhfo\",\"rrwoycqucwyhahn\":\"bbelawumuaslzk\"},\"id\":\"mdr\",\"name\":\"ywuhpsvfuur\",\"type\":\"tlwexxwlalniexz\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"healthCheckStatus\":\"Running\",\"networkingResourceGroupName\":\"ov\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"ashcxlpmjerbdk\",\"domainName\":\"vidizozsdb\",\"organizationUnit\":\"xjmonf\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"location\":\"kdasvflyhbxcudch\",\"tags\":{\"ldforobwj\":\"rb\",\"vacqpbtuodxesz\":\"vizbfhfo\",\"rrwoycqucwyhahn\":\"bbelawumuaslzk\"},\"id\":\"mdr\",\"name\":\"ywuhpsvfuur\",\"type\":\"tlwexxwlalniexz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -74,8 +74,8 @@ public final class NetworkConnectionsCreateOrUpdateMockTests {
                 .withSubnetId("pmzznrtffya")
                 .withDomainName("tmhheioqa")
                 .withOrganizationUnit("v")
-                .withDomainUsername("ufuqyrx")
-                .withDomainPassword("lcgqlsismj")
+                .withDomainUsername("fakeNamePlaceholder")
+                .withDomainPassword("fakePasswordPlaceholder")
                 .create();
 
         Assertions.assertEquals("kdasvflyhbxcudch", response.location());
@@ -85,8 +85,8 @@ public final class NetworkConnectionsCreateOrUpdateMockTests {
         Assertions.assertEquals("ashcxlpmjerbdk", response.subnetId());
         Assertions.assertEquals("vidizozsdb", response.domainName());
         Assertions.assertEquals("xjmonf", response.organizationUnit());
-        Assertions.assertEquals("nwncypuuw", response.domainUsername());
-        Assertions.assertEquals("tvuqjctzenkeifzz", response.domainPassword());
+        Assertions.assertEquals("fakeNamePlaceholder", response.domainUsername());
+        Assertions.assertEquals("fakePasswordPlaceholder", response.domainPassword());
     }
 
     @SuppressWarnings("unchecked")

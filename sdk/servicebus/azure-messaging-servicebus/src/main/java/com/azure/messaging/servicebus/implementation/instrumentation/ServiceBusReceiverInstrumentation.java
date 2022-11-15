@@ -71,7 +71,7 @@ public class ServiceBusReceiverInstrumentation {
                 .contextWrite(ctx -> {
                     startTime.set(Instant.now().toEpochMilli());
                     return ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, tracer.startSpanWithLink(getSettlementSpanName(status), message,
-                        messageContext, Context.NONE));
+                        messageContext, messageContext));
                 });
         }
 

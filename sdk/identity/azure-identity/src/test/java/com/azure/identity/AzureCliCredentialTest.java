@@ -108,9 +108,6 @@ public class AzureCliCredentialTest {
     @Test
     public void testAdditionalTenantNoImpact() {
         // setup
-        String username = "testuser";
-        String password = "P@ssw0rd";
-
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
             .setTenantId("newTenant");
 

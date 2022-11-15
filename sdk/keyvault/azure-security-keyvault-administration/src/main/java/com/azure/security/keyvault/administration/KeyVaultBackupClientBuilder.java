@@ -121,8 +121,14 @@ public final class KeyVaultBackupClientBuilder implements
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public KeyVaultBackupClient buildClient() {
-        return new KeyVaultBackupClient(buildAsyncClient());
+    public KeyVaultBackupClient  buildClient() {
+        Configuration buildConfiguration = validateEndpointAndGetBuildConfiguration();
+        serviceVersion = getServiceVersion();
+        if (pipeline != null) {
+            return new KeyVaultBackupClient(vaultUrl, pipeline, serviceVersion);
+        }
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration);
+        return new KeyVaultBackupClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**
@@ -140,6 +146,16 @@ public final class KeyVaultBackupClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyVaultBackupAsyncClient buildAsyncClient() {
+        Configuration buildConfiguration = validateEndpointAndGetBuildConfiguration();
+        serviceVersion = getServiceVersion();
+        if (pipeline != null) {
+            return new KeyVaultBackupAsyncClient(vaultUrl, pipeline, serviceVersion);
+        }
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration);
+        return new KeyVaultBackupAsyncClient(vaultUrl, buildPipeline, serviceVersion);
+    }
+
+    private Configuration validateEndpointAndGetBuildConfiguration() {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone()
             : configuration;
@@ -151,12 +167,14 @@ public final class KeyVaultBackupClientBuilder implements
                 new IllegalStateException(
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
+        return buildConfiguration;
+    }
 
-        serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+    private KeyVaultAdministrationServiceVersion getServiceVersion() {
+        return serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+    }
 
-        if (pipeline != null) {
-            return new KeyVaultBackupAsyncClient(vaultUrl, pipeline, serviceVersion);
-        }
+    private HttpPipeline getPipeline(Configuration buildConfiguration) {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -191,12 +209,10 @@ public final class KeyVaultBackupClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        HttpPipeline buildPipeline = new HttpPipelineBuilder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-
-        return new KeyVaultBackupAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**

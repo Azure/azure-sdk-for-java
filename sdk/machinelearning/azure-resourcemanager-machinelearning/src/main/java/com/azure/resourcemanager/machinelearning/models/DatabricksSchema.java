@@ -16,6 +16,10 @@ public class DatabricksSchema {
     @JsonProperty(value = "properties")
     private DatabricksProperties properties;
 
+    /** Creates an instance of DatabricksSchema class. */
+    public DatabricksSchema() {
+    }
+
     /**
      * Get the properties property: Properties of Databricks.
      *

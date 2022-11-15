@@ -51,7 +51,7 @@
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
       "x-ms-request-id" : "d63e94a9-1da6-40fa-b18c-69085c70c311",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/issuers/createCertificateJavaPemIssuer01\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"account1\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"John\",\"last_name\":\"Doe\",\"email\":\"john.doe@contoso.com\",\"phone\":\"1234567890\"}]},\"attributes\":{\"enabled\":true,\"created\":1543865457,\"updated\":1547151181}}"
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/issuers/createCertificateJavaPemIssuer01\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"account1\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"John\",\"last_name\":\"Doe\",\"email\":\"john.doe@contoso.com\",\"phone\":\"fakePhoneNumberPlaceholder\"}]},\"attributes\":{\"enabled\":true,\"created\":1543865457,\"updated\":1547151181}}"
     }
   }, {
     "Method" : "POST",

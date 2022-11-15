@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +69,7 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
         } else if (getTestMode() == TestMode.PLAYBACK) {
             ledgerManager = ConfidentialLedgerManager
                 .configure()
+                .withDefaultPollInterval(Duration.ofMillis(10))
                 .withHttpClient(interceptorManager.getPlaybackClient())
                 .authenticate(getCredential(), getAzureProfile());
         }

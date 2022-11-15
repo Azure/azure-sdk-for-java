@@ -101,6 +101,7 @@ public final class RntbdTransportClientTest {
     private static final Uri physicalAddress = new Uri("rntbd://host:10251/replica-path/");
     private static final Duration requestTimeout = Duration.ofSeconds(1000);
     private static final int sslHandshakeTimeoutInMillis = 5000;
+    private static final int transitTimeoutDetectionThreshold = 3;
 
     @DataProvider(name = "fromMockedNetworkFailureToExpectedDocumentClientException")
     public Object[][] fromMockedNetworkFailureToExpectedDocumentClientException() {
@@ -737,6 +738,7 @@ public final class RntbdTransportClientTest {
                 .build();
 
         assertEquals(options.sslHandshakeTimeoutInMillis(), sslHandshakeTimeoutInMillis);
+        assertEquals(options.transientTimeoutDetectionThreshold(), transitTimeoutDetectionThreshold);
     }
 
     // TODO: add validations for other properties
@@ -744,7 +746,7 @@ public final class RntbdTransportClientTest {
     @Test(enabled = false, groups = "unit")
     public void transportClientCustomizedOptionsTests() {
         try {
-            System.setProperty("azure.cosmos.directTcp.defaultOptions", "{\"sslHandshakeTimeoutMinDuration\":\"PT15S\"}");
+            System.setProperty("azure.cosmos.directTcp.defaultOptions", "{\"sslHandshakeTimeoutMinDuration\":\"PT15S\",\"transitTimeoutDetectionThreshold\":\"10\" }");
 
             ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             UserAgentContainer userAgentContainer = new UserAgentContainer();
@@ -754,6 +756,7 @@ public final class RntbdTransportClientTest {
                     .build();
 
             assertEquals(options.sslHandshakeTimeoutInMillis(), Duration.ofSeconds(15).toMillis());
+            assertEquals(options.transientTimeoutDetectionThreshold(), 10);
 
         } finally {
             System.clearProperty("azure.cosmos.directTcp.defaultOptions");

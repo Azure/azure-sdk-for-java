@@ -22,6 +22,10 @@ public final class ContainerResourceRequirements {
     @JsonProperty(value = "containerResourceRequests")
     private ContainerResourceSettings containerResourceRequests;
 
+    /** Creates an instance of ContainerResourceRequirements class. */
+    public ContainerResourceRequirements() {
+    }
+
     /**
      * Get the containerResourceLimits property: Container resource limit info:.
      *

@@ -3,11 +3,11 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.io.IOUtils;
+import com.azure.core.util.mocking.MockAsynchronousByteChannel;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -21,6 +21,7 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,25 +40,40 @@ public class ByteCountingAsynchronousByteChannelTest {
 
     @Test
     public void isOpenDelegates() {
-        AsynchronousByteChannel asynchronousByteChannel = Mockito.mock(AsynchronousByteChannel.class);
-        Mockito.when(asynchronousByteChannel.isOpen()).thenReturn(true, false);
-        ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(asynchronousByteChannel, null, null);
+        AtomicInteger openCalls = new AtomicInteger();
+        AsynchronousByteChannel asynchronousByteChannel = new MockAsynchronousByteChannel() {
+            @Override
+            public boolean isOpen() {
+                return openCalls.getAndIncrement() == 0;
+            }
+        };
+
+        ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(asynchronousByteChannel,
+            null, null);
 
         assertTrue(channel.isOpen());
         assertFalse(channel.isOpen());
 
-        Mockito.verify(asynchronousByteChannel, Mockito.times(2)).isOpen();
+        assertEquals(2, openCalls.get());
     }
 
     @Test
     public void closeDelegates() throws IOException {
-        AsynchronousByteChannel asynchronousByteChannel = Mockito.mock(AsynchronousByteChannel.class);
-        ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(asynchronousByteChannel, null, null);
+        AtomicInteger closeCalls = new AtomicInteger();
+        AsynchronousByteChannel asynchronousByteChannel = new MockAsynchronousByteChannel() {
+            @Override
+            public void close() throws IOException {
+                closeCalls.incrementAndGet();
+                super.close();
+            }
+        };
+        ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(asynchronousByteChannel,
+            null, null);
 
         channel.close();
         channel.close();
 
-        Mockito.verify(asynchronousByteChannel, Mockito.times(2)).close();
+        assertEquals(2, closeCalls.get());
     }
 
     @Test
