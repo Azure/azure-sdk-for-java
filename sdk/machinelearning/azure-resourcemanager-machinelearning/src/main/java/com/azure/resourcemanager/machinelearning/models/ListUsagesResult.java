@@ -19,12 +19,15 @@ public final class ListUsagesResult {
     private List<UsageInner> value;
 
     /*
-     * The URI to fetch the next page of AML resource usage information. Call
-     * ListNext() with this to fetch the next page of AML resource usage
-     * information.
+     * The URI to fetch the next page of AML resource usage information. Call ListNext() with this to fetch the next
+     * page of AML resource usage information.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ListUsagesResult class. */
+    public ListUsagesResult() {
+    }
 
     /**
      * Get the value property: The list of AML resource usages.

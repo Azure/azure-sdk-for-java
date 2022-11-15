@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Compute Start. */
 public final class ComputeStartSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/start.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/start.json
      */
     /**
      * Sample code: Start ComputeInstance Compute.

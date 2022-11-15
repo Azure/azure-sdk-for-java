@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Workspaces ListOutboundNetworkDependenciesEndpoints. */
 public final class WorkspacesListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ExternalFQDN/get.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ExternalFQDN/get.json
      */
     /**
      * Sample code: ListOutboundNetworkDependenciesEndpoints.

@@ -16,8 +16,7 @@ import java.time.Duration;
 @Fluent
 public final class TargetUtilizationScaleSettings extends OnlineScaleSettings {
     /*
-     * The maximum number of instances that the deployment can scale to. The
-     * quota will be reserved for max_instances.
+     * The maximum number of instances that the deployment can scale to. The quota will be reserved for max_instances.
      */
     @JsonProperty(value = "maxInstances")
     private Integer maxInstances;
@@ -29,8 +28,7 @@ public final class TargetUtilizationScaleSettings extends OnlineScaleSettings {
     private Integer minInstances;
 
     /*
-     * The polling interval in ISO 8691 format. Only supports duration with
-     * precision as low as Seconds.
+     * The polling interval in ISO 8691 format. Only supports duration with precision as low as Seconds.
      */
     @JsonProperty(value = "pollingInterval")
     private Duration pollingInterval;
@@ -40,6 +38,10 @@ public final class TargetUtilizationScaleSettings extends OnlineScaleSettings {
      */
     @JsonProperty(value = "targetUtilizationPercentage")
     private Integer targetUtilizationPercentage;
+
+    /** Creates an instance of TargetUtilizationScaleSettings class. */
+    public TargetUtilizationScaleSettings() {
+    }
 
     /**
      * Get the maxInstances property: The maximum number of instances that the deployment can scale to. The quota will

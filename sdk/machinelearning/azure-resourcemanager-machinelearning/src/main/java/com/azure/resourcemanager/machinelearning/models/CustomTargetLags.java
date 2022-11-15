@@ -22,6 +22,10 @@ public final class CustomTargetLags extends TargetLags {
     @JsonProperty(value = "values", required = true)
     private List<Integer> values;
 
+    /** Creates an instance of CustomTargetLags class. */
+    public CustomTargetLags() {
+    }
+
     /**
      * Get the values property: [Required] Set target lags values.
      *

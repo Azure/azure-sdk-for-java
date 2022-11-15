@@ -32,18 +32,10 @@ public final class ImageObjectDetection extends AutoMLVertical {
     private ImageModelSettingsObjectDetection modelSettings;
 
     /*
-     * Search space for sampling different combinations of models and their
-     * hyperparameters.
+     * Search space for sampling different combinations of models and their hyperparameters.
      */
     @JsonProperty(value = "searchSpace")
     private List<ImageModelDistributionSettingsObjectDetection> searchSpace;
-
-    /*
-     * [Required] Collection of registered Tabular Dataset Ids and other data
-     * settings required for training and validating models.
-     */
-    @JsonProperty(value = "dataSettings", required = true)
-    private ImageVerticalDataSettings dataSettings;
 
     /*
      * [Required] Limit settings for the AutoML job.
@@ -56,6 +48,24 @@ public final class ImageObjectDetection extends AutoMLVertical {
      */
     @JsonProperty(value = "sweepSettings")
     private ImageSweepSettings sweepSettings;
+
+    /*
+     * Validation data inputs.
+     */
+    @JsonProperty(value = "validationData")
+    private MLTableJobInput validationData;
+
+    /*
+     * The fraction of training dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     */
+    @JsonProperty(value = "validationDataSize")
+    private Double validationDataSize;
+
+    /** Creates an instance of ImageObjectDetection class. */
+    public ImageObjectDetection() {
+    }
 
     /**
      * Get the primaryMetric property: Primary metric to optimize for this task.
@@ -120,28 +130,6 @@ public final class ImageObjectDetection extends AutoMLVertical {
     }
 
     /**
-     * Get the dataSettings property: [Required] Collection of registered Tabular Dataset Ids and other data settings
-     * required for training and validating models.
-     *
-     * @return the dataSettings value.
-     */
-    public ImageVerticalDataSettings dataSettings() {
-        return this.dataSettings;
-    }
-
-    /**
-     * Set the dataSettings property: [Required] Collection of registered Tabular Dataset Ids and other data settings
-     * required for training and validating models.
-     *
-     * @param dataSettings the dataSettings value to set.
-     * @return the ImageObjectDetection object itself.
-     */
-    public ImageObjectDetection withDataSettings(ImageVerticalDataSettings dataSettings) {
-        this.dataSettings = dataSettings;
-        return this;
-    }
-
-    /**
      * Get the limitSettings property: [Required] Limit settings for the AutoML job.
      *
      * @return the limitSettings value.
@@ -181,10 +169,66 @@ public final class ImageObjectDetection extends AutoMLVertical {
         return this;
     }
 
+    /**
+     * Get the validationData property: Validation data inputs.
+     *
+     * @return the validationData value.
+     */
+    public MLTableJobInput validationData() {
+        return this.validationData;
+    }
+
+    /**
+     * Set the validationData property: Validation data inputs.
+     *
+     * @param validationData the validationData value to set.
+     * @return the ImageObjectDetection object itself.
+     */
+    public ImageObjectDetection withValidationData(MLTableJobInput validationData) {
+        this.validationData = validationData;
+        return this;
+    }
+
+    /**
+     * Get the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
+     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
+     *
+     * @return the validationDataSize value.
+     */
+    public Double validationDataSize() {
+        return this.validationDataSize;
+    }
+
+    /**
+     * Set the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
+     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
+     *
+     * @param validationDataSize the validationDataSize value to set.
+     * @return the ImageObjectDetection object itself.
+     */
+    public ImageObjectDetection withValidationDataSize(Double validationDataSize) {
+        this.validationDataSize = validationDataSize;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ImageObjectDetection withLogVerbosity(LogVerbosity logVerbosity) {
         super.withLogVerbosity(logVerbosity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageObjectDetection withTargetColumnName(String targetColumnName) {
+        super.withTargetColumnName(targetColumnName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageObjectDetection withTrainingData(MLTableJobInput trainingData) {
+        super.withTrainingData(trainingData);
         return this;
     }
 
@@ -202,14 +246,6 @@ public final class ImageObjectDetection extends AutoMLVertical {
         if (searchSpace() != null) {
             searchSpace().forEach(e -> e.validate());
         }
-        if (dataSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataSettings in model ImageObjectDetection"));
-        } else {
-            dataSettings().validate();
-        }
         if (limitSettings() == null) {
             throw LOGGER
                 .logExceptionAsError(
@@ -220,6 +256,9 @@ public final class ImageObjectDetection extends AutoMLVertical {
         }
         if (sweepSettings() != null) {
             sweepSettings().validate();
+        }
+        if (validationData() != null) {
+            validationData().validate();
         }
     }
 

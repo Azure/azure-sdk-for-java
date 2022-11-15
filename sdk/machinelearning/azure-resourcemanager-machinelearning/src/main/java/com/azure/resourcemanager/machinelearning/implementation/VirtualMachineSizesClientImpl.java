@@ -164,20 +164,6 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
      * Returns supported VM Sizes in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineSizeListResultInner list(String location) {
-        return listAsync(location).block();
-    }
-
-    /**
-     * Returns supported VM Sizes in a location.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -187,5 +173,19 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineSizeListResultInner> listWithResponse(String location, Context context) {
         return listWithResponseAsync(location, context).block();
+    }
+
+    /**
+     * Returns supported VM Sizes in a location.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine size operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineSizeListResultInner list(String location) {
+        return listWithResponse(location, Context.NONE).getValue();
     }
 }
