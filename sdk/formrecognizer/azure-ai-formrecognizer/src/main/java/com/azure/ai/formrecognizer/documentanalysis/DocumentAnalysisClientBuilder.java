@@ -151,22 +151,7 @@ public final class DocumentAnalysisClientBuilder implements
         final DocumentAnalysisServiceVersion serviceVersion =
             version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
-        HttpPipeline pipeline = httpPipeline;
-        // Create a default Pipeline if it is not given
-        if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(
-                clientOptions,
-                httpLogOptions,
-                buildConfiguration,
-                retryPolicy,
-                retryOptions,
-                azureKeyCredential,
-                tokenCredential,
-                audience,
-                perCallPolicies,
-                perRetryPolicies,
-                httpClient);
-        }
+        HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
@@ -210,6 +195,18 @@ public final class DocumentAnalysisClientBuilder implements
         final DocumentAnalysisServiceVersion serviceVersion =
             version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
+        HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
+
+        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(pipeline)
+            .buildClient();
+
+        return new DocumentAnalysisAsyncClient(formRecognizerAPI, serviceVersion);
+    }
+
+    private HttpPipeline getHttpPipeline(Configuration buildConfiguration) {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
@@ -226,14 +223,7 @@ public final class DocumentAnalysisClientBuilder implements
                 perRetryPolicies,
                 httpClient);
         }
-
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new DocumentAnalysisAsyncClient(formRecognizerAPI, serviceVersion);
+        return pipeline;
     }
 
     /**

@@ -3,6 +3,9 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
@@ -17,9 +20,14 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComponentDocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
-import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
@@ -230,8 +238,18 @@ public class Transforms {
         return analyzeResult;
     }
 
-    public static AnalyzeDocumentOptions getAnalyzeDocumentOptions(AnalyzeDocumentOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new AnalyzeDocumentOptions() : userProvidedOptions;
+    public static BuildDocumentModelRequest getBuildDocumentModelRequest(String blobContainerUrl,
+        DocumentModelBuildMode buildMode, String modelId, String prefix, BuildDocumentModelOptions buildDocumentModelOptions) {
+        BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest()
+            .setModelId(modelId)
+            .setBuildMode(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
+                .fromString(buildMode.toString()))
+            .setAzureBlobSource(new AzureBlobContentSource()
+                .setContainerUrl(blobContainerUrl)
+                .setPrefix(prefix))
+            .setDescription(buildDocumentModelOptions.getDescription())
+            .setTags(buildDocumentModelOptions.getTags());
+        return buildDocumentModelRequest;
     }
 
     /**
@@ -631,6 +649,38 @@ public class Transforms {
             Utility.parseResultId(operationLocation));
 
         return operationResult;
+    }
+
+    public static AuthorizeCopyRequest getAuthorizeCopyRequest(CopyAuthorizationOptions copyAuthorizationOptions,
+        String modelId) {
+        return new AuthorizeCopyRequest()
+            .setModelId(modelId)
+            .setDescription(copyAuthorizationOptions.getDescription())
+            .setTags(copyAuthorizationOptions.getTags());
+    }
+
+    public static ComposeDocumentModelRequest getComposeDocumentModelRequest(List<String> componentModelIds,
+                                                                              ComposeDocumentModelOptions composeDocumentModelOptions,
+                                                                              String modelId) {
+        return new ComposeDocumentModelRequest()
+            .setComponentModels(componentModelIds.stream()
+                .map(modelIdString -> new ComponentDocumentModelDetails().setModelId(modelIdString))
+                .collect(Collectors.toList()))
+            .setModelId(modelId)
+            .setDescription(composeDocumentModelOptions.getDescription())
+            .setTags(composeDocumentModelOptions.getTags());
+    }
+
+    public static CopyAuthorization getInnerCopyAuthorization(DocumentModelCopyAuthorization target) {
+        CopyAuthorization copyRequest
+            = new CopyAuthorization()
+            .setTargetModelLocation(target.getTargetModelLocation())
+            .setTargetResourceId(target.getTargetResourceId())
+            .setTargetResourceRegion(target.getTargetResourceRegion())
+            .setTargetModelId(target.getTargetModelId())
+            .setAccessToken(target.getAccessToken())
+            .setExpirationDateTime(target.getExpiresOn());
+        return copyRequest;
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {

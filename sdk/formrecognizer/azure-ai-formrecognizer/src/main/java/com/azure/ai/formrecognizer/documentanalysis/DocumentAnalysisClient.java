@@ -35,9 +35,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getAnalyzeDocumentOptions;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getHttpResponseException;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.enableSyncRestProxy;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
 
 /**
@@ -337,7 +337,7 @@ public final class DocumentAnalysisClient {
     }
 
     private Function<PollingContext<OperationResult>, PollResponse<OperationResult>>
-    pollingOperation(String modelId, Context finalContext) {
+        pollingOperation(String modelId, Context finalContext) {
         return pollingContext -> {
             final PollResponse<OperationResult> operationResultPollResponse
                 = pollingContext.getLatestResponse();
@@ -372,7 +372,7 @@ public final class DocumentAnalysisClient {
     }
 
     private Function<PollingContext<OperationResult>, AnalyzeResult>
-    fetchingOperation(
+        fetchingOperation(
         String modelId, Context finalContext) {
         return pollingContext -> {
             final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
