@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.implementation.core;
+package com.azure.spring.cloud.service.implementation.servicebus.lifecycle;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import org.slf4j.Logger;
