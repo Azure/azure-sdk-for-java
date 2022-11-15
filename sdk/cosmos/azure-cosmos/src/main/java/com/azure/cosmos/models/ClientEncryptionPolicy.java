@@ -28,7 +28,7 @@ public final class ClientEncryptionPolicy {
     private List<ClientEncryptionIncludedPath> includedPaths;
 
     @JsonProperty("policyFormatVersion")
-    private final int policyFormatVersion;
+    private int policyFormatVersion;
 
     /**
      * Constructor.
@@ -57,6 +57,13 @@ public final class ClientEncryptionPolicy {
         this.policyFormatVersion = policyFormatVersion;
         validateIncludedPaths(paths, policyFormatVersion);
         this.includedPaths = paths;
+    }
+
+    /**
+     * Constructor.
+     */
+    public ClientEncryptionPolicy() {
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
