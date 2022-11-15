@@ -131,11 +131,11 @@ public class MultivariateSample {
 
         Iterator<PagedResponse<BinaryData>> ite = response.iterableByPage().iterator();
         int i = 1;
-        while (ite.hasNext()){
+        while (ite.hasNext()) {
             PagedResponse<BinaryData> items = ite.next();
-            System.out.println("The result in the page "+i);
+            System.out.println("The result in the page " + i);
             i++;
-            for (BinaryData item : items.getValue()){
+            for (BinaryData item : items.getValue()) {
                 JsonObject jsonObject = Json.createReader(new StringReader(item.toString())).readObject();
                 System.out.println("\t" + jsonObject.getString("modelId"));
             }
@@ -150,8 +150,8 @@ public class MultivariateSample {
     }
 
     public static void run(BinaryData trainBody, BinaryData beginInferBody) throws Exception {
-       String endpoint = "<anomaly-detector-resource-endpoint>";
-       String key = "<anomaly-detector-resource-key>";
+        String endpoint = "<anomaly-detector-resource-endpoint>";
+        String key = "<anomaly-detector-resource-key>";
 
         // Get multivariate client
         AnomalyDetectorClient client = getClient(endpoint, key);
@@ -209,7 +209,7 @@ public class MultivariateSample {
                         + ",  Score: "
                         + item.getJsonObject("value").getJsonNumber("score"));
             }
-        }else{
+        } else {
             for (int i = 0; i < results.size(); i++) {
                 JsonObject item = results.getJsonObject(i);
                 System.out.print(
