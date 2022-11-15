@@ -1,35 +1,34 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.anomalydetector;
+// Disable due to the endpoint is not available in repository test environment.
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Test;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import java.io.StringReader;
-
-/**
- * Unit tests for {@link AnomalyDetectorClient}.
- */
-public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
-
-    private AnomalyDetectorClient getClient() {
-        return getClientBuilder().buildClient();
-    }
-
-    @Test
-    public void testDetect() {
-        System.out.println("Disable the test due to the endpoint is not available in the Repo test environment. " +
-            "The following code works when endpoint is available.");
-
+//package com.azure.ai.anomalydetector;
+//
+//import static org.junit.jupiter.api.Assertions.assertEquals;
+//import static org.junit.jupiter.api.Assertions.assertFalse;
+//
+//import com.azure.core.http.rest.RequestOptions;
+//import com.azure.core.http.rest.Response;
+//import com.azure.core.util.BinaryData;
+//import org.junit.jupiter.api.Test;
+//
+//import javax.json.Json;
+//import javax.json.JsonArray;
+//import javax.json.JsonObject;
+//import java.io.StringReader;
+//
+///**
+// * Unit tests for {@link AnomalyDetectorClient}.
+// */
+//public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
+//
+//    private AnomalyDetectorClient getClient() {
+//        return getClientBuilder().buildClient();
+//    }
+//
+//    @Test
+//    public void testDetect() {
 //        testDetectEntireSeriesWithResponse(request -> {
 //
 //            Response<BinaryData> response = getClient().detectUnivariateEntireSeriesWithResponse(request, new RequestOptions());
@@ -54,6 +53,6 @@ public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
 //                assertFalse(isPositiveAnomalyJA.getBoolean(i));
 //
 //        });
-
-    }
-}
+//
+//    }
+//}

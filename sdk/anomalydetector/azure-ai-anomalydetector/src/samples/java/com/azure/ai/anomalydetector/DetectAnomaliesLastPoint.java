@@ -21,12 +21,7 @@ import javax.json.JsonReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * Sample for detecting whether the last point of time series is anomaly or not.

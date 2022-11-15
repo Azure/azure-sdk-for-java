@@ -21,7 +21,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.api.Assertions;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.io.StringReader;
+import java.io.InputStream;
+
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.UUID;
@@ -32,8 +38,12 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-enum ModelStatus {CREATED, RUNNING, READY, FAILED}
-enum DetectionStatus {CREATED, RUNNING, READY, FAILED}
+enum ModelStatus {
+    CREATED, RUNNING, READY, FAILED
+}
+enum DetectionStatus {
+    CREATED, RUNNING, READY, FAILED
+}
 
 public class MultivariateSample {
     private static void close(FileOutputStream fos) {
@@ -90,7 +100,6 @@ public class MultivariateSample {
         String responseBodyStr = response.getValue().toString();
         JsonObject jsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
 
-        String _modelId = jsonObject.getString("modelId");
         JsonObject modelInfo = jsonObject.getJsonObject("modelInfo");
 
         return modelInfo;
@@ -114,7 +123,7 @@ public class MultivariateSample {
         return status;
     }
 
-    private static void getModelList(AnomalyDetectorClient client, Integer skip, Integer top){
+    private static void getModelList(AnomalyDetectorClient client, Integer skip, Integer top) {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("skip", skip.toString())
             .addQueryParam("top", top.toString());
@@ -133,7 +142,7 @@ public class MultivariateSample {
         }
     }
 
-    private static Response<BinaryData> getLastDetectResult(AnomalyDetectorClient client, BinaryData body, UUID modelId){
+    private static Response<BinaryData> getLastDetectResult(AnomalyDetectorClient client, BinaryData body, UUID modelId) {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = client.detectMultivariateLastAnomalyWithResponse(modelId.toString(), body, requestOptions);
 
@@ -157,7 +166,7 @@ public class MultivariateSample {
             if (modelStatus == ModelStatus.READY) {
                 System.out.println("READY");
                 break;
-            }else if(modelStatus == ModelStatus.FAILED){
+            } else if (modelStatus == ModelStatus.FAILED) {
                 System.out.println("FAILED");
                 throw new Exception(modelInfo.getJsonArray("errors").getString(0));
             }
@@ -189,20 +198,25 @@ public class MultivariateSample {
         JsonObject lastDetectJsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
         JsonArray variableStates = lastDetectJsonObject.getJsonArray("variableStates");
         JsonArray results = lastDetectJsonObject.getJsonArray("results");
-        if (lastDetectResponse.getStatusCode() == 200){
-            for (int i=0; i<results.size(); i++){
+        if (lastDetectResponse.getStatusCode() == 200) {
+            for (int i = 0; i < results.size(); i++) {
                 JsonObject item = results.getJsonObject(i);
                 System.out.print(
-                    "\ntimestamp: " + item.getString("timestamp") +
-                        ",  isAnomaly: " + item.getJsonObject("value").getBoolean("isAnomaly") +
-                        ",  Score: " + item.getJsonObject("value").getJsonNumber("score"));
+                    "\ntimestamp: "
+                        + item.getString("timestamp")
+                        + ",  isAnomaly: "
+                        + item.getJsonObject("value").getBoolean("isAnomaly")
+                        + ",  Score: "
+                        + item.getJsonObject("value").getJsonNumber("score"));
             }
         }else{
-            for (int i=0; i<results.size(); i++){
+            for (int i = 0; i < results.size(); i++) {
                 JsonObject item = results.getJsonObject(i);
                 System.out.print(
-                    "\ntimestamp: " + item.getString("timestamp") +
-                        ",  errors: " + item.getJsonArray("errors").getString(0));
+                    "\ntimestamp: "
+                        + item.getString("timestamp")
+                        + ",  errors: "
+                        + item.getJsonArray("errors").getString(0));
             }
         }
 

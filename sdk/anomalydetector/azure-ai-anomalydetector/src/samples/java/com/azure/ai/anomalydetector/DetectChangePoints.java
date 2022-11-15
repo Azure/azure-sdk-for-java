@@ -23,12 +23,7 @@ import javax.json.JsonObjectBuilder;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * Sample for detecting change points in a piece of time series.
