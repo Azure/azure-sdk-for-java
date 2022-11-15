@@ -664,7 +664,7 @@ public class EncryptionProcessor {
     }
 
     private String convertToBase64UriSafeString(byte[] bytesToProcess) {
-        StringBuilder base64String = new StringBuilder(new String(Base64.getUrlDecoder().decode(bytesToProcess)));
+        StringBuilder base64String = new StringBuilder(new String(Base64.getUrlDecoder().decode(bytesToProcess), StandardCharsets.UTF_8));
 
         // Base 64 Encoding with URL and Filename Safe Alphabet  https://datatracker.ietf.org/doc/html/rfc4648#section-5
         // https://docs.microsoft.com/en-us/azure/cosmos-db/concepts-limits#per-item-limits, due to base64 conversion and encryption
