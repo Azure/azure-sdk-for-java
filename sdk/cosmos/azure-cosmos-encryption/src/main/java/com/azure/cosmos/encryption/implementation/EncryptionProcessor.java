@@ -450,7 +450,7 @@ public class EncryptionProcessor {
     }
 
     public String encryptAndSerializeValue(EncryptionSettings encryptionSettings, String propertyValue, String propertyName) throws MicrosoftDataEncryptionException {
-        JsonNode propertyValueHolder = toJsonNode(propertyValue.getBytes(), TypeMarker.STRING);
+        JsonNode propertyValueHolder = toJsonNode(propertyValue.getBytes(StandardCharsets.UTF_8), TypeMarker.STRING);
         return convertToBase64UriSafeString(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName));
     }
 
@@ -473,7 +473,7 @@ public class EncryptionProcessor {
 
         if (propertyName.equals(Constants.PROPERTY_NAME_ID)) {
             // case: id does not support '/','\','?','#'. Convert Base64 string to Uri safe string
-            cipherTextWithTypeMarker =  convertToBase64UriSafeString(cipherTextWithTypeMarker).getBytes();
+            cipherTextWithTypeMarker =  convertToBase64UriSafeString(cipherTextWithTypeMarker).getBytes(StandardCharsets.UTF_8);
         }
 
         if (objectNode != null && !objectNode.isNull()) {
@@ -664,7 +664,7 @@ public class EncryptionProcessor {
     }
 
     private String convertToBase64UriSafeString(byte[] bytesToProcess) {
-        StringBuilder base64String = new StringBuilder(new String(Base64.getDecoder().decode(bytesToProcess)));
+        StringBuilder base64String = new StringBuilder(new String(Base64.getUrlDecoder().decode(bytesToProcess)));
 
         // Base 64 Encoding with URL and Filename Safe Alphabet  https://datatracker.ietf.org/doc/html/rfc4648#section-5
         // https://docs.microsoft.com/en-us/azure/cosmos-db/concepts-limits#per-item-limits, due to base64 conversion and encryption
@@ -679,7 +679,7 @@ public class EncryptionProcessor {
 
         replaceString(base64String, "_", "/");
         replaceString(base64String, "-", "\\+");
-        return Base64.getEncoder().encode(base64String.toString().getBytes());
+        return Base64.getUrlEncoder().encode(base64String.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private StringBuilder replaceString(StringBuilder sb,
