@@ -3,7 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -652,6 +654,40 @@ public class EventHubsJavaDocCodeSamples {
         // Continue to perform other tasks while the processor is running in the background.
         eventProcessorClient.stop();
         // END: com.azure.messaging.eventhubs.eventprocessorclient.startstop
+    }
+
+    public void createBufferedAsyncProducer() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        EventHubBufferedProducerAsyncClient client = new EventHubBufferedProducerClientBuilder()
+            .credential("fully-qualifed-namespace", "event-hub-name", credential)
+            .onSendBatchSucceeded(succeededContext -> {
+                System.out.println("Successfully published events to: " + succeededContext.getPartitionId());
+            })
+            .onSendBatchFailed(failedContext -> {
+                System.out.printf("Failed to published events to %s. Error: %s%n",
+                    failedContext.getPartitionId(), failedContext.getThrowable());
+            })
+            .maxWaitTime(Duration.ofSeconds(60))
+            .maxEventBufferLengthPerPartition(1500)
+            .buildAsyncClient();
+        // END: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation
+    }
+
+    public void createBufferedProducer() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        EventHubBufferedProducerClient client = new EventHubBufferedProducerClientBuilder()
+            .connectionString("event-hub-namespace-connection-string", "event-hub-name")
+            .onSendBatchSucceeded(succeededContext -> {
+                System.out.println("Successfully published events to: " + succeededContext.getPartitionId());
+            })
+            .onSendBatchFailed(failedContext -> {
+                System.out.printf("Failed to published events to %s. Error: %s%n",
+                    failedContext.getPartitionId(), failedContext.getThrowable());
+            })
+            .buildClient();
+        // END: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation
     }
 
     private static final class TelemetryEvent {

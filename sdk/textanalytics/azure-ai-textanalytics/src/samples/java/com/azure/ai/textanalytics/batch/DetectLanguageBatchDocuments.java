@@ -54,7 +54,7 @@ public class DetectLanguageBatchDocuments {
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics();
-        System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+        System.out.printf("Documents statistics: document count = %d, erroneous document count = %d, transaction count = %d, valid document count = %d.%n",
             batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Detected language for each document in a batch of documents

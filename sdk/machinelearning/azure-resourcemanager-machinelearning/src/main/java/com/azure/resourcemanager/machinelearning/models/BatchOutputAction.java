@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BatchOutputAction. */
+/** Enum to determine how batch inferencing will handle output. */
 public final class BatchOutputAction extends ExpandableStringEnum<BatchOutputAction> {
     /** Static value SummaryOnly for BatchOutputAction. */
     public static final BatchOutputAction SUMMARY_ONLY = fromString("SummaryOnly");

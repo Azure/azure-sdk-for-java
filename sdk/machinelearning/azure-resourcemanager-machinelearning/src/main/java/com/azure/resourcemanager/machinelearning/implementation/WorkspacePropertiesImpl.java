@@ -147,6 +147,10 @@ public final class WorkspacePropertiesImpl implements WorkspaceProperties {
         return this.innerModel().mlFlowTrackingUri();
     }
 
+    public Boolean v1LegacyMode() {
+        return this.innerModel().v1LegacyMode();
+    }
+
     public WorkspacePropertiesInner innerModel() {
         return this.innerObject;
     }

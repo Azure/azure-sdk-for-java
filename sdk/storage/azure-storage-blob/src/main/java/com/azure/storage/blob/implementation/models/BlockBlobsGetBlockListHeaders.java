@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -63,6 +64,13 @@ public final class BlockBlobsGetBlockListHeaders {
     @JsonProperty(value = "Content-Type")
     private String contentType;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH =
+            HttpHeaderName.fromString("x-ms-blob-content-length");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlockBlobsGetBlockListHeaders class.
@@ -70,23 +78,23 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlockBlobsGetBlockListHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        String xMsBlobContentLength = rawHeaders.getValue("x-ms-blob-content-length");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsBlobContentLength = rawHeaders.getValue(X_MS_BLOB_CONTENT_LENGTH);
         if (xMsBlobContentLength != null) {
             this.xMsBlobContentLength = Long.parseLong(xMsBlobContentLength);
         }
-        this.eTag = rawHeaders.getValue("ETag");
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        this.contentType = rawHeaders.getValue("Content-Type");
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
     /**

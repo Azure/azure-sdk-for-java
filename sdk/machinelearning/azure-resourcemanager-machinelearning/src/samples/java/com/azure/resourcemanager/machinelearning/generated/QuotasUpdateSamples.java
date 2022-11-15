@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Quotas Update. */
 public final class QuotasUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Quota/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Quota/update.json
      */
     /**
      * Sample code: update quotas.

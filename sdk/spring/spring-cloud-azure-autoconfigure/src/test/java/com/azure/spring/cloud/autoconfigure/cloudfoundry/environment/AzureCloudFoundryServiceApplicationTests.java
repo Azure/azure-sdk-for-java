@@ -91,7 +91,7 @@ public class AzureCloudFoundryServiceApplicationTests {
             assertEquals("dbs/ZFxCAA==/", config.getCredentials().get("documentdb_database_link"));
             assertEquals("https://hostname:443/", config.getCredentials().get("documentdb_host_endpoint"));
             assertEquals(
-                "3becR7JFnWamMvGwWYWWTV4WpeNhN8tOzJ74yjAxPKDpx65q2lYz60jt8WXU6HrIKrAIwhs0Hglf0123456789==",
+                "fakeCredentialPlaceholder",
                 config.getCredentials().get("documentdb_master_key"));
         } catch (IOException e) {
             LOG.error("Error reading json file", e);
@@ -127,7 +127,7 @@ public class AzureCloudFoundryServiceApplicationTests {
             assertEquals("dbs/ZFxCAA==/", config.getCredentials().get("documentdb_database_link"));
             assertEquals("https://hostname:443/", config.getCredentials().get("documentdb_host_endpoint"));
             assertEquals(
-                "3becR7JFnWamMvGwWYWWTV4WpeNhN8tOzJ74yjAxPKDpx65q2lYz60jt8WXU6HrIKrAIwhs0Hglf0123456789==",
+                "fakeCredentialPlaceholder",
                 config.getCredentials().get("documentdb_master_key"));
         } catch (IOException e) {
             LOG.error("Error reading json file", e);

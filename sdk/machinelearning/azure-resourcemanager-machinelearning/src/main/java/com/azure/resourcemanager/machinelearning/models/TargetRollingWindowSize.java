@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class TargetRollingWindowSize {
+    /** Creates an instance of TargetRollingWindowSize class. */
+    public TargetRollingWindowSize() {
+    }
+
     /**
      * Validates the instance.
      *

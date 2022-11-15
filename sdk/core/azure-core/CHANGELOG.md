@@ -1,6 +1,6 @@
 # Release History
 
-## 1.34.0-beta.1 (Unreleased)
+## 1.35.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.34.0 (2022-11-04)
+
+### Features Added
+
+- Added `HttpHeaderName`, and corresponding methods on `HttpHeaders`, which provides a way of adding, accessing, and 
+  removing `HttpHeader`s from `HttpHeaders` without needing to call `String.toLowercase`. ([#30924](https://github.com/Azure/azure-sdk-for-java/pull/30924))
+- Added `SyncPollingStrategy`, and implementations of it, to compliment the asynchronous `PollingStrategy`. ([#31923](https://github.com/Azure/azure-sdk-for-java/pull/31923))
+- Added a new factory method on `SyncPoller` matching the factory method on `PollerFlux`, except taking `SyncPollingStrategy`
+  instead of `PollingStrategy`.
+
+### Bugs Fixed
+
+- Fixed a bug where `void` and `Void` responses would attempt to create a `byte[]` the size of the response 
+  `Content-Length`. ([#31865](https://github.com/Azure/azure-sdk-for-java/pull/31865))
+- Fixed a bug where `SyncPoller` `waitUntil` or `waitForCompletion` didn't update the terminal poll context correctly. ([#31905](https://github.com/Azure/azure-sdk-for-java/pull/31905))
+
+### Other Changes
+
+- Removed size limit when creating a `BinaryData.fromFlux` when the `Flux<ByteBuffer>` is buffered.
+- Deprecated empty argument constructor in `ExpandableStringEnum` subtypes.
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.4` to `2.13.4.2`.
 
 ## 1.33.0 (2022-10-07)
 

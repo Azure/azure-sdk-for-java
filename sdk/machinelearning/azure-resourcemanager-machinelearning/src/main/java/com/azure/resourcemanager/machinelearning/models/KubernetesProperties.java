@@ -61,6 +61,10 @@ public final class KubernetesProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, InstanceTypeSchema> instanceTypes;
 
+    /** Creates an instance of KubernetesProperties class. */
+    public KubernetesProperties() {
+    }
+
     /**
      * Get the relayConnectionString property: Relay connection string.
      *

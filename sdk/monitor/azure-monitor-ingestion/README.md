@@ -97,6 +97,11 @@ workspace. The target table must exist before you can send data to it. The follo
 - [Syslog](https://docs.microsoft.com/azure/azure-monitor/reference/tables/syslog)
 - [WindowsEvents](https://docs.microsoft.com/azure/azure-monitor/reference/tables/windowsevent)
 
+### Logs retrieval
+The logs that were uploaded using this library can be queried using the 
+[Azure Monitor Query](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#readme) 
+client library.
+
 ## Examples
 
 - [Upload custom logs](#upload-custom-logs)
@@ -139,6 +144,18 @@ UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-na
 System.out.println("Logs upload result status " + result.getStatus());
 ```
 
+### Handle logs ingestion response
+
+The `upload` API returns `UploadLogsResult`. The hierarchy of the response is:
+```
+UploadLogsResult
+|--- status (UploadLogsStatus enum with values - success, partial failure or failure)
+|--- errors (list of `UploadLogsError` objects)
+    |--- responseError (ResponseError)
+        |--- code 
+        |--- message
+    |--- failedLogs (list of logs objects - the logs that failed to upload)
+```
 ## Troubleshooting
 
 ### Enabling Logging

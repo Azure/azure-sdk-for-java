@@ -11,16 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PartialSku {
     /*
-     * If the SKU supports scale out/in then the capacity integer should be
-     * included. If scale out/in is not possible for the resource this may be
-     * omitted.
+     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible
+     * for the resource this may be omitted.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /*
-     * If the service has different generations of hardware, for the same SKU,
-     * then that can be captured here.
+     * If the service has different generations of hardware, for the same SKU, then that can be captured here.
      */
     @JsonProperty(value = "family")
     private String family;
@@ -32,18 +30,22 @@ public final class PartialSku {
     private String name;
 
     /*
-     * The SKU size. When the name field is the combination of tier and some
-     * other value, this would be the standalone code.
+     * The SKU size. When the name field is the combination of tier and some other value, this would be the standalone
+     * code.
      */
     @JsonProperty(value = "size")
     private String size;
 
     /*
-     * This field is required to be implemented by the Resource Provider if the
-     * service has more than one tier, but is not required on a PUT.
+     * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is
+     * not required on a PUT.
      */
     @JsonProperty(value = "tier")
     private SkuTier tier;
+
+    /** Creates an instance of PartialSku class. */
+    public PartialSku() {
+    }
 
     /**
      * Get the capacity property: If the SKU supports scale out/in then the capacity integer should be included. If

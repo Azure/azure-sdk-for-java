@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
 /** An instance of this class provides access to all the operations defined in ModelContainersClient. */
@@ -25,7 +25,7 @@ public interface ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ModelContainerDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<ModelContainerInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * List model containers.
@@ -42,26 +42,13 @@ public interface ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ModelContainerDataInner> list(
+    PagedIterable<ModelContainerInner> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
         Integer count,
         ListViewType listViewType,
         Context context);
-
-    /**
-     * Delete container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Delete container.
@@ -79,7 +66,7 @@ public interface ModelContainersClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
-     * Get container.
+     * Delete container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
@@ -87,10 +74,9 @@ public interface ModelContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelContainerDataInner get(String resourceGroupName, String workspaceName, String name);
+    void delete(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -105,24 +91,22 @@ public interface ModelContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModelContainerDataInner> getWithResponse(
+    Response<ModelContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
-     * Create or update container.
+     * Get container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
+     * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body);
+    ModelContainerInner get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Create or update container.
@@ -138,6 +122,22 @@ public interface ModelContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModelContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body, Context context);
+    Response<ModelContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body, Context context);
+
+    /**
+     * Create or update container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param body Container entity to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Resource Manager resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ModelContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body);
 }
