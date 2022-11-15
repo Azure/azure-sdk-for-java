@@ -30,8 +30,8 @@ public final class ReadmeSamples {
         LoadTestAdministrationClient adminClient = builder.buildLoadTestAdministrationClient();
         LoadTestRunClient testRunClient = builder.buildLoadTestRunClient();
 
-        adminClient.list(null);
-        testRunClient.list(null);
+        adminClient.listLoadTests(null);
+        testRunClient.listTestRuns(null);
         // END: java-readme-sample-auth
     }
 
@@ -83,7 +83,7 @@ public final class ReadmeSamples {
         BinaryData test = BinaryData.fromObject(testMap);
 
         // receive response with BinaryData content
-        Response<BinaryData> testOutResponse = adminClient.createOrUpdateWithResponse("test12345", test, null);
+        Response<BinaryData> testOutResponse = adminClient.createOrUpdateLoadTestWithResponse("test12345", test, null);
         System.out.println(testOutResponse.getValue().toString());
         // END: java-readme-sample-createTest
     }
@@ -120,14 +120,14 @@ public final class ReadmeSamples {
         BinaryData testRun = BinaryData.fromObject(testRunMap);
 
         // receive response with BinaryData content
-        Response<BinaryData> testRunOut = testRunClient.createOrUpdateWithResponse("testrun12345", testRun, null);
+        Response<BinaryData> testRunOut = testRunClient.createOrUpdateTestRunWithResponse("testrun12345", testRun, null);
         System.out.println(testRunOut.getValue().toString());
 
         // wait for test to reach terminal state
         JsonNode testRunJson = null;
         String testStatus = null, startDateTime = null, endDateTime = null;
         while (testStatus == null || (testStatus != "DONE" && testStatus != "CANCELLED" && testStatus != "FAILED")) {
-            testRunOut = testRunClient.getWithResponse("testrun12345", null);
+            testRunOut = testRunClient.getTestRunWithResponse("testrun12345", null);
             // parse JSON and read status value
             try {
                 testRunJson = new ObjectMapper().readTree(testRunOut.getValue().toString());
@@ -173,7 +173,7 @@ public final class ReadmeSamples {
         }
 
         // fetch client metrics using metric namespace and metric name
-        Response<BinaryData> clientMetricsOut = testRunClient.getMetricsWithResponse("testrun12345", metricName, metricNamespace, startDateTime+'/'+endDateTime, null);
+        Response<BinaryData> clientMetricsOut = testRunClient.getMetricsWithResponse("testrun12345", metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
         System.out.println(clientMetricsOut.getValue().toString());
         // END: java-readme-sample-runTest
     }

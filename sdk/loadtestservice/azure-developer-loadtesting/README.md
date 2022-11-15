@@ -184,7 +184,7 @@ LoadTestAdministrationClient adminClient = new LoadTestingClientBuilder()
 BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
 
 // receive response with BinaryData content
-Response<BinaryData> fileUrlOut = adminClient.uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null);
+Response<BinaryData> fileUrlOut = adminClient.uploadFileWithResponse("test12345", "sample-file.jmx", fileData, null);
 System.out.println(fileUrlOut.getValue().toString());
 ```
 
@@ -258,7 +258,7 @@ try {
 }
 
 // fetch client metrics using metric namespace and metric name
-Response<BinaryData> clientMetricsOut = testRunClient.getMetricsWithResponse("testrun12345", metricName, metricNamespace, "Data", startDateTime+'/'+endDateTime, null);
+Response<BinaryData> clientMetricsOut = testRunClient.getMetricsWithResponse("testrun12345", metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
 System.out.println(clientMetricsOut.getValue().toString());
 ```
 
