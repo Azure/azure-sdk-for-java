@@ -15,18 +15,6 @@ public interface BackupResourceVaultConfigs {
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
-     */
-    BackupResourceVaultConfigResource get(String vaultName, String resourceGroupName);
-
-    /**
-     * Fetches resource vault config.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,18 +25,16 @@ public interface BackupResourceVaultConfigs {
         String vaultName, String resourceGroupName, Context context);
 
     /**
-     * Updates vault security config.
+     * Fetches resource vault config.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters resource config request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup resource vault config details.
      */
-    BackupResourceVaultConfigResource update(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters);
+    BackupResourceVaultConfigResource get(String vaultName, String resourceGroupName);
 
     /**
      * Updates vault security config.
@@ -76,7 +62,7 @@ public interface BackupResourceVaultConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup resource vault config details.
      */
-    BackupResourceVaultConfigResource put(
+    BackupResourceVaultConfigResource update(
         String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters);
 
     /**
@@ -93,4 +79,18 @@ public interface BackupResourceVaultConfigs {
      */
     Response<BackupResourceVaultConfigResource> putWithResponse(
         String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context);
+
+    /**
+     * Updates vault security config.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters resource config request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup resource vault config details.
+     */
+    BackupResourceVaultConfigResource put(
+        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters);
 }

@@ -1,0 +1,379 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer87607e4f?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "7cd5b1e9-eecf-43d2-b378-92caf269591c",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer87607e4f\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076957,\"updated\":1665076957}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer601842b7?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "2164d670-ea02-41f3-9dee-562a2cf5f4a9",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer601842b7\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076957,\"updated\":1665076957}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer46020cb4?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e3f5b42e-68ba-4ac8-b2f8-7d56066e447d",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer46020cb4\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076957,\"updated\":1665076957}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer51911f56?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "eea94fcb-e949-4810-bbda-c6fc2ab45dba",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer51911f56\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076957,\"updated\":1665076957}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer869123c2?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "65d0bb35-0571-446b-8702-0433645c80e0",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer869123c2\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076958,\"updated\":1665076958}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer25736ec2?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "9ee68916-e970-4d3f-9198-d995fbd29296",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer25736ec2\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076958,\"updated\":1665076958}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer55849773?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "0a90819b-8bd1-4ef9-9889-28c30fb93b94",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer55849773\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076958,\"updated\":1665076958}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer02901c73?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "d6240585-6832-4c80-839a-d2cb70eb4283",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer02901c73\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076958,\"updated\":1665076958}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer06884e12?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "3ff51f9a-1364-487d-bb8c-3c07cc030fd3",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer06884e12\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076958,\"updated\":1665076958}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/listcertissuer6982171a?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "384",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1127fc89-bb85-49d5-b92e-671c60c6f7d2",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer6982171a\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1665076958,\"updated\":1665076958}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/Issuers?maxresults=25&api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "3351",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "360aacc0-a41f-4cef-8866-ec03c921dd99",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer02901c73\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer02952b55\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer03889ddd\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer06884e12\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer07065f02\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer07322264\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer0773280c\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer0780736f\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer0810899f\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer09233550\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer11104a65\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer12248ba3\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer13631ee0\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer21294690\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer22532b15\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer25736ec2\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer260638ed\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer274726f4\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer27916fd3\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer28617774\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer31008429\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer320522ff\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer34589326\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer35362fb0\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer35513f23\",\"provider\":\"Test\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates/issuers?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXlJV05sY25ScFptbGpZWFJsTDBsVFUxVkZVbE12VEVsVFZFTkZVbFJKVTFOVlJWSXpOamt6TmpaR1FTRXdNREF3TWpnaE9UazVPUzB4TWkwek1WUXlNem8xT1RvMU9TNDVPVGs1T1RrNVdpRS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates/issuers?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXlJV05sY25ScFptbGpZWFJsTDBsVFUxVkZVbE12VEVsVFZFTkZVbFJKVTFOVlJWSXpOamt6TmpaR1FTRXdNREF3TWpnaE9UazVPUzB4TWkwek1WUXlNem8xT1RvMU9TNDVPVGs1T1RrNVdpRS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "3351",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "47f1f065-131a-4f3a-8055-46fecb04c8f8",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer369366fa\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer394080e5\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer42135911\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer42966f09\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer43010263\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer43371a6c\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer46020cb4\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer502801cc\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer50657f16\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer51911f56\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer5288090f\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer53791931\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer55849773\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer5679007b\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer5961464b\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer601842b7\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer6193920c\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer64314536\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer64632f82\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer66743bfc\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer66839d01\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer68428cc3\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer68558f13\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer68559966\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer6982171a\",\"provider\":\"Test\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates/issuers?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXlJV05sY25ScFptbGpZWFJsTDBsVFUxVkZVbE12VEVsVFZFTkZVbFJKVTFOVlJWSTNNalE0T1VZeE1DRXdNREF3TWpnaE9UazVPUzB4TWkwek1WUXlNem8xT1RvMU9TNDVPVGs1T1RrNVdpRS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates/issuers?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXlJV05sY25ScFptbGpZWFJsTDBsVFUxVkZVbE12VEVsVFZFTkZVbFJKVTFOVlJWSTNNalE0T1VZeE1DRXdNREF3TWpnaE9UazVPUzB4TWkwek1WUXlNem8xT1RvMU9TNDVPVGs1T1RrNVdpRS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "3336",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "de4efd10-a998-4073-bc13-49099532a325",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer730645e7\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer73519195\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer757569de\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer75891390\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer80220f21\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer82399c0b\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer83182886\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer83362361\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer840483bd\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer86782862\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer869123c2\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer87607e4f\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer88370116\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer88467356\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer924022fb\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer9350793e\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer94342807\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer948974d5\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer968007fb\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/listcertissuer9689320e\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer017636df7b\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer02399f597e\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer03226d0f81\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer03259e0318\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer03777c5d5c\",\"provider\":\"Test\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates/issuers?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01EUXdJV05sY25ScFptbGpZWFJsTDBsVFUxVkZVbE12VkVWVFZFbFRVMVZGVWpFd01URXpNelJCTWtNaE1EQXdNREk0SVRrNU9Ua3RNVEl0TXpGVU1qTTZOVGs2TlRrdU9UazVPVGs1T1ZvaCIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates/issuers?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01EUXdJV05sY25ScFptbGpZWFJsTDBsVFUxVkZVbE12VkVWVFZFbFRVMVZGVWpFd01URXpNelJCTWtNaE1EQXdNREk0SVRrNU9Ua3RNVEl0TXpGVU1qTTZOVGs2TlRrdU9UazVPVGs1T1ZvaCIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "3296",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "fe91e2bd-57c2-4ac6-8845-76d5f0ec1f2e",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer1011334a2c\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer1457767eab\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer153999011e\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer16844840d0\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer18049d1cf1\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer20619769b5\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer21392c61aa\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer24175a9b3c\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer250139eeea\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer2824075a37\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer3266783651\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer354475cadf\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer43314f40e3\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer47452ee82c\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer497584eae2\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer52734495b4\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer55054cf71c\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer5532369420\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer5798006b0b\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer64016de794\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer67429d9fc2\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer784254ce39\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer814285cfe9\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer8152051c86\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer82071a708a\",\"provider\":\"Test\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates/issuers?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01EUXdJV05sY25ScFptbGpZWFJsTDBsVFUxVkZVbE12VkVWVFZFbFRVMVZGVWpnek56SXdSRFF3TmpFaE1EQXdNREk0SVRrNU9Ua3RNVEl0TXpGVU1qTTZOVGs2TlRrdU9UazVPVGs1T1ZvaCIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates/issuers?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01EUXdJV05sY25ScFptbGpZWFJsTDBsVFUxVkZVbE12VkVWVFZFbFRVMVZGVWpnek56SXdSRFF3TmpFaE1EQXdNREk0SVRrNU9Ua3RNVEl0TXpGVU1qTTZOVGs2TlRrdU9UazVPVGs1T1ZvaCIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "853",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:22:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "00000097-4393-4e8d-a224-8c307411ccab",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer83720d4061\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer861243885c\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer8934138a58\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer893964efae\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer9236540e55\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer946248e1b0\",\"provider\":\"Test\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer9523237cc5\",\"provider\":\"Test\"}],\"nextLink\":null}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "listcertissuer51911f56", "listcertissuer87607e4f", "listcertissuer46020cb4", "listcertissuer06884e12", "listcertissuer869123c2", "listcertissuer55849773", "listcertissuer601842b7", "listcertissuer25736ec2", "listcertissuer02901c73", "listcertissuer6982171a" ]
+}

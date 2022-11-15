@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchIndexClientBuilderTests {
-    private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
+    private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("fakeApiKeyPlaceholder");
     private final String searchEndpoint = "https://test.search.windows.net";
     private final SearchServiceVersion apiVersion = SearchServiceVersion.V2020_06_30;
 

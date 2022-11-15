@@ -38,6 +38,10 @@ public final class AgentPoolUpgradeProfileInner {
     @JsonProperty(value = "properties", required = true)
     private AgentPoolUpgradeProfileProperties innerProperties = new AgentPoolUpgradeProfileProperties();
 
+    /** Creates an instance of AgentPoolUpgradeProfileInner class. */
+    public AgentPoolUpgradeProfileInner() {
+    }
+
     /**
      * Get the id property: The ID of the agent pool upgrade profile.
      *

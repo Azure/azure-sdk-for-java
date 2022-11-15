@@ -46,6 +46,9 @@ public final class SelectiveKeyRestoreOperation {
     @JsonProperty(value = "endTime")
     private Long endTime;
 
+    /** Creates an instance of SelectiveKeyRestoreOperation class. */
+    public SelectiveKeyRestoreOperation() {}
+
     /**
      * Get the status property: Status of the restore operation.
      *

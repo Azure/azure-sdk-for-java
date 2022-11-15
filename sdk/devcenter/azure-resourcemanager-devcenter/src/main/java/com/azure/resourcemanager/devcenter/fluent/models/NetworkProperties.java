@@ -38,6 +38,10 @@ public final class NetworkProperties extends NetworkConnectionUpdateProperties {
     @JsonProperty(value = "domainJoinType", required = true)
     private DomainJoinType domainJoinType;
 
+    /** Creates an instance of NetworkProperties class. */
+    public NetworkProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

@@ -463,22 +463,6 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param componentName Name of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dapr component.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DaprComponentInner get(String resourceGroupName, String environmentName, String componentName) {
-        return getAsync(resourceGroupName, environmentName, componentName).block();
-    }
-
-    /**
-     * Get a dapr component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -492,7 +476,25 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
-     * Creates or updates a Dapr Component in a Managed Environment.
+     * Get a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param componentName Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dapr component.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DaprComponentInner get(String resourceGroupName, String environmentName, String componentName) {
+        return getWithResponse(resourceGroupName, environmentName, componentName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a Dapr Component.
+     *
+     * <p>Creates or updates a Dapr Component in a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -557,7 +559,9 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
-     * Creates or updates a Dapr Component in a Managed Environment.
+     * Creates or updates a Dapr Component.
+     *
+     * <p>Creates or updates a Dapr Component in a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -621,7 +625,9 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
-     * Creates or updates a Dapr Component in a Managed Environment.
+     * Creates or updates a Dapr Component.
+     *
+     * <p>Creates or updates a Dapr Component in a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -643,28 +649,9 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
-     * Creates or updates a Dapr Component in a Managed Environment.
+     * Creates or updates a Dapr Component.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param daprComponentEnvelope Configuration details of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr Component.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DaprComponentInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String componentName,
-        DaprComponentInner daprComponentEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, componentName, daprComponentEnvelope).block();
-    }
-
-    /**
-     * Creates or updates a Dapr Component in a Managed Environment.
+     * <p>Creates or updates a Dapr Component in a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -689,7 +676,34 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
-     * Delete a Dapr Component from a Managed Environment.
+     * Creates or updates a Dapr Component.
+     *
+     * <p>Creates or updates a Dapr Component in a Managed Environment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param componentName Name of the Dapr Component.
+     * @param daprComponentEnvelope Configuration details of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr Component.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DaprComponentInner createOrUpdate(
+        String resourceGroupName,
+        String environmentName,
+        String componentName,
+        DaprComponentInner daprComponentEnvelope) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, environmentName, componentName, daprComponentEnvelope, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Delete a Dapr Component.
+     *
+     * <p>Delete a Dapr Component from a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -743,7 +757,9 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
-     * Delete a Dapr Component from a Managed Environment.
+     * Delete a Dapr Component.
+     *
+     * <p>Delete a Dapr Component from a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -795,7 +811,9 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
-     * Delete a Dapr Component from a Managed Environment.
+     * Delete a Dapr Component.
+     *
+     * <p>Delete a Dapr Component from a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -812,22 +830,9 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
-     * Delete a Dapr Component from a Managed Environment.
+     * Delete a Dapr Component.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String environmentName, String componentName) {
-        deleteAsync(resourceGroupName, environmentName, componentName).block();
-    }
-
-    /**
-     * Delete a Dapr Component from a Managed Environment.
+     * <p>Delete a Dapr Component from a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -845,6 +850,23 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
+     * Delete a Dapr Component.
+     *
+     * <p>Delete a Dapr Component from a Managed Environment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param componentName Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String environmentName, String componentName) {
+        deleteWithResponse(resourceGroupName, environmentName, componentName, Context.NONE);
+    }
+
+    /**
      * List secrets for a dapr component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -853,8 +875,8 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection ARM resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return dapr component Secrets Collection for ListSecrets Action along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DaprSecretsCollectionInner>> listSecretsWithResponseAsync(
@@ -909,8 +931,8 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection ARM resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return dapr component Secrets Collection for ListSecrets Action along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DaprSecretsCollectionInner>> listSecretsWithResponseAsync(
@@ -961,7 +983,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection ARM resource on successful completion of {@link Mono}.
+     * @return dapr component Secrets Collection for ListSecrets Action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DaprSecretsCollectionInner> listSecretsAsync(
@@ -976,28 +998,11 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param componentName Name of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DaprSecretsCollectionInner listSecrets(
-        String resourceGroupName, String environmentName, String componentName) {
-        return listSecretsAsync(resourceGroupName, environmentName, componentName).block();
-    }
-
-    /**
-     * List secrets for a dapr component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection ARM resource along with {@link Response}.
+     * @return dapr component Secrets Collection for ListSecrets Action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DaprSecretsCollectionInner> listSecretsWithResponse(
@@ -1006,9 +1011,27 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     }
 
     /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param componentName Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection for ListSecrets Action.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DaprSecretsCollectionInner listSecrets(
+        String resourceGroupName, String environmentName, String componentName) {
+        return listSecretsWithResponse(resourceGroupName, environmentName, componentName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1043,7 +1066,8 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

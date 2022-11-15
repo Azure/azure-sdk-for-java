@@ -24,6 +24,10 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightHiveActivityTypeProperties innerTypeProperties = new HDInsightHiveActivityTypeProperties();
 
+    /** Creates an instance of HDInsightHiveActivity class. */
+    public HDInsightHiveActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight Hive activity properties.
      *

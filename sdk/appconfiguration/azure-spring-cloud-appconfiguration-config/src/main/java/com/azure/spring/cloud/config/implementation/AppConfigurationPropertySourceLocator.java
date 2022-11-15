@@ -24,7 +24,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.KeyVaultSecretProvider;
-import com.azure.spring.cloud.config.NormalizeNull;
 import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
@@ -227,10 +226,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 .setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
                 .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
 
-            List<ConfigurationSetting> watchKeys = client.listConfigurationSettings(settingSelector);
-
-            watchKeys
-                .forEach(watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));
+            watchKeysFeatures = client.listConfigurationSettings(settingSelector);
         }
         return watchKeysFeatures;
     }

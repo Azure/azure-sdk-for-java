@@ -27,6 +27,10 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
+    /** Creates an instance of FactoryVstsConfiguration class. */
+    public FactoryVstsConfiguration() {
+    }
+
     /**
      * Get the projectName property: VSTS project name.
      *
@@ -99,6 +103,13 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
     @Override
     public FactoryVstsConfiguration withLastCommitId(String lastCommitId) {
         super.withLastCommitId(lastCommitId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FactoryVstsConfiguration withDisablePublish(Boolean disablePublish) {
+        super.withDisablePublish(disablePublish);
         return this;
     }
 

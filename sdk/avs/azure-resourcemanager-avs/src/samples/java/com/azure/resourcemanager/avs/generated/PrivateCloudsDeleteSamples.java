@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateClouds Delete. */
 public final class PrivateCloudsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_Delete.json
      */
     /**
      * Sample code: PrivateClouds_Delete.

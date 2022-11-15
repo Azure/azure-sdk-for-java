@@ -493,22 +493,6 @@ public final class PoolsClientImpl implements PoolsClient {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner get(String resourceGroupName, String projectName, String poolName) {
-        return getAsync(resourceGroupName, projectName, poolName).block();
-    }
-
-    /**
-     * Gets a machine pool.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -519,6 +503,22 @@ public final class PoolsClientImpl implements PoolsClient {
     public Response<PoolInner> getWithResponse(
         String resourceGroupName, String projectName, String poolName, Context context) {
         return getWithResponseAsync(resourceGroupName, projectName, poolName, context).block();
+    }
+
+    /**
+     * Gets a machine pool.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a machine pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PoolInner get(String resourceGroupName, String projectName, String poolName) {
+        return getWithResponse(resourceGroupName, projectName, poolName, Context.NONE).getValue();
     }
 
     /**
@@ -1334,7 +1334,8 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1370,7 +1371,8 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -23,6 +23,10 @@ public final class AmlComputeNodesInformation {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AmlComputeNodesInformation class. */
+    public AmlComputeNodesInformation() {
+    }
+
     /**
      * Get the nodes property: The collection of returned AmlCompute nodes details.
      *

@@ -37,6 +37,10 @@ public final class OSOptionProfileInner {
     @JsonProperty(value = "properties", required = true)
     private OSOptionPropertyList innerProperties = new OSOptionPropertyList();
 
+    /** Creates an instance of OSOptionProfileInner class. */
+    public OSOptionProfileInner() {
+    }
+
     /**
      * Get the id property: The ID of the OS option resource.
      *

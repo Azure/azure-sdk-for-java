@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class OsDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OsDisk.class);
-
     /*
      * The OS type.
      */
@@ -37,12 +33,15 @@ public final class OsDisk {
     private VirtualHardDisk vhd;
 
     /*
-     * Specifies the size of os disk in gigabytes. This is the fully expanded
-     * disk size needed of the VHD image on the ASE. This disk size should be
-     * greater than the size of the VHD provided in vhdUri.
+     * Specifies the size of os disk in gigabytes. This is the fully expanded disk size needed of the VHD image on the
+     * ASE. This disk size should be greater than the size of the VHD provided in vhdUri.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
+
+    /** Creates an instance of OsDisk class. */
+    public OsDisk() {
+    }
 
     /**
      * Get the osType property: The OS type.

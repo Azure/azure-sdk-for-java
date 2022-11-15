@@ -30,15 +30,6 @@ public final class QuotasImpl implements Quotas {
         this.serviceManager = serviceManager;
     }
 
-    public UpdateWorkspaceQuotasResult update(String location, QuotaUpdateParameters parameters) {
-        UpdateWorkspaceQuotasResultInner inner = this.serviceClient().update(location, parameters);
-        if (inner != null) {
-            return new UpdateWorkspaceQuotasResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<UpdateWorkspaceQuotasResult> updateWithResponse(
         String location, QuotaUpdateParameters parameters, Context context) {
         Response<UpdateWorkspaceQuotasResultInner> inner =
@@ -49,6 +40,15 @@ public final class QuotasImpl implements Quotas {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new UpdateWorkspaceQuotasResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public UpdateWorkspaceQuotasResult update(String location, QuotaUpdateParameters parameters) {
+        UpdateWorkspaceQuotasResultInner inner = this.serviceClient().update(location, parameters);
+        if (inner != null) {
+            return new UpdateWorkspaceQuotasResultImpl(inner, this.manager());
         } else {
             return null;
         }

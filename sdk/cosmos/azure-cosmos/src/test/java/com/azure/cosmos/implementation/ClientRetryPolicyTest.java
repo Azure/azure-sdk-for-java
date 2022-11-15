@@ -9,6 +9,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -52,6 +53,8 @@ public class ClientRetryPolicyTest {
 
             Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
+
+            Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
         }
     }
 
@@ -85,11 +88,15 @@ public class ClientRetryPolicyTest {
                     .shouldRetry(true)
                     .backOfTime(Duration.ofMillis(0))
                     .build());
+
+                Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
             } else {
                 validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(false)
                     .build());
+
+                Assert.assertFalse(clientRetryPolicy.canUsePreferredLocations());
             }
 
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
@@ -176,11 +183,15 @@ public class ClientRetryPolicyTest {
                     .shouldRetry(true)
                     .backOfTime(Duration.ofMillis(0))
                     .build());
+
+                Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
             } else {
                 validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(false)
                     .build());
+
+                Assert.assertFalse(clientRetryPolicy.canUsePreferredLocations());
             }
 
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
@@ -214,6 +225,8 @@ public class ClientRetryPolicyTest {
 
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForWrite(Mockito.any());
+
+            Assert.assertFalse(clientRetryPolicy.canUsePreferredLocations());
         }
     }
 
@@ -246,6 +259,8 @@ public class ClientRetryPolicyTest {
 
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
+
+            Assert.assertFalse(clientRetryPolicy.canUsePreferredLocations());
         }
     }
 
@@ -276,6 +291,8 @@ public class ClientRetryPolicyTest {
 
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForWrite(Mockito.any());
+
+            Assert.assertFalse(clientRetryPolicy.canUsePreferredLocations());
         }
     }
 
@@ -308,6 +325,8 @@ public class ClientRetryPolicyTest {
 
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
+
+            Assert.assertFalse(clientRetryPolicy.canUsePreferredLocations());
         }
     }
 

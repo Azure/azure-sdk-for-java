@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class RetentionPolicy {
+    /** Creates an instance of RetentionPolicy class. */
+    public RetentionPolicy() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/timezone/ianaVersion/json?api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaTimezoneSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 1E18A688D0724195B82FAA9ECFC4D840 Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:55Z",
+      "Body" : "{\"Version\":\"2022d\"}",
+      "Date" : "Thu, 29 Sep 2022 21:00:54 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

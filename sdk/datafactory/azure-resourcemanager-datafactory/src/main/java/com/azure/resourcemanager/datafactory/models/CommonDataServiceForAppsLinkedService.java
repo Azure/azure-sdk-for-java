@@ -25,6 +25,10 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     private CommonDataServiceForAppsLinkedServiceTypeProperties innerTypeProperties =
         new CommonDataServiceForAppsLinkedServiceTypeProperties();
 
+    /** Creates an instance of CommonDataServiceForAppsLinkedService class. */
+    public CommonDataServiceForAppsLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Common Data Service for Apps linked service properties.
      *

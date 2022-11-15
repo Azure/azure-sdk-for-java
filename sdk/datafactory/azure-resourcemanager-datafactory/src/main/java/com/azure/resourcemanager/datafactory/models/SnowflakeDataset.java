@@ -24,6 +24,10 @@ public final class SnowflakeDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private SnowflakeDatasetTypeProperties innerTypeProperties = new SnowflakeDatasetTypeProperties();
 
+    /** Creates an instance of SnowflakeDataset class. */
+    public SnowflakeDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Snowflake dataset properties.
      *

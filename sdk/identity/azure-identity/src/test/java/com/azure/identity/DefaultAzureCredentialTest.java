@@ -171,6 +171,36 @@ public class DefaultAzureCredentialTest {
 
     }
 
+    @Test
+    public void testCredentialUnavailableSync() throws Exception {
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+
+        try (MockedConstruction<ManagedIdentityCredential> managedIdentityCredentialMock = mockConstruction(ManagedIdentityCredential.class, (managedIdentityCredential, context) -> {
+            when(managedIdentityCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Managed Identity credential"));
+        }); MockedConstruction<IntelliJCredential> intelliJCredentialMock = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
+            when(intelliJCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from IntelliJ Credential"));
+        }); MockedConstruction<AzurePowerShellCredential> powerShellCredentialMock = mockConstruction(AzurePowerShellCredential.class, (powerShellCredential, context) -> {
+            when(powerShellCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Powershell credential"));
+        }); MockedConstruction<AzureCliCredential> azureCliCredentialMock = mockConstruction(AzureCliCredential.class, (azureCliCredential, context) -> {
+            when(azureCliCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Cli credential"));
+        })) {
+            // test
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+            try {
+                credential.getTokenSync(request);
+            } catch (Exception e) {
+                Assert.assertTrue(e instanceof CredentialUnavailableException && e.getMessage().startsWith("EnvironmentCredential authentication unavailable. "));
+            }
+            Assert.assertNotNull(managedIdentityCredentialMock);
+            Assert.assertNotNull(intelliJCredentialMock);
+            Assert.assertNotNull(powerShellCredentialMock);
+            Assert.assertNotNull(azureCliCredentialMock);
+        }
+
+    }
+
     @Test(expected = IllegalStateException.class)
     public void testInvalidIdCombination() {
         // setup

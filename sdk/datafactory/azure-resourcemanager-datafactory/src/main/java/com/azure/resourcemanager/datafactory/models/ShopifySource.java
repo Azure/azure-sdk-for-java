@@ -20,6 +20,10 @@ public final class ShopifySource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of ShopifySource class. */
+    public ShopifySource() {
+    }
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

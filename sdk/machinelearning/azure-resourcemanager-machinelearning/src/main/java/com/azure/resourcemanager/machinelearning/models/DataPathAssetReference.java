@@ -26,6 +26,10 @@ public final class DataPathAssetReference extends AssetReferenceBase {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of DataPathAssetReference class. */
+    public DataPathAssetReference() {
+    }
+
     /**
      * Get the datastoreId property: ARM resource ID of the datastore where the asset is located.
      *

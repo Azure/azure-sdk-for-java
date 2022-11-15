@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class CodeContainerResourceArmPaginatedResult {
     /*
-     * The link to the next page of CodeContainer objects. If null, there are
-     * no additional pages.
+     * The link to the next page of CodeContainer objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class CodeContainerResourceArmPaginatedResult {
      * An array of objects of type CodeContainer.
      */
     @JsonProperty(value = "value")
-    private List<CodeContainerDataInner> value;
+    private List<CodeContainerInner> value;
+
+    /** Creates an instance of CodeContainerResourceArmPaginatedResult class. */
+    public CodeContainerResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of CodeContainer objects. If null, there are no additional
@@ -52,7 +55,7 @@ public final class CodeContainerResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<CodeContainerDataInner> value() {
+    public List<CodeContainerInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class CodeContainerResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the CodeContainerResourceArmPaginatedResult object itself.
      */
-    public CodeContainerResourceArmPaginatedResult withValue(List<CodeContainerDataInner> value) {
+    public CodeContainerResourceArmPaginatedResult withValue(List<CodeContainerInner> value) {
         this.value = value;
         return this;
     }

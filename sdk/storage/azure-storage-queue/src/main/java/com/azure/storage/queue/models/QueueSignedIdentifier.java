@@ -24,6 +24,9 @@ public final class QueueSignedIdentifier {
     @JsonProperty(value = "AccessPolicy", required = true)
     private QueueAccessPolicy accessPolicy;
 
+    /** Creates an instance of QueueSignedIdentifier class. */
+    public QueueSignedIdentifier() {}
+
     /**
      * Get the id property: a unique id.
      *

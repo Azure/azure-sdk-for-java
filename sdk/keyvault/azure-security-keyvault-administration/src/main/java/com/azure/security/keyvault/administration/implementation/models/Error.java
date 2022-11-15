@@ -28,6 +28,9 @@ public final class Error {
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private Error innerError;
 
+    /** Creates an instance of Error class. */
+    public Error() {}
+
     /**
      * Get the code property: The error code.
      *

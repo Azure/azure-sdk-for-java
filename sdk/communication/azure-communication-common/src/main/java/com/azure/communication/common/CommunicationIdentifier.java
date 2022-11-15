@@ -24,7 +24,7 @@ public abstract class CommunicationIdentifier {
         }
 
         if (rawId.startsWith("4:")) {
-            return new PhoneNumberIdentifier("+" + rawId.substring("4:".length()));
+            return new PhoneNumberIdentifier(rawId.substring("4:".length()));
         }
         final String[] segments = rawId.split(":");
         if (segments.length < 3) {

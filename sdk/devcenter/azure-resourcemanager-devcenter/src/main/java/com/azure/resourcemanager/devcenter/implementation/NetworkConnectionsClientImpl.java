@@ -714,21 +714,6 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkConnectionInner getByResourceGroup(String resourceGroupName, String networkConnectionName) {
-        return getByResourceGroupAsync(resourceGroupName, networkConnectionName).block();
-    }
-
-    /**
-     * Gets a network connection resource.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -739,6 +724,21 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     public Response<NetworkConnectionInner> getByResourceGroupWithResponse(
         String resourceGroupName, String networkConnectionName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkConnectionName, context).block();
+    }
+
+    /**
+     * Gets a network connection resource.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkConnectionInner getByResourceGroup(String resourceGroupName, String networkConnectionName) {
+        return getByResourceGroupWithResponse(resourceGroupName, networkConnectionName, Context.NONE).getValue();
     }
 
     /**
@@ -1851,21 +1851,6 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health check status details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HealthCheckStatusDetailsInner getHealthDetails(String resourceGroupName, String networkConnectionName) {
-        return getHealthDetailsAsync(resourceGroupName, networkConnectionName).block();
-    }
-
-    /**
-     * Gets health check status details.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1876,6 +1861,21 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     public Response<HealthCheckStatusDetailsInner> getHealthDetailsWithResponse(
         String resourceGroupName, String networkConnectionName, Context context) {
         return getHealthDetailsWithResponseAsync(resourceGroupName, networkConnectionName, context).block();
+    }
+
+    /**
+     * Gets health check status details.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health check status details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HealthCheckStatusDetailsInner getHealthDetails(String resourceGroupName, String networkConnectionName) {
+        return getHealthDetailsWithResponse(resourceGroupName, networkConnectionName, Context.NONE).getValue();
     }
 
     /**
@@ -1999,21 +1999,6 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runHealthChecks(String resourceGroupName, String networkConnectionName) {
-        runHealthChecksAsync(resourceGroupName, networkConnectionName).block();
-    }
-
-    /**
-     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
-     * health check details.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2027,9 +2012,25 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     }
 
     /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void runHealthChecks(String resourceGroupName, String networkConnectionName) {
+        runHealthChecksWithResponse(resourceGroupName, networkConnectionName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2066,7 +2067,8 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2104,7 +2106,8 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2141,7 +2144,8 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2179,7 +2183,8 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2215,7 +2220,8 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

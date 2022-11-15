@@ -8,11 +8,8 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.machinelearning.models.OnlineEndpointData;
+import com.azure.resourcemanager.machinelearning.models.OnlineEndpoint;
 import com.azure.resourcemanager.machinelearning.models.PartialManagedServiceIdentity;
-import com.azure.resourcemanager.machinelearning.models.PartialOnlineEndpoint;
-import com.azure.resourcemanager.machinelearning.models.PartialSku;
-import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +17,7 @@ import java.util.Map;
 /** Samples for OnlineEndpoints Update. */
 public final class OnlineEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineEndpoint/update.json
      */
     /**
      * Sample code: Update Online Endpoint.
@@ -29,7 +26,7 @@ public final class OnlineEndpointsUpdateSamples {
      */
     public static void updateOnlineEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager)
         throws IOException {
-        OnlineEndpointData resource =
+        OnlineEndpoint resource =
             manager
                 .onlineEndpoints()
                 .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE)
@@ -46,15 +43,6 @@ public final class OnlineEndpointsUpdateSamples {
                             SerializerFactory
                                 .createDefaultManagementSerializerAdapter()
                                 .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withKind("string")
-            .withProperties(new PartialOnlineEndpoint().withTraffic(mapOf("string", 1)))
-            .withSku(
-                new PartialSku()
-                    .withCapacity(1)
-                    .withFamily("string")
-                    .withName("string")
-                    .withSize("string")
-                    .withTier(SkuTier.FREE))
             .apply();
     }
 

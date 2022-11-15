@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for GlobalReachConnections CreateOrUpdate. */
 public final class GlobalReachConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/GlobalReachConnections_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/GlobalReachConnections_CreateOrUpdate.json
      */
     /**
      * Sample code: GlobalReachConnections_CreateOrUpdate.

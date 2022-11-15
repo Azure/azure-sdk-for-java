@@ -63,6 +63,10 @@ public final class P2SVpnGatewayProperties {
     @JsonProperty(value = "isRoutingPreferenceInternet")
     private Boolean isRoutingPreferenceInternet;
 
+    /** Creates an instance of P2SVpnGatewayProperties class. */
+    public P2SVpnGatewayProperties() {
+    }
+
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.
      *

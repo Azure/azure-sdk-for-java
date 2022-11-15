@@ -51,16 +51,6 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
         return Utils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public NetworkConnection getByResourceGroup(String resourceGroupName, String networkConnectionName) {
-        NetworkConnectionInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, networkConnectionName);
-        if (inner != null) {
-            return new NetworkConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NetworkConnection> getByResourceGroupWithResponse(
         String resourceGroupName, String networkConnectionName, Context context) {
         Response<NetworkConnectionInner> inner =
@@ -71,6 +61,16 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NetworkConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NetworkConnection getByResourceGroup(String resourceGroupName, String networkConnectionName) {
+        NetworkConnectionInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, networkConnectionName);
+        if (inner != null) {
+            return new NetworkConnectionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -98,16 +98,6 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
         return Utils.mapPage(inner, inner1 -> new HealthCheckStatusDetailsImpl(inner1, this.manager()));
     }
 
-    public HealthCheckStatusDetails getHealthDetails(String resourceGroupName, String networkConnectionName) {
-        HealthCheckStatusDetailsInner inner =
-            this.serviceClient().getHealthDetails(resourceGroupName, networkConnectionName);
-        if (inner != null) {
-            return new HealthCheckStatusDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<HealthCheckStatusDetails> getHealthDetailsWithResponse(
         String resourceGroupName, String networkConnectionName, Context context) {
         Response<HealthCheckStatusDetailsInner> inner =
@@ -123,13 +113,23 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
         }
     }
 
-    public void runHealthChecks(String resourceGroupName, String networkConnectionName) {
-        this.serviceClient().runHealthChecks(resourceGroupName, networkConnectionName);
+    public HealthCheckStatusDetails getHealthDetails(String resourceGroupName, String networkConnectionName) {
+        HealthCheckStatusDetailsInner inner =
+            this.serviceClient().getHealthDetails(resourceGroupName, networkConnectionName);
+        if (inner != null) {
+            return new HealthCheckStatusDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> runHealthChecksWithResponse(
         String resourceGroupName, String networkConnectionName, Context context) {
         return this.serviceClient().runHealthChecksWithResponse(resourceGroupName, networkConnectionName, context);
+    }
+
+    public void runHealthChecks(String resourceGroupName, String networkConnectionName) {
+        this.serviceClient().runHealthChecks(resourceGroupName, networkConnectionName);
     }
 
     public NetworkConnection getById(String id) {

@@ -22,7 +22,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = AnalyzeTextKeyPhraseExtractionInput.class),
     @JsonSubTypes.Type(name = "PiiEntityRecognition", value = AnalyzeTextPiiEntitiesRecognitionInput.class),
     @JsonSubTypes.Type(name = "LanguageDetection", value = AnalyzeTextLanguageDetectionInput.class),
-    @JsonSubTypes.Type(name = "SentimentAnalysis", value = AnalyzeTextSentimentAnalysisInput.class)
+    @JsonSubTypes.Type(name = "SentimentAnalysis", value = AnalyzeTextSentimentAnalysisInput.class),
+    @JsonSubTypes.Type(name = "DynamicClassification", value = AnalyzeTextDynamicClassificationInput.class)
 })
 @Immutable
 public class AnalyzeTextTask {}

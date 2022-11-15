@@ -29,6 +29,7 @@ public final class CosmosBulkExecutionOptions {
     private Integer maxConcurrentCosmosPartitions = null;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Map<String, String> customOptions;
+    private String throughputControlGroupName;
 
     /**
      * Constructor
@@ -244,6 +245,27 @@ public final class CosmosBulkExecutionOptions {
      */
     Map<String, String> getHeaders() {
         return this.customOptions;
+    }
+
+    /**
+     * Gets the throughput control group name.
+     *
+     * @return the throughput control group name.
+     */
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    /**
+     * Sets the throughput control group name.
+     *
+     * @param throughputControlGroupName the throughput control group name.
+     * @return the CosmosBulkExecutionOptions.
+     */
+    public CosmosBulkExecutionOptions setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
+
+        return this;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

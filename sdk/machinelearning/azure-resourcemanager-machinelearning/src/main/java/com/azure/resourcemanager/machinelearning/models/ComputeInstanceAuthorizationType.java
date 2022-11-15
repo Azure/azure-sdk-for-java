@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ComputeInstanceAuthorizationType. */
+/**
+ * Compute Instance Authorization type.
+ *
+ * <p>The Compute Instance Authorization type. Available values are personal (default).
+ */
 public final class ComputeInstanceAuthorizationType extends ExpandableStringEnum<ComputeInstanceAuthorizationType> {
     /** Static value personal for ComputeInstanceAuthorizationType. */
     public static final ComputeInstanceAuthorizationType PERSONAL = fromString("personal");

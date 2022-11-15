@@ -32,6 +32,10 @@ public final class ManagedVirtualNetwork {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ManagedVirtualNetwork class. */
+    public ManagedVirtualNetwork() {
+    }
+
     /**
      * Get the vNetId property: Managed Virtual Network ID.
      *

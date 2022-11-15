@@ -36,7 +36,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataWithConnectionStringClient(HttpClient httpClient) throws UnsupportedEncodingException {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadMetadataWithConnectionStringClient");
         downloadMetadata(conversationClient.getCallRecording());
     }
@@ -47,7 +47,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataWithTokenCredentialClient(HttpClient httpClient) throws UnsupportedEncodingException {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingTokenCredential(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadMetadataWithTokenCredentialClient");
         downloadMetadata(conversationClient.getCallRecording());
     }
@@ -70,7 +70,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadVideo(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadVideo");
 
         try {
@@ -97,7 +97,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadContent404(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadContent404");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -110,7 +110,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadContentWrongUrl(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadContentWrongUrl");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -130,7 +130,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadContentStreamFailure(HttpClient httpClient) throws IOException {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadContent404");
 
         OutputStream outputStream = Mockito.mock(OutputStream.class);

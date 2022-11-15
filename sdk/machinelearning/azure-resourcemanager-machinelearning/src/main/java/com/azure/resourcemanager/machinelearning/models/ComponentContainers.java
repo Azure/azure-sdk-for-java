@@ -20,7 +20,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ComponentContainerData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<ComponentContainer> list(String resourceGroupName, String workspaceName);
 
     /**
      * List component containers.
@@ -35,20 +35,8 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ComponentContainerData> list(
+    PagedIterable<ComponentContainer> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context);
-
-    /**
-     * Delete container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Delete container.
@@ -65,6 +53,33 @@ public interface ComponentContainers {
     Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
+     * Delete container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String name);
+
+    /**
+     * Get container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container along with {@link Response}.
+     */
+    Response<ComponentContainer> getWithResponse(
+        String resourceGroupName, String workspaceName, String name, Context context);
+
+    /**
      * Get container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -75,22 +90,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container.
      */
-    ComponentContainerData get(String resourceGroupName, String workspaceName, String name);
-
-    /**
-     * Get container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container along with {@link Response}.
-     */
-    Response<ComponentContainerData> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context);
+    ComponentContainer get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -101,7 +101,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    ComponentContainerData getById(String id);
+    ComponentContainer getById(String id);
 
     /**
      * Get container.
@@ -113,7 +113,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<ComponentContainerData> getByIdWithResponse(String id, Context context);
+    Response<ComponentContainer> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete container.
@@ -138,10 +138,10 @@ public interface ComponentContainers {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new ComponentContainerData resource.
+     * Begins definition for a new ComponentContainer resource.
      *
      * @param name resource name.
-     * @return the first stage of the new ComponentContainerData definition.
+     * @return the first stage of the new ComponentContainer definition.
      */
-    ComponentContainerData.DefinitionStages.Blank define(String name);
+    ComponentContainer.DefinitionStages.Blank define(String name);
 }

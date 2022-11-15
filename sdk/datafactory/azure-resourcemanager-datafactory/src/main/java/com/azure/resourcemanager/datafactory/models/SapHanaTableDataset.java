@@ -23,6 +23,10 @@ public final class SapHanaTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SapHanaTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of SapHanaTableDataset class. */
+    public SapHanaTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: SAP HANA Table properties.
      *

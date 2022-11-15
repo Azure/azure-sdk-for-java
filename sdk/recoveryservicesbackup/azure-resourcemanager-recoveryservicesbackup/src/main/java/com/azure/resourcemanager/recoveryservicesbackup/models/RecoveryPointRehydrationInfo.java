@@ -23,6 +23,10 @@ public final class RecoveryPointRehydrationInfo {
     @JsonProperty(value = "rehydrationPriority")
     private RehydrationPriority rehydrationPriority;
 
+    /** Creates an instance of RecoveryPointRehydrationInfo class. */
+    public RecoveryPointRehydrationInfo() {
+    }
+
     /**
      * Get the rehydrationRetentionDuration property: How long the rehydrated RP should be kept Should be ISO8601
      * Duration format e.g. "P7D".

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoleScope. */
+/** The role scope. */
 public final class RoleScope extends ExpandableStringEnum<RoleScope> {
     /** Static value / for RoleScope. */
     public static final RoleScope GLOBAL = fromString("/");
@@ -27,7 +27,11 @@ public final class RoleScope extends ExpandableStringEnum<RoleScope> {
         return fromString(name, RoleScope.class);
     }
 
-    /** @return known RoleScope values. */
+    /**
+     * Gets known RoleScope values.
+     *
+     * @return known RoleScope values.
+     */
     public static Collection<RoleScope> values() {
         return values(RoleScope.class);
     }

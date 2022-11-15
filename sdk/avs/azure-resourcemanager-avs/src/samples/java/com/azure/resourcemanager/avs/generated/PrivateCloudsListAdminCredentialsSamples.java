@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateClouds ListAdminCredentials. */
 public final class PrivateCloudsListAdminCredentialsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_ListAdminCredentials.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_ListAdminCredentials.json
      */
     /**
      * Sample code: PrivateClouds_ListAdminCredentials.

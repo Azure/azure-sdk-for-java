@@ -34,6 +34,10 @@ public final class InboundNatRulePortMapping {
     @JsonProperty(value = "backendPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer backendPort;
 
+    /** Creates an instance of InboundNatRulePortMapping class. */
+    public InboundNatRulePortMapping() {
+    }
+
     /**
      * Get the inboundNatRuleName property: Name of inbound NAT rule.
      *

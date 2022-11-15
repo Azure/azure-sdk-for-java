@@ -18,6 +18,10 @@ public final class ContainerServiceSshPublicKey {
     @JsonProperty(value = "keyData", required = true)
     private String keyData;
 
+    /** Creates an instance of ContainerServiceSshPublicKey class. */
+    public ContainerServiceSshPublicKey() {
+    }
+
     /**
      * Get the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
      * be in PEM format with or without headers.

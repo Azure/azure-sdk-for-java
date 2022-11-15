@@ -46,6 +46,10 @@ public final class ManagedIntegrationRuntimeError {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ManagedIntegrationRuntimeError class. */
+    public ManagedIntegrationRuntimeError() {
+    }
+
     /**
      * Get the time property: The time when the error occurred.
      *
