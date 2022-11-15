@@ -106,7 +106,7 @@ public final class SchemaRegistryHelper {
      * @param headers Headers to read.
      * @return The corresponding {@link SchemaFormat} or {@code null} if the header does not exist.
      */
-    private static SchemaFormat getSchemaFormat(HttpHeaders headers) {
+    public static SchemaFormat getSchemaFormat(HttpHeaders headers) {
         final String contentType = headers.getValue("Content-Type");
 
         if (contentType == null) {
