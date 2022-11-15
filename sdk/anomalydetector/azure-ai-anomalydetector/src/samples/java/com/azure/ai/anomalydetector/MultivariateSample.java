@@ -114,7 +114,7 @@ public class MultivariateSample {
         return status;
     }
 
-    private static void GetModelList(AnomalyDetectorClient client, Integer skip, Integer top){
+    private static void getModelList(AnomalyDetectorClient client, Integer skip, Integer top){
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("skip", skip.toString())
             .addQueryParam("top", top.toString());
@@ -133,14 +133,14 @@ public class MultivariateSample {
         }
     }
 
-    private static Response<BinaryData> GetLastDetectResult(AnomalyDetectorClient client, BinaryData body, UUID modelId){
+    private static Response<BinaryData> getLastDetectResult(AnomalyDetectorClient client, BinaryData body, UUID modelId){
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = client.detectMultivariateLastAnomalyWithResponse(modelId.toString(), body, requestOptions);
 
         return response;
     }
 
-    public static void Run(BinaryData trainBody, BinaryData beginInferBody) throws Exception {
+    public static void run(BinaryData trainBody, BinaryData beginInferBody) throws Exception {
        String endpoint = "<anomaly-detector-resource-endpoint>";
        String key = "<anomaly-detector-resource-key>";
 
@@ -184,7 +184,7 @@ public class MultivariateSample {
         InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\sync_infer_body.json");
         JsonReader reader = Json.createReader(fileInputStream);
         BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
-        Response<BinaryData> lastDetectResponse = GetLastDetectResult(client, detectBody, modelId);
+        Response<BinaryData> lastDetectResponse = getLastDetectResult(client, detectBody, modelId);
         String responseBodyStr = lastDetectResponse.getValue().toString();
         JsonObject lastDetectJsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
         JsonArray variableStates = lastDetectJsonObject.getJsonArray("variableStates");
@@ -214,7 +214,7 @@ public class MultivariateSample {
         //Get model list
         Integer skip = 0;
         Integer top = 5;
-        GetModelList(client, skip, top);
+        getModelList(client, skip, top);
     }
 
     public static void main(final String[] args) throws Exception {
@@ -222,13 +222,13 @@ public class MultivariateSample {
         System.out.println("============================== Test MultiTables =========================================");
         BinaryData trainBodyMultiTables = BinaryData.fromString("{\"slidingWindow\":200,\"alignPolicy\":{\"alignMode\":\"Outer\",\"fillNAMethod\":\"Linear\",\"paddingValue\":0},\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000\",\"dataSchema\":\"MultiTable\",\"startTime\":\"2021-01-02T00:00:00Z\",\"endTime\":\"2021-01-02T05:00:00Z\",\"displayName\":\"SampleRequest\"}");
         BinaryData beginInferBodyMultiTables = BinaryData.fromString("{\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000\",\"topContributorCount\":10,\"startTime\":\"2021-01-01T00:00:00Z\",\"endTime\":\"2021-01-01T12:00:00Z\"}");
-        Run(trainBodyMultiTables, beginInferBodyMultiTables);
+        run(trainBodyMultiTables, beginInferBodyMultiTables);
 
         // test OneTable
         System.out.println("============================= Test OneTable =============================================");
         BinaryData trainBodyOneTable = BinaryData.fromString("{\"slidingWindow\":200,\"alignPolicy\":{\"alignMode\":\"Outer\",\"fillNAMethod\":\"Linear\",\"paddingValue\":0},\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-onetable/sample_data_20_3000.csv\",\"dataSchema\":\"OneTable\",\"startTime\":\"2021-01-02T00:00:00Z\",\"endTime\":\"2021-01-02T05:00:00Z\",\"displayName\":\"SampleRequest\"}");
         BinaryData beginInferBodyOneTable = BinaryData.fromString("{\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-onetable/sample_data_20_3000.csv\",\"topContributorCount\":10,\"startTime\":\"2021-01-01T00:00:00Z\",\"endTime\":\"2021-01-01T12:00:00Z\"}");
-        Run(trainBodyOneTable, beginInferBodyOneTable);
+        run(trainBodyOneTable, beginInferBodyOneTable);
 
     }
 }
