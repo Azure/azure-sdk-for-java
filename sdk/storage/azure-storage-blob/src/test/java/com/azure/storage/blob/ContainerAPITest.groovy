@@ -1843,6 +1843,7 @@ class ContainerAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
     def "List blobs hier segment with version prefix and delimiter"() {
         setup:
         def options = new ListBlobsOptions()
