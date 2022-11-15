@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `EventHubBufferedProducerBuilder.fullyQualifiedNamespace(String)`
+- Added `EventHubBufferedProducerBuilder.eventHubName(String)`
+
 ### Breaking Changes
 
 ### Bugs Fixed

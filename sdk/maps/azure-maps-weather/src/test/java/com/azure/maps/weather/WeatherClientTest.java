@@ -3,14 +3,6 @@
 
 package com.azure.maps.weather;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoPosition;
@@ -37,9 +29,16 @@ import com.azure.maps.weather.models.TropicalStormForecastOptions;
 import com.azure.maps.weather.models.TropicalStormLocationOptions;
 import com.azure.maps.weather.models.Waypoint;
 import com.azure.maps.weather.models.WeatherAlongRouteResult;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class WeatherClientTest extends WeatherTestBase {
     private WeatherClient client;
@@ -141,7 +140,7 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        CurrentConditionsResult actualResult = client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), 
+        CurrentConditionsResult actualResult = client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268),
             null, null, null, null);
         CurrentConditionsResult expectedResult = TestUtils.getExpectedCurrentConditions();
         validateGetCurrentConditions(expectedResult, actualResult);
@@ -153,7 +152,7 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetCurrentConditionsWithResponse(TestUtils.getExpectedCurrentConditions(), 200, client.getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), 
+        validateGetCurrentConditionsWithResponse(TestUtils.getExpectedCurrentConditions(), 200, client.getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268),
             null, null, null, null, null));
     }
 
@@ -367,7 +366,7 @@ public class WeatherClientTest extends WeatherTestBase {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.searchTropicalStormWithResponse(-100, storm.getBasinId(), storm.getGovId(), null));
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
-        } 
+        }
     }
 
     // Test get tropical storm forecast
@@ -561,8 +560,8 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testGetDailyHistoricalActuals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         DailyHistoricalActualsResult actualResult = client.getDailyHistoricalActuals(new GeoPosition(30.0734812, 62.6490341), before, today, null);
         DailyHistoricalActualsResult expectedResult = TestUtils.getExpectedDailyHistoricalActuals();
         validateGetDailyHistoricalActuals(expectedResult, actualResult);
@@ -574,8 +573,8 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testGetDailyHistoricalActualsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         validateGetDailyHistoricalActualsWithResponse(TestUtils.getExpectedDailyHistoricalActuals(), 200, client.getDailyHistoricalActualsWithResponse(new GeoPosition(30.0734812, 62.6490341), before, today, null, null));
     }
 
@@ -584,8 +583,8 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testInvalidGetDailyHistoricalActualsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getDailyHistoricalActualsWithResponse(new GeoPosition(-10000, 62.6490341), before, today, null, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -596,7 +595,7 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testGetDailyHistoricalRecords(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate beforeYears = LocalDate.now().minusYears(10);
+        LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
         DailyHistoricalRecordsResult actualResult = client.getDailyHistoricalRecords(new GeoPosition(-75.165222, 39.952583), beforeYears, afterYears, null);
         DailyHistoricalRecordsResult expectedResult = TestUtils.getExpectedDailyHistoricalRecords();
@@ -609,7 +608,7 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testGetDailyHistoricalRecordsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate beforeYears = LocalDate.now().minusYears(10);
+        LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
         validateGetDailyHistoricalRecordsWithResponse(TestUtils.getExpectedDailyHistoricalRecords(), 200, client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-75.165222, 39.952583), beforeYears, afterYears, null, null));
     }
@@ -619,7 +618,7 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testInvalidGetDailyHistoricalRecordsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate beforeYears = LocalDate.now().minusYears(10);
+        LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-1000000, 39.952583), beforeYears, afterYears, null, null));
@@ -631,8 +630,8 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testGetDailyHistoricalNormals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         DailyHistoricalNormalsResult actualResult = client.getDailyHistoricalNormals(new GeoPosition(30.0734812, 62.6490341), before, today, null);
         DailyHistoricalNormalsResult expectedResult = TestUtils.getExpectedDailyHistoricalNormalsResult();
         validateGetDailyHistoricalNormalsResult(expectedResult, actualResult);
@@ -644,8 +643,8 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testGetDailyHistoricalNormalsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         validateGetDailyHistoricalNormalsResultWithResponse(TestUtils.getExpectedDailyHistoricalNormalsResult(), 200, client.getDailyHistoricalNormalsWithResponse(new GeoPosition(30.0734812, 62.6490341), before, today, null, null));
     }
 
@@ -654,8 +653,8 @@ public class WeatherClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testInvalidGetDailyHistoricalNormalsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         client = getWeatherClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getDailyHistoricalNormalsWithResponse(new GeoPosition(-100000, 62.6490341), before, today, null, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());

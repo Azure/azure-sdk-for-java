@@ -509,7 +509,7 @@ public final class SystemEventMappingNames {
      * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
      */
     public static final String MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT =
-        "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
+            "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
 
     /**
      * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for a
@@ -534,28 +534,28 @@ public final class SystemEventMappingNames {
      * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED =
-        "Microsoft.Media.LiveEventIncomingDataChunkDropped";
+            "Microsoft.Media.LiveEventIncomingDataChunkDropped";
 
     /**
      * Encoder connect event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamReceived event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED =
-        "Microsoft.Media.LiveEventIncomingStreamReceived";
+            "Microsoft.Media.LiveEventIncomingStreamReceived";
 
     /**
      * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC =
-        "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
+            "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
 
     /**
      * Incoming video stream out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC =
-        "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
+            "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
 
     /**
      * Ingest heartbeat event data. Schema of the data property of an EventGridEvent for a
@@ -568,7 +568,7 @@ public final class SystemEventMappingNames {
      * Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
      */
     public static final String MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED =
-        "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
+            "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateChanged event. */
     public static final String POLICY_INSIGHTS_POLICY_STATE_CHANGED = "Microsoft.PolicyInsights.PolicyStateChanged";
@@ -864,25 +864,25 @@ public final class SystemEventMappingNames {
                     put(MEDIA_JOB_SCHEDULED, MediaJobScheduledEventData.class);
                     put(MEDIA_JOB_STATE_CHANGE, MediaJobStateChangeEventData.class);
                     put(
-                        MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT,
-                        MediaLiveEventChannelArchiveHeartbeatEventData.class);
+                            MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT,
+                            MediaLiveEventChannelArchiveHeartbeatEventData.class);
                     put(MEDIA_LIVE_EVENT_CONNECTION_REJECTED, MediaLiveEventConnectionRejectedEventData.class);
                     put(MEDIA_LIVE_EVENT_ENCODER_CONNECTED, MediaLiveEventEncoderConnectedEventData.class);
                     put(MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED, MediaLiveEventEncoderDisconnectedEventData.class);
                     put(
-                        MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED,
-                        MediaLiveEventIncomingDataChunkDroppedEventData.class);
+                            MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED,
+                            MediaLiveEventIncomingDataChunkDroppedEventData.class);
                     put(MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED, MediaLiveEventIncomingStreamReceivedEventData.class);
                     put(
-                        MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC,
-                        MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
+                            MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC,
+                            MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
                     put(
-                        MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC,
-                        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
+                            MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC,
+                            MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
                     put(MEDIA_LIVE_EVENT_INGEST_HEARTBEAT, MediaLiveEventIngestHeartbeatEventData.class);
                     put(
-                        MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
-                        MediaLiveEventTrackDiscontinuityDetectedEventData.class);
+                            MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
+                            MediaLiveEventTrackDiscontinuityDetectedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
@@ -954,7 +954,5 @@ public final class SystemEventMappingNames {
         return Collections.unmodifiableMap(SYSTEM_EVENT_MAPPINGS);
     }
 
-    private SystemEventMappingNames() {
-
-    }
+    private SystemEventMappingNames() {}
 }
