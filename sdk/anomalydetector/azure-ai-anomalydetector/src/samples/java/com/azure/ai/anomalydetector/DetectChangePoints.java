@@ -57,7 +57,6 @@ public class DetectChangePoints {
         // Instantiate a client that will be used to call the service.
         AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
             .pipeline(httpPipeline)
-            .apiVersion("v1.1")
             .endpoint(endpoint)
             .buildClient();
 

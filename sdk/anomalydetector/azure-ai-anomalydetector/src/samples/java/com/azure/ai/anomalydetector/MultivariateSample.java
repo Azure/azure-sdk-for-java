@@ -69,7 +69,6 @@ public class MultivariateSample {
 
         AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
             .pipeline(httpPipeline)
-            .apiVersion("v1.1")
             .endpoint(endpoint)
             .httpLogOptions(httpLogOptions)
             .buildClient();

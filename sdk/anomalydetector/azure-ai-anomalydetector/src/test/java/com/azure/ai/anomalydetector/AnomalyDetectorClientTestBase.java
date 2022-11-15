@@ -53,7 +53,6 @@ public class AnomalyDetectorClientTestBase extends TestBase {
 
         return new AnomalyDetectorClientBuilder()
             .pipeline(httpPipeline)
-            .apiVersion("v1.1")
             .endpoint(endpoint);
     }
 
