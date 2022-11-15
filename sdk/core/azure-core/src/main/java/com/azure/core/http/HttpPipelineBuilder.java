@@ -83,6 +83,7 @@ public class HttpPipelineBuilder {
             tracer = TracerProvider.getDefaultProvider().createTracer("azure-core", null, null, tracingOptions);
         }
 
+        // TODO: probably explicit?
         policies.add(new InstrumentationPolicy(tracer));
         return new HttpPipeline(client, policies, tracer);
     }

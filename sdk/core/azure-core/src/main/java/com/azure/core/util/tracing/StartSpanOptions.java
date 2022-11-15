@@ -3,6 +3,7 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.TelemetryAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Objects;
 public final class StartSpanOptions {
     private final SpanKind spanKind;
     private Map<String, Object> spanAttributes;
+    private TelemetryAttributes telemetryAttributes;
 
     /**
      * Describes span with given name and kind
@@ -51,6 +53,11 @@ public final class StartSpanOptions {
         return this;
     }
 
+    public StartSpanOptions setAttributes(TelemetryAttributes attributes) {
+        telemetryAttributes = attributes;
+        return this;
+    }
+
     /**
      * Gets span kind.
      *
@@ -65,7 +72,12 @@ public final class StartSpanOptions {
      *
      * @return attributes to be set on span and used for sampling.
      */
+    @Deprecated
     public Map<String, Object> getAttributes() {
-        return this.spanAttributes;
+        return this.spanAttributes; // TODO merge
+    }
+
+    public TelemetryAttributes getTelemetryAttributes() {
+        return telemetryAttributes; // TODO merge
     }
 }

@@ -4,10 +4,12 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.TelemetryAttributes;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * Contract that all tracers must implement to be pluggable into the SDK.
@@ -77,6 +79,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} which indicates the shared span builder that is in the current Context.
      */
+    @Deprecated
     String SPAN_BUILDER_KEY = "builder";
 
     /**
@@ -221,9 +224,6 @@ public interface Tracer {
     @Deprecated
     Context start(String methodName, Context context, ProcessKind processKind);
 
-    default void injectContext(BiConsumer<String, String> headerSetter, Context context) {
-    }
-
     /**
      * Completes the current tracing span.
      *
@@ -331,7 +331,12 @@ public interface Tracer {
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.
      */
+    @Deprecated
     void addLink(Context context);
+
+    default Context addLink(Context span, Context link) {
+        return span;
+    }
 
     /**
      * Extracts the span's context as {@link Context} from upstream.
@@ -353,7 +358,19 @@ public interface Tracer {
      * @return The updated {@link Context} object containing the span context.
      * @throws NullPointerException if {@code diagnosticId} or {@code context} is {@code null}.
      */
+    @Deprecated
     Context extractContext(String diagnosticId, Context context);
+
+    default Context extractContext(Function<String, String> headerGetter, Context context) {
+        // todo diagid
+        return extractContext(headerGetter.apply("traceparent"), context);
+    }
+
+    default void injectContext(BiConsumer<String, String> headerSetter, Context context) {
+        // todo diagid
+        return;
+    }
+
 
     /**
      * Returns a span builder with the provided name in {@link Context}.
@@ -374,6 +391,7 @@ public interface Tracer {
      * @return The updated {@link Context} object containing the span builder.
      * @throws NullPointerException if {@code context} or {@code spanName} is {@code null}.
      */
+    @Deprecated
     default Context getSharedSpanBuilder(String spanName, Context context) {
         // no-op
         return Context.NONE;
@@ -453,4 +471,9 @@ public interface Tracer {
     default boolean isEnabled() {
         return true;
     }
+
+    default TelemetryAttributes createAttributes(Map<String, Object> attributeMap) {
+        return null;// TODO
+    }
+
 }

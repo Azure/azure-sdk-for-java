@@ -423,13 +423,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return isEnabled;
     }
 
-    Tracer getOpenTelemetryTracer() {
-        return tracer;
-    }
+//    @Override
+//    public
 
-    String getAzNamespace() {
-        return azNamespace;
-    }
 
     /**
      * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent being the designated
