@@ -784,8 +784,7 @@ public class StoreReader {
                 backendLatencyInMs = Double.parseDouble(headerValue);
             }
 
-            headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
-            if (!Strings.isNullOrEmpty(headerValue)) {
+            if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS)) != null) {
                 retryAfterInMs = Double.parseDouble(headerValue);
             }
 
@@ -894,8 +893,7 @@ public class StoreReader {
                     backendLatencyInMs = Double.parseDouble(headerValue);
                 }
 
-                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
-                if (!Strings.isNullOrEmpty(headerValue)) {
+                if ((headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS)) != null) {
                     retryAfterInMs = Double.parseDouble(headerValue);
                 }
 
