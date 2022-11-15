@@ -413,6 +413,15 @@ public interface VirtualMachine
      */
     boolean isHibernationEnabled();
 
+    /** @return the SecurityType of the virtual machine */
+    SecurityTypes securityType();
+
+    /** @return whether secure boot is enabled on the virtual machine */
+    Boolean isSecureBootEnabled();
+
+    /** @return whether vTPM is enabled on the virtual machine */
+    Boolean isVTpmEnabled();
+
     // Setters
     //
 
@@ -427,6 +436,7 @@ public interface VirtualMachine
             DefinitionStages.WithPrimaryNetworkInterface,
             DefinitionStages.WithOS,
             DefinitionStages.WithProximityPlacementGroup,
+            DefinitionStages.WithSecurityFeatures,
             DefinitionStages.WithCreate {
     }
 
@@ -1873,6 +1883,51 @@ public interface VirtualMachine
             WithCreate enableHibernation();
         }
 
+        /** The stage of the definition allowing to specify the SecurityType for the virtual machine. */
+        interface WithSecurityTypes {
+            /**
+             * Enables trusted launch.
+             * <p>
+             * Trusted launch only supports generation 2 VMs.
+             * </p>
+             *
+             * @see <a href="https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#limitations">Limitations</a>
+             *      for supported VM sizes, images and regions.
+             * @return the next stage of the definition
+             */
+            WithSecurityFeatures withTrustedLaunch();
+        }
+
+        /** The stage of the definition allowing to specify the security features for the virtual machine. */
+        interface WithSecurityFeatures extends WithCreate {
+            /**
+             * Enables secure boot feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithSecurityFeatures withSecureBoot();
+
+            /**
+             * Disables secure boot should be disabled on the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            WithSecurityFeatures withoutSecureBoot();
+
+            /**
+             * Enables vTPM feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithSecurityFeatures withVTpm();
+
+            /**
+             * Disables vTPM feature.
+             * @return the next stage of the definition
+             */
+            WithSecurityFeatures withoutVTpm();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -1896,7 +1951,8 @@ public interface VirtualMachine
                 DefinitionStages.WithAdditionalCapacities,
                 DefinitionStages.WithNetworkInterfaceDeleteOptions,
                 DefinitionStages.WithEphemeralOSDisk,
-                DefinitionStages.WithScaleSet {
+                DefinitionStages.WithScaleSet,
+                DefinitionStages.WithSecurityTypes {
 
             /**
              * Begins creating the virtual machine resource.
@@ -2400,6 +2456,55 @@ public interface VirtualMachine
              */
             Update withOSDisk(Disk disk);
         }
+
+        /** The stage of the VM update allowing to change security features. */
+        interface WithSecurityFeatures {
+            /**
+             * Enables secure boot feature.
+             * <p>
+             * Note:
+             * Your VM's security type should be set in order to enable this feature.
+             * After changing security features, a restart is required for your VM to take effect.
+             * </p>
+             *
+             * @return the next stage of the update
+             */
+            Update withSecureBoot();
+
+            /**
+             * Disables secure boot feature.
+             * <p>
+             * Note:
+             * After changing security features, a restart is required for your VM to take effect.
+             * </p>
+             *
+             * @return the next stage of the update
+             */
+            Update withoutSecureBoot();
+
+            /**
+             * Enables vTPM feature.
+             * <p>
+             * Note:
+             * Your VM's security type should be set in order to enable this feature.
+             * After changing security features, a restart is required for your VM to take effect.
+             * </p>
+             *
+             * @return the next stage of the update
+             */
+            Update withVTpm();
+
+            /**
+             * Disables vTPM feature.
+             * <p>
+             * Note:
+             * After changing security features, a restart is required for your VM to take effect.
+             * </p>
+             *
+             * @return the next stage of the update
+             */
+            Update withoutVTpm();
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2417,7 +2522,8 @@ public interface VirtualMachine
             UpdateStages.WithUserAssignedManagedServiceIdentity,
             UpdateStages.WithLicenseType,
             UpdateStages.WithAdditionalCapacities,
-            UpdateStages.WithOSDisk {
+            UpdateStages.WithOSDisk,
+            UpdateStages.WithSecurityFeatures {
         /**
          * Specifies the encryption settings for the OS Disk.
          *
