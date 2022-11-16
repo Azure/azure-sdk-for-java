@@ -135,7 +135,6 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         Thread.sleep(5 * 1000);
     }
 
-
     @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
     public void queryItemsWithCosmosPagedFlux() throws Exception {
 
