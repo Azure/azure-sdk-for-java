@@ -26,6 +26,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ComputeSecretsInner {
+    /** Creates an instance of ComputeSecretsInner class. */
+    public ComputeSecretsInner() {
+    }
+
     /**
      * Validates the instance.
      *

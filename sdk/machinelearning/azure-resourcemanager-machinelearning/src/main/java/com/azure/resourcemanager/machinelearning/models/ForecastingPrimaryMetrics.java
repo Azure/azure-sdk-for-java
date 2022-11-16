@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ForecastingPrimaryMetrics. */
+/** Primary metrics for Forecasting task. */
 public final class ForecastingPrimaryMetrics extends ExpandableStringEnum<ForecastingPrimaryMetrics> {
     /** Static value SpearmanCorrelation for ForecastingPrimaryMetrics. */
     public static final ForecastingPrimaryMetrics SPEARMAN_CORRELATION = fromString("SpearmanCorrelation");

@@ -29,6 +29,10 @@ public final class NotebookResourceInfoInner {
     @JsonProperty(value = "notebookPreparationError")
     private NotebookPreparationError notebookPreparationError;
 
+    /** Creates an instance of NotebookResourceInfoInner class. */
+    public NotebookResourceInfoInner() {
+    }
+
     /**
      * Get the fqdn property: The fqdn property.
      *

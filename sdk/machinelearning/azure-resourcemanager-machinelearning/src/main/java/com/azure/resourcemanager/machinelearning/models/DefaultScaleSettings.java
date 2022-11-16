@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Default")
 @Immutable
 public final class DefaultScaleSettings extends OnlineScaleSettings {
+    /** Creates an instance of DefaultScaleSettings class. */
+    public DefaultScaleSettings() {
+    }
+
     /**
      * Validates the instance.
      *

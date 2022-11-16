@@ -51,32 +51,27 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             location: String (Optional)
-     *             osType: String(Windows) (Optional)
-     *             hardwareProfile (Optional): {
-     *                 skuName: String (Optional)
-     *                 vCPUs: Integer (Optional)
-     *                 memoryGB: Integer (Optional)
-     *             }
-     *             storageProfile (Optional): {
-     *                 osDisk (Optional): {
-     *                     diskSizeGB: Integer (Optional)
-     *                 }
-     *             }
-     *             imageReference (Optional): {
-     *                 name: String (Optional)
-     *                 version: String (Optional)
-     *                 operatingSystem: String (Optional)
-     *                 osBuildNumber: String (Optional)
-     *                 publishedDate: OffsetDateTime (Optional)
-     *             }
-     *             localAdministrator: String(Enabled/Disabled) (Optional)
+     *     name: String (Optional)
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *
@@ -159,16 +154,11 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             type: String(StopDevBox) (Optional)
-     *             frequency: String(Daily) (Optional)
-     *             time: String (Optional)
-     *             timeZone: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     name: String (Optional)
+     *     type: String(StopDevBox) (Optional)
+     *     frequency: String(Daily) (Optional)
+     *     time: String (Optional)
+     *     timeZone: String (Optional)
      * }
      * }</pre>
      *
@@ -238,44 +228,39 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             projectName: String (Optional)
-     *             poolName: String (Required)
-     *             provisioningState: String (Optional)
-     *             actionState: String (Optional)
-     *             powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *             uniqueId: String (Optional)
-     *             errorDetails (Optional): {
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *             }
-     *             location: String (Optional)
-     *             osType: String(Windows) (Optional)
-     *             user: String (Optional)
-     *             hardwareProfile (Optional): {
-     *                 skuName: String (Optional)
-     *                 vCPUs: Integer (Optional)
-     *                 memoryGB: Integer (Optional)
-     *             }
-     *             storageProfile (Optional): {
-     *                 osDisk (Optional): {
-     *                     diskSizeGB: Integer (Optional)
-     *                 }
-     *             }
-     *             imageReference (Optional): {
-     *                 name: String (Optional)
-     *                 version: String (Optional)
-     *                 operatingSystem: String (Optional)
-     *                 osBuildNumber: String (Optional)
-     *                 publishedDate: OffsetDateTime (Optional)
-     *             }
-     *             createdTime: OffsetDateTime (Optional)
-     *             localAdministrator: String(Enabled/Disabled) (Optional)
+     *     name: String (Optional)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     provisioningState: String (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     errorDetails (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *
@@ -515,7 +500,7 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteDevBox(
+    public SyncPoller<BinaryData, Void> beginDeleteDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         return this.client.beginDeleteDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
     }

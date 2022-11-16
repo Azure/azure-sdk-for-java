@@ -26,6 +26,10 @@ public final class RandomSamplingAlgorithm extends SamplingAlgorithm {
     @JsonProperty(value = "seed")
     private Integer seed;
 
+    /** Creates an instance of RandomSamplingAlgorithm class. */
+    public RandomSamplingAlgorithm() {
+    }
+
     /**
      * Get the rule property: The specific type of random algorithm.
      *
