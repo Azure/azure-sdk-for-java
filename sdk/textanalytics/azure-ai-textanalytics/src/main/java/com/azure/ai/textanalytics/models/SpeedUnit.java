@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for SpeedUnit. */
 public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
     /** Static value Unspecified for SpeedUnit. */
@@ -59,14 +57,5 @@ public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
      */
     public static SpeedUnit fromString(String name) {
         return fromString(name, SpeedUnit.class);
-    }
-
-    /**
-     * Gets known SpeedUnit values.
-     *
-     * @return known SpeedUnit values.
-     */
-    public static Collection<SpeedUnit> values() {
-        return values(SpeedUnit.class);
     }
 }

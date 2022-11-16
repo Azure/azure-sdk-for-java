@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for TemporalModifier. */
 public final class TemporalModifier extends ExpandableStringEnum<TemporalModifier> {
     /** Static value AfterApprox for TemporalModifier. */
@@ -71,14 +69,5 @@ public final class TemporalModifier extends ExpandableStringEnum<TemporalModifie
      */
     public static TemporalModifier fromString(String name) {
         return fromString(name, TemporalModifier.class);
-    }
-
-    /**
-     * Gets known TemporalModifier values.
-     *
-     * @return known TemporalModifier values.
-     */
-    public static Collection<TemporalModifier> values() {
-        return values(TemporalModifier.class);
     }
 }

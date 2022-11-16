@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for DateTimeSubKind. */
 public final class DateTimeSubKind extends ExpandableStringEnum<DateTimeSubKind> {
     /** Static value Time for DateTimeSubKind. */
@@ -32,14 +30,5 @@ public final class DateTimeSubKind extends ExpandableStringEnum<DateTimeSubKind>
      */
     public static DateTimeSubKind fromString(String name) {
         return fromString(name, DateTimeSubKind.class);
-    }
-
-    /**
-     * Gets known DateTimeSubKind values.
-     *
-     * @return known DateTimeSubKind values.
-     */
-    public static Collection<DateTimeSubKind> values() {
-        return values(DateTimeSubKind.class);
     }
 }

@@ -1,5 +1,25 @@
 # Release History
 
+## 4.6.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.6.0-beta.1 (2022-11-11)
+
+### Features Added
+- Added `CreateOkpKeyOptions` to pass key options when creating an Octet Key Pair (OKP) on Managed HSM.
+- Added `createOkpKey()` and `createOkpKeyWithResponse()` to `KeyClient` and `KeyAsyncClient` to create an Octet Key Pair (OKP) on Managed HSM.
+- Added `OKP` and `OKP_HSM` to `KeyType`.
+- Added `Ed25519` to `KeyCurveName` to create an Octet Key Pair (OKP) using the Ed25519 curve.
+- Added `EDDSA` to `SignatureAlgorithm` to support signing and verifying using an Edwards Curve Digital Signature Algorithm (EdDSA) on Managed HSM.
+- Added support for service version `7.4-preview.1`.
+
 ## 4.5.2 (2022-11-10)
 
 ### Other Changes
