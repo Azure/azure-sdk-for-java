@@ -75,7 +75,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
             .setHeader(
                 this.options,
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
-                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPRTED_CAPABILITIES_EXCLUDE_MERGE));
+                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_EXCLUDE_MERGE));
     }
 
     @Override

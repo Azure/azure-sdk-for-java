@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -362,7 +363,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
                 this.feedContextClient,
-                this.feedContextClient.getContainerClient(),
+                BridgeInternal.extractContainerSelfLink(this.feedContextClient.getContainerClient()),
                 leaseStoreManager,
                 leaseStoreManager,
                 DEFAULT_DEGREE_OF_PARALLELISM,

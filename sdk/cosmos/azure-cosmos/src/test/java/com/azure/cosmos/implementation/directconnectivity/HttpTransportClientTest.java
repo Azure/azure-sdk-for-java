@@ -152,7 +152,7 @@ public class HttpTransportClientTest {
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.ACCEPT)).isEqualTo("application/json");
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES))
-            .isEqualTo(String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPRTED_CAPABILITIES));
+            .isEqualTo(String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES));
     }
 
     @DataProvider(name = "fromMockedHttpResponseToExpectedDocumentClientException")

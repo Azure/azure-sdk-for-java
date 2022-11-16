@@ -1647,7 +1647,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (!request.getHeaders().containsKey(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES)) {
             request.getHeaders().put(
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
-                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPRTED_CAPABILITIES));
+                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES));
         }
 
         if ((RequestVerb.POST.equals(httpMethod) || RequestVerb.PUT.equals(httpMethod))

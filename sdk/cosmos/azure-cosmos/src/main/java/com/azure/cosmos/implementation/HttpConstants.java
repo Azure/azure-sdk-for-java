@@ -289,11 +289,11 @@ public class HttpConstants {
         private static final long None = 0; // 0
         private static final long PartitionMerge = 1; // 1 << 0
 
-        public static final long SUPPRTED_CAPABILITIES;
-        public static final long SUPPRTED_CAPABILITIES_EXCLUDE_MERGE;
+        public static final long SUPPORTED_CAPABILITIES;
+        public static final long SUPPORTED_CAPABILITIES_EXCLUDE_MERGE;
         static {
-            SUPPRTED_CAPABILITIES = PartitionMerge;
-            SUPPRTED_CAPABILITIES_EXCLUDE_MERGE = None;
+            SUPPORTED_CAPABILITIES = PartitionMerge;
+            SUPPORTED_CAPABILITIES_EXCLUDE_MERGE = None;
         }
     }
 

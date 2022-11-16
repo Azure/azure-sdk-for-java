@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -37,7 +35,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final Logger logger = LoggerFactory.getLogger(PartitionSynchronizerImpl.class);
     private final ChangeFeedContextClient documentClient;
-    private final CosmosAsyncContainer collectionSelfLink;
+    private final String collectionSelfLink;
     private final LeaseContainer leaseContainer;
     private final LeaseManager leaseManager;
 
@@ -48,7 +46,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     public PartitionSynchronizerImpl(
         ChangeFeedContextClient documentClient,
-        CosmosAsyncContainer collectionSelfLink,
+        String collectionSelfLink,
         LeaseContainer leaseContainer,
         LeaseManager leaseManager,
         int degreeOfParallelism,
@@ -188,17 +186,14 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private String getLeaseContinuationToken(
         FeedRangeEpkImpl feedRangeEpk,
         String etag) {
-
-        String containerRid = BridgeInternal.extractContainerSelfLink(this.collectionSelfLink);
-
         FeedRangeContinuation feedRangeContinuation = FeedRangeContinuation.create(
-            containerRid,
+            this.collectionSelfLink,
             feedRangeEpk,
             feedRangeEpk.getRange());
         feedRangeContinuation.replaceContinuation(etag);
 
        ChangeFeedState changeFeedState =  new ChangeFeedStateV1(
-            containerRid,
+            this.collectionSelfLink,
             feedRangeEpk,
             this.changeFeedMode,
             PartitionProcessorHelper.getStartFromSettings(
