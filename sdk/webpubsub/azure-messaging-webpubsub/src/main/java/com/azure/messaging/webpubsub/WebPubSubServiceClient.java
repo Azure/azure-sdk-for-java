@@ -385,6 +385,9 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromAllGroupsWithResponse(
         String hub, String connectionId, RequestOptions requestOptions) {
+        if (WebPubSubServiceVersion.V2021_10_01.equals(version)) {
+           throw new UnsupportedOperationException("removeConnectionFromAllGroupsWithResponse is not supported in api-version 2021-10-01");
+        }
         return this.serviceClient.removeConnectionFromAllGroupsWithResponse(hub, connectionId, requestOptions);
     }
 
