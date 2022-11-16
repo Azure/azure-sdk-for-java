@@ -93,7 +93,7 @@
       <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
-      <version>1.1.0-beta.12</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+      <version>1.1.0-beta.13</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -258,7 +258,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.13.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -288,7 +288,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-administration</artifactId>
-      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+      <version>4.3.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -303,7 +303,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

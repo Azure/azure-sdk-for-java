@@ -6,6 +6,9 @@ Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Dependency Updates
+- Upgrade spring-security to 5.7.5 to address [CVE-2022-31690](https://tanzu.vmware.com/security/cve-2022-31690) [#32145](https://github.com/Azure/azure-sdk-for-java/pull/32145).
+
 ## 4.4.1 (2022-10-31)
 
 ### Spring Cloud Azure Autoconfigure
