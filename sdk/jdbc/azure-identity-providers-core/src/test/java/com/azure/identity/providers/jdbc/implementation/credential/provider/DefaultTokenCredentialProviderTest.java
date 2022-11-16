@@ -10,8 +10,6 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
-import com.azure.identity.implementation.IdentityClient;
-import com.azure.identity.implementation.IdentityClientBase;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -66,16 +64,6 @@ class DefaultTokenCredentialProviderTest {
 
         // verify
         assertTrue(tokenCredential instanceof ClientSecretCredential);
-        Field fieldIdentityClient = ClientSecretCredential.class.getDeclaredField("identityClient");
-        fieldIdentityClient.setAccessible(true);
-        IdentityClient identityClient = (IdentityClient) fieldIdentityClient.get(tokenCredential);
-        Field fieldClientSecret = IdentityClientBase.class.getDeclaredField("clientSecret");
-        fieldClientSecret.setAccessible(true);
-
-        assertEquals("fake-tenantId", identityClient.getTenantId());
-        assertEquals("fake-clientId", identityClient.getClientId());
-        assertEquals("fake-clientSecret", fieldClientSecret.get(identityClient));
-        assertEquals(expectedAuthorityHost, identityClient.getIdentityClientOptions().getAuthorityHost());
     }
 
     @ParameterizedTest
@@ -92,27 +80,13 @@ class DefaultTokenCredentialProviderTest {
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
         TokenCredential tokenCredential = provider.get();
 
-        // getValue
-        Field fieldIdentityClient = ClientCertificateCredential.class.getDeclaredField("identityClient");
-        fieldIdentityClient.setAccessible(true);
-        IdentityClient identityClient = (IdentityClient) fieldIdentityClient.get(tokenCredential);
-
-        Field fieldCertificatePath = IdentityClientBase.class.getDeclaredField("certificatePath");
-        fieldCertificatePath.setAccessible(true);
-
         // verify
         assertTrue(tokenCredential instanceof ClientCertificateCredential);
-        assertEquals("fake-tenantId", identityClient.getTenantId());
-        assertEquals("fake-clientId", identityClient.getClientId());
-        assertEquals("fake-clientCertificatePath", fieldCertificatePath.get(identityClient));
-
-        assertEquals(expectedAuthorityHost, identityClient.getIdentityClientOptions().getAuthorityHost());
-
     }
 
     @ParameterizedTest
     @MethodSource("provideAuthorityHosts")
-    void testUsernamePasswordCredential(String providedAuthorityHost, String expectedAuthorityHost) throws NoSuchFieldException, IllegalAccessException {
+    void testUsernamePasswordCredential(String providedAuthorityHost) throws NoSuchFieldException, IllegalAccessException {
 
         // setUp
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
@@ -125,11 +99,6 @@ class DefaultTokenCredentialProviderTest {
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
         TokenCredential tokenCredential = provider.get();
 
-        // get
-        Field fieldIdentityClient = UsernamePasswordCredential.class.getDeclaredField("identityClient");
-        fieldIdentityClient.setAccessible(true);
-        IdentityClient identityClient = (IdentityClient) fieldIdentityClient.get(tokenCredential);
-
         Field fieldUsername = UsernamePasswordCredential.class.getDeclaredField("username");
         fieldUsername.setAccessible(true);
 
@@ -138,10 +107,8 @@ class DefaultTokenCredentialProviderTest {
 
         // verify
         assertTrue(tokenCredential instanceof UsernamePasswordCredential);
-        assertEquals("fake-clientId", identityClient.getClientId());
         assertEquals("fake-username", fieldUsername.get(tokenCredential));
         assertEquals("fake-password", fieldPassword.get(tokenCredential));
-        assertEquals(expectedAuthorityHost, identityClient.getIdentityClientOptions().getAuthorityHost());
     }
 
     @Test
