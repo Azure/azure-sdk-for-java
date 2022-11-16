@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 /**
  * Test ServiceBusSenderAsyncClient
  */
-@Service("MessageSenderAsync")
+@Component("MessageSenderAsync")
 public class MessageSenderAsync extends ServiceBusScenario {
     @Value("${SEND_TIMES:100000}")
     private int sendTimes;

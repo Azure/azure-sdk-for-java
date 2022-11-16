@@ -15,14 +15,14 @@ import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
 /**
  * Test ServiceBusReceiverClient
  */
-@Service("MessageReceiver")
+@Component("MessageReceiver")
 public class MessageReceiver extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiver.class);
 

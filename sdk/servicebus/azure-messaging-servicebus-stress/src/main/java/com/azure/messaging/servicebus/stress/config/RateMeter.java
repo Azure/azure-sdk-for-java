@@ -14,22 +14,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Send metric telemetry periodically
  */
-public class RateMeter {
+public class RateMeter implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(RateMeter.class);
+    private static final String METRIC_NAMESPACE = "java.servicebus.stress";
 
     private final Map<String, AtomicInteger> rateMap = new ConcurrentHashMap<>();
     private final TelemetryClient telemetryClient;
     private final Duration periodicDuration;
-    private final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
-    private static final String METRIC_NAMESPACE = "java.servicebus.stress";
+    private final ScheduledExecutorService executorService;
 
     /**
      * Constructor to create RateMeter
@@ -40,6 +42,14 @@ public class RateMeter {
     public RateMeter(TelemetryClient telemetryClient, Duration periodicDuration) {
         this.telemetryClient = telemetryClient;
         this.periodicDuration = periodicDuration;
+
+        // Set the thread pool as a daemon so that the spring application can be closed once the test is finished.
+        this.executorService = new ScheduledThreadPoolExecutor(2, r -> {
+            Thread t = Executors.defaultThreadFactory().newThread(r);
+            t.setDaemon(true);
+            return t;
+        });
+
         this.runMetrics();
     }
 
@@ -52,6 +62,14 @@ public class RateMeter {
     public void add(String key, int count) {
         rateMap.computeIfAbsent(key, name -> new AtomicInteger(0));
         rateMap.get(key).addAndGet(count);
+    }
+
+    /**
+     * Stop track metrics and close RateMeter by shutting down the underlying thread pool.
+     */
+    @Override
+    public void close() {
+        executorService.shutdown();
     }
 
     private void runMetrics() {

@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -17,7 +18,7 @@ import java.time.Duration;
 /**
  * Test ServiceBusProcessorClient
  */
-@Service("MessageProcessor")
+@Component("MessageProcessor")
 public class MessageProcessor extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
 

@@ -8,13 +8,13 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.stress.util.EntityType;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 /**
  * Test ServiceBusReceiverAsyncClient
  */
-@Service("MessageReceiverAsync")
+@Component("MessageReceiverAsync")
 public class MessageReceiverAsync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiverAsync.class);
 

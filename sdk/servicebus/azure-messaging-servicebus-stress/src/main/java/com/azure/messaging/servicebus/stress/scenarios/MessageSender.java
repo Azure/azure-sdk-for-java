@@ -9,7 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 /**
  * Test ServiceBusSenderClient
  */
-@Service("MessageSender")
+@Component("MessageSender")
 public class MessageSender extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageSender.class);
 
