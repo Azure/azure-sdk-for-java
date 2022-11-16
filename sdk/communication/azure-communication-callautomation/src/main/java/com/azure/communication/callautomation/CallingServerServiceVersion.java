@@ -12,6 +12,10 @@ public enum CallingServerServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2022-04-07-preview}.
      */
+    V2023_01_15_PREVIEW("2023-01-15-preview"),
+    /**
+     * Service version {@code 2022-04-07-preview}.
+     */
     V2022_04_07_PREVIEW("2022-04-07-preview"),
     /**
      * Service version {@code 2021-11-15-preview}.
