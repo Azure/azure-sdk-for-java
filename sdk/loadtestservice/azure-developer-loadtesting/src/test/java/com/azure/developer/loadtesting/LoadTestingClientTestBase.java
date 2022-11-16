@@ -25,6 +25,8 @@ class LoadTestingClientTestBase extends TestBase {
     protected final String existingTestRunId = Configuration.getGlobalConfiguration().get("EXISING_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
     protected final String newTestRunId = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "44444444-1234-1234-1234-123456789012");
     protected final String defaultUploadFileName = Configuration.getGlobalConfiguration().get("UPLOAD_FILE_NAME", "sample-JMX-file.jmx");
+    protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration().get("APP_COMPONENT_RESOURCE_ID", "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource");
+    protected final String defaultServerMetricId = Configuration.getGlobalConfiguration().get("SERVER_METRIC_ID", "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
 
     private TokenCredential getTokenCredential() {
         DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
