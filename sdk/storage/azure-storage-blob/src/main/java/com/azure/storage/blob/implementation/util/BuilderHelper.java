@@ -42,7 +42,7 @@ import java.util.Map;
 
 /**
  * This class provides helper methods for common builder patterns.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public final class BuilderHelper {
@@ -97,9 +97,9 @@ public final class BuilderHelper {
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
@@ -190,8 +190,7 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions,
         ClientOptions clientOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
-        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
-            : logOptions.getApplicationId();
+        String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
         return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, configuration);
     }
 

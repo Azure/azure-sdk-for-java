@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -62,6 +63,8 @@ public final class ModelHelper {
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
      */
     public static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
+
+    private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
 
     /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
@@ -399,14 +402,14 @@ public final class ModelHelper {
     }
 
     public static String getErrorCode(HttpHeaders headers) {
-        return getHeaderValue(headers, "x-ms-error-code");
+        return getHeaderValue(headers, X_MS_ERROR_CODE);
     }
 
     public static String getETag(HttpHeaders headers) {
-        return getHeaderValue(headers, "ETag");
+        return getHeaderValue(headers, HttpHeaderName.ETAG);
     }
 
-    private static String getHeaderValue(HttpHeaders headers, String headerName) {
+    private static String getHeaderValue(HttpHeaders headers, HttpHeaderName headerName) {
         if (headers == null) {
             return null;
         }
