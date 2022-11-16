@@ -30,14 +30,18 @@ pr:
       - sdk/confidentialledger/azure-resourcemanager-confidentialledger/pom.xml
 
 parameters:
-- name: release_azuresecurityconfidentialledger
-  displayName: 'azure-security-confidentialledger'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerconfidentialledger
-  displayName: 'azure-resourcemanager-confidentialledger'
-  type: boolean
-  default: false
+  - name: release_azuresecurityconfidentialledger
+    displayName: azure-security-confidentialledger
+    type: boolean
+    default: true
+  - name: release_azureresourcemanagerconfidentialledger
+    displayName: azure-resourcemanager-confidentialledger
+    type: boolean
+    default: false
+  - name: release_azureconfidentialledger
+    displayName: azure-confidentialledger
+    type: boolean
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -53,3 +57,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerconfidentialledger
         releaseInBatch: ${{ parameters.release_azureresourcemanagerconfidentialledger }}
+      - name: azure-confidentialledger
+        groupId: com.azure
+        safeName: azureconfidentialledger
+        releaseInBatch: ${{ parameters.release_azureconfidentialledger }}
