@@ -16,6 +16,7 @@ class NoopTracer implements Tracer {
         return context;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Context start(String spanName, Context context, ProcessKind processKind) {
         Objects.requireNonNull(spanName, "'spanName' cannot be null");
@@ -42,10 +43,12 @@ class NoopTracer implements Tracer {
         return context;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void addLink(Context context) {
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Context extractContext(String diagnosticId, Context context) {
         Objects.requireNonNull(diagnosticId, "'diagnosticId' cannot be null");

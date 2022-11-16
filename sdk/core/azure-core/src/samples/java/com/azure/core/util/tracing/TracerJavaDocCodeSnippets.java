@@ -13,6 +13,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 /**
  * Contains code snippets when generating javadocs through doclets for {@link Tracer}.
  */
+@SuppressWarnings("deprecation")
 public class TracerJavaDocCodeSnippets {
     final Tracer tracer = new TracerImplementation();
 

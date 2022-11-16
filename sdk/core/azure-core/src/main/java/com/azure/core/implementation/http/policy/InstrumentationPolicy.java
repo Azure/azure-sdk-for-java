@@ -57,6 +57,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpan(context)));
     }
 
+    @SuppressWarnings("try")
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         if (!tracer.isEnabled() || (boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
