@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneExcept
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneHandler;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /**
  * READ DocDB partitions and create leases if they do not exist.
  */
@@ -18,6 +20,14 @@ public interface PartitionSynchronizer {
      * @return a deferred computation of this operation.
      */
     Mono<Void> createMissingLeases();
+
+    /***
+     * Create epk leases based on pk version leases.
+     *
+     * @param pkVersionLeases partition key range based leases.
+     * @return a deferred computation of this operation.
+     */
+    Mono<Void> createMissingLeases(List<Lease> pkVersionLeases);
 
     /***
      * Get the feedRangeGone handler based on whether it is merge or split.

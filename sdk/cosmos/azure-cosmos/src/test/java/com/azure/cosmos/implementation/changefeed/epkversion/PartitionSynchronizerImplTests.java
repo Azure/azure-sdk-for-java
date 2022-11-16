@@ -8,9 +8,11 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -37,6 +39,7 @@ public class PartitionSynchronizerImplTests {
         CosmosAsyncContainer feedContainerMock = Mockito.mock(CosmosAsyncContainer.class);
         LeaseContainer leaseContainerMock = Mockito.mock(LeaseContainer.class);
         LeaseManager leaseManagerMock = Mockito.mock(LeaseManager.class);
+        ChangeFeedProcessorOptions changeFeedProcessorOptions = Mockito.mock(ChangeFeedProcessorOptions.class);
 
         PartitionSynchronizerImpl partitionSynchronizer = new PartitionSynchronizerImpl(
                 feedContextClientMock,
@@ -44,7 +47,9 @@ public class PartitionSynchronizerImplTests {
                 leaseContainerMock,
                 leaseManagerMock,
                 1,
-                1);
+                1,
+                changeFeedProcessorOptions,
+                ChangeFeedMode.INCREMENTAL);
 
         List<PartitionKeyRange> overlappingRanges = new ArrayList<>();
         overlappingRanges.add(new PartitionKeyRange("1", "AA", "BB"));
@@ -86,6 +91,7 @@ public class PartitionSynchronizerImplTests {
         CosmosAsyncContainer feedContainerMock = Mockito.mock(CosmosAsyncContainer.class);
         LeaseContainer leaseContainerMock = Mockito.mock(LeaseContainer.class);
         LeaseManager leaseManagerMock = Mockito.mock(LeaseManager.class);
+        ChangeFeedProcessorOptions changeFeedProcessorOptions = Mockito.mock(ChangeFeedProcessorOptions.class);
 
         PartitionSynchronizerImpl partitionSynchronizer = new PartitionSynchronizerImpl(
                 feedContextClientMock,
@@ -93,7 +99,9 @@ public class PartitionSynchronizerImplTests {
                 leaseContainerMock,
                 leaseManagerMock,
                 1,
-                1);
+                1,
+                changeFeedProcessorOptions,
+                ChangeFeedMode.INCREMENTAL);
 
         List<PartitionKeyRange> overlappingRanges = new ArrayList<>();
         overlappingRanges.add(new PartitionKeyRange("1", "AA", "BB"));

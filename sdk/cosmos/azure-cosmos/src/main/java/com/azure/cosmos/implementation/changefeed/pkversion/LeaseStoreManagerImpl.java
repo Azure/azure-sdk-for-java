@@ -20,6 +20,8 @@ import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -31,7 +33,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -40,7 +44,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Provides flexible way to buildAsyncClient lease manager constructor parameters.
  * For the actual creation of lease manager instance, delegates to lease manager factory.
  */
-class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
+public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
     private final String LEASE_STORE_MANAGER_LEASE_SUFFIX = "..";
 
     private final Logger logger = LoggerFactory.getLogger(LeaseStoreManagerImpl.class);
@@ -200,6 +204,29 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
             })
             // return some add-hoc value since we don't actually care about the result.
             .map( documentResourceResponse -> true)
+            .then();
+    }
+
+    @Override
+    public Mono<Void> delete(List<Lease> leases) {
+        checkNotNull(leases, "Argument 'leases' can not be null");
+
+        List<CosmosItemOperation> operations = new ArrayList<>();
+        for (Lease lease : leases) {
+            operations.add(CosmosBulkOperations.getDeleteItemOperation(lease.getId(), new PartitionKey(lease.getId())));
+        }
+
+        return this.leaseDocumentClient.executeBulkOperations(Flux.defer(() -> Flux.fromIterable(operations)))
+            .flatMap(itemResponse -> {
+                if (itemResponse.getResponse() != null && itemResponse.getResponse().isSuccessStatusCode()) {
+                    operations.remove(itemResponse.getOperation());
+                } else {
+                    logger.debug("Failed to delete pk version lease {}", itemResponse.getOperation().getId(), itemResponse.getException());
+                }
+
+                return Mono.empty();
+            })
+            .repeat(() -> operations.size() != 0)
             .then();
     }
 

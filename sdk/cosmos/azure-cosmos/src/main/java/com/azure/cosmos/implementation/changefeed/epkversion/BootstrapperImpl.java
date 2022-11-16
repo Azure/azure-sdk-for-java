@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
+import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -21,13 +22,20 @@ class BootstrapperImpl implements Bootstrapper {
     private final Logger logger = LoggerFactory.getLogger(BootstrapperImpl.class);
     private final PartitionSynchronizer synchronizer;
     private final LeaseStore leaseStore;
+    private final LeaseStoreManager pkVersionLeaseStoreManager;
     private final Duration lockTime;
     private final Duration sleepTime;
 
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
 
-    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime) {
+    public BootstrapperImpl(
+        PartitionSynchronizer synchronizer,
+        LeaseStore leaseStore,
+        Duration lockTime,
+        Duration sleepTime,
+        LeaseStoreManager pkVersionLeaseStoreManager) {
+
         checkNotNull(synchronizer, "Argument 'synchronizer' can not be null");
         checkNotNull(leaseStore, "Argument 'leaseStore' can not be null");
         checkArgument(lockTime != null && this.isPositive(lockTime), "lockTime should be non-null and positive");
@@ -35,6 +43,7 @@ class BootstrapperImpl implements Bootstrapper {
 
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;
+        this.pkVersionLeaseStoreManager = pkVersionLeaseStoreManager;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
 
@@ -66,7 +75,18 @@ class BootstrapperImpl implements Bootstrapper {
                                 logger.info("Another instance is initializing the store");
                                 return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                             } else {
-                                return this.synchronizer.createMissingLeases()
+                                return this.shouldBootstrapFromPkVersionLeases()
+                                    .flatMap(shouldBootstrapFromPkVersion -> {
+                                        if (shouldBootstrapFromPkVersion) {
+                                            return this.pkVersionLeaseStoreManager.getAllLeases()
+                                                .collectList()
+                                                .flatMap(pkVersionLeases -> {
+                                                    return this.synchronizer.createMissingLeases(pkVersionLeases)
+                                                        .then(this.pkVersionLeaseStoreManager.delete(pkVersionLeases)); // after bootstrapping, we are going to delete all th pk version leases
+                                                });
+                                        }
+                                        return this.synchronizer.createMissingLeases();
+                                    })
                                     .then(this.leaseStore.markInitialized());
                             }
                         })
@@ -84,5 +104,9 @@ class BootstrapperImpl implements Bootstrapper {
             })
             .repeat(() -> !this.isInitialized)
             .then();
+    }
+
+    private Mono<Boolean> shouldBootstrapFromPkVersionLeases() {
+        return this.pkVersionLeaseStoreManager == null ? Mono.just(false) : this.pkVersionLeaseStoreManager.isInitialized();
     }
 }

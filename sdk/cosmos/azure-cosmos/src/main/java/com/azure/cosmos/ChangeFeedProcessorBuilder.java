@@ -134,6 +134,33 @@ public class ChangeFeedProcessorBuilder {
     }
 
     /**
+     * Sets a consumer function which will be called to process changes for LatestVersion change feed mode.
+     *
+     * <!-- src_embed com.azure.cosmos.latestVersionChanges.handleChanges -->
+     * <pre>
+     * .handleLatestVersionChanges&#40;docs -&gt; &#123;
+     *     for &#40;JsonNode item : docs&#41; &#123;
+     *         &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
+     *     &#125;
+     * &#125;&#41;
+     * </pre>
+     * <!-- end com.azure.cosmos.latestVersionChanges.handleChanges -->
+     *
+     * @param consumer the {@link Consumer} to call for handling the feeds.
+     * @return current Builder.
+     */
+    @Beta(value = Beta.SinceVersion.V4_40_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ChangeFeedProcessorBuilder handleLatestVersionChanges(Consumer<List<JsonNode>> consumer) {
+        checkNotNull(consumer, "Argument 'consumer' can not be null");
+        checkArgument(this.incrementalModeLeaseConsumer == null, "consumer has already been defined");
+
+        this.incrementalModeLeaseConsumer = consumer;
+        this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
+        this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
+        return this;
+    }
+
+    /**
      * Sets a consumer function which will be called to process changes for AllVersionsAndDeletes change feed mode.
      *
      * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->

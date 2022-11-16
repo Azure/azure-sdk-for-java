@@ -67,9 +67,12 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private final Scheduler scheduler;
 
     private volatile String databaseResourceId;
+    private volatile String databaseId;
     private volatile String collectionResourceId;
+    private volatile String collectionId;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
+    private LeaseStoreManager pkVersionLeaseStoreManager;
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
 
@@ -257,12 +260,14 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 .readDatabase(this.feedContextClient.getDatabaseClient(), null)
                 .map(databaseResourceResponse -> {
                     this.databaseResourceId = databaseResourceResponse.getProperties().getResourceId();
+                    this.databaseId = databaseResourceResponse.getProperties().getId();
                     return this.databaseResourceId;
                 })
                 .flatMap( id -> this.feedContextClient
                         .readContainer(this.feedContextClient.getContainerClient(), null)
                         .map(documentCollectionResourceResponse -> {
                             this.collectionResourceId = documentCollectionResourceResponse.getProperties().getResourceId();
+                            this.collectionId = documentCollectionResourceResponse.getProperties().getId();
                             return this;
                         }));
     }
@@ -287,6 +292,19 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                     .requestOptionsFactory(requestOptionsFactory)
                                     .hostName(this.hostName)
                                     .build();
+
+                        if (this.canBootstrapFromPkVersionLeaseStore()) {
+                            String pkVersionLeasePrefix = this.getPkVersionLeasePrefix();
+                            this.pkVersionLeaseStoreManager =
+                                com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder()
+                                    .leasePrefix(pkVersionLeasePrefix)
+                                    .leaseCollectionLink(this.leaseContextClient.getContainerClient())
+                                    .leaseContextClient(this.leaseContextClient)
+                                    .requestOptionsFactory(requestOptionsFactory)
+                                    .hostName(this.hostName)
+                                    .build();
+                        }
+
                         return Mono.just(this.leaseStoreManager);
                     });
         }
@@ -319,7 +337,25 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.collectionResourceId);
     }
 
+    private String getPkVersionLeasePrefix() {
+        String optionsPrefix = this.changeFeedProcessorOptions.getLeasePrefix();
+
+        if (optionsPrefix == null) {
+            optionsPrefix = "";
+        }
+
+        URI uri = this.feedContextClient.getServiceEndpoint();
+
+        return String.format(
+            "%s%s_%s_%s",
+            optionsPrefix,
+            uri.getHost(),
+            this.databaseId,
+            this.collectionId);
+    }
+
     abstract Class<T> getPartitionProcessorItemType();
+    abstract boolean canBootstrapFromPkVersionLeaseStore();
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
         CheckpointerObserverFactory<T> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
@@ -330,9 +366,16 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 leaseStoreManager,
                 leaseStoreManager,
                 DEFAULT_DEGREE_OF_PARALLELISM,
-                DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE);
+                DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
+                this.changeFeedProcessorOptions,
+                this.changeFeedMode);
 
-        Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
+        Bootstrapper bootstrapper = new BootstrapperImpl(
+            synchronizer,
+            leaseStoreManager,
+            this.lockTime,
+            this.sleepTime,
+            this.pkVersionLeaseStoreManager);
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl<>(
                 factory,
                 leaseStoreManager,

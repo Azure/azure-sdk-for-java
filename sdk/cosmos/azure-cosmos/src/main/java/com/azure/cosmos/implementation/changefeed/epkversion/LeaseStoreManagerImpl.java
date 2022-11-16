@@ -33,6 +33,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -203,6 +204,11 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
             // return some add-hoc value since we don't actually care about the result.
             .map( documentResourceResponse -> true)
             .then();
+    }
+
+    @Override
+    public Mono<Void> delete(List<Lease> leases) {
+        throw new UnsupportedOperationException("Delete with leases are not supported for Change Feed epk version wire format");
     }
 
     @Override

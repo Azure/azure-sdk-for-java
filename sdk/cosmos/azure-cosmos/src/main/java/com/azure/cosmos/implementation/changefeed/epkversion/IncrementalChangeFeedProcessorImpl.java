@@ -35,4 +35,9 @@ public class IncrementalChangeFeedProcessorImpl extends ChangeFeedProcessorImplB
     Class<JsonNode> getPartitionProcessorItemType() {
         return JsonNode.class;
     }
+
+    @Override
+    boolean canBootstrapFromPkVersionLeaseStore() {
+        return true;
+    }
 }

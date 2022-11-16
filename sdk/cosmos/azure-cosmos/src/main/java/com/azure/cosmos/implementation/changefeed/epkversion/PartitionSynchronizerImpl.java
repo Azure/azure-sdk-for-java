@@ -2,24 +2,32 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneHandler;
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneMergeHandler;
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneSplitHandler;
+import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -32,21 +40,28 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final CosmosAsyncContainer collectionSelfLink;
     private final LeaseContainer leaseContainer;
     private final LeaseManager leaseManager;
+
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
+    private final ChangeFeedMode changeFeedMode;
     private final int degreeOfParallelism;
     private final int maxBatchSize;
 
     public PartitionSynchronizerImpl(
-            ChangeFeedContextClient documentClient,
-            CosmosAsyncContainer collectionSelfLink,
-            LeaseContainer leaseContainer,
-            LeaseManager leaseManager,
-            int degreeOfParallelism,
-            int maxBatchSize) {
+        ChangeFeedContextClient documentClient,
+        CosmosAsyncContainer collectionSelfLink,
+        LeaseContainer leaseContainer,
+        LeaseManager leaseManager,
+        int degreeOfParallelism,
+        int maxBatchSize,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions,
+        ChangeFeedMode changeFeedMode) {
 
         this.documentClient = documentClient;
         this.collectionSelfLink = collectionSelfLink;
         this.leaseContainer = leaseContainer;
         this.leaseManager = leaseManager;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.changeFeedMode = changeFeedMode;
         this.degreeOfParallelism = degreeOfParallelism;
         this.maxBatchSize = maxBatchSize;
     }
@@ -59,6 +74,15 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                     logger.error("Create lease failed", throwable);
                     return Mono.empty();
                 });
+    }
+
+    @Override
+    public Mono<Void> createMissingLeases(List<Lease> pkVersionLeases) {
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange)
+            .flatMap(pkRangeList -> this.createLeases(pkRangeList, pkVersionLeases).then())
+            .doOnError(throwable -> {
+                logger.error("Create missing leases from pkVersionLeases failed", throwable);
+            });
     }
 
     @Override
@@ -136,5 +160,53 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                 return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
                                 }, this.degreeOfParallelism);
             });
+    }
+
+    private Flux<Lease> createLeases(List<PartitionKeyRange> partitionKeyRanges, List<Lease> pkVersionLeases) {
+        return Mono.just(pkVersionLeases)
+            .flatMapMany(leaseList -> {
+                Map<String, Lease> leaseByPartition =
+                    leaseList.stream().collect(Collectors.toMap(lease -> lease.getLeaseToken(), lease -> lease));
+
+                return Flux.fromIterable(partitionKeyRanges)
+                    .flatMap(pkRange -> {
+                        if (leaseByPartition.containsKey(pkRange.getId())) {
+                            // find a matching pk version lease, create epk version lease based on it
+                            FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
+                            String leaseContinuationToken = this.getLeaseContinuationToken(
+                                feedRangeEpk,
+                                leaseByPartition.get(pkRange.getId()).getContinuationToken());
+                            return leaseManager.createLeaseIfNotExist(feedRangeEpk, leaseContinuationToken);
+                        }
+
+                        return Mono.empty();
+
+                    }, this.degreeOfParallelism);
+            });
+    }
+
+    private String getLeaseContinuationToken(
+        FeedRangeEpkImpl feedRangeEpk,
+        String etag) {
+
+        String containerRid = BridgeInternal.extractContainerSelfLink(this.collectionSelfLink);
+
+        FeedRangeContinuation feedRangeContinuation = FeedRangeContinuation.create(
+            containerRid,
+            feedRangeEpk,
+            feedRangeEpk.getRange());
+        feedRangeContinuation.replaceContinuation(etag);
+
+       ChangeFeedState changeFeedState =  new ChangeFeedStateV1(
+            containerRid,
+            feedRangeEpk,
+            this.changeFeedMode,
+            PartitionProcessorHelper.getStartFromSettings(
+                feedRangeEpk,
+                this.changeFeedProcessorOptions,
+                this.changeFeedMode),
+           feedRangeContinuation);
+
+        return changeFeedState.toString();
     }
 }

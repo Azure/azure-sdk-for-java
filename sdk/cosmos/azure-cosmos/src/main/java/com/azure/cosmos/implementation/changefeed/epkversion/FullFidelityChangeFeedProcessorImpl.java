@@ -37,4 +37,10 @@ public class FullFidelityChangeFeedProcessorImpl extends ChangeFeedProcessorImpl
     Class<ChangeFeedProcessorItem> getPartitionProcessorItemType() {
         return ChangeFeedProcessorItem.class;
     }
+
+    @Override
+    boolean canBootstrapFromPkVersionLeaseStore() {
+        // pkVersion does not support fullFidelity mode
+        return false;
+    }
 }

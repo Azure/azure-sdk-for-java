@@ -487,6 +487,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
     }
+
     public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
                                                          List<T> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)

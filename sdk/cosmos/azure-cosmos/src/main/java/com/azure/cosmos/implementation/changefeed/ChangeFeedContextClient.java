@@ -6,12 +6,14 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -172,4 +174,11 @@ public interface ChangeFeedContextClient {
      * @return The list of partition key ranges.
      */
     Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range);
+
+    /**
+     * Executes flux of operations in Bulk.
+     * @param operations Flux of operation which will be executed by this container.
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     */
+    Flux<CosmosBulkOperationResponse<Object>> executeBulkOperations(Flux<CosmosItemOperation> operations);
 }

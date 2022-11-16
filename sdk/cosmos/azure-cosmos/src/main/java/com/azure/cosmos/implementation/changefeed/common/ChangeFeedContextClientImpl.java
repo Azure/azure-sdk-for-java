@@ -11,12 +11,14 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -106,6 +108,12 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     return Mono.just(pkRangesValueHolder.v);
                 })
                 .publishOn(this.scheduler);
+    }
+
+    @Override
+    public Flux<CosmosBulkOperationResponse<Object>> executeBulkOperations(Flux<CosmosItemOperation> operations) {
+        return this.cosmosContainer.executeBulkOperations(operations)
+            .publishOn(this.scheduler);
     }
 
     @Override

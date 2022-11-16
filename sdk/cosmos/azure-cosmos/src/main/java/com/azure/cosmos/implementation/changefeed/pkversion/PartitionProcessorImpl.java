@@ -4,6 +4,8 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -42,8 +44,6 @@ import static java.time.temporal.ChronoUnit.MILLIS;
  */
 class PartitionProcessorImpl implements PartitionProcessor {
     private static final Logger logger = LoggerFactory.getLogger(PartitionProcessorImpl.class);
-
-    private static final int DefaultMaxItemCount = 100;
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
     private final ChangeFeedObserver<JsonNode> observer;
@@ -69,6 +69,13 @@ class PartitionProcessorImpl implements PartitionProcessor {
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
         this.options.setMaxItemCount(settings.getMaxItemCount());
+
+        // For pk version, merge is not support, exclude it from the capabilities header
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+            .setHeader(
+                this.options,
+                HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPRTED_CAPABILITIES_EXCLUDE_MERGE));
     }
 
     @Override
