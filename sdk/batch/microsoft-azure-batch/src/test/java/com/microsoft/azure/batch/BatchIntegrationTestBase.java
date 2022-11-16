@@ -156,6 +156,7 @@ public class BatchIntegrationTestBase {
         BatchCredentials credentials;
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
+        interceptorManager.addTextReplacementRule("\\?sig=.*&(sv=[^&]+)&", "sig=fakeSig");
         RestClient restClient;
 
         credentials = getCredentials(mode);
