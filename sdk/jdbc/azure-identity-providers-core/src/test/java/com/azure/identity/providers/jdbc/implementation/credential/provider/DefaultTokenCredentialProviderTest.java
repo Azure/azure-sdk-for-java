@@ -16,10 +16,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultTokenCredentialProviderTest {
@@ -86,7 +84,7 @@ class DefaultTokenCredentialProviderTest {
 
     @ParameterizedTest
     @MethodSource("provideAuthorityHosts")
-    void testUsernamePasswordCredential(String providedAuthorityHost) throws NoSuchFieldException, IllegalAccessException {
+    void testUsernamePasswordCredential(String providedAuthorityHost) {
 
         // setUp
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
@@ -99,16 +97,8 @@ class DefaultTokenCredentialProviderTest {
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
         TokenCredential tokenCredential = provider.get();
 
-        Field fieldUsername = UsernamePasswordCredential.class.getDeclaredField("username");
-        fieldUsername.setAccessible(true);
-
-        Field fieldPassword = UsernamePasswordCredential.class.getDeclaredField("password");
-        fieldPassword.setAccessible(true);
-
         // verify
         assertTrue(tokenCredential instanceof UsernamePasswordCredential);
-        assertEquals("fake-username", fieldUsername.get(tokenCredential));
-        assertEquals("fake-password", fieldPassword.get(tokenCredential));
     }
 
     @Test
