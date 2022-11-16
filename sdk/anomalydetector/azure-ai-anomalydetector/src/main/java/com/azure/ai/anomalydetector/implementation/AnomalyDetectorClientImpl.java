@@ -159,7 +159,7 @@ public final class AnomalyDetectorClientImpl {
      */
     @Host("{Endpoint}/anomalydetector/{ApiVersion}")
     @ServiceInterface(name = "AnomalyDetectorClien")
-    private interface AnomalyDetectorClientService {
+    public interface AnomalyDetectorClientService {
         @Post("/timeseries/entire/detect")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -175,8 +175,8 @@ public final class AnomalyDetectorClientImpl {
         Mono<Response<BinaryData>> detectUnivariateEntireSeries(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -195,8 +195,8 @@ public final class AnomalyDetectorClientImpl {
         Mono<Response<BinaryData>> detectUnivariateLastPoint(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -215,8 +215,8 @@ public final class AnomalyDetectorClientImpl {
         Mono<Response<BinaryData>> detectUnivariateChangePoint(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -236,7 +236,7 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") String resultId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -255,8 +255,8 @@ public final class AnomalyDetectorClientImpl {
         Mono<Response<BinaryData>> createAndTrainMultivariateModel(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -275,7 +275,7 @@ public final class AnomalyDetectorClientImpl {
         Mono<Response<BinaryData>> listMultivariateModels(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -295,7 +295,7 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -315,7 +315,7 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -335,8 +335,8 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -356,8 +356,8 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -377,7 +377,7 @@ public final class AnomalyDetectorClientImpl {
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -396,16 +396,16 @@ public final class AnomalyDetectorClientImpl {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Optional)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
-     *     maxAnomalyRatio: Float (Optional)
+     *     maxAnomalyRatio: Double (Optional)
      *     sensitivity: Integer (Optional)
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
-     *     imputeFixedValue: Float (Optional)
+     *     imputeFixedValue: Double (Optional)
      * }
      * }</pre>
      *
@@ -415,13 +415,13 @@ public final class AnomalyDetectorClientImpl {
      * {
      *     period: int (Required)
      *     expectedValues (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     upperMargins (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     lowerMargins (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     isAnomaly (Required): [
      *         boolean (Required)
@@ -433,12 +433,12 @@ public final class AnomalyDetectorClientImpl {
      *         boolean (Required)
      *     ]
      *     severity (Optional): [
-     *         float (Optional)
+     *         double (Optional)
      *     ]
      * }
      * }</pre>
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * @param body The request of entire or last anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -456,8 +456,8 @@ public final class AnomalyDetectorClientImpl {
                         service.detectUnivariateEntireSeries(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                body,
                                 accept,
+                                body,
                                 requestOptions,
                                 context));
     }
@@ -476,16 +476,16 @@ public final class AnomalyDetectorClientImpl {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Optional)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
-     *     maxAnomalyRatio: Float (Optional)
+     *     maxAnomalyRatio: Double (Optional)
      *     sensitivity: Integer (Optional)
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
-     *     imputeFixedValue: Float (Optional)
+     *     imputeFixedValue: Double (Optional)
      * }
      * }</pre>
      *
@@ -495,13 +495,13 @@ public final class AnomalyDetectorClientImpl {
      * {
      *     period: int (Required)
      *     expectedValues (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     upperMargins (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     lowerMargins (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     isAnomaly (Required): [
      *         boolean (Required)
@@ -513,12 +513,12 @@ public final class AnomalyDetectorClientImpl {
      *         boolean (Required)
      *     ]
      *     severity (Optional): [
-     *         float (Optional)
+     *         double (Optional)
      *     ]
      * }
      * }</pre>
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * @param body The request of entire or last anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -545,16 +545,16 @@ public final class AnomalyDetectorClientImpl {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Optional)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
-     *     maxAnomalyRatio: Float (Optional)
+     *     maxAnomalyRatio: Double (Optional)
      *     sensitivity: Integer (Optional)
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
-     *     imputeFixedValue: Float (Optional)
+     *     imputeFixedValue: Double (Optional)
      * }
      * }</pre>
      *
@@ -564,17 +564,17 @@ public final class AnomalyDetectorClientImpl {
      * {
      *     period: int (Required)
      *     suggestedWindow: int (Required)
-     *     expectedValue: float (Required)
-     *     upperMargin: float (Required)
-     *     lowerMargin: float (Required)
+     *     expectedValue: double (Required)
+     *     upperMargin: double (Required)
+     *     lowerMargin: double (Required)
      *     isAnomaly: boolean (Required)
      *     isNegativeAnomaly: boolean (Required)
      *     isPositiveAnomaly: boolean (Required)
-     *     severity: Float (Optional)
+     *     severity: Double (Optional)
      * }
      * }</pre>
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * @param body The request of entire or last anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -592,8 +592,8 @@ public final class AnomalyDetectorClientImpl {
                         service.detectUnivariateLastPoint(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                body,
                                 accept,
+                                body,
                                 requestOptions,
                                 context));
     }
@@ -611,16 +611,16 @@ public final class AnomalyDetectorClientImpl {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Optional)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
-     *     maxAnomalyRatio: Float (Optional)
+     *     maxAnomalyRatio: Double (Optional)
      *     sensitivity: Integer (Optional)
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
-     *     imputeFixedValue: Float (Optional)
+     *     imputeFixedValue: Double (Optional)
      * }
      * }</pre>
      *
@@ -630,17 +630,17 @@ public final class AnomalyDetectorClientImpl {
      * {
      *     period: int (Required)
      *     suggestedWindow: int (Required)
-     *     expectedValue: float (Required)
-     *     upperMargin: float (Required)
-     *     lowerMargin: float (Required)
+     *     expectedValue: double (Required)
+     *     upperMargin: double (Required)
+     *     lowerMargin: double (Required)
      *     isAnomaly: boolean (Required)
      *     isNegativeAnomaly: boolean (Required)
      *     isPositiveAnomaly: boolean (Required)
-     *     severity: Float (Optional)
+     *     severity: Double (Optional)
      * }
      * }</pre>
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * @param body The request of entire or last anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -665,14 +665,14 @@ public final class AnomalyDetectorClientImpl {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Required)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
      *     stableTrendWindow: Integer (Optional)
-     *     threshold: Float (Optional)
+     *     threshold: Double (Optional)
      * }
      * }</pre>
      *
@@ -685,13 +685,12 @@ public final class AnomalyDetectorClientImpl {
      *         boolean (Optional)
      *     ]
      *     confidenceScores (Optional): [
-     *         float (Optional)
+     *         double (Optional)
      *     ]
      * }
      * }</pre>
      *
-     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
-     *     request if needed.
+     * @param body The request of change point detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -709,8 +708,8 @@ public final class AnomalyDetectorClientImpl {
                         service.detectUnivariateChangePoint(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                body,
                                 accept,
+                                body,
                                 requestOptions,
                                 context));
     }
@@ -727,14 +726,14 @@ public final class AnomalyDetectorClientImpl {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Required)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
      *     stableTrendWindow: Integer (Optional)
-     *     threshold: Float (Optional)
+     *     threshold: Double (Optional)
      * }
      * }</pre>
      *
@@ -747,13 +746,12 @@ public final class AnomalyDetectorClientImpl {
      *         boolean (Optional)
      *     ]
      *     confidenceScores (Optional): [
-     *         float (Optional)
+     *         double (Optional)
      *     ]
      * }
      * }</pre>
      *
-     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
-     *     request if needed.
+     * @param body The request of change point detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -789,7 +787,7 @@ public final class AnomalyDetectorClientImpl {
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -807,12 +805,12 @@ public final class AnomalyDetectorClientImpl {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -829,7 +827,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param resultId Result identifier.
+     * @param resultId The resultId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -875,7 +873,7 @@ public final class AnomalyDetectorClientImpl {
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -893,12 +891,12 @@ public final class AnomalyDetectorClientImpl {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -915,7 +913,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param resultId Result identifier.
+     * @param resultId The resultId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -951,7 +949,7 @@ public final class AnomalyDetectorClientImpl {
      *     alignPolicy (Optional): {
      *         alignMode: String(Inner/Outer) (Optional)
      *         fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *         paddingValue: Float (Optional)
+     *         paddingValue: Double (Optional)
      *     }
      *     status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *     errors (Optional): [
@@ -966,19 +964,19 @@ public final class AnomalyDetectorClientImpl {
      *                 int (Optional)
      *             ]
      *             trainLosses (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *             validationLosses (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *             latenciesInSeconds (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *         }
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -1005,7 +1003,7 @@ public final class AnomalyDetectorClientImpl {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -1020,19 +1018,19 @@ public final class AnomalyDetectorClientImpl {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -1043,7 +1041,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body Training request.
+     * @param body Training result of a model including its status, errors and diagnostics information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1060,8 +1058,8 @@ public final class AnomalyDetectorClientImpl {
                         service.createAndTrainMultivariateModel(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                body,
                                 accept,
+                                body,
                                 requestOptions,
                                 context));
     }
@@ -1088,7 +1086,7 @@ public final class AnomalyDetectorClientImpl {
      *     alignPolicy (Optional): {
      *         alignMode: String(Inner/Outer) (Optional)
      *         fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *         paddingValue: Float (Optional)
+     *         paddingValue: Double (Optional)
      *     }
      *     status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *     errors (Optional): [
@@ -1103,19 +1101,19 @@ public final class AnomalyDetectorClientImpl {
      *                 int (Optional)
      *             ]
      *             trainLosses (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *             validationLosses (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *             latenciesInSeconds (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *         }
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -1142,7 +1140,7 @@ public final class AnomalyDetectorClientImpl {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -1157,19 +1155,19 @@ public final class AnomalyDetectorClientImpl {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -1180,7 +1178,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body Training request.
+     * @param body Training result of a model including its status, errors and diagnostics information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1227,7 +1225,7 @@ public final class AnomalyDetectorClientImpl {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -1242,19 +1240,19 @@ public final class AnomalyDetectorClientImpl {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -1327,7 +1325,7 @@ public final class AnomalyDetectorClientImpl {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -1342,19 +1340,19 @@ public final class AnomalyDetectorClientImpl {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -1417,7 +1415,7 @@ public final class AnomalyDetectorClientImpl {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -1432,19 +1430,19 @@ public final class AnomalyDetectorClientImpl {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -1535,7 +1533,7 @@ public final class AnomalyDetectorClientImpl {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -1550,19 +1548,19 @@ public final class AnomalyDetectorClientImpl {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -1619,7 +1617,7 @@ public final class AnomalyDetectorClientImpl {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -1634,19 +1632,19 @@ public final class AnomalyDetectorClientImpl {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -1707,7 +1705,7 @@ public final class AnomalyDetectorClientImpl {
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -1725,12 +1723,12 @@ public final class AnomalyDetectorClientImpl {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -1748,7 +1746,8 @@ public final class AnomalyDetectorClientImpl {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Detect anomaly request.
+     * @param body Detection request for batch inference. This is an asynchronous inference which will need another API
+     *     to get detection results.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1767,8 +1766,8 @@ public final class AnomalyDetectorClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 modelId,
-                                body,
                                 accept,
+                                body,
                                 requestOptions,
                                 context));
     }
@@ -1809,7 +1808,7 @@ public final class AnomalyDetectorClientImpl {
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -1827,12 +1826,12 @@ public final class AnomalyDetectorClientImpl {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -1850,7 +1849,8 @@ public final class AnomalyDetectorClientImpl {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Detect anomaly request.
+     * @param body Detection request for batch inference. This is an asynchronous inference which will need another API
+     *     to get detection results.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1882,7 +1882,7 @@ public final class AnomalyDetectorClientImpl {
      *                 String (Required)
      *             ]
      *             values (Required): [
-     *                 float (Required)
+     *                 double (Required)
      *             ]
      *         }
      *     ]
@@ -1897,7 +1897,7 @@ public final class AnomalyDetectorClientImpl {
      *     variableStates (Optional): [
      *          (Optional){
      *             variable: String (Optional)
-     *             filledNARatio: Float (Optional)
+     *             filledNARatio: Double (Optional)
      *             effectiveCount: Integer (Optional)
      *             firstTimestamp: OffsetDateTime (Optional)
      *             lastTimestamp: OffsetDateTime (Optional)
@@ -1908,12 +1908,12 @@ public final class AnomalyDetectorClientImpl {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -1934,7 +1934,7 @@ public final class AnomalyDetectorClientImpl {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Request for last detection.
+     * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1952,8 +1952,8 @@ public final class AnomalyDetectorClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 modelId,
-                                body,
                                 accept,
+                                body,
                                 requestOptions,
                                 context));
     }
@@ -1976,7 +1976,7 @@ public final class AnomalyDetectorClientImpl {
      *                 String (Required)
      *             ]
      *             values (Required): [
-     *                 float (Required)
+     *                 double (Required)
      *             ]
      *         }
      *     ]
@@ -1991,7 +1991,7 @@ public final class AnomalyDetectorClientImpl {
      *     variableStates (Optional): [
      *          (Optional){
      *             variable: String (Optional)
-     *             filledNARatio: Float (Optional)
+     *             filledNARatio: Double (Optional)
      *             effectiveCount: Integer (Optional)
      *             firstTimestamp: OffsetDateTime (Optional)
      *             lastTimestamp: OffsetDateTime (Optional)
@@ -2002,12 +2002,12 @@ public final class AnomalyDetectorClientImpl {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -2028,7 +2028,7 @@ public final class AnomalyDetectorClientImpl {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Request for last detection.
+     * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2043,7 +2043,9 @@ public final class AnomalyDetectorClientImpl {
     }
 
     /**
-     * Get the next page of items.
+     * List Multivariate Models
+     *
+     * <p>Get the next page of items.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2062,7 +2064,7 @@ public final class AnomalyDetectorClientImpl {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -2077,19 +2079,19 @@ public final class AnomalyDetectorClientImpl {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)

@@ -4,6 +4,17 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
+import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
+import com.azure.ai.anomalydetector.models.DetectRequest;
+import com.azure.ai.anomalydetector.models.DetectionRequest;
+import com.azure.ai.anomalydetector.models.DetectionResult;
+import com.azure.ai.anomalydetector.models.EntireDetectResponse;
+import com.azure.ai.anomalydetector.models.LastDetectResponse;
+import com.azure.ai.anomalydetector.models.LastDetectionRequest;
+import com.azure.ai.anomalydetector.models.LastDetectionResult;
+import com.azure.ai.anomalydetector.models.Model;
+import com.azure.ai.anomalydetector.models.ModelInfo;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -46,16 +57,16 @@ public final class AnomalyDetectorClient {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Optional)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
-     *     maxAnomalyRatio: Float (Optional)
+     *     maxAnomalyRatio: Double (Optional)
      *     sensitivity: Integer (Optional)
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
-     *     imputeFixedValue: Float (Optional)
+     *     imputeFixedValue: Double (Optional)
      * }
      * }</pre>
      *
@@ -65,13 +76,13 @@ public final class AnomalyDetectorClient {
      * {
      *     period: int (Required)
      *     expectedValues (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     upperMargins (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     lowerMargins (Required): [
-     *         float (Required)
+     *         double (Required)
      *     ]
      *     isAnomaly (Required): [
      *         boolean (Required)
@@ -83,12 +94,12 @@ public final class AnomalyDetectorClient {
      *         boolean (Required)
      *     ]
      *     severity (Optional): [
-     *         float (Optional)
+     *         double (Optional)
      *     ]
      * }
      * }</pre>
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * @param body The request of entire or last anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -116,16 +127,16 @@ public final class AnomalyDetectorClient {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Optional)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
-     *     maxAnomalyRatio: Float (Optional)
+     *     maxAnomalyRatio: Double (Optional)
      *     sensitivity: Integer (Optional)
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
-     *     imputeFixedValue: Float (Optional)
+     *     imputeFixedValue: Double (Optional)
      * }
      * }</pre>
      *
@@ -135,17 +146,17 @@ public final class AnomalyDetectorClient {
      * {
      *     period: int (Required)
      *     suggestedWindow: int (Required)
-     *     expectedValue: float (Required)
-     *     upperMargin: float (Required)
-     *     lowerMargin: float (Required)
+     *     expectedValue: double (Required)
+     *     upperMargin: double (Required)
+     *     lowerMargin: double (Required)
      *     isAnomaly: boolean (Required)
      *     isNegativeAnomaly: boolean (Required)
      *     isPositiveAnomaly: boolean (Required)
-     *     severity: Float (Optional)
+     *     severity: Double (Optional)
      * }
      * }</pre>
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * @param body The request of entire or last anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -171,14 +182,14 @@ public final class AnomalyDetectorClient {
      *     series (Required): [
      *          (Required){
      *             timestamp: OffsetDateTime (Optional)
-     *             value: float (Required)
+     *             value: double (Required)
      *         }
      *     ]
      *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Required)
      *     customInterval: Integer (Optional)
      *     period: Integer (Optional)
      *     stableTrendWindow: Integer (Optional)
-     *     threshold: Float (Optional)
+     *     threshold: Double (Optional)
      * }
      * }</pre>
      *
@@ -191,13 +202,12 @@ public final class AnomalyDetectorClient {
      *         boolean (Optional)
      *     ]
      *     confidenceScores (Optional): [
-     *         float (Optional)
+     *         double (Optional)
      *     ]
      * }
      * }</pre>
      *
-     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
-     *     request if needed.
+     * @param body The request of change point detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -234,7 +244,7 @@ public final class AnomalyDetectorClient {
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -252,12 +262,12 @@ public final class AnomalyDetectorClient {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -274,7 +284,7 @@ public final class AnomalyDetectorClient {
      * }
      * }</pre>
      *
-     * @param resultId Result identifier.
+     * @param resultId The resultId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -311,7 +321,7 @@ public final class AnomalyDetectorClient {
      *     alignPolicy (Optional): {
      *         alignMode: String(Inner/Outer) (Optional)
      *         fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *         paddingValue: Float (Optional)
+     *         paddingValue: Double (Optional)
      *     }
      *     status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *     errors (Optional): [
@@ -326,19 +336,19 @@ public final class AnomalyDetectorClient {
      *                 int (Optional)
      *             ]
      *             trainLosses (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *             validationLosses (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *             latenciesInSeconds (Optional): [
-     *                 float (Optional)
+     *                 double (Optional)
      *             ]
      *         }
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -365,7 +375,7 @@ public final class AnomalyDetectorClient {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -380,19 +390,19 @@ public final class AnomalyDetectorClient {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -403,7 +413,7 @@ public final class AnomalyDetectorClient {
      * }
      * }</pre>
      *
-     * @param body Training request.
+     * @param body Training result of a model including its status, errors and diagnostics information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -451,7 +461,7 @@ public final class AnomalyDetectorClient {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -466,19 +476,19 @@ public final class AnomalyDetectorClient {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -543,7 +553,7 @@ public final class AnomalyDetectorClient {
      *         alignPolicy (Optional): {
      *             alignMode: String(Inner/Outer) (Optional)
      *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *             paddingValue: Float (Optional)
+     *             paddingValue: Double (Optional)
      *         }
      *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
      *         errors (Optional): [
@@ -558,19 +568,19 @@ public final class AnomalyDetectorClient {
      *                     int (Optional)
      *                 ]
      *                 trainLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 validationLosses (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *                 latenciesInSeconds (Optional): [
-     *                     float (Optional)
+     *                     double (Optional)
      *                 ]
      *             }
      *             variableStates (Optional): [
      *                  (Optional){
      *                     variable: String (Optional)
-     *                     filledNARatio: Float (Optional)
+     *                     filledNARatio: Double (Optional)
      *                     effectiveCount: Integer (Optional)
      *                     firstTimestamp: OffsetDateTime (Optional)
      *                     lastTimestamp: OffsetDateTime (Optional)
@@ -632,7 +642,7 @@ public final class AnomalyDetectorClient {
      *         variableStates (Optional): [
      *              (Optional){
      *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
+     *                 filledNARatio: Double (Optional)
      *                 effectiveCount: Integer (Optional)
      *                 firstTimestamp: OffsetDateTime (Optional)
      *                 lastTimestamp: OffsetDateTime (Optional)
@@ -650,12 +660,12 @@ public final class AnomalyDetectorClient {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -673,7 +683,8 @@ public final class AnomalyDetectorClient {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Detect anomaly request.
+     * @param body Detection request for batch inference. This is an asynchronous inference which will need another API
+     *     to get detection results.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -706,7 +717,7 @@ public final class AnomalyDetectorClient {
      *                 String (Required)
      *             ]
      *             values (Required): [
-     *                 float (Required)
+     *                 double (Required)
      *             ]
      *         }
      *     ]
@@ -721,7 +732,7 @@ public final class AnomalyDetectorClient {
      *     variableStates (Optional): [
      *          (Optional){
      *             variable: String (Optional)
-     *             filledNARatio: Float (Optional)
+     *             filledNARatio: Double (Optional)
      *             effectiveCount: Integer (Optional)
      *             firstTimestamp: OffsetDateTime (Optional)
      *             lastTimestamp: OffsetDateTime (Optional)
@@ -732,12 +743,12 @@ public final class AnomalyDetectorClient {
      *             timestamp: OffsetDateTime (Required)
      *             value (Optional): {
      *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
      *                 interpretation (Optional): [
      *                      (Optional){
      *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
+     *                         contributionScore: Double (Optional)
      *                         correlationChanges (Optional): {
      *                             changedVariables (Optional): [
      *                                 String (Optional)
@@ -758,7 +769,7 @@ public final class AnomalyDetectorClient {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Request for last detection.
+     * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -771,5 +782,275 @@ public final class AnomalyDetectorClient {
     public Response<BinaryData> detectMultivariateLastAnomalyWithResponse(
             String modelId, BinaryData body, RequestOptions requestOptions) {
         return this.client.detectMultivariateLastAnomalyWithResponse(modelId, body, requestOptions).block();
+    }
+
+    /**
+     * Detect anomalies for the entire series in batch.
+     *
+     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
+     * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
+     * detection can give user an overall status of the time series.
+     *
+     * @param body The request of entire or last anomaly detection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of entire anomaly detection.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntireDetectResponse detectUnivariateEntireSeries(DetectRequest body) {
+        // Generated convenience method for detectUnivariateEntireSeriesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectUnivariateEntireSeriesWithResponse(BinaryData.fromObject(body), requestOptions)
+                .getValue()
+                .toObject(EntireDetectResponse.class);
+    }
+
+    /**
+     * Detect anomaly status of the latest point in time series.
+     *
+     * <p>This operation generates a model using the points that you sent into the API, and based on all data to
+     * determine whether the last point is anomalous.
+     *
+     * @param body The request of entire or last anomaly detection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of last anomaly detection.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LastDetectResponse detectUnivariateLastPoint(DetectRequest body) {
+        // Generated convenience method for detectUnivariateLastPointWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectUnivariateLastPointWithResponse(BinaryData.fromObject(body), requestOptions)
+                .getValue()
+                .toObject(LastDetectResponse.class);
+    }
+
+    /**
+     * Detect change point for the entire series
+     *
+     * <p>Evaluate change point score of every series point.
+     *
+     * @param body The request of change point detection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of change point detection.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChangePointDetectResponse detectUnivariateChangePoint(ChangePointDetectRequest body) {
+        // Generated convenience method for detectUnivariateChangePointWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectUnivariateChangePointWithResponse(BinaryData.fromObject(body), requestOptions)
+                .getValue()
+                .toObject(ChangePointDetectResponse.class);
+    }
+
+    /**
+     * Get Multivariate Anomaly Detection Result
+     *
+     * <p>For asynchronous inference, get multivariate anomaly detection result based on resultId returned by the
+     * BatchDetectAnomaly api.
+     *
+     * @param resultId The resultId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detection results for the given resultId.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DetectionResult getMultivariateBatchDetectionResult(String resultId) {
+        // Generated convenience method for getMultivariateBatchDetectionResultWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMultivariateBatchDetectionResultWithResponse(resultId, requestOptions)
+                .getValue()
+                .toObject(DetectionResult.class);
+    }
+
+    /**
+     * Train a Multivariate Anomaly Detection Model
+     *
+     * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
+     * indicate an externally accessible Azure blob storage URI.There are two types of data input: An URI pointed to an
+     * Azure blob storage folder which contains multiple CSV files, and each CSV file contains two columns, timestamp
+     * and variable. Another type of input is an URI pointed to a CSV file in Azure blob storage, which contains all the
+     * variables and a timestamp column.
+     *
+     * @param body Training result of a model including its status, errors and diagnostics information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of getting a model.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Model createAndTrainMultivariateModel(ModelInfo body) {
+        // Generated convenience method for createAndTrainMultivariateModelWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createAndTrainMultivariateModelWithResponse(BinaryData.fromObject(body), requestOptions)
+                .getValue()
+                .toObject(Model.class);
+    }
+
+    /**
+     * List Multivariate Models
+     *
+     * <p>List models of a resource.
+     *
+     * @param skip Skip indicates how many models will be skipped.
+     * @param top Top indicates how many models will be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of listing models as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Model> listMultivariateModels(Integer skip, Integer top) {
+        // Generated convenience method for listMultivariateModels
+        return new PagedIterable<>(client.listMultivariateModels(skip, top));
+    }
+
+    /**
+     * List Multivariate Models
+     *
+     * <p>List models of a resource.
+     *
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of listing models as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Model> listMultivariateModels() {
+        // Generated convenience method for listMultivariateModels
+        return new PagedIterable<>(client.listMultivariateModels());
+    }
+
+    /**
+     * Delete Multivariate Model
+     *
+     * <p>Delete an existing multivariate model according to the modelId.
+     *
+     * @param modelId Model identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteMultivariateModel(String modelId) {
+        // Generated convenience method for deleteMultivariateModelWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteMultivariateModelWithResponse(modelId, requestOptions).getValue();
+    }
+
+    /**
+     * Get Multivariate Model
+     *
+     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
+     *
+     * @param modelId Model identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed information of multivariate model, including the training status and variables used in the
+     *     model.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Model getMultivariateModel(String modelId) {
+        // Generated convenience method for getMultivariateModelWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMultivariateModelWithResponse(modelId, requestOptions).getValue().toObject(Model.class);
+    }
+
+    /**
+     * Detect Multivariate Anomaly
+     *
+     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, the input
+     * schema should be the same with the training request. The request will complete asynchronously and return a
+     * resultId to query the detection result.The request should be a source link to indicate an externally accessible
+     * Azure storage Uri, either pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob
+     * storage.
+     *
+     * @param modelId Model identifier.
+     * @param body Detection request for batch inference. This is an asynchronous inference which will need another API
+     *     to get detection results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detection results for the given resultId.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DetectionResult detectMultivariateBatchAnomaly(String modelId, DetectionRequest body) {
+        // Generated convenience method for detectMultivariateBatchAnomalyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectMultivariateBatchAnomalyWithResponse(modelId, BinaryData.fromObject(body), requestOptions)
+                .getValue()
+                .toObject(DetectionResult.class);
+    }
+
+    /**
+     * Detect anomalies in the last point of the request body
+     *
+     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, and the
+     * inference data should be put into request body in a JSON format. The request will complete synchronously and
+     * return the detection immediately in the response body.
+     *
+     * @param modelId Model identifier.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LastDetectionResult detectMultivariateLastAnomaly(String modelId, LastDetectionRequest body) {
+        // Generated convenience method for detectMultivariateLastAnomalyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectMultivariateLastAnomalyWithResponse(modelId, BinaryData.fromObject(body), requestOptions)
+                .getValue()
+                .toObject(LastDetectionResult.class);
     }
 }
