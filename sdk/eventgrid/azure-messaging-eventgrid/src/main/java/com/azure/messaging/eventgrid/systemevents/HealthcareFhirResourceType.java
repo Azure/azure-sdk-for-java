@@ -518,7 +518,11 @@ public final class HealthcareFhirResourceType extends ExpandableStringEnum<Healt
         return fromString(name, HealthcareFhirResourceType.class);
     }
 
-    /** @return known HealthcareFhirResourceType values. */
+    /**
+     * Gets known HealthcareFhirResourceType values.
+     *
+     * @return known HealthcareFhirResourceType values.
+     */
     public static Collection<HealthcareFhirResourceType> values() {
         return values(HealthcareFhirResourceType.class);
     }

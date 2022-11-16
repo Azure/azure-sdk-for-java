@@ -64,6 +64,10 @@ import java.util.function.Supplier;
  * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the fully
  * qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
  * </li>
+ * <li>{@link #credential(TokenCredential)}, {@link #credential(AzureSasCredential)}, or
+ * {@link #credential(AzureNamedKeyCredential)} along with {@link #fullyQualifiedNamespace(String)} and
+ * {@link #eventHubName(String)}. The fully qualified namespace, Event Hub name, and authorized credentials
+ * to use the Event Hub.</li>
  * </ul>
  * </li>
  * </ul>

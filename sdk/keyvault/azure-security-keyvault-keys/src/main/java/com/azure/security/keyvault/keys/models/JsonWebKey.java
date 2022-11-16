@@ -67,7 +67,7 @@ public class JsonWebKey {
 
     /**
      * JsonWebKey key type (kty). Possible values include: 'EC', 'EC-HSM', 'RSA',
-     * 'RSA-HSM', 'oct', 'oct-HSM'.
+     * 'RSA-HSM', 'oct', 'oct-HSM', 'OKP', 'OKP-HSM'.
      */
     @JsonProperty(value = "kty")
     private KeyType keyType;
@@ -140,7 +140,7 @@ public class JsonWebKey {
 
     /**
      * Elliptic curve name. For valid values, see KeyCurveName. Possible
-     * values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'.
+     * values include: 'P-256', 'P-384', 'P-521', 'SECP256K1', 'Ed25519'.
      */
     @JsonProperty(value = "crv")
     private KeyCurveName crv;
@@ -627,6 +627,29 @@ public class JsonWebKey {
         }
     }
 
+    /*private static PublicKey getOkpPublicKey(EdECPoint edEcPoint, NamedParameterSpec curveSpec, Provider provider) {
+        // Create public key spec with given point
+        try {
+            EdECPublicKeySpec pubSpec = new EdECPublicKeySpec(curveSpec, edEcPoint);
+            KeyFactory kf = provider != null ? KeyFactory.getInstance("Ed25519", provider)
+                : KeyFactory.getInstance("Ed25519");
+            return (EdECPublicKey) kf.generatePublic(pubSpec);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static PrivateKey getOkpPrivateKey(byte[] d, NamedParameterSpec curveSpec, Provider provider) {
+        try {
+            EdECPrivateKeySpec priSpec = new EdECPrivateKeySpec(curveSpec, d);
+            KeyFactory kf = provider != null ? KeyFactory.getInstance("Ed25519", provider)
+                : KeyFactory.getInstance("Ed25519");
+            return (EdECPrivateKey) kf.generatePrivate(priSpec);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }*/
+
     /**
      * Verifies if the key is an RSA key.
      */
@@ -917,6 +940,45 @@ public class JsonWebKey {
         return fromAes(secretKey).setKeyOps(keyOperations);
     }
 
+    // TODO: Determine if these operations will be supported and how (shading, external provider, etc.).
+    /*
+     * Converts an octet key pair (OKP) to JSON web key.
+     *
+     * @param keyPair The octet key pair (OKP).
+     *
+     * @return The JSON web key, converted from the given octet key pair (OKP).
+     */
+    /*public static JsonWebKey fromOkp(KeyPair keyPair) {
+        EdECPublicKey publicKey = (EdECPublicKey) keyPair.getPublic();
+        EdECPoint point = publicKey.getPoint();
+        EdECPrivateKey privateKey = (EdECPrivateKey) keyPair.getPrivate();
+
+        if (privateKey != null) {
+            return new JsonWebKey()
+                .setCurveName(KeyCurveName.Ed25519)
+                .setD(privateKey.getBytes().get())
+                .setX(point.getY().toByteArray())
+                .setKeyType(KeyType.OKP);
+        } else {
+            return new JsonWebKey()
+                .setCurveName(KeyCurveName.Ed25519)
+                .setX(point.getY().toByteArray())
+                .setKeyType(KeyType.OKP);
+        }
+    }*/
+
+    /*
+     * Converts an octet key pair (OKP) to JSON web key.
+     *
+     * @param keyPair The octet key pair (OKP).
+     * @param keyOperations The key operations to set for the key.
+     *
+     * @return The JSON web key, converted from the given octet key pair (OKP).
+     */
+    /*public static JsonWebKey fromOkp(KeyPair keyPair, List<KeyOperation> keyOperations) {
+        return fromOkp(keyPair).setKeyOps(keyOperations);
+    }*/
+
     /**
      * Converts JSON web key to AES key.
      *
@@ -930,6 +992,80 @@ public class JsonWebKey {
         SecretKey secretKey = new SecretKeySpec(k, "AES");
         return secretKey;
     }
+
+    // TODO: Determine if these operations will be supported and how (shading, external provider, etc.).
+    /*
+     * Converts JSON web key to an octet key pair (OKP).
+     *
+     * @return The octet key-pair (OKP).
+     */
+    /*public KeyPair toOkp() {
+        return toOkp(false, null);
+    }*/
+
+    /*
+     * Converts JSON web key to an octet key pair (OKP) and include the private key if indicated.
+     *
+     * @param includePrivateParameters set to {@code true} if the octet key pair (OKP) should include the private key.
+     * Set to {@code false} otherwise.
+     *
+     * @return The octet key-pair (OKP).
+     */
+    /*public KeyPair toOkp(boolean includePrivateParameters) {
+        return toOkp(includePrivateParameters, null);
+    }*/
+
+    /*
+     * Converts JSON web key to an octet key pair (OKP) and include the private key if indicated.
+     *
+     * @param includePrivateParameters set to {@code true} if the octet key pair (OKP) should include the private key.
+     * Set to {@code false} otherwise.
+     *
+     * @return The octet key-pair (OKP).
+     *
+     * @throws IllegalArgumentException If the {@link KeyType} is not {@link KeyType#OKP} or {@link KeyType#OKP_HSM}.
+     * @throws IllegalStateException If an instance of the octet key pair cannot be generated.
+     */
+    /*public KeyPair toOkp(boolean includePrivateParameters, Provider provider) {
+
+        if (provider == null) {
+            // Our default provider for this class
+            provider = Security.getProvider("Ed25519");
+        }
+
+        if (!KeyType.OKP.equals(keyType) && !KeyType.OKP_HSM.equals(keyType)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Not an OKP key."));
+        }
+
+        try {
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("OKP", provider);
+
+            NamedParameterSpec gps = new NamedParameterSpec(CURVE_TO_SPEC_NAME.get(crv));
+            kpg.initialize(gps);
+
+            // Generate dummy keypair to get parameter spec.
+            KeyPair apair = kpg.generateKeyPair();
+            EdECPublicKey apub = (EdECPublicKey) apair.getPublic();
+            NamedParameterSpec aspec = apub.getParams();
+
+            EdECPoint edEcPoint = new EdECPoint(
+                new BigInteger(1, x).divide(BigInteger.TWO).equals(BigInteger.ONE),
+                new BigInteger(1, y));
+
+            KeyPair realKeyPair;
+
+            if (includePrivateParameters) {
+                realKeyPair = new KeyPair(getOkpPublicKey(edEcPoint, aspec, provider),
+                    getOkpPrivateKey(d, aspec, provider));
+            } else {
+                realKeyPair = new KeyPair(getOkpPublicKey(edEcPoint, aspec, provider), null);
+            }
+
+            return realKeyPair;
+        } catch (GeneralSecurityException e) {
+            throw logger.logExceptionAsError(new IllegalStateException(e));
+        }
+    }*/
 
     @Override
     public boolean equals(Object obj) {
@@ -1028,7 +1164,9 @@ public class JsonWebKey {
             return k != null;
         } else if (KeyType.RSA.equals(keyType) || KeyType.RSA_HSM.equals(keyType)) {
             return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
-        } else if (KeyType.EC.equals(keyType) || KeyType.EC_HSM.equals(keyType)) {
+        } else if (KeyType.EC.equals(keyType) || KeyType.EC_HSM.equals(keyType)
+            || KeyType.OKP.equals(keyType) || KeyType.OKP_HSM.equals(keyType)) {
+
             return (d != null);
         }
 
@@ -1066,6 +1204,10 @@ public class JsonWebKey {
             return isValidEc();
         } else if (KeyType.EC_HSM.equals(keyType)) {
             return isValidEcHsm();
+        } else if (KeyType.OKP.equals(keyType)) {
+            return isValidOkp();
+        } else if (KeyType.OKP_HSM.equals(keyType)) {
+            return isValidOkpHsm();
         }
 
         return false;
@@ -1128,6 +1270,36 @@ public class JsonWebKey {
 
         // MUST have (T || (ecPointParameters && crv))
         boolean publicParameters = (ecPointParameters && crv != null);
+        boolean tokenParameters = t != null;
+
+        if (tokenParameters && publicParameters) {
+            return false;
+        }
+
+        return (tokenParameters || publicParameters);
+    }
+
+    private boolean isValidOkp() {
+        if (x == null || crv == null) {
+            return false;
+        }
+
+        return hasPrivateKey() || (d == null);
+    }
+
+    private boolean isValidOkpHsm() {
+        // MAY have public key parameters
+        if ((x != null && crv == null) || (x == null && crv != null)) {
+            return false;
+        }
+
+        // No private key
+        if (hasPrivateKey()) {
+            return false;
+        }
+
+        // MUST have (T || (ecPointParameters && crv))
+        boolean publicParameters = (x != null && crv != null);
         boolean tokenParameters = t != null;
 
         if (tokenParameters && publicParameters) {
@@ -1216,6 +1388,7 @@ public class JsonWebKey {
         curveToSpecMap.put(KeyCurveName.P_384, "secp384r1");
         curveToSpecMap.put(KeyCurveName.P_521, "secp521r1");
         curveToSpecMap.put(KeyCurveName.P_256K, "secp256k1");
+        curveToSpecMap.put(KeyCurveName.ED25519, "ed25519");
         return curveToSpecMap;
     }
 

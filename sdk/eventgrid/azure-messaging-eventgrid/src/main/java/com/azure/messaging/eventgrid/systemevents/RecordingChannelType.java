@@ -27,7 +27,11 @@ public final class RecordingChannelType extends ExpandableStringEnum<RecordingCh
         return fromString(name, RecordingChannelType.class);
     }
 
-    /** @return known RecordingChannelType values. */
+    /**
+     * Gets known RecordingChannelType values.
+     *
+     * @return known RecordingChannelType values.
+     */
     public static Collection<RecordingChannelType> values() {
         return values(RecordingChannelType.class);
     }
