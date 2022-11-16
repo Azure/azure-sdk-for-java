@@ -41,6 +41,10 @@ public final class ProbeSettings {
     @JsonProperty(value = "timeout")
     private Duration timeout;
 
+    /** Creates an instance of ProbeSettings class. */
+    public ProbeSettings() {
+    }
+
     /**
      * Get the failureThreshold property: The number of failures to allow before returning an unhealthy status.
      *

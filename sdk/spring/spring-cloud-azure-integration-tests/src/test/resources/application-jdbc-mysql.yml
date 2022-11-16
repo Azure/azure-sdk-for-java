@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://${AZURE_MYSQL_ACCOUNT_NAME}.mysql.database.azure.com:3306/db
+    url: jdbc:mysql://${AZURE_MYSQL_ENDPOINT}:3306/db
     username: passwordless-mysql-test-admin@${AZURE_MYSQL_ACCOUNT_NAME}
     hikari:
       maximum-pool-size: 5

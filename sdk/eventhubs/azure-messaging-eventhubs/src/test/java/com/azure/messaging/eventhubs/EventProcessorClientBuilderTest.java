@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import java.time.Duration;
+
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;

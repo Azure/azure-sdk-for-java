@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EnvironmentContainers Get. */
 public final class EnvironmentContainersGetSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/EnvironmentContainer/get.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/EnvironmentContainer/get.json
      */
     /**
      * Sample code: Get Environment Container.

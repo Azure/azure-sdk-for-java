@@ -16,6 +16,9 @@ public final class RoleAssignmentFilter {
     @JsonProperty(value = "principalId")
     private String principalId;
 
+    /** Creates an instance of RoleAssignmentFilter class. */
+    public RoleAssignmentFilter() {}
+
     /**
      * Get the principalId property: Returns role assignment of the specific principal.
      *

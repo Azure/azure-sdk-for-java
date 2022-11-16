@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Compute Restart. */
 public final class ComputeRestartSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/restart.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/restart.json
      */
     /**
      * Sample code: Restart ComputeInstance Compute.

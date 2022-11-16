@@ -15,17 +15,12 @@ import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -46,33 +41,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link RetryPolicy}.
  */
 public class RetryPolicyTests {
-
-    @Mock
-    HttpResponse httpCloseableResponse;
-
-    private AutoCloseable mockCloseable;
-
-    @BeforeEach
-    public void setup() {
-        mockCloseable = MockitoAnnotations.openMocks(this);
-    }
-    @AfterEach
-    public void teardown() throws Exception {
-        if (mockCloseable != null) {
-            mockCloseable.close();
-        }
-        Mockito.framework().clearInlineMock(this);
-        Mockito.reset(httpCloseableResponse);
-    }
 
     @ParameterizedTest
     @ValueSource(ints = {408, 429, 500, 502, 503})
@@ -418,9 +391,14 @@ public class RetryPolicyTests {
 
     @SyncAsyncTest
     public void retryConsumesBody() throws Exception {
-
-        when(httpCloseableResponse.getStatusCode()).thenReturn(503);
-        when(httpCloseableResponse.getHeaders()).thenReturn(new HttpHeaders());
+        AtomicInteger closeCalls = new AtomicInteger();
+        HttpResponse closeTrackingHttpResponse = new MockHttpResponse(null, 503, new HttpHeaders()) {
+            @Override
+            public void close() {
+                closeCalls.incrementAndGet();
+                super.close();
+            }
+        };
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
@@ -428,12 +406,12 @@ public class RetryPolicyTests {
 
                 @Override
                 public HttpResponse sendSync(HttpRequest request, Context context) {
-                    return httpCloseableResponse;
+                    return closeTrackingHttpResponse;
                 }
 
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.just(httpCloseableResponse);
+                    return Mono.just(closeTrackingHttpResponse);
                 }
             })
             .build();
@@ -443,7 +421,7 @@ public class RetryPolicyTests {
             () -> sendRequest(pipeline)
         );
 
-        Mockito.verify(httpCloseableResponse, times(2)).close();
+        assertEquals(2, closeCalls.get());
     }
 
     @SyncAsyncTest
@@ -560,8 +538,17 @@ public class RetryPolicyTests {
     }
 
     static Stream<Arguments> getWellKnownRetryDelaySupplier() {
-        RetryStrategy retryStrategy = mock(RetryStrategy.class);
-        when(retryStrategy.calculateRetryDelay(anyInt())).thenReturn(Duration.ofSeconds(1));
+        RetryStrategy retryStrategy = new RetryStrategy() {
+            @Override
+            public int getMaxRetries() {
+                return 0;
+            }
+
+            @Override
+            public Duration calculateRetryDelay(int retryAttempts) {
+                return Duration.ofSeconds(1);
+            }
+        };
 
         return Stream.of(
             // No well-known headers, fallback to the default.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TaskType. */
+/** AutoMLJob Task type. */
 public final class TaskType extends ExpandableStringEnum<TaskType> {
     /** Static value Classification for TaskType. */
     public static final TaskType CLASSIFICATION = fromString("Classification");

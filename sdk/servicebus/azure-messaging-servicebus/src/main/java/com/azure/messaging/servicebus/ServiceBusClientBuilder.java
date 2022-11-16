@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
@@ -53,9 +52,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Locale;
@@ -745,7 +742,7 @@ public final class ServiceBusClientBuilder implements
         }
 
         if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(configuration);
+            proxyOptions = ProxyOptions.fromConfiguration(configuration);
         }
 
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
@@ -767,48 +764,6 @@ public final class ServiceBusClientBuilder implements
                 ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
                 options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
                 customEndpointAddress.getPort());
-        }
-    }
-
-    private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
-        ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
-        if (proxyOptions != null) {
-            authentication = proxyOptions.getAuthentication();
-        }
-
-        String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
-
-        if (CoreUtils.isNullOrEmpty(proxyAddress)) {
-            return ProxyOptions.SYSTEM_DEFAULTS;
-        }
-
-        return getProxyOptions(authentication, proxyAddress, configuration,
-            Boolean.parseBoolean(configuration.get("java.net.useSystemProxies")));
-    }
-
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
-        Configuration configuration, boolean useSystemProxies) {
-        String host;
-        int port;
-        if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
-            final String[] hostPort = proxyAddress.split(":");
-            host = hostPort[0];
-            port = Integer.parseInt(hostPort[1]);
-            final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-            final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
-            final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
-            return new ProxyOptions(authentication, proxy, username, password);
-        } else if (useSystemProxies) {
-            // java.net.useSystemProxies needs to be set to true in this scenario.
-            // If it is set to false 'ProxyOptions' in azure-core will return null.
-            com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
-                .fromConfiguration(configuration);
-            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
-                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
-        } else {
-            LOGGER.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
-                + "set or was false.");
-            return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }
 
@@ -2035,7 +1990,7 @@ public final class ServiceBusClientBuilder implements
      *
      * @see ServiceBusRuleManagerAsyncClient
      */
-    @ServiceClientBuilder(serviceClients = {ServiceBusRuleManagerAsyncClient.class})
+    @ServiceClientBuilder(serviceClients = {ServiceBusRuleManagerAsyncClient.class, ServiceBusRuleManagerClient.class})
     public final class ServiceBusRuleManagerBuilder {
         private String subscriptionName;
         private String topicName;

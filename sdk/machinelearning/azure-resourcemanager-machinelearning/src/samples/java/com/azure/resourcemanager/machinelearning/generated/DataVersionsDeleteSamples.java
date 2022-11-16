@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DataVersions Delete. */
 public final class DataVersionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/DataVersionBase/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/DataVersionBase/delete.json
      */
     /**
      * Sample code: Delete Data Version Base.

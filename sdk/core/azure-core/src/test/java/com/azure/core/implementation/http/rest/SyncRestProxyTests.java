@@ -11,6 +11,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -23,12 +24,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.Header;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
@@ -80,7 +79,7 @@ public class SyncRestProxyTests {
         Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
         testInterface.testVoidMethod(context);
 
-        Mockito.verify(client.lastResponseSpy).close();
+        assertTrue(client.lastResponseClosed);
     }
 
     @Test
@@ -110,12 +109,12 @@ public class SyncRestProxyTests {
         StreamResponse streamResponse = testInterface.testDownload(context);
         streamResponse.close();
         // This indirectly tests that StreamResponse has HttpResponse reference
-        Mockito.verify(client.getLastResponseSpy()).close();
+        assertTrue(client.lastResponseClosed);
     }
 
     private static final class LocalHttpClient implements HttpClient {
 
-        private volatile HttpResponse lastResponseSpy;
+        private volatile boolean lastResponseClosed;
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
@@ -126,27 +125,19 @@ public class SyncRestProxyTests {
         public HttpResponse sendSync(HttpRequest request, Context context) {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
-                success = success && request.getHeaders()
-                    .stream()
-                    .filter(header -> header.getName().equals("Content-Type"))
-                    .map(Header::getValue)
-                    .anyMatch(contentType -> contentType.equals("application/json"));
+                success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
             } else {
-                success = success && request.getHttpMethod().equals(HttpMethod.GET);
+                success &= request.getHttpMethod().equals(HttpMethod.GET);
             }
-            int statusCode = success ? 200 : 400;
-            MockHttpResponse response = Mockito.spy(new MockHttpResponse(request, statusCode));
-            lastResponseSpy = response;
-            return response;
-        }
 
-        public HttpResponse getLastResponseSpy() {
-            return lastResponseSpy;
+            return new MockHttpResponse(request, success ? 200 : 400) {
+                @Override
+                public void close() {
+                    lastResponseClosed = true;
+                    super.close();
+                }
+            };
         }
-    }
-
-    private static byte[] collectRequest(HttpRequest request) {
-        return RestProxyUtils.validateLengthSync(request).toBytes();
     }
 
     @ParameterizedTest

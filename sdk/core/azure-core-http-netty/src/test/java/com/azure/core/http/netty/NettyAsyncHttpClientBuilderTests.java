@@ -31,6 +31,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 
@@ -46,6 +47,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -571,5 +573,22 @@ public class NettyAsyncHttpClientBuilderTests {
             Arguments.of(Duration.ofSeconds(120), TimeUnit.SECONDS.toMillis(120)),
             Arguments.of(Duration.ofNanos(1), TimeUnit.MILLISECONDS.toMillis(1))
         );
+    }
+
+    @Test
+    @SuppressWarnings("deprecation") // maxChunkSize is deprecated in a future version of Reactor Netty
+    public void preconfiguredHttpResponseDecoderIsMaintained() {
+        HttpClient nettyHttpClient = HttpClient.create()
+            .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxChunkSize(64 * 1024)
+                .validateHeaders(true));
+
+        NettyAsyncHttpClient azureHttpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(nettyHttpClient)
+            .build();
+
+        HttpResponseDecoderSpec spec = azureHttpClient.nettyClient.configuration().decoder();
+
+        // Header validation is explicitly set to false.
+        assertFalse(spec.validateHeaders());
+        assertEquals(64 * 1024, spec.maxChunkSize());
     }
 }
