@@ -272,8 +272,8 @@ public final class QueueDescription {
      * The maximum message size for a message.
      */
     @JacksonXmlProperty(
-        localName = "MaxMessageSizeInKilobytes",
-        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+            localName = "MaxMessageSizeInKilobytes",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Long maxMessageSizeInKilobytes;
 
     /**
