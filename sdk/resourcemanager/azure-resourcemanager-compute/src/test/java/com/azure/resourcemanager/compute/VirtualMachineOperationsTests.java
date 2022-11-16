@@ -63,7 +63,6 @@ import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -74,7 +73,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -1574,7 +1572,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withTrustedLaunch()
@@ -1599,9 +1597,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // Let virtual machine finish restarting.
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
+        vm = computeManager.virtualMachines().getById(vm.id());
+
         Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, vm.securityType());
         Assertions.assertFalse(vm.isSecureBootEnabled());
         Assertions.assertFalse(vm.isVTpmEnabled());
+
+        computeManager.virtualMachines().deleteById(vm.id());
     }
 
     // *********************************** helper methods ***********************************

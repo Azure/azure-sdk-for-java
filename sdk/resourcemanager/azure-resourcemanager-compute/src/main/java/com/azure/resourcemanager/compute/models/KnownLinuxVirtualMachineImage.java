@@ -8,6 +8,12 @@ public enum KnownLinuxVirtualMachineImage {
     UBUNTU_SERVER_16_04_LTS("Canonical", "UbuntuServer", "16.04.0-LTS"),
     /** UbuntuServer 18.04LTS. */
     UBUNTU_SERVER_18_04_LTS("Canonical", "UbuntuServer", "18.04-LTS"),
+    /** UbuntuServer 18.04LTS Gen2. */
+    UBUNTU_SERVER_18_04_LTS_GEN2("Canonical", "UbuntuServer", "18_04-lts-gen2"),
+    /** UbuntuServer 20.04LTS. */
+    UBUNTU_SERVER_20_04_LTS("Canonical", "0001-com-ubuntu-server-focal", "20_04-lts"),
+    /** UbuntuServer 20.04LTS Gen2. */
+    UBUNTU_SERVER_20_04_LTS_GEN2("Canonical", "0001-com-ubuntu-server-focal", "20_04-lts-gen2"),
 
     /** Debian 9. */
     DEBIAN_9("credativ", "Debian", "9"),
