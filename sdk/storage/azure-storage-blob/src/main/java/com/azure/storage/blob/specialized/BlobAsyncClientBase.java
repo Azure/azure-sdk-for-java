@@ -9,8 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -1263,17 +1263,22 @@ public class BlobAsyncClientBase {
             requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context)
+        // The first range should eagerly convert headers as they'll be used to create response types.
+        Context firstRangeContext = context == null ? new Context("azure-eagerly-convert-headers", true)
+            : context.addData("azure-eagerly-convert-headers", true);
+
+        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
+            firstRangeContext)
             .map(response -> {
-                BlobsDownloadHeaders blobsDownloadHeaders = response.getDeserializedHeaders();
+                BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
                 String eTag = blobsDownloadHeaders.getETag();
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
                     blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
 
                 /*
-                    If the customer did not specify a count, they are reading to the end of the blob. Extract this value
-                    from the response for better book-keeping towards the end.
-                */
+                 * If the customer did not specify a count, they are reading to the end of the blob. Extract this value
+                 * from the response for better book-keeping towards the end.
+                 */
                 long finalCount;
                 long initialOffset = finalRange.getOffset();
                 if (finalRange.getCount() == null) {
@@ -1285,44 +1290,43 @@ public class BlobAsyncClientBase {
 
                 // The resume function takes throwable and offset at the destination.
                 // I.e. offset is relative to the starting point.
-                BiFunction<Throwable, Long, Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>>>
-                    onDownloadErrorResume = (throwable, offset) -> {
-                        if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
-                            return Mono.error(throwable);
-                        }
+                BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
+                    if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
+                        return Mono.error(throwable);
+                    }
 
-                        long newCount = finalCount - offset;
+                    long newCount = finalCount - offset;
 
-                        /*
-                         * It's possible that the network stream will throw an error after emitting all data but before
-                         * completing. Issuing a retry at this stage would leave the download in a bad state with
-                         * incorrect count and offset values. Because we have read the intended amount of data, we can
-                         * ignore the error at the end of the stream.
-                         */
-                        if (newCount == 0) {
-                            LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
-                                + "but before stream signaled completion. Returning success as all data was downloaded. "
-                                + "Exception message: " + throwable.getMessage());
-                            return Mono.empty();
-                        }
+                    /*
+                     * It's possible that the network stream will throw an error after emitting all data but before
+                     * completing. Issuing a retry at this stage would leave the download in a bad state with
+                     * incorrect count and offset values. Because we have read the intended amount of data, we can
+                     * ignore the error at the end of the stream.
+                     */
+                    if (newCount == 0) {
+                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network "
+                            + "but before stream signaled completion. Returning success as all data was downloaded. "
+                            + "Exception message: " + throwable.getMessage());
+                        return Mono.empty();
+                    }
 
-                        try {
-                            return downloadRange(
-                                new BlobRange(initialOffset + offset, newCount), finalRequestConditions, eTag, getMD5, context);
-                        } catch (Exception e) {
-                            return Mono.error(e);
-                        }
-                    };
+                    try {
+                        return downloadRange(
+                            new BlobRange(initialOffset + offset, newCount), finalRequestConditions, eTag, getMD5, context);
+                    } catch (Exception e) {
+                        return Mono.error(e);
+                    }
+                };
 
                 return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
             });
     }
 
-    private Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>> downloadRange(BlobRange range,
-        BlobRequestConditions requestConditions, String eTag, Boolean getMD5, Context context) {
-        return azureBlobStorage.getBlobs().downloadWithResponseAsync(containerName, blobName, snapshot, versionId, null,
-            range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), eTag,
+    private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions, String eTag,
+        Boolean getMD5, Context context) {
+        return azureBlobStorage.getBlobs().downloadNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot,
+            versionId, null, range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null,
+            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             customerProvidedKey, context);
     }

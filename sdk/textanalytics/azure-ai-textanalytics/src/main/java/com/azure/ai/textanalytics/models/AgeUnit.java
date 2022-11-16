@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for AgeUnit. */
 public final class AgeUnit extends ExpandableStringEnum<AgeUnit> {
     /** Static value Unspecified for AgeUnit. */
@@ -32,15 +30,6 @@ public final class AgeUnit extends ExpandableStringEnum<AgeUnit> {
      */
     public static AgeUnit fromString(String name) {
         return fromString(name, AgeUnit.class);
-    }
-
-    /**
-     * Gets known AgeUnit values.
-     *
-     * @return known AgeUnit values.
-     */
-    public static Collection<AgeUnit> values() {
-        return values(AgeUnit.class);
     }
 }
 

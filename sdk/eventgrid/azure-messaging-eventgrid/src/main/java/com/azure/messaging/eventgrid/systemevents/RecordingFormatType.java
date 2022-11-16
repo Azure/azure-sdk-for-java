@@ -30,7 +30,11 @@ public final class RecordingFormatType extends ExpandableStringEnum<RecordingFor
         return fromString(name, RecordingFormatType.class);
     }
 
-    /** @return known RecordingFormatType values. */
+    /**
+     * Gets known RecordingFormatType values.
+     *
+     * @return known RecordingFormatType values.
+     */
     public static Collection<RecordingFormatType> values() {
         return values(RecordingFormatType.class);
     }

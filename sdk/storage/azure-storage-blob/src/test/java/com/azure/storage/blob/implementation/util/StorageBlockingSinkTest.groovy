@@ -13,6 +13,9 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 class StorageBlockingSinkTest extends Specification {
+    // Use a delay of 5 ms to test.
+    // This is more than long enough to ensure that nothing odd happens in the blocking sink.
+    static def delayMs = 5
 
     def "min"() {
         setup:
@@ -33,12 +36,11 @@ class StorageBlockingSinkTest extends Specification {
     def "producer, delayed consumer"() {
         setup:
         def blockingSink = new StorageBlockingSink()
-        def delay = 1000
 
         when:
         blockingSink.asFlux()
             .index()
-            .delayElements(Duration.ofMillis(delay)) // This simulates the slower network bound IO
+            .delayElements(Duration.ofMillis(delayMs)) // This simulates the slower network bound IO
             .doOnNext({ tuple ->
                 assert tuple.getT2().getLong(0) == tuple.getT1() // Check for data integrity
             })
@@ -64,7 +66,6 @@ class StorageBlockingSinkTest extends Specification {
     def "producer, delayed consumer random buffers"() {
         setup:
         def blockingSink = new StorageBlockingSink()
-        def delay = 1000
         def num = 50
         def rand = new Random()
         def buffers = new ByteBuffer[num]
@@ -78,7 +79,7 @@ class StorageBlockingSinkTest extends Specification {
         when:
         blockingSink.asFlux()
             .index()
-            .delayElements(Duration.ofMillis(delay)) // This simulates the slower network bound IO
+            .delayElements(Duration.ofMillis(delayMs)) // This simulates the slower network bound IO
             .doOnNext({ tuple ->
                 assert tuple.getT2() == buffers[(int)tuple.getT1()] // Check for data integrity
             })
@@ -97,7 +98,6 @@ class StorageBlockingSinkTest extends Specification {
     def "delayed producer, consumer"() {
         setup:
         def blockingSink = new StorageBlockingSink()
-        def delay = 1000
 
         when:
         blockingSink.asFlux()
@@ -109,7 +109,7 @@ class StorageBlockingSinkTest extends Specification {
 
         for(int i = 0; i < num; i++) {
             blockingSink.emitNext(ByteBuffer.allocate(8).putLong(i))
-            sleep(delay) // This simulates a customer writing really slow to the OutputStream
+            sleep(delayMs) // This simulates a customer writing really slow to the OutputStream
         }
         blockingSink.emitCompleteOrThrow()
 
@@ -128,7 +128,6 @@ class StorageBlockingSinkTest extends Specification {
     def "delayed producer, consumer random buffers"() {
         setup:
         def blockingSink = new StorageBlockingSink()
-        def delay = 1000
         def num = 50
         def rand = new Random()
         def buffers = new ByteBuffer[num]
@@ -149,7 +148,7 @@ class StorageBlockingSinkTest extends Specification {
 
         for(int i = 0; i < num; i++) {
             blockingSink.emitNext(buffers[i])
-            sleep(delay) // This simulates a customer writing really slow to the OutputStream
+            sleep(delayMs) // This simulates a customer writing really slow to the OutputStream
         }
         blockingSink.emitCompleteOrThrow()
 
@@ -193,7 +192,7 @@ class StorageBlockingSinkTest extends Specification {
         when:
         CountDownLatch latch = new CountDownLatch(1)
         blockingSink.asFlux()
-            .timeout(Duration.ofMillis(100))
+            .timeout(Duration.ofMillis(delayMs))
             .doFinally({s -> latch.countDown()})
             .subscribeOn(Schedulers.boundedElastic())
             .subscribe()
@@ -210,7 +209,7 @@ class StorageBlockingSinkTest extends Specification {
         blockingSink = new StorageBlockingSink()
         latch = new CountDownLatch(1)
         blockingSink.asFlux()
-            .timeout(Duration.ofMillis(100))
+            .timeout(Duration.ofMillis(delayMs))
             .doFinally({s -> latch.countDown()})
             .subscribeOn(Schedulers.boundedElastic())
             .subscribe()

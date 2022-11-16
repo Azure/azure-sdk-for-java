@@ -154,7 +154,8 @@ public final class StorageDirectoryDeletedEventData {
      * @return the recursive value.
      */
     public Boolean isRecursive() {
-        return Boolean.getBoolean(this.recursive);
+        String returnValue = this.recursive;
+        return Boolean.getBoolean(returnValue);
     }
 
     /**

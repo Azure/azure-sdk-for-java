@@ -15,9 +15,10 @@ import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceB
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
-import com.azure.spring.messaging.servicebus.implementation.core.ServiceBusProcessorClientLifecycleManager;
+import com.azure.spring.cloud.service.implementation.servicebus.lifecycle.ServiceBusProcessorClientLifecycleManager;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,7 @@ class AzureServiceBusProcessorClientConfiguration {
     @ConditionalOnMissingBean(ServiceBusProcessorClientLifecycleManager.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.auto-startup", havingValue = "true",
         matchIfMissing = true)
+    @ConditionalOnClass(ServiceBusProcessorClientLifecycleManager.class)
     ServiceBusProcessorClientLifecycleManager processorClientLifecycleManager(ServiceBusProcessorClient processorClient) {
         return new ServiceBusProcessorClientLifecycleManager(processorClient);
     }
