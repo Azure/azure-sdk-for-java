@@ -8,7 +8,7 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.stream.StreamSupport;
 /**
  * Test for EventSenderBuffered
  */
-@Service("EventSenderBuffered")
+@Component("EventSenderBuffered")
 public class EventSenderBuffered extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventSenderBuffered.class);
 
@@ -73,6 +73,8 @@ public class EventSenderBuffered extends EventHubsScenario {
             });
 
             return sender.enqueueEvents(eventDataList);
-        }).subscribe();
+        }).blockLast();
+
+        sender.close();
     }
 }

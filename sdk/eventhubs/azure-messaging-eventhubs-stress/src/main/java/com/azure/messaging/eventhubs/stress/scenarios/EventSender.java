@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 /**
  * Test for EventSender
  */
-@Service("EventSender")
+@Component("EventSender")
 public class EventSender extends EventHubsScenario {
 
     private final Random random = new Random();
@@ -50,6 +50,8 @@ public class EventSender extends EventHubsScenario {
                 eventDataList.add(new EventData(payload));
             });
             return client.send(eventDataList);
-        }).subscribe();
+        }).blockLast();
+
+        client.close();
     }
 }

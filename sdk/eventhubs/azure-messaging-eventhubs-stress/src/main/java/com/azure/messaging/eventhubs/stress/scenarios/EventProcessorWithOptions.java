@@ -19,7 +19,7 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -43,7 +43,7 @@ import java.util.function.Consumer;
  * --BATCH_TIMEOUT_IN_MILLIS int
  * </pre>
  */
-@Service("EventProcessorWithOptions")
+@Component("EventProcessorWithOptions")
 public class EventProcessorWithOptions extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessorWithOptions.class);
 

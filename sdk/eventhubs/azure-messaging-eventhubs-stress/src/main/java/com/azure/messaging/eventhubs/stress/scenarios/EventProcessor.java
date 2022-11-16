@@ -10,12 +10,12 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * Test for EventProcessorClient
  */
-@Service("EventProcessor")
+@Component("EventProcessor")
 public class EventProcessor extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessor.class);
 
