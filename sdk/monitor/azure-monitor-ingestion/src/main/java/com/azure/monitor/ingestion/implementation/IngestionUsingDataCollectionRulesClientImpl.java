@@ -33,6 +33,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.monitor.ingestion.IngestionUsingDataCollectionRulesServiceVersion;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the IngestionUsingDataCollectionRulesClient type. */
@@ -181,7 +182,9 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     }
 
     /**
-     * See error response code and error response message for more detail.
+     * Ingestion API used to directly ingest data using Data Collection Rules
+     *
+     * <p>See error response code and error response message for more detail.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -192,11 +195,13 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     Object
+     *     Object (Required)
      * ]
      * }</pre>
      *
@@ -237,7 +242,9 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     }
 
     /**
-     * See error response code and error response message for more detail.
+     * Ingestion API used to directly ingest data using Data Collection Rules
+     *
+     * <p>See error response code and error response message for more detail.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -248,66 +255,13 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
      * </table>
      *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     Object
-     * ]
-     * }</pre>
-     *
-     * @param ruleId The immutable Id of the Data Collection Rule resource.
-     * @param stream The streamDeclaration name as defined in the Data Collection Rule.
-     * @param body An array of objects matching the schema defined by the provided stream.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadWithResponseAsync(
-            String ruleId, String stream, BinaryData body, RequestOptions requestOptions, Context context) {
-        if (ruleId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
-        }
-        if (stream == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stream is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.upload(
-                this.getEndpoint(),
-                ruleId,
-                stream,
-                this.getServiceVersion().getVersion(),
-                body,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * See error response code and error response message for more detail.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
-     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     Object
+     *     Object (Required)
      * ]
      * }</pre>
      *
