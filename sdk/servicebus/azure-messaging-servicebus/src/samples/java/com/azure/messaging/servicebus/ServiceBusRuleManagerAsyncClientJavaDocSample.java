@@ -84,7 +84,7 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
     @Test
     public void getRules() {
         // BEGIN: com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules
-        ruleManager.getRules().subscribe(ruleProperties -> System.out.println(ruleProperties.getName()));
+        ruleManager.listRules().subscribe(ruleProperties -> System.out.println(ruleProperties.getName()));
         // END: com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules
     }
 

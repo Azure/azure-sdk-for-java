@@ -6,20 +6,24 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
+import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DeadlockTests {
@@ -30,7 +34,7 @@ public class DeadlockTests {
 
     @BeforeEach
     public void configureWireMockServer() {
-        expectedGetBytes = new byte[10 * 1024 * 1024];
+        expectedGetBytes = new byte[1024 * 1024];
         new SecureRandom().nextBytes(expectedGetBytes);
 
         server = new WireMockServer(WireMockConfiguration.options()
@@ -56,15 +60,21 @@ public class DeadlockTests {
 
         String endpoint = server.baseUrl() + GET_ENDPOINT;
 
-        for (int i = 0; i < 100; i++) {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())
-                    .zipWith(Mono.just(response.getStatusCode()))))
-                .assertNext(responseTuple -> {
-                    assertEquals(200, responseTuple.getT2());
-                    assertArrayEquals(expectedGetBytes, responseTuple.getT1());
-                })
-                .verifyComplete();
+        Mono<Tuple2<byte[], Integer>> request = httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
+            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), 1024 * 1024)
+                .map(bytes -> Tuples.of(bytes, response.getStatusCode())));
+
+        List<Tuple2<byte[], Integer>> results = Flux.range(0, 100)
+            .parallel()
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(ignored -> request)
+            .sequential()
+            .collectList()
+            .block();
+
+        for (Tuple2<byte[], Integer> result : results) {
+            assertEquals(200, result.getT2());
+            TestUtils.assertArraysEqual(expectedGetBytes, result.getT1());
         }
     }
 }
