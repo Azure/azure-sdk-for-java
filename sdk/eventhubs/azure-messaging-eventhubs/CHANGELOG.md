@@ -1,13 +1,11 @@
 # Release History
 
-## 5.15.0-beta.1 (Unreleased)
+## 5.15.0 (2022-11-16)
 
 ### Features Added
 
 - Added `EventHubBufferedProducerBuilder.fullyQualifiedNamespace(String)`
 - Added `EventHubBufferedProducerBuilder.eventHubName(String)`
-
-### Breaking Changes
 
 ### Bugs Fixed
 - Fixed incorrect proxy configuration using environment variables. ([#24230](https://github.com/Azure/azure-sdk-for-java/issues/24230)) 
