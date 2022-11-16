@@ -664,22 +664,24 @@ public class EncryptionProcessor {
     }
 
     private String convertToBase64UriSafeString(byte[] bytesToProcess) {
-        StringBuilder base64String = new StringBuilder(new String(Base64.getUrlDecoder().decode(bytesToProcess), StandardCharsets.UTF_8));
+//        StringBuilder base64String = new StringBuilder(new String(Base64.getDecoder().decode(bytesToProcess), StandardCharsets.UTF_8));
 
         // Base 64 Encoding with URL and Filename Safe Alphabet  https://datatracker.ietf.org/doc/html/rfc4648#section-5
         // https://docs.microsoft.com/en-us/azure/cosmos-db/concepts-limits#per-item-limits, due to base64 conversion and encryption
         // the permissible size of the property will further reduce.
-        replaceString(base64String, "/", "_");
-        replaceString(base64String, "\\+", "-");
-        return base64String.toString();
+//        replaceString(base64String, "/", "_");
+//        replaceString(base64String, "\\+", "-");
+//        return base64String.toString();
+        return Base64.getUrlEncoder().encodeToString(bytesToProcess);
     }
 
     private byte[] convertFromBase64UriSafeString(String base64UriSafeString) {
-        StringBuilder base64String = new StringBuilder(base64UriSafeString);
-
-        replaceString(base64String, "_", "/");
-        replaceString(base64String, "-", "\\+");
-        return Base64.getUrlEncoder().encode(base64String.toString().getBytes(StandardCharsets.UTF_8));
+//        StringBuilder base64String = new StringBuilder(base64UriSafeString);
+//
+//        replaceString(base64String, "_", "/");
+//        replaceString(base64String, "-", "\\+");
+//        return Base64.getEncoder().encode(base64String.toString().getBytes(StandardCharsets.UTF_8));
+        return Base64.getUrlDecoder().decode(base64UriSafeString);
     }
 
     private StringBuilder replaceString(StringBuilder sb,

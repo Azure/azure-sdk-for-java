@@ -1213,7 +1213,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
     }
 
-        protected static List<ClientEncryptionIncludedPath> getPaths(boolean shouldEncryptIdAndPartitionKey) {
+        protected static List<ClientEncryptionIncludedPath> getPaths(boolean shouldEncryptId) {
             ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
             includedPath1.setClientEncryptionKeyId("key1");
             includedPath1.setPath("/sensitiveString");
@@ -1293,16 +1293,16 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
             ClientEncryptionIncludedPath includedPath14 = new ClientEncryptionIncludedPath();
-            includedPath13.setClientEncryptionKeyId("key1");
-            includedPath13.setPath("/id");
-            includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-            includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+            includedPath14.setClientEncryptionKeyId("key1");
+            includedPath14.setPath("/id");
+            includedPath14.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath14.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
-            ClientEncryptionIncludedPath includedPath15 = new ClientEncryptionIncludedPath();
-            includedPath13.setClientEncryptionKeyId("key1");
-            includedPath13.setPath("/mypk");
-            includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-            includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+//            ClientEncryptionIncludedPath includedPath15 = new ClientEncryptionIncludedPath();
+//            includedPath13.setClientEncryptionKeyId("key1");
+//            includedPath13.setPath("/mypk");
+//            includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+//            includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
             List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
             paths.add(includedPath1);
@@ -1319,9 +1319,8 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             paths.add(includedPath12);
             paths.add(includedPath13);
 
-            if (shouldEncryptIdAndPartitionKey) {
+            if (shouldEncryptId) {
                 paths.add(includedPath14);
-                paths.add(includedPath15);
             }
 
             return paths;
