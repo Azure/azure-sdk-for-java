@@ -4,6 +4,7 @@
 package com.azure.developer.loadtesting;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -19,9 +20,20 @@ class LoadTestingClientTestBase extends TestBase {
 
     private final String defaultEndpoint = "REDACTED.eus.cnt-prod.loadtesting.azure.com";
 
-    protected final String defaultTestId = "11111111-1234-1234-1234-123456789012";
-    protected final String defaultFileId = "22222222-1234-1234-1234-123456789012";
-    protected final String defaultTestRunId = "33333333-1234-1234-1234-123456789012";
+    protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
+    protected final String newTestId = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
+    protected final String existingTestRunId = Configuration.getGlobalConfiguration().get("EXISING_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
+    protected final String newTestRunId = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "44444444-1234-1234-1234-123456789012");
+    protected final String defaultUploadFileName = Configuration.getGlobalConfiguration().get("UPLOAD_FILE_NAME", "sample-JMX-file.jmx");
+
+    private TokenCredential getTokenCredential() {
+        DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
+        String authorityHost = Configuration.getGlobalConfiguration().get("AUTHORITY_HOST");
+        if (authorityHost != null) {
+            credentialBuilder.authorityHost(authorityHost);
+        }
+        return credentialBuilder.build();
+    }
 
     @Override
     protected void beforeTest() {
@@ -37,9 +49,9 @@ class LoadTestingClientTestBase extends TestBase {
         } else if (getTestMode() == TestMode.RECORD) {
             loadTestingClientBuilder
                     .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+                    .credential(getTokenCredential());
         } else if (getTestMode() == TestMode.LIVE) {
-            loadTestingClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            loadTestingClientBuilder.credential(getTokenCredential());
         }
         builder = loadTestingClientBuilder;
     }

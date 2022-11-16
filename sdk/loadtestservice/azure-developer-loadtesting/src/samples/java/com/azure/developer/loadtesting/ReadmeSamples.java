@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -30,8 +31,16 @@ public final class ReadmeSamples {
         LoadTestAdministrationClient adminClient = builder.buildLoadTestAdministrationClient();
         LoadTestRunClient testRunClient = builder.buildLoadTestRunClient();
 
-        adminClient.listLoadTests(null);
-        testRunClient.listTestRuns(null);
+        RequestOptions reqOpts = new RequestOptions()
+            .addQueryParam("orderBy", "lastModifiedDateTime")
+            .addQueryParam("maxPageSize", "10");
+        adminClient.listLoadTests(reqOpts);
+
+        reqOpts = new RequestOptions()
+            .addQueryParam("orderBy", "lastModifiedDateTime")
+            .addQueryParam("status", "EXECUTING,DONE")
+            .addQueryParam("maxPageSize", "10");
+        testRunClient.listTestRuns(reqOpts);
         // END: java-readme-sample-auth
     }
 
