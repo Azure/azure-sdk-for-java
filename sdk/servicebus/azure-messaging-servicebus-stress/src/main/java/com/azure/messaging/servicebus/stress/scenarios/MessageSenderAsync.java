@@ -3,13 +3,13 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +17,14 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
- * Test ServiceBusSenderClient
+ * Test ServiceBusSenderAsyncClient
  */
-@Service("MessageSenderSync")
-public class MessageSenderSync extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSenderSync.class);
-
+@Service("MessageSenderAsync")
+public class MessageSenderAsync extends ServiceBusScenario {
     @Value("${SEND_TIMES:100000}")
     private int sendTimes;
 
-    @Value("${SEND_MESSAGES:100}")
+    @Value("${SEND_MESSAGES:10}")
     private int messagesToSend;
 
     @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
@@ -46,27 +44,23 @@ public class MessageSenderSync extends ServiceBusScenario {
             topicName = options.getServicebusTopicName();
         }
 
-        ServiceBusSenderClient client = new ServiceBusClientBuilder()
+        ServiceBusSenderAsyncClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
             .queueName(queueName)
             .topicName(topicName)
-            .buildClient();
+            .buildAsyncClient();
 
         final byte[] payload = new byte[payloadSize];
         random.nextBytes(payload);
 
-        for (long i = 0; i < sendTimes; i++) {
+        Flux.range(0, sendTimes).concatMap(i -> {
             List<ServiceBusMessage> eventDataList = new ArrayList<>();
             IntStream.range(0, messagesToSend).forEach(j -> {
                 eventDataList.add(new ServiceBusMessage(payload));
             });
-            try {
-                client.sendMessages(eventDataList);
-            } catch (Exception exp) {
-                LOGGER.error(exp.getMessage());
-            }
-        }
+            return client.sendMessages(eventDataList);
+        }).blockLast();
 
         client.close();
     }

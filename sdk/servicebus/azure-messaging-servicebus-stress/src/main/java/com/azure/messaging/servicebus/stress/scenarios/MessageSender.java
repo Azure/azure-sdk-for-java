@@ -3,13 +3,13 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,12 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
- * Test ServiceBusSenderAsyncClient
+ * Test ServiceBusSenderClient
  */
 @Service("MessageSender")
 public class MessageSender extends ServiceBusScenario {
+    private static final ClientLogger LOGGER = new ClientLogger(MessageSender.class);
+
     @Value("${SEND_TIMES:100000}")
     private int sendTimes;
 
@@ -44,22 +46,28 @@ public class MessageSender extends ServiceBusScenario {
             topicName = options.getServicebusTopicName();
         }
 
-        ServiceBusSenderAsyncClient client = new ServiceBusClientBuilder()
+        ServiceBusSenderClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
             .queueName(queueName)
             .topicName(topicName)
-            .buildAsyncClient();
+            .buildClient();
 
         final byte[] payload = new byte[payloadSize];
         random.nextBytes(payload);
 
-        Flux.range(0, sendTimes).concatMap(i -> {
+        for (long i = 0; i < sendTimes; i++) {
             List<ServiceBusMessage> eventDataList = new ArrayList<>();
             IntStream.range(0, messagesToSend).forEach(j -> {
                 eventDataList.add(new ServiceBusMessage(payload));
             });
-            return client.sendMessages(eventDataList);
-        }).subscribe();
+            try {
+                client.sendMessages(eventDataList);
+            } catch (Exception exp) {
+                LOGGER.error(exp.getMessage());
+            }
+        }
+
+        client.close();
     }
 }

@@ -21,9 +21,9 @@ import java.util.stream.IntStream;
 /**
  * Test ServiceBusSenderClient and send session messages
  */
-@Service("MessageSessionSenderSync")
-public class MessageSessionSenderSync extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSessionSenderSync.class);
+@Service("MessageSessionSender")
+public class MessageSessionSender extends ServiceBusScenario {
+    private static final ClientLogger LOGGER = new ClientLogger(MessageSessionSender.class);
 
     @Value("${SEND_TIMES:100000}")
     private int sendTimes;
