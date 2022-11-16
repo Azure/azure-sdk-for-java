@@ -36,6 +36,7 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.ChecksumUtils;
@@ -124,9 +125,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     BlockBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId) {
+        EncryptionScope encryptionScope, String versionId, TransferValidationOptions transferValidation) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, versionId);
+            encryptionScope, versionId, transferValidation);
     }
 
     /**
@@ -143,7 +144,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new BlockBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId());
+            getVersionId(), getTransferValidation());
     }
 
     /**
@@ -164,7 +165,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new BlockBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId());
+            getVersionId(), getTransferValidation());
     }
 
     /**

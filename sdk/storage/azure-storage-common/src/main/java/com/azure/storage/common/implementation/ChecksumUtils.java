@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.DownloadTransferValidationOptions;
 import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.UploadTransferValidationOptions;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -19,6 +20,20 @@ import java.util.Arrays;
 import java.util.Base64;
 
 public class ChecksumUtils {
+    public static UploadTransferValidationOptions getDefaultUploadValidationOptions() {
+        return new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.None);
+    }
+
+    public static DownloadTransferValidationOptions getDefaultDownloadValidationOptions() {
+        return new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.None);
+    }
+
+    public static TransferValidationOptions getDefaultTransferValidationOptions() {
+        return new TransferValidationOptions()
+            .setUpload(getDefaultUploadValidationOptions())
+            .setDownload(getDefaultDownloadValidationOptions());
+    }
+
     public static boolean isAlgorithmSelected(StorageChecksumAlgorithm algorithm) {
         return algorithm != null && algorithm != StorageChecksumAlgorithm.None;
     }

@@ -31,7 +31,9 @@ import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.ChecksumUtils;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -79,6 +81,7 @@ public final class BlobClientBuilder implements
 
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private TransferValidationOptions transferValidation = ChecksumUtils.getDefaultTransferValidationOptions();
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
@@ -612,6 +615,16 @@ public final class BlobClientBuilder implements
      */
     public BlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TransferValidationOptions} used by this client for validating transfer content integrity.
+     * @param transferValidation Options to use.
+     * @return the updated BlobClientBuilder object.
+     */
+    public BlobClientBuilder transferValidation(TransferValidationOptions transferValidation) {
+        this.transferValidation = Objects.requireNonNull(transferValidation);
         return this;
     }
 }

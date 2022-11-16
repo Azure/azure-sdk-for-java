@@ -35,6 +35,7 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferStagingArea;
@@ -174,10 +175,18 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
      * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @param transferValidation Options for validating content transfer integrity on this client.
      */
     protected BlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-                              String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-                              EncryptionScope encryptionScope, String versionId) {
+        String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope, String versionId, TransferValidationOptions transferValidation) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
+            encryptionScope, versionId, transferValidation);
+    }
+    protected BlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+            String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+            EncryptionScope encryptionScope, String versionId) {
+
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
     }

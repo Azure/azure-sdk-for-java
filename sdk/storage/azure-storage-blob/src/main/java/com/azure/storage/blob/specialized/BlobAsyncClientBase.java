@@ -80,7 +80,9 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.ChecksumUtils;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -139,6 +141,7 @@ public class BlobAsyncClientBase {
     private final String snapshot;
     private final String versionId;
     private final CpkInfo customerProvidedKey;
+    private final TransferValidationOptions transferValidation;
 
     /**
      * Encryption scope of the blob.
@@ -224,6 +227,30 @@ public class BlobAsyncClientBase {
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, String versionId) {
+        this(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
+            encryptionScope, versionId, null);
+    }
+
+    /**
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
+     *
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @param transferValidation Options for content transfer validation with this client.
+     */
+    protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+            String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+            EncryptionScope encryptionScope, String versionId, TransferValidationOptions transferValidation) {
         if (snapshot != null && versionId != null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
@@ -242,6 +269,8 @@ public class BlobAsyncClientBase {
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
         this.versionId = versionId;
+        this.transferValidation = transferValidation != null ? transferValidation
+            : ChecksumUtils.getDefaultTransferValidationOptions();
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {
@@ -261,6 +290,15 @@ public class BlobAsyncClientBase {
             return null;
         }
         return encryptionScope.getEncryptionScope();
+    }
+
+    /**
+     * Gets the options used by this client to validate content transfer integrity.
+     *
+     * @return the {@link TransferValidationOptions} used by this client.
+     */
+    protected TransferValidationOptions getTransferValidation() {
+        return transferValidation;
     }
 
     /**

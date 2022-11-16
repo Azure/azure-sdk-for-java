@@ -36,7 +36,9 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.ChecksumUtils;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -87,6 +89,7 @@ public final class SpecializedBlobClientBuilder implements
 
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private TransferValidationOptions transferValidation = ChecksumUtils.getDefaultTransferValidationOptions();
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
@@ -133,7 +136,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            transferValidation);
     }
 
     /**
@@ -168,7 +172,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            transferValidation);
     }
 
     /**
@@ -202,7 +207,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            transferValidation);
     }
 
     /*
@@ -757,6 +763,16 @@ public final class SpecializedBlobClientBuilder implements
      */
     public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TransferValidationOptions} used by this client for validating transfer content integrity.
+     * @param transferValidation Options to use.
+     * @return the updated SpecializedBlobClientBuilder object.
+     */
+    public SpecializedBlobClientBuilder transferValidation(TransferValidationOptions transferValidation) {
+        this.transferValidation = Objects.requireNonNull(transferValidation);
         return this;
     }
 }

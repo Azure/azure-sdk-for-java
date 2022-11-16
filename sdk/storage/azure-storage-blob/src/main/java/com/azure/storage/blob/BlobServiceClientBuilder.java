@@ -34,6 +34,8 @@ import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TransferValidationOptions;
+import com.azure.storage.common.implementation.ChecksumUtils;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -78,6 +80,7 @@ public final class BlobServiceClientBuilder implements
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
     private BlobContainerEncryptionScope blobContainerEncryptionScope;
+    private TransferValidationOptions transferValidation = ChecksumUtils.getDefaultTransferValidationOptions();
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
@@ -155,7 +158,7 @@ public final class BlobServiceClientBuilder implements
         anonymousAccess = !foundCredential;
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
-            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess, transferValidation);
     }
 
     /**
@@ -529,6 +532,16 @@ public final class BlobServiceClientBuilder implements
      */
     public BlobServiceClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TransferValidationOptions} used by this client for validating transfer content integrity.
+     * @param transferValidation Options to use.
+     * @return the updated BlobServiceClientBuilder object.
+     */
+    public BlobServiceClientBuilder transferValidation(TransferValidationOptions transferValidation) {
+        this.transferValidation = Objects.requireNonNull(transferValidation);
         return this;
     }
 }

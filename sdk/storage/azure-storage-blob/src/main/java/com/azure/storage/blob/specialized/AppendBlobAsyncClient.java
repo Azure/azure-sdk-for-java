@@ -34,6 +34,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -99,9 +100,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     AppendBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId) {
+        EncryptionScope encryptionScope, String versionId, TransferValidationOptions transferValidation) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, versionId);
+            encryptionScope, versionId, transferValidation);
     }
 
     /**
@@ -118,7 +119,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new AppendBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId());
+            getVersionId(), getTransferValidation());
     }
 
     /**
@@ -139,7 +140,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new AppendBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId());
+            getVersionId(), getTransferValidation());
     }
 
     /**
