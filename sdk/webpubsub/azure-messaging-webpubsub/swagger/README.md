@@ -20,5 +20,6 @@ generate-sync-async-clients: true
 service-name: WebPubSubService
 generate-builder-per-client: false
 service-versions:
+  - '2021_10_01'
   - '2022-11-01'
 ```
