@@ -17,7 +17,7 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 - For Spark 3.2:
   - [Azure Databricks Runtime 10.2 with Spark 3.2.0](https://docs.microsoft.com/azure/databricks/release-notes/runtime/10.2)
 - For Spark 3.3
-  - [Azure Databricks Runtime 11.0 with Spark 3.3.0](https://docs.microsoft.com/azure/databricks/release-notes/runtime/11.0)
+  - [Azure Databricks Runtime 11.3 LTS with Spark 3.3.0](https://learn.microsoft.com/en-us/azure/databricks/release-notes/runtime/11.3)
 
 
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
