@@ -21,6 +21,10 @@ public final class DedicatedHostGroupPropertiesAdditionalCapabilities {
     @JsonProperty(value = "ultraSSDEnabled")
     private Boolean ultraSsdEnabled;
 
+    /** Creates an instance of DedicatedHostGroupPropertiesAdditionalCapabilities class. */
+    public DedicatedHostGroupPropertiesAdditionalCapabilities() {
+    }
+
     /**
      * Get the ultraSsdEnabled property: The flag that enables or disables a capability to have UltraSSD Enabled Virtual
      * Machines on Dedicated Hosts of the Dedicated Host Group. For the Virtual Machines to be UltraSSD Enabled,

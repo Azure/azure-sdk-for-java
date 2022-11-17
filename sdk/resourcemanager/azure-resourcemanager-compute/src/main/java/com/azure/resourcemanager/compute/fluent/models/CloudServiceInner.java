@@ -26,6 +26,10 @@ public final class CloudServiceInner extends Resource {
     @JsonProperty(value = "systemData")
     private SystemData systemData;
 
+    /** Creates an instance of CloudServiceInner class. */
+    public CloudServiceInner() {
+    }
+
     /**
      * Get the properties property: Cloud service properties.
      *

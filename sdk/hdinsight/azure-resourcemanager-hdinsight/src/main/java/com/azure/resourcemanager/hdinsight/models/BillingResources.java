@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The billing resources. */
 @Fluent
 public final class BillingResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingResources.class);
-
     /*
      * The region or location.
      */
@@ -32,6 +28,10 @@ public final class BillingResources {
      */
     @JsonProperty(value = "diskBillingMeters")
     private List<DiskBillingMeters> diskBillingMeters;
+
+    /** Creates an instance of BillingResources class. */
+    public BillingResources() {
+    }
 
     /**
      * Get the region property: The region or location.

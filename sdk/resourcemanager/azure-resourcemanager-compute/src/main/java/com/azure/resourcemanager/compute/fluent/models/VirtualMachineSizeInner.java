@@ -49,6 +49,10 @@ public final class VirtualMachineSizeInner {
     @JsonProperty(value = "maxDataDiskCount")
     private Integer maxDataDiskCount;
 
+    /** Creates an instance of VirtualMachineSizeInner class. */
+    public VirtualMachineSizeInner() {
+    }
+
     /**
      * Get the name property: The name of the virtual machine size.
      *

@@ -236,6 +236,8 @@ public interface GalleryImageVersion
 
             /**
              * Specifies that an image version should be removed from an existing region serving it.
+             * <p>
+             * Removing region would set safetyProfile.allowDeletionOfReplicatedLocations to true.
              *
              * @param region the region
              * @return the next update stage

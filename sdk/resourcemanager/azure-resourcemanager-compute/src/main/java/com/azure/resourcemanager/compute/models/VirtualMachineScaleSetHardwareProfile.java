@@ -17,6 +17,10 @@ public final class VirtualMachineScaleSetHardwareProfile {
     @JsonProperty(value = "vmSizeProperties")
     private VMSizeProperties vmSizeProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetHardwareProfile class. */
+    public VirtualMachineScaleSetHardwareProfile() {
+    }
+
     /**
      * Get the vmSizeProperties property: Specifies the properties for customizing the size of the virtual machine.
      * Minimum api-version: 2021-11-01. &lt;br&gt;&lt;br&gt; Please follow the instructions in [VM

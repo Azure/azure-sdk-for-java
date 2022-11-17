@@ -14,7 +14,7 @@ public final class CurrencyResolutionPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link CurrencyResolution} instance.
      */
     public interface CurrencyResolutionAccessor {
-        void setISO4217(CurrencyResolution currencyResolution, String iso4217);
+        void setIso4217(CurrencyResolution currencyResolution, String iso4217);
         void setUnit(CurrencyResolution currencyResolution, String unit);
         void setValue(CurrencyResolution currencyResolution, double value);
     }
@@ -29,7 +29,7 @@ public final class CurrencyResolutionPropertiesHelper {
     }
 
     public static void setISO4217(CurrencyResolution currencyResolution, String iso4217) {
-        accessor.setISO4217(currencyResolution, iso4217);
+        accessor.setIso4217(currencyResolution, iso4217);
     }
 
     public static void setUnit(CurrencyResolution currencyResolution, String unit) {
