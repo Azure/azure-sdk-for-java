@@ -29,6 +29,10 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of UpgradeOperationHistoricalStatusInfoInner class. */
+    public UpgradeOperationHistoricalStatusInfoInner() {
+    }
+
     /**
      * Get the properties property: Information about the properties of the upgrade operation.
      *

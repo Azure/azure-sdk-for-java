@@ -29,6 +29,10 @@ public final class CapacityReservationUpdate extends UpdateResource {
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /** Creates an instance of CapacityReservationUpdate class. */
+    public CapacityReservationUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Capacity reservation.
      *

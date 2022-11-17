@@ -26,6 +26,10 @@ public final class RunCommandDocumentInner extends RunCommandDocumentBaseInner {
     @JsonProperty(value = "parameters")
     private List<RunCommandParameterDefinition> parameters;
 
+    /** Creates an instance of RunCommandDocumentInner class. */
+    public RunCommandDocumentInner() {
+    }
+
     /**
      * Get the script property: The script to be executed.
      *

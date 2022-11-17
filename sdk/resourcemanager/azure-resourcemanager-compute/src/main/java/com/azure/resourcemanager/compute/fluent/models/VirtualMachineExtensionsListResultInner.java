@@ -17,6 +17,10 @@ public final class VirtualMachineExtensionsListResultInner {
     @JsonProperty(value = "value")
     private List<VirtualMachineExtensionInner> value;
 
+    /** Creates an instance of VirtualMachineExtensionsListResultInner class. */
+    public VirtualMachineExtensionsListResultInner() {
+    }
+
     /**
      * Get the value property: The list of extensions.
      *

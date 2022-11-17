@@ -112,7 +112,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
 
     packages = []
-    if 'relatedReadmeMdFile' not in config or not config['relatedReadmeMdFile']:
+    if 'relatedReadmeMdFiles' not in config or not config['relatedReadmeMdFiles']:
         return packages
 
     for readme in config['relatedReadmeMdFiles']:

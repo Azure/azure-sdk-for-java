@@ -29,6 +29,10 @@ public final class VMSizeProperties {
     @JsonProperty(value = "vCPUsPerCore")
     private Integer vCpusPerCore;
 
+    /** Creates an instance of VMSizeProperties class. */
+    public VMSizeProperties() {
+    }
+
     /**
      * Get the vCpusAvailable property: Specifies the number of vCPUs available for the VM. &lt;br&gt;&lt;br&gt; When
      * this property is not specified in the request body the default behavior is to set it to the value of vCPUs

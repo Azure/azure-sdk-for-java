@@ -30,6 +30,10 @@ public final class WinRMListener {
     @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
+    /** Creates an instance of WinRMListener class. */
+    public WinRMListener() {
+    }
+
     /**
      * Get the protocol property: Specifies the protocol of WinRM listener. &lt;br&gt;&lt;br&gt; Possible values are:
      * &lt;br&gt;**http** &lt;br&gt;&lt;br&gt; **https**.

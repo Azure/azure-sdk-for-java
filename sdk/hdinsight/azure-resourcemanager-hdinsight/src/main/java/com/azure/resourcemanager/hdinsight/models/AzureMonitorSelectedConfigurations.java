@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The selected configurations for azure monitor. */
 @Fluent
 public final class AzureMonitorSelectedConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMonitorSelectedConfigurations.class);
-
     /*
      * The configuration version.
      */
@@ -35,6 +31,10 @@ public final class AzureMonitorSelectedConfigurations {
      */
     @JsonProperty(value = "tableList")
     private List<AzureMonitorTableConfiguration> tableList;
+
+    /** Creates an instance of AzureMonitorSelectedConfigurations class. */
+    public AzureMonitorSelectedConfigurations() {
+    }
 
     /**
      * Get the configurationVersion property: The configuration version.

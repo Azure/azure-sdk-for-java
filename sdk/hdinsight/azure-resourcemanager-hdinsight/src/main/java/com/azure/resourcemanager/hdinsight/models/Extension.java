@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cluster monitoring extensions. */
 @Fluent
 public final class Extension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Extension.class);
-
     /*
      * The workspace ID for the cluster monitoring extension.
      */
@@ -25,6 +21,10 @@ public final class Extension {
      */
     @JsonProperty(value = "primaryKey")
     private String primaryKey;
+
+    /** Creates an instance of Extension class. */
+    public Extension() {
+    }
 
     /**
      * Get the workspaceId property: The workspace ID for the cluster monitoring extension.

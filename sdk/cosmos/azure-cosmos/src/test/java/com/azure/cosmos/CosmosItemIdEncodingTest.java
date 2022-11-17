@@ -255,15 +255,15 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY.toString(),
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.BADREQUEST,// Bug in Compute Gateway - check with Dmitri when fix is available
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
@@ -625,9 +625,11 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 cosmosError.getCause().getCause() instanceof JsonParseException &&
                 cosmosError.getCause().getCause().toString().contains("<TITLE>Bad Request</TITLE>")) {
 
+                logger.info("HTML BAD REQUEST", cosmosError);
                 assertThat(expected.ExpectedReadStatusCode).isEqualTo(400);
                 return;
             } else {
+                logger.info("BAD REQUEST", cosmosError);
                 assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedReadStatusCode);
             }
         }
