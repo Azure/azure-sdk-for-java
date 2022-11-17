@@ -24,9 +24,7 @@ import com.azure.search.documents.implementation.models.SearchFirstPageResponseW
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestRequest;
-import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.MappingUtils;
-import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
@@ -681,7 +679,7 @@ public final class SearchAsyncClient {
         try {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, null, context)
-                .onErrorMap(DocumentResponseConversions::exceptionMapper)
+                .onErrorMap(Utility::exceptionMapper)
                 .map(res -> new SimpleResponse<>(res, serializer.deserializeFromBytes(
                     serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
         } catch (RuntimeException ex) {
@@ -938,14 +936,14 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName,
-            SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
+            Utility.ensureSuggestOptions(suggestOptions));
 
         return new SuggestPagedFlux(() -> withContext(context -> suggest(suggestRequest, context)));
     }
 
     SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions, Context context) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
+        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName,
+            Utility.ensureSuggestOptions(suggestOptions));
 
         return new SuggestPagedFlux(() -> suggest(suggestRequest, context));
     }

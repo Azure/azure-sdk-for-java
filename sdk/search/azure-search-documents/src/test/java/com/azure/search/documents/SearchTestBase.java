@@ -11,7 +11,8 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.DefaultJsonReader;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
@@ -38,6 +39,8 @@ import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -81,10 +84,14 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected String setupIndexFromJsonFile(String jsonFile) {
-        SearchIndex baseIndex = SearchIndex.fromJson(DefaultJsonReader.fromBytes(TestHelpers.loadResource(jsonFile)));
-        String testIndexName = testResourceNamer.randomName(baseIndex.getName(), 64);
+        try (JsonReader jsonReader = JsonProviders.createReader(TestHelpers.loadResource(jsonFile))) {
+            SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
+            String testIndexName = testResourceNamer.randomName(baseIndex.getName(), 64);
 
-        return setupIndex(TestHelpers.createTestIndex(testIndexName, baseIndex));
+            return setupIndex(TestHelpers.createTestIndex(testIndexName, baseIndex));
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     protected String setupIndex(SearchIndex index) {

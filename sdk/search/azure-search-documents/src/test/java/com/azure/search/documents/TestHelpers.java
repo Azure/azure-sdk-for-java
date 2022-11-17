@@ -12,10 +12,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.json.DefaultJsonReader;
-import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -23,6 +23,8 @@ import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -122,11 +124,14 @@ public final class TestHelpers {
                 actualJson = SERIALIZER.serializeToBytes(actual);
             }
 
-            Map<String, Object> expectedMap = DefaultJsonReader.fromBytes(expectedJson)
-                .readMap(JsonReader::readUntyped);
-            Map<String, Object> actualMap = DefaultJsonReader.fromBytes(actualJson).readMap(JsonReader::readUntyped);
+            try (JsonReader expectedReader = JsonProviders.createReader(expectedJson);
+                JsonReader actualReader = JsonProviders.createReader(actualJson)) {
 
-            assertMapEqualsInternal(expectedMap, actualMap, ignoredDefaults, ignoredFields);
+                assertMapEqualsInternal(expectedReader.readMap(JsonReader::readUntyped),
+                    actualReader.readMap(JsonReader::readUntyped), ignoredDefaults, ignoredFields);
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
         }
     }
 
@@ -136,9 +141,13 @@ public final class TestHelpers {
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        jsonSerializable.toJson(DefaultJsonWriter.fromStream(outputStream));
 
-        return outputStream.toByteArray();
+        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            jsonSerializable.toJson(writer).flush();
+            return outputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     /**
@@ -326,13 +335,19 @@ public final class TestHelpers {
     }
 
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
-        JsonReader reader = DefaultJsonReader.fromBytes(loadResource(filename));
-
-        return reader.readArray(reader1 -> reader1.readMap(JsonReader::readUntyped));
+        try (JsonReader jsonReader = JsonProviders.createReader(loadResource(filename))) {
+            return jsonReader.readArray(reader -> reader.readMap(JsonReader::readUntyped));
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     public static Map<String, Object> convertStreamToMap(byte[] source) {
-        return DefaultJsonReader.fromBytes(source).readMap(JsonReader::readUntyped);
+        try (JsonReader jsonReader = JsonProviders.createReader(source)) {
+            return jsonReader.readMap(JsonReader::readUntyped);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
@@ -340,19 +355,22 @@ public final class TestHelpers {
     }
 
     public static SearchIndexClient setupSharedIndex(String indexName) {
-        SearchIndex baseIndex = SearchIndex.fromJson(
-            DefaultJsonReader.fromBytes(loadResource(HOTELS_TESTS_INDEX_DATA_JSON)));
+        try (JsonReader jsonReader = JsonProviders.createReader(loadResource(HOTELS_TESTS_INDEX_DATA_JSON))) {
+            SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
 
-        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
-            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
-            .buildClient();
+            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+                .endpoint(ENDPOINT)
+                .credential(new AzureKeyCredential(API_KEY))
+                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
+                .buildClient();
 
-        searchIndexClient.createOrUpdateIndex(createTestIndex(indexName, baseIndex));
-        uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
+            searchIndexClient.createOrUpdateIndex(createTestIndex(indexName, baseIndex));
+            uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
 
-        return searchIndexClient;
+            return searchIndexClient;
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {

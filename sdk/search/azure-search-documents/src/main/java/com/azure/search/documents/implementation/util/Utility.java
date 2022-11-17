@@ -5,6 +5,8 @@ package com.azure.search.documents.implementation.util;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -29,11 +31,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.models.IndexBatch;
+import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.SuggestOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -61,6 +66,11 @@ public final class Utility {
      * Representation of the Multi-Status HTTP response code.
      */
     private static final int MULTI_STATUS_CODE = 207;
+
+    /*
+     * Exception message to use if the document isn't found.
+     */
+    private static final String DOCUMENT_NOT_FOUND = "Document not found.";
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -158,6 +168,40 @@ public final class Utility {
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    /**
+     * Ensures that all suggest parameters are correctly set. This method should be used when {@link SuggestOptions} is
+     * passed to the Search service.
+     *
+     * @param suggestOptions suggest parameters
+     * @return SuggestOptions ensured suggest parameters
+     */
+    public static SuggestOptions ensureSuggestOptions(SuggestOptions suggestOptions) {
+        if (suggestOptions == null) {
+            return null;
+        }
+
+        return CoreUtils.isNullOrEmpty(suggestOptions.getSelect()) ? suggestOptions.setSelect("*") : suggestOptions;
+    }
+
+    /**
+     * Converts the {@link Throwable} into a more descriptive exception type if the {@link SearchDocument} isn't found.
+     *
+     * @param throwable Throwable thrown during a API call.
+     * @return The {@link Throwable} mapped to a more descriptive exception type if the {@link SearchDocument}
+     * isn't found, otherwise the passed {@link Throwable} unmodified.
+     */
+    public static Throwable exceptionMapper(Throwable throwable) {
+        if (!(throwable instanceof SearchErrorException)) {
+            return throwable;
+        }
+
+        SearchErrorException exception = (SearchErrorException) throwable;
+        if (exception.getResponse().getStatusCode() == 404) {
+            return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
+        }
+        return new HttpResponseException(exception.getMessage(), exception.getResponse());
     }
 
     private Utility() {

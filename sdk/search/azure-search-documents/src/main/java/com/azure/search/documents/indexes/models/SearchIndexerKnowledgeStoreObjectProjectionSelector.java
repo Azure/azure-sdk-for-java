@@ -29,14 +29,12 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
 
     /** {@inheritDoc} */
     @Override
-    @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
         return this;
     }
 
     /** {@inheritDoc} */
-    @Override
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setGeneratedKeyName(String generatedKeyName) {
         super.setGeneratedKeyName(generatedKeyName);
@@ -45,7 +43,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
 
     /** {@inheritDoc} */
     @Override
-    @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setSource(String source) {
         super.setSource(source);
         return this;
@@ -53,14 +50,12 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
 
     /** {@inheritDoc} */
     @Override
-    @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setSourceContext(String sourceContext) {
         super.setSourceContext(sourceContext);
         return this;
     }
 
     /** {@inheritDoc} */
-    @Override
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
@@ -138,31 +133,5 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
                     throw new IllegalStateException(
                             "Missing required property/properties: " + String.join(", ", missingProperties));
                 });
-    }
-
-    public SearchIndexerKnowledgeStoreObjectProjectionSelector setReferenceKeyName(String referenceKeyName) {
-        super.setReferenceKeyName(referenceKeyName);
-        return this;
-    }
-
-    public SearchIndexerKnowledgeStoreObjectProjectionSelector setGeneratedKeyName(String generatedKeyName) {
-        super.setGeneratedKeyName(generatedKeyName);
-        return this;
-    }
-
-    public SearchIndexerKnowledgeStoreObjectProjectionSelector setSource(String source) {
-        super.setSource(source);
-
-        return this;
-    }
-
-    public SearchIndexerKnowledgeStoreObjectProjectionSelector setSourceContext(String sourceContext) {
-        super.setSourceContext(sourceContext);
-        return this;
-    }
-
-    public SearchIndexerKnowledgeStoreObjectProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
-        super.setInputs(inputs);
-        return this;
     }
 }

@@ -59,10 +59,6 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
         return this.name;
     }
 
-    private SynonymMap() {
-        this(null, null);
-    }
-
     /**
      * Constructor of {@link SynonymMap}.
      *

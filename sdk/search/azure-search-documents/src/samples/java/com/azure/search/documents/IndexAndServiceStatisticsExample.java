@@ -4,7 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -62,8 +62,8 @@ public class IndexAndServiceStatisticsExample {
 
         System.out.println(":" + searchServiceStatistics);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream)) {
-            searchServiceStatistics.toJson(jsonWriter);
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            searchServiceStatistics.toJson(jsonWriter).flush();
             System.out.println(new String(outputStream.toByteArray(), StandardCharsets.UTF_8));
         } catch (IOException ex) {
             ex.printStackTrace();

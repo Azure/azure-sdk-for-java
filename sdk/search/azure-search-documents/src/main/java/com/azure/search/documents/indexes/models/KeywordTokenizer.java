@@ -8,6 +8,8 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV1;
 import com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2;
 
+import java.io.IOException;
+
 /**
  * Emits the entire input as a single token. This tokenizer is implemented
  * using Apache Lucene.
@@ -73,7 +75,7 @@ public final class KeywordTokenizer extends LexicalTokenizer {
     }
 
     @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) {
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return (v1Tokenizer != null) ? v1Tokenizer.toJson(jsonWriter) : v2Tokenizer.toJson(jsonWriter);
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.search.documents {
+    requires transitive com.azure.json;
     requires transitive com.azure.core;
 
     opens com.azure.search.documents to com.fasterxml.jackson.databind;

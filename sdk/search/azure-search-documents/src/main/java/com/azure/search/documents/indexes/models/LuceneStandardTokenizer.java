@@ -8,6 +8,8 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV1;
 import com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV2;
 
+import java.io.IOException;
+
 /**
  * Breaks text following the Unicode Text Segmentation rules. This tokenizer is
  * implemented using Apache Lucene.
@@ -72,7 +74,7 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
     }
 
     @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) {
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return (v1Tokenizer != null) ? v1Tokenizer.toJson(jsonWriter) : v2tokenizer.toJson(jsonWriter);
     }
 }

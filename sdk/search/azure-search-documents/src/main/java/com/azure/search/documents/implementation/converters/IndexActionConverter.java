@@ -4,10 +4,12 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.json.DefaultJsonReader;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.search.documents.models.IndexAction;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Map;
 
 /**
@@ -55,8 +57,11 @@ public final class IndexActionConverter {
         // Convert the document to the JSON representation.
         byte[] documentJson = serializer.serializeToBytes(document);
         if (documentJson != null) {
-            indexAction.setAdditionalProperties(DefaultJsonReader.fromBytes(documentJson)
-                .readMap(JsonReader::readUntyped));
+            try (JsonReader reader = JsonProviders.createReader(documentJson)) {
+                indexAction.setAdditionalProperties(reader.readMap(JsonReader::readUntyped));
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
         }
 
         return indexAction;

@@ -3,7 +3,7 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
+import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.SuggestOptions;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,7 @@ public class SuggestOptionsHandlerTests {
         SuggestOptions suggestOptions = createTestOptions();
         assertEquals(suggestOptions.getSelect(), emptySelect);
 
-        SuggestOptions ensuredSuggestOptions = SuggestOptionsHandler.ensureSuggestOptions(suggestOptions);
+        SuggestOptions ensuredSuggestOptions = Utility.ensureSuggestOptions(suggestOptions);
         assertEquals(ensuredSuggestOptions.getSelect(), SELECT_STAR);
     }
 
@@ -31,7 +31,7 @@ public class SuggestOptionsHandlerTests {
     public void ensureSelectLeavesOtherPropertiesUnchanged() {
 
         SuggestOptions suggestOptions = createTestOptions();
-        SuggestOptions ensuredSuggestOptions = SuggestOptionsHandler.ensureSuggestOptions(suggestOptions);
+        SuggestOptions ensuredSuggestOptions = Utility.ensureSuggestOptions(suggestOptions);
 
         assertEquals(suggestOptions.getFilter(), ensuredSuggestOptions.getFilter());
         assertEquals(suggestOptions.getHighlightPostTag(), ensuredSuggestOptions.getHighlightPostTag());
@@ -47,7 +47,7 @@ public class SuggestOptionsHandlerTests {
     @Test
     public void ensureSelectReturnsSelfWhenSelectIsPopulated() {
         SuggestOptions suggestOptions = createTestOptions();
-        SuggestOptions ensuredSuggestOptions = SuggestOptionsHandler.ensureSuggestOptions(suggestOptions);
+        SuggestOptions ensuredSuggestOptions = Utility.ensureSuggestOptions(suggestOptions);
 
         assertEquals(suggestOptions, ensuredSuggestOptions);
     }

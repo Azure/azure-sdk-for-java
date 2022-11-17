@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.SentimentSkillV1;
 import com.azure.search.documents.indexes.implementation.models.SentimentSkillV3;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -179,7 +180,7 @@ public final class SentimentSkill extends SearchIndexerSkill {
     }
 
     @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) {
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return (v1Skill != null) ? v1Skill.toJson(jsonWriter) : v3Skill.toJson(jsonWriter);
     }
 }

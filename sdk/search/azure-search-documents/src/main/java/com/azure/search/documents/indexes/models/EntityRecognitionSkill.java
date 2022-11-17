@@ -9,6 +9,7 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1;
 import com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -256,7 +257,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
     }
 
     @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) {
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return (v1Skill != null) ? v1Skill.toJson(jsonWriter) : v3Skill.toJson(jsonWriter);
     }
 }

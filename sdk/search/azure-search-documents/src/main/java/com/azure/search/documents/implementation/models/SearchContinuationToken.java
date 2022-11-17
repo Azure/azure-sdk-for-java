@@ -3,13 +3,15 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.json.DefaultJsonReader;
-import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.util.SearchPagedResponse;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -50,15 +52,20 @@ public final class SearchContinuationToken {
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream);
-        jsonWriter.writeStartObject()
-            .writeStringField(API_VERSION, apiVersion)
-            .writeStringField(NEXT_LINK, nextLink)
-            .writeJsonField(NEXT_PAGE_PARAMETERS, nextPageParameters)
-            .writeEndObject()
-            .flush();
+        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            writer.writeStartObject()
+                .writeStringField(API_VERSION, apiVersion)
+                .writeStringField(NEXT_LINK, nextLink)
+                .writeJsonField(NEXT_PAGE_PARAMETERS, nextPageParameters)
+                .writeEndObject()
+                .flush();
 
-        return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+            return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
+
     }
 
     /**
@@ -69,28 +76,32 @@ public final class SearchContinuationToken {
      * @return {@link SearchRequest} The search request used for fetching next page.
      */
     public static SearchRequest deserializeToken(String apiVersion, String continuationToken) {
-        return DefaultJsonReader.fromBytes(Base64.getDecoder().decode(continuationToken)).readObject(reader -> {
-            String version = null;
-            SearchRequest token = null;
+        try (JsonReader jsonReader = JsonProviders.createReader(Base64.getDecoder().decode(continuationToken))) {
+            return jsonReader.readObject(reader -> {
+                String version = null;
+                SearchRequest token = null;
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                if (API_VERSION.equals(fieldName)) {
-                    version = reader.getStringValue();
-                } else if (NEXT_PAGE_PARAMETERS.equals(fieldName)) {
-                    token = SearchRequest.fromJson(reader);
-                } else {
-                    reader.skipChildren();
+                    if (API_VERSION.equals(fieldName)) {
+                        version = reader.getString();
+                    } else if (NEXT_PAGE_PARAMETERS.equals(fieldName)) {
+                        token = SearchRequest.fromJson(reader);
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            if (!Objects.equals(apiVersion, version)) {
-                throw new IllegalStateException("Continuation token uses invalid apiVersion" + apiVersion);
-            }
+                if (!Objects.equals(apiVersion, version)) {
+                    throw new IllegalStateException("Continuation token uses invalid apiVersion" + apiVersion);
+                }
 
-            return token;
-        });
+                return token;
+            });
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 }

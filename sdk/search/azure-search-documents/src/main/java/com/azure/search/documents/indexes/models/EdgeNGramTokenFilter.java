@@ -7,6 +7,8 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterV1;
 import com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterV2;
 
+import java.io.IOException;
+
 /**
  * Generates n-grams of the given size(s) starting from the front or the back
  * of an input token. This token filter is implemented using Apache Lucene.
@@ -122,7 +124,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     }
 
     @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) {
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return (v1Filter != null) ? v1Filter.toJson(jsonWriter) : v2Filter.toJson(jsonWriter);
     }
 }
