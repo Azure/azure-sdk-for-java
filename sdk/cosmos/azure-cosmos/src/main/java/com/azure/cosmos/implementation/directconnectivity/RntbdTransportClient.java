@@ -300,6 +300,15 @@ public class RntbdTransportClient extends TransportClient {
             }
 
             return cosmosException;
+        }).doFinally(signalType -> {
+            if (signalType != SignalType.CANCEL) {
+                return;
+            }
+
+            // Since reactor-core 3.4.23, if the Mono.fromCompletionStage is cancelled, then it will also cancel the internal future
+            // But the stated behavior mat change in later versions. In order to keep consistent behavior, we internally will always cancel the future.
+            record.cancel(true);
+
         }).contextWrite(reactorContext);
     }
 
