@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.AreaResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** Represents the area entity resolution model. */
@@ -11,22 +12,25 @@ public final class AreaResolution extends BaseResolution {
     /*
      * The area Unit of measurement
      */
-    private final AreaUnit unit;
+    private AreaUnit unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
+    private double value;
 
-    /**
-     * Represents the area entity resolution model.
-     *
-     * @param unit The area Unit of measurement.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public AreaResolution(AreaUnit unit, double value) {
-        this.unit = unit;
-        this.value = value;
+    static {
+        AreaResolutionPropertiesHelper.setAccessor(new AreaResolutionPropertiesHelper.AreaResolutionAccessor() {
+            @Override
+            public void setUnit(AreaResolution areaResolution, AreaUnit unit) {
+                areaResolution.setUnit(unit);
+            }
+
+            @Override
+            public void setValue(AreaResolution areaResolution, double value) {
+                areaResolution.setValue(value);
+            }
+        });
     }
 
     /**
@@ -45,5 +49,13 @@ public final class AreaResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setUnit(AreaUnit unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }

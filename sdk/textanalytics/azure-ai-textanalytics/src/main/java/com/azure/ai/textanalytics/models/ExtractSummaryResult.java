@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 /**
  * The {@link ExtractSummaryResult} model.
@@ -12,18 +13,28 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class ExtractSummaryResult extends TextAnalyticsResult {
     private DetectedLanguage detectedLanguage;
-    private SummarySentenceCollection sentences;
+    private IterableStream<SummarySentence> sentences;
+    private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
         ExtractSummaryResultPropertiesHelper.setAccessor(
             new ExtractSummaryResultPropertiesHelper.ExtractSummaryResultAccessor() {
                 @Override
-                public void setSentences(ExtractSummaryResult documentResult, SummarySentenceCollection sentences) {
+                public void setDetectedLanguage(ExtractSummaryResult documentResult,
+                    DetectedLanguage detectedLanguage) {
+                    documentResult.setDetectedLanguage(detectedLanguage);
+                }
+
+                @Override
+                public void setSentences(ExtractSummaryResult documentResult,
+                    IterableStream<SummarySentence> sentences) {
                     documentResult.setSentences(sentences);
                 }
+
                 @Override
-                public void setDetectedLanguage(ExtractSummaryResult documentResult, DetectedLanguage detectedLanguage) {
-                    documentResult.setDetectedLanguage(detectedLanguage);
+                public void setWarnings(ExtractSummaryResult documentResult,
+                    IterableStream<TextAnalyticsWarning> warnings) {
+                    documentResult.setWarnings(warnings);
                 }
             });
     }
@@ -40,19 +51,6 @@ public final class ExtractSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the extractive summarization sentence collection.
-     *
-     * @return The extractive summarization sentence collection.
-     *
-     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
-     * was accessed.
-     */
-    public SummarySentenceCollection getSentences() {
-        throwExceptionIfError();
-        return sentences;
-    }
-
-    /**
      * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
      * contain an object of the language detected for this document.
      *
@@ -62,11 +60,37 @@ public final class ExtractSummaryResult extends TextAnalyticsResult {
         return this.detectedLanguage;
     }
 
+    /**
+     * Get the extractive summarization sentence collection.
+     *
+     * @return The extractive summarization sentence collection.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
+     */
+    public IterableStream<SummarySentence> getSentences() {
+        throwExceptionIfError();
+        return sentences;
+    }
+
+    /**
+     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     *
+     * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
+     */
+    public IterableStream<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
+
     private void setDetectedLanguage(DetectedLanguage detectedLanguage) {
         this.detectedLanguage = detectedLanguage;
     }
 
-    private void setSentences(SummarySentenceCollection sentences) {
+    private void setSentences(IterableStream<SummarySentence> sentences) {
         this.sentences = sentences;
+    }
+
+    private void setWarnings(IterableStream<TextAnalyticsWarning> warnings) {
+        this.warnings = warnings;
     }
 }

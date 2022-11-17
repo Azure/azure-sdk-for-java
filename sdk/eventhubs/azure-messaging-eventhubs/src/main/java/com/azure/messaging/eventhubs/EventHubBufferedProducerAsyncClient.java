@@ -63,6 +63,25 @@ import static com.azure.core.util.FluxUtil.monoError;
  * partition keys are assigned to a partition consistent with other publishers, or where maximizing availability is a
  * requirement, using {@link EventHubProducerAsyncClient} or {@link EventHubProducerClient} is recommended.
  * </p>
+ *
+ * <p><strong>Creating an {@link EventHubBufferedProducerAsyncClient}</strong></p>
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * EventHubBufferedProducerAsyncClient client = new EventHubBufferedProducerClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;fully-qualifed-namespace&quot;, &quot;event-hub-name&quot;, credential&#41;
+ *     .onSendBatchSucceeded&#40;succeededContext -&gt; &#123;
+ *         System.out.println&#40;&quot;Successfully published events to: &quot; + succeededContext.getPartitionId&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .onSendBatchFailed&#40;failedContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Failed to published events to %s. Error: %s%n&quot;,
+ *             failedContext.getPartitionId&#40;&#41;, failedContext.getThrowable&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .maxWaitTime&#40;Duration.ofSeconds&#40;60&#41;&#41;
+ *     .maxEventBufferLengthPerPartition&#40;1500&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation -->
  */
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = true)
 public final class EventHubBufferedProducerAsyncClient implements Closeable {

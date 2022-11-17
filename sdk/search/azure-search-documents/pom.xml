@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-search-documents</artifactId>
-  <version>11.6.0-beta.3</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+  <version>11.6.0-beta.4</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
   <packaging>jar</packaging>
 
   <properties>
@@ -106,13 +106,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.8.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.5.0-RC1</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
