@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The compute isolation properties. */
 @Fluent
 public final class ComputeIsolationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeIsolationProperties.class);
-
     /*
      * The flag indicates whether enable compute isolation or not.
      */
@@ -25,6 +21,10 @@ public final class ComputeIsolationProperties {
      */
     @JsonProperty(value = "hostSku")
     private String hostSku;
+
+    /** Creates an instance of ComputeIsolationProperties class. */
+    public ComputeIsolationProperties() {
+    }
 
     /**
      * Get the enableComputeIsolation property: The flag indicates whether enable compute isolation or not.
