@@ -39,6 +39,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -259,11 +260,13 @@ public class RntbdTransportClient extends TransportClient {
 
                 String unexpectedError = RntbdObjectMapper.toJson(error);
 
-                reportIssue(logger, endpoint,
-                    "request completed with an unexpected {}: \\{\"record\":{},\"error\":{}}",
-                    error.getClass(),
-                    record,
-                    unexpectedError);
+                if (!(error instanceof CancellationException)) {
+                    reportIssue(logger, endpoint,
+                        "request completed with an unexpected {}: \\{\"record\":{},\"error\":{}}",
+                        error.getClass(),
+                        record,
+                        unexpectedError);
+                }
 
                 error = new GoneException(
                     lenientFormat("an unexpected %s occurred: %s", unexpectedError),

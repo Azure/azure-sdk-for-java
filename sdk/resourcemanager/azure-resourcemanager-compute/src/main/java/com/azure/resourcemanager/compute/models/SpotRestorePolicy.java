@@ -28,6 +28,10 @@ public final class SpotRestorePolicy {
     @JsonProperty(value = "restoreTimeout")
     private String restoreTimeout;
 
+    /** Creates an instance of SpotRestorePolicy class. */
+    public SpotRestorePolicy() {
+    }
+
     /**
      * Get the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to
      * be restored opportunistically based on capacity availability and pricing constraints.

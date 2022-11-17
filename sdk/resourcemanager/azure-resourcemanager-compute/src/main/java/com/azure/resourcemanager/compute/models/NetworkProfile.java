@@ -30,6 +30,10 @@ public final class NetworkProfile {
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations;
 
+    /** Creates an instance of NetworkProfile class. */
+    public NetworkProfile() {
+    }
+
     /**
      * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
      * the virtual machine.

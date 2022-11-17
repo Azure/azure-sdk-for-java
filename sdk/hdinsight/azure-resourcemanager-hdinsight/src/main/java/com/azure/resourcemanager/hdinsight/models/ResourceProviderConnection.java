@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceProviderConnection. */
+/** The direction for the resource provider connection. */
 public final class ResourceProviderConnection extends ExpandableStringEnum<ResourceProviderConnection> {
     /** Static value Inbound for ResourceProviderConnection. */
     public static final ResourceProviderConnection INBOUND = fromString("Inbound");
@@ -27,7 +27,11 @@ public final class ResourceProviderConnection extends ExpandableStringEnum<Resou
         return fromString(name, ResourceProviderConnection.class);
     }
 
-    /** @return known ResourceProviderConnection values. */
+    /**
+     * Gets known ResourceProviderConnection values.
+     *
+     * @return known ResourceProviderConnection values.
+     */
     public static Collection<ResourceProviderConnection> values() {
         return values(ResourceProviderConnection.class);
     }

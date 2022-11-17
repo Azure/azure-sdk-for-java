@@ -73,6 +73,10 @@ public final class DedicatedHostProperties {
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
+    /** Creates an instance of DedicatedHostProperties class. */
+    public DedicatedHostProperties() {
+    }
+
     /**
      * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
      *
