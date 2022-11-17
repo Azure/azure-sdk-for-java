@@ -1980,27 +1980,15 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Boolean isSecureBootEnabled() {
-        if (securityType() == null) {
-            return false;
-        }
-        UefiSettings uefiSettings = this.innerModel().securityProfile().uefiSettings();
-        if (uefiSettings == null) {
-            return false;
-        }
-        return ResourceManagerUtils.toPrimitiveBoolean(uefiSettings.secureBootEnabled());
+    public boolean isSecureBootEnabled() {
+        return securityType() != null && this.innerModel().securityProfile().uefiSettings() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().securityProfile().uefiSettings().secureBootEnabled());
     }
 
     @Override
-    public Boolean isVTpmEnabled() {
-        if (securityType() == null) {
-            return false;
-        }
-        UefiSettings uefiSettings = this.innerModel().securityProfile().uefiSettings();
-        if (uefiSettings == null) {
-            return false;
-        }
-        return ResourceManagerUtils.toPrimitiveBoolean(uefiSettings.vTpmEnabled());
+    public boolean isVTpmEnabled() {
+        return securityType() != null && this.innerModel().securityProfile().uefiSettings() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().securityProfile().uefiSettings().vTpmEnabled());
     }
 
     @Override

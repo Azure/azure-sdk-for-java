@@ -417,10 +417,10 @@ public interface VirtualMachine
     SecurityTypes securityType();
 
     /** @return whether secure boot is enabled on the virtual machine */
-    Boolean isSecureBootEnabled();
+    boolean isSecureBootEnabled();
 
     /** @return whether vTPM is enabled on the virtual machine */
-    Boolean isVTpmEnabled();
+    boolean isVTpmEnabled();
 
     // Setters
     //
