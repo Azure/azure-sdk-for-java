@@ -24,7 +24,10 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventHubClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -258,6 +261,10 @@ public class EventHubClientBuilderTest {
             .buildAsyncProducerClient();
 
         // Assert
+        assertTrue(fullyQualifiedDomainName.equalsIgnoreCase(client.getFullyQualifiedNamespace()),
+            String.format("Expected: %s. Actual: %s%n", fullyQualifiedDomainName,
+                client.getFullyQualifiedNamespace()));
+
         assertEquals(fullyQualifiedDomainName, client.getFullyQualifiedNamespace());
         assertEquals(EVENT_HUB_NAME, client.getEventHubName());
     }
