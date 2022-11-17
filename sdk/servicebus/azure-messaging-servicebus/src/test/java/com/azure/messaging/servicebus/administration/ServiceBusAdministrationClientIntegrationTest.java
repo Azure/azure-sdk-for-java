@@ -84,6 +84,14 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             client.createQueue(FORWARD_TO_QUEUE);
         }
 
+        if (!client.getQueueExists(QUEUE_TO_CREATE)) {
+            client.deleteQueue(QUEUE_TO_CREATE);
+        }
+
+        if (!client.getTopicExists(TOPIC_TO_CREATE)) {
+            client.deleteTopic(TOPIC_TO_CREATE);
+        }
+
         // Create topics and subscription in topic
         if (!client.getTopicExists(FORWARD_TO_TOPIC_NAME)) {
             client.createTopic(FORWARD_TO_TOPIC_NAME);

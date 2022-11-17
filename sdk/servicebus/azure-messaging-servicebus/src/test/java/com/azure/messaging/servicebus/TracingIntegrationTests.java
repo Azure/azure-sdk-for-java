@@ -100,7 +100,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         }
 
         final boolean shareConnection = true;
-        final boolean useCredentials = false;
+        final boolean useCredentials = true;
         final int entityIndex = 0;
 
         sender = getSenderBuilder(useCredentials, MessagingEntityType.QUEUE, entityIndex,
@@ -166,7 +166,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             })
             .subscribe();
 
-        assertTrue(processedFound.await(20, TimeUnit.SECONDS));
+        assertTrue(processedFound.await(60, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
@@ -309,7 +309,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectNextCount(messageCount)
             .verifyComplete();
 
-        assertTrue(processedFound.await(20, TimeUnit.SECONDS));
+        assertTrue(processedFound.await(60, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
         List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
@@ -443,8 +443,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Test
     @Order(6)
     public void peekMessage() {
-        StepVerifier.create(sender.sendMessage(new ServiceBusMessage(CONTENTS_BYTES)))
-            .verifyComplete();
+        sender.sendMessage(new ServiceBusMessage(CONTENTS_BYTES)).block(TIMEOUT);
 
         StepVerifier.create(receiver.peekMessage())
             .assertNext(receivedMessage -> {

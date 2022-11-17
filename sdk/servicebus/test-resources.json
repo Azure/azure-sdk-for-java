@@ -56,7 +56,7 @@
   "variables": {
     "authRuleResourceId": "[resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaceName'), variables('sharedAccessKeyName'))]",
     "contributorRoleId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
-    "namespaceName": "[concat('sb-java-', parameters('baseName'))]",
+    "namespaceName": "[concat('sb-java-live', parameters('baseName'))]",
     "queueName": "queue",
     "queueSessionName": "queue-session",
     "numberOfInstances": 25,
