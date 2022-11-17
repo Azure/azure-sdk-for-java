@@ -413,7 +413,7 @@ public interface VirtualMachine
      */
     boolean isHibernationEnabled();
 
-    /** @return the SecurityType of the virtual machine */
+    /** @return the {@link SecurityTypes} of the virtual machine */
     SecurityTypes securityType();
 
     /** @return whether secure boot is enabled on the virtual machine */
@@ -1908,24 +1908,11 @@ public interface VirtualMachine
             WithSecurityFeatures withSecureBoot();
 
             /**
-             * Disables secure boot should be disabled on the virtual machine.
-             *
-             * @return the next stage of the definition
-             */
-            WithSecurityFeatures withoutSecureBoot();
-
-            /**
              * Enables vTPM feature.
              *
              * @return the next stage of the definition
              */
             WithSecurityFeatures withVTpm();
-
-            /**
-             * Disables vTPM feature.
-             * @return the next stage of the definition
-             */
-            WithSecurityFeatures withoutVTpm();
         }
 
         /**
@@ -2462,7 +2449,6 @@ public interface VirtualMachine
             /**
              * Enables secure boot feature.
              * <p>
-             * Note:
              * Your VM's security type should be set in order to enable this feature.
              * After changing security features, a restart is required for your VM to take effect.
              * </p>
@@ -2474,7 +2460,6 @@ public interface VirtualMachine
             /**
              * Disables secure boot feature.
              * <p>
-             * Note:
              * After changing security features, a restart is required for your VM to take effect.
              * </p>
              *
@@ -2485,7 +2470,6 @@ public interface VirtualMachine
             /**
              * Enables vTPM feature.
              * <p>
-             * Note:
              * Your VM's security type should be set in order to enable this feature.
              * After changing security features, a restart is required for your VM to take effect.
              * </p>
@@ -2497,7 +2481,6 @@ public interface VirtualMachine
             /**
              * Disables vTPM feature.
              * <p>
-             * Note:
              * After changing security features, a restart is required for your VM to take effect.
              * </p>
              *

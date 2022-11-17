@@ -1988,7 +1988,7 @@ class VirtualMachineImpl
         if (uefiSettings == null) {
             return false;
         }
-        return uefiSettings.secureBootEnabled();
+        return ResourceManagerUtils.toPrimitiveBoolean(uefiSettings.secureBootEnabled());
     }
 
     @Override
@@ -2000,7 +2000,7 @@ class VirtualMachineImpl
         if (uefiSettings == null) {
             return false;
         }
-        return uefiSettings.vTpmEnabled();
+        return ResourceManagerUtils.toPrimitiveBoolean(uefiSettings.vTpmEnabled());
     }
 
     @Override
