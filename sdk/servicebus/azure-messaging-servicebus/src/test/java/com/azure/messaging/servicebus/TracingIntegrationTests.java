@@ -111,14 +111,18 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 //            .queueName(TEST_QUEUE_NAME)
 //            .buildAsyncClient();
 
-        receiver = getReceiverBuilder(useCredentials, MessagingEntityType.QUEUE, entityIndex, shareConnection).buildAsyncClient();
+        receiver = getReceiverBuilder(useCredentials, MessagingEntityType.QUEUE, entityIndex, shareConnection)
+            .disableAutoComplete()
+            .buildAsyncClient();
 //            new ServiceBusClientBuilder()
 //            .connectionString(getConnectionString())
 //            .receiver()
 //            .queueName(TEST_QUEUE_NAME)
 //            .buildAsyncClient(false, false);
 
-        receiverSync = getReceiverBuilder(useCredentials, MessagingEntityType.QUEUE, entityIndex, shareConnection).buildClient();
+        receiverSync = getReceiverBuilder(useCredentials, MessagingEntityType.QUEUE, entityIndex, shareConnection)
+            .disableAutoComplete()
+            .buildClient();
 //            new ServiceBusClientBuilder()
 //            .connectionString(getConnectionString())
 //            .receiver()
