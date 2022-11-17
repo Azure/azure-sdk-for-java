@@ -51,6 +51,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
