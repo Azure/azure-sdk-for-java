@@ -53,6 +53,10 @@ public final class SnapshotInner extends Resource {
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
 
+    /** Creates an instance of SnapshotInner class. */
+    public SnapshotInner() {
+    }
+
     /**
      * Get the managedBy property: Unused. Always Null.
      *

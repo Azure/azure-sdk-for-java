@@ -7,15 +7,12 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateLinkConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The private link configuration. */
 @Fluent
 public final class PrivateLinkConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkConfiguration.class);
-
     /*
      * The private link configuration id.
      */
@@ -39,6 +36,10 @@ public final class PrivateLinkConfiguration {
      */
     @JsonProperty(value = "properties", required = true)
     private PrivateLinkConfigurationProperties innerProperties = new PrivateLinkConfigurationProperties();
+
+    /** Creates an instance of PrivateLinkConfiguration class. */
+    public PrivateLinkConfiguration() {
+    }
 
     /**
      * Get the id property: The private link configuration id.
@@ -152,12 +153,12 @@ public final class PrivateLinkConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model PrivateLinkConfiguration"));
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model PrivateLinkConfiguration"));
@@ -165,4 +166,6 @@ public final class PrivateLinkConfiguration {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkConfiguration.class);
 }

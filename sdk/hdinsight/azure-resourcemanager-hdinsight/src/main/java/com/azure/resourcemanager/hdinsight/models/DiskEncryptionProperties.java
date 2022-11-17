@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The disk encryption properties. */
 @Fluent
 public final class DiskEncryptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionProperties.class);
-
     /*
-     * Base key vault URI where the customers key is located eg.
-     * https://myvault.vault.azure.net
+     * Base key vault URI where the customers key is located eg. https://myvault.vault.azure.net
      */
     @JsonProperty(value = "vaultUri")
     private String vaultUri;
@@ -50,6 +45,10 @@ public final class DiskEncryptionProperties {
      */
     @JsonProperty(value = "encryptionAtHost")
     private Boolean encryptionAtHost;
+
+    /** Creates an instance of DiskEncryptionProperties class. */
+    public DiskEncryptionProperties() {
+    }
 
     /**
      * Get the vaultUri property: Base key vault URI where the customers key is located eg.

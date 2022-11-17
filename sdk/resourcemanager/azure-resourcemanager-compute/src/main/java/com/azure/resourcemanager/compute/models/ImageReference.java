@@ -68,6 +68,10 @@ public final class ImageReference extends SubResource {
     @JsonProperty(value = "communityGalleryImageId")
     private String communityGalleryImageId;
 
+    /** Creates an instance of ImageReference class. */
+    public ImageReference() {
+    }
+
     /**
      * Get the publisher property: The image publisher.
      *
