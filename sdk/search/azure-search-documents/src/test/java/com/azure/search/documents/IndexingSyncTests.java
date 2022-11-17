@@ -105,7 +105,7 @@ public class IndexingSyncTests extends SearchTestBase {
 
         List<Book> books = new ArrayList<>();
         books.add(new Book()
-            .ISBN("132")
+            .ISBN("123")
             .title("Lord of the Rings")
             .author(new Author()
                 .firstName("J.R.R")
@@ -113,7 +113,7 @@ public class IndexingSyncTests extends SearchTestBase {
         );
 
         List<IndexingResult> result = client.uploadDocuments(books).getResults();
-        this.assertIndexActionSucceeded("132", result.get(0), 201);
+        this.assertIndexActionSucceeded("123", result.get(0), 201);
 
         waitForIndexing();
         assertEquals(1L, client.getDocumentCount());
@@ -264,13 +264,13 @@ public class IndexingSyncTests extends SearchTestBase {
         assertSuccessfulIndexResult(results.get(4), "2", 201);
 
         SearchDocument actualHotel1 = client.getDocument(hotel1.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel1, actualHotel1, false);
+        assertMapEquals(hotel1, actualHotel1, true);
 
         SearchDocument actualHotel2 = client.getDocument(hotel2.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel2, actualHotel2, false);
+        assertMapEquals(hotel2, actualHotel2, true);
 
         SearchDocument actualHotel3 = client.getDocument(hotel3.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel3, actualHotel3, false);
+        assertMapEquals(hotel3, actualHotel3, true);
     }
 
     @Test
@@ -307,13 +307,13 @@ public class IndexingSyncTests extends SearchTestBase {
         }
 
         SearchDocument actualHotel1 = client.getDocument(hotel1.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel1, actualHotel1, false);
+        assertMapEquals(hotel1, actualHotel1, true);
 
         SearchDocument actualHotel2 = client.getDocument(hotel2.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel2, actualHotel2, false);
+        assertMapEquals(hotel2, actualHotel2, true);
 
         SearchDocument actualHotel3 = client.getDocument(hotel3.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel3, actualHotel3, false);
+        assertMapEquals(hotel3, actualHotel3, true);
     }
 
     @Test
@@ -469,7 +469,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[] { "vcr/dvd" }),
+                    .tags(new String[]{"vcr/dvd"}),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -478,7 +478,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[] {"vcr/dvd", "jacuzzi tub"})
+                    .tags(new String[]{"vcr/dvd", "jacuzzi tub"})
             ));
 
         // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date, location and address.
@@ -500,7 +500,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(new String[] { "vcr/dvd", "balcony" })
+                    .tags(new String[]{"vcr/dvd", "balcony"})
             ));
 
         // Fields whose values get updated are updated, and whose values get erased remain the same.
@@ -529,7 +529,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(new String[] { "vcr/dvd", "balcony" })
+                    .tags(new String[]{"vcr/dvd", "balcony"})
             ));
 
         List<Hotel> originalDocs = new ArrayList<>();
@@ -587,8 +587,8 @@ public class IndexingSyncTests extends SearchTestBase {
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
-                .postalCode("10022")
-            ).ROOMS(Arrays.asList(
+                .postalCode("10022"))
+            .ROOMS(Arrays.asList(
                 new HotelRoom()
                     .description("Budget Room, 1 Queen Bed (Cityside)")
                     .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
@@ -597,7 +597,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[] { "vcr/dvd" }),
+                    .tags(new String[]{"vcr/dvd"}),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -606,7 +606,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[] { "vcr/dvd", "jacuzzi tub" })
+                    .tags(new String[]{"vcr/dvd", "jacuzzi tub"})
             ));
 
         LoudHotel updatedDoc = new LoudHotel()
@@ -617,7 +617,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .PARKINGINCLUDED(true)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(3)
-            //.LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
             .ADDRESS(new HotelAddress())
             .ROOMS(Collections.singletonList(
                 new HotelRoom()
@@ -625,7 +625,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .type("Budget Room")
                     .baseRate(10.5)
                     .smokingAllowed(false)
-                    .tags(new String[] { "vcr/dvd", "balcony" })
+                    .tags(new String[]{"vcr/dvd", "balcony"})
             ));
 
         LoudHotel expectedDoc = new LoudHotel()
@@ -639,14 +639,14 @@ public class IndexingSyncTests extends SearchTestBase {
             .SMOKINGALLOWED(false)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(3)
-            //.LOCATION(null)
+            .LOCATION(null)
             .ADDRESS(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
-                .postalCode("10022")
-            ).ROOMS(Collections.singletonList(
+                .postalCode("10022"))
+            .ROOMS(Collections.singletonList(
                 // Regardless of NullValueHandling, this should look like the merged doc with unspecified fields as null
                 // because we don't support partial updates for complex collections.
                 new HotelRoom()
@@ -657,7 +657,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions(null)
                     .sleepsCount(null)
                     .smokingAllowed(false)
-                    .tags(new String[] { "vcr/dvd", "balcony" })
+                    .tags(new String[]{"vcr/dvd", "balcony"})
             ));
 
         List<LoudHotel> originalDocs = new ArrayList<>();

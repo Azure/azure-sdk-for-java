@@ -427,8 +427,8 @@ public class SuggestSyncTests extends SearchTestBase {
         SearchDocument result = suggestResultPagedResponse.getValue().get(0).getDocument(SearchDocument.class);
 
         assertEquals("Secret Point Motel", result.get("HotelName"));
-        assertEquals(4, result.get("Rating"));
-        assertEquals("New York", ((LinkedHashMap) result.get("Address")).get("City"));
+        assertEquals(4, ((Number) result.get("Rating")).intValue());
+        assertEquals("New York", ((LinkedHashMap<?, ?>) result.get("Address")).get("City"));
         assertEquals(Arrays.asList("Budget Room", "Budget Room"),
             ((ArrayList<LinkedHashMap<String, String>>) result.get("Rooms"))
                 .parallelStream()

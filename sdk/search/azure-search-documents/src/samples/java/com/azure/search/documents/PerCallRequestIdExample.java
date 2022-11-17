@@ -68,8 +68,7 @@ public class PerCallRequestIdExample {
     /**
      * This examples shows how to pass {@code x-ms-client-request-id} when using an asynchronous client.
      * <p>
-     * Asynchronous clients are able to accept {@link Context} in all APIs using Reactor's 
-     * {@link Mono#contextWrite(ContextView)} or {@link Flux#contextWrite(ContextView)}
+     * Asynchronous clients are able to accept {@link Context} in all APIs using Reactor's {@code subscriberContext}.
      */
     private static void asynchronousApiCall() {
         SearchAsyncClient client = createBuilder().buildAsyncClient();
@@ -83,7 +82,7 @@ public class PerCallRequestIdExample {
         HttpHeaders headers = new HttpHeaders();
         headers.set("x-ms-client-request-id", UUID.randomUUID().toString());
 
-        reactor.util.context.Context context = reactor.util.context.Context.of(
+        reactor.util.context.Context subscriberContext = reactor.util.context.Context.of(
             AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
         // Print out expected 'x-ms-client-request-id' header value.
@@ -91,7 +90,7 @@ public class PerCallRequestIdExample {
 
         // Perform index operations on a list of documents
         client.mergeDocumentsWithResponse(hotels, null)
-            .contextWrite(context)
+            .contextWrite(subscriberContext)
             .doOnSuccess(response -> {
                 System.out.printf("Indexed %s documents%n", response.getValue().getResults().size());
 

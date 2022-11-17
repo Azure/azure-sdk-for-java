@@ -7,10 +7,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TokenFilterName. */
+/** Defines the names of all token filters supported by Azure Cognitive Search. */
 public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName> {
     /** Static value arabic_normalization for TokenFilterName. */
     public static final TokenFilterName ARABIC_NORMALIZATION = fromString("arabic_normalization");
@@ -120,7 +119,6 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
      * @param name a name to look for.
      * @return the corresponding TokenFilterName.
      */
-    @JsonCreator
     public static TokenFilterName fromString(String name) {
         return fromString(name, TokenFilterName.class);
     }

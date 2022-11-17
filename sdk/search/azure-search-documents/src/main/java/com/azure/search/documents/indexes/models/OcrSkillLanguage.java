@@ -7,10 +7,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OcrSkillLanguage. */
+/** The language codes supported for input by OcrSkill. */
 public final class OcrSkillLanguage extends ExpandableStringEnum<OcrSkillLanguage> {
     /** Static value af for OcrSkillLanguage. */
     public static final OcrSkillLanguage AF = fromString("af");
@@ -528,7 +527,6 @@ public final class OcrSkillLanguage extends ExpandableStringEnum<OcrSkillLanguag
      * @param name a name to look for.
      * @return the corresponding OcrSkillLanguage.
      */
-    @JsonCreator
     public static OcrSkillLanguage fromString(String name) {
         return fromString(name, OcrSkillLanguage.class);
     }

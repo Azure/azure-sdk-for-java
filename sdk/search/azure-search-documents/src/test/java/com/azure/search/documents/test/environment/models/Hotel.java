@@ -7,6 +7,7 @@ import com.azure.search.documents.indexes.FieldBuilderIgnore;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -18,47 +19,60 @@ import java.util.List;
 public class Hotel {
     @SimpleField(isKey = true, isSortable = true)
     @JsonProperty(value = "HotelId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String hotelId;
 
     @SearchableField(isSortable = true, analyzerName = "en.lucene")
     @JsonProperty(value = "HotelName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String hotelName;
 
     @SimpleField
     @JsonProperty(value = "Description")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
     @FieldBuilderIgnore
     @JsonProperty(value = "Description_fr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionFr;
 
     @SimpleField
     @JsonProperty(value = "Category")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String category;
 
     @SearchableField
     @JsonProperty(value = "Tags")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> tags;
 
     @JsonProperty(value = "ParkingIncluded")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean parkingIncluded;
 
     @JsonProperty(value = "SmokingAllowed")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean smokingAllowed;
 
     @JsonProperty(value = "LastRenovationDate")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date lastRenovationDate;
 
     @JsonProperty(value = "Rating")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer rating;
 
     @JsonProperty(value = "Location")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private GeoPoint location;
 
     @JsonProperty(value = "Address")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private HotelAddress address;
 
     @JsonProperty(value = "Rooms")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<HotelRoom> rooms;
 
     public Hotel() {

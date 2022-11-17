@@ -22,9 +22,9 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.IndexBatch;
-import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.implementation.models.RequestOptions;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchErrorException;
@@ -35,6 +35,7 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
@@ -230,6 +231,34 @@ public final class DocumentsImpl {
      * Queries the number of documents in the index.
      *
      * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Long>> countWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.count(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                xMsClientRequestId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     *
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -251,6 +280,248 @@ public final class DocumentsImpl {
                 this.client.getApiVersion(),
                 accept,
                 context);
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     *
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Long> countAsync(RequestOptions requestOptions) {
+        return countWithResponseAsync(requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     *
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Long> countAsync(RequestOptions requestOptions, Context context) {
+        return countWithResponseAsync(requestOptions, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Searches for documents in the index.
+     *
+     * @param searchText A full-text search query expression; Use "*" or omit this parameter to match all documents.
+     * @param searchOptions Parameter group.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing search results from an index along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchDocumentsResult>> searchGetWithResponseAsync(
+            String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        Boolean includeTotalCountInternal = null;
+        if (searchOptions != null) {
+            includeTotalCountInternal = searchOptions.isTotalCountIncluded();
+        }
+        Boolean includeTotalCount = includeTotalCountInternal;
+        List<String> facetsInternal = null;
+        if (searchOptions != null) {
+            facetsInternal = searchOptions.getFacets();
+        }
+        List<String> facets = facetsInternal;
+        String filterInternal = null;
+        if (searchOptions != null) {
+            filterInternal = searchOptions.getFilter();
+        }
+        String filter = filterInternal;
+        List<String> highlightFieldsInternal = null;
+        if (searchOptions != null) {
+            highlightFieldsInternal = searchOptions.getHighlightFields();
+        }
+        List<String> highlightFields = highlightFieldsInternal;
+        String highlightPostTagInternal = null;
+        if (searchOptions != null) {
+            highlightPostTagInternal = searchOptions.getHighlightPostTag();
+        }
+        String highlightPostTag = highlightPostTagInternal;
+        String highlightPreTagInternal = null;
+        if (searchOptions != null) {
+            highlightPreTagInternal = searchOptions.getHighlightPreTag();
+        }
+        String highlightPreTag = highlightPreTagInternal;
+        Double minimumCoverageInternal = null;
+        if (searchOptions != null) {
+            minimumCoverageInternal = searchOptions.getMinimumCoverage();
+        }
+        Double minimumCoverage = minimumCoverageInternal;
+        List<String> orderByInternal = null;
+        if (searchOptions != null) {
+            orderByInternal = searchOptions.getOrderBy();
+        }
+        List<String> orderBy = orderByInternal;
+        QueryType queryTypeInternal = null;
+        if (searchOptions != null) {
+            queryTypeInternal = searchOptions.getQueryType();
+        }
+        QueryType queryType = queryTypeInternal;
+        List<String> scoringParametersInternal = null;
+        if (searchOptions != null) {
+            scoringParametersInternal = searchOptions.getScoringParameters();
+        }
+        List<String> scoringParameters = scoringParametersInternal;
+        String scoringProfileInternal = null;
+        if (searchOptions != null) {
+            scoringProfileInternal = searchOptions.getScoringProfile();
+        }
+        String scoringProfile = scoringProfileInternal;
+        String semanticConfigurationInternal = null;
+        if (searchOptions != null) {
+            semanticConfigurationInternal = searchOptions.getSemanticConfiguration();
+        }
+        String semanticConfiguration = semanticConfigurationInternal;
+        List<String> searchFieldsInternal = null;
+        if (searchOptions != null) {
+            searchFieldsInternal = searchOptions.getSearchFields();
+        }
+        List<String> searchFields = searchFieldsInternal;
+        QueryLanguage queryLanguageInternal = null;
+        if (searchOptions != null) {
+            queryLanguageInternal = searchOptions.getQueryLanguage();
+        }
+        QueryLanguage queryLanguage = queryLanguageInternal;
+        QuerySpellerType spellerInternal = null;
+        if (searchOptions != null) {
+            spellerInternal = searchOptions.getSpeller();
+        }
+        QuerySpellerType speller = spellerInternal;
+        String answersInternal = null;
+        if (searchOptions != null) {
+            answersInternal = searchOptions.getAnswers();
+        }
+        String answers = answersInternal;
+        SearchMode searchModeInternal = null;
+        if (searchOptions != null) {
+            searchModeInternal = searchOptions.getSearchMode();
+        }
+        SearchMode searchMode = searchModeInternal;
+        ScoringStatistics scoringStatisticsInternal = null;
+        if (searchOptions != null) {
+            scoringStatisticsInternal = searchOptions.getScoringStatistics();
+        }
+        ScoringStatistics scoringStatistics = scoringStatisticsInternal;
+        String sessionIdInternal = null;
+        if (searchOptions != null) {
+            sessionIdInternal = searchOptions.getSessionId();
+        }
+        String sessionId = sessionIdInternal;
+        List<String> selectInternal = null;
+        if (searchOptions != null) {
+            selectInternal = searchOptions.getSelect();
+        }
+        List<String> select = selectInternal;
+        Integer skipInternal = null;
+        if (searchOptions != null) {
+            skipInternal = searchOptions.getSkip();
+        }
+        Integer skip = skipInternal;
+        Integer topInternal = null;
+        if (searchOptions != null) {
+            topInternal = searchOptions.getTop();
+        }
+        Integer top = topInternal;
+        String captionsInternal = null;
+        if (searchOptions != null) {
+            captionsInternal = searchOptions.getCaptions();
+        }
+        String captions = captionsInternal;
+        List<String> semanticFieldsInternal = null;
+        if (searchOptions != null) {
+            semanticFieldsInternal = searchOptions.getSemanticFields();
+        }
+        List<String> semanticFields = semanticFieldsInternal;
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        List<String> facetsConverted =
+                (facets == null)
+                        ? new ArrayList<>()
+                        : facets.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        String highlightFieldsConverted =
+                (highlightFields == null)
+                        ? null
+                        : highlightFields.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        String orderByConverted =
+                (orderBy == null)
+                        ? null
+                        : orderBy.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        List<String> scoringParametersConverted =
+                (scoringParameters == null)
+                        ? new ArrayList<>()
+                        : scoringParameters.stream()
+                                .map(item -> Objects.toString(item, ""))
+                                .collect(Collectors.toList());
+        String searchFieldsConverted =
+                (searchFields == null)
+                        ? null
+                        : searchFields.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        String selectConverted =
+                (select == null)
+                        ? null
+                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String semanticFieldsConverted =
+                (semanticFields == null)
+                        ? null
+                        : semanticFields.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.searchGet(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                searchText,
+                                includeTotalCount,
+                                facetsConverted,
+                                filter,
+                                highlightFieldsConverted,
+                                highlightPostTag,
+                                highlightPreTag,
+                                minimumCoverage,
+                                orderByConverted,
+                                queryType,
+                                scoringParametersConverted,
+                                scoringProfile,
+                                semanticConfiguration,
+                                searchFieldsConverted,
+                                queryLanguage,
+                                speller,
+                                answers,
+                                searchMode,
+                                scoringStatistics,
+                                sessionId,
+                                selectConverted,
+                                skip,
+                                top,
+                                captions,
+                                semanticFieldsConverted,
+                                this.client.getApiVersion(),
+                                xMsClientRequestId,
+                                accept,
+                                context));
     }
 
     /**
@@ -468,6 +739,75 @@ public final class DocumentsImpl {
     /**
      * Searches for documents in the index.
      *
+     * @param searchText A full-text search query expression; Use "*" or omit this parameter to match all documents.
+     * @param searchOptions Parameter group.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing search results from an index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchDocumentsResult> searchGetAsync(
+            String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
+        return searchGetWithResponseAsync(searchText, searchOptions, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Searches for documents in the index.
+     *
+     * @param searchText A full-text search query expression; Use "*" or omit this parameter to match all documents.
+     * @param searchOptions Parameter group.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing search results from an index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchDocumentsResult> searchGetAsync(
+            String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
+        return searchGetWithResponseAsync(searchText, searchOptions, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Searches for documents in the index.
+     *
+     * @param searchRequest The definition of the Search request.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing search results from an index along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(
+            SearchRequest searchRequest, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.searchPost(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                this.client.getApiVersion(),
+                                xMsClientRequestId,
+                                accept,
+                                searchRequest,
+                                context));
+    }
+
+    /**
+     * Searches for documents in the index.
+     *
      * @param searchRequest The definition of the Search request.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -494,6 +834,80 @@ public final class DocumentsImpl {
                 accept,
                 searchRequest,
                 context);
+    }
+
+    /**
+     * Searches for documents in the index.
+     *
+     * @param searchRequest The definition of the Search request.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing search results from an index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, RequestOptions requestOptions) {
+        return searchPostWithResponseAsync(searchRequest, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Searches for documents in the index.
+     *
+     * @param searchRequest The definition of the Search request.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing search results from an index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchDocumentsResult> searchPostAsync(
+            SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
+        return searchPostWithResponseAsync(searchRequest, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves a document from the index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
+     *     from the returned document.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> getWithResponseAsync(
+            String key, List<String> selectedFields, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        String selectedFieldsConverted =
+                (selectedFields == null)
+                        ? null
+                        : selectedFields.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.get(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                key,
+                                selectedFieldsConverted,
+                                this.client.getApiVersion(),
+                                xMsClientRequestId,
+                                accept,
+                                context));
     }
 
     /**
@@ -533,6 +947,149 @@ public final class DocumentsImpl {
                 xMsClientRequestId,
                 accept,
                 context);
+    }
+
+    /**
+     * Retrieves a document from the index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
+     *     from the returned document.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> getAsync(String key, List<String> selectedFields, RequestOptions requestOptions) {
+        return getWithResponseAsync(key, selectedFields, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves a document from the index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
+     *     from the returned document.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> getAsync(
+            String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
+        return getWithResponseAsync(key, selectedFields, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Suggests documents in the index that match the given partial query text.
+     *
+     * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100
+     *     characters.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     *     definition.
+     * @param suggestOptions Parameter group.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SuggestDocumentsResult>> suggestGetWithResponseAsync(
+            String searchText, String suggesterName, SuggestOptions suggestOptions, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        String filterInternal = null;
+        if (suggestOptions != null) {
+            filterInternal = suggestOptions.getFilter();
+        }
+        String filter = filterInternal;
+        Boolean useFuzzyMatchingInternal = null;
+        if (suggestOptions != null) {
+            useFuzzyMatchingInternal = suggestOptions.useFuzzyMatching();
+        }
+        Boolean useFuzzyMatching = useFuzzyMatchingInternal;
+        String highlightPostTagInternal = null;
+        if (suggestOptions != null) {
+            highlightPostTagInternal = suggestOptions.getHighlightPostTag();
+        }
+        String highlightPostTag = highlightPostTagInternal;
+        String highlightPreTagInternal = null;
+        if (suggestOptions != null) {
+            highlightPreTagInternal = suggestOptions.getHighlightPreTag();
+        }
+        String highlightPreTag = highlightPreTagInternal;
+        Double minimumCoverageInternal = null;
+        if (suggestOptions != null) {
+            minimumCoverageInternal = suggestOptions.getMinimumCoverage();
+        }
+        Double minimumCoverage = minimumCoverageInternal;
+        List<String> orderByInternal = null;
+        if (suggestOptions != null) {
+            orderByInternal = suggestOptions.getOrderBy();
+        }
+        List<String> orderBy = orderByInternal;
+        List<String> searchFieldsInternal = null;
+        if (suggestOptions != null) {
+            searchFieldsInternal = suggestOptions.getSearchFields();
+        }
+        List<String> searchFields = searchFieldsInternal;
+        List<String> selectInternal = null;
+        if (suggestOptions != null) {
+            selectInternal = suggestOptions.getSelect();
+        }
+        List<String> select = selectInternal;
+        Integer topInternal = null;
+        if (suggestOptions != null) {
+            topInternal = suggestOptions.getTop();
+        }
+        Integer top = topInternal;
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        String orderByConverted =
+                (orderBy == null)
+                        ? null
+                        : orderBy.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String searchFieldsConverted =
+                (searchFields == null)
+                        ? null
+                        : searchFields.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        String selectConverted =
+                (select == null)
+                        ? null
+                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.suggestGet(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                searchText,
+                                suggesterName,
+                                filter,
+                                useFuzzyMatching,
+                                highlightPostTag,
+                                highlightPreTag,
+                                minimumCoverage,
+                                orderByConverted,
+                                searchFieldsConverted,
+                                selectConverted,
+                                top,
+                                this.client.getApiVersion(),
+                                xMsClientRequestId,
+                                accept,
+                                context));
     }
 
     /**
@@ -646,6 +1203,85 @@ public final class DocumentsImpl {
     /**
      * Suggests documents in the index that match the given partial query text.
      *
+     * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100
+     *     characters.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     *     definition.
+     * @param suggestOptions Parameter group.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SuggestDocumentsResult> suggestGetAsync(
+            String searchText, String suggesterName, SuggestOptions suggestOptions, RequestOptions requestOptions) {
+        return suggestGetWithResponseAsync(searchText, suggesterName, suggestOptions, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Suggests documents in the index that match the given partial query text.
+     *
+     * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100
+     *     characters.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     *     definition.
+     * @param suggestOptions Parameter group.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SuggestDocumentsResult> suggestGetAsync(
+            String searchText,
+            String suggesterName,
+            SuggestOptions suggestOptions,
+            RequestOptions requestOptions,
+            Context context) {
+        return suggestGetWithResponseAsync(searchText, suggesterName, suggestOptions, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Suggests documents in the index that match the given partial query text.
+     *
+     * @param suggestRequest The Suggest request.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(
+            SuggestRequest suggestRequest, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.suggestPost(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                this.client.getApiVersion(),
+                                xMsClientRequestId,
+                                accept,
+                                suggestRequest,
+                                context));
+    }
+
+    /**
+     * Suggests documents in the index that match the given partial query text.
+     *
      * @param suggestRequest The Suggest request.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -672,6 +1308,72 @@ public final class DocumentsImpl {
                 accept,
                 suggestRequest,
                 context);
+    }
+
+    /**
+     * Suggests documents in the index that match the given partial query text.
+     *
+     * @param suggestRequest The Suggest request.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SuggestDocumentsResult> suggestPostAsync(SuggestRequest suggestRequest, RequestOptions requestOptions) {
+        return suggestPostWithResponseAsync(suggestRequest, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Suggests documents in the index that match the given partial query text.
+     *
+     * @param suggestRequest The Suggest request.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SuggestDocumentsResult> suggestPostAsync(
+            SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
+        return suggestPostWithResponseAsync(suggestRequest, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Sends a batch of document write actions to the index.
+     *
+     * @param batch The batch of index actions.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing the status of operations for all documents in the indexing request along with {@link
+     *     Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(
+            IndexBatch batch, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.index(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                this.client.getApiVersion(),
+                                xMsClientRequestId,
+                                accept,
+                                batch,
+                                context));
     }
 
     /**
@@ -703,6 +1405,131 @@ public final class DocumentsImpl {
                 accept,
                 batch,
                 context);
+    }
+
+    /**
+     * Sends a batch of document write actions to the index.
+     *
+     * @param batch The batch of index actions.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing the status of operations for all documents in the indexing request on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<IndexDocumentsResult> indexAsync(IndexBatch batch, RequestOptions requestOptions) {
+        return indexWithResponseAsync(batch, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Sends a batch of document write actions to the index.
+     *
+     * @param batch The batch of index actions.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing the status of operations for all documents in the indexing request on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<IndexDocumentsResult> indexAsync(IndexBatch batch, RequestOptions requestOptions, Context context) {
+        return indexWithResponseAsync(batch, requestOptions, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
+     * @param searchText The incomplete term which should be auto-completed.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     *     definition.
+     * @param requestOptions Parameter group.
+     * @param autocompleteOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AutocompleteResult>> autocompleteGetWithResponseAsync(
+            String searchText,
+            String suggesterName,
+            RequestOptions requestOptions,
+            AutocompleteOptions autocompleteOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        AutocompleteMode autocompleteModeInternal = null;
+        if (autocompleteOptions != null) {
+            autocompleteModeInternal = autocompleteOptions.getAutocompleteMode();
+        }
+        AutocompleteMode autocompleteMode = autocompleteModeInternal;
+        String filterInternal = null;
+        if (autocompleteOptions != null) {
+            filterInternal = autocompleteOptions.getFilter();
+        }
+        String filter = filterInternal;
+        Boolean useFuzzyMatchingInternal = null;
+        if (autocompleteOptions != null) {
+            useFuzzyMatchingInternal = autocompleteOptions.useFuzzyMatching();
+        }
+        Boolean useFuzzyMatching = useFuzzyMatchingInternal;
+        String highlightPostTagInternal = null;
+        if (autocompleteOptions != null) {
+            highlightPostTagInternal = autocompleteOptions.getHighlightPostTag();
+        }
+        String highlightPostTag = highlightPostTagInternal;
+        String highlightPreTagInternal = null;
+        if (autocompleteOptions != null) {
+            highlightPreTagInternal = autocompleteOptions.getHighlightPreTag();
+        }
+        String highlightPreTag = highlightPreTagInternal;
+        Double minimumCoverageInternal = null;
+        if (autocompleteOptions != null) {
+            minimumCoverageInternal = autocompleteOptions.getMinimumCoverage();
+        }
+        Double minimumCoverage = minimumCoverageInternal;
+        List<String> searchFieldsInternal = null;
+        if (autocompleteOptions != null) {
+            searchFieldsInternal = autocompleteOptions.getSearchFields();
+        }
+        List<String> searchFields = searchFieldsInternal;
+        Integer topInternal = null;
+        if (autocompleteOptions != null) {
+            topInternal = autocompleteOptions.getTop();
+        }
+        Integer top = topInternal;
+        String searchFieldsConverted =
+                (searchFields == null)
+                        ? null
+                        : searchFields.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.autocompleteGet(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                xMsClientRequestId,
+                                this.client.getApiVersion(),
+                                searchText,
+                                suggesterName,
+                                autocompleteMode,
+                                filter,
+                                useFuzzyMatching,
+                                highlightPostTag,
+                                highlightPreTag,
+                                minimumCoverage,
+                                searchFieldsConverted,
+                                top,
+                                accept,
+                                context));
     }
 
     /**
@@ -800,6 +1627,85 @@ public final class DocumentsImpl {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
+     * @param searchText The incomplete term which should be auto-completed.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     *     definition.
+     * @param requestOptions Parameter group.
+     * @param autocompleteOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutocompleteResult> autocompleteGetAsync(
+            String searchText,
+            String suggesterName,
+            RequestOptions requestOptions,
+            AutocompleteOptions autocompleteOptions) {
+        return autocompleteGetWithResponseAsync(searchText, suggesterName, requestOptions, autocompleteOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
+     * @param searchText The incomplete term which should be auto-completed.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     *     definition.
+     * @param requestOptions Parameter group.
+     * @param autocompleteOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutocompleteResult> autocompleteGetAsync(
+            String searchText,
+            String suggesterName,
+            RequestOptions requestOptions,
+            AutocompleteOptions autocompleteOptions,
+            Context context) {
+        return autocompleteGetWithResponseAsync(searchText, suggesterName, requestOptions, autocompleteOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
+     * @param autocompleteRequest The definition of the Autocomplete request.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(
+            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.autocompletePost(
+                                this.client.getEndpoint(),
+                                this.client.getIndexName(),
+                                xMsClientRequestId,
+                                this.client.getApiVersion(),
+                                accept,
+                                autocompleteRequest,
+                                context));
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
      * @param autocompleteRequest The definition of the Autocomplete request.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -825,5 +1731,40 @@ public final class DocumentsImpl {
                 accept,
                 autocompleteRequest,
                 context);
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
+     * @param autocompleteRequest The definition of the Autocomplete request.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutocompleteResult> autocompletePostAsync(
+            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions) {
+        return autocompletePostWithResponseAsync(autocompleteRequest, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
+     * @param autocompleteRequest The definition of the Autocomplete request.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutocompleteResult> autocompletePostAsync(
+            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
+        return autocompletePostWithResponseAsync(autocompleteRequest, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 }

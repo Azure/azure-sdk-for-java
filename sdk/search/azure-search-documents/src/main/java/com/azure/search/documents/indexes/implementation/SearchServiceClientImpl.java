@@ -24,6 +24,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
@@ -230,6 +231,31 @@ public final class SearchServiceClientImpl {
      * Gets service level statistics for a search service.
      *
      * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service level statistics for a search service along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponseAsync(
+            RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.getServiceStatistics(
+                                this.getEndpoint(), xMsClientRequestId, this.getApiVersion(), accept, context));
+    }
+
+    /**
+     * Gets service level statistics for a search service.
+     *
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -248,5 +274,35 @@ public final class SearchServiceClientImpl {
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.getServiceStatistics(
                 this.getEndpoint(), xMsClientRequestId, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets service level statistics for a search service.
+     *
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service level statistics for a search service on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchServiceStatistics> getServiceStatisticsAsync(RequestOptions requestOptions) {
+        return getServiceStatisticsWithResponseAsync(requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets service level statistics for a search service.
+     *
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service level statistics for a search service on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchServiceStatistics> getServiceStatisticsAsync(RequestOptions requestOptions, Context context) {
+        return getServiceStatisticsWithResponseAsync(requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 }

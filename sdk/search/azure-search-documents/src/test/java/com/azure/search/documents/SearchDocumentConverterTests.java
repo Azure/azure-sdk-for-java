@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.convertToMap;
+import static com.azure.search.documents.TestHelpers.convertStreamToMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -36,7 +36,7 @@ public class SearchDocumentConverterTests {
         // the result object is a map of key:value, get deserialized directly into the Document object
         // Document is simply a Hash Map.
         // in this case we simulate creation of the object created by azure-core
-        SearchDocument doc = new SearchDocument(convertToMap(json.getBytes(StandardCharsets.UTF_8)));
+        SearchDocument doc = new SearchDocument(convertStreamToMap(json.getBytes(StandardCharsets.UTF_8)));
         cleanupODataAnnotation(doc);
         return doc;
     }
@@ -57,7 +57,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("field3", 2.78);
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test
@@ -70,13 +70,13 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("field4", Arrays.asList(null, new SearchDocument(Collections.singletonMap("name", "Bob"))));
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test
     public void canReadPrimitiveTypes() {
         Map<String, Object> values = new HashMap<>();
-        values.put("132", 132);
+        values.put("123", 123);
         values.put("9999999999999", 9_999_999_999_999L);
         values.put("3.25", 3.25);
         values.put("\"hello\"", "hello");
@@ -90,7 +90,7 @@ public class SearchDocumentConverterTests {
             SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", expectedObject));
 
             SearchDocument actualDoc = deserialize(json);
-            assertEquals(expectedDoc, actualDoc);
+            assertMapEquals(expectedDoc, actualDoc, false);
         }
     }
 
@@ -110,7 +110,7 @@ public class SearchDocumentConverterTests {
             SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", expectedArray));
 
             SearchDocument actualDoc = deserialize(json);
-            assertEquals(expectedDoc, actualDoc);
+            assertMapEquals(expectedDoc, actualDoc, false);
         }
     }
 
@@ -151,7 +151,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("details", innerDoc);
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class SearchDocumentConverterTests {
         SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("stores", Arrays.asList(store1, store2)));
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test
@@ -264,9 +264,9 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void dateTimeStringsInArraysAreReadAsDateTime() {
-        String json = "{ \"field\": [ \"hello\", \"".concat(TEST_DATE_STRING).concat("\", \"132\" ] }}");
+        String json = "{ \"field\": [ \"hello\", \"".concat(TEST_DATE_STRING).concat("\", \"123\" ] }}");
         SearchDocument expectedDoc = new SearchDocument(
-            Collections.singletonMap("field", Arrays.asList("hello", TEST_DATE, "132")));
+            Collections.singletonMap("field", Arrays.asList("hello", TEST_DATE, "123")));
 
         SearchDocument actualDoc = deserialize(json);
         assertMapEquals(expectedDoc, actualDoc, false);

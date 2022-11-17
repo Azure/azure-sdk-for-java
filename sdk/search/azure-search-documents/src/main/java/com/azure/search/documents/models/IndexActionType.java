@@ -6,10 +6,7 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for IndexActionType. */
+/** The operation to perform on a document in an indexing batch. */
 public enum IndexActionType {
     /** Enum value upload. */
     UPLOAD("upload"),
@@ -36,7 +33,6 @@ public enum IndexActionType {
      * @param value the serialized value to parse.
      * @return the parsed IndexActionType object, or null if unable to parse.
      */
-    @JsonCreator
     public static IndexActionType fromString(String value) {
         if (value == null) {
             return null;
@@ -50,7 +46,7 @@ public enum IndexActionType {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

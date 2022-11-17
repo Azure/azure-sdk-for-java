@@ -39,7 +39,7 @@ public class DataSourceSyncTests extends SearchTestBase {
     private static final String FAKE_COSMOS_CONNECTION_STRING =
         "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase";
     public static final String FAKE_AZURE_SQL_CONNECTION_STRING =
-        "Server=tcp:fakeUri,1433;Database=fakeDatabase;User ID=reader;Password=fakePasswordPlaceholder;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        "Server=tcp:fakeUri,1433;Database=fakeDatabase;User ID=reader;Password=fakePassword;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
 
     private final List<String> dataSourcesToDelete = new ArrayList<>();
     private SearchIndexerClient client;
@@ -150,7 +150,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         dataSourcesToDelete.add(updatedActual.getName());
 
         updatedExpected.setConnectionString(null); // Create doesn't return connection strings.
-        TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag");
+        TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag", "@odata.type");
     }
 
     @Test

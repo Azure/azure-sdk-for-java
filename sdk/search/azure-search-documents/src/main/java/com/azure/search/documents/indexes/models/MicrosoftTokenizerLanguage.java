@@ -6,10 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for MicrosoftTokenizerLanguage. */
+/** Lists the languages supported by the Microsoft language tokenizer. */
 public enum MicrosoftTokenizerLanguage {
     /** Enum value bangla. */
     BANGLA("bangla"),
@@ -150,7 +147,6 @@ public enum MicrosoftTokenizerLanguage {
      * @param value the serialized value to parse.
      * @return the parsed MicrosoftTokenizerLanguage object, or null if unable to parse.
      */
-    @JsonCreator
     public static MicrosoftTokenizerLanguage fromString(String value) {
         if (value == null) {
             return null;
@@ -164,7 +160,7 @@ public enum MicrosoftTokenizerLanguage {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

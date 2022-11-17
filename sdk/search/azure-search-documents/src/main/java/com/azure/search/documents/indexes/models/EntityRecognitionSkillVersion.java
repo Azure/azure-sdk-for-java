@@ -3,9 +3,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Represents the version of {@link EntityRecognitionSkill}.
  */
@@ -20,7 +17,6 @@ public enum EntityRecognitionSkillVersion {
      */
     V3("#Microsoft.Skills.Text.V3.EntityRecognitionSkill");
 
-    @JsonValue
     private final String odataType;
 
     EntityRecognitionSkillVersion(String odataType) {
@@ -45,7 +41,6 @@ public enum EntityRecognitionSkillVersion {
      * @return The {@link EntityRecognitionSkillVersion} corresponding to the {@code value}, or null if no versions
      * match the {@code value}.
      */
-    @JsonCreator
     public static EntityRecognitionSkillVersion fromString(String value) {
         if (V1.odataType.equals(value)) {
             return V1;

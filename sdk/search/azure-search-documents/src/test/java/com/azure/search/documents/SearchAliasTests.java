@@ -200,11 +200,7 @@ public class SearchAliasTests extends SearchTestBase {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())));
 
-        assertDoesNotThrow(() -> indexClient.deleteAlias(aliasName));
-
-        // Wait for 1 second for the alias to update
-        TestHelpers.sleepIfRunningAgainstService(1000);
-
+        assertDoesNotThrow(() -> indexClient.deleteIndex(aliasName));
         assertThrows(HttpResponseException.class, () -> indexClient.getIndex(aliasName));
     }
 

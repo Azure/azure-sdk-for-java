@@ -7,10 +7,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobIndexerPdfTextRotationAlgorithm. */
+/** Determines algorithm for text extraction from PDF files in Azure blob storage. */
 public final class BlobIndexerPdfTextRotationAlgorithm
         extends ExpandableStringEnum<BlobIndexerPdfTextRotationAlgorithm> {
     /** Static value none for BlobIndexerPdfTextRotationAlgorithm. */
@@ -25,7 +24,6 @@ public final class BlobIndexerPdfTextRotationAlgorithm
      * @param name a name to look for.
      * @return the corresponding BlobIndexerPdfTextRotationAlgorithm.
      */
-    @JsonCreator
     public static BlobIndexerPdfTextRotationAlgorithm fromString(String name) {
         return fromString(name, BlobIndexerPdfTextRotationAlgorithm.class);
     }

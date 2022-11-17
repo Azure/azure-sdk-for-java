@@ -4,6 +4,7 @@ package com.azure.search.documents.test.environment.models;
 
 import com.azure.core.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -14,42 +15,53 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoudHotel {
     @JsonProperty(value = "HotelId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String HOTELID;
 
     @JsonProperty(value = "HotelName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String HOTELNAME;
 
     @JsonProperty(value = "Description")
     private String DESCRIPTION;
 
     @JsonProperty(value = "Description_fr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String DESCRIPTIONFRENCH;
 
     @JsonProperty(value = "Category")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String CATEGORY;
 
     @JsonProperty(value = "Tags")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> TAGS;
 
     @JsonProperty(value = "ParkingIncluded")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean PARKINGINCLUDED;
 
     @JsonProperty(value = "SmokingAllowed")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean SMOKINGALLOWED;
 
     @JsonProperty(value = "LastRenovationDate")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date LASTRENOVATIONDATE;
 
     @JsonProperty(value = "Rating")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer RATING;
 
     @JsonProperty(value = "Location")
     private GeoPoint LOCATION;
 
     @JsonProperty(value = "Address")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private HotelAddress ADDRESS;
 
     @JsonProperty(value = "Rooms")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<HotelRoom> ROOMS;
 
     public LoudHotel() {

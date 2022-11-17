@@ -7,10 +7,14 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueryAnswerType. */
+/**
+ * This parameter is only valid if the query type is 'semantic'. If set, the query returns answers extracted from key
+ * passages in the highest ranked documents. The number of answers returned can be configured by appending the pipe
+ * character '|' followed by the 'count-&lt;number of answers&gt;' option after the answers parameter value, such as
+ * 'extractive|count-3'. Default count is 1.
+ */
 public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType> {
     /** Static value none for QueryAnswerType. */
     public static final QueryAnswerType NONE = fromString("none");
@@ -24,7 +28,6 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
      * @param name a name to look for.
      * @return the corresponding QueryAnswerType.
      */
-    @JsonCreator
     public static QueryAnswerType fromString(String name) {
         return fromString(name, QueryAnswerType.class);
     }

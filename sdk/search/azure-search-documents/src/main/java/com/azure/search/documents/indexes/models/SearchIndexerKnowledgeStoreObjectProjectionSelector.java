@@ -7,8 +7,11 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Projection definition for what data to store in Azure Blob. */
@@ -20,13 +23,12 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
      *
      * @param storageContainer the storageContainer value to set.
      */
-    @JsonCreator
-    public SearchIndexerKnowledgeStoreObjectProjectionSelector(
-            @JsonProperty(value = "storageContainer", required = true) String storageContainer) {
+    public SearchIndexerKnowledgeStoreObjectProjectionSelector(String storageContainer) {
         super(storageContainer);
     }
 
     /** {@inheritDoc} */
+    @Override
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
@@ -35,12 +37,14 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
 
     /** {@inheritDoc} */
     @Override
+    @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setGeneratedKeyName(String generatedKeyName) {
         super.setGeneratedKeyName(generatedKeyName);
         return this;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setSource(String source) {
         super.setSource(source);
@@ -49,6 +53,7 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
 
     /** {@inheritDoc} */
     @Override
+    @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setSourceContext(String sourceContext) {
         super.setSourceContext(sourceContext);
         return this;
@@ -56,6 +61,106 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
 
     /** {@inheritDoc} */
     @Override
+    @Override
+    public SearchIndexerKnowledgeStoreObjectProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
+        super.setInputs(inputs);
+        return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageContainer", getStorageContainer());
+        jsonWriter.writeStringField("referenceKeyName", getReferenceKeyName());
+        jsonWriter.writeStringField("generatedKeyName", getGeneratedKeyName());
+        jsonWriter.writeStringField("source", getSource());
+        jsonWriter.writeStringField("sourceContext", getSourceContext());
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchIndexerKnowledgeStoreObjectProjectionSelector from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerKnowledgeStoreObjectProjectionSelector if the JsonReader was pointing to an
+     *     instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
+    public static SearchIndexerKnowledgeStoreObjectProjectionSelector fromJson(JsonReader jsonReader)
+            throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean storageContainerFound = false;
+                    String storageContainer = null;
+                    String referenceKeyName = null;
+                    String generatedKeyName = null;
+                    String source = null;
+                    String sourceContext = null;
+                    List<InputFieldMappingEntry> inputs = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("storageContainer".equals(fieldName)) {
+                            storageContainer = reader.getString();
+                            storageContainerFound = true;
+                        } else if ("referenceKeyName".equals(fieldName)) {
+                            referenceKeyName = reader.getString();
+                        } else if ("generatedKeyName".equals(fieldName)) {
+                            generatedKeyName = reader.getString();
+                        } else if ("source".equals(fieldName)) {
+                            source = reader.getString();
+                        } else if ("sourceContext".equals(fieldName)) {
+                            sourceContext = reader.getString();
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (storageContainerFound) {
+                        SearchIndexerKnowledgeStoreObjectProjectionSelector deserializedValue =
+                                new SearchIndexerKnowledgeStoreObjectProjectionSelector(storageContainer);
+                        deserializedValue.setReferenceKeyName(referenceKeyName);
+                        deserializedValue.setGeneratedKeyName(generatedKeyName);
+                        deserializedValue.setSource(source);
+                        deserializedValue.setSourceContext(sourceContext);
+                        deserializedValue.setInputs(inputs);
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!storageContainerFound) {
+                        missingProperties.add("storageContainer");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
+    }
+
+    public SearchIndexerKnowledgeStoreObjectProjectionSelector setReferenceKeyName(String referenceKeyName) {
+        super.setReferenceKeyName(referenceKeyName);
+        return this;
+    }
+
+    public SearchIndexerKnowledgeStoreObjectProjectionSelector setGeneratedKeyName(String generatedKeyName) {
+        super.setGeneratedKeyName(generatedKeyName);
+        return this;
+    }
+
+    public SearchIndexerKnowledgeStoreObjectProjectionSelector setSource(String source) {
+        super.setSource(source);
+
+        return this;
+    }
+
+    public SearchIndexerKnowledgeStoreObjectProjectionSelector setSourceContext(String sourceContext) {
+        super.setSourceContext(sourceContext);
+        return this;
+    }
+
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
         return this;

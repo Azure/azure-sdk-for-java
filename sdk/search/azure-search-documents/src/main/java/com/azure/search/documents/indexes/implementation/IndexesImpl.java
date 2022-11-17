@@ -21,17 +21,19 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeRequest;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -152,6 +154,36 @@ public final class IndexesImpl {
      *
      * @param index The definition of the index to create.
      * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     *     with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndex>> createWithResponseAsync(SearchIndex index, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.create(
+                                this.client.getEndpoint(),
+                                xMsClientRequestId,
+                                this.client.getApiVersion(),
+                                accept,
+                                index,
+                                context));
+    }
+
+    /**
+     * Creates a new search index.
+     *
+     * @param index The definition of the index to create.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -170,6 +202,39 @@ public final class IndexesImpl {
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.create(
                 this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, index, context);
+    }
+
+    /**
+     * Creates a new search index.
+     *
+     * @param index The definition of the index to create.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndex> createAsync(SearchIndex index, RequestOptions requestOptions) {
+        return createWithResponseAsync(index, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a new search index.
+     *
+     * @param index The definition of the index to create.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndex> createAsync(SearchIndex index, RequestOptions requestOptions, Context context) {
+        return createWithResponseAsync(index, requestOptions, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -210,6 +275,74 @@ public final class IndexesImpl {
                                         res.getValue().getIndexes(),
                                         null,
                                         null));
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     *
+     * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
+     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndex> listAsync(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(select, requestOptions, context));
+    }
+
+    /**
+     * Creates a new search index or updates an index if it already exists.
+     *
+     * @param indexName The definition of the index to create or update.
+     * @param index The definition of the index to create or update.
+     * @param allowIndexDowntime Allows new analyzers, tokenizers, token filters, or char filters to be added to an
+     *     index by taking the index offline for at least a few seconds. This temporarily causes indexing and query
+     *     requests to fail. Performance and write availability of the index can be impaired for several minutes after
+     *     the index is updated, or longer for very large indexes.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     *     with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndex>> createOrUpdateWithResponseAsync(
+            String indexName,
+            SearchIndex index,
+            Boolean allowIndexDowntime,
+            String ifMatch,
+            String ifNoneMatch,
+            RequestOptions requestOptions) {
+        final String prefer = "return=representation";
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.createOrUpdate(
+                                this.client.getEndpoint(),
+                                indexName,
+                                allowIndexDowntime,
+                                xMsClientRequestId,
+                                ifMatch,
+                                ifNoneMatch,
+                                prefer,
+                                this.client.getApiVersion(),
+                                accept,
+                                index,
+                                context));
     }
 
     /**
@@ -264,6 +397,112 @@ public final class IndexesImpl {
     }
 
     /**
+     * Creates a new search index or updates an index if it already exists.
+     *
+     * @param indexName The definition of the index to create or update.
+     * @param index The definition of the index to create or update.
+     * @param allowIndexDowntime Allows new analyzers, tokenizers, token filters, or char filters to be added to an
+     *     index by taking the index offline for at least a few seconds. This temporarily causes indexing and query
+     *     requests to fail. Performance and write availability of the index can be impaired for several minutes after
+     *     the index is updated, or longer for very large indexes.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndex> createOrUpdateAsync(
+            String indexName,
+            SearchIndex index,
+            Boolean allowIndexDowntime,
+            String ifMatch,
+            String ifNoneMatch,
+            RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(
+                        indexName, index, allowIndexDowntime, ifMatch, ifNoneMatch, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a new search index or updates an index if it already exists.
+     *
+     * @param indexName The definition of the index to create or update.
+     * @param index The definition of the index to create or update.
+     * @param allowIndexDowntime Allows new analyzers, tokenizers, token filters, or char filters to be added to an
+     *     index by taking the index offline for at least a few seconds. This temporarily causes indexing and query
+     *     requests to fail. Performance and write availability of the index can be impaired for several minutes after
+     *     the index is updated, or longer for very large indexes.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndex> createOrUpdateAsync(
+            String indexName,
+            SearchIndex index,
+            Boolean allowIndexDowntime,
+            String ifMatch,
+            String ifNoneMatch,
+            RequestOptions requestOptions,
+            Context context) {
+        return createOrUpdateWithResponseAsync(
+                        indexName, index, allowIndexDowntime, ifMatch, ifNoneMatch, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
+     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
+     * source in case you need to re-build the index.
+     *
+     * @param indexName The name of the index to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+            String indexName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                this.client.getEndpoint(),
+                                indexName,
+                                xMsClientRequestId,
+                                ifMatch,
+                                ifNoneMatch,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
+    }
+
+    /**
      * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
      * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
      * source in case you need to re-build the index.
@@ -301,6 +540,82 @@ public final class IndexesImpl {
     }
 
     /**
+     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
+     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
+     * source in case you need to re-build the index.
+     *
+     * @param indexName The name of the index to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String indexName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(indexName, ifMatch, ifNoneMatch, requestOptions)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
+     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
+     * source in case you need to re-build the index.
+     *
+     * @param indexName The name of the index to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+            String indexName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+        return deleteWithResponseAsync(indexName, ifMatch, ifNoneMatch, requestOptions, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Retrieves an index definition.
+     *
+     * @param indexName The name of the index to retrieve.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     *     with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndex>> getWithResponseAsync(String indexName, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.get(
+                                this.client.getEndpoint(),
+                                indexName,
+                                xMsClientRequestId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
+    }
+
+    /**
      * Retrieves an index definition.
      *
      * @param indexName The name of the index to retrieve.
@@ -326,6 +641,70 @@ public final class IndexesImpl {
     }
 
     /**
+     * Retrieves an index definition.
+     *
+     * @param indexName The name of the index to retrieve.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndex> getAsync(String indexName, RequestOptions requestOptions) {
+        return getWithResponseAsync(indexName, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves an index definition.
+     *
+     * @param indexName The name of the index to retrieve.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndex> getAsync(String indexName, RequestOptions requestOptions, Context context) {
+        return getWithResponseAsync(indexName, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName The name of the index for which to retrieve statistics.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return statistics for a given index along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexStatistics>> getStatisticsWithResponseAsync(
+            String indexName, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.getStatistics(
+                                this.client.getEndpoint(),
+                                indexName,
+                                xMsClientRequestId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
+    }
+
+    /**
      * Returns statistics for the given index, including a document count and storage usage.
      *
      * @param indexName The name of the index for which to retrieve statistics.
@@ -347,6 +726,73 @@ public final class IndexesImpl {
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.getStatistics(
                 this.client.getEndpoint(), indexName, xMsClientRequestId, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName The name of the index for which to retrieve statistics.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return statistics for a given index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexStatistics> getStatisticsAsync(String indexName, RequestOptions requestOptions) {
+        return getStatisticsWithResponseAsync(indexName, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName The name of the index for which to retrieve statistics.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return statistics for a given index on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexStatistics> getStatisticsAsync(
+            String indexName, RequestOptions requestOptions, Context context) {
+        return getStatisticsWithResponseAsync(indexName, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName The name of the index for which to test an analyzer.
+     * @param request The text and analyzer or analysis components to test.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of testing an analyzer on text along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AnalyzeResult>> analyzeWithResponseAsync(
+            String indexName, AnalyzeRequest request, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.analyze(
+                                this.client.getEndpoint(),
+                                indexName,
+                                xMsClientRequestId,
+                                this.client.getApiVersion(),
+                                accept,
+                                request,
+                                context));
     }
 
     /**
@@ -379,5 +825,41 @@ public final class IndexesImpl {
                 accept,
                 request,
                 context);
+    }
+
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName The name of the index for which to test an analyzer.
+     * @param request The text and analyzer or analysis components to test.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of testing an analyzer on text on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeResult> analyzeAsync(String indexName, AnalyzeRequest request, RequestOptions requestOptions) {
+        return analyzeWithResponseAsync(indexName, request, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName The name of the index for which to test an analyzer.
+     * @param request The text and analyzer or analysis components to test.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of testing an analyzer on text on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeResult> analyzeAsync(
+            String indexName, AnalyzeRequest request, RequestOptions requestOptions, Context context) {
+        return analyzeWithResponseAsync(indexName, request, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 }

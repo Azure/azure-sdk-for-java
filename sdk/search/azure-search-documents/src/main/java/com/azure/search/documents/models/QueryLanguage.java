@@ -7,10 +7,9 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueryLanguage. */
+/** The language of the query. */
 public final class QueryLanguage extends ExpandableStringEnum<QueryLanguage> {
     /** Static value none for QueryLanguage. */
     public static final QueryLanguage NONE = fromString("none");
@@ -234,7 +233,6 @@ public final class QueryLanguage extends ExpandableStringEnum<QueryLanguage> {
      * @param name a name to look for.
      * @return the corresponding QueryLanguage.
      */
-    @JsonCreator
     public static QueryLanguage fromString(String name) {
         return fromString(name, QueryLanguage.class);
     }

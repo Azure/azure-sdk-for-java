@@ -4,29 +4,34 @@ package com.azure.search.documents.test.environment.models;
 
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HotelAddress {
     @SimpleField(isFacetable = true)
     @JsonProperty(value = "StreetAddress")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String streetAddress;
 
     @SearchableField(isFilterable = true)
     @JsonProperty(value = "City")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String city;
 
     @SearchableField
     @JsonProperty(value = "StateProvince")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String stateProvince;
 
     @SearchableField(synonymMapNames = {"fieldbuilder"})
     @JsonProperty(value = "Country")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String country;
 
     @SimpleField
     @JsonProperty(value = "PostalCode")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String postalCode;
-
 
     public String streetAddress() {
         return this.streetAddress;

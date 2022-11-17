@@ -3,7 +3,9 @@
 
 package com.azure.search.documents.implementation.converters;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
+import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestResult;
 
 /**
@@ -19,6 +21,7 @@ public final class SuggestResultHelper {
      */
     public interface SuggestResultAccessor {
         void setAdditionalProperties(SuggestResult suggestResult, SearchDocument additionalProperties);
+        void setJsonSerializer(SuggestResult suggestResult, JsonSerializer jsonSerializer);
     }
 
     /**
@@ -32,5 +35,9 @@ public final class SuggestResultHelper {
 
     static void setAdditionalProperties(SuggestResult suggestResult, SearchDocument additionalProperties) {
         accessor.setAdditionalProperties(suggestResult, additionalProperties);
+    }
+
+    static void setJsonSerializer(SuggestResult suggestResult, JsonSerializer jsonSerializer) {
+        accessor.setJsonSerializer(suggestResult, jsonSerializer);
     }
 }

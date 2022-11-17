@@ -7,10 +7,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobIndexerImageAction. */
+/**
+ * Determines how to process embedded images and image files in Azure blob storage. Setting the "imageAction"
+ * configuration to any value other than "none" requires that a skillset also be attached to that indexer.
+ */
 public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndexerImageAction> {
     /** Static value none for BlobIndexerImageAction. */
     public static final BlobIndexerImageAction NONE = fromString("none");
@@ -28,7 +30,6 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
      * @param name a name to look for.
      * @return the corresponding BlobIndexerImageAction.
      */
-    @JsonCreator
     public static BlobIndexerImageAction fromString(String name) {
         return fromString(name, BlobIndexerImageAction.class);
     }

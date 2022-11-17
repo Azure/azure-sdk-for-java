@@ -7,10 +7,9 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QuerySpellerType. */
+/** Improve search recall by spell-correcting individual search query terms. */
 public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerType> {
     /** Static value none for QuerySpellerType. */
     public static final QuerySpellerType NONE = fromString("none");
@@ -24,7 +23,6 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
      * @param name a name to look for.
      * @return the corresponding QuerySpellerType.
      */
-    @JsonCreator
     public static QuerySpellerType fromString(String name) {
         return fromString(name, QuerySpellerType.class);
     }

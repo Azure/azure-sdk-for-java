@@ -7,10 +7,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LineEnding. */
+/**
+ * Defines the sequence of characters to use between the lines of text recognized by the OCR skill. The default value is
+ * "space".
+ */
 public final class LineEnding extends ExpandableStringEnum<LineEnding> {
     /** Static value space for LineEnding. */
     public static final LineEnding SPACE = fromString("space");
@@ -30,7 +32,6 @@ public final class LineEnding extends ExpandableStringEnum<LineEnding> {
      * @param name a name to look for.
      * @return the corresponding LineEnding.
      */
-    @JsonCreator
     public static LineEnding fromString(String name) {
         return fromString(name, LineEnding.class);
     }
