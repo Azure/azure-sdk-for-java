@@ -29,6 +29,10 @@ public final class NlpVerticalLimitSettings {
     @JsonProperty(value = "timeout")
     private Duration timeout;
 
+    /** Creates an instance of NlpVerticalLimitSettings class. */
+    public NlpVerticalLimitSettings() {
+    }
+
     /**
      * Get the maxConcurrentTrials property: Maximum Concurrent AutoML iterations.
      *

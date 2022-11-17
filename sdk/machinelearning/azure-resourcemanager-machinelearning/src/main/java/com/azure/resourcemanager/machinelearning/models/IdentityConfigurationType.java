@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IdentityConfigurationType. */
+/** Enum to determine identity framework. */
 public final class IdentityConfigurationType extends ExpandableStringEnum<IdentityConfigurationType> {
     /** Static value Managed for IdentityConfigurationType. */
     public static final IdentityConfigurationType MANAGED = fromString("Managed");

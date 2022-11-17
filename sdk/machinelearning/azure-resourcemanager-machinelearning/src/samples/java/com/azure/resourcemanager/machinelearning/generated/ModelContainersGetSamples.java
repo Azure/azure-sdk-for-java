@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ModelContainers Get. */
 public final class ModelContainersGetSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ModelContainer/get.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ModelContainer/get.json
      */
     /**
      * Sample code: Get Model Container.

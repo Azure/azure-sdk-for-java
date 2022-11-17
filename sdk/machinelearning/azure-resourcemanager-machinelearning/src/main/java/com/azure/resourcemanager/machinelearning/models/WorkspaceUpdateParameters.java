@@ -38,6 +38,10 @@ public final class WorkspaceUpdateParameters {
     @JsonProperty(value = "properties")
     private WorkspacePropertiesUpdateParameters innerProperties;
 
+    /** Creates an instance of WorkspaceUpdateParameters class. */
+    public WorkspaceUpdateParameters() {
+    }
+
     /**
      * Get the tags property: The resource tags for the machine learning workspace.
      *

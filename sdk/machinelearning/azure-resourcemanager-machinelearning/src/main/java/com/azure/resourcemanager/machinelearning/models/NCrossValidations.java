@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class NCrossValidations {
+    /** Creates an instance of NCrossValidations class. */
+    public NCrossValidations() {
+    }
+
     /**
      * Validates the instance.
      *
