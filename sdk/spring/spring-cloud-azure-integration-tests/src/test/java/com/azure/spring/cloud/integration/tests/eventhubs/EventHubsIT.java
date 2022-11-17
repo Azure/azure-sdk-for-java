@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
@@ -35,7 +36,7 @@ import java.util.concurrent.TimeUnit;
             + ",org.springframework.cloud.stream.function.FunctionConfiguration"
 })
 @ActiveProfiles("eventhubs")
-public class EventHubsIT {
+public class EventHubsIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsIT.class);
     private static final String DATA = "eventhub test";
     private static CountDownLatch LATCH = new CountDownLatch(1);

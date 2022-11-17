@@ -4,6 +4,7 @@ package com.azure.spring.cloud.integration.tests.keyvault.secret;
 
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("keyvault-secret")
-public class KeyVaultSecretIT {
+public class KeyVaultSecretIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecretIT.class);
     private static final String NAME = "sample-key";
     private static final String VALUE = "sample-value";

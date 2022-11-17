@@ -4,6 +4,7 @@ package com.azure.spring.cloud.integration.tests.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("appconfiguration")
-public class AppConfigurationIT {
+public class AppConfigurationIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationIT.class);
     private static final String SAMPLE_KEY = "sample-key";
     private static final String SAMPLE_LABEL = "sample-label";

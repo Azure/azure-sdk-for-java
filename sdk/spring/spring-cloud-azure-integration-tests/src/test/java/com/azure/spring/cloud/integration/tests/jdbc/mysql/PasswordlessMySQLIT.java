@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.integration.tests.jdbc.mysql;
 
 import com.azure.cosmos.implementation.guava25.base.Joiner;
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -23,7 +24,7 @@ import java.util.List;
 @DisabledIfEnvironmentVariable(named = "AZURE_MYSQL_IT_SKIPRUNNING", matches = "skipRunning")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
-class PasswordlessMySQLIT {
+class PasswordlessMySQLIT extends BaseIT {
     String VALUE = "information_schema,db,mysql,performance_schema,sys";
 
     @Autowired

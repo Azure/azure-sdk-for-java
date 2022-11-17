@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("cosmos")
-public class CosmosIT {
+public class CosmosIT extends BaseIT{
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosIT.class);
     private static final String DATABASE_NAME = "TestDB";
     private static final String CONTAINER_NAME = "Users";

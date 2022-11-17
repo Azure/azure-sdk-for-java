@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.storage.fileshare;
 
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import java.nio.charset.Charset;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("storage-fileshare")
-public class StorageFileShareIT {
+public class StorageFileShareIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileShareIT.class);
     private static final String DATA = "sample-data";
 

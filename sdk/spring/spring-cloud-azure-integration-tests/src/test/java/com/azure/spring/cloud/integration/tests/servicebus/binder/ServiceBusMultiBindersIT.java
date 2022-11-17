@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.servicebus.binder;
 
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-binder-multi")
-class ServiceBusMultiBindersIT {
+class ServiceBusMultiBindersIT extends BaseIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMultiBindersIT.class);
 

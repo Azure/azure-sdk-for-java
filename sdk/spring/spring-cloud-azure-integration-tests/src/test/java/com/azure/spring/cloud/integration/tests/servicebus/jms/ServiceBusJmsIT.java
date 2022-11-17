@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.servicebus.jms;
 
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -17,7 +18,7 @@ import java.util.concurrent.Exchanger;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-jms")
-public class ServiceBusJmsIT {
+public class ServiceBusJmsIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsIT.class);
     private static final String DATA = "service bus jms test";
     private static final String QUEUE_NAME = "que001";

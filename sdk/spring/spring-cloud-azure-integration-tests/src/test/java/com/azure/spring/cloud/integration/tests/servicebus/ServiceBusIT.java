@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +33,7 @@ import java.util.concurrent.TimeUnit;
             + ",org.springframework.cloud.stream.function.FunctionConfiguration"
     })
 @ActiveProfiles("servicebus")
-public class ServiceBusIT {
+public class ServiceBusIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
     private static final String DATA1 = "service bus test1";
     private static final String DATA2 = "service bus test2";

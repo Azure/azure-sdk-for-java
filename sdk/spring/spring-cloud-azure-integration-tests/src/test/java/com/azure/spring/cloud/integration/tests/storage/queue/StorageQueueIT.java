@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.storage.queue;
 
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("storage-queue")
-public class StorageQueueIT {
+public class StorageQueueIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageQueueIT.class);
     private static final String DATA = "storage queue test";
 

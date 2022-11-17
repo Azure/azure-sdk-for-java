@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.cosmos.springdata;
 
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import com.azure.spring.cloud.integration.tests.cosmos.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("cosmos-springdata")
-public class SpringDataCosmosIT {
+public class SpringDataCosmosIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringDataCosmosIT.class);
     private static final String USER_ID = "testSpringDataCosmos";
 

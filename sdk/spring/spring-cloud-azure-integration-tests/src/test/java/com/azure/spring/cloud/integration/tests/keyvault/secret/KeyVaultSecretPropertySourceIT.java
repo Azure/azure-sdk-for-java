@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.keyvault.secret;
 
+import com.azure.spring.cloud.integration.tests.common.BaseIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("keyvault-secret-property-source")
-public class KeyVaultSecretPropertySourceIT {
+public class KeyVaultSecretPropertySourceIT extends BaseIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecretPropertySourceIT.class);
 
     @Value("${AZURE_KEYVAULT_SECRET_VALUE}")
