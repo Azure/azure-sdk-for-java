@@ -36,6 +36,10 @@ public final class RestorePointCollectionProperties {
     @JsonProperty(value = "restorePoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorePointInner> restorePoints;
 
+    /** Creates an instance of RestorePointCollectionProperties class. */
+    public RestorePointCollectionProperties() {
+    }
+
     /**
      * Get the source property: The properties of the source resource that this restore point collection is created
      * from.

@@ -16,6 +16,10 @@ public final class SoftDeletePolicy {
     @JsonProperty(value = "isSoftDeleteEnabled")
     private Boolean isSoftDeleteEnabled;
 
+    /** Creates an instance of SoftDeletePolicy class. */
+    public SoftDeletePolicy() {
+    }
+
     /**
      * Get the isSoftDeleteEnabled property: Enables soft-deletion for resources in this gallery, allowing them to be
      * recovered within retention time.

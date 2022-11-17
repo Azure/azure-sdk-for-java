@@ -25,6 +25,10 @@ public final class EncryptionImages {
     @JsonProperty(value = "dataDiskImages")
     private List<DataDiskImageEncryption> dataDiskImages;
 
+    /** Creates an instance of EncryptionImages class. */
+    public EncryptionImages() {
+    }
+
     /**
      * Get the osDiskImage property: Contains encryption settings for an OS disk image.
      *

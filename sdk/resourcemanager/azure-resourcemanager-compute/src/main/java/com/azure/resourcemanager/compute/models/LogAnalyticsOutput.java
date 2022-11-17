@@ -16,6 +16,10 @@ public final class LogAnalyticsOutput {
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private String output;
 
+    /** Creates an instance of LogAnalyticsOutput class. */
+    public LogAnalyticsOutput() {
+    }
+
     /**
      * Get the output property: Output file Uri path to blob container.
      *

@@ -22,6 +22,10 @@ public final class DedicatedHostAllocatableVM {
     @JsonProperty(value = "count")
     private Double count;
 
+    /** Creates an instance of DedicatedHostAllocatableVM class. */
+    public DedicatedHostAllocatableVM() {
+    }
+
     /**
      * Get the vmSize property: VM size in terms of which the unutilized capacity is represented.
      *

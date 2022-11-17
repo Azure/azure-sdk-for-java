@@ -48,6 +48,8 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceUpdatedEventData;
@@ -328,6 +330,12 @@ public final class SystemEventMappingNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageCreated event. */
+    public static final String HEALTHCARE_DICOM_IMAGE_CREATED = "Microsoft.HealthcareApis.DicomImageCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageDeleted event. */
+    public static final String HEALTHCARE_DICOM_IMAGE_DELETED = "Microsoft.HealthcareApis.DicomImageDeleted";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceCreated event. */
     public static final String HEALTHCARE_FHIR_RESOURCE_CREATED = "Microsoft.HealthcareApis.FhirResourceCreated";
@@ -816,6 +824,8 @@ public final class SystemEventMappingNames {
                             CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
                             ContainerServiceNewKubernetesVersionAvailableEventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
+                    put(HEALTHCARE_DICOM_IMAGE_CREATED, HealthcareDicomImageCreatedEventData.class);
+                    put(HEALTHCARE_DICOM_IMAGE_DELETED, HealthcareDicomImageDeletedEventData.class);
                     put(HEALTHCARE_FHIR_RESOURCE_CREATED, HealthcareFhirResourceCreatedEventData.class);
                     put(HEALTHCARE_FHIR_RESOURCE_DELETED, HealthcareFhirResourceDeletedEventData.class);
                     put(HEALTHCARE_FHIR_RESOURCE_UPDATED, HealthcareFhirResourceUpdatedEventData.class);

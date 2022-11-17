@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The update cluster identity certificate request parameters. */
 @Fluent
 public final class UpdateClusterIdentityCertificateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateClusterIdentityCertificateParameters.class);
-
     /*
      * The application id.
      */
@@ -31,6 +27,10 @@ public final class UpdateClusterIdentityCertificateParameters {
      */
     @JsonProperty(value = "certificatePassword")
     private String certificatePassword;
+
+    /** Creates an instance of UpdateClusterIdentityCertificateParameters class. */
+    public UpdateClusterIdentityCertificateParameters() {
+    }
 
     /**
      * Get the applicationId property: The application id.

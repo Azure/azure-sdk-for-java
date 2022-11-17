@@ -30,6 +30,10 @@ public final class VirtualMachineScaleSetExtensionUpdate extends SubResourceRead
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetExtensionProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetExtensionUpdate class. */
+    public VirtualMachineScaleSetExtensionUpdate() {
+    }
+
     /**
      * Get the name property: The name of the extension.
      *

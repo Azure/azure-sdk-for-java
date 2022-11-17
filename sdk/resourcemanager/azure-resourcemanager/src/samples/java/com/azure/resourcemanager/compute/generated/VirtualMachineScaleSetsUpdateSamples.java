@@ -126,7 +126,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                             .withName("windows2016")
                             .withPublisher("microsoft-ads")
                             .withProduct("windows-data-science-vm")
-                            .withPromotionCode("aaaaaaaaaa"))
+                            .withPromotionCode("fakeTokenPlaceholder"))
                     .withIdentity(
                         new VirtualMachineScaleSetIdentity()
                             .withType(ResourceIdentityType.SYSTEM_ASSIGNED)
@@ -196,9 +196,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                                 new SshPublicKey()
                                                                     .withPath(
                                                                         "/home/{your-username}/.ssh/authorized_keys")
-                                                                    .withKeyData(
-                                                                        "ssh-rsa"
-                                                                            + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1"))))
+                                                                    .withKeyData("fakeTokenPlaceholder"))))
                                             .withProvisionVMAgent(true)
                                             .withPatchSettings(
                                                 new LinuxPatchSettings()
