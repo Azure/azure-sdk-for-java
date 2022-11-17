@@ -549,7 +549,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(encryptionPaths, 1);
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(encryptionPaths, 2);
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties(this.configuration.getCollectionId(),
                 Configuration.DEFAULT_PARTITION_KEY_PATH);

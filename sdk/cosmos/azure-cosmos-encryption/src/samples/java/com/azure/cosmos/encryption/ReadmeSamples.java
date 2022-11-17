@@ -86,7 +86,7 @@ public class ReadmeSamples {
 
                 List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
                 paths.add(includedPath);
-                ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 1);
+                ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 2);
                 CosmosContainerProperties properties = new CosmosContainerProperties("<YOUR CONTAINER NAME>", "/mypk");
                 properties.setClientEncryptionPolicy(clientEncryptionPolicy);
                 return cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties);

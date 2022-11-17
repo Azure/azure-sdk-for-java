@@ -676,12 +676,12 @@ public class EncryptionProcessor {
     }
 
     private byte[] convertFromBase64UriSafeString(String base64UriSafeString) {
-        StringBuilder base64String = new StringBuilder(base64UriSafeString);
-
-        replaceString(base64String, "_", "/");
-        replaceString(base64String, "-", "\\+");
-        return Base64.getEncoder().encode(base64String.toString().getBytes(StandardCharsets.UTF_8));
-//        return Base64.getUrlDecoder().decode(base64UriSafeString);
+//        StringBuilder base64String = new StringBuilder(base64UriSafeString);
+//
+//        replaceString(base64String, "_", "/");
+//        replaceString(base64String, "-", "\\+");
+//        return Base64.getDecoder().decode(base64String.toString().getBytes(StandardCharsets.UTF_8));
+        return Base64.getUrlDecoder().decode(base64UriSafeString);
     }
 
     private StringBuilder replaceString(StringBuilder sb,
