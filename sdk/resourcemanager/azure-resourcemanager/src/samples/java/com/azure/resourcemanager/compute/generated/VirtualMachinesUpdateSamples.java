@@ -76,7 +76,7 @@ public final class VirtualMachinesUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -142,7 +142,7 @@ public final class VirtualMachinesUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(

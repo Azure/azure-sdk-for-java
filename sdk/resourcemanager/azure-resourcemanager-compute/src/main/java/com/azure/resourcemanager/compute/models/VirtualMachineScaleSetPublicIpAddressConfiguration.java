@@ -32,6 +32,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     @JsonProperty(value = "sku")
     private PublicIpAddressSku sku;
 
+    /** Creates an instance of VirtualMachineScaleSetPublicIpAddressConfiguration class. */
+    public VirtualMachineScaleSetPublicIpAddressConfiguration() {
+    }
+
     /**
      * Get the name property: The publicIP address configuration name.
      *

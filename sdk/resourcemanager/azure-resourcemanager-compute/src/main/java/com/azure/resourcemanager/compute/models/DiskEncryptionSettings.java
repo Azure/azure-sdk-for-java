@@ -28,6 +28,10 @@ public final class DiskEncryptionSettings {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of DiskEncryptionSettings class. */
+    public DiskEncryptionSettings() {
+    }
+
     /**
      * Get the diskEncryptionKey property: Specifies the location of the disk encryption key, which is a Key Vault
      * Secret.

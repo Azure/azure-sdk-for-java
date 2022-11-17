@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The details about the localizable name of a type of usage. */
 @Fluent
 public final class LocalizedName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalizedName.class);
-
     /*
      * The name of the used resource.
      */
@@ -25,6 +21,10 @@ public final class LocalizedName {
      */
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
+
+    /** Creates an instance of LocalizedName class. */
+    public LocalizedName() {
+    }
 
     /**
      * Get the value property: The name of the used resource.

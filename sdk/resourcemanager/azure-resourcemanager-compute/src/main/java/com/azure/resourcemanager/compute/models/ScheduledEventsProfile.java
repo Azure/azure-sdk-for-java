@@ -16,6 +16,10 @@ public final class ScheduledEventsProfile {
     @JsonProperty(value = "terminateNotificationProfile")
     private TerminateNotificationProfile terminateNotificationProfile;
 
+    /** Creates an instance of ScheduledEventsProfile class. */
+    public ScheduledEventsProfile() {
+    }
+
     /**
      * Get the terminateNotificationProfile property: Specifies Terminate Scheduled Event related configurations.
      *

@@ -139,6 +139,10 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     @JsonProperty(value = "userData")
     private String userData;
 
+    /** Creates an instance of VirtualMachineScaleSetVMPropertiesInner class. */
+    public VirtualMachineScaleSetVMPropertiesInner() {
+    }
+
     /**
      * Get the latestModelApplied property: Specifies whether the latest model has been applied to the virtual machine.
      *

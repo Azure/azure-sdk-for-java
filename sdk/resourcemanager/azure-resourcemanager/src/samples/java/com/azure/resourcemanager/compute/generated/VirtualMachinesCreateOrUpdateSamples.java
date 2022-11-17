@@ -107,7 +107,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -163,7 +163,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -244,7 +244,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -298,7 +298,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withLinuxConfiguration(
                                 new LinuxConfiguration()
                                     .withProvisionVMAgent(true)
@@ -368,7 +368,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -426,7 +426,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -480,7 +480,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -540,7 +540,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -602,7 +602,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -662,7 +662,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -720,7 +720,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -780,7 +780,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withLinuxConfiguration(
                                 new LinuxConfiguration()
                                     .withProvisionVMAgent(true)
@@ -841,7 +841,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -902,7 +902,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -963,7 +963,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1022,7 +1022,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1076,7 +1076,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1144,7 +1144,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1203,7 +1203,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1261,7 +1261,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE)
@@ -1329,7 +1329,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1383,7 +1383,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("{vm-name}")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1443,7 +1443,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1500,7 +1500,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1616,7 +1616,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1670,7 +1670,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1728,7 +1728,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1791,7 +1791,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1860,9 +1860,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                                     .asList(
                                                         new SshPublicKey()
                                                             .withPath("/home/{your-username}/.ssh/authorized_keys")
-                                                            .withKeyData(
-                                                                "ssh-rsa"
-                                                                    + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1"))))))
+                                                            .withKeyData("fakeTokenPlaceholder"))))))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1913,7 +1911,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1976,7 +1974,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2035,7 +2033,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2088,7 +2086,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("{vm-name}")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2146,7 +2144,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2201,7 +2199,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withLinuxConfiguration(
                                 new LinuxConfiguration()
                                     .withProvisionVMAgent(true)
@@ -2266,7 +2264,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -2335,7 +2333,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2393,7 +2391,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withLinuxConfiguration(
                                 new LinuxConfiguration()
                                     .withProvisionVMAgent(true)
@@ -2451,7 +2449,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2538,7 +2536,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2592,7 +2590,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2654,7 +2652,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)

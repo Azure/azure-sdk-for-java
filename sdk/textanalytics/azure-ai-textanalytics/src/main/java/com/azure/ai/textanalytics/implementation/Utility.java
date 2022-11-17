@@ -508,7 +508,7 @@ public final class Utility {
             detectedLanguageImpl.getIso6391Name(), detectedLanguageImpl.getConfidenceScore(),
             null);
         if (detectedLanguageImpl.getScript() != null) {
-            DetectedLanguagePropertiesHelper.setScript(detectedLanguage,
+            DetectedLanguagePropertiesHelper.setScriptKind(detectedLanguage,
                 ScriptKind.fromString(detectedLanguageImpl.getScript().toString()));
         }
         return detectedLanguage;
