@@ -29,6 +29,10 @@ public final class RegistryListCredentialsResult {
     @JsonProperty(value = "passwords")
     private List<Password> passwords;
 
+    /** Creates an instance of RegistryListCredentialsResult class. */
+    public RegistryListCredentialsResult() {
+    }
+
     /**
      * Get the location property: The location property.
      *

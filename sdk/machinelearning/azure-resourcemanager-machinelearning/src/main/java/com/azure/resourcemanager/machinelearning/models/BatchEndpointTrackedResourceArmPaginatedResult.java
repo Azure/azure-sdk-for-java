@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.BatchEndpointDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.BatchEndpointInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class BatchEndpointTrackedResourceArmPaginatedResult {
     /*
-     * The link to the next page of BatchEndpoint objects. If null, there are
-     * no additional pages.
+     * The link to the next page of BatchEndpoint objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class BatchEndpointTrackedResourceArmPaginatedResult {
      * An array of objects of type BatchEndpoint.
      */
     @JsonProperty(value = "value")
-    private List<BatchEndpointDataInner> value;
+    private List<BatchEndpointInner> value;
+
+    /** Creates an instance of BatchEndpointTrackedResourceArmPaginatedResult class. */
+    public BatchEndpointTrackedResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of BatchEndpoint objects. If null, there are no additional
@@ -52,7 +55,7 @@ public final class BatchEndpointTrackedResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<BatchEndpointDataInner> value() {
+    public List<BatchEndpointInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class BatchEndpointTrackedResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the BatchEndpointTrackedResourceArmPaginatedResult object itself.
      */
-    public BatchEndpointTrackedResourceArmPaginatedResult withValue(List<BatchEndpointDataInner> value) {
+    public BatchEndpointTrackedResourceArmPaginatedResult withValue(List<BatchEndpointInner> value) {
         this.value = value;
         return this;
     }

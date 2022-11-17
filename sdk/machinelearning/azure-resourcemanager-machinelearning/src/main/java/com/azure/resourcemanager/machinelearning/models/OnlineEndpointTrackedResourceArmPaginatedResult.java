@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.OnlineEndpointDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.OnlineEndpointInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class OnlineEndpointTrackedResourceArmPaginatedResult {
     /*
-     * The link to the next page of OnlineEndpoint objects. If null, there are
-     * no additional pages.
+     * The link to the next page of OnlineEndpoint objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class OnlineEndpointTrackedResourceArmPaginatedResult {
      * An array of objects of type OnlineEndpoint.
      */
     @JsonProperty(value = "value")
-    private List<OnlineEndpointDataInner> value;
+    private List<OnlineEndpointInner> value;
+
+    /** Creates an instance of OnlineEndpointTrackedResourceArmPaginatedResult class. */
+    public OnlineEndpointTrackedResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of OnlineEndpoint objects. If null, there are no additional
@@ -52,7 +55,7 @@ public final class OnlineEndpointTrackedResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<OnlineEndpointDataInner> value() {
+    public List<OnlineEndpointInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class OnlineEndpointTrackedResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the OnlineEndpointTrackedResourceArmPaginatedResult object itself.
      */
-    public OnlineEndpointTrackedResourceArmPaginatedResult withValue(List<OnlineEndpointDataInner> value) {
+    public OnlineEndpointTrackedResourceArmPaginatedResult withValue(List<OnlineEndpointInner> value) {
         this.value = value;
         return this;
     }

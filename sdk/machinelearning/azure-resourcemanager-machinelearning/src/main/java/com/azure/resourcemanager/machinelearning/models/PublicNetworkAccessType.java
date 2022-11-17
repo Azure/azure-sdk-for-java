@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicNetworkAccessType. */
+/** Enum to determine whether PublicNetworkAccess is Enabled or Disabled. */
 public final class PublicNetworkAccessType extends ExpandableStringEnum<PublicNetworkAccessType> {
     /** Static value Enabled for PublicNetworkAccessType. */
     public static final PublicNetworkAccessType ENABLED = fromString("Enabled");

@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class SamplingAlgorithm {
+    /** Creates an instance of SamplingAlgorithm class. */
+    public SamplingAlgorithm() {
+    }
+
     /**
      * Validates the instance.
      *

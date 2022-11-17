@@ -12,8 +12,8 @@ import java.time.Duration;
 @Fluent
 public final class TableVerticalLimitSettings {
     /*
-     * Enable early termination, determines whether or not if AutoMLJob will
-     * terminate early if there is no score improvement in last 20 iterations.
+     * Enable early termination, determines whether or not if AutoMLJob will terminate early if there is no score
+     * improvement in last 20 iterations.
      */
     @JsonProperty(value = "enableEarlyTermination")
     private Boolean enableEarlyTermination;
@@ -53,6 +53,10 @@ public final class TableVerticalLimitSettings {
      */
     @JsonProperty(value = "trialTimeout")
     private Duration trialTimeout;
+
+    /** Creates an instance of TableVerticalLimitSettings class. */
+    public TableVerticalLimitSettings() {
+    }
 
     /**
      * Get the enableEarlyTermination property: Enable early termination, determines whether or not if AutoMLJob will

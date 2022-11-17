@@ -73,7 +73,7 @@ public final class TopicDescription {
     @JacksonXmlProperty(
             localName = "SizeInBytes",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer sizeInBytes;
+    private Long sizeInBytes;
 
     /*
      * Filter messages before publishing.
@@ -349,7 +349,7 @@ public final class TopicDescription {
      *
      * @return the sizeInBytes value.
      */
-    public Integer getSizeInBytes() {
+    public Long getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -359,7 +359,7 @@ public final class TopicDescription {
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setSizeInBytes(Integer sizeInBytes) {
+    public TopicDescription setSizeInBytes(Long sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
     }

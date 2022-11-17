@@ -1,0 +1,1081 @@
+{
+    "summary": {
+        "startDate": "2022-11-06T01:00:00+02:00",
+        "endDate": "2022-11-06T13:00:00+02:00",
+        "severity": 4,
+        "phrase": "Snow late Saturday night will accumulate a coating to 1 cm before changing to rain",
+        "category": "snow"
+    },
+    "forecasts": [
+        {
+            "date": "2022-11-03T07:00:00+02:00",
+            "temperature": {
+                "minimum": {
+                    "value": 0.0,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 3.2,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperature": {
+                "minimum": {
+                    "value": -2.2,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 1.4,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperatureShade": {
+                "minimum": {
+                    "value": -2.2,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 1.4,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "hoursOfSun": 1.1,
+            "degreeDaySummary": {
+                "heating": {
+                    "value": 16.0,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "cooling": {
+                    "value": 0.0,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "airAndPollen": [
+                {
+                    "name": "AirQuality",
+                    "value": 0,
+                    "category": "Good",
+                    "categoryValue": 1,
+                    "type": "Ozone"
+                },
+                {
+                    "name": "Grass",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Mold",
+                    "value": 330,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Ragweed",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Tree",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "UVIndex",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                }
+            ],
+            "day": {
+                "iconCode": 12,
+                "iconPhrase": "Showers",
+                "hasPrecipitation": true,
+                "precipitationType": "Rain",
+                "precipitationIntensity": "Moderate",
+                "shortPhrase": "Cloudy",
+                "longPhrase": "Cloudy",
+                "precipitationProbability": 55,
+                "thunderstormProbability": 0,
+                "rainProbability": 55,
+                "snowProbability": 33,
+                "iceProbability": 0,
+                "wind": {
+                    "direction": {
+                        "degrees": 144.0,
+                        "localizedDescription": "SE"
+                    },
+                    "speed": {
+                        "value": 9.3,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 143.0,
+                        "localizedDescription": "SE"
+                    },
+                    "speed": {
+                        "value": 20.4,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 3.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 3.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 1.0,
+                "hoursOfRain": 1.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 100
+            },
+            "night": {
+                "iconCode": 8,
+                "iconPhrase": "Dreary",
+                "hasPrecipitation": false,
+                "shortPhrase": "Low clouds",
+                "longPhrase": "Low clouds",
+                "precipitationProbability": 13,
+                "thunderstormProbability": 0,
+                "rainProbability": 8,
+                "snowProbability": 8,
+                "iceProbability": 0,
+                "wind": {
+                    "direction": {
+                        "degrees": 164.0,
+                        "localizedDescription": "SSE"
+                    },
+                    "speed": {
+                        "value": 9.3,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 171.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 24.1,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 0.0,
+                "hoursOfRain": 0.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 100
+            },
+            "sources": [
+                "AccuWeather"
+            ]
+        },
+        {
+            "date": "2022-11-04T07:00:00+02:00",
+            "temperature": {
+                "minimum": {
+                    "value": -2.3,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 3.2,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperature": {
+                "minimum": {
+                    "value": -3.7,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 1.2,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperatureShade": {
+                "minimum": {
+                    "value": -3.7,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 1.2,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "hoursOfSun": 1.0,
+            "degreeDaySummary": {
+                "heating": {
+                    "value": 18.0,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "cooling": {
+                    "value": 0.0,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "airAndPollen": [
+                {
+                    "name": "AirQuality",
+                    "value": 0,
+                    "category": "Good",
+                    "categoryValue": 1,
+                    "type": "Ozone"
+                },
+                {
+                    "name": "Grass",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Mold",
+                    "value": 363,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Ragweed",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Tree",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "UVIndex",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                }
+            ],
+            "day": {
+                "iconCode": 8,
+                "iconPhrase": "Dreary",
+                "hasPrecipitation": false,
+                "shortPhrase": "Low clouds",
+                "longPhrase": "Low clouds",
+                "precipitationProbability": 7,
+                "thunderstormProbability": 0,
+                "rainProbability": 3,
+                "snowProbability": 4,
+                "iceProbability": 0,
+                "wind": {
+                    "direction": {
+                        "degrees": 177.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 11.1,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 173.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 27.8,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 0.0,
+                "hoursOfRain": 0.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 97
+            },
+            "night": {
+                "iconCode": 8,
+                "iconPhrase": "Dreary",
+                "hasPrecipitation": false,
+                "shortPhrase": "Low clouds",
+                "longPhrase": "Low clouds",
+                "precipitationProbability": 2,
+                "thunderstormProbability": 0,
+                "rainProbability": 0,
+                "snowProbability": 1,
+                "iceProbability": 0,
+                "wind": {
+                    "direction": {
+                        "degrees": 193.0,
+                        "localizedDescription": "SSW"
+                    },
+                    "speed": {
+                        "value": 9.3,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 191.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 25.9,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 0.0,
+                "hoursOfRain": 0.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 93
+            },
+            "sources": [
+                "AccuWeather"
+            ]
+        },
+        {
+            "date": "2022-11-05T07:00:00+02:00",
+            "temperature": {
+                "minimum": {
+                    "value": -0.7,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 1.0,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperature": {
+                "minimum": {
+                    "value": -7.5,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": -2.5,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperatureShade": {
+                "minimum": {
+                    "value": -7.5,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": -2.5,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "hoursOfSun": 1.6,
+            "degreeDaySummary": {
+                "heating": {
+                    "value": 18.0,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "cooling": {
+                    "value": 0.0,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "airAndPollen": [
+                {
+                    "name": "AirQuality",
+                    "value": 0,
+                    "category": "Good",
+                    "categoryValue": 1,
+                    "type": "Ozone"
+                },
+                {
+                    "name": "Grass",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Mold",
+                    "value": 490,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Ragweed",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Tree",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "UVIndex",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                }
+            ],
+            "day": {
+                "iconCode": 8,
+                "iconPhrase": "Dreary",
+                "hasPrecipitation": false,
+                "shortPhrase": "Low clouds",
+                "longPhrase": "Low clouds",
+                "precipitationProbability": 1,
+                "thunderstormProbability": 0,
+                "rainProbability": 0,
+                "snowProbability": 0,
+                "iceProbability": 1,
+                "wind": {
+                    "direction": {
+                        "degrees": 187.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 13.0,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 186.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 33.3,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 0.0,
+                "hoursOfRain": 0.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 92
+            },
+            "night": {
+                "iconCode": 19,
+                "iconPhrase": "Flurries",
+                "hasPrecipitation": true,
+                "precipitationType": "Snow",
+                "precipitationIntensity": "Light",
+                "shortPhrase": "Cloudy with some snow late",
+                "longPhrase": "Low clouds with some snow late, accumulating a coating to 1 cm",
+                "precipitationProbability": 81,
+                "thunderstormProbability": 0,
+                "rainProbability": 0,
+                "snowProbability": 81,
+                "iceProbability": 0,
+                "wind": {
+                    "direction": {
+                        "degrees": 178.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 16.7,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 171.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 37.0,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 0.6,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.63,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 4.0,
+                "hoursOfRain": 0.0,
+                "hoursOfSnow": 4.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 100
+            },
+            "sources": [
+                "AccuWeather"
+            ]
+        },
+        {
+            "date": "2022-11-06T07:00:00+02:00",
+            "temperature": {
+                "minimum": {
+                    "value": 3.3,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 4.1,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperature": {
+                "minimum": {
+                    "value": -2.1,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": -1.9,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperatureShade": {
+                "minimum": {
+                    "value": -2.1,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": -1.9,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "hoursOfSun": 0.8,
+            "degreeDaySummary": {
+                "heating": {
+                    "value": 14.0,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "cooling": {
+                    "value": 0.0,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "airAndPollen": [
+                {
+                    "name": "AirQuality",
+                    "value": 0,
+                    "category": "Good",
+                    "categoryValue": 1,
+                    "type": "Ozone"
+                },
+                {
+                    "name": "Grass",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Mold",
+                    "value": 735,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Ragweed",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Tree",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "UVIndex",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                }
+            ],
+            "day": {
+                "iconCode": 12,
+                "iconPhrase": "Showers",
+                "hasPrecipitation": true,
+                "precipitationType": "Rain",
+                "precipitationIntensity": "Light",
+                "shortPhrase": "Rain and drizzle in the a.m.",
+                "longPhrase": "Breezy with occasional rain and drizzle in the morning followed by a shower in spots in the afternoon",
+                "precipitationProbability": 68,
+                "thunderstormProbability": 14,
+                "rainProbability": 68,
+                "snowProbability": 45,
+                "iceProbability": 1,
+                "wind": {
+                    "direction": {
+                        "degrees": 185.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 20.4,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 175.0,
+                        "localizedDescription": "S"
+                    },
+                    "speed": {
+                        "value": 38.9,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 1.1,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 1.1,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 2.0,
+                "hoursOfRain": 2.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 100
+            },
+            "night": {
+                "iconCode": 7,
+                "iconPhrase": "Cloudy",
+                "hasPrecipitation": false,
+                "shortPhrase": "Considerable cloudiness",
+                "longPhrase": "Considerable cloudiness",
+                "precipitationProbability": 25,
+                "thunderstormProbability": 0,
+                "rainProbability": 25,
+                "snowProbability": 0,
+                "iceProbability": 0,
+                "wind": {
+                    "direction": {
+                        "degrees": 228.0,
+                        "localizedDescription": "SW"
+                    },
+                    "speed": {
+                        "value": 18.5,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 246.0,
+                        "localizedDescription": "WSW"
+                    },
+                    "speed": {
+                        "value": 31.5,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 0.0,
+                "hoursOfRain": 0.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 100
+            },
+            "sources": [
+                "AccuWeather"
+            ]
+        },
+        {
+            "date": "2022-11-07T07:00:00+02:00",
+            "temperature": {
+                "minimum": {
+                    "value": 3.9,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 5.9,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperature": {
+                "minimum": {
+                    "value": 0.3,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 3.9,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "realFeelTemperatureShade": {
+                "minimum": {
+                    "value": 0.3,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "maximum": {
+                    "value": 3.9,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "hoursOfSun": 0.7,
+            "degreeDaySummary": {
+                "heating": {
+                    "value": 13.0,
+                    "unit": "C",
+                    "unitType": 17
+                },
+                "cooling": {
+                    "value": 0.0,
+                    "unit": "C",
+                    "unitType": 17
+                }
+            },
+            "airAndPollen": [
+                {
+                    "name": "AirQuality",
+                    "value": 0,
+                    "category": "Good",
+                    "categoryValue": 1,
+                    "type": "Ozone"
+                },
+                {
+                    "name": "Grass",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Mold",
+                    "value": 992,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Ragweed",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "Tree",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                },
+                {
+                    "name": "UVIndex",
+                    "value": 0,
+                    "category": "Low",
+                    "categoryValue": 1
+                }
+            ],
+            "day": {
+                "iconCode": 12,
+                "iconPhrase": "Showers",
+                "hasPrecipitation": true,
+                "precipitationType": "Rain",
+                "precipitationIntensity": "Light",
+                "shortPhrase": "Cloudy with a shower or two",
+                "longPhrase": "Considerable cloudiness with a brief shower or two",
+                "precipitationProbability": 67,
+                "thunderstormProbability": 13,
+                "rainProbability": 67,
+                "snowProbability": 0,
+                "iceProbability": 0,
+                "wind": {
+                    "direction": {
+                        "degrees": 234.0,
+                        "localizedDescription": "SW"
+                    },
+                    "speed": {
+                        "value": 11.1,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 239.0,
+                        "localizedDescription": "WSW"
+                    },
+                    "speed": {
+                        "value": 31.5,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 1.4,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 1.4,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 2.0,
+                "hoursOfRain": 2.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 100
+            },
+            "night": {
+                "iconCode": 12,
+                "iconPhrase": "Showers",
+                "hasPrecipitation": true,
+                "precipitationType": "Rain",
+                "precipitationIntensity": "Moderate",
+                "shortPhrase": "Cloudy, a little rain late",
+                "longPhrase": "Considerable cloudiness with a little rain late",
+                "precipitationProbability": 71,
+                "thunderstormProbability": 0,
+                "rainProbability": 71,
+                "snowProbability": 0,
+                "iceProbability": 0,
+                "wind": {
+                    "direction": {
+                        "degrees": 235.0,
+                        "localizedDescription": "SW"
+                    },
+                    "speed": {
+                        "value": 9.3,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "windGust": {
+                    "direction": {
+                        "degrees": 235.0,
+                        "localizedDescription": "SW"
+                    },
+                    "speed": {
+                        "value": 29.6,
+                        "unit": "km/h",
+                        "unitType": 7
+                    }
+                },
+                "totalLiquid": {
+                    "value": 4.2,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "rain": {
+                    "value": 4.2,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "snow": {
+                    "value": 0.0,
+                    "unit": "cm",
+                    "unitType": 4
+                },
+                "ice": {
+                    "value": 0.0,
+                    "unit": "mm",
+                    "unitType": 3
+                },
+                "hoursOfPrecipitation": 2.0,
+                "hoursOfRain": 2.0,
+                "hoursOfSnow": 0.0,
+                "hoursOfIce": 0.0,
+                "cloudCover": 100
+            },
+            "sources": [
+                "AccuWeather"
+            ]
+        }
+    ]
+}

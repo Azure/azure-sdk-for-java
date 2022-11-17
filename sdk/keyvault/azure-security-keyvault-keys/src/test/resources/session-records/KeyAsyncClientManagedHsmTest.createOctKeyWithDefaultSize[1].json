@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey313162a/create?api-version=7.3",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey70909e3/create?api-version=7.4-preview.1",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "430",
+      "content-length" : "435",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "323",
+      "x-ms-server-latency" : "181",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "westus2",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "northus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "76a2d3b4-af0c-11ec-9c37-0022487870d4",
-      "Body" : "{\"attributes\":{\"created\":1648522860,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1648522860},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://azsdktestshsm.managedhsm.azure.net/keys/testoctkey313162a/fd875d7f2a970b4b99600f300b4ba235\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
+      "x-ms-request-id" : "592fb370-6211-11ed-b6e0-000d3a602e9a",
+      "Body" : "{\"attributes\":{\"created\":1668206216,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1668206216},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://vicolinakeyvaulthsm.managedhsm.azure.net/keys/testoctkey70909e3/9c5a278122894e378dab8f7fe2ca652c\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testoctkey313162a" ]
+  "variables" : [ "testoctkey70909e3" ]
 }

@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
@@ -170,6 +171,35 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> received = findSpans(spans, "EventHubs.consume").stream()
             .filter(s -> s == receivedSpan.get()).collect(Collectors.toList());
         assertConsumerSpan(received.get(0), receivedMessage.get(), "EventHubs.consume");
+    }
+
+    @Test
+    public void sendAndReceiveParallel() throws InterruptedException {
+        int messageCount = 5;
+        CountDownLatch latch = new CountDownLatch(messageCount);
+        spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.consume"));
+        StepVerifier.create(consumer
+                .receive()
+                .take(messageCount)
+                .doOnNext(pe -> {
+                    String traceparent = (String) pe.getData().getProperties().get("traceparent");
+                    String traceId = Span.current().getSpanContext().getTraceId();
+
+                    // context created for the message and current are the same
+                    assertTrue(traceparent.startsWith("00-" + traceId));
+                    assertFalse(((ReadableSpan) Span.current()).hasEnded());
+                })
+                .parallel(messageCount, 1)
+                .runOn(Schedulers.boundedElastic(), 2))
+            .expectNextCount(messageCount)
+            .verifyComplete();
+
+        StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
+
+        assertTrue(latch.await(20, TimeUnit.SECONDS));
+        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+        List<ReadableSpan> received = findSpans(spans, "EventHubs.consume");
+        assertTrue(messageCount <= received.size());
     }
 
     @Test

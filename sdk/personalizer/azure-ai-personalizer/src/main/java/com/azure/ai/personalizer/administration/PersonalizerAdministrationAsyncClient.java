@@ -57,7 +57,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Operations allowed by the client are viewing and editing the properties, policy, model, running evaluations.
  *
  * <p><strong>Instantiating an asynchronous Personalizer Admin Client</strong></p>
- * <p>
  * <!-- src_embed com.azure.ai.personalizer.PersonalizerAdministrationAsyncClient.instantiation -->
  * <pre>
  * PersonalizerAdministrationAsyncClient adminClient = new PersonalizerAdministrationClientBuilder&#40;&#41;
