@@ -22,6 +22,10 @@ public final class InnerError {
     @JsonProperty(value = "errordetail")
     private String errordetail;
 
+    /** Creates an instance of InnerError class. */
+    public InnerError() {
+    }
+
     /**
      * Get the exceptiontype property: The exception type.
      *

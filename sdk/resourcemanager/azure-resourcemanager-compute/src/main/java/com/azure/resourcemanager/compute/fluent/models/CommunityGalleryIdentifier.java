@@ -16,6 +16,10 @@ public final class CommunityGalleryIdentifier {
     @JsonProperty(value = "uniqueId")
     private String uniqueId;
 
+    /** Creates an instance of CommunityGalleryIdentifier class. */
+    public CommunityGalleryIdentifier() {
+    }
+
     /**
      * Get the uniqueId property: The unique id of this community gallery.
      *

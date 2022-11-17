@@ -26,6 +26,10 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     @JsonProperty(value = "properties")
     private VirtualMachineNetworkInterfaceIpConfigurationProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineNetworkInterfaceIpConfiguration class. */
+    public VirtualMachineNetworkInterfaceIpConfiguration() {
+    }
+
     /**
      * Get the name property: The IP configuration name.
      *
