@@ -1,12 +1,6 @@
 ## Release History
 
-### 4.15.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.15.0 (2022-11-16)
 
 #### Other Changes
 * Fixed shading instructions to correct dependency issues in Azure Synapse with version 4.14.0 and 4.14.1. - See [PR 31980](https://github.com/Azure/azure-sdk-for-java/pull/31980) 
