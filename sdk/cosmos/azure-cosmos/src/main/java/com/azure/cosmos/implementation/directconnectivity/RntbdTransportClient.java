@@ -306,7 +306,8 @@ public class RntbdTransportClient extends TransportClient {
             }
 
             // Since reactor-core 3.4.23, if the Mono.fromCompletionStage is cancelled, then it will also cancel the internal future
-            // But the stated behavior mat change in later versions. In order to keep consistent behavior, we internally will always cancel the future.
+            // But the stated behavior may change in later versions (https://github.com/reactor/reactor-core/issues/3235).
+            // In order to keep consistent behavior, we internally will always cancel the future.
             record.cancel(true);
 
         }).contextWrite(reactorContext);

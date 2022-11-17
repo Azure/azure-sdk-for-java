@@ -823,6 +823,7 @@ public final class RntbdTransportClientTest {
         Thread.sleep(500);
 
         assertThat(rntbdRequestRecord.isCancelled()).isTrue();
+        assertThat(rntbdRequestRecord.isCompletedExceptionally()).isTrue();
     }
 
     private static RntbdTransportClient getRntbdTransportClientUnderTest(
