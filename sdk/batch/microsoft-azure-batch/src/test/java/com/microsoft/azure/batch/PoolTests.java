@@ -66,7 +66,7 @@ public class PoolTests extends BatchIntegrationTestBase {
 
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1_V2";
-        int POOL_VM_COUNT = 0;
+        int POOL_VM_COUNT = 2;
         int POOL_LOW_PRI_VM_COUNT = 2;
 
         // 10 minutes
@@ -91,7 +91,8 @@ public class PoolTests extends BatchIntegrationTestBase {
             PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
                     .withTargetDedicatedNodes(POOL_VM_COUNT).withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
                     .withVmSize(POOL_VM_SIZE).withVirtualMachineConfiguration(configuration)
-                    .withNetworkConfiguration(netConfig);
+                    .withNetworkConfiguration(netConfig)
+                    .withTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
             batchClient.poolOperations().createPool(addParameter);
         }
 
@@ -107,6 +108,8 @@ public class PoolTests extends BatchIntegrationTestBase {
 
             Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
             Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
+            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
+            Assert.assertEquals(NodeCommunicationMode.DEFAULT, pool.targetNodeCommunicationMode());
 
             List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).endpointConfiguration().inboundEndpoints();
@@ -130,8 +133,28 @@ public class PoolTests extends BatchIntegrationTestBase {
             Assert.assertNotNull(poolNodeCount); // Single pool only
             Assert.assertNotNull(poolNodeCount.lowPriority());
 
-            Assert.assertEquals(2, poolNodeCount.lowPriority().total());
-            Assert.assertEquals(0, poolNodeCount.dedicated().total());
+            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, poolNodeCount.lowPriority().total());
+            Assert.assertEquals(POOL_VM_COUNT, poolNodeCount.dedicated().total());
+
+            // Update NodeCommunicationMode to Simplified
+            PoolUpdatePropertiesParameter updatePropertiesParam = new PoolUpdatePropertiesParameter();
+            updatePropertiesParam.withTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED)
+                    .withApplicationPackageReferences( new LinkedList<ApplicationPackageReference>())
+                    .withMetadata(new LinkedList<MetadataItem>())
+                    .withCertificateReferences(new LinkedList<CertificateReference>());
+
+            batchClient.poolOperations().updatePoolProperties(poolId, updatePropertiesParam);
+            pool = batchClient.poolOperations().getPool(poolId);
+            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
+            Assert.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.targetNodeCommunicationMode());
+
+            // Patch NodeCommunicationMode to Classic
+            PoolPatchParameter patchParam = new PoolPatchParameter();
+            patchParam.withTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
+            batchClient.poolOperations().patchPool(poolId, patchParam);
+            pool = batchClient.poolOperations().getPool(poolId);
+            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
+            Assert.assertEquals(NodeCommunicationMode.CLASSIC, pool.targetNodeCommunicationMode());
 
             // RESIZE
             batchClient.poolOperations().resizePool(poolId, 1, 1);
@@ -582,79 +605,6 @@ public class PoolTests extends BatchIntegrationTestBase {
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);
-        } finally {
-            try {
-                if (batchClient.poolOperations().existsPool(poolId)) {
-                    batchClient.poolOperations().deletePool(poolId);
-                }
-            } catch (Exception e) {
-                // Ignore exception
-            }
-        }
-    }
-
-    @Test
-    public void canCRUDIaaSPoolWithNodeCommunication() throws Exception {
-        // CREATE
-        String poolId = getStringIdWithUserNamePrefix("-nodeCommunicationMode-testPool");
-
-        // Create a pool with 3 VMs
-        String POOL_VM_SIZE = "STANDARD_D1_V2";
-        int POOL_VM_COUNT = 3;
-
-        // 10 minutes
-        long POOL_STEADY_TIMEOUT_IN_MILLISECONDS = 10 * 60 * 1000;
-        long startTime = System.currentTimeMillis();
-        long elapsedTime = 0L;
-        boolean steady = false;
-
-        try {
-            // Check if pool exists
-            if (!batchClient.poolOperations().existsPool(poolId)) {
-                ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
-                        .withSku("18.04-LTS").withVersion("latest");
-                VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-                configuration.withNodeAgentSKUId("batch.node.ubuntu 18.04").withImageReference(imgRef);
-
-                PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
-                        .withTargetDedicatedNodes(POOL_VM_COUNT)
-                        .withVmSize(POOL_VM_SIZE).withVirtualMachineConfiguration(configuration)
-                        .withTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
-                batchClient.poolOperations().createPool(addParameter);
-            }
-
-            Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
-            waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_MILLISECONDS);
-
-            // GET
-            CloudPool pool = batchClient.poolOperations().getPool(poolId);;
-            Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.DEFAULT, pool.targetNodeCommunicationMode());
-
-            // Update NodeCommunicationMode to Simplified
-            PoolUpdatePropertiesParameter updatePropertiesParam = new PoolUpdatePropertiesParameter();
-            updatePropertiesParam.withTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED)
-                                 .withApplicationPackageReferences( new LinkedList<ApplicationPackageReference>())
-                                 .withMetadata(new LinkedList<MetadataItem>())
-                                 .withCertificateReferences(new LinkedList<CertificateReference>());
-
-            batchClient.poolOperations().updatePoolProperties(poolId, updatePropertiesParam);
-            pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.targetNodeCommunicationMode());
-
-            // Patch NodeCommunicationMode to Classic
-            PoolPatchParameter patchParam = new PoolPatchParameter();
-            patchParam.withTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
-            batchClient.poolOperations().patchPool(poolId, patchParam);
-            pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.CLASSIC, pool.targetNodeCommunicationMode());
-
-            // DELETE
-            batchClient.poolOperations().deletePool(poolId);
-
         } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
