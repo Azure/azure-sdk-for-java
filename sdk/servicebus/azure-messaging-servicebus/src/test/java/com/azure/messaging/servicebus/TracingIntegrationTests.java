@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -72,23 +73,23 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         super(new ClientLogger(TracingIntegrationTests.class));
     }
 
-    @BeforeAll
-    static void setup() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(90));
-        ServiceBusAdministrationClient adminClient = new ServiceBusAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .buildClient();
-        assumeTrue(adminClient.createQueue(TEST_QUEUE_NAME).getStatus() == EntityStatus.ACTIVE);
-    }
-
-    @AfterAll
-    static void cleanup() {
-        StepVerifier.resetDefaultTimeout();
-        ServiceBusAdministrationClient adminClient = new ServiceBusAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .buildClient();
-        adminClient.deleteQueue(TEST_QUEUE_NAME);
-    }
+//    @BeforeAll
+//    static void setup() {
+//        StepVerifier.setDefaultTimeout(Duration.ofSeconds(90));
+//        ServiceBusAdministrationClient adminClient = new ServiceBusAdministrationClientBuilder()
+//            .connectionString(getConnectionString())
+//            .buildClient();
+//        assumeTrue(adminClient.createQueue(TEST_QUEUE_NAME).getStatus() == EntityStatus.ACTIVE);
+//    }
+//
+//    @AfterAll
+//    static void cleanup() {
+//        StepVerifier.resetDefaultTimeout();
+//        ServiceBusAdministrationClient adminClient = new ServiceBusAdministrationClientBuilder()
+//            .connectionString(getConnectionString())
+//            .buildClient();
+//        adminClient.deleteQueue(TEST_QUEUE_NAME);
+//    }
     @Override
     protected void beforeTest() {
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), TEST_QUEUE_NAME);
@@ -104,23 +105,31 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        sender = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
-            .sender()
-            .queueName(TEST_QUEUE_NAME)
-            .buildAsyncClient();
+        final boolean shareConnection = true;
+        final boolean useCredentials = false;
+        final int entityIndex = 0;
 
-        receiver = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
-            .receiver()
-            .queueName(TEST_QUEUE_NAME)
-            .buildAsyncClient(false, false);
+        sender = getSenderBuilder(useCredentials, MessagingEntityType.QUEUE, entityIndex,
+            false, shareConnection).buildAsyncClient();
+//            new ServiceBusClientBuilder()
+//            .connectionString(getConnectionString())
+//            .sender()
+//            .queueName(TEST_QUEUE_NAME)
+//            .buildAsyncClient();
 
-        receiverSync = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
-            .receiver()
-            .queueName(TEST_QUEUE_NAME)
-            .buildClient();
+        receiver = getReceiverBuilder(useCredentials, MessagingEntityType.QUEUE, entityIndex, shareConnection).buildAsyncClient();
+//            new ServiceBusClientBuilder()
+//            .connectionString(getConnectionString())
+//            .receiver()
+//            .queueName(TEST_QUEUE_NAME)
+//            .buildAsyncClient(false, false);
+
+        receiverSync = getReceiverBuilder(useCredentials, MessagingEntityType.QUEUE, entityIndex, shareConnection).buildClient();
+//            new ServiceBusClientBuilder()
+//            .connectionString(getConnectionString())
+//            .receiver()
+//            .queueName(TEST_QUEUE_NAME)
+//            .buildClient();
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
     }
@@ -142,8 +151,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         ServiceBusMessage message1 = new ServiceBusMessage(CONTENTS_BYTES);
         ServiceBusMessage message2 = new ServiceBusMessage(CONTENTS_BYTES);
         List<ServiceBusMessage> messages = Arrays.asList(message1, message2);
-        StepVerifier.create(sender.sendMessages(messages))
-            .verifyComplete();
+        sender.sendMessages(messages).block(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
@@ -151,6 +159,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ServiceBusReceivedMessage> received = new ArrayList<>();
         receiver.receiveMessages()
             .take(2)
+            .publishOn(Schedulers.boundedElastic())
             .doOnNext(msg -> {
                 received.add(msg);
                 String traceparent = (String) msg.getApplicationProperties().get("traceparent");
@@ -159,7 +168,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 // context created for the message and current are the same
                 assertTrue(traceparent.startsWith("00-" + traceId));
                 assertFalse(((ReadableSpan) Span.current()).hasEnded());
-                receiver.complete(msg).block();
+                receiver.complete(msg).block(TIMEOUT);
             })
             .subscribe();
 
