@@ -157,7 +157,7 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "IngestionUsingDataCo")
-    private interface IngestionUsingDataCollectionRulesClientService {
+    public interface IngestionUsingDataCollectionRulesClientService {
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
