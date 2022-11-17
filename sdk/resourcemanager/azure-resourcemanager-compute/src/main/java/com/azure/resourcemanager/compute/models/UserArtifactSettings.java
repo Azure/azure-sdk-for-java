@@ -27,6 +27,10 @@ public final class UserArtifactSettings {
     @JsonProperty(value = "configFileName")
     private String configFileName;
 
+    /** Creates an instance of UserArtifactSettings class. */
+    public UserArtifactSettings() {
+    }
+
     /**
      * Get the packageFileName property: Optional. The name to assign the downloaded package file on the VM. This is
      * limited to 4096 characters. If not specified, the package file will be named the same as the Gallery Application

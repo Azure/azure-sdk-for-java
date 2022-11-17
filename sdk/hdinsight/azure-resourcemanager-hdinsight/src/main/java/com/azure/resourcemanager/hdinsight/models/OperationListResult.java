@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,11 +15,8 @@ import java.util.List;
  */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
-     * The list of HDInsight operations supported by the HDInsight resource
-     * provider.
+     * The list of HDInsight operations supported by the HDInsight resource provider.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
@@ -31,6 +26,10 @@ public final class OperationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
 
     /**
      * Get the value property: The list of HDInsight operations supported by the HDInsight resource provider.

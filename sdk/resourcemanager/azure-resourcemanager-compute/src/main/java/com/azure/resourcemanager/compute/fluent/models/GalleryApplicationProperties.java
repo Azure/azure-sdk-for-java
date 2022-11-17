@@ -6,9 +6,11 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.GalleryApplicationCustomAction;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Describes the properties of a gallery Application Definition. */
 @Fluent
@@ -50,6 +52,17 @@ public final class GalleryApplicationProperties {
      */
     @JsonProperty(value = "supportedOSType", required = true)
     private OperatingSystemTypes supportedOSType;
+
+    /*
+     * A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery
+     * Application.
+     */
+    @JsonProperty(value = "customActions")
+    private List<GalleryApplicationCustomAction> customActions;
+
+    /** Creates an instance of GalleryApplicationProperties class. */
+    public GalleryApplicationProperties() {
+    }
 
     /**
      * Get the description property: The description of this gallery Application Definition resource. This property is
@@ -180,6 +193,28 @@ public final class GalleryApplicationProperties {
     }
 
     /**
+     * Get the customActions property: A list of custom actions that can be performed with all of the Gallery
+     * Application Versions within this Gallery Application.
+     *
+     * @return the customActions value.
+     */
+    public List<GalleryApplicationCustomAction> customActions() {
+        return this.customActions;
+    }
+
+    /**
+     * Set the customActions property: A list of custom actions that can be performed with all of the Gallery
+     * Application Versions within this Gallery Application.
+     *
+     * @param customActions the customActions value to set.
+     * @return the GalleryApplicationProperties object itself.
+     */
+    public GalleryApplicationProperties withCustomActions(List<GalleryApplicationCustomAction> customActions) {
+        this.customActions = customActions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -190,6 +225,9 @@ public final class GalleryApplicationProperties {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property supportedOSType in model GalleryApplicationProperties"));
+        }
+        if (customActions() != null) {
+            customActions().forEach(e -> e.validate());
         }
     }
 

@@ -29,6 +29,10 @@ public final class VirtualMachinePatchStatus {
     @JsonProperty(value = "configurationStatuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstanceViewStatus> configurationStatuses;
 
+    /** Creates an instance of VirtualMachinePatchStatus class. */
+    public VirtualMachinePatchStatus() {
+    }
+
     /**
      * Get the availablePatchSummary property: The available patch summary of the latest assessment operation for the
      * virtual machine.
