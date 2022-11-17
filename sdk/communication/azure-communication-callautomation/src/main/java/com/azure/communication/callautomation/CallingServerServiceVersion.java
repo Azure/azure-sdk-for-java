@@ -10,7 +10,7 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum CallingServerServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2022-04-07-preview}.
+     * Service version {@code 2023-01-15-preview}.
      */
     V2023_01_15_PREVIEW("2023-01-15-preview"),
     /**
