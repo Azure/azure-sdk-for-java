@@ -55,6 +55,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         Map<String, Object> appCompMap = new HashMap<String, Object>();
         Map<String, Object> compsMap = new HashMap<String, Object>();
         Map<String, Object> compMap = new HashMap<String, Object>();
+        compMap.put("resourceId", defaultAppComponentResourceId);
         compMap.put("resourceType", "microsoft.insights/components");
         compMap.put("resourceName", "appcomponentresource");
         compMap.put("displayName", "Performance_LoadTest_Insights");
@@ -76,8 +77,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         metricMap.put("aggregation", "Average");
         metricMap.put("resourceType", "microsoft.insights/components");
 
-        metricsMap.put(defaultAppComponentResourceId, metricMap);
-        serverMetricsMap.put("components", metricsMap);
+        metricsMap.put(defaultServerMetricId, metricMap);
+        serverMetricsMap.put("metrics", metricsMap);
 
         return serverMetricsMap;
     }
@@ -154,7 +155,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         try {
             JsonNode test = new ObjectMapper().readTree(testBinary.toString());
             String validationStatus = test.get("inputArtifacts")
-                                        .get("testScriptUrl")
+                                        .get("testScriptFileInfo")
                                         .get("validationStatus")
                                         .asText();
             Assertions.assertTrue(test.get("testId").asText().equals(newTestId) && validationStatus.equals(ValidationStatus.VALIDATION_SUCCESS.toString()));
@@ -170,7 +171,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getFileWithResponse(newTestId, defaultUploadFileName, null);
         try {
             JsonNode file = new ObjectMapper().readTree(response.getValue().toString());
-            Assertions.assertTrue(file.get("fileName").asText().equals(defaultUploadFileName) && file.get("fileType").asText().equals("JMX_FILE"));
+            Assertions.assertTrue(file.get("filename").asText().equals(defaultUploadFileName) && file.get("fileType").asText().equals("JMX_FILE"));
         } catch (Exception e) {
             Assertions.assertTrue(false);
         }
@@ -196,7 +197,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getAppComponentsWithResponse(newTestId, null);
         try {
             JsonNode test = new ObjectMapper().readTree(response.getValue().toString());
-            Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId) && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText().equals(defaultAppComponentResourceId));
+            Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId) && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText().equalsIgnoreCase(defaultAppComponentResourceId));
         } catch (Exception e) {
             Assertions.assertTrue(false);
         }
@@ -209,8 +210,9 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getServerMetricsConfigWithResponse(newTestId, null);
         try {
             JsonNode test = new ObjectMapper().readTree(response.getValue().toString());
-            Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics").get(defaultServerMetricId).get("id").asText().equals(defaultServerMetricId));
+            Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics").get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));
         } catch (Exception e) {
+            e.printStackTrace();
             Assertions.assertTrue(false);
         }
         Assertions.assertEquals(200, response.getStatusCode());
@@ -222,10 +224,10 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(11)
     public void listTestFiles() {
         PagedIterable<BinaryData> response = builder.buildLoadTestAdministrationClient().listTestFiles(newTestId, null);
-        boolean found = response.stream().anyMatch((testBinary) -> {
+        boolean found = response.stream().anyMatch((fileBinary) -> {
             try {
-                JsonNode file = new ObjectMapper().readTree(testBinary.toString());
-                if (file.get("fileName").asText().equals(defaultUploadFileName) && file.get("fileType").asText().equals("JMX_FILE")) {
+                JsonNode file = new ObjectMapper().readTree(fileBinary.toString());
+                if (file.get("filename").asText().equals(defaultUploadFileName) && file.get("fileType").asText().equals("JMX_FILE")) {
                     return true;
                 }
             } catch (Exception e) {

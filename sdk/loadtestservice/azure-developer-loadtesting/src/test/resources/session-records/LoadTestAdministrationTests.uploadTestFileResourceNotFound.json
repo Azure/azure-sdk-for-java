@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/fake_test_id/files/sample-JMX-file.jmx?api-version=2022-11-01&fileType=JMX_FILE",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e30638e3-bcef-4ab3-a413-929393d9a880",
+      "x-ms-client-request-id" : "79a4f930-54ea-483b-a866-72e511f1dadc",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
@@ -13,12 +13,12 @@
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "c4553484-0c4e-4676-a046-24fced0e8a4b",
+      "mise-correlation-id" : "56aebb7d-da22-40a6-9da0-5b22d0007edf",
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "{\"error\":{\"code\":\"TestNotFound\",\"message\":\"Test not found with given name \\\"fake_test_id\\\".\"}}",
-      "Date" : "Wed, 16 Nov 2022 17:22:54 GMT",
-      "x-ms-correlation-request-id" : "187567d8-9ef5-4d13-9861-1a518e608faf",
+      "Date" : "Thu, 17 Nov 2022 07:04:21 GMT",
+      "x-ms-correlation-request-id" : "e25f4fd5-36bc-47c8-b091-20ea8afd252b",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

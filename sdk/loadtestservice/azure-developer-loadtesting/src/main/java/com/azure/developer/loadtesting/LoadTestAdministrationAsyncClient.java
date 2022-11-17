@@ -401,7 +401,7 @@ public final class LoadTestAdministrationAsyncClient {
                                     loadTest = new ObjectMapper().readTree(loadTestBinaryData.toString());
                                     validationStatus =
                                             loadTest.get("inputArtifacts")
-                                                    .get("testScriptUrl")
+                                                    .get("testScriptFileInfo")
                                                     .get("validationStatus")
                                                     .asText();
                                 } catch (JsonProcessingException e) {

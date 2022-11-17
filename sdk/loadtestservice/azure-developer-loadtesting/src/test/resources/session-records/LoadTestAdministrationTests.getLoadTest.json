@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "479cdfbf-eb59-43e5-b577-cec851156326"
+    },
+    "Response" : {
+      "content-length" : "890",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "29aacc8d-fe3b-4071-a084-8b4a59fa90e2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"environmentVariables\":{\"duration_in_sec\":\"10\",\"protocol\":\"https\",\"ramp_up_time\":\"0\",\"domain\":\"azure.microsoft.com\",\"threads_per_engine\":\"1\"},\"loadTestConfiguration\":{\"engineInstances\":1,\"splitAllCSVs\":false,\"quickStartTest\":false},\"inputArtifacts\":{\"testScriptFileInfo\":{\"url\":\"REDACTED\",\"filename\":\"sample-JMX-file.jmx\",\"fileType\":\"JMX_FILE\",\"expireDateTime\":\"2022-11-17T08:04:37.5941357\",\"validationStatus\":\"VALIDATION_SUCCESS\"},\"additionalFileInfo\":[]},\"testId\":\"22222222-1234-1234-1234-123456789012\",\"description\":\"Sample Test\",\"displayName\":\"Java SDK Sample Test\",\"createdDateTime\":\"2022-11-17T07:04:19.051Z\",\"lastModifiedDateTime\":\"2022-11-17T07:04:19.051Z\"}",
+      "Date" : "Thu, 17 Nov 2022 07:04:37 GMT",
+      "x-ms-correlation-request-id" : "bd1c0cf2-72c8-409d-aa53-7b5cc6a3749d",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

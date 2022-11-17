@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012?api-version=2022-11-01",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/sample-JMX-file.jmx?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f5611350-1475-4385-88d9-66f5ecf84a6c"
+      "x-ms-client-request-id" : "a7189b68-9783-4582-97a6-895d6cfc1ddb"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "2f77fb47-57e2-4add-a27d-d504737fd227",
+      "mise-correlation-id" : "b1e6c44e-9ac8-4aaa-bfed-1e3e2f3c6a56",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Thu, 17 Nov 2022 07:04:44 GMT",
-      "x-ms-correlation-request-id" : "5e1c5895-a08e-4fe2-894c-5c9e2427ccec"
+      "Date" : "Thu, 17 Nov 2022 07:04:43 GMT",
+      "x-ms-correlation-request-id" : "9e8a0e5b-8d25-423f-a861-59436e352ffe"
     },
     "Exception" : null
   } ],
