@@ -60,6 +60,10 @@ public final class VirtualMachineRunCommandInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
+    /** Creates an instance of VirtualMachineRunCommandInstanceView class. */
+    public VirtualMachineRunCommandInstanceView() {
+    }
+
     /**
      * Get the executionState property: Script execution status.
      *

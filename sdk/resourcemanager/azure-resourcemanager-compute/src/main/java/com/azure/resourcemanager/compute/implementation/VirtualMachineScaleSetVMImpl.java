@@ -4,6 +4,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -539,8 +540,9 @@ class VirtualMachineScaleSetVMImpl
     public Mono<VirtualMachineScaleSetVM> refreshAsync() {
         return this
             .client
-            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(),
+            .getWithResponseAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(),
                 InstanceViewTypes.INSTANCE_VIEW)
+            .map(Response::getValue)
             .map(
                 vmInner -> {
                     this.setInner(vmInner);

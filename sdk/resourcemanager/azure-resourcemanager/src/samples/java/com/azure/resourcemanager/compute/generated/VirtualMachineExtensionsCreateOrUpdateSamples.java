@@ -87,7 +87,7 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                                 Arrays
                                     .asList(
                                         new InstanceViewStatus()
-                                            .withCode("aaaaaaaaaaaaaaaaaaaaaaa")
+                                            .withCode("fakeTokenPlaceholder")
                                             .withLevel(StatusLevelTypes.INFO)
                                             .withDisplayStatus("aaaaaa")
                                             .withMessage("a")
@@ -96,7 +96,7 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                                 Arrays
                                     .asList(
                                         new InstanceViewStatus()
-                                            .withCode("aaaaaaaaaaaaaaaaaaaaaaa")
+                                            .withCode("fakeTokenPlaceholder")
                                             .withLevel(StatusLevelTypes.INFO)
                                             .withDisplayStatus("aaaaaa")
                                             .withMessage("a")

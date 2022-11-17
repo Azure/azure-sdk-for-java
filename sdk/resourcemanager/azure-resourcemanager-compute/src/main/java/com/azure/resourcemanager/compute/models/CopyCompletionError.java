@@ -23,6 +23,10 @@ public final class CopyCompletionError {
     @JsonProperty(value = "errorMessage", required = true)
     private String errorMessage;
 
+    /** Creates an instance of CopyCompletionError class. */
+    public CopyCompletionError() {
+    }
+
     /**
      * Get the errorCode property: Indicates the error code if the background copy of a resource created via the
      * CopyStart operation fails.

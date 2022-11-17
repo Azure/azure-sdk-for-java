@@ -95,7 +95,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -172,7 +172,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -238,7 +238,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -318,7 +318,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -387,7 +387,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -456,7 +456,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -531,7 +531,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -598,7 +598,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -656,8 +656,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                                             .deserialize("{}", Object.class, SerializerEncoding.JSON))
                                                     .withProtectedSettingsFromKeyVault(
                                                         new KeyVaultSecretReference()
-                                                            .withSecretUrl(
-                                                                "https://kvName.vault.azure.net/secrets/secretName/79b88b3a6f5440ffb2e73e44a0db712e")
+                                                            .withSecretUrl("fakeTokenPlaceholder")
                                                             .withSourceVault(
                                                                 new SubResource()
                                                                     .withId(
@@ -693,7 +692,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -774,7 +773,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -846,7 +845,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -916,7 +915,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -985,7 +984,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1063,7 +1062,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1135,7 +1134,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1220,9 +1219,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                                                 new SshPublicKey()
                                                                     .withPath(
                                                                         "/home/{your-username}/.ssh/authorized_keys")
-                                                                    .withKeyData(
-                                                                        "ssh-rsa"
-                                                                            + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1"))))))
+                                                                    .withKeyData("fakeTokenPlaceholder"))))))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1288,7 +1285,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1360,7 +1357,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withOsDisk(
@@ -1422,7 +1419,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1510,7 +1507,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1593,7 +1590,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1675,7 +1672,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1741,7 +1738,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1823,7 +1820,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1894,7 +1891,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -1966,7 +1963,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2055,7 +2052,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2127,7 +2124,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2197,7 +2194,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2262,7 +2259,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2332,7 +2329,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2407,7 +2404,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2472,7 +2469,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2542,7 +2539,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(
@@ -2605,7 +2602,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 new VirtualMachineScaleSetOSProfile()
                                     .withComputerNamePrefix("{vmss-name}")
                                     .withAdminUsername("{your-username}")
-                                    .withAdminPassword("{your-password}"))
+                                    .withAdminPassword("fakeTokenPlaceholder"))
                             .withStorageProfile(
                                 new VirtualMachineScaleSetStorageProfile()
                                     .withImageReference(

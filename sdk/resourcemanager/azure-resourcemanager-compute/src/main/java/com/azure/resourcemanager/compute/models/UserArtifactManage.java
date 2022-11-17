@@ -31,6 +31,10 @@ public final class UserArtifactManage {
     @JsonProperty(value = "update")
     private String update;
 
+    /** Creates an instance of UserArtifactManage class. */
+    public UserArtifactManage() {
+    }
+
     /**
      * Get the install property: Required. The path and arguments to install the gallery application. This is limited to
      * 4096 characters.

@@ -26,6 +26,10 @@ public final class VirtualMachineScaleSetListWithLinkResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VirtualMachineScaleSetListWithLinkResult class. */
+    public VirtualMachineScaleSetListWithLinkResult() {
+    }
+
     /**
      * Get the value property: The list of virtual machine scale sets.
      *
