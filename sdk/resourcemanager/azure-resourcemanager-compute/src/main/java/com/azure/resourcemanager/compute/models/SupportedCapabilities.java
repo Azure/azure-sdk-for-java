@@ -28,6 +28,10 @@ public final class SupportedCapabilities {
     @JsonProperty(value = "architecture")
     private Architecture architecture;
 
+    /** Creates an instance of SupportedCapabilities class. */
+    public SupportedCapabilities() {
+    }
+
     /**
      * Get the diskControllerTypes property: The disk controllers that an OS disk supports. If set it can be SCSI or
      * SCSI, NVME or NVME, SCSI.

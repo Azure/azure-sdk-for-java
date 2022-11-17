@@ -22,6 +22,10 @@ public final class RecoveryWalkResponseInner {
     @JsonProperty(value = "nextPlatformUpdateDomain", access = JsonProperty.Access.WRITE_ONLY)
     private Integer nextPlatformUpdateDomain;
 
+    /** Creates an instance of RecoveryWalkResponseInner class. */
+    public RecoveryWalkResponseInner() {
+    }
+
     /**
      * Get the walkPerformed property: Whether the recovery walk was performed.
      *
