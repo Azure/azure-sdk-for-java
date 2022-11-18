@@ -23,6 +23,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
@@ -966,6 +967,7 @@ public class ShareFileAsyncClient {
 //        return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
 //            channel -> getPropertiesWithResponse(requestConditions, context).flatMap(response ->
 //                downloadResponseInChunk(response, channel, range, requestConditions, context)), this::channelCleanUp);
+        downloadFirstChunk(range, requestConditions, context);
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
             channel ->
                 downloadChunk(channel, range, requestConditions, context), this::channelCleanUp);
@@ -1000,6 +1002,32 @@ public class ShareFileAsyncClient {
             .then(Mono.just(response));
     }
 
+    private Mono<ShareFileProperties> downloadResponseInChunk2(AsynchronousFileChannel channel,
+        ShareFileRange range, ShareRequestConditions requestConditions, Context context) {
+        return Mono.justOrEmpty(range).switchIfEmpty(Mono.defer(() -> downloadFirstChunk(range, requestConditions, context)))
+            .map(currentRange -> {
+                List<ShareFileRange> chunks = new ArrayList<>();
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
+                    long count = FILE_DEFAULT_BLOCK_SIZE;
+                    if (pos + count > currentRange.getEnd()) {
+                        count = currentRange.getEnd() - pos;
+                    }
+                    chunks.add(new ShareFileRange(pos, pos + count - 1));
+                }
+                return chunks;
+            }).flatMapMany(Flux::fromIterable)
+            .flatMap(chunk ->
+                downloadWithResponse(new ShareFileDownloadOptions().setRange(chunk).setRangeContentMd5Requested(false)
+                    .setRequestConditions(requestConditions), context).flux()
+                    .subscribeOn(Schedulers.boundedElastic())
+                    .flatMap(response ->
+                        FluxUtil
+                            .writeFile(response.getValue(), channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
+                            .subscribeOn(Schedulers.boundedElastic())
+                            .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
+                                || throwable instanceof TimeoutException)))).then(Mono.just(new ShareFileProperties(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)));
+    }
+
     private Mono<Response<ShareFileProperties>> downloadChunk(AsynchronousFileChannel channel, ShareFileRange range,
         ShareRequestConditions requestConditions, Context context) {
 
@@ -1014,6 +1042,50 @@ public class ShareFileAsyncClient {
                     .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                         || throwable instanceof TimeoutException)).then(Mono.just(ModelHelper.buildShareFilePropertiesResponse(response))));
     }
+
+    private Mono<ShareFileRange> downloadFirstChunk(ShareFileRange range, ShareRequestConditions requestConditions, Context context) {
+        ShareFileRange finalRange = range == null ? new ShareFileRange(0, 4L * Constants.MB) : range;
+
+        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+
+        return downloadRange(finalRange, false, requestConditions, context)
+            .subscribeOn(Schedulers.boundedElastic())
+            .map(response -> {
+                String eTag = ModelHelper.getETag(response.getHeaders());
+                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
+                    response.getDeserializedHeaders(), response.getHeaders());
+
+                long finalEnd = headers.getContentRange() == null ? headers.getContentLength() : Long.parseLong(headers.getContentRange().split("/")[1]);
+                LOGGER.warning("final length is: " + finalEnd);
+                return new ShareFileRange(0, finalEnd);
+            });
+    }
+
+//    Mono<ShareFileDownloadAsyncResponse> downloadToFileHelper(ShareFileDownloadOptions options, Context context) {
+//        options = options == null ? new ShareFileDownloadOptions() : options;
+//        ShareFileRange range = options.getRange() == null ? new ShareFileRange(0) : options.getRange();
+//        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+//            ? new ShareRequestConditions() : options.getRequestConditions();
+//        DownloadRetryOptions retryOptions = options.getRetryOptions() == null ? new DownloadRetryOptions()
+//            : options.getRetryOptions();
+//        Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
+//
+//        return downloadRange(range, getRangeContentMd5, requestConditions, context)
+//            .map(response -> {
+//                String eTag = ModelHelper.getETag(response.getHeaders());
+//                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
+//                    response.getDeserializedHeaders(), response.getHeaders());
+//
+//                // logic for parsing the length and seeing if its more than 4MB
+//                long finalEnd = headers.getContentRange() == null ? headers.getContentLength()
+//                    : Long.parseLong(headers.getContentRange().split("/")[1]);
+//
+//                return finalEnd;
+//
+////                return new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+////                    response.getHeaders(), bufferFlux, headers);
+//            });
+//    }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
         try {
