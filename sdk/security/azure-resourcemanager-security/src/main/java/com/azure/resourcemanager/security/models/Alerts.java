@@ -115,19 +115,6 @@ public interface Alerts {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated with a subscription.
-     */
-    Alert getSubscriptionLevel(String ascLocation, String alertName);
-
-    /**
-     * Get an alert that is associated with a subscription.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,19 +124,17 @@ public interface Alerts {
     Response<Alert> getSubscriptionLevelWithResponse(String ascLocation, String alertName, Context context);
 
     /**
-     * Get an alert that is associated a resource group or a resource in a resource group.
+     * Get an alert that is associated with a subscription.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated a resource group or a resource in a resource group.
+     * @return an alert that is associated with a subscription.
      */
-    Alert getResourceGroupLevel(String resourceGroupName, String ascLocation, String alertName);
+    Alert getSubscriptionLevel(String ascLocation, String alertName);
 
     /**
      * Get an alert that is associated a resource group or a resource in a resource group.
@@ -170,16 +155,19 @@ public interface Alerts {
         String resourceGroupName, String ascLocation, String alertName, Context context);
 
     /**
-     * Update the alert's state.
+     * Get an alert that is associated a resource group or a resource in a resource group.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an alert that is associated a resource group or a resource in a resource group.
      */
-    void updateSubscriptionLevelStateToDismiss(String ascLocation, String alertName);
+    Alert getResourceGroupLevel(String resourceGroupName, String ascLocation, String alertName);
 
     /**
      * Update the alert's state.
@@ -206,7 +194,7 @@ public interface Alerts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateSubscriptionLevelStateToResolve(String ascLocation, String alertName);
+    void updateSubscriptionLevelStateToDismiss(String ascLocation, String alertName);
 
     /**
      * Update the alert's state.
@@ -233,7 +221,7 @@ public interface Alerts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateSubscriptionLevelStateToActivate(String ascLocation, String alertName);
+    void updateSubscriptionLevelStateToResolve(String ascLocation, String alertName);
 
     /**
      * Update the alert's state.
@@ -260,7 +248,7 @@ public interface Alerts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateSubscriptionLevelStateToInProgress(String ascLocation, String alertName);
+    void updateSubscriptionLevelStateToActivate(String ascLocation, String alertName);
 
     /**
      * Update the alert's state.
@@ -280,8 +268,6 @@ public interface Alerts {
     /**
      * Update the alert's state.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
@@ -289,7 +275,7 @@ public interface Alerts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateResourceGroupLevelStateToResolve(String resourceGroupName, String ascLocation, String alertName);
+    void updateSubscriptionLevelStateToInProgress(String ascLocation, String alertName);
 
     /**
      * Update the alert's state.
@@ -320,7 +306,7 @@ public interface Alerts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateResourceGroupLevelStateToDismiss(String resourceGroupName, String ascLocation, String alertName);
+    void updateResourceGroupLevelStateToResolve(String resourceGroupName, String ascLocation, String alertName);
 
     /**
      * Update the alert's state.
@@ -351,7 +337,7 @@ public interface Alerts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateResourceGroupLevelStateToActivate(String resourceGroupName, String ascLocation, String alertName);
+    void updateResourceGroupLevelStateToDismiss(String resourceGroupName, String ascLocation, String alertName);
 
     /**
      * Update the alert's state.
@@ -382,7 +368,7 @@ public interface Alerts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateResourceGroupLevelStateToInProgress(String resourceGroupName, String ascLocation, String alertName);
+    void updateResourceGroupLevelStateToActivate(String resourceGroupName, String ascLocation, String alertName);
 
     /**
      * Update the alert's state.
@@ -400,6 +386,20 @@ public interface Alerts {
      */
     Response<Void> updateResourceGroupLevelStateToInProgressWithResponse(
         String resourceGroupName, String ascLocation, String alertName, Context context);
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateResourceGroupLevelStateToInProgress(String resourceGroupName, String ascLocation, String alertName);
 
     /**
      * Simulate security alerts.

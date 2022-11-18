@@ -39,18 +39,6 @@ public interface Locations {
      *
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ASC location of the subscription is in the "name" field.
-     */
-    AscLocation get(String ascLocation);
-
-    /**
-     * Details of a specific location.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,4 +46,16 @@ public interface Locations {
      * @return the ASC location of the subscription is in the "name" field along with {@link Response}.
      */
     Response<AscLocation> getWithResponse(String ascLocation, Context context);
+
+    /**
+     * Details of a specific location.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ASC location of the subscription is in the "name" field.
+     */
+    AscLocation get(String ascLocation);
 }

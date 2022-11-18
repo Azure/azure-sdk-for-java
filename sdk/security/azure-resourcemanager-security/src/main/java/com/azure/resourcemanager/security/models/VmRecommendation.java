@@ -34,6 +34,10 @@ public final class VmRecommendation {
     @JsonProperty(value = "enforcementSupport")
     private EnforcementSupport enforcementSupport;
 
+    /** Creates an instance of VmRecommendation class. */
+    public VmRecommendation() {
+    }
+
     /**
      * Get the configurationStatus property: The configuration status of the machines group or machine or rule.
      *

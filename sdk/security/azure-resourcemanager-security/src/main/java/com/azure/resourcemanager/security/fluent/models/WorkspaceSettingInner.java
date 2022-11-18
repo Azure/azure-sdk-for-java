@@ -17,6 +17,10 @@ public final class WorkspaceSettingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private WorkspaceSettingProperties innerProperties;
 
+    /** Creates an instance of WorkspaceSettingInner class. */
+    public WorkspaceSettingInner() {
+    }
+
     /**
      * Get the innerProperties property: Workspace setting data.
      *

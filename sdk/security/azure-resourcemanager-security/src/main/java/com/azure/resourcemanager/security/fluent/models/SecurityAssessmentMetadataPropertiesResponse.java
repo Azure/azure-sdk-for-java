@@ -45,6 +45,10 @@ public final class SecurityAssessmentMetadataPropertiesResponse extends Security
     @JsonProperty(value = "techniques")
     private List<Techniques> techniques;
 
+    /** Creates an instance of SecurityAssessmentMetadataPropertiesResponse class. */
+    public SecurityAssessmentMetadataPropertiesResponse() {
+    }
+
     /**
      * Get the publishDates property: The publishDates property.
      *
