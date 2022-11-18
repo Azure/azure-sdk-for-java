@@ -74,6 +74,7 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the KeywordTokenizerV1.
      */
     public static KeywordTokenizerV1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

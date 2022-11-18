@@ -242,6 +242,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @return An instance of SearchIndexerSkillset if the JsonReader was pointing to an instance of it, or null if it
      *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchIndexerSkillset.
      */
     public static SearchIndexerSkillset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

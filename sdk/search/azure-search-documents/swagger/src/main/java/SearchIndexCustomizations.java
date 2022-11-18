@@ -5,10 +5,14 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.expr.LongLiteralExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.javadoc.Javadoc;
 import org.slf4j.Logger;
 
 import java.io.Serializable;
@@ -19,8 +23,8 @@ import java.util.Locale;
  */
 public class SearchIndexCustomizations extends Customization {
     private static final String VARARG_METHOD_TEMPLATE = joinWithNewline(
-        "public %s %s(%s... %s) {",
-        "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);",
+        "{",
+        "    this.%1$s = (%1$s == null) ? null : java.util.Arrays.asList(%1$s);",
         "    return this;",
         "}");
 
@@ -38,19 +42,26 @@ public class SearchIndexCustomizations extends Customization {
         customizeAutocompleteOptions(packageCustomization.getClass("AutocompleteOptions"));
         customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
+        customizeIndexDocumentsResult(packageCustomization.getClass("IndexDocumentsResult"));
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
         classCustomization.getMethod("isUseFuzzyMatching").rename("useFuzzyMatching");
-        addVarArgsOverload(classCustomization, "searchFields", "String");
+        classCustomization.customizeAst(ast -> addVarArgsOverload(
+            ast.getClassByName(classCustomization.getClassName()).get(), classCustomization.getClassName(),
+            "searchFields", "String"));
     }
 
     private void customizeSuggestOptions(ClassCustomization classCustomization) {
         classCustomization.getMethod("isUseFuzzyMatching").rename("useFuzzyMatching");
+        classCustomization.customizeAst(ast -> {
+            String className = classCustomization.getClassName();
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className).get();
 
-        addVarArgsOverload(classCustomization, "orderBy", "String");
-        addVarArgsOverload(classCustomization, "searchFields", "String");
-        addVarArgsOverload(classCustomization, "select", "String");
+            addVarArgsOverload(clazz, className, "orderBy", "String");
+            addVarArgsOverload(clazz, className, "searchFields", "String");
+            addVarArgsOverload(clazz, className, "select", "String");
+        });
     }
 
     private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
@@ -60,12 +71,16 @@ public class SearchIndexCustomizations extends Customization {
 
     private void customizeSearchOptions(ClassCustomization classCustomization) {
         classCustomization.getMethod("isIncludeTotalCount").rename("isTotalCountIncluded");
+        classCustomization.customizeAst(ast -> {
+            String className = classCustomization.getClassName();
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className).get();
 
-        addVarArgsOverload(classCustomization, "facets", "String");
-        addVarArgsOverload(classCustomization, "orderBy", "String");
-        addVarArgsOverload(classCustomization, "searchFields", "String");
-        addVarArgsOverload(classCustomization, "select", "String");
-        addVarArgsOverload(classCustomization, "highlightFields", "String");
+            addVarArgsOverload(clazz, className, "facets", "String");
+            addVarArgsOverload(clazz, className, "orderBy", "String");
+            addVarArgsOverload(clazz, className, "searchFields", "String");
+            addVarArgsOverload(clazz, className, "select", "String");
+            addVarArgsOverload(clazz, className, "highlightFields", "String");
+        });
 
         // Can't be done right now as setScoringParameters uses String.
 //        // Scoring parameters are slightly different as code generates them as String.
@@ -84,22 +99,34 @@ public class SearchIndexCustomizations extends Customization {
     }
 
     private void customizeIndexAction(ClassCustomization classCustomization) {
-        classCustomization
-            .customizeAst(ast -> ast.getClassByName("IndexAction").get()
-                .addPrivateField(String.class, "rawDocument"))
-            .getProperty("rawDocument")
-            .generateGetterAndSetter();
+        classCustomization.customizeAst(ast -> {
+            String className = classCustomization.getClassName();
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className).get();
 
-        classCustomization.getMethod("getRawDocument")
-            .getJavadoc()
-            .setDescription("Gets the raw JSON document.")
-            .setReturn("The raw JSON document.");
+            clazz.addPrivateField("String", "rawDocument");
+            clazz.addMethod("getRawDocument", Modifier.Keyword.PUBLIC).setType("String")
+                .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("return this.rawDocument;"))))
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "/**",
+                    " * Gets the raw JSON document.",
+                    " * @return The raw JSON document.",
+                    " */"
+                )));
 
-        classCustomization.getMethod("setRawDocument")
-            .getJavadoc()
-            .setDescription("Sets the raw JSON document.")
-            .setParam("rawDocument", "The raw JSON document.")
-            .setReturn("the IndexAction object itself.");
+            clazz.addMethod("setRawDocument", Modifier.Keyword.PUBLIC).setType("IndexAction")
+                .addParameter("String", "rawDocument")
+                .setBody(new BlockStmt(new NodeList<>(
+                    StaticJavaParser.parseStatement("this.rawDocument = rawDocument;"),
+                    StaticJavaParser.parseStatement("return this;")
+                )))
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "/**",
+                    " * Sets the raw JSON document.",
+                    " * @param rawDocument The raw JSON document.",
+                    " * @return the IndexAction object itself.",
+                    " */"
+                )));
+        });
     }
 
     private void customizeIndexingResult(ClassCustomization classCustomization) {
@@ -120,21 +147,61 @@ public class SearchIndexCustomizations extends Customization {
 
             field = clazz.getFieldByName("statusCode").get();
             field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+
+            clazz.getDefaultConstructor().get().setModifiers(Modifier.Keyword.PRIVATE);
+
+            clazz.addConstructor(Modifier.Keyword.PUBLIC)
+                .addParameter("String", "key")
+                .addParameter("boolean", "succeeded")
+                .addParameter("int", "statusCode")
+                .setBody(new BlockStmt(new NodeList<>(
+                    StaticJavaParser.parseStatement("this.key = key;"),
+                    StaticJavaParser.parseStatement("this.succeeded = succeeded;"),
+                    StaticJavaParser.parseStatement("this.statusCode = statusCode;")
+                )))
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "/**",
+                    " * Creates an instance of IndexingResult class",
+                    " * @param key the key value to set.",
+                    " * @param succeeded the succeeded value to set.",
+                    " * @param statusCode the statusCode value to set."
+                )));
+        });
+    }
+
+    private void customizeIndexDocumentsResult(ClassCustomization classCustomization) {
+        classCustomization.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+
+            clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE);
+
+            Javadoc ctorJavadoc = StaticJavaParser.parseJavadoc(joinWithNewline(
+                "/**",
+                "* Constructor of {@link IndexDocumentsResult}.",
+                "* @param results The list of status information for each document in the indexing request.",
+                "*/"
+            ));
+            clazz.addConstructor(Modifier.Keyword.PUBLIC)
+                .addParameter("List<IndexingResult>", "results")
+                .setJavadocComment(ctorJavadoc)
+                .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("this.results = results;"))));
         });
     }
 
     /*
      * This helper function adds a varargs overload in addition to a List setter.
      */
-    private static void addVarArgsOverload(ClassCustomization classCustomization, String parameterName,
+    private static void addVarArgsOverload(ClassOrInterfaceDeclaration clazz, String className, String parameterName,
         String parameterType) {
         String methodName = "set" + parameterName.substring(0, 1).toUpperCase(Locale.ROOT) + parameterName.substring(1);
 
-        String varargMethod = String.format(VARARG_METHOD_TEMPLATE, classCustomization.getClassName(), methodName,
-            parameterType, parameterName, parameterName, parameterName, parameterName);
+        String varargMethod = String.format(VARARG_METHOD_TEMPLATE, parameterName);
 
-        classCustomization.addMethod(varargMethod).getJavadoc()
-            .replace(classCustomization.getMethod(methodName).getJavadoc());
+        Javadoc copyJavadoc = clazz.getMethodsByName(methodName).get(0).getJavadoc().get();
+        clazz.addMethod(methodName, Modifier.Keyword.PUBLIC).setType(className)
+            .addParameter(StaticJavaParser.parseParameter(parameterType + "... " + parameterName))
+            .setBody(StaticJavaParser.parseBlock(varargMethod))
+            .setJavadocComment(copyJavadoc);
     }
 
     private static String joinWithNewline(String... lines) {

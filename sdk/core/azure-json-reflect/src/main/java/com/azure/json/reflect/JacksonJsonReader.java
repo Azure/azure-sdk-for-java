@@ -232,10 +232,9 @@ final class JacksonJsonReader extends JsonReader {
     @Override
     public JsonReader bufferObject() throws IOException {
         JsonToken currentToken = currentToken();
-        if (currentToken == JsonToken.START_OBJECT
-            || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
+        if (currentToken == JsonToken.START_OBJECT || (currentToken == JsonToken.FIELD_NAME)) {
             StringBuilder bufferedObject = new StringBuilder();
-            readChildren(bufferedObject);
+            readRemainingFieldsAsJsonObject(bufferedObject);
             String json = bufferedObject.toString();
             return new JacksonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported);
         } else {

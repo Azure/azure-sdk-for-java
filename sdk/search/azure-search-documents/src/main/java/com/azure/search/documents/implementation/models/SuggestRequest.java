@@ -349,6 +349,7 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @return An instance of SuggestRequest if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SuggestRequest.
      */
     public static SuggestRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

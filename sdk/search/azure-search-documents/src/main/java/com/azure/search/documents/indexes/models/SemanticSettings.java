@@ -59,6 +59,7 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
      * @param jsonReader The JsonReader being read.
      * @return An instance of SemanticSettings if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SemanticSettings.
      */
     public static SemanticSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

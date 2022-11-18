@@ -333,6 +333,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the WordDelimiterTokenFilter.
      */
     public static WordDelimiterTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

@@ -159,6 +159,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the KeyPhraseExtractionSkill.
      */
     public static KeyPhraseExtractionSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

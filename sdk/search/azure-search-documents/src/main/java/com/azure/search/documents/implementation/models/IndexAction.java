@@ -91,6 +91,7 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of IndexAction if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IndexAction.
      */
     public static IndexAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
@@ -121,19 +122,19 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
     private String rawDocument;
 
     /**
-     * Gets the raw JSON document.
+     * /** Gets the raw JSON document.
      *
-     * @return The raw JSON document.
+     * @return The raw JSON document. /
      */
     public String getRawDocument() {
-        return rawDocument;
+        return this.rawDocument;
     }
 
     /**
-     * Sets the raw JSON document.
+     * /** Sets the raw JSON document.
      *
      * @param rawDocument The raw JSON document.
-     * @return the IndexAction object itself.
+     * @return the IndexAction object itself. /
      */
     public IndexAction setRawDocument(String rawDocument) {
         this.rawDocument = rawDocument;

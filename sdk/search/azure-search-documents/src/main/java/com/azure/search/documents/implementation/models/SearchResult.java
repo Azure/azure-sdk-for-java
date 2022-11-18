@@ -137,6 +137,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * @return An instance of SearchResult if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchResult.
      */
     public static SearchResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

@@ -58,6 +58,7 @@ public abstract class CognitiveServicesAccount implements JsonSerializable<Cogni
      * @return An instance of CognitiveServicesAccount if the JsonReader was pointing to an instance of it, or null if
      *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the CognitiveServicesAccount.
      */
     public static CognitiveServicesAccount fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

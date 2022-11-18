@@ -133,6 +133,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * @return An instance of CustomEntityAlias if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomEntityAlias.
      */
     public static CustomEntityAlias fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

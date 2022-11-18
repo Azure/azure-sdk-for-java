@@ -144,6 +144,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchServiceLimits if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchServiceLimits.
      */
     public static SearchServiceLimits fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

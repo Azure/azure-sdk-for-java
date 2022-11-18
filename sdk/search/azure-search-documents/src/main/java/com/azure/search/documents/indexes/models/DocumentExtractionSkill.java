@@ -155,6 +155,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the DocumentExtractionSkill.
      */
     public static DocumentExtractionSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

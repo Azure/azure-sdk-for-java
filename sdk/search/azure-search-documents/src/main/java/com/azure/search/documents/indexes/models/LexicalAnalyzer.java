@@ -56,6 +56,7 @@ public abstract class LexicalAnalyzer implements JsonSerializable<LexicalAnalyze
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the LexicalAnalyzer.
      */
     public static LexicalAnalyzer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

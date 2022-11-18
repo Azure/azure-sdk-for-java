@@ -387,6 +387,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @return An instance of CustomEntity if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomEntity.
      */
     public static CustomEntity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

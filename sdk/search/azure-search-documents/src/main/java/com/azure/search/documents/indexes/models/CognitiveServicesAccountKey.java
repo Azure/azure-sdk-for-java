@@ -69,6 +69,7 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
      *     if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the CognitiveServicesAccountKey.
      */
     public static CognitiveServicesAccountKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

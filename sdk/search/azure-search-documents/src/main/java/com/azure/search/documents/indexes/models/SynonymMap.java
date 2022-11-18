@@ -172,6 +172,7 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SynonymMap if the JsonReader was pointing to an instance of it, or null if it was pointing
      *     to JSON null.
+     * @throws IOException If an error occurs while reading the SynonymMap.
      */
     public static SynonymMap fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

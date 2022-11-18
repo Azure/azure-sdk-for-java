@@ -70,6 +70,7 @@ public final class MappingCharFilter extends CharFilter {
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the MappingCharFilter.
      */
     public static MappingCharFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

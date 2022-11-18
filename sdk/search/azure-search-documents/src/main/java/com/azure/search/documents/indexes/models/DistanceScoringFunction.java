@@ -76,6 +76,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
      *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the DistanceScoringFunction.
      */
     public static DistanceScoringFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

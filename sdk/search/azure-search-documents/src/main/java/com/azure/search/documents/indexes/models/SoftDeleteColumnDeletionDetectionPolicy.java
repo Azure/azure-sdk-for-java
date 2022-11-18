@@ -92,6 +92,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * @return An instance of SoftDeleteColumnDeletionDetectionPolicy if the JsonReader was pointing to an instance of
      *     it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the SoftDeleteColumnDeletionDetectionPolicy.
      */
     public static SoftDeleteColumnDeletionDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

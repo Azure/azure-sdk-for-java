@@ -197,6 +197,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the EntityRecognitionSkillV1.
      */
     public static EntityRecognitionSkillV1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

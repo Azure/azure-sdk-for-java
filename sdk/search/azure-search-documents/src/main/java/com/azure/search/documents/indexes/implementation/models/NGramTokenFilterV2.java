@@ -102,6 +102,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the NGramTokenFilterV2.
      */
     public static NGramTokenFilterV2 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

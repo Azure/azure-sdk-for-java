@@ -88,6 +88,7 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
      * @return An instance of CorsOptions if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CorsOptions.
      */
     public static CorsOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

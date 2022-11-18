@@ -13,8 +13,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.json.DefaultJsonReader;
-import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
@@ -27,6 +28,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -987,8 +990,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        new IndexDocumentsResult(results).toJson(DefaultJsonWriter.fromStream(outputStream));
-        return outputStream.toByteArray();
+        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            writer.writeJson(new IndexDocumentsResult(results)).flush();
+            return outputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     private static Mono<HttpResponse> createMockBatchSplittingResponse(HttpRequest request, int keyIdOffset,
@@ -996,17 +1003,21 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         return FluxUtil.collectBytesInByteBufferStream(request.getBody())
             .flatMap(bodyBytes -> {
                 // Request documents are in a sub-node called value.
-                IndexBatch indexBatch = IndexBatch.fromJson(DefaultJsonReader.fromBytes(bodyBytes));
+                try (JsonReader reader = JsonProviders.createReader(bodyBytes)) {
+                    IndexBatch indexBatch = IndexBatch.fromJson(reader);
 
-                // Given the initial size was 10 and it was split we should expect 5 elements.
-                assertNotNull(indexBatch);
-                assertEquals(expectedBatchSize, indexBatch.getActions().size());
+                    // Given the initial size was 10 and it was split we should expect 5 elements.
+                    assertNotNull(indexBatch);
+                    assertEquals(expectedBatchSize, indexBatch.getActions().size());
 
-                int[] statusCodes = new int[expectedBatchSize];
-                Arrays.fill(statusCodes, 200);
+                    int[] statusCodes = new int[expectedBatchSize];
+                    Arrays.fill(statusCodes, 200);
 
-                return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
-                    createMockResponseData(keyIdOffset, statusCodes)));
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(keyIdOffset, statusCodes)));
+                } catch (IOException ex) {
+                    return Mono.error(ex);
+                }
             });
     }
 }

@@ -67,6 +67,7 @@ public final class SnowballTokenFilter extends TokenFilter {
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the SnowballTokenFilter.
      */
     public static SnowballTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

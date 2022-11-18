@@ -152,6 +152,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      *     to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the SplitSkill.
      */
     public static SplitSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

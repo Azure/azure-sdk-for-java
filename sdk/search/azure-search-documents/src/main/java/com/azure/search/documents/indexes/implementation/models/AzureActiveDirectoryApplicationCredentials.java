@@ -93,6 +93,7 @@ public final class AzureActiveDirectoryApplicationCredentials
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureActiveDirectoryApplicationCredentials if the JsonReader was pointing to an instance
      *     of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureActiveDirectoryApplicationCredentials.
      */
     public static AzureActiveDirectoryApplicationCredentials fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(

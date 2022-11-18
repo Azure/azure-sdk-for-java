@@ -39,7 +39,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
     private int statusCode;
 
     /** Creates an instance of IndexingResult class. */
-    public IndexingResult() {}
+    private IndexingResult() {}
 
     /**
      * Get the key property: The key of a document that was in the indexing request.
@@ -99,6 +99,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      * @return An instance of IndexingResult if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IndexingResult.
      */
     public static IndexingResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
@@ -152,4 +153,17 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
     }
 
     private static final long serialVersionUID = -8604424005271188140L;
+
+    /**
+     * /** Creates an instance of IndexingResult class
+     *
+     * @param key the key value to set.
+     * @param succeeded the succeeded value to set.
+     * @param statusCode the statusCode value to set.
+     */
+    public IndexingResult(String key, boolean succeeded, int statusCode) {
+        this.key = key;
+        this.succeeded = succeeded;
+        this.statusCode = statusCode;
+    }
 }

@@ -522,6 +522,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @return An instance of SearchField if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchField.
      */
     public static SearchField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
