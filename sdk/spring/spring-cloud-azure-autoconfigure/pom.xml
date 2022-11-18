@@ -300,12 +300,6 @@
       <version>3.0.0-RC1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>jakarta.el</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;org.glassfish:jakarta.el;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
 
     <!-- for the samples   -->
     <dependency>
