@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Providers JDBC MySQL</name>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-providers-core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
     </dependency>
 
     <dependency>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.8.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.5.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

@@ -22,7 +22,7 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
     private Iterable<SingleLabelClassifyAction> singleLabelClassifyActions;
     private Iterable<MultiLabelClassifyAction> multiLabelClassifyActions;
-    private Iterable<AbstractiveSummaryAction> abstractiveSummaryActions;
+    private Iterable<AbstractSummaryAction> abstractSummaryActions;
     private Iterable<ExtractSummaryAction> extractSummaryActions;
 
     /**
@@ -268,24 +268,23 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Gets the list of {@link AbstractiveSummaryAction} to be executed.
+     * Gets the list of {@link AbstractSummaryAction} to be executed.
      *
-     * @return the list of {@link AbstractiveSummaryAction} to be executed.
+     * @return the list of {@link AbstractSummaryAction} to be executed.
      */
-    public Iterable<AbstractiveSummaryAction> getAbstractiveSummaryActions() {
-        return abstractiveSummaryActions;
+    public Iterable<AbstractSummaryAction> getAbstractSummaryActions() {
+        return abstractSummaryActions;
     }
 
     /**
-     * Sets the list of {@link AbstractiveSummaryAction} to be executed.
+     * Sets the list of {@link AbstractSummaryAction} to be executed.
      *
-     * @param abstractiveSummaryActions The list of {@link AbstractiveSummaryAction} to be executed.
+     * @param abstractSummaryActions The list of {@link AbstractSummaryAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions) {
-        this.abstractiveSummaryActions = abstractiveSummaryActions == null
-            ? null : Arrays.asList(abstractiveSummaryActions);
+    public TextAnalyticsActions setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions) {
+        this.abstractSummaryActions = abstractSummaryActions == null ? null : Arrays.asList(abstractSummaryActions);
         return this;
     }
 

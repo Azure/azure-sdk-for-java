@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for ClassificationType. */
 public final class ClassificationType extends ExpandableStringEnum<ClassificationType> {
     /** Static value Single for ClassificationType. */
@@ -23,14 +21,5 @@ public final class ClassificationType extends ExpandableStringEnum<Classificatio
      */
     public static ClassificationType fromString(String name) {
         return fromString(name, ClassificationType.class);
-    }
-
-    /**
-     * Gets known ClassificationType values.
-     *
-     * @return known ClassificationType values.
-     */
-    public static Collection<ClassificationType> values() {
-        return values(ClassificationType.class);
     }
 }

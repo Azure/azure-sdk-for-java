@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.NumericRangeResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** represents the resolution of numeric intervals. */
@@ -11,29 +12,36 @@ public final class NumericRangeResolution extends BaseResolution {
     /*
      * The kind of range that the resolution object represents.
      */
-    private final RangeKind rangeKind;
+    private RangeKind rangeKind;
 
     /*
      * The beginning value of  the interval.
      */
-    private final double minimum;
+    private double minimum;
 
     /*
      * The ending value of the interval.
      */
-    private final double maximum;
+    private double maximum;
 
-    /**
-     * Create a resolution of numeric intervals.
-     *
-     * @param rangeKind The kind of range that the resolution object represents.
-     * @param minimum The beginning value of the interval.
-     * @param maximum The ending value of the interval.
-     */
-    public NumericRangeResolution(RangeKind rangeKind, double minimum, double maximum) {
-        this.rangeKind = rangeKind;
-        this.minimum = minimum;
-        this.maximum = maximum;
+    static {
+        NumericRangeResolutionPropertiesHelper.setAccessor(
+            new NumericRangeResolutionPropertiesHelper.NumericRangeResolutionAccessor() {
+                @Override
+                public void setRangeKind(NumericRangeResolution numericRangeResolution, RangeKind rangeKind) {
+                    numericRangeResolution.setRangeKind(rangeKind);
+                }
+
+                @Override
+                public void setMinimum(NumericRangeResolution numericRangeResolution, double minimum) {
+                    numericRangeResolution.setMinimum(minimum);
+                }
+
+                @Override
+                public void setMaximum(NumericRangeResolution numericRangeResolution, double maximum) {
+                    numericRangeResolution.setMaximum(maximum);
+                }
+            });
     }
 
     /**
@@ -61,5 +69,17 @@ public final class NumericRangeResolution extends BaseResolution {
      */
     public double getMaximum() {
         return this.maximum;
+    }
+
+    private void setRangeKind(RangeKind rangeKind) {
+        this.rangeKind = rangeKind;
+    }
+
+    private void setMinimum(double minimum) {
+        this.minimum = minimum;
+    }
+
+    private void setMaximum(double maximum) {
+        this.maximum = maximum;
     }
 }

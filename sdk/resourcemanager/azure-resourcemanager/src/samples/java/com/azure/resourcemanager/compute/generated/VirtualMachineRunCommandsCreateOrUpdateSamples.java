@@ -40,7 +40,7 @@ public final class VirtualMachineRunCommandsCreateOrUpdateSamples {
                                 new RunCommandInputParameter().withName("param2").withValue("value2")))
                     .withAsyncExecution(false)
                     .withRunAsUser("user1")
-                    .withRunAsPassword("<runAsPassword>")
+                    .withRunAsPassword("fakeTokenPlaceholder")
                     .withTimeoutInSeconds(3600),
                 Context.NONE);
     }

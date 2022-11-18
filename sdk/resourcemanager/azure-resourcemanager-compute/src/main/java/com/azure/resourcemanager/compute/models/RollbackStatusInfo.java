@@ -28,6 +28,10 @@ public final class RollbackStatusInfo {
     @JsonProperty(value = "rollbackError", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError rollbackError;
 
+    /** Creates an instance of RollbackStatusInfo class. */
+    public RollbackStatusInfo() {
+    }
+
     /**
      * Get the successfullyRolledbackInstanceCount property: The number of instances which have been successfully rolled
      * back.

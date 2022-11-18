@@ -33,6 +33,10 @@ public final class DiskEncryptionSetUpdate {
     @JsonProperty(value = "identity")
     private EncryptionSetIdentity identity;
 
+    /** Creates an instance of DiskEncryptionSetUpdate class. */
+    public DiskEncryptionSetUpdate() {
+    }
+
     /**
      * Get the innerProperties property: disk encryption set resource update properties.
      *
