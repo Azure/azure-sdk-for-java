@@ -308,7 +308,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
     @Test
     public void canCreateTrustedLaunchVMsFromGalleryImage() {
-        final String galleryName = generateRandomResourceName("jsim", 15); // "jsim94f154754";
+        final String galleryName = generateRandomResourceName("jsim", 15);
 
         Gallery gallery =
             this
