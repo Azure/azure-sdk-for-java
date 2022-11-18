@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * Base class for Anomaly Detector clients test.
  */
 public class AnomalyDetectorClientTestBase extends TestBase {
-    private static final String FAKE_API_KEY = "1234567890";
+    private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
     void testDetectEntireSeriesWithResponse(Consumer<DetectRequest> testRunner) {

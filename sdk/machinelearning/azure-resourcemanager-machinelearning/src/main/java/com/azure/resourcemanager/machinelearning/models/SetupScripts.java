@@ -16,6 +16,10 @@ public final class SetupScripts {
     @JsonProperty(value = "scripts")
     private ScriptsToExecute scripts;
 
+    /** Creates an instance of SetupScripts class. */
+    public SetupScripts() {
+    }
+
     /**
      * Get the scripts property: Customized setup scripts.
      *

@@ -14,7 +14,7 @@ public final class ListUsagesResultTests {
         ListUsagesResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"currentValue\":5551509476153562500,\"limit\":2433341846338964721,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"atmelwui\",\"value\":\"ccjzkzivgvv\"}}],\"nextLink\":\"ayrhyrnx\"}")
+                    "{\"value\":[{\"currentValue\":3103507589533354334,\"limit\":4122830623851114030,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"ovljxywsu\",\"value\":\"yrs\"}},{\"currentValue\":4579993960866529408,\"limit\":164789879294916168,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"aeaeneqnzarrw\",\"value\":\"uu\"}},{\"currentValue\":4399358999277003826,\"limit\":7831439414407354845,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"pfpubjibww\",\"value\":\"tohqkvpuvksgp\"}},{\"currentValue\":8295901406246697833,\"limit\":4000304635126091856,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"ljphuopxodl\",\"value\":\"ynt\"}}],\"nextLink\":\"zihleosjswsr\"}")
                 .toObject(ListUsagesResult.class);
     }
 

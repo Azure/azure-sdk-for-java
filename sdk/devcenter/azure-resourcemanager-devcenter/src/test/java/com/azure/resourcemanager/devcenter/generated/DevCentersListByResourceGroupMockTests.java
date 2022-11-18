@@ -34,7 +34,8 @@ public final class DevCentersListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"khbejdznxc\"},\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"volvtn\",\"tags\":{\"mjdftu\":\"fzg\",\"mczuo\":\"jltduceam\",\"ssxmojms\":\"ejwcwwqiok\"},\"id\":\"p\",\"name\":\"jpr\",\"type\":\"kwcf\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"lvrwxkvtkk\"},\"identity\":{\"principalId\":\"4a08138c-24b3-4d7d-8094-7feca6a39d82\",\"tenantId\":\"37703544-0925-47bc-8313-45829e79e3cd\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"vjayvblmhvkzu\",\"tags\":{\"opbyrqufegxu\":\"vvyhg\"},\"id\":\"wz\",\"name\":\"bnhlmc\",\"type\":\"l\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +63,13 @@ public final class DevCentersListByResourceGroupMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DevCenter> response = manager.devCenters().listByResourceGroup("mvikl", 654040507, Context.NONE);
+        PagedIterable<DevCenter> response =
+            manager.devCenters().listByResourceGroup("nrvgoupmfiibfgg", 2107533163, Context.NONE);
 
-        Assertions.assertEquals("volvtn", response.iterator().next().location());
-        Assertions.assertEquals("fzg", response.iterator().next().tags().get("mjdftu"));
+        Assertions.assertEquals("vjayvblmhvkzu", response.iterator().next().location());
+        Assertions.assertEquals("vvyhg", response.iterator().next().tags().get("opbyrqufegxu"));
         Assertions
-            .assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+            .assertEquals(
+                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

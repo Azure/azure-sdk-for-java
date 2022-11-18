@@ -32,6 +32,10 @@ public class ResourceBase {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ResourceBase class. */
+    public ResourceBase() {
+    }
+
     /**
      * Get the description property: The asset description text.
      *

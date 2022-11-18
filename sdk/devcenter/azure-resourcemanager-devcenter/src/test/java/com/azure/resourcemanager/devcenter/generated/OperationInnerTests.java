@@ -15,7 +15,7 @@ public final class OperationInnerTests {
         OperationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"pxodlqiyntorzih\",\"isDataAction\":false,\"display\":{\"provider\":\"swsrms\",\"resource\":\"zrpzb\",\"operation\":\"ckqqzqioxiysui\",\"description\":\"ynkedyatrwyhqmib\"},\"origin\":\"user\",\"actionType\":\"Internal\"}")
+                    "{\"name\":\"pkhjwni\",\"isDataAction\":true,\"display\":{\"provider\":\"i\",\"resource\":\"dggkzzlvmbmpa\",\"operation\":\"odfvuefywsbp\",\"description\":\"mwyhr\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
                 .toObject(OperationInner.class);
     }
 

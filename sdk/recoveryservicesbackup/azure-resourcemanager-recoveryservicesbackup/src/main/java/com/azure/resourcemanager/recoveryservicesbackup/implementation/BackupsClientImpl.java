@@ -263,31 +263,6 @@ public final class BackupsClientImpl implements BackupsClient {
      * @param containerName Container name associated with the backup item.
      * @param protectedItemName Backup item for which backup needs to be triggered.
      * @param parameters resource backup request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters) {
-        triggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters).block();
-    }
-
-    /**
-     * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call GetProtectedItemOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backup item.
-     * @param containerName Container name associated with the backup item.
-     * @param protectedItemName Backup item for which backup needs to be triggered.
-     * @param parameters resource backup request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,5 +281,31 @@ public final class BackupsClientImpl implements BackupsClient {
         return triggerWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context)
             .block();
+    }
+
+    /**
+     * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
+     * operation, call GetProtectedItemOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backup item.
+     * @param containerName Container name associated with the backup item.
+     * @param protectedItemName Backup item for which backup needs to be triggered.
+     * @param parameters resource backup request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void trigger(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        BackupRequestResource parameters) {
+        triggerWithResponse(
+            vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, Context.NONE);
     }
 }

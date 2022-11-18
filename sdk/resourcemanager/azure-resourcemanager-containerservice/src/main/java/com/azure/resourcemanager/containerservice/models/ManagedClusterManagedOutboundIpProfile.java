@@ -17,6 +17,10 @@ public final class ManagedClusterManagedOutboundIpProfile {
     @JsonProperty(value = "count")
     private Integer count;
 
+    /** Creates an instance of ManagedClusterManagedOutboundIpProfile class. */
+    public ManagedClusterManagedOutboundIpProfile() {
+    }
+
     /**
      * Get the count property: The desired number of outbound IPs created/managed by Azure. Allowed values must be in
      * the range of 1 to 16 (inclusive). The default value is 1.

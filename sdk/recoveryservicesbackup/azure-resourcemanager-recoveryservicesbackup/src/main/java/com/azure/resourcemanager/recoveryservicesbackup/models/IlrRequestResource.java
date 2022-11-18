@@ -24,6 +24,10 @@ public final class IlrRequestResource extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of IlrRequestResource class. */
+    public IlrRequestResource() {
+    }
+
     /**
      * Get the properties property: ILRRequestResource properties.
      *

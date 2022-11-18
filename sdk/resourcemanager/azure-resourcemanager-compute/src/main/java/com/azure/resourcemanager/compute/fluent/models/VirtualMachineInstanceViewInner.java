@@ -120,6 +120,10 @@ public final class VirtualMachineInstanceViewInner {
     @JsonProperty(value = "patchStatus")
     private VirtualMachinePatchStatus patchStatus;
 
+    /** Creates an instance of VirtualMachineInstanceViewInner class. */
+    public VirtualMachineInstanceViewInner() {
+    }
+
     /**
      * Get the platformUpdateDomain property: Specifies the update domain of the virtual machine.
      *

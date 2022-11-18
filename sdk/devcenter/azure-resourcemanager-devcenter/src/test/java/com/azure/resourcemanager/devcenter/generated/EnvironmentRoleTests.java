@@ -13,7 +13,7 @@ public final class EnvironmentRoleTests {
     public void testDeserialize() {
         EnvironmentRole model =
             BinaryData
-                .fromString("{\"roleName\":\"jrybnwjewgdrjer\",\"description\":\"aen\"}")
+                .fromString("{\"roleName\":\"rmcqiby\",\"description\":\"ojvknmefqsgzvaha\"}")
                 .toObject(EnvironmentRole.class);
     }
 

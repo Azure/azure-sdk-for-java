@@ -22,6 +22,10 @@ public final class InstantRPAdditionalDetails {
     @JsonProperty(value = "azureBackupRGNameSuffix")
     private String azureBackupRGNameSuffix;
 
+    /** Creates an instance of InstantRPAdditionalDetails class. */
+    public InstantRPAdditionalDetails() {
+    }
+
     /**
      * Get the azureBackupRGNamePrefix property: The azureBackupRGNamePrefix property.
      *

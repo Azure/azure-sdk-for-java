@@ -14,7 +14,7 @@ public final class HealthCheckStatusDetailsListResultTests {
         HealthCheckStatusDetailsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-09-16T04:19:40Z\",\"endDateTime\":\"2021-03-09T16:30:01Z\",\"healthChecks\":[]},\"id\":\"asxifto\",\"name\":\"qyzhf\",\"type\":\"wesgogczh\"}],\"nextLink\":\"nxkrlgnyhmossxkk\"}")
+                    "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-01-27T21:41:09Z\",\"endDateTime\":\"2021-02-05T20:22:21Z\",\"healthChecks\":[]},\"id\":\"uwqlgzrfzeey\",\"name\":\"bizikayuhq\",\"type\":\"bjbsybb\"}],\"nextLink\":\"r\"}")
                 .toObject(HealthCheckStatusDetailsListResult.class);
     }
 

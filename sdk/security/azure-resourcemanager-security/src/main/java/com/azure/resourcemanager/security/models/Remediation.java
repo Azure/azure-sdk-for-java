@@ -35,6 +35,10 @@ public final class Remediation {
     @JsonProperty(value = "portalLink")
     private String portalLink;
 
+    /** Creates an instance of Remediation class. */
+    public Remediation() {
+    }
+
     /**
      * Get the description property: Remediation description.
      *

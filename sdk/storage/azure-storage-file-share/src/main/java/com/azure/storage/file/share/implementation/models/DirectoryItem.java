@@ -42,6 +42,9 @@ public final class DirectoryItem {
     @JsonProperty(value = "PermissionKey")
     private String permissionKey;
 
+    /** Creates an instance of DirectoryItem class. */
+    public DirectoryItem() {}
+
     /**
      * Get the name property: The Name property.
      *

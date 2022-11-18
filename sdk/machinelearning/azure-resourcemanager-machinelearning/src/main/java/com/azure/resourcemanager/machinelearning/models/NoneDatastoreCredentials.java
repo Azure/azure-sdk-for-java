@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("None")
 @Immutable
 public final class NoneDatastoreCredentials extends DatastoreCredentials {
+    /** Creates an instance of NoneDatastoreCredentials class. */
+    public NoneDatastoreCredentials() {
+    }
+
     /**
      * Validates the instance.
      *

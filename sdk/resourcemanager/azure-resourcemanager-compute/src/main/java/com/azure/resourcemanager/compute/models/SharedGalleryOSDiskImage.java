@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** This is the OS disk image. */
 @Fluent
 public final class SharedGalleryOSDiskImage extends SharedGalleryDiskImage {
+    /** Creates an instance of SharedGalleryOSDiskImage class. */
+    public SharedGalleryOSDiskImage() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public SharedGalleryOSDiskImage withHostCaching(SharedGalleryHostCaching hostCaching) {

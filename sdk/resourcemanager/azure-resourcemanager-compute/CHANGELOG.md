@@ -1,6 +1,27 @@
 # Release History
 
-## 2.20.0-beta.1 (Unreleased)
+## 2.21.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `withCopyStart` method in `Snapshot` for copying incremental snapshot from incremental snapshot.
+- Supported `awaitCopyStartCompletion` and `awaitCopyStartCompletionAsync` method in `Snapshot`.
+- Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress.
+- Supported `withTrustedLaunch`, `withSecureBoot` and `withVTpm` methods in `VirtualMachine`.
+- Supported `UBUNTU_SERVER_18_04_LTS_GEN2`, `UBUNTU_SERVER_20_04_LTS` and `UBUNTU_SERVER_20_04_LTS_GEN2` in `KnownLinuxVirtualMachineImage`.
+- Supported `withTrustedLaunch` and `withHyperVGeneration` methods in `GalleryImage`.
+
+### Breaking Changes
+
+- Property `uri` removed from `GalleryArtifactVersionSource`. This property was non-functional.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated Gallery to `2022-03-03`.
+
+## 2.20.0 (2022-10-26)
 
 ### Bugs Fixed
 

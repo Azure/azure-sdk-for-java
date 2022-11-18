@@ -43,15 +43,6 @@ public final class ComputesImpl implements Computes {
         return Utils.mapPage(inner, inner1 -> new ComputeResourceImpl(inner1, this.manager()));
     }
 
-    public ComputeResource get(String resourceGroupName, String workspaceName, String computeName) {
-        ComputeResourceInner inner = this.serviceClient().get(resourceGroupName, workspaceName, computeName);
-        if (inner != null) {
-            return new ComputeResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ComputeResource> getWithResponse(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
         Response<ComputeResourceInner> inner =
@@ -62,6 +53,15 @@ public final class ComputesImpl implements Computes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ComputeResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ComputeResource get(String resourceGroupName, String workspaceName, String computeName) {
+        ComputeResourceInner inner = this.serviceClient().get(resourceGroupName, workspaceName, computeName);
+        if (inner != null) {
+            return new ComputeResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -94,15 +94,6 @@ public final class ComputesImpl implements Computes {
         return this.serviceClient().listNodes(resourceGroupName, workspaceName, computeName, context);
     }
 
-    public ComputeSecrets listKeys(String resourceGroupName, String workspaceName, String computeName) {
-        ComputeSecretsInner inner = this.serviceClient().listKeys(resourceGroupName, workspaceName, computeName);
-        if (inner != null) {
-            return new ComputeSecretsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ComputeSecrets> listKeysWithResponse(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
         Response<ComputeSecretsInner> inner =
@@ -113,6 +104,15 @@ public final class ComputesImpl implements Computes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ComputeSecretsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ComputeSecrets listKeys(String resourceGroupName, String workspaceName, String computeName) {
+        ComputeSecretsInner inner = this.serviceClient().listKeys(resourceGroupName, workspaceName, computeName);
+        if (inner != null) {
+            return new ComputeSecretsImpl(inner, this.manager());
         } else {
             return null;
         }

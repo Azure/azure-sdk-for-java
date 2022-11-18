@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JsonWebKeyEncryptionAlgorithm. */
+/** Algorithm identifier for encryption, default RSA-OAEP. */
 public final class JsonWebKeyEncryptionAlgorithm extends ExpandableStringEnum<JsonWebKeyEncryptionAlgorithm> {
     /** Static value RSA-OAEP for JsonWebKeyEncryptionAlgorithm. */
     public static final JsonWebKeyEncryptionAlgorithm RSA_OAEP = fromString("RSA-OAEP");
@@ -30,7 +30,11 @@ public final class JsonWebKeyEncryptionAlgorithm extends ExpandableStringEnum<Js
         return fromString(name, JsonWebKeyEncryptionAlgorithm.class);
     }
 
-    /** @return known JsonWebKeyEncryptionAlgorithm values. */
+    /**
+     * Gets known JsonWebKeyEncryptionAlgorithm values.
+     *
+     * @return known JsonWebKeyEncryptionAlgorithm values.
+     */
     public static Collection<JsonWebKeyEncryptionAlgorithm> values() {
         return values(JsonWebKeyEncryptionAlgorithm.class);
     }

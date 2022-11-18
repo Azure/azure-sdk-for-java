@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecoveryType. */
+/** Type of this recovery. */
 public final class RecoveryType extends ExpandableStringEnum<RecoveryType> {
     /** Static value Invalid for RecoveryType. */
     public static final RecoveryType INVALID = fromString("Invalid");

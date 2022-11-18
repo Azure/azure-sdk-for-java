@@ -18,6 +18,9 @@ public final class QueueServiceStatistics {
     @JsonProperty(value = "GeoReplication")
     private GeoReplication geoReplication;
 
+    /** Creates an instance of QueueServiceStatistics class. */
+    public QueueServiceStatistics() {}
+
     /**
      * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.
      *

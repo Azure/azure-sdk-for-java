@@ -25,6 +25,10 @@ public final class BackupResourceConfigResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of BackupResourceConfigResourceInner class. */
+    public BackupResourceConfigResourceInner() {
+    }
+
     /**
      * Get the properties property: BackupResourceConfigResource properties.
      *

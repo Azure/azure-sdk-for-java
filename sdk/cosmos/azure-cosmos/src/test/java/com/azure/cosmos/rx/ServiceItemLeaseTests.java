@@ -4,8 +4,8 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
-import com.azure.cosmos.implementation.changefeed.fullfidelity.ServiceItemLeaseV1;
-import com.azure.cosmos.implementation.changefeed.incremental.ServiceItemLease;
+import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
+import com.azure.cosmos.implementation.changefeed.pkversion.ServiceItemLease;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

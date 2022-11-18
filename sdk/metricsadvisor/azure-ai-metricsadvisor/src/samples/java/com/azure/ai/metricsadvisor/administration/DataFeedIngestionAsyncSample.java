@@ -57,7 +57,7 @@ public class DataFeedIngestionAsyncSample {
             .block();
 
         /*
-          Each of the above sample a varient of block() operator which will block
+          Each of the above sample a variant of block() operator which will block
           until the operation is completed.
           This is strongly discouraged for use in production as it eliminates the benefits
           of asynchronous IO. It is used here to ensure the sample runs to completion.

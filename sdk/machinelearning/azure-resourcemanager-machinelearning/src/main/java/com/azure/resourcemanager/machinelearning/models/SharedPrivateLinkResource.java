@@ -23,6 +23,10 @@ public final class SharedPrivateLinkResource {
     @JsonProperty(value = "properties")
     private SharedPrivateLinkResourceProperty innerProperties;
 
+    /** Creates an instance of SharedPrivateLinkResource class. */
+    public SharedPrivateLinkResource() {
+    }
+
     /**
      * Get the name property: Unique name of the private link.
      *

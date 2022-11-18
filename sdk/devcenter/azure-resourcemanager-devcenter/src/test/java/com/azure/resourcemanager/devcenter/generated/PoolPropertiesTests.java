@@ -17,10 +17,10 @@ public final class PoolPropertiesTests {
         PoolProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"hnzbonl\",\"devBoxDefinitionName\":\"toego\",\"networkConnectionName\":\"wbw\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"}")
+                    "{\"provisioningState\":\"a\",\"devBoxDefinitionName\":\"feqztppriol\",\"networkConnectionName\":\"rjaltolmncw\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"}")
                 .toObject(PoolProperties.class);
-        Assertions.assertEquals("toego", model.devBoxDefinitionName());
-        Assertions.assertEquals("wbw", model.networkConnectionName());
+        Assertions.assertEquals("feqztppriol", model.devBoxDefinitionName());
+        Assertions.assertEquals("rjaltolmncw", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
     }
@@ -29,13 +29,13 @@ public final class PoolPropertiesTests {
     public void testSerialize() {
         PoolProperties model =
             new PoolProperties()
-                .withDevBoxDefinitionName("toego")
-                .withNetworkConnectionName("wbw")
+                .withDevBoxDefinitionName("feqztppriol")
+                .withNetworkConnectionName("rjaltolmncw")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
                 .withLocalAdministrator(LocalAdminStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(PoolProperties.class);
-        Assertions.assertEquals("toego", model.devBoxDefinitionName());
-        Assertions.assertEquals("wbw", model.networkConnectionName());
+        Assertions.assertEquals("feqztppriol", model.devBoxDefinitionName());
+        Assertions.assertEquals("rjaltolmncw", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
     }

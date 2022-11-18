@@ -11,19 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IdentityInfo {
     /*
-     * To differentiate if the managed identity is system assigned or user
-     * assigned
+     * To differentiate if the managed identity is system assigned or user assigned
      */
     @JsonProperty(value = "isSystemAssignedIdentity")
     private Boolean isSystemAssignedIdentity;
 
     /*
      * Managed Identity Resource Id
-     * Optional: Might not be required in the case of system assigned managed
-     * identity
+     * Optional: Might not be required in the case of system assigned managed identity
      */
     @JsonProperty(value = "managedIdentityResourceId")
     private String managedIdentityResourceId;
+
+    /** Creates an instance of IdentityInfo class. */
+    public IdentityInfo() {
+    }
 
     /**
      * Get the isSystemAssignedIdentity property: To differentiate if the managed identity is system assigned or user

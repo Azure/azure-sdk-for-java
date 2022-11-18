@@ -50,6 +50,10 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
     @JsonProperty(value = "vmScanners")
     private DefenderForServersAwsOfferingVmScanners vmScanners;
 
+    /** Creates an instance of DefenderForServersAwsOffering class. */
+    public DefenderForServersAwsOffering() {
+    }
+
     /**
      * Get the defenderForServers property: The Defender for servers connection configuration.
      *

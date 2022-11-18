@@ -24,6 +24,10 @@ public final class CustomAssessmentAutomationsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CustomAssessmentAutomationsListResult class. */
+    public CustomAssessmentAutomationsListResult() {
+    }
+
     /**
      * Get the value property: Collection of Custom Assessment Automations.
      *

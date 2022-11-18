@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.3 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.1 (2022-11-17)
+
+### Features Added
+
+- Added user-agent header to Identity requests
+
+## 1.7.0 (2022-11-04)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `msal4j` from `1.13.2` to `1.13.3`
 
 ## 1.7.0-beta.2 (2022-10-13)
 

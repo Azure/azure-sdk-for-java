@@ -34,8 +34,7 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
          * @param retryOptions Retry options.
          */
         BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
-                                         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-                                         DownloadRetryOptions retryOptions);
+            BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions);
     }
 
     /**
@@ -55,8 +54,7 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
      * @param retryOptions Retry options.
      */
     public static BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
-                                                   BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-                                                   DownloadRetryOptions retryOptions) {
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadAsyncResponse which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.

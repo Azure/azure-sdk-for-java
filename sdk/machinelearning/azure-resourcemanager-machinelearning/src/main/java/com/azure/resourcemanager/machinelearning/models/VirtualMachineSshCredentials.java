@@ -34,6 +34,10 @@ public final class VirtualMachineSshCredentials {
     @JsonProperty(value = "privateKeyData")
     private String privateKeyData;
 
+    /** Creates an instance of VirtualMachineSshCredentials class. */
+    public VirtualMachineSshCredentials() {
+    }
+
     /**
      * Get the username property: Username of admin account.
      *

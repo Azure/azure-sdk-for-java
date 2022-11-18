@@ -105,7 +105,7 @@ public class IndexingSyncTests extends SearchTestBase {
 
         List<Book> books = new ArrayList<>();
         books.add(new Book()
-            .ISBN("123")
+            .ISBN("132")
             .title("Lord of the Rings")
             .author(new Author()
                 .firstName("J.R.R")
@@ -113,7 +113,7 @@ public class IndexingSyncTests extends SearchTestBase {
         );
 
         List<IndexingResult> result = client.uploadDocuments(books).getResults();
-        this.assertIndexActionSucceeded("123", result.get(0), 201);
+        this.assertIndexActionSucceeded("132", result.get(0), 201);
 
         waitForIndexing();
         assertEquals(1L, client.getDocumentCount());

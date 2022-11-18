@@ -30,6 +30,9 @@ public enum FilterBlobsIncludeItem {
      */
     @JsonCreator
     public static FilterBlobsIncludeItem fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FilterBlobsIncludeItem[] items = FilterBlobsIncludeItem.values();
         for (FilterBlobsIncludeItem item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum FilterBlobsIncludeItem {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

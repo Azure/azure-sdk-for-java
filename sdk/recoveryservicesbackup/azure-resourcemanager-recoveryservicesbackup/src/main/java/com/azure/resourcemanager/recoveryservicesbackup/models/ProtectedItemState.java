@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtectedItemState. */
+/** Backup state of the backed up item. */
 public final class ProtectedItemState extends ExpandableStringEnum<ProtectedItemState> {
     /** Static value Invalid for ProtectedItemState. */
     public static final ProtectedItemState INVALID = fromString("Invalid");

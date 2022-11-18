@@ -39,19 +39,6 @@ public interface DeviceSecurityGroups {
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
-     */
-    DeviceSecurityGroup get(String resourceId, String deviceSecurityGroupName);
-
-    /**
-     * Use this method to get the device security group for the specified IoT Hub resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,7 +48,7 @@ public interface DeviceSecurityGroups {
     Response<DeviceSecurityGroup> getWithResponse(String resourceId, String deviceSecurityGroupName, Context context);
 
     /**
-     * User this method to deletes the device security group.
+     * Use this method to get the device security group for the specified IoT Hub resource.
      *
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
@@ -69,8 +56,9 @@ public interface DeviceSecurityGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device security group resource.
      */
-    void deleteByResourceGroup(String resourceId, String deviceSecurityGroupName);
+    DeviceSecurityGroup get(String resourceId, String deviceSecurityGroupName);
 
     /**
      * User this method to deletes the device security group.
@@ -84,7 +72,20 @@ public interface DeviceSecurityGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(
+        String resourceId, String deviceSecurityGroupName, Context context);
+
+    /**
+     * User this method to deletes the device security group.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String resourceId, String deviceSecurityGroupName);
 
     /**
      * Use this method to get the device security group for the specified IoT Hub resource.
