@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.models;
 
+import com.azure.core.util.BinaryData;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -14,9 +15,7 @@ import java.nio.ByteBuffer;
  * Extended options that may be passed when uploading a file range.
  */
 public final class ShareFileUploadOptions {
-    private final Flux<ByteBuffer> dataFlux;
-    private final InputStream dataStream;
-    private final Long length;
+    private final BinaryData data;
     private Long offset;
     private ParallelTransferOptions parallelTransferOptions;
     private ShareRequestConditions requestConditions;
@@ -31,9 +30,7 @@ public final class ShareFileUploadOptions {
      */
     public ShareFileUploadOptions(Flux<ByteBuffer> dataFlux) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
-        this.dataFlux = dataFlux;
-        this.dataStream = null;
-        this.length = null;
+        this.data = BinaryData.wrapFlux(dataFlux, null);
     }
 
     /**
@@ -53,9 +50,7 @@ public final class ShareFileUploadOptions {
     public ShareFileUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
-        this.dataStream = dataStream;
-        this.length = length;
-        this.dataFlux = null;
+        this.data = BinaryData.fromStream(dataStream, length);
     }
 
     /**
@@ -67,10 +62,17 @@ public final class ShareFileUploadOptions {
      */
     public ShareFileUploadOptions(InputStream dataStream) {
         StorageImplUtils.assertNotNull("dataStream", dataStream);
-        this.dataStream = dataStream;
-        this.dataFlux = null;
-        this.length = null;
+        this.data = BinaryData.fromStream(dataStream);
     }
+
+    /**
+     * Gets Mono of binary data.
+     * @return mono of data
+     */
+    public BinaryData getData() {
+        return this.data;
+    }
+
 
     /**
      * Gets the data source.
@@ -78,7 +80,7 @@ public final class ShareFileUploadOptions {
      * @return The data to write to the file.
      */
     public Flux<ByteBuffer> getDataFlux() {
-        return this.dataFlux;
+        return this.data.toFluxByteBuffer();
     }
 
     /**
@@ -87,7 +89,7 @@ public final class ShareFileUploadOptions {
      * @return The data to write to the file.
      */
     public InputStream getDataStream() {
-        return this.dataStream;
+        return data.toStream();
     }
 
     /**
@@ -97,7 +99,7 @@ public final class ShareFileUploadOptions {
      * data provided in the {@link InputStream} or {@link Flux}&lt;{@link ByteBuffer}&gt;.
      */
     public Long getLength() {
-        return length;
+        return data.getLength();
     }
 
     /**

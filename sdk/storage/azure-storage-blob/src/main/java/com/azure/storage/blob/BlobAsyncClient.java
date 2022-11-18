@@ -35,7 +35,6 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -56,7 +55,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -690,56 +688,38 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
-            Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
-                uploadInChunks(blockBlobAsyncClient, stream, parallelTransferOptions, headers, metadata, tags,
+            Function<BinaryData, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (data) ->
+                uploadInChunks(blockBlobAsyncClient, data, parallelTransferOptions, headers, metadata, tags,
                     tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
 
-            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction =
-                (stream, length) -> uploadFullBlob(blockBlobAsyncClient, stream, length, parallelTransferOptions,
+            Function<BinaryData, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction =
+                (data) -> uploadFullBlob(blockBlobAsyncClient, data, parallelTransferOptions,
                     headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
 
-            Flux<ByteBuffer> data = options.getDataFlux();
-            // no specified length: use azure.core's converter
-            if (data == null && options.getOptionalLength() == null) {
-                // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
-                    parallelTransferOptions.getBlockSizeLong());
-                data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
-            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
-            } else if (data == null) {
-                // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
-                    parallelTransferOptions.getBlockSizeLong());
-                data = Utility.convertStreamToByteBuffer(
-                    options.getDataStream(), options.getOptionalLength(), chunkSize, false);
-            }
-
-            return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(parallelTransferOptions),
-                uploadInChunksFunction, uploadFullBlobFunction);
+            return UploadUtils.uploadFullOrChunked(options.getData(),
+                ModelHelper.wrapBlobOptions(parallelTransferOptions), uploadInChunksFunction, uploadFullBlobFunction);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     private Mono<Response<BlockBlobItem>> uploadFullBlob(BlockBlobAsyncClient blockBlobAsyncClient,
-        Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
+        BinaryData data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
         Boolean legalHold) {
 
-        /*
-        Note that there is no need to buffer here as the flux returned by the size gate in this case is created
-        from an iterable and is therefore replayable.
-         */
+        // data *must* be replayable to compute MD5
+        Mono<BinaryData> dataMono = data.isReplayable() ? Mono.just(data) : data.toReplayableBinaryDataAsync();
 
-        return UploadUtils.computeMd5(data, computeMd5, LOGGER)
-            .map(fluxMd5Wrapper -> new BlockBlobSimpleUploadOptions(fluxMd5Wrapper.getData(), length)
+        return dataMono.flatMap(bData -> UploadUtils.computeMd5(bData, computeMd5, LOGGER))
+            .map(dataMd5Wrapper -> new BlockBlobSimpleUploadOptions(dataMd5Wrapper.getData())
                 .setHeaders(headers)
                 .setMetadata(metadata)
                 .setTags(tags)
                 .setTier(tier)
                 .setRequestConditions(requestConditions)
-                .setContentMd5(fluxMd5Wrapper.getMd5())
+                .setContentMd5(dataMd5Wrapper.getMd5())
                 .setImmutabilityPolicy(immutabilityPolicy)
                 .setLegalHold(legalHold))
             .flatMap(options -> {
@@ -757,7 +737,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     private Mono<Response<BlockBlobItem>> uploadInChunks(BlockBlobAsyncClient blockBlobAsyncClient,
-        Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
+        BinaryData data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
         Boolean legalHold) {
@@ -771,7 +751,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(),
             BlockBlobClient.MAX_STAGE_BLOCK_BYTES_LONG);
 
-        Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data,
+        Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data.toFluxByteBuffer(),
             ModelHelper.wrapBlobOptions(parallelTransferOptions));
 
         /*
@@ -783,14 +763,13 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return chunkedSource.flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(bufferAggregator -> {
-                Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
-
                 final String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
-                return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER)
-                    .flatMap(fluxMd5Wrapper -> {
-                        Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
-                            fluxMd5Wrapper.getData(), bufferAggregator.length(), fluxMd5Wrapper.getMd5(),
-                            requestConditions.getLeaseId());
+                return UploadUtils.computeMd5(bufferAggregator.asBinaryData(), computeMd5, LOGGER)
+                    .flatMap(dataMd5Wrapper -> {
+                        Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(
+                            new BlockBlobStageBlockOptions(blockId, dataMd5Wrapper.getData())
+                                .setContentMd5(dataMd5Wrapper.getMd5())
+                                .setLeaseId(requestConditions.getLeaseId()));
                         if (progressReporter != null) {
                             responseMono = responseMono.contextWrite(
                                 FluxUtil.toReactorContext(Contexts.empty()

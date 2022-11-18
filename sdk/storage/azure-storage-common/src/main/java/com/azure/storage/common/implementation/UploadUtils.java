@@ -4,6 +4,7 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -38,14 +39,23 @@ public class UploadUtils {
      * @param uploadFull {@link BiFunction} to upload in full.
      * @return A reactive response containing the information of the uploaded data.
      */
-    public static <T> Mono<Response<T>> uploadFullOrChunked(final Flux<ByteBuffer> data,
+    public static <T> Mono<Response<T>> uploadFullOrChunked(final BinaryData data,
         ParallelTransferOptions parallelTransferOptions,
-        final Function<Flux<ByteBuffer>, Mono<Response<T>>> uploadInChunks,
-        final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<T>>> uploadFull) {
+        final Function<BinaryData, Mono<Response<T>>> uploadInChunks,
+        final Function<BinaryData, Mono<Response<T>>> uploadFull) {
 
+        long threshold = parallelTransferOptions.getMaxSingleUploadSizeLong();
+        // if data has known length, branch off that. Otherwise, start buffering an initial upload to determine branch
+        if (data.getLength() != null) {
+            if (data.getLength() > threshold) {
+                return uploadInChunks.apply(data);
+            } else {
+                return uploadFull.apply(data);
+            }
+        }
         PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSizeLong());
 
-        return data
+        return data.toFluxByteBuffer()
             .filter(ByteBuffer::hasRemaining)
             // The gate buffers data until threshold is breached.
             .concatMap(gate::write, 0)
@@ -64,17 +74,19 @@ public class UploadUtils {
                 if (gate.isThresholdBreached()) {
                     // In this case we can pass a flux that can have just one subscriber because
                     // the chunked upload is going to cache the data downstream before sending chunks over the wire.
-                    return uploadInChunks.apply(flux.concatWith(Flux.defer(gate::flush)));
+                    return BinaryData.fromFlux(flux.concatWith(Flux.defer(gate::flush)))
+                        .flatMap(uploadInChunks);
                 } else {
                     // In this case gate contains all the data cached.
                     // The flux passed to this lambda allows only one subscriber. Therefore we substitute it
                     // with flux coming from gate which is based of iterable and can be subscribed again.
-                    return uploadFull.apply(gate.flush(), gate.size());
+                    return BinaryData.fromFlux(gate.flush(), gate.size())
+                        .flatMap(uploadFull);
                 }
             })
             .next()
             // If nothing was emitted from the stream upload an empty blob.
-            .switchIfEmpty(Mono.defer(() -> uploadFull.apply(Flux.empty(), 0L)));
+            .switchIfEmpty(Mono.defer(() -> BinaryData.fromFlux(Flux.empty(), 0L).flatMap(uploadFull)));
     }
 
     /**
@@ -156,10 +168,13 @@ public class UploadUtils {
      * @param logger Logger to log errors.
      * @return The data wrapped with its md5.
      */
-    public static Mono<FluxMd5Wrapper> computeMd5(Flux<ByteBuffer> data, boolean computeMd5, ClientLogger logger) {
+    public static Mono<FluxMd5Wrapper> computeMd5(BinaryData data, boolean computeMd5, ClientLogger logger) {
+        if (!data.isReplayable()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException("data was not replayable")));
+        }
         if (computeMd5) {
             try {
-                return data.reduce(MessageDigest.getInstance("MD5"), (digest, buffer) -> {
+                return data.toFluxByteBuffer().reduce(MessageDigest.getInstance("MD5"), (digest, buffer) -> {
                     // Use MessageDigest.update(ByteBuffer) as this is able to optimize based on the type of ByteBuffer
                     // that was passed. Also, pass it a ByteBuffer.duplicate view so that the actual ByteBuffer won't
                     // be mutated.
@@ -175,15 +190,15 @@ public class UploadUtils {
     }
 
     public static class FluxMd5Wrapper {
-        private final Flux<ByteBuffer> data;
+        private final BinaryData data;
         private final byte[] md5;
 
-        FluxMd5Wrapper(Flux<ByteBuffer> data, byte[] md5) {
+        FluxMd5Wrapper(BinaryData data, byte[] md5) {
             this.data = data;
             this.md5 = CoreUtils.clone(md5);
         }
 
-        public Flux<ByteBuffer> getData() {
+        public BinaryData getData() {
             return data;
         }
 

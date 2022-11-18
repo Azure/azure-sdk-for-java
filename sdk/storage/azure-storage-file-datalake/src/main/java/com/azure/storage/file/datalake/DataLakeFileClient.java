@@ -737,10 +737,12 @@ public class DataLakeFileClient extends DataLakePathClient {
         DataLakeFileAppendOptions appendOptions, Duration timeout, Context context) {
 
         Objects.requireNonNull(data);
+        // TODO (jaschrep): we may still need this conversion for buffering that BinaryData.fromStream() won't do
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
-        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
-            fbb.subscribeOn(Schedulers.elastic()), fileOffset, length, appendOptions, context);
+        Mono<Response<Void>> response = BinaryData.fromFlux(fbb.subscribeOn(Schedulers.elastic()), length)
+            .flatMap(bdata -> dataLakeFileAsyncClient.appendWithResponse(
+                bdata, fileOffset, appendOptions, context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -786,13 +788,12 @@ public class DataLakeFileClient extends DataLakePathClient {
         Duration timeout, Context context) {
 
         Objects.requireNonNull(data);
-        Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
             .setLeaseId(leaseId)
             .setContentHash(contentMd5)
             .setFlush(null);
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
-            fluxData.subscribeOn(Schedulers.boundedElastic()), fileOffset, data.getLength(), appendOptions, context);
+            data, fileOffset, appendOptions, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -838,9 +839,8 @@ public class DataLakeFileClient extends DataLakePathClient {
         DataLakeFileAppendOptions appendOptions, Duration timeout, Context context) {
 
         Objects.requireNonNull(data);
-        Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
-            fluxData.subscribeOn(Schedulers.boundedElastic()), fileOffset, data.getLength(), appendOptions, context);
+            data, fileOffset, appendOptions, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

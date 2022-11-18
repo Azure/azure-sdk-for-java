@@ -3,19 +3,20 @@
 
 package com.azure.storage.file.share.models;
 
+import com.azure.core.util.BinaryData;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 /**
  * Extended options that may be passed when uploading a file range.
  */
 public final class ShareFileUploadRangeOptions {
-    private final Flux<ByteBuffer> dataFlux;
-    private final InputStream dataStream;
-    private final long length;
+    private final Mono<BinaryData> dataMono;
     private Long offset;
     private ShareRequestConditions requestConditions;
     private FileLastWrittenMode lastWrittenMode;
@@ -32,9 +33,7 @@ public final class ShareFileUploadRangeOptions {
     public ShareFileUploadRangeOptions(Flux<ByteBuffer> dataFlux, long length) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
-        this.dataFlux = dataFlux;
-        this.dataStream = null;
-        this.length = length;
+        this.dataMono = BinaryData.fromFlux(dataFlux, length);
     }
 
     /**
@@ -49,10 +48,31 @@ public final class ShareFileUploadRangeOptions {
     public ShareFileUploadRangeOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
         StorageImplUtils.assertInBounds("length", length, 1, Long.MAX_VALUE);
-        this.dataStream = dataStream;
-        this.length = length;
-        this.dataFlux = null;
+        this.dataMono = Mono.just(BinaryData.fromStream(dataStream, length));
     }
+
+    /**
+     * Constructs a new {@code FileParallelUploadOptions}.
+     *
+     * @param data BinaryData.
+     * @throws IllegalArgumentException if the BinaryData has no length.
+     */
+    public ShareFileUploadRangeOptions(BinaryData data) {
+        StorageImplUtils.assertNotNull("data", data);
+        if (data.getLength() == null) {
+            throw new IllegalArgumentException("ShareFileUploadRangeOptions requires a length, but the given BinaryData had none.");
+        }
+        this.dataMono = Mono.just(data);
+    }
+
+    /**
+     * Gets Mono of binary data.
+     * @return mono of data
+     */
+    public Mono<BinaryData> getDataMono() {
+        return this.dataMono;
+    }
+
 
     /**
      * Gets the data source.
@@ -60,7 +80,7 @@ public final class ShareFileUploadRangeOptions {
      * @return The data to write to the file.
      */
     public Flux<ByteBuffer> getDataFlux() {
-        return this.dataFlux;
+        return this.dataMono.flatMapMany(BinaryData::toFluxByteBuffer);
     }
 
     /**
@@ -69,7 +89,7 @@ public final class ShareFileUploadRangeOptions {
      * @return The data to write to the file.
      */
     public InputStream getDataStream() {
-        return this.dataStream;
+        return Objects.requireNonNull(this.dataMono.block()).toStream();
     }
 
     /**
@@ -79,7 +99,7 @@ public final class ShareFileUploadRangeOptions {
      * data provided in the {@link InputStream} or {@link Flux}&lt;{@link ByteBuffer}&gt;.
      */
     public long getLength() {
-        return length;
+        return Objects.requireNonNull(dataMono.block()).getLength();
     }
 
     /**

@@ -20,10 +20,7 @@ import java.util.Map;
  */
 @Fluent
 public class FileParallelUploadOptions {
-    private final Flux<ByteBuffer> dataFlux;
-    private final InputStream dataStream;
     private final BinaryData data;
-    private final Long length;
     private ParallelTransferOptions parallelTransferOptions;
     private PathHttpHeaders headers;
     private Map<String, String> metadata;
@@ -40,10 +37,7 @@ public class FileParallelUploadOptions {
      */
     public FileParallelUploadOptions(Flux<ByteBuffer> dataFlux) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
-        this.dataFlux = dataFlux;
-        this.dataStream = null;
-        this.length = null;
-        this.data = null;
+        this.data = BinaryData.wrapFlux(dataFlux, null);
     }
 
     /**
@@ -54,9 +48,6 @@ public class FileParallelUploadOptions {
     public FileParallelUploadOptions(BinaryData data) {
         StorageImplUtils.assertNotNull("data must not be null", data);
         this.data = data;
-        this.length = data.getLength();
-        this.dataFlux = null;
-        this.dataStream = null;
     }
 
     /**
@@ -93,10 +84,7 @@ public class FileParallelUploadOptions {
         if (length != null) {
             StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         }
-        this.dataStream = dataStream;
-        this.length = length;
-        this.dataFlux = null;
-        this.data = null;
+        this.data = BinaryData.fromStream(dataStream, length);
     }
 
     /**
@@ -105,7 +93,7 @@ public class FileParallelUploadOptions {
      * @return The data to write to the file.
      */
     public Flux<ByteBuffer> getDataFlux() {
-        return this.dataFlux;
+        return this.data.toFluxByteBuffer();
     }
 
     /**
@@ -114,7 +102,7 @@ public class FileParallelUploadOptions {
      * @return The data to write to the file.
      */
     public InputStream getDataStream() {
-        return this.dataStream;
+        return this.data.toStream();
     }
 
     /**
@@ -135,7 +123,7 @@ public class FileParallelUploadOptions {
      */
     @Deprecated
     public long getLength() {
-        return length;
+        return data.getLength();
     }
 
     /**
@@ -145,7 +133,7 @@ public class FileParallelUploadOptions {
      * data provided in the {@link InputStream}.
      */
     public Long getOptionalLength() {
-        return length;
+        return data.getLength();
     }
 
     /**

@@ -19,7 +19,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -57,20 +56,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.fluxError;
@@ -598,51 +592,32 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
             long fileOffset = 0;
 
-            Function<Flux<ByteBuffer>, Mono<Response<PathInfo>>> uploadInChunksFunction = (stream) ->
-                uploadInChunks(stream, fileOffset, validatedParallelTransferOptions, options.getHeaders(),
+            Function<BinaryData, Mono<Response<PathInfo>>> uploadInChunksFunction = (data) ->
+                uploadInChunks(data, fileOffset, validatedParallelTransferOptions, options.getHeaders(),
                     validatedUploadRequestConditions);
 
-            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<PathInfo>>> uploadFullMethod =
-                (stream, length) -> uploadWithResponse(stream,
-                    fileOffset, length, options.getHeaders(), validatedUploadRequestConditions,
+            Function<BinaryData, Mono<Response<PathInfo>>> uploadFullMethod =
+                (data) -> uploadWithResponse(data,
+                    fileOffset, options.getHeaders(), validatedUploadRequestConditions,
                     validatedParallelTransferOptions.getProgressListener());
-
-            BinaryData binaryData = options.getData();
-
-            // if BinaryData is present, convert it to Flux Byte Buffer
-            Flux<ByteBuffer> data = binaryData != null ? binaryData.toFluxByteBuffer() : options.getDataFlux();
-            // no specified length: use azure.core's converter
-            if (data == null && options.getOptionalLength() == null) {
-                // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
-                    validatedParallelTransferOptions.getBlockSizeLong());
-                data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
-            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
-            } else if (data == null) {
-                // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
-                    validatedParallelTransferOptions.getBlockSizeLong());
-                data = Utility.convertStreamToByteBuffer(
-                    options.getDataStream(), options.getOptionalLength(), chunkSize, false);
-            }
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
                 options.getMetadata(), validatedRequestConditions)
-                .then(UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions,
+                .then(UploadUtils.uploadFullOrChunked(options.getData(), validatedParallelTransferOptions,
                     uploadInChunksFunction, uploadFullMethod));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    private Mono<Response<PathInfo>> uploadInChunks(Flux<ByteBuffer> data, long fileOffset,
+    private Mono<Response<PathInfo>> uploadInChunks(BinaryData data, long fileOffset,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders httpHeaders,
         DataLakeRequestConditions requestConditions) {
 
         // Validation done in the constructor.
         BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
 
-        Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
+        Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data.toFluxByteBuffer(), parallelTransferOptions);
 
         ProgressListener progressListener = parallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
@@ -682,7 +657,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 if (progressReporter != null) {
                     appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
                 }
-                return appendWithResponse(bufferAggregator.asFlux(), currentOffset, currentBufferLength,
+                return appendWithResponse(bufferAggregator.asBinaryData(), currentOffset,
                     new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()), appendContexts.getContext())
                     .map(resp -> offset) /* End of file after append to pass to flush. */
                     .flux();
@@ -691,16 +666,16 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
     }
 
-    private Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
+    private Mono<Response<PathInfo>> uploadWithResponse(BinaryData data, long fileOffset,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, ProgressListener progressListener) {
         Contexts appendContexts = Contexts.empty();
         if (progressListener != null) {
             appendContexts.setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progressListener));
         }
-        return appendWithResponse(data, fileOffset, length, new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()),
+        return appendWithResponse(data, fileOffset, new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()),
             appendContexts.getContext())
-            .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders,
+            .flatMap(resp -> flushWithResponse(fileOffset + data.getLength(), false, false, httpHeaders,
                 requestConditions));
     }
 
@@ -852,92 +827,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> uploadFromFileWithResponse(String filePath, ParallelTransferOptions parallelTransferOptions,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
-        Long originalBlockSize = (parallelTransferOptions == null)
-            ? null
-            : parallelTransferOptions.getBlockSizeLong();
-
-        DataLakeRequestConditions validatedRequestConditions = requestConditions == null
-            ? new DataLakeRequestConditions() : requestConditions;
-        /* Since we are creating a file with the request conditions, everything but lease id becomes invalid
-           after creation, so e remove them for the append/flush calls. */
-        DataLakeRequestConditions validatedUploadRequestConditions = new DataLakeRequestConditions()
-            .setLeaseId(validatedRequestConditions.getLeaseId());
-
-        final ParallelTransferOptions finalParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-        long fileOffset = 0;
-
-        try {
-            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(filePath, LOGGER),
-                channel -> {
-                    try {
-                        long fileSize = channel.size();
-
-                        if (fileSize == 0) {
-                            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
-                                + "greater than 0."));
-                        }
-
-                        // By default, if the file is larger than 100 MB chunk it and append it in stages.
-                        // But, this is configurable by the user passing options with max single upload size configured.
-                        if (UploadUtils.shouldUploadInChunks(filePath,
-                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {
-                            return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
-                                .then(uploadFileChunks(fileOffset, fileSize, finalParallelTransferOptions,
-                                    originalBlockSize, headers, validatedUploadRequestConditions, channel));
-                        } else {
-                            // Otherwise, we know it can be sent in a single request reducing network overhead.
-                            return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
-                                .then(uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
-                                    validatedUploadRequestConditions,
-                                    finalParallelTransferOptions.getProgressListener()));
-                        }
-                    } catch (IOException ex) {
-                        return Mono.error(ex);
-                    }
-                },
-                channel -> UploadUtils.uploadFileCleanup(channel, LOGGER));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    private Mono<Response<PathInfo>> uploadFileChunks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
-        Long originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
-        AsynchronousFileChannel channel) {
-        // parallelTransferOptions are finalized in the calling method.
-
-        ProgressListener progressListener = parallelTransferOptions.getProgressListener();
-        ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
-            progressListener);
-
-        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
-            .flatMap(chunk -> {
-                Flux<ByteBuffer> data = FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount());
-
-                Contexts appendContexts = Contexts.empty();
-                if (progressReporter != null) {
-                    appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
-                }
-                return appendWithResponse(data, fileOffset + chunk.getOffset(), chunk.getCount(),
-                    new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()), appendContexts.getContext());
-            }, parallelTransferOptions.getMaxConcurrency())
-            .then(Mono.defer(() -> flushWithResponse(fileSize, false, false, headers, requestConditions)));
-    }
-
-    private static List<FileRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {
-        List<FileRange> ranges = new ArrayList<>();
-        if (fileSize > 100 * Constants.MB && originalBlockSize == null) {
-            blockSize = BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
-        }
-        for (long pos = 0; pos < fileSize; pos += blockSize) {
-            long count = blockSize;
-            if (pos + count > fileSize) {
-                count = fileSize - pos;
-            }
-            ranges.add(new FileRange(pos, count));
-        }
-        return ranges;
+        return uploadWithResponse(new FileParallelUploadOptions(BinaryData.fromFile(Paths.get(filePath)))
+            .setParallelTransferOptions(parallelTransferOptions)
+            .setHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions));
     }
 
     /**
@@ -967,7 +861,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> append(Flux<ByteBuffer> data, long fileOffset, long length) {
-        return appendWithResponse(data, fileOffset, length, new DataLakeFileAppendOptions(), null).flatMap(FluxUtil::toMono);
+        return BinaryData.fromFlux(data, length)
+            .flatMap(bdata -> appendWithResponse(bdata, fileOffset, new DataLakeFileAppendOptions(), null))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -995,7 +891,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> append(BinaryData data, long fileOffset) {
-        return appendWithResponse(data, fileOffset, null, null).flatMap(FluxUtil::toMono);
+        return appendWithResponse(data, fileOffset, (DataLakeFileAppendOptions) null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1037,7 +933,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .setContentHash(contentMd5)
             .setFlush(null);
         try {
-            return withContext(context -> appendWithResponse(data, fileOffset, length, appendOptions, context));
+            return withContext(context -> BinaryData.fromFlux(data, length).flatMap(bdata ->
+                appendWithResponse(bdata, fileOffset, appendOptions, context)));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1077,7 +974,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         DataLakeFileAppendOptions appendOptions) {
-        return appendWithResponse(data, fileOffset, length, appendOptions, null);
+        return BinaryData.fromFlux(data, length).flatMap(bdata ->
+            appendWithResponse(bdata, fileOffset, appendOptions, null));
     }
 
     /**
@@ -1113,14 +1011,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponse(BinaryData data, long fileOffset, byte[] contentMd5, String leaseId) {
         try {
-            Objects.requireNonNull(data);
-            Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
-            long length = data.getLength();
             DataLakeFileAppendOptions options = new DataLakeFileAppendOptions()
                 .setLeaseId(leaseId)
                 .setContentHash(contentMd5)
                 .setFlush(null);
-            return withContext(context -> appendWithResponse(fluxData, fileOffset, length, options, context));
+            return withContext(context -> appendWithResponse(data, fileOffset, options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1158,13 +1053,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponse(BinaryData data, long fileOffset, DataLakeFileAppendOptions appendOptions) {
-        Objects.requireNonNull(data);
-        Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
-        long length = data.getLength();
-        return appendWithResponse(fluxData, fileOffset, length, appendOptions, null);
+        return appendWithResponse(data, fileOffset, appendOptions, null);
     }
 
-    Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
+    Mono<Response<Void>> appendWithResponse(BinaryData data, long fileOffset,
         DataLakeFileAppendOptions appendOptions, Context context) {
         appendOptions = appendOptions == null ? new DataLakeFileAppendOptions() : appendOptions;
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(appendOptions.getLeaseId());
@@ -1172,7 +1064,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(
-            data, fileOffset, null, length, null, null, appendOptions.isFlush(), headers, leaseAccessConditions, getCpkInfo(), context)
+            data, fileOffset, null, data.getLength(), null, null, appendOptions.isFlush(), headers, leaseAccessConditions, getCpkInfo(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

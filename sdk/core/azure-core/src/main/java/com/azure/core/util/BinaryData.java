@@ -471,6 +471,35 @@ public final class BinaryData {
     }
 
     /**
+     * Wraps a flux in a binary data without any asynchronous consumption. Flux is considered not replayable.
+     *
+     * @param data Flux to wrap.
+     * @param length Length of flux, if known.
+     * @return BinaryData wrapping the flux.
+     */
+    public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length) {
+        return wrapFlux(data, length, false);
+    }
+
+    /**
+     * Wraps a flux in a binary data without any asynchronous consumption.
+     *
+     * @param data Flux to wrap.
+     * @param length Length of flux, if known.
+     * @param isReplayable Flag for flux replayability.
+     * @return BinaryData wrapping the flux.
+     */
+    public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length, boolean isReplayable) {
+        if (data == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'data' cannot be null."));
+        }
+        if (length != null && length < 0) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'length' cannot be less than 0."));
+        }
+        return new BinaryData(new FluxByteBufferContent(data, length, isReplayable));
+    }
+
+    /**
      * Creates an instance of {@link BinaryData} from the given {@link String}.
      * <p>
      * The {@link String} is converted into bytes using {@link String#getBytes(Charset)} passing
