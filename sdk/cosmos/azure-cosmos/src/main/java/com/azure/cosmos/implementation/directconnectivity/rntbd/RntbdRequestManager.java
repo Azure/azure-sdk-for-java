@@ -592,7 +592,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     }
                 });
             }
-            
+
             return;
         }
 
@@ -682,6 +682,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return record;
         });
 
+        // NOTE: please do not put the following logic inside the compute block. It may cause dead lock when a record is cancelled early
         record.whenComplete((response, error) -> {
             this.pendingRequests.remove(record.transportRequestId());
             if (pendingRequestTimeout.get() != null) {
