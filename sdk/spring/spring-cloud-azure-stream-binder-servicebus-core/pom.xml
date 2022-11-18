@@ -32,6 +32,10 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
+  <properties>
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
