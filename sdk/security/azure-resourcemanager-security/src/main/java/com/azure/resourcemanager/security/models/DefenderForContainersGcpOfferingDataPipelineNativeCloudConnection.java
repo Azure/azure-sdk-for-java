@@ -22,6 +22,10 @@ public final class DefenderForContainersGcpOfferingDataPipelineNativeCloudConnec
     @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
 
+    /** Creates an instance of DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection class. */
+    public DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection() {
+    }
+
     /**
      * Get the serviceAccountEmailAddress property: The data collection service account email address in GCP for this
      * offering.

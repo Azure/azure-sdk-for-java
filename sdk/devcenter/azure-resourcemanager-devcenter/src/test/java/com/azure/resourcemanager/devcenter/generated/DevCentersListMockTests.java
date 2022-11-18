@@ -34,8 +34,8 @@ public final class DevCentersListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"fqntcyp\"},\"identity\":{\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"wkslir\",\"tags\":{\"dfcea\":\"jxv\",\"gdyftumrtwna\":\"vlhv\",\"wkojgcyztsfmzn\":\"jslb\"},\"id\":\"aeqphchqnr\",\"name\":\"rpxeh\",\"type\":\"wrykqgai\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"pc\"},\"identity\":{\"principalId\":\"67801bd2-f6cc-44c7-aaf6-45a1cb6c77e0\",\"tenantId\":\"e107c319-9157-4034-a429-6ebc1e700273\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"njv\",\"tags\":{\"ngwfqatm\":\"xlpqekftnkhtjsy\"},\"id\":\"dhtmdvypgikd\",\"name\":\"szywkbirryu\",\"type\":\"hlhkjoqrvqqaatj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class DevCentersListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DevCenter> response = manager.devCenters().list(1169581420, Context.NONE);
+        PagedIterable<DevCenter> response = manager.devCenters().list(1472948449, Context.NONE);
 
-        Assertions.assertEquals("wkslir", response.iterator().next().location());
-        Assertions.assertEquals("jxv", response.iterator().next().tags().get("dfcea"));
+        Assertions.assertEquals("njv", response.iterator().next().location());
+        Assertions.assertEquals("xlpqekftnkhtjsy", response.iterator().next().tags().get("ngwfqatm"));
         Assertions
             .assertEquals(
                 ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());

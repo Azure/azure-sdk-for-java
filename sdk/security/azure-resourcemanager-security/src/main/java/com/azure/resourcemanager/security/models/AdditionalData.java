@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class AdditionalData {
+    /** Creates an instance of AdditionalData class. */
+    public AdditionalData() {
+    }
+
     /**
      * Validates the instance.
      *

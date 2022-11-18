@@ -31,6 +31,10 @@ public final class DefenderCspmAwsOfferingVmScannersConfiguration {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> exclusionTags;
 
+    /** Creates an instance of DefenderCspmAwsOfferingVmScannersConfiguration class. */
+    public DefenderCspmAwsOfferingVmScannersConfiguration() {
+    }
+
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
      *

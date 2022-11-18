@@ -49,17 +49,6 @@ public final class DiscoveredSecuritySolutionsImpl implements DiscoveredSecurity
         return Utils.mapPage(inner, inner1 -> new DiscoveredSecuritySolutionImpl(inner1, this.manager()));
     }
 
-    public DiscoveredSecuritySolution get(
-        String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName) {
-        DiscoveredSecuritySolutionInner inner =
-            this.serviceClient().get(resourceGroupName, ascLocation, discoveredSecuritySolutionName);
-        if (inner != null) {
-            return new DiscoveredSecuritySolutionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DiscoveredSecuritySolution> getWithResponse(
         String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName, Context context) {
         Response<DiscoveredSecuritySolutionInner> inner =
@@ -72,6 +61,17 @@ public final class DiscoveredSecuritySolutionsImpl implements DiscoveredSecurity
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DiscoveredSecuritySolutionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DiscoveredSecuritySolution get(
+        String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName) {
+        DiscoveredSecuritySolutionInner inner =
+            this.serviceClient().get(resourceGroupName, ascLocation, discoveredSecuritySolutionName);
+        if (inner != null) {
+            return new DiscoveredSecuritySolutionImpl(inner, this.manager());
         } else {
             return null;
         }

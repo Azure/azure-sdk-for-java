@@ -20,8 +20,8 @@ public final class DevCenterInnerTests {
         DevCenterInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"hxqh\"},\"identity\":{\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"czbysc\":{},\"x\":{},\"vyq\":{},\"b\":{}}},\"location\":\"rkxvdum\",\"tags\":{\"snhsjcnyejhkryh\":\"tfwvukxgaudc\"},\"id\":\"napczwlokjy\",\"name\":\"mkkvnip\",\"type\":\"oxzjnchgejspod\"}")
+                    "{\"properties\":{\"provisioningState\":\"hxqh\"},\"identity\":{\"principalId\":\"fb4e1087-9bcb-47e1-8d5d-b873dd807403\",\"tenantId\":\"7f67176e-0a3d-47d8-8774-ad0896b2486f\",\"type\":\"SystemAssigned,"
+                        + " UserAssigned\",\"userAssignedIdentities\":{\"czbysc\":{\"principalId\":\"76c49856-0337-4ab0-ae4c-c558b557f244\",\"clientId\":\"9af16236-acc5-47d5-9c6a-4c7ac9bac7a4\"},\"x\":{\"principalId\":\"fa66a68d-070c-43b3-8013-c3aa03e4e08f\",\"clientId\":\"46b281ae-bf33-4220-b6e9-8cf0afb7c39c\"},\"vyq\":{\"principalId\":\"6113c325-6f91-4f95-91d5-5c2f9c248d99\",\"clientId\":\"6235d5b1-e36a-470c-9938-f2ded07499ca\"},\"b\":{\"principalId\":\"93a596a3-a417-4c74-bca2-d27a00d765a0\",\"clientId\":\"29074bfa-b08e-4767-b00a-dbb78c9e4a88\"}}},\"location\":\"rkxvdum\",\"tags\":{\"snhsjcnyejhkryh\":\"tfwvukxgaudc\"},\"id\":\"napczwlokjy\",\"name\":\"mkkvnip\",\"type\":\"oxzjnchgejspod\"}")
                 .toObject(DevCenterInner.class);
         Assertions.assertEquals("rkxvdum", model.location());
         Assertions.assertEquals("tfwvukxgaudc", model.tags().get("snhsjcnyejhkryh"));

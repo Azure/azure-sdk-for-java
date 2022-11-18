@@ -13,7 +13,7 @@ public interface ProjectEnvironmentTypes {
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface ProjectEnvironmentTypes {
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -40,7 +40,7 @@ public interface ProjectEnvironmentTypes {
     /**
      * Gets a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -55,7 +55,7 @@ public interface ProjectEnvironmentTypes {
     /**
      * Gets a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,7 +68,7 @@ public interface ProjectEnvironmentTypes {
     /**
      * Deletes a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -83,7 +83,7 @@ public interface ProjectEnvironmentTypes {
     /**
      * Deletes a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

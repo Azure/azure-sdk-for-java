@@ -327,6 +327,7 @@
     "jacoco",
     "javadoc",
     "javadocs",
+    "Jdbc",
     "JSESSIONID",
     "junitxml",
     "jtoken",

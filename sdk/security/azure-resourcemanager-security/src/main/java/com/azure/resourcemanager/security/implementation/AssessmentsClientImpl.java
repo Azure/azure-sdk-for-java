@@ -60,7 +60,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAssess")
-    private interface AssessmentsService {
+    public interface AssessmentsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Security/assessments")
         @ExpectedResponses({200})
@@ -342,24 +342,6 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      *
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param expand OData expand. Optional.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security assessment on your scanned resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SecurityAssessmentResponseInner> getAsync(
-        String resourceId, String assessmentName, ExpandEnum expand) {
-        return getWithResponseAsync(resourceId, assessmentName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a security assessment on your scanned resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -370,22 +352,6 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         final ExpandEnum expand = null;
         return getWithResponseAsync(resourceId, assessmentName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a security assessment on your scanned resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security assessment on your scanned resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityAssessmentResponseInner get(String resourceId, String assessmentName) {
-        final ExpandEnum expand = null;
-        return getAsync(resourceId, assessmentName, expand).block();
     }
 
     /**
@@ -404,6 +370,22 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     public Response<SecurityAssessmentResponseInner> getWithResponse(
         String resourceId, String assessmentName, ExpandEnum expand, Context context) {
         return getWithResponseAsync(resourceId, assessmentName, expand, context).block();
+    }
+
+    /**
+     * Get a security assessment on your scanned resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a security assessment on your scanned resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityAssessmentResponseInner get(String resourceId, String assessmentName) {
+        final ExpandEnum expand = null;
+        return getWithResponse(resourceId, assessmentName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -524,24 +506,6 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assessment Calculated assessment on a pre-defined assessment metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessment on a resource - response format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityAssessmentResponseInner createOrUpdate(
-        String resourceId, String assessmentName, SecurityAssessment assessment) {
-        return createOrUpdateAsync(resourceId, assessmentName, assessment).block();
-    }
-
-    /**
-     * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
-     * predefined with the same name before inserting the assessment result.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assessment Calculated assessment on a pre-defined assessment metadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -552,6 +516,24 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     public Response<SecurityAssessmentResponseInner> createOrUpdateWithResponse(
         String resourceId, String assessmentName, SecurityAssessment assessment, Context context) {
         return createOrUpdateWithResponseAsync(resourceId, assessmentName, assessment, context).block();
+    }
+
+    /**
+     * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
+     * predefined with the same name before inserting the assessment result.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param assessment Calculated assessment on a pre-defined assessment metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security assessment on a resource - response format.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityAssessmentResponseInner createOrUpdate(
+        String resourceId, String assessmentName, SecurityAssessment assessment) {
+        return createOrUpdateWithResponse(resourceId, assessmentName, assessment, Context.NONE).getValue();
     }
 
     /**
@@ -642,21 +624,6 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      *
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceId, String assessmentName) {
-        deleteAsync(resourceId, assessmentName).block();
-    }
-
-    /**
-     * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
-     * predefined with the same name before inserting the assessment result.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -666,6 +633,21 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceId, String assessmentName, Context context) {
         return deleteWithResponseAsync(resourceId, assessmentName, context).block();
+    }
+
+    /**
+     * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
+     * predefined with the same name before inserting the assessment result.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceId, String assessmentName) {
+        deleteWithResponse(resourceId, assessmentName, Context.NONE);
     }
 
     /**

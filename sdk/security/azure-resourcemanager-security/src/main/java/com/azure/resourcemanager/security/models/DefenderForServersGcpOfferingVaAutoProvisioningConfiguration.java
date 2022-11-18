@@ -16,6 +16,10 @@ public final class DefenderForServersGcpOfferingVaAutoProvisioningConfiguration 
     @JsonProperty(value = "type")
     private Type type;
 
+    /** Creates an instance of DefenderForServersGcpOfferingVaAutoProvisioningConfiguration class. */
+    public DefenderForServersGcpOfferingVaAutoProvisioningConfiguration() {
+    }
+
     /**
      * Get the type property: The Vulnerability Assessment solution to be provisioned. Can be either 'TVM' or 'Qualys'.
      *

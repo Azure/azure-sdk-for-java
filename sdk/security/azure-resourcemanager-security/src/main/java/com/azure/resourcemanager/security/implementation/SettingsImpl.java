@@ -37,15 +37,6 @@ public final class SettingsImpl implements Settings {
         return Utils.mapPage(inner, inner1 -> new SettingImpl(inner1, this.manager()));
     }
 
-    public Setting get(SettingName settingName) {
-        SettingInner inner = this.serviceClient().get(settingName);
-        if (inner != null) {
-            return new SettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Setting> getWithResponse(SettingName settingName, Context context) {
         Response<SettingInner> inner = this.serviceClient().getWithResponse(settingName, context);
         if (inner != null) {
@@ -59,8 +50,8 @@ public final class SettingsImpl implements Settings {
         }
     }
 
-    public Setting update(SettingName settingName, SettingInner setting) {
-        SettingInner inner = this.serviceClient().update(settingName, setting);
+    public Setting get(SettingName settingName) {
+        SettingInner inner = this.serviceClient().get(settingName);
         if (inner != null) {
             return new SettingImpl(inner, this.manager());
         } else {
@@ -76,6 +67,15 @@ public final class SettingsImpl implements Settings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SettingImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Setting update(SettingName settingName, SettingInner setting) {
+        SettingInner inner = this.serviceClient().update(settingName, setting);
+        if (inner != null) {
+            return new SettingImpl(inner, this.manager());
         } else {
             return null;
         }

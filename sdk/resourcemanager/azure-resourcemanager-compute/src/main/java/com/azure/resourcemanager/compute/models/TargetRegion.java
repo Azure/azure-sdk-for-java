@@ -36,6 +36,16 @@ public final class TargetRegion {
     @JsonProperty(value = "encryption")
     private EncryptionImages encryption;
 
+    /*
+     * Contains the flag setting to hide an image when users specify version='latest'
+     */
+    @JsonProperty(value = "excludeFromLatest")
+    private Boolean excludeFromLatest;
+
+    /** Creates an instance of TargetRegion class. */
+    public TargetRegion() {
+    }
+
     /**
      * Get the name property: The name of the region.
      *
@@ -119,6 +129,28 @@ public final class TargetRegion {
      */
     public TargetRegion withEncryption(EncryptionImages encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the excludeFromLatest property: Contains the flag setting to hide an image when users specify
+     * version='latest'.
+     *
+     * @return the excludeFromLatest value.
+     */
+    public Boolean excludeFromLatest() {
+        return this.excludeFromLatest;
+    }
+
+    /**
+     * Set the excludeFromLatest property: Contains the flag setting to hide an image when users specify
+     * version='latest'.
+     *
+     * @param excludeFromLatest the excludeFromLatest value to set.
+     * @return the TargetRegion object itself.
+     */
+    public TargetRegion withExcludeFromLatest(Boolean excludeFromLatest) {
+        this.excludeFromLatest = excludeFromLatest;
         return this;
     }
 

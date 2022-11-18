@@ -17,6 +17,10 @@ public final class ApplicationProfile {
     @JsonProperty(value = "galleryApplications")
     private List<VMGalleryApplication> galleryApplications;
 
+    /** Creates an instance of ApplicationProfile class. */
+    public ApplicationProfile() {
+    }
+
     /**
      * Get the galleryApplications property: Specifies the gallery applications that should be made available to the
      * VM/VMSS.
