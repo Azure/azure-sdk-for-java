@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed claim ownership receive `Status Code 412 (ConditionNotMet)` response even there is only one active event processor. ([#32206](https://github.com/Azure/azure-sdk-for-java/issues/32206))
+
 ### Other Changes
 
 ## 5.15.0 (2022-11-16)
