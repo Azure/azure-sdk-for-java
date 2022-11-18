@@ -25,7 +25,7 @@ import java.util.stream.StreamSupport;
 public class EventSenderBuffered extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventSenderBuffered.class);
 
-    private final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     @Value("${SEND_TIMES:1000000}")
     private int sendTimes;
@@ -64,7 +64,7 @@ public class EventSenderBuffered extends EventHubsScenario {
             .buildAsyncClient();
 
         final byte[] payload = new byte[payloadSize];
-        random.nextBytes(payload);
+        RANDOM.nextBytes(payload);
 
         Flux.range(0, sendTimes).concatMap(i -> {
             List<EventData> eventDataList = new ArrayList<>();

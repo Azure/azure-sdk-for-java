@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 @Component("EventSender")
 public class EventSender extends EventHubsScenario {
 
-    private final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     @Value("${SEND_TIMES:1000000}")
     private int sendTimes;
@@ -38,7 +38,7 @@ public class EventSender extends EventHubsScenario {
         final String eventHub = options.getEventhubsEventHubName();
 
         final byte[] payload = new byte[payloadSize];
-        random.nextBytes(payload);
+        RANDOM.nextBytes(payload);
 
         EventHubProducerAsyncClient client = new EventHubClientBuilder()
             .connectionString(eventHubConnStr, eventHub)
