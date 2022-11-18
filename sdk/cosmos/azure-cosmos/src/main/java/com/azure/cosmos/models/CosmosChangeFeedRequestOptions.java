@@ -382,7 +382,7 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.mode = ChangeFeedMode.FULL_FIDELITY;
-        this.customOptions.put(
+        this.setHeader(
             HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
         return this;
@@ -424,7 +424,7 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.mode = ChangeFeedMode.FULL_FIDELITY;
-        this.customOptions.put(
+        this.setHeader(
             HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
         return this;
