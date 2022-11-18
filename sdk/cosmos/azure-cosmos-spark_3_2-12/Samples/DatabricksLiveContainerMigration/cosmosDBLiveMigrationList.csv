@@ -1,0 +1,5 @@
+﻿cosmosEndpoint,cosmosMasterKey,cosmosSourceDatabaseName,cosmosSourceContainerName,cosmosSourceContainerThroughputControl,cosmosTargetDatabaseName,cosmosTargetContainerName,cosmosRegion,cosmosTargetContainerPartitionKey,cosmosTargetContainerProvisionedThroughput
+endpoint,masterkey,databaseName,containerName,0.95,databaseName,containerName,region,partitionKey,autoScaleMaxThroughput = '1000'
+endpoint,masterkey,databaseName,containerName,0.95,databaseName,containerName,region,partitionKey,manualThroughput = '1000'
+endpoint,masterkey,databaseName,containerName,0.95,databaseName,containerName,region,partitionKey,sharedDBmanualThroughput = '1000'
+endpoint,masterkey,databaseName,containerName,0.95,databaseName,containerName,region,partitionKey,saredDBautoScaleMaxThroughput = '1000'
