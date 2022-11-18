@@ -177,6 +177,11 @@ public class BinaryDataTest {
     }
 
     @Test
+    public void wrapFromNullFlux() {
+        assertThrows(NullPointerException.class, () -> BinaryData.wrapFlux(null, null));
+    }
+
+    @Test
     public void createFromStream() throws IOException {
         // Arrange
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
@@ -287,6 +292,34 @@ public class BinaryDataTest {
         );
     }
 
+    @Test
+    public void wrapFluxLazy() {
+        final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
+        final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
+        final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
+
+        // Act & Assert
+        Arrays.asList((long) expected.length, null).forEach(
+            providedLength -> {
+                BinaryData actual = BinaryData.wrapFlux(dataFlux, providedLength);
+                assertArrayEquals(expected, actual.toBytes());
+                // toBytes buffers and reveals length
+                assertEquals(expected.length, actual.getLength());
+
+                actual = BinaryData.wrapFlux(dataFlux, providedLength);
+                // Assert that length isn't computed eagerly.
+                assertEquals(providedLength, actual.getLength());
+
+                // Verify that data isn't buffered
+                StepVerifier.create(BinaryData.wrapFlux(dataFlux, providedLength, false)
+                        .toFluxByteBuffer()
+                        .count())
+                    .assertNext(actualCount -> assertEquals(2, actualCount))
+                    .verifyComplete();
+            }
+        );
+    }
+
     @ParameterizedTest
     @MethodSource("createFromFluxValidationsSupplier")
     public void createFromFluxValidations(Flux<ByteBuffer> flux, Long length, Boolean buffer,
@@ -303,6 +336,19 @@ public class BinaryDataTest {
             StepVerifier.create(BinaryData.fromFlux(flux, length, buffer))
                 .expectError(expectedException)
                 .verify();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("createFromFluxValidationsSupplier")
+    public void wrapFluxValidations(Flux<ByteBuffer> flux, Long length, Boolean buffer,
+        Class<? extends Throwable> expectedException) {
+        if (length == null && buffer == null) {
+            assertThrows(expectedException, () -> BinaryData.wrapFlux(flux, null));
+        } else if (buffer == null) {
+            assertThrows(expectedException, () -> BinaryData.wrapFlux(flux, length));
+        } else {
+            assertThrows(expectedException, () -> BinaryData.wrapFlux(flux, length, buffer));
         }
     }
 
