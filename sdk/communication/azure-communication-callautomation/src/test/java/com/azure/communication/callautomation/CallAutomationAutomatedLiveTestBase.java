@@ -110,6 +110,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // receive message from dispatcher
         ServiceBusReceivedMessage message = context.getMessage();
         String body = message.getBody().toString();
+        System.out.println(body);
 
         // parse the message
         assert !body.isEmpty();
