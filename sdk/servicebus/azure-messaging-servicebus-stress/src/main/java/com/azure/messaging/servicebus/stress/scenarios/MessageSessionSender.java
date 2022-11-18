@@ -25,6 +25,8 @@ import java.util.stream.IntStream;
 public class MessageSessionSender extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageSessionSender.class);
 
+    private static final Random RANDOM = new Random();
+
     @Value("${SEND_TIMES:100000}")
     private int sendTimes;
 
@@ -36,8 +38,6 @@ public class MessageSessionSender extends ServiceBusScenario {
 
     @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
     private int payloadSize;
-
-    private final Random random = new Random();
 
     @Override
     public void run() {
@@ -60,7 +60,7 @@ public class MessageSessionSender extends ServiceBusScenario {
             .buildClient();
 
         final byte[] payload = new byte[payloadSize];
-        random.nextBytes(payload);
+        RANDOM.nextBytes(payload);
 
         for (long i = 0; i < sendTimes; i++) {
             for (int j = 0; j < sessionsToSend; j++) {

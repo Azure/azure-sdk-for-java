@@ -21,6 +21,9 @@ import java.util.stream.IntStream;
  */
 @Component("MessageSenderAsync")
 public class MessageSenderAsync extends ServiceBusScenario {
+
+    private static final Random RANDOM = new Random();
+
     @Value("${SEND_TIMES:100000}")
     private int sendTimes;
 
@@ -29,8 +32,6 @@ public class MessageSenderAsync extends ServiceBusScenario {
 
     @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
     private int payloadSize;
-
-    private final Random random = new Random();
 
     @Override
     public void run() {
@@ -52,7 +53,7 @@ public class MessageSenderAsync extends ServiceBusScenario {
             .buildAsyncClient();
 
         final byte[] payload = new byte[payloadSize];
-        random.nextBytes(payload);
+        RANDOM.nextBytes(payload);
 
         Flux.range(0, sendTimes).concatMap(i -> {
             List<ServiceBusMessage> eventDataList = new ArrayList<>();
