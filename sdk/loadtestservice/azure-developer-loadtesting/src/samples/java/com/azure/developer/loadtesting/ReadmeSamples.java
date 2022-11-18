@@ -34,7 +34,7 @@ public final class ReadmeSamples {
         RequestOptions reqOpts = new RequestOptions()
             .addQueryParam("orderBy", "lastModifiedDateTime")
             .addQueryParam("maxPageSize", "10");
-        adminClient.listLoadTests(reqOpts);
+        adminClient.listTests(reqOpts);
 
         reqOpts = new RequestOptions()
             .addQueryParam("orderBy", "lastModifiedDateTime")
@@ -92,7 +92,7 @@ public final class ReadmeSamples {
         BinaryData test = BinaryData.fromObject(testMap);
 
         // receive response with BinaryData content
-        Response<BinaryData> testOutResponse = adminClient.createOrUpdateLoadTestWithResponse("test12345", test, null);
+        Response<BinaryData> testOutResponse = adminClient.createOrUpdateTestWithResponse("test12345", test, null);
         System.out.println(testOutResponse.getValue().toString());
         // END: java-readme-sample-createTest
     }
@@ -108,7 +108,7 @@ public final class ReadmeSamples {
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
 
         // receive response with BinaryData content
-        Response<BinaryData> fileUrlOut = adminClient.uploadFileWithResponse("test12345", "sample-file.jmx", fileData, null);
+        Response<BinaryData> fileUrlOut = adminClient.uploadTestFileWithResponse("test12345", "sample-file.jmx", fileData, null);
         System.out.println(fileUrlOut.getValue().toString());
         // END: java-readme-sample-uploadTestFile
     }

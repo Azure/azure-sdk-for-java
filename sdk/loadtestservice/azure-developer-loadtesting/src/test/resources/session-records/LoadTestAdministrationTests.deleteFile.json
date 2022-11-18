@@ -1,21 +1,40 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/sample-JMX-file.jmx?api-version=2022-11-01",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a7189b68-9783-4582-97a6-895d6cfc1ddb"
+      "x-ms-client-request-id" : "ecccb48a-7c92-4cdc-b5ec-236bb16e9d48"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "b1e6c44e-9ac8-4aaa-bfed-1e3e2f3c6a56",
+      "mise-correlation-id" : "1d8f923b-e59a-407f-bdd2-02344642a8d8",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Thu, 17 Nov 2022 07:04:43 GMT",
-      "x-ms-correlation-request-id" : "9e8a0e5b-8d25-423f-a861-59436e352ffe"
+      "Date" : "Fri, 18 Nov 2022 06:29:38 GMT",
+      "x-ms-correlation-request-id" : "5f335b72-0afc-41ce-a709-ce4f050317ba"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/sample-JMX-file.jmx?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c9163e30-16ed-4a69-8c9f-5187b08f5395"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "651a218d-be0d-442f-9123-c8ba342facf0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 18 Nov 2022 06:29:39 GMT",
+      "x-ms-correlation-request-id" : "bf54f781-2d39-4383-8fea-0aa93b77fb63"
     },
     "Exception" : null
   } ],

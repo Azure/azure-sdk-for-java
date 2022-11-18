@@ -41,7 +41,7 @@
     <test.dir>src/test</test.dir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.80</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.40</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
   </properties>
   <dependencies>

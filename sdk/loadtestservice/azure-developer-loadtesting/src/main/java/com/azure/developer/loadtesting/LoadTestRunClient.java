@@ -33,37 +33,6 @@ public final class LoadTestRunClient {
     }
 
     /**
-     * Get test run file by file name.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     filename: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param fileName Test run file name with file extension.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run file by file name along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileWithResponse(String testRunId, String fileName, RequestOptions requestOptions) {
-        return this.client.getFileWithResponse(testRunId, fileName, requestOptions).block();
-    }
-
-    /**
      * Lists the metric namespaces for a load test run.
      *
      * <p><strong>Response Body Schema</strong>
@@ -1159,5 +1128,37 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
         return this.client.stopTestRunWithResponse(testRunId, requestOptions).block();
+    }
+
+    /**
+     * Get test run file by file name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *     expireDateTime: OffsetDateTime (Optional)
+     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param fileName Test run file name with file extension.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test run file by file name along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getTestRunFileWithResponse(
+            String testRunId, String fileName, RequestOptions requestOptions) {
+        return this.client.getTestRunFileWithResponse(testRunId, fileName, requestOptions).block();
     }
 }

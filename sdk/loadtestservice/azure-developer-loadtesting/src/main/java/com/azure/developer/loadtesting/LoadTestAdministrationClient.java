@@ -36,106 +36,6 @@ public final class LoadTestAdministrationClient {
     }
 
     /**
-     * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
-     * given test will be overwritten. File should be provided in the request body as application/octet-stream.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>fileType</td><td>String</td><td>No</td><td>File type. Allowed values: "JMX_FILE", "USER_PROPERTIES", "ADDITIONAL_ARTIFACTS".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * BinaryData
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     filename: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param fileName Unique name for test file with file extension like : App.jmx.
-     * @param body The file content as application/octet-stream.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return file info along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadFileWithResponse(
-            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
-        return this.client.uploadFileWithResponse(testId, fileName, body, requestOptions).block();
-    }
-
-    /**
-     * Get test file by the file name.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     filename: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param fileName File name with file extension like app.jmx.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test file by the file name along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        return this.client.getFileWithResponse(testId, fileName, requestOptions).block();
-    }
-
-    /**
-     * Delete file by the file name for a test.
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param fileName File name with file extension like app.jmx.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        return this.client.deleteFileWithResponse(testId, fileName, requestOptions).block();
-    }
-
-    /**
      * Associate an app component (collection of azure resources) to a test.
      *
      * <p><strong>Request Body Schema</strong>
@@ -353,19 +253,69 @@ public final class LoadTestAdministrationClient {
     }
 
     /**
-     * Gets the validation status of the test script JMX file for a test.
+     * Uploads file and polls the validation status of the uploaded file.
      *
      * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
      * @param refreshTime The time in seconds to refresh the polling operation.
+     * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
+     *     it.
      * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
      * @return A {@link SyncPoller} to poll on and retrieve the validation
      *     status(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ValidationStatus, BinaryData> beginGetValidationStatus(String testId, int refreshTime) {
+    public SyncPoller<ValidationStatus, BinaryData> beginUploadAndValidate(
+            String testId, String fileName, BinaryData body, int refreshTime, RequestOptions fileUploadRequestOptions) {
         PollerFlux<ValidationStatus, BinaryData> asyncPoller =
-                this.client.beginGetValidationStatus(testId, refreshTime);
+                this.client.beginUploadAndValidate(testId, fileName, body, refreshTime, fileUploadRequestOptions);
         return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Get all test files.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             filename: String (Optional)
+     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *             expireDateTime: OffsetDateTime (Optional)
+     *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all test files as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listTestFiles(String testId, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listTestFiles(testId, requestOptions));
     }
 
     /**
@@ -525,9 +475,9 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateLoadTestWithResponse(
+    public Response<BinaryData> createOrUpdateTestWithResponse(
             String testId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.createOrUpdateLoadTestWithResponse(testId, body, requestOptions).block();
+        return this.client.createOrUpdateTestWithResponse(testId, body, requestOptions).block();
     }
 
     /**
@@ -544,8 +494,8 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteLoadTestWithResponse(String testId, RequestOptions requestOptions) {
-        return this.client.deleteLoadTestWithResponse(testId, requestOptions).block();
+    public Response<Void> deleteTestWithResponse(String testId, RequestOptions requestOptions) {
+        return this.client.deleteTestWithResponse(testId, requestOptions).block();
     }
 
     /**
@@ -633,8 +583,8 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLoadTestWithResponse(String testId, RequestOptions requestOptions) {
-        return this.client.getLoadTestWithResponse(testId, requestOptions).block();
+    public Response<BinaryData> getTestWithResponse(String testId, RequestOptions requestOptions) {
+        return this.client.getTestWithResponse(testId, requestOptions).block();
     }
 
     /**
@@ -743,52 +693,107 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLoadTests(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listLoadTests(requestOptions));
+    public PagedIterable<BinaryData> listTests(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listTests(requestOptions));
     }
 
     /**
-     * Get all test files.
+     * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
+     * given test will be overwritten. File should be provided in the request body as application/octet-stream.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
+     *     <tr><td>fileType</td><td>String</td><td>No</td><td>File type. Allowed values: "JMX_FILE", "USER_PROPERTIES", "ADDITIONAL_ARTIFACTS".</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             url: String (Optional)
-     *             filename: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *             expireDateTime: OffsetDateTime (Optional)
-     *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     url: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *     expireDateTime: OffsetDateTime (Optional)
+     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      * }
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      *     hyphen characters.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all test files as paginated response with {@link PagedIterable}.
+     * @return file info along with {@link Response}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTestFiles(String testId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTestFiles(testId, requestOptions));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> uploadTestFileWithResponse(
+            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
+        return this.client.uploadTestFileWithResponse(testId, fileName, body, requestOptions).block();
+    }
+
+    /**
+     * Get test file by the file name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *     expireDateTime: OffsetDateTime (Optional)
+     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param fileName File name with file extension like app.jmx.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test file by the file name along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
+        return this.client.getTestFileWithResponse(testId, fileName, requestOptions).block();
+    }
+
+    /**
+     * Delete file by the file name for a test.
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param fileName File name with file extension like app.jmx.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
+        return this.client.deleteTestFileWithResponse(testId, fileName, requestOptions).block();
     }
 }

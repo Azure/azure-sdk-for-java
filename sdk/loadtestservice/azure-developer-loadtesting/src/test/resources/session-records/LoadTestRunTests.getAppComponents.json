@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012/app-components?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f49be261-5e0a-4729-91b2-09c1f78c5947"
+    },
+    "Response" : {
+      "content-length" : "682",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "3ae8d186-c744-4fdb-8899-862778bec45d",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"components\":{\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\":{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\",\"resourceName\":\"appcomponentresource\",\"resourceType\":\"microsoft.insights/components\",\"displayName\":\"Performance_LoadTest_Insights\",\"resourceGroup\":\"samplerg\",\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"kind\":\"web\"}},\"testRunId\":\"33333333-1234-1234-1234-123456789012\",\"createdDateTime\":\"2022-11-18T06:29:44.162Z\",\"lastModifiedDateTime\":\"2022-11-18T06:29:44.162Z\"}",
+      "Date" : "Fri, 18 Nov 2022 06:29:48 GMT",
+      "x-ms-correlation-request-id" : "5bc2fd3d-9ab9-45bb-ad36-b4e5669407ca",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

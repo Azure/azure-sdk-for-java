@@ -137,7 +137,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getFile(
+        Mono<Response<BinaryData>> getTestRunFile(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @PathParam("fileName") String fileName,
@@ -1197,12 +1197,12 @@ public final class LoadTestRunsImpl {
      * @return test run file by file name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getFileWithResponseAsync(
+    public Mono<Response<BinaryData>> getTestRunFileWithResponseAsync(
             String testRunId, String fileName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getFile(
+                        service.getTestRunFile(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 fileName,
@@ -1238,8 +1238,9 @@ public final class LoadTestRunsImpl {
      * @return test run file by file name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileWithResponse(String testRunId, String fileName, RequestOptions requestOptions) {
-        return getFileWithResponseAsync(testRunId, fileName, requestOptions).block();
+    public Response<BinaryData> getTestRunFileWithResponse(
+            String testRunId, String fileName, RequestOptions requestOptions) {
+        return getTestRunFileWithResponseAsync(testRunId, fileName, requestOptions).block();
     }
 
     /**

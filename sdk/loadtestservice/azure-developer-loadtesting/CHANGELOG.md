@@ -1,23 +1,37 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.0.0 (2023-01-15)
 
-- First stable release of Azure Load Testing client library for Java with single top-level `LoadTestingClientBuilder` which can build `LoadTestAdministration` and `LoadTestRun` clients.
+- First stable release of Azure Load Testing client library for Java.
 
 ### Features Added
 
-- Metric namespaces, metric dimensions and metric values
+- Added sync and async versions of `LoadTestRunClient.listMetricNamespacesWithResponse`
+- Added sync and async versions of `LoadTestRunClient.listMetricDefinitionsWithResponse`
+- Added sync and async versions of `LoadTestRunClient.getMetricsWithResponse`
+- Added sync and async versions of `LoadTestRunClient.getMetricDimensionValues`
+- Added sync and async versions of `LoadTestRunClient.createOrUpdateAppComponentWithResponse`
+- Added sync and async versions of `LoadTestRunClient.getAppComponentsWithResponse`
+- Added sync and async versions of `LoadTestRunClient.createOrUpdateServerMetricsConfigWithResponse`
+- Added sync and async versions of `LoadTestRunClient.getServerMetricsConfigWithResponse`
+- Added sync and async versions of `LoadTestAdministrationClient.beginUploadAndValidate` Long-Running operation
 
 ### Breaking Changes
 
 - There is a single builder which builds `LoadTestAdministration` and `LoadTestRun` clients, rather than a client which provides them via accessor methods previously
-- Significant changes in metrics API, introduction of metric namespaces and metric dimensions
+- Added metric namespaces and metric dimensions
 - File upload now uses `application/octet-stream` instead of `multipart/form-data`
 - File upload now uses file name as primary identifier instead of `fileId`
-
-### Bugs Fixed
+- Removed sync and async versions of `LoadTestAdministrationClient.ListSupportedResourceType`
+- Removed sync and async versions of `LoadTestAdministrationClient.DeleteAppComponent` and `LoadTestAdministrationClient.DeleteAppComponentByName`
+- Removed sync and async versions of `LoadTestAdministrationClient.DeleteServerMetrics` and `LoadTestAdministrationClient.DeleteServerMetricsByName`
+- Removed sync and async versions of `TestRunClient.GetTestRunClientMetrics` and `TestRunClient.GetTestRunClientMetricsFilters`
+- Removed sync and async versions of `TestRunClient.GetServerDefaultMetrics`
 
 ### Other Changes
+
+- README updated
+- Added samples and test cases
 
 ## 1.0.0-beta.1 (2022-10-22)
 

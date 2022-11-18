@@ -58,7 +58,7 @@ public final class LoadTestingClientBuilder
     @Generated private static final String SDK_VERSION = "version";
 
     @Generated
-    private static final String[] DEFAULT_SCOPES = new String[] {"https://cnt-prod.loadtesting.azure.com/.default"};
+    private static final String[] DEFAULT_SCOPES = new String[] {"https://loadtest.azure-dev.com/.default"}; // {"https://cnt-prod.loadtesting.azure.com/.default"};
 
     @Generated
     private final Map<String, String> properties = CoreUtils.getProperties("azure-developer-loadtesting.properties");
