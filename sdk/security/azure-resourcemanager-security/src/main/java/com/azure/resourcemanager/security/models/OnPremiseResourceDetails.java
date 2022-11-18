@@ -45,6 +45,10 @@ public class OnPremiseResourceDetails extends ResourceDetails {
     @JsonProperty(value = "machineName", required = true)
     private String machineName;
 
+    /** Creates an instance of OnPremiseResourceDetails class. */
+    public OnPremiseResourceDetails() {
+    }
+
     /**
      * Get the workspaceId property: Azure resource Id of the workspace the machine is attached to.
      *

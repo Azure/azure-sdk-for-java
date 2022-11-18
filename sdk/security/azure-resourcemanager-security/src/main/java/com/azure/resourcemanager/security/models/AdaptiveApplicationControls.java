@@ -12,15 +12,6 @@ public interface AdaptiveApplicationControls {
     /**
      * Gets a list of application control machine groups for the subscription.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of application control machine groups for the subscription.
-     */
-    AdaptiveApplicationControlGroups list();
-
-    /**
-     * Gets a list of application control machine groups for the subscription.
-     *
      * @param includePathRecommendations Include the policy rules.
      * @param summary Return output in a summarized form.
      * @param context The context to associate with this operation.
@@ -33,17 +24,13 @@ public interface AdaptiveApplicationControls {
         Boolean includePathRecommendations, Boolean summary, Context context);
 
     /**
-     * Gets an application control VM/server group.
+     * Gets a list of application control machine groups for the subscription.
      *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param groupName Name of an application control machine group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group.
+     * @return a list of application control machine groups for the subscription.
      */
-    AdaptiveApplicationControlGroup get(String ascLocation, String groupName);
+    AdaptiveApplicationControlGroups list();
 
     /**
      * Gets an application control VM/server group.
@@ -60,7 +47,7 @@ public interface AdaptiveApplicationControls {
     Response<AdaptiveApplicationControlGroup> getWithResponse(String ascLocation, String groupName, Context context);
 
     /**
-     * Delete an application control machine group.
+     * Gets an application control VM/server group.
      *
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
@@ -68,8 +55,9 @@ public interface AdaptiveApplicationControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application control VM/server group.
      */
-    void deleteByResourceGroup(String ascLocation, String groupName);
+    AdaptiveApplicationControlGroup get(String ascLocation, String groupName);
 
     /**
      * Delete an application control machine group.
@@ -83,7 +71,19 @@ public interface AdaptiveApplicationControls {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String ascLocation, String groupName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String ascLocation, String groupName, Context context);
+
+    /**
+     * Delete an application control machine group.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param groupName Name of an application control machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String ascLocation, String groupName);
 
     /**
      * Gets an application control VM/server group.

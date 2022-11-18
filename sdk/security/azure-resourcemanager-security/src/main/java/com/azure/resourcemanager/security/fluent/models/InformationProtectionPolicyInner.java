@@ -21,6 +21,10 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private InformationProtectionPolicyProperties innerProperties;
 
+    /** Creates an instance of InformationProtectionPolicyInner class. */
+    public InformationProtectionPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Information protection policy data.
      *

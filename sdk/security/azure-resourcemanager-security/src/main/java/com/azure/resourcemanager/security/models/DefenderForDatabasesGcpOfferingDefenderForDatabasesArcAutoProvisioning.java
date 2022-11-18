@@ -22,6 +22,10 @@ public final class DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoPro
     @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
 
+    /** Creates an instance of DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning class. */
+    public DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning() {
+    }
+
     /**
      * Get the serviceAccountEmailAddress property: The service account email address in GCP for this offering.
      *

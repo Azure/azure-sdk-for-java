@@ -22,6 +22,10 @@ public final class AutomationValidationStatusInner {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of AutomationValidationStatusInner class. */
+    public AutomationValidationStatusInner() {
+    }
+
     /**
      * Get the isValid property: Indicates whether the model is valid or not.
      *
