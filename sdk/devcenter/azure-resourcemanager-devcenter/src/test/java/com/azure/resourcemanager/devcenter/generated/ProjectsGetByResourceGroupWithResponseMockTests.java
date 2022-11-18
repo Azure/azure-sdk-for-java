@@ -9,13 +9,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
-import com.azure.resourcemanager.devcenter.models.DomainJoinType;
-import com.azure.resourcemanager.devcenter.models.NetworkConnection;
+import com.azure.resourcemanager.devcenter.models.Project;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -26,15 +24,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class NetworkConnectionsListByResourceGroupMockTests {
+public final class ProjectsGetByResourceGroupWithResponseMockTests {
     @Test
-    public void testListByResourceGroup() throws Exception {
+    public void testGetByResourceGroupWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"pdvjdhttzaefedx\",\"healthCheckStatus\":\"Failed\",\"networkingResourceGroupName\":\"rphkmcrjdqnsdfz\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"tg\",\"domainName\":\"lkdghr\",\"organizationUnit\":\"uutlwxezwzhok\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"location\":\"eafidltugsresm\",\"tags\":{\"rhptilluc\":\"jhoiftxfkfweg\",\"cwsldri\":\"iqtgdqoh\",\"bphbqzmizakakank\":\"etpwbralll\",\"n\":\"p\"},\"id\":\"zhajoylhjlmuo\",\"name\":\"xprimrsop\",\"type\":\"eecjmeis\"}]}";
+            "{\"properties\":{\"provisioningState\":\"tqmieox\",\"devCenterId\":\"ggufhyaomtb\",\"description\":\"havgrvk\"},\"location\":\"ovjzhpjbibgjmfx\",\"tags\":{\"xnbkfezzxscyhwzd\":\"fcluyov\",\"omvzzbtd\":\"irujbz\",\"yujviylwdshfssn\":\"qvpn\",\"rymsgaojfmw\":\"bgye\"},\"id\":\"cotmr\",\"name\":\"hirctymoxoftpipi\",\"type\":\"yczuhxacpq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,17 +60,12 @@ public final class NetworkConnectionsListByResourceGroupMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<NetworkConnection> response =
-            manager.networkConnections().listByResourceGroup("nwm", 729391291, Context.NONE);
+        Project response =
+            manager.projects().getByResourceGroupWithResponse("ejnt", "sewgioilqukr", Context.NONE).getValue();
 
-        Assertions.assertEquals("eafidltugsresm", response.iterator().next().location());
-        Assertions.assertEquals("jhoiftxfkfweg", response.iterator().next().tags().get("rhptilluc"));
-        Assertions.assertEquals("rphkmcrjdqnsdfz", response.iterator().next().networkingResourceGroupName());
-        Assertions.assertEquals(DomainJoinType.HYBRID_AZURE_ADJOIN, response.iterator().next().domainJoinType());
-        Assertions.assertEquals("tg", response.iterator().next().subnetId());
-        Assertions.assertEquals("lkdghr", response.iterator().next().domainName());
-        Assertions.assertEquals("uutlwxezwzhok", response.iterator().next().organizationUnit());
-        Assertions.assertEquals("fakeNamePlaceholder", response.iterator().next().domainUsername());
-        Assertions.assertEquals("fakePasswordPlaceholder", response.iterator().next().domainPassword());
+        Assertions.assertEquals("ovjzhpjbibgjmfx", response.location());
+        Assertions.assertEquals("fcluyov", response.tags().get("xnbkfezzxscyhwzd"));
+        Assertions.assertEquals("ggufhyaomtb", response.devCenterId());
+        Assertions.assertEquals("havgrvk", response.description());
     }
 }

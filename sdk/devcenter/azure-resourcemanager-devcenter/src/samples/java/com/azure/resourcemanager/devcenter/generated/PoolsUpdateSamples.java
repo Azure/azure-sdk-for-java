@@ -10,7 +10,7 @@ import com.azure.resourcemanager.devcenter.models.Pool;
 /** Samples for Pools Update. */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Pools_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Pools_Patch.json
      */
     /**
      * Sample code: Pools_Update.
