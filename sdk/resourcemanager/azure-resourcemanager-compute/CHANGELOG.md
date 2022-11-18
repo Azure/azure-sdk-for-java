@@ -9,7 +9,7 @@
 - Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress.
 - Supported `withTrustedLaunch`, `withSecureBoot` and `withVTpm` methods in `VirtualMachine`.
 - Supported `UBUNTU_SERVER_18_04_LTS_GEN2`, `UBUNTU_SERVER_20_04_LTS` and `UBUNTU_SERVER_20_04_LTS_GEN2` in `KnownLinuxVirtualMachineImage`.
-- Supported `withTrustedLaunch`, `SecurityType` and `withHyperVGeneration` methods in `GalleryImage`.
+- Supported `withTrustedLaunch`, `securityType` and `withHyperVGeneration` methods in `GalleryImage`.
 
 ### Breaking Changes
 
