@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for NumberKind. */
 public final class NumberKind extends ExpandableStringEnum<NumberKind> {
     /** Static value Integer for NumberKind. */
@@ -35,14 +33,5 @@ public final class NumberKind extends ExpandableStringEnum<NumberKind> {
      */
     public static NumberKind fromString(String name) {
         return fromString(name, NumberKind.class);
-    }
-
-    /**
-     * Gets known NumberKind values.
-     *
-     * @return known NumberKind values.
-     */
-    public static Collection<NumberKind> values() {
-        return values(NumberKind.class);
     }
 }

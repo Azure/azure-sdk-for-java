@@ -33,6 +33,10 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of AdaptiveApplicationControlGroupInner class. */
+    public AdaptiveApplicationControlGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Represents a machines group and set of rules to be allowed running on a
      * machine.

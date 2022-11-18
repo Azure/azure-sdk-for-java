@@ -61,7 +61,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterIngest")
-    private interface IngestionSettingsService {
+    public interface IngestionSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings")
         @ExpectedResponses({200})
@@ -386,20 +386,6 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * Settings for ingesting security data and logs to correlate with resources associated with the subscription.
      *
      * @param ingestionSettingName Name of the ingestion setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IngestionSettingInner get(String ingestionSettingName) {
-        return getAsync(ingestionSettingName).block();
-    }
-
-    /**
-     * Settings for ingesting security data and logs to correlate with resources associated with the subscription.
-     *
-     * @param ingestionSettingName Name of the ingestion setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -410,6 +396,20 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IngestionSettingInner> getWithResponse(String ingestionSettingName, Context context) {
         return getWithResponseAsync(ingestionSettingName, context).block();
+    }
+
+    /**
+     * Settings for ingesting security data and logs to correlate with resources associated with the subscription.
+     *
+     * @param ingestionSettingName Name of the ingestion setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IngestionSettingInner get(String ingestionSettingName) {
+        return getWithResponse(ingestionSettingName, Context.NONE).getValue();
     }
 
     /**
@@ -539,21 +539,6 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      *
      * @param ingestionSettingName Name of the ingestion setting.
      * @param ingestionSetting Ingestion setting object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IngestionSettingInner create(String ingestionSettingName, IngestionSettingInner ingestionSetting) {
-        return createAsync(ingestionSettingName, ingestionSetting).block();
-    }
-
-    /**
-     * Create setting for ingesting security data and logs to correlate with resources associated with the subscription.
-     *
-     * @param ingestionSettingName Name of the ingestion setting.
-     * @param ingestionSetting Ingestion setting object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -565,6 +550,21 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
     public Response<IngestionSettingInner> createWithResponse(
         String ingestionSettingName, IngestionSettingInner ingestionSetting, Context context) {
         return createWithResponseAsync(ingestionSettingName, ingestionSetting, context).block();
+    }
+
+    /**
+     * Create setting for ingesting security data and logs to correlate with resources associated with the subscription.
+     *
+     * @param ingestionSettingName Name of the ingestion setting.
+     * @param ingestionSetting Ingestion setting object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IngestionSettingInner create(String ingestionSettingName, IngestionSettingInner ingestionSetting) {
+        return createWithResponse(ingestionSettingName, ingestionSetting, Context.NONE).getValue();
     }
 
     /**
@@ -669,19 +669,6 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * Deletes the ingestion settings for this subscription.
      *
      * @param ingestionSettingName Name of the ingestion setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String ingestionSettingName) {
-        deleteAsync(ingestionSettingName).block();
-    }
-
-    /**
-     * Deletes the ingestion settings for this subscription.
-     *
-     * @param ingestionSettingName Name of the ingestion setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -691,6 +678,19 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String ingestionSettingName, Context context) {
         return deleteWithResponseAsync(ingestionSettingName, context).block();
+    }
+
+    /**
+     * Deletes the ingestion settings for this subscription.
+     *
+     * @param ingestionSettingName Name of the ingestion setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String ingestionSettingName) {
+        deleteWithResponse(ingestionSettingName, Context.NONE);
     }
 
     /**
@@ -799,20 +799,6 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
      *
      * @param ingestionSettingName Name of the ingestion setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IngestionSettingTokenInner listTokens(String ingestionSettingName) {
-        return listTokensAsync(ingestionSettingName).block();
-    }
-
-    /**
-     * Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
-     *
-     * @param ingestionSettingName Name of the ingestion setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -823,6 +809,20 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IngestionSettingTokenInner> listTokensWithResponse(String ingestionSettingName, Context context) {
         return listTokensWithResponseAsync(ingestionSettingName, context).block();
+    }
+
+    /**
+     * Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
+     *
+     * @param ingestionSettingName Name of the ingestion setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IngestionSettingTokenInner listTokens(String ingestionSettingName) {
+        return listTokensWithResponse(ingestionSettingName, Context.NONE).getValue();
     }
 
     /**
@@ -931,20 +931,6 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * Connection strings for ingesting security scan logs and data.
      *
      * @param ingestionSettingName Name of the ingestion setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection string for ingesting security data and logs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionStringsInner listConnectionStrings(String ingestionSettingName) {
-        return listConnectionStringsAsync(ingestionSettingName).block();
-    }
-
-    /**
-     * Connection strings for ingesting security scan logs and data.
-     *
-     * @param ingestionSettingName Name of the ingestion setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -955,6 +941,20 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
     public Response<ConnectionStringsInner> listConnectionStringsWithResponse(
         String ingestionSettingName, Context context) {
         return listConnectionStringsWithResponseAsync(ingestionSettingName, context).block();
+    }
+
+    /**
+     * Connection strings for ingesting security scan logs and data.
+     *
+     * @param ingestionSettingName Name of the ingestion setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return connection string for ingesting security data and logs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionStringsInner listConnectionStrings(String ingestionSettingName) {
+        return listConnectionStringsWithResponse(ingestionSettingName, Context.NONE).getValue();
     }
 
     /**

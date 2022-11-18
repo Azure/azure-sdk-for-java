@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for EnvironmentTypes Update. */
 public final class EnvironmentTypesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/EnvironmentTypes_Patch.json
      */
     /**
      * Sample code: EnvironmentTypes_Update.

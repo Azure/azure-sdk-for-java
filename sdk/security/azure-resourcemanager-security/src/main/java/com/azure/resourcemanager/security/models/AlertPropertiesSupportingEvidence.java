@@ -26,6 +26,10 @@ public final class AlertPropertiesSupportingEvidence {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of AlertPropertiesSupportingEvidence class. */
+    public AlertPropertiesSupportingEvidence() {
+    }
+
     /**
      * Get the type property: Type of the supportingEvidence.
      *

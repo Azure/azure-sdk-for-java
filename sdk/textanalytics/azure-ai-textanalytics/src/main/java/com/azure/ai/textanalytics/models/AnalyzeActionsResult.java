@@ -21,7 +21,7 @@ public final class AnalyzeActionsResult {
     private IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults;
     private IterableStream<SingleLabelClassifyActionResult> singleLabelClassifyResults;
     private IterableStream<MultiLabelClassifyActionResult> multiLabelClassifyResults;
-    private IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults;
+    private IterableStream<AbstractSummaryActionResult> abstractSummaryResults;
     private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
 
     static {
@@ -85,8 +85,8 @@ public final class AnalyzeActionsResult {
 
                 @Override
                 public void setAbstractiveSummaryResults(AnalyzeActionsResult analyzeActionsResult,
-                                                         IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults) {
-                    analyzeActionsResult.setAbstractiveSummaryResults(abstractiveSummaryResults);
+                                                         IterableStream<AbstractSummaryActionResult> abstractiveSummaryResults) {
+                    analyzeActionsResult.setAbstractSummaryResults(abstractiveSummaryResults);
                 }
 
                 @Override
@@ -190,8 +190,8 @@ public final class AnalyzeActionsResult {
      *
      * @return the abstractiveSummaryResults value.
      */
-    public IterableStream<AbstractiveSummaryActionResult> getAbstractiveSummaryResults() {
-        return abstractiveSummaryResults;
+    public IterableStream<AbstractSummaryActionResult> getAbstractSummaryResults() {
+        return abstractSummaryResults;
     }
 
     /**
@@ -246,9 +246,9 @@ public final class AnalyzeActionsResult {
         this.multiLabelClassifyResults = multiLabelClassifyResults;
     }
 
-    private void setAbstractiveSummaryResults(
-        IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults) {
-        this.abstractiveSummaryResults = abstractiveSummaryResults;
+    private void setAbstractSummaryResults(
+        IterableStream<AbstractSummaryActionResult> abstractSummaryResults) {
+        this.abstractSummaryResults = abstractSummaryResults;
     }
 
     private void setExtractSummaryResults(IterableStream<ExtractSummaryActionResult> extractSummaryResults) {

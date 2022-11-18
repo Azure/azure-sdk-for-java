@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
 import com.azure.resourcemanager.compute.models.EncryptionStatus;
@@ -117,7 +118,8 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
         return computeManager
             .serviceClient()
             .getVirtualMachineExtensions()
-            .getAsync(rgName, vmName, extension.name(), "instanceView");
+            .getWithResponseAsync(rgName, vmName, extension.name(), "instanceView")
+            .map(Response::getValue);
     }
 
     /**

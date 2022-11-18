@@ -16,29 +16,29 @@ public final class SkuTests {
         Sku model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gk\",\"tier\":\"Premium\",\"size\":\"mbmpaxmodfvuefy\",\"family\":\"bpfvm\",\"capacity\":1299993392}")
+                    "{\"name\":\"xbxwa\",\"tier\":\"Premium\",\"size\":\"qxn\",\"family\":\"kzgxhurip\",\"capacity\":2112833635}")
                 .toObject(Sku.class);
-        Assertions.assertEquals("gk", model.name());
+        Assertions.assertEquals("xbxwa", model.name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
-        Assertions.assertEquals("mbmpaxmodfvuefy", model.size());
-        Assertions.assertEquals("bpfvm", model.family());
-        Assertions.assertEquals(1299993392, model.capacity());
+        Assertions.assertEquals("qxn", model.size());
+        Assertions.assertEquals("kzgxhurip", model.family());
+        Assertions.assertEquals(2112833635, model.capacity());
     }
 
     @Test
     public void testSerialize() {
         Sku model =
             new Sku()
-                .withName("gk")
+                .withName("xbxwa")
                 .withTier(SkuTier.PREMIUM)
-                .withSize("mbmpaxmodfvuefy")
-                .withFamily("bpfvm")
-                .withCapacity(1299993392);
+                .withSize("qxn")
+                .withFamily("kzgxhurip")
+                .withCapacity(2112833635);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("gk", model.name());
+        Assertions.assertEquals("xbxwa", model.name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
-        Assertions.assertEquals("mbmpaxmodfvuefy", model.size());
-        Assertions.assertEquals("bpfvm", model.family());
-        Assertions.assertEquals(1299993392, model.capacity());
+        Assertions.assertEquals("qxn", model.size());
+        Assertions.assertEquals("kzgxhurip", model.family());
+        Assertions.assertEquals(2112833635, model.capacity());
     }
 }

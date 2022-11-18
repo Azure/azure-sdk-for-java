@@ -84,7 +84,7 @@ import com.azure.ai.textanalytics.implementation.models.VolumeResolution;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.implementation.models.WeightResolution;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -133,7 +133,6 @@ import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.SpeedUnit;
 import com.azure.ai.textanalytics.models.SummaryContext;
 import com.azure.ai.textanalytics.models.SummarySentence;
-import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TemperatureUnit;
 import com.azure.ai.textanalytics.models.TemporalModifier;
@@ -148,7 +147,7 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.VolumeUnit;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.models.WeightUnit;
-import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
+import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
@@ -509,7 +508,7 @@ public final class Utility {
             detectedLanguageImpl.getIso6391Name(), detectedLanguageImpl.getConfidenceScore(),
             null);
         if (detectedLanguageImpl.getScript() != null) {
-            DetectedLanguagePropertiesHelper.setScript(detectedLanguage,
+            DetectedLanguagePropertiesHelper.setScriptKind(detectedLanguage,
                 ScriptKind.fromString(detectedLanguageImpl.getScript().toString()));
         }
         return detectedLanguage;
@@ -1530,44 +1529,44 @@ public final class Utility {
         return classifications;
     }
 
-    public static AbstractiveSummaryResultCollection toAbstractiveSummaryResultCollection(
+    public static AbstractSummaryResultCollection toAbstractiveSummaryResultCollection(
         AbstractiveSummarizationResult abstractiveSummarizationResult) {
         List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documentResults = abstractiveSummarizationResult.getDocuments();
-        List<AbstractiveSummaryResult> summaryResults = new ArrayList<>();
+        List<AbstractSummaryResult> summaryResults = new ArrayList<>();
         for (AbstractiveSummaryDocumentResultWithDetectedLanguage documentResult : documentResults) {
             summaryResults.add(toAbstractiveSummaryResult(documentResult));
         }
 
         // Document errors
         for (InputError documentError : abstractiveSummarizationResult.getErrors()) {
-            summaryResults.add(new AbstractiveSummaryResult(documentError.getId(), null,
+            summaryResults.add(new AbstractSummaryResult(documentError.getId(), null,
                     toTextAnalyticsError(documentError.getError())));
         }
 
-        return new AbstractiveSummaryResultCollection(summaryResults, abstractiveSummarizationResult.getModelVersion(),
+        return new AbstractSummaryResultCollection(summaryResults, abstractiveSummarizationResult.getModelVersion(),
             abstractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(abstractiveSummarizationResult.getStatistics()));
     }
 
-    public static AbstractiveSummaryResult toAbstractiveSummaryResult(
+    public static AbstractSummaryResult toAbstractiveSummaryResult(
         AbstractiveSummaryDocumentResultWithDetectedLanguage documentResult) {
-        AbstractiveSummaryResult summaryResult = new AbstractiveSummaryResult(
+        AbstractSummaryResult summaryResult = new AbstractSummaryResult(
             documentResult.getId(),
             documentResult.getStatistics() == null ? null : toTextDocumentStatistics(documentResult.getStatistics()),
             null
         );
 
-        AbstractiveSummaryResultPropertiesHelper.setSummaries(summaryResult,
+        AbstractSummaryResultPropertiesHelper.setSummaries(summaryResult,
             new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries())));
         if (documentResult.getDetectedLanguage() != null) {
-            AbstractiveSummaryResultPropertiesHelper.setDetectedLanguage(summaryResult,
+            AbstractSummaryResultPropertiesHelper.setDetectedLanguage(summaryResult,
                 toDetectedLanguage(documentResult.getDetectedLanguage()));
         }
 
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
                 warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
-        AbstractiveSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
+        AbstractSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
 
         return summaryResult;
     }
@@ -1641,17 +1640,14 @@ public final class Utility {
         final List<TextAnalyticsWarning> warnings = documentSummary.getWarnings().stream().map(
             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
-        final SummarySentenceCollection summarySentenceCollection = new SummarySentenceCollection(
-            new IterableStream<>(summarySentences),
-            new IterableStream<>(warnings)
-        );
-
         final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult(documentSummary.getId(),
             documentSummary.getStatistics() == null
                 ? null : toTextDocumentStatistics(documentSummary.getStatistics()),
             null
         );
-        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentenceCollection);
+        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, new IterableStream<>(summarySentences));
+        ExtractSummaryResultPropertiesHelper.setWarnings(extractSummaryResult,  new IterableStream<>(warnings));
+
         if (documentSummary.getDetectedLanguage() != null) {
             ExtractSummaryResultPropertiesHelper.setDetectedLanguage(extractSummaryResult,
                 toDetectedLanguage(documentSummary.getDetectedLanguage()));

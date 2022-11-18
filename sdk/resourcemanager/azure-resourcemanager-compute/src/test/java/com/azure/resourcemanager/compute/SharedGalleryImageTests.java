@@ -209,18 +209,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
     @Test
     public void canCreateUpdateGetDeleteGalleryImageVersion() {
-        //
-        // Create {
-        //  "startTime": "2018-09-18T19:19:33.6467692+00:00",
-        //  "endTime": "2018-09-18T19:27:34.3244427+00:00",
-        //  "status": "Failed",
-        //  "error": {
-        //    "code": "CrpPirReplicationJobsNotCompleted",
-        //    "message": "Replication job not completed at region: westcentralus"
-        //  },
-        //  "name": "971500cb-f79e-4303-9f6a-df90010a7cc1"
-        // }a gallery
-        //
         final String galleryName = generateRandomResourceName("jsim", 15); // "jsim94f154754";
 
         Gallery gallery =

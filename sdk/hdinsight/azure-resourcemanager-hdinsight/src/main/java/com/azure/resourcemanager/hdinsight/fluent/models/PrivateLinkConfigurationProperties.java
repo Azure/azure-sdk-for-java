@@ -8,25 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.IpConfiguration;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkConfigurationProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The private link configuration properties. */
 @Fluent
 public final class PrivateLinkConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkConfigurationProperties.class);
-
     /*
-     * The HDInsight private linkable sub-resource name to apply the private
-     * link configuration to. For example, 'headnode', 'gateway', 'edgenode'.
+     * The HDInsight private linkable sub-resource name to apply the private link configuration to. For example,
+     * 'headnode', 'gateway', 'edgenode'.
      */
     @JsonProperty(value = "groupId", required = true)
     private String groupId;
 
     /*
-     * The private link configuration provisioning state, which only appears in
-     * the response.
+     * The private link configuration provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkConfigurationProvisioningState provisioningState;
@@ -36,6 +32,10 @@ public final class PrivateLinkConfigurationProperties {
      */
     @JsonProperty(value = "ipConfigurations", required = true)
     private List<IpConfiguration> ipConfigurations;
+
+    /** Creates an instance of PrivateLinkConfigurationProperties class. */
+    public PrivateLinkConfigurationProperties() {
+    }
 
     /**
      * Get the groupId property: The HDInsight private linkable sub-resource name to apply the private link
@@ -96,13 +96,13 @@ public final class PrivateLinkConfigurationProperties {
      */
     public void validate() {
         if (groupId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property groupId in model PrivateLinkConfigurationProperties"));
         }
         if (ipConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ipConfigurations in model PrivateLinkConfigurationProperties"));
@@ -110,4 +110,6 @@ public final class PrivateLinkConfigurationProperties {
             ipConfigurations().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkConfigurationProperties.class);
 }

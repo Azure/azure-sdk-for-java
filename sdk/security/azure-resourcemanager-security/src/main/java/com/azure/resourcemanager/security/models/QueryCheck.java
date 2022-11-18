@@ -29,6 +29,10 @@ public final class QueryCheck {
     @JsonProperty(value = "columnNames")
     private List<String> columnNames;
 
+    /** Creates an instance of QueryCheck class. */
+    public QueryCheck() {
+    }
+
     /**
      * Get the query property: The rule query.
      *

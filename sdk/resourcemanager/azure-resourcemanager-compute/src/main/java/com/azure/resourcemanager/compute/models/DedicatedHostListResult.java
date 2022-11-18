@@ -26,6 +26,10 @@ public final class DedicatedHostListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DedicatedHostListResult class. */
+    public DedicatedHostListResult() {
+    }
+
     /**
      * Get the value property: The list of dedicated hosts.
      *

@@ -20,7 +20,7 @@ public final class DevCenterUpdateTests {
         DevCenterUpdate model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"mdvpjhulsu\":{}}},\"tags\":{\"odjpslwejd\":\"kjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\",\"gexpaojakhmsbz\":\"yffdfdos\"},\"location\":\"crzevdphlx\"}")
+                    "{\"identity\":{\"principalId\":\"ebebb0ad-650c-4793-b4f6-6a796f5472a8\",\"tenantId\":\"bb403024-195a-4516-adf2-f86a0ebd1306\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"mdvpjhulsu\":{\"principalId\":\"3678e520-bcbd-4438-a7bf-bb6091a04462\",\"clientId\":\"3b037db1-47a3-41f4-b201-9b3b38192d1c\"}}},\"tags\":{\"odjpslwejd\":\"kjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\",\"gexpaojakhmsbz\":\"yffdfdos\"},\"location\":\"crzevdphlx\"}")
                 .toObject(DevCenterUpdate.class);
         Assertions.assertEquals("kjozkrwfnd", model.tags().get("odjpslwejd"));
         Assertions.assertEquals("crzevdphlx", model.location());

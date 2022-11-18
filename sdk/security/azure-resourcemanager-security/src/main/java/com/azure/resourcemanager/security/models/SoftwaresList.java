@@ -24,6 +24,10 @@ public final class SoftwaresList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SoftwaresList class. */
+    public SoftwaresList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

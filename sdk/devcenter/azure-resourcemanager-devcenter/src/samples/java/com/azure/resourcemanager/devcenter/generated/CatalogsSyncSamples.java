@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Catalogs Sync. */
 public final class CatalogsSyncSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Catalogs_Sync.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Catalogs_Sync.json
      */
     /**
      * Sample code: Catalogs_Sync.

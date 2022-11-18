@@ -43,6 +43,10 @@ public final class VirtualMachineExtensionImageProperties {
     @JsonProperty(value = "supportsMultipleExtensions")
     private Boolean supportsMultipleExtensions;
 
+    /** Creates an instance of VirtualMachineExtensionImageProperties class. */
+    public VirtualMachineExtensionImageProperties() {
+    }
+
     /**
      * Get the operatingSystem property: The operating system this extension supports.
      *

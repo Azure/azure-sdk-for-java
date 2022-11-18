@@ -75,7 +75,7 @@ public final class DisksUpdateSamples {
                             .withName("myPurchasePlanName")
                             .withPublisher("myPurchasePlanPublisher")
                             .withProduct("myPurchasePlanProduct")
-                            .withPromotionCode("myPurchasePlanPromotionCode")),
+                            .withPromotionCode("fakeTokenPlaceholder")),
                 Context.NONE);
     }
 

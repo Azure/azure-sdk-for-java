@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Time and capacity request parameters. */
 @Fluent
 public final class AutoscaleTimeAndCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleTimeAndCapacity.class);
-
     /*
      * 24-hour time in the form xx:xx
      */
@@ -31,6 +27,10 @@ public final class AutoscaleTimeAndCapacity {
      */
     @JsonProperty(value = "maxInstanceCount")
     private Integer maxInstanceCount;
+
+    /** Creates an instance of AutoscaleTimeAndCapacity class. */
+    public AutoscaleTimeAndCapacity() {
+    }
 
     /**
      * Get the time property: 24-hour time in the form xx:xx.

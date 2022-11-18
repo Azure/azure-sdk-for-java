@@ -34,6 +34,10 @@ public final class InformationProtectionKeyword {
     @JsonProperty(value = "excluded")
     private Boolean excluded;
 
+    /** Creates an instance of InformationProtectionKeyword class. */
+    public InformationProtectionKeyword() {
+    }
+
     /**
      * Get the pattern property: The keyword pattern.
      *

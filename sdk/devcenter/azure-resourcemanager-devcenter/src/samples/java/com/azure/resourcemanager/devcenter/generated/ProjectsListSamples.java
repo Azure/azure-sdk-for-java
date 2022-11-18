@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Projects List. */
 public final class ProjectsListSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Projects_ListBySubscription.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Projects_ListBySubscription.json
      */
     /**
      * Sample code: Projects_ListBySubscription.
