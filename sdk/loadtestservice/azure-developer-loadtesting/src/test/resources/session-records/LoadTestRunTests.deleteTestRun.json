@@ -4,18 +4,37 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "d4198df8-6310-4094-8784-9511fbf3f71b"
+      "x-ms-client-request-id" : "f4aff496-a5e5-48c5-a4d3-ed13a1a05b19"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "b87be851-ceed-4de9-9e03-52aa6f05d436",
+      "mise-correlation-id" : "d62871e9-d5d9-4135-bd79-0b04dc48de65",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Fri, 18 Nov 2022 06:29:56 GMT",
-      "x-ms-correlation-request-id" : "f4803190-aa11-4477-956d-b8b1471282ca"
+      "Date" : "Fri, 18 Nov 2022 17:25:53 GMT",
+      "x-ms-correlation-request-id" : "04c2b97e-d80e-4794-8d22-d84d82ec3afc"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/44444444-1234-1234-1234-123456789012?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "479f7ed2-f497-434e-92b0-65f672904253"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "3238be71-865b-487c-8b82-2c8d51a3ab9e",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 18 Nov 2022 17:25:53 GMT",
+      "x-ms-correlation-request-id" : "ec986699-d064-47fe-b805-088e4aef5ed8"
     },
     "Exception" : null
   } ],

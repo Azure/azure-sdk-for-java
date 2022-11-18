@@ -15,7 +15,15 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.LoadTestRunsImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous LoadTestingClient type. */
@@ -1159,5 +1167,69 @@ public final class LoadTestRunAsyncClient {
     public Mono<Response<BinaryData>> getTestRunFileWithResponse(
             String testRunId, String fileName, RequestOptions requestOptions) {
         return this.serviceClient.getTestRunFileWithResponseAsync(testRunId, fileName, requestOptions);
+    }
+
+    /**
+     * Starts a test run and polls the status of the test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param body Load test run model.
+     * @param refreshTime The time in seconds to refresh the polling operation.
+     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
+     * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the test run
+     *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginStartTestRun(
+            String testRunId, BinaryData body, int refreshTime, RequestOptions testRunRequestOptions) {
+        return new PollerFlux<>(
+                Duration.ofSeconds(refreshTime),
+                (context) -> {
+                    Mono<BinaryData> testRunMono =
+                            createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
+                                    .flatMap(FluxUtil::toMono);
+                    return testRunMono;
+                },
+                (context) -> {
+                    Mono<BinaryData> testRunMono = getTestRunWithResponse(testRunId, null).flatMap(FluxUtil::toMono);
+                    return testRunMono.flatMap(
+                            testRunBinary -> {
+                                String status;
+                                JsonNode testRun;
+                                try {
+                                    testRun = new ObjectMapper().readTree(testRunBinary.toString());
+                                    status = testRun.get("status").asText();
+                                } catch (JsonProcessingException e) {
+                                    return Mono.error(
+                                            new RuntimeException(
+                                                    "Encountered exception while retriving test run status"));
+                                }
+                                LongRunningOperationStatus lroStatus;
+                                switch (status) {
+                                    case "NOTSTARTED":
+                                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                                        break;
+                                    case "DONE":
+                                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                                        break;
+                                    case "FAILED":
+                                        lroStatus = LongRunningOperationStatus.FAILED;
+                                        break;
+                                    case "CANCELLED":
+                                        lroStatus = LongRunningOperationStatus.USER_CANCELLED;
+                                        break;
+                                    default:
+                                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+                                        break;
+                                }
+                                return Mono.just(new PollResponse<>(lroStatus, BinaryData.fromString(status)));
+                            });
+                },
+                (activationResponse, context) -> {
+                    return Mono.error(new RuntimeException("Cancellation is not supported"));
+                },
+                (context) -> getTestRunWithResponse(testRunId, null).flatMap(FluxUtil::toMono));
     }
 }

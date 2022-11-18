@@ -15,6 +15,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 
 /** Initializes a new instance of the synchronous LoadTestingClient type. */
 @ServiceClient(builder = LoadTestingClientBuilder.class)
@@ -1160,5 +1162,25 @@ public final class LoadTestRunClient {
     public Response<BinaryData> getTestRunFileWithResponse(
             String testRunId, String fileName, RequestOptions requestOptions) {
         return this.client.getTestRunFileWithResponse(testRunId, fileName, requestOptions).block();
+    }
+
+    /**
+     * Starts a test run and polls the status of the test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param body Load test run model.
+     * @param refreshTime The time in seconds to refresh the polling operation.
+     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
+     * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
+     * @return A {@link SyncPoller} to poll on and retrieve the test run
+     *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginStartTestRun(
+            String testRunId, BinaryData body, int refreshTime, RequestOptions testRunRequestOptions) {
+        PollerFlux<BinaryData, BinaryData> asyncPoller =
+                this.client.beginStartTestRun(testRunId, body, refreshTime, testRunRequestOptions);
+        return asyncPoller.getSyncPoller();
     }
 }

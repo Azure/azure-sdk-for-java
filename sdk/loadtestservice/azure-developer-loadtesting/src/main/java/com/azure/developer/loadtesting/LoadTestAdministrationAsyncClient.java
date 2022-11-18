@@ -342,7 +342,8 @@ public final class LoadTestAdministrationAsyncClient {
                             });
                 },
                 (context) -> {
-                    Mono<BinaryData> fileMono = getTestFileWithResponse(testId, fileName, null).flatMap(FluxUtil::toMono);
+                    Mono<BinaryData> fileMono =
+                            getTestFileWithResponse(testId, fileName, null).flatMap(FluxUtil::toMono);
                     return fileMono.flatMap(fileBinaryData -> getValidationStatus(fileBinaryData));
                 },
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
