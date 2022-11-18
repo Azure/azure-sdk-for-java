@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `BinaryData.wrapFlux()` to provide a synchronous return type when not consuming the given async data stream.
+
 ### Breaking Changes
 
 ### Bugs Fixed
