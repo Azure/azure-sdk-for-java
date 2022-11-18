@@ -20,55 +20,55 @@ public final class DevBoxDefinitionUpdateTests {
         DevBoxDefinitionUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"imageReference\":{\"id\":\"uyfta\",\"exactVersion\":\"cpwi\",\"publisher\":\"vqtmnub\",\"offer\":\"kpzksmondjmq\",\"sku\":\"vypomgkopkwho\"},\"sku\":{\"name\":\"pajqgxysm\",\"tier\":\"Basic\",\"size\":\"qfqvmkc\",\"family\":\"zapvhelx\",\"capacity\":1663002651},\"osStorageType\":\"yat\"},\"tags\":{\"rjxgciqib\":\"kcbcue\"},\"location\":\"osx\"}")
+                    "{\"properties\":{\"imageReference\":{\"id\":\"unkbebx\",\"exactVersion\":\"byyntwlrbqt\",\"publisher\":\"ievseotgqrllt\",\"offer\":\"wlauwzizxbmpg\",\"sku\":\"efuzmuvpbttd\"},\"sku\":{\"name\":\"orppxebmnzbtb\",\"tier\":\"Basic\",\"size\":\"lkfg\",\"family\":\"dneu\",\"capacity\":2052379315},\"osStorageType\":\"hsd\"},\"tags\":{\"uvxzxclvi\":\"ozfikdowwq\"},\"location\":\"hqzonosggbhcoh\"}")
                 .toObject(DevBoxDefinitionUpdate.class);
-        Assertions.assertEquals("kcbcue", model.tags().get("rjxgciqib"));
-        Assertions.assertEquals("osx", model.location());
-        Assertions.assertEquals("uyfta", model.imageReference().id());
-        Assertions.assertEquals("vqtmnub", model.imageReference().publisher());
-        Assertions.assertEquals("kpzksmondjmq", model.imageReference().offer());
-        Assertions.assertEquals("vypomgkopkwho", model.imageReference().sku());
-        Assertions.assertEquals("pajqgxysm", model.sku().name());
+        Assertions.assertEquals("ozfikdowwq", model.tags().get("uvxzxclvi"));
+        Assertions.assertEquals("hqzonosggbhcoh", model.location());
+        Assertions.assertEquals("unkbebx", model.imageReference().id());
+        Assertions.assertEquals("ievseotgqrllt", model.imageReference().publisher());
+        Assertions.assertEquals("wlauwzizxbmpg", model.imageReference().offer());
+        Assertions.assertEquals("efuzmuvpbttd", model.imageReference().sku());
+        Assertions.assertEquals("orppxebmnzbtb", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("qfqvmkc", model.sku().size());
-        Assertions.assertEquals("zapvhelx", model.sku().family());
-        Assertions.assertEquals(1663002651, model.sku().capacity());
-        Assertions.assertEquals("yat", model.osStorageType());
+        Assertions.assertEquals("lkfg", model.sku().size());
+        Assertions.assertEquals("dneu", model.sku().family());
+        Assertions.assertEquals(2052379315, model.sku().capacity());
+        Assertions.assertEquals("hsd", model.osStorageType());
     }
 
     @Test
     public void testSerialize() {
         DevBoxDefinitionUpdate model =
             new DevBoxDefinitionUpdate()
-                .withTags(mapOf("rjxgciqib", "kcbcue"))
-                .withLocation("osx")
+                .withTags(mapOf("uvxzxclvi", "ozfikdowwq"))
+                .withLocation("hqzonosggbhcoh")
                 .withImageReference(
                     new ImageReference()
-                        .withId("uyfta")
-                        .withPublisher("vqtmnub")
-                        .withOffer("kpzksmondjmq")
-                        .withSku("vypomgkopkwho"))
+                        .withId("unkbebx")
+                        .withPublisher("ievseotgqrllt")
+                        .withOffer("wlauwzizxbmpg")
+                        .withSku("efuzmuvpbttd"))
                 .withSku(
                     new Sku()
-                        .withName("pajqgxysm")
+                        .withName("orppxebmnzbtb")
                         .withTier(SkuTier.BASIC)
-                        .withSize("qfqvmkc")
-                        .withFamily("zapvhelx")
-                        .withCapacity(1663002651))
-                .withOsStorageType("yat");
+                        .withSize("lkfg")
+                        .withFamily("dneu")
+                        .withCapacity(2052379315))
+                .withOsStorageType("hsd");
         model = BinaryData.fromObject(model).toObject(DevBoxDefinitionUpdate.class);
-        Assertions.assertEquals("kcbcue", model.tags().get("rjxgciqib"));
-        Assertions.assertEquals("osx", model.location());
-        Assertions.assertEquals("uyfta", model.imageReference().id());
-        Assertions.assertEquals("vqtmnub", model.imageReference().publisher());
-        Assertions.assertEquals("kpzksmondjmq", model.imageReference().offer());
-        Assertions.assertEquals("vypomgkopkwho", model.imageReference().sku());
-        Assertions.assertEquals("pajqgxysm", model.sku().name());
+        Assertions.assertEquals("ozfikdowwq", model.tags().get("uvxzxclvi"));
+        Assertions.assertEquals("hqzonosggbhcoh", model.location());
+        Assertions.assertEquals("unkbebx", model.imageReference().id());
+        Assertions.assertEquals("ievseotgqrllt", model.imageReference().publisher());
+        Assertions.assertEquals("wlauwzizxbmpg", model.imageReference().offer());
+        Assertions.assertEquals("efuzmuvpbttd", model.imageReference().sku());
+        Assertions.assertEquals("orppxebmnzbtb", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("qfqvmkc", model.sku().size());
-        Assertions.assertEquals("zapvhelx", model.sku().family());
-        Assertions.assertEquals(1663002651, model.sku().capacity());
-        Assertions.assertEquals("yat", model.osStorageType());
+        Assertions.assertEquals("lkfg", model.sku().size());
+        Assertions.assertEquals("dneu", model.sku().family());
+        Assertions.assertEquals(2052379315, model.sku().capacity());
+        Assertions.assertEquals("hsd", model.osStorageType());
     }
 
     @SuppressWarnings("unchecked")

@@ -32,7 +32,7 @@ public final class ImageVersionsListByImageMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"name\":\"vkjlmxhom\",\"publishedDate\":\"2021-10-09T04:46:26Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":2141225677,\"provisioningState\":\"gumbnraauzzptja\"},\"id\":\"sdzhezww\",\"name\":\"aiqyuvvfo\",\"type\":\"kphhq\"}]}";
+            "{\"value\":[{\"properties\":{\"name\":\"alxlllchp\",\"publishedDate\":\"2021-06-03T17:52:41Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":653951731,\"provisioningState\":\"dnhfuk\"},\"id\":\"sjcswsmystuluqyp\",\"name\":\"cvlerchpqbmfpjba\",\"type\":\"widf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +61,6 @@ public final class ImageVersionsListByImageMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ImageVersion> response =
-            manager.imageVersions().listByImage("iayz", "iykhy", "wf", "jlb", Context.NONE);
+            manager.imageVersions().listByImage("iogsjkmnwq", "nobaiyhddviacegf", "m", "tfpmvmemfnczdw", Context.NONE);
     }
 }

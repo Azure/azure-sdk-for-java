@@ -37,15 +37,6 @@ public final class ConnectorsImpl implements Connectors {
         return Utils.mapPage(inner, inner1 -> new ConnectorSettingImpl(inner1, this.manager()));
     }
 
-    public ConnectorSetting get(String connectorName) {
-        ConnectorSettingInner inner = this.serviceClient().get(connectorName);
-        if (inner != null) {
-            return new ConnectorSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ConnectorSetting> getWithResponse(String connectorName, Context context) {
         Response<ConnectorSettingInner> inner = this.serviceClient().getWithResponse(connectorName, context);
         if (inner != null) {
@@ -59,12 +50,21 @@ public final class ConnectorsImpl implements Connectors {
         }
     }
 
-    public void delete(String connectorName) {
-        this.serviceClient().delete(connectorName);
+    public ConnectorSetting get(String connectorName) {
+        ConnectorSettingInner inner = this.serviceClient().get(connectorName);
+        if (inner != null) {
+            return new ConnectorSettingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String connectorName, Context context) {
         return this.serviceClient().deleteWithResponse(connectorName, context);
+    }
+
+    public void delete(String connectorName) {
+        this.serviceClient().delete(connectorName);
     }
 
     public ConnectorSetting getById(String id) {

@@ -41,6 +41,10 @@ public final class OSVersionInner {
     @JsonProperty(value = "properties")
     private OSVersionProperties properties;
 
+    /** Creates an instance of OSVersionInner class. */
+    public OSVersionInner() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

@@ -33,6 +33,10 @@ public class AllowlistCustomAlertRule extends ListCustomAlertRule {
     @JsonProperty(value = "allowlistValues", required = true)
     private List<String> allowlistValues;
 
+    /** Creates an instance of AllowlistCustomAlertRule class. */
+    public AllowlistCustomAlertRule() {
+    }
+
     /**
      * Get the allowlistValues property: The values to allow. The format of the values depends on the rule type.
      *

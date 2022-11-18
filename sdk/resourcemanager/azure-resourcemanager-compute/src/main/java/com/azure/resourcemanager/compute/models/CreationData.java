@@ -82,6 +82,10 @@ public final class CreationData {
     @JsonProperty(value = "performancePlus")
     private Boolean performancePlus;
 
+    /** Creates an instance of CreationData class. */
+    public CreationData() {
+    }
+
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
      *

@@ -29,6 +29,10 @@ public class DedicatedHostInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
+    /** Creates an instance of DedicatedHostInstanceView class. */
+    public DedicatedHostInstanceView() {
+    }
+
     /**
      * Get the assetId property: Specifies the unique id of the dedicated physical machine on which the dedicated host
      * resides.

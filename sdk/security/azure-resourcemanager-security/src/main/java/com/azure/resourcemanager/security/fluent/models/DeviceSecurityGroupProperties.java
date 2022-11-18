@@ -39,6 +39,10 @@ public final class DeviceSecurityGroupProperties {
     @JsonProperty(value = "denylistRules")
     private List<DenylistCustomAlertRule> denylistRules;
 
+    /** Creates an instance of DeviceSecurityGroupProperties class. */
+    public DeviceSecurityGroupProperties() {
+    }
+
     /**
      * Get the thresholdRules property: The list of custom alert threshold rules.
      *

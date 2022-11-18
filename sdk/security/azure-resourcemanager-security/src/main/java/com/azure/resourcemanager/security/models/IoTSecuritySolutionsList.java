@@ -25,6 +25,10 @@ public final class IoTSecuritySolutionsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of IoTSecuritySolutionsList class. */
+    public IoTSecuritySolutionsList() {
+    }
+
     /**
      * Get the value property: List of IoT Security solutions.
      *

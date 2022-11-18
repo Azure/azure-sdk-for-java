@@ -24,6 +24,10 @@ public final class CapacityReservationUtilization {
     @JsonProperty(value = "virtualMachinesAllocated", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> virtualMachinesAllocated;
 
+    /** Creates an instance of CapacityReservationUtilization class. */
+    public CapacityReservationUtilization() {
+    }
+
     /**
      * Get the currentCapacity property: The value provides the current capacity of the VM size which was reserved
      * successfully and for which the customer is getting billed.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-08-01.
