@@ -24,6 +24,10 @@ public final class ConnectorSettingList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ConnectorSettingList class. */
+    public ConnectorSettingList() {
+    }
+
     /**
      * Get the value property: List of all the cloud account connector settings.
      *

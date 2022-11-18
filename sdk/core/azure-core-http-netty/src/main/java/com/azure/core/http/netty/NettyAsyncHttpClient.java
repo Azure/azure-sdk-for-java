@@ -58,9 +58,9 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
  * class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API for
- * features such as {@link NettyAsyncHttpClientBuilder#eventLoopGroup(EventLoopGroup) thread pooling}, {@link
- * NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping}, {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions)
- * setProxy configuration}, and much more.
+ * features such as {@link NettyAsyncHttpClientBuilder#eventLoopGroup(EventLoopGroup) thread pooling},
+ * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
+ * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
  *
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
@@ -70,6 +70,7 @@ class NettyAsyncHttpClient implements HttpClient {
     private static final byte[] EMPTY_BYTES = new byte[0];
 
     private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
+    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
     private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
@@ -109,24 +110,24 @@ class NettyAsyncHttpClient implements HttpClient {
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
 
-        boolean effectiveEagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        long effectiveResponseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
+        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean headersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
-        boolean effectiveHeadersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS)
-            .orElse(false);
 
         return nettyClient
             .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
-            .doAfterRequest((r, connection) -> doAfterRequest(connection, effectiveResponseTimeout))
+            .doAfterRequest((r, connection) -> doAfterRequest(connection, responseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse,
-                effectiveHeadersEagerlyConverted))
+            .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
+                headersEagerlyConverted))
             .single()
             .onErrorMap(throwable -> {
                 // The exception was an SSLException that was caused by a failure to connect to a proxy.
@@ -247,19 +248,36 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param restRequest the Rest request whose response this delegate handles
      * @param disableBufferCopy Flag indicating if the network response shouldn't be buffered.
      * @param eagerlyReadResponse Flag indicating if the network response should be eagerly read into memory.
+     * @param ignoreResponseBody Flag indicating if the network response should be ignored.
      * @param headersEagerlyConverted Flag indicating if the Netty HttpHeaders should be eagerly converted to Azure Core
      * HttpHeaders.
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
-        HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse,
+        HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse, boolean ignoreResponseBody,
         boolean headersEagerlyConverted) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
+            // For now, eagerlyReadResponse and ignoreResponseBody works the same.
+//            if (ignoreResponseBody) {
+//                AtomicBoolean firstNext = new AtomicBoolean(true);
+//                return reactorNettyConnection.inbound().receive()
+//                    .doOnNext(ignored -> {
+//                        if (!firstNext.compareAndSet(true, false)) {
+//                            LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+//                                + "Response body will be ignored as directed.");
+//                        }
+//                    })
+//                    .ignoreElements()
+//                    .doFinally(ignored -> closeConnection(reactorNettyConnection))
+//                    .then(Mono.fromSupplier(() -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
+//                        EMPTY_BYTES, headersEagerlyConverted)));
+//            }
+
             /*
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
              * response MUST be deeply copied to ensure it can safely be used downstream.
              */
-            if (eagerlyReadResponse) {
+            if (eagerlyReadResponse || ignoreResponseBody) {
                 // Set up the body flux and dispose the connection once it has been received.
                 return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))

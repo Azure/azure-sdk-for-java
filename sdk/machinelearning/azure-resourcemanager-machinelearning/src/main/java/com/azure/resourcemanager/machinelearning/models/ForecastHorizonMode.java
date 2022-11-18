@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ForecastHorizonMode. */
+/** Enum to determine forecast horizon selection mode. */
 public final class ForecastHorizonMode extends ExpandableStringEnum<ForecastHorizonMode> {
     /** Static value Auto for ForecastHorizonMode. */
     public static final ForecastHorizonMode AUTO = fromString("Auto");

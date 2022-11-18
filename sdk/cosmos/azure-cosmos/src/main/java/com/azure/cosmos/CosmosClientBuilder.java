@@ -876,7 +876,7 @@ public class CosmosClientBuilder implements
 
         if (preferredRegions != null) {
             // validate preferredRegions
-            preferredRegions.stream().forEach(
+            preferredRegions.forEach(
                 preferredRegion -> {
                     Preconditions.checkArgument(StringUtils.trimToNull(preferredRegion) != null, "preferredRegion can't be empty");
                     String trimmedPreferredRegion = preferredRegion.toLowerCase(Locale.ROOT).replace(" ", "");

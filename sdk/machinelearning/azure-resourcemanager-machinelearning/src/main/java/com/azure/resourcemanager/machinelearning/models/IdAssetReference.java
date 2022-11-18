@@ -21,6 +21,10 @@ public final class IdAssetReference extends AssetReferenceBase {
     @JsonProperty(value = "assetId", required = true)
     private String assetId;
 
+    /** Creates an instance of IdAssetReference class. */
+    public IdAssetReference() {
+    }
+
     /**
      * Get the assetId property: [Required] ARM resource ID of the asset.
      *

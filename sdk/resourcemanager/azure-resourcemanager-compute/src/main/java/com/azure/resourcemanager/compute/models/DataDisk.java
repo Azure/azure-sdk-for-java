@@ -115,6 +115,10 @@ public final class DataDisk {
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
+    /** Creates an instance of DataDisk class. */
+    public DataDisk() {
+    }
+
     /**
      * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.

@@ -10,6 +10,19 @@
 
 ### Other Changes
 
+## 1.16.1 (2022-11-16)
+
+### Bugs Fixed
+
+- Reverted behavior changes of `claimOwnership` back to return empty when error occurred, to avoid throw out 412 status code error. ([#31672](https://github.com/Azure/azure-sdk-for-java/issues/31672))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.0`.
+- Update `azure-storage-blob` dependency to `12.20.1`.
+
 ## 1.16.0 (2022-10-13)
 
 ### Breaking Changes

@@ -44,7 +44,7 @@
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
 
 # PRLabel: %Communication
-/sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/
 
 # PRLabel: %Communication - Calling Server
 /sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
@@ -53,16 +53,16 @@
 /sdk/communication/sdk/communication/azure-communication-callautomation/ @juntuchen-msft @cochi2
 
 # PRLabel: %Communication - Chat
-/sdk/communication/sdk/communication/azure-communication-chat/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/sdk/communication/azure-communication-chat/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Identity
-/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @ostoliarova-msft
+/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @ostoliarova-msft @mjafferi-msft
 
 # PRLabel: %Communication - Common
-/sdk/communication/azure-communication-common/      @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @ostoliarova-msft
+/sdk/communication/azure-communication-common/      @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @ostoliarova-msft @mjafferi-msft
 
 # PRLabel: %Communication - Network Traversal
-/sdk/communication/sdk/communication/azure-communication-networktraversal/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/sdk/communication/azure-communication-networktraversal/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Phone Numbers
 /sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @lucasrsant @RoyHerrod @danielav7
@@ -86,11 +86,11 @@
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                        @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995
+/sdk/cosmos/                                        @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995
+/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
 
 # PRLabel: %Load Testing
 /sdk/loadtestservice/                               @Harshan01 @abranj1219
@@ -187,6 +187,9 @@
 /sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+
+# PRLabel: %DevCenter
+/sdk/devcenter/                                     @sebrenna @mharlan
 
 # end to end tests
 # PRLabel: %Azure.Identity
@@ -748,6 +751,9 @@
 
 # ServiceLabel: %Consumption - RIandShowBack %Service Attention
 #/<NotInRepo>/          @ccmshowbackdevs
+
+# ServiceLabel: %DevCenter %Service Attention
+#/<NotInRepo>/          @sebrenna @mharlan
 
 ###########
 # Eng Sys

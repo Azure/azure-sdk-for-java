@@ -16,17 +16,28 @@ public final class EnvironmentTypeUpdateTests {
     public void testDeserialize() {
         EnvironmentTypeUpdate model =
             BinaryData
-                .fromString("{\"tags\":{\"rpabg\":\"phoxus\",\"xywpmueefjzwfqkq\":\"epsbjtazqu\"}}")
+                .fromString(
+                    "{\"tags\":{\"qidybyx\":\"yn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\",\"ckzywbiexzfeyue\":\"nyyazttbtwwrqpue\"}}")
                 .toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("phoxus", model.tags().get("rpabg"));
+        Assertions.assertEquals("yn", model.tags().get("qidybyx"));
     }
 
     @Test
     public void testSerialize() {
         EnvironmentTypeUpdate model =
-            new EnvironmentTypeUpdate().withTags(mapOf("rpabg", "phoxus", "xywpmueefjzwfqkq", "epsbjtazqu"));
+            new EnvironmentTypeUpdate()
+                .withTags(
+                    mapOf(
+                        "qidybyx",
+                        "yn",
+                        "aaxdbabphlwrq",
+                        "zfcl",
+                        "hsucoc",
+                        "fkts",
+                        "ckzywbiexzfeyue",
+                        "nyyazttbtwwrqpue"));
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("phoxus", model.tags().get("rpabg"));
+        Assertions.assertEquals("yn", model.tags().get("qidybyx"));
     }
 
     @SuppressWarnings("unchecked")

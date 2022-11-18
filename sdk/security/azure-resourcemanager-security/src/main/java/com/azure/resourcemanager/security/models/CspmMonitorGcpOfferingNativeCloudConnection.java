@@ -22,6 +22,10 @@ public final class CspmMonitorGcpOfferingNativeCloudConnection {
     @JsonProperty(value = "serviceAccountEmailAddress")
     private String serviceAccountEmailAddress;
 
+    /** Creates an instance of CspmMonitorGcpOfferingNativeCloudConnection class. */
+    public CspmMonitorGcpOfferingNativeCloudConnection() {
+    }
+
     /**
      * Get the workloadIdentityProviderId property: The GCP workload identity provider id for the offering.
      *

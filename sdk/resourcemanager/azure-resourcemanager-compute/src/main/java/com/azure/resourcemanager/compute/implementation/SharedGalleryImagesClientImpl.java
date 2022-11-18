@@ -56,7 +56,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface SharedGalleryImagesService {
+    public interface SharedGalleryImagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries"
@@ -134,7 +134,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -196,7 +196,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -350,7 +350,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -408,7 +408,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -448,23 +448,6 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      *     listed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery image by subscription id or tenant id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedGalleryImageInner get(String location, String galleryUniqueName, String galleryImageName) {
-        return getAsync(location, galleryUniqueName, galleryImageName).block();
-    }
-
-    /**
-     * Get a shared gallery image by subscription id or tenant id.
-     *
-     * @param location Resource location.
-     * @param galleryUniqueName The unique name of the Shared Gallery.
-     * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -475,6 +458,23 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
     public Response<SharedGalleryImageInner> getWithResponse(
         String location, String galleryUniqueName, String galleryImageName, Context context) {
         return getWithResponseAsync(location, galleryUniqueName, galleryImageName, context).block();
+    }
+
+    /**
+     * Get a shared gallery image by subscription id or tenant id.
+     *
+     * @param location Resource location.
+     * @param galleryUniqueName The unique name of the Shared Gallery.
+     * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
+     *     listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a shared gallery image by subscription id or tenant id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SharedGalleryImageInner get(String location, String galleryUniqueName, String galleryImageName) {
+        return getWithResponse(location, galleryUniqueName, galleryImageName, Context.NONE).getValue();
     }
 
     /**

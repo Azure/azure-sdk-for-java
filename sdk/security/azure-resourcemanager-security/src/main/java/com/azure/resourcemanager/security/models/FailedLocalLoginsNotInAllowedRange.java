@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("FailedLocalLoginsNotInAllowedRange")
 @Fluent
 public final class FailedLocalLoginsNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of FailedLocalLoginsNotInAllowedRange class. */
+    public FailedLocalLoginsNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public FailedLocalLoginsNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

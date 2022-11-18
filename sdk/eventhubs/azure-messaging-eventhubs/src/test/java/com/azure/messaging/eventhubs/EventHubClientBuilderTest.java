@@ -12,7 +12,6 @@ import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -115,23 +114,18 @@ public class EventHubClientBuilderTest {
 
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
-    public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
+    public void testProxyOptionsConfiguration(String proxyConfiguration) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
         configuration = configuration.put(JAVA_NET_USE_SYSTEM_PROXIES, "true");
 
-        boolean clientCreated = false;
-        try {
-            EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
-                .connectionString(CORRECT_CONNECTION_STRING)
-                .configuration(configuration)
-                .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-                .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-                .buildAsyncConsumerClient();
-            clientCreated = true;
-        } catch (Exception ex) {
-        }
-        Assertions.assertEquals(expectedClientCreation, clientCreated);
+        // Client creation should not fail with incorrect proxy configurations
+        EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
+            .configuration(configuration)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .buildAsyncConsumerClient();
     }
 
     @Test
@@ -241,16 +235,16 @@ public class EventHubClientBuilderTest {
 
     private static Stream<Arguments> getProxyConfigurations() {
         return Stream.of(
-            Arguments.of("http://localhost:8080", true),
-            Arguments.of("localhost:8080", true),
-            Arguments.of("localhost_8080", false),
-            Arguments.of("http://example.com:8080", true),
-            Arguments.of("http://sub.example.com:8080", true),
-            Arguments.of(":8080", false),
-            Arguments.of("http://localhost", true),
-            Arguments.of("sub.example.com:8080", true),
-            Arguments.of("https://username:password@sub.example.com:8080", true),
-            Arguments.of("https://username:password@sub.example.com", true)
+            Arguments.of("http://localhost:8080"),
+            Arguments.of("localhost:8080"),
+            Arguments.of("localhost_8080"),
+            Arguments.of("http://example.com:8080"),
+            Arguments.of("http://sub.example.com:8080"),
+            Arguments.of(":8080"),
+            Arguments.of("http://localhost"),
+            Arguments.of("sub.example.com:8080"),
+            Arguments.of("https://username:password@sub.example.com:8080"),
+            Arguments.of("https://username:password@sub.example.com")
         );
     }
 

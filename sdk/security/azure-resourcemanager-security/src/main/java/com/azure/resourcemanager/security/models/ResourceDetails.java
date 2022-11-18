@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ResourceDetails {
+    /** Creates an instance of ResourceDetails class. */
+    public ResourceDetails() {
+    }
+
     /**
      * Validates the instance.
      *

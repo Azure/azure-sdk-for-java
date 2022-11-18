@@ -33,7 +33,9 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateOkpKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
@@ -175,6 +177,28 @@ public abstract class KeyClientTestBase extends TestBase {
                 .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
                 .setTags(tags);
+
+        if (runManagedHsmTest) {
+            keyToCreate.setHardwareProtected(true);
+        }
+
+        testRunner.accept(keyToCreate);
+    }
+
+    @Test
+    public abstract void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
+
+    void createOkpKeyRunner(Consumer<CreateOkpKeyOptions> testRunner) {
+        final Map<String, String> tags = new HashMap<>();
+
+        tags.put("foo", "baz");
+
+        final CreateOkpKeyOptions keyToCreate =
+            new CreateOkpKeyOptions(testResourceNamer.randomName(KEY_NAME, 20))
+                .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+                .setTags(tags)
+                .setCurveName(KeyCurveName.ED25519);
 
         if (runManagedHsmTest) {
             keyToCreate.setHardwareProtected(true);

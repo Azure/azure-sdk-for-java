@@ -28,6 +28,10 @@ public final class AutomationSource {
     @JsonProperty(value = "ruleSets")
     private List<AutomationRuleSet> ruleSets;
 
+    /** Creates an instance of AutomationSource class. */
+    public AutomationSource() {
+    }
+
     /**
      * Get the eventSource property: A valid event source type.
      *

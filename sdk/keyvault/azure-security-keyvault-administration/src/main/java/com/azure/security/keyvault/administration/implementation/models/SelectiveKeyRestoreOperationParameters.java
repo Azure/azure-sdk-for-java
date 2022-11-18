@@ -17,11 +17,13 @@ public final class SelectiveKeyRestoreOperationParameters {
     private SASTokenParameter sasTokenParameters;
 
     /*
-     * The Folder name of the blob where the previous successful full backup
-     * was stored
+     * The Folder name of the blob where the previous successful full backup was stored
      */
     @JsonProperty(value = "folder", required = true)
     private String folder;
+
+    /** Creates an instance of SelectiveKeyRestoreOperationParameters class. */
+    public SelectiveKeyRestoreOperationParameters() {}
 
     /**
      * Get the sasTokenParameters property: The sasTokenParameters property.

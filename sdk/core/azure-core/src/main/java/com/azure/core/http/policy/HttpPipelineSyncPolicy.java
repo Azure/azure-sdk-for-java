@@ -13,6 +13,11 @@ import reactor.core.publisher.Mono;
  * Represents a {@link HttpPipelinePolicy} that doesn't do any asynchronous or synchronously blocking operations.
  */
 public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
+    /**
+     * Creates a new instance of {@link HttpPipelineSyncPolicy}.
+     */
+    public HttpPipelineSyncPolicy() {
+    }
 
     /**
      * {@inheritDoc}
@@ -40,6 +45,7 @@ public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
 
     /**
      * Method is invoked before the request is sent.
+     *
      * @param context The request context.
      */
     protected void beforeSendingRequest(HttpPipelineCallContext context) {
@@ -48,6 +54,7 @@ public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
 
     /**
      * Method is invoked after the response is received.
+     *
      * @param context The request context.
      * @param response The response received.
      * @return The transformed response.

@@ -36,6 +36,10 @@ public final class DiscoveredSecuritySolutionProperties {
     @JsonProperty(value = "sku", required = true)
     private String sku;
 
+    /** Creates an instance of DiscoveredSecuritySolutionProperties class. */
+    public DiscoveredSecuritySolutionProperties() {
+    }
+
     /**
      * Get the securityFamily property: The security family of the discovered solution.
      *

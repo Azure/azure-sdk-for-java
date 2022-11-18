@@ -1568,6 +1568,13 @@
       "type": "java.lang.String",
       "description": "Name of the Azure cloud to connect to.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.passwordless-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable passwordless connections to Azure databases by using OAuth2 Azure Active Directory token credentials.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
+      "defaultValue": false
     }
   ],
   "hints": [

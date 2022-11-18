@@ -16,6 +16,10 @@ public final class AssessmentLinks {
     @JsonProperty(value = "azurePortalUri", access = JsonProperty.Access.WRITE_ONLY)
     private String azurePortalUri;
 
+    /** Creates an instance of AssessmentLinks class. */
+    public AssessmentLinks() {
+    }
+
     /**
      * Get the azurePortalUri property: Link to assessment in Azure Portal.
      *

@@ -616,30 +616,25 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             catalogName: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             parameters: Object (Optional)
-     *             scheduledTasks (Optional): {
-     *                 String (Optional): {
-     *                     type: String(AutoExpire) (Required)
-     *                     enabled: String(Enabled/Disabled) (Optional)
-     *                     startTime: OffsetDateTime (Required)
-     *                 }
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             name: String (Optional)
-     *             environmentType: String (Required)
-     *             owner: String (Optional)
-     *             provisioningState: String (Optional)
-     *             resourceGroupId: String (Optional)
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     owner: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
      * }
      * }</pre>
      *
@@ -695,30 +690,25 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             catalogName: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             parameters: Object (Optional)
-     *             scheduledTasks (Optional): {
-     *                 String (Optional): {
-     *                     type: String(AutoExpire) (Required)
-     *                     enabled: String(Enabled/Disabled) (Optional)
-     *                     startTime: OffsetDateTime (Required)
-     *                 }
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             name: String (Optional)
-     *             environmentType: String (Required)
-     *             owner: String (Optional)
-     *             provisioningState: String (Optional)
-     *             resourceGroupId: String (Optional)
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     owner: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
      * }
      * }</pre>
      *
@@ -759,30 +749,25 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             catalogName: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             parameters: Object (Optional)
-     *             scheduledTasks (Optional): {
-     *                 String (Optional): {
-     *                     type: String(AutoExpire) (Required)
-     *                     enabled: String(Enabled/Disabled) (Optional)
-     *                     startTime: OffsetDateTime (Required)
-     *                 }
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             name: String (Optional)
-     *             environmentType: String (Required)
-     *             owner: String (Optional)
-     *             provisioningState: String (Optional)
-     *             resourceGroupId: String (Optional)
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     owner: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
      * }
      * }</pre>
      *
@@ -816,30 +801,25 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             catalogName: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             parameters: Object (Optional)
-     *             scheduledTasks (Optional): {
-     *                 String (Optional): {
-     *                     type: String(AutoExpire) (Required)
-     *                     enabled: String(Enabled/Disabled) (Optional)
-     *                     startTime: OffsetDateTime (Required)
-     *                 }
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             name: String (Optional)
-     *             environmentType: String (Required)
-     *             owner: String (Optional)
-     *             provisioningState: String (Optional)
-     *             resourceGroupId: String (Optional)
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     owner: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
      * }
      * }</pre>
      *
@@ -898,30 +878,25 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             catalogName: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             parameters: Object (Optional)
-     *             scheduledTasks (Optional): {
-     *                 String (Optional): {
-     *                     type: String(AutoExpire) (Required)
-     *                     enabled: String(Enabled/Disabled) (Optional)
-     *                     startTime: OffsetDateTime (Required)
-     *                 }
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             name: String (Optional)
-     *             environmentType: String (Required)
-     *             owner: String (Optional)
-     *             provisioningState: String (Optional)
-     *             resourceGroupId: String (Optional)
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     owner: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
      * }
      * }</pre>
      *
@@ -965,30 +940,25 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             catalogName: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             parameters: Object (Optional)
-     *             scheduledTasks (Optional): {
-     *                 String (Optional): {
-     *                     type: String(AutoExpire) (Required)
-     *                     enabled: String(Enabled/Disabled) (Optional)
-     *                     startTime: OffsetDateTime (Required)
-     *                 }
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             name: String (Optional)
-     *             environmentType: String (Required)
-     *             owner: String (Optional)
-     *             provisioningState: String (Optional)
-     *             resourceGroupId: String (Optional)
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     owner: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
      * }
      * }</pre>
      *
@@ -1558,7 +1528,7 @@ public final class EnvironmentsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteEnvironmentAsync(
+    public PollerFlux<BinaryData, Void> beginDeleteEnvironmentAsync(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
@@ -1571,7 +1541,7 @@ public final class EnvironmentsImpl {
                                 ? requestOptions.getContext()
                                 : Context.NONE),
                 TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+                TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -1589,7 +1559,7 @@ public final class EnvironmentsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteEnvironment(
+    public SyncPoller<BinaryData, Void> beginDeleteEnvironment(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         return this.beginDeleteEnvironmentAsync(projectName, userId, environmentName, requestOptions).getSyncPoller();
     }
@@ -1955,18 +1925,13 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             isDirectory: Boolean (Optional)
-     *             downloadUri: String (Optional)
-     *             fileSize: Float (Optional)
-     *             createdTime: OffsetDateTime (Optional)
-     *             lastModifiedTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     downloadUri: String (Optional)
+     *     fileSize: Float (Optional)
+     *     createdTime: OffsetDateTime (Optional)
+     *     lastModifiedTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -2017,18 +1982,13 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             isDirectory: Boolean (Optional)
-     *             downloadUri: String (Optional)
-     *             fileSize: Float (Optional)
-     *             createdTime: OffsetDateTime (Optional)
-     *             lastModifiedTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     downloadUri: String (Optional)
+     *     fileSize: Float (Optional)
+     *     createdTime: OffsetDateTime (Optional)
+     *     lastModifiedTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -2063,18 +2023,13 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             isDirectory: Boolean (Optional)
-     *             downloadUri: String (Optional)
-     *             fileSize: Float (Optional)
-     *             createdTime: OffsetDateTime (Optional)
-     *             lastModifiedTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     downloadUri: String (Optional)
+     *     fileSize: Float (Optional)
+     *     createdTime: OffsetDateTime (Optional)
+     *     lastModifiedTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -2103,18 +2058,13 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             isDirectory: Boolean (Optional)
-     *             downloadUri: String (Optional)
-     *             fileSize: Float (Optional)
-     *             createdTime: OffsetDateTime (Optional)
-     *             lastModifiedTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     downloadUri: String (Optional)
+     *     fileSize: Float (Optional)
+     *     createdTime: OffsetDateTime (Optional)
+     *     lastModifiedTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -2171,18 +2121,13 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             isDirectory: Boolean (Optional)
-     *             downloadUri: String (Optional)
-     *             fileSize: Float (Optional)
-     *             createdTime: OffsetDateTime (Optional)
-     *             lastModifiedTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     downloadUri: String (Optional)
+     *     fileSize: Float (Optional)
+     *     createdTime: OffsetDateTime (Optional)
+     *     lastModifiedTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -2224,18 +2169,13 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             isDirectory: Boolean (Optional)
-     *             downloadUri: String (Optional)
-     *             fileSize: Float (Optional)
-     *             createdTime: OffsetDateTime (Optional)
-     *             lastModifiedTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     downloadUri: String (Optional)
+     *     fileSize: Float (Optional)
+     *     createdTime: OffsetDateTime (Optional)
+     *     lastModifiedTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -2280,14 +2220,9 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             catalogName: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     catalogName: String (Optional)
      * }
      * }</pre>
      *
@@ -2343,14 +2278,9 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             catalogName: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     catalogName: String (Optional)
      * }
      * }</pre>
      *
@@ -2391,14 +2321,9 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             catalogName: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     catalogName: String (Optional)
      * }
      * }</pre>
      *
@@ -2500,50 +2425,45 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             catalogItemId: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             catalogName: String (Optional)
-     *             version: String (Optional)
-     *             summary: String (Optional)
+     *     catalogItemId: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     catalogName: String (Optional)
+     *     version: String (Optional)
+     *     summary: String (Optional)
+     *     description: String (Optional)
+     *     templatePath: String (Optional)
+     *     parametersSchema: String (Optional)
+     *     parameters (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
      *             description: String (Optional)
-     *             templatePath: String (Optional)
-     *             parametersSchema: String (Optional)
-     *             parameters (Optional): [
-     *                  (Optional){
-     *                     id: String (Optional)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     default: Object (Optional)
-     *                     type: String(array/boolean/integer/null/number/object/string) (Optional)
-     *                     readOnly: Boolean (Optional)
-     *                     required: Boolean (Optional)
-     *                     allowed (Optional): [
-     *                         Object (Optional)
-     *                     ]
-     *                 }
+     *             default: Object (Optional)
+     *             type: String(array/boolean/integer/null/number/object/string) (Optional)
+     *             readOnly: Boolean (Optional)
+     *             required: Boolean (Optional)
+     *             allowed (Optional): [
+     *                 Object (Optional)
      *             ]
-     *             actions (Optional): [
-     *                  (Optional){
-     *                     id: String (Optional)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     parametersSchema: String (Optional)
-     *                     parameters (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     type: String(Custom/Deploy/Delete) (Optional)
-     *                     typeName: String (Optional)
-     *                     runner: String (Optional)
-     *                 }
-     *             ]
-     *             runner: String (Optional)
-     *             status: String(Enabled/Disabled) (Optional)
-     *             eligibleForLatestVersion: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String (Optional)
+     *     actions (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             parametersSchema: String (Optional)
+     *             parameters (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             type: String(Custom/Deploy/Delete) (Optional)
+     *             typeName: String (Optional)
+     *             runner: String (Optional)
+     *         }
+     *     ]
+     *     runner: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     eligibleForLatestVersion: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -2601,50 +2521,45 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             catalogItemId: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             catalogName: String (Optional)
-     *             version: String (Optional)
-     *             summary: String (Optional)
+     *     catalogItemId: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     catalogName: String (Optional)
+     *     version: String (Optional)
+     *     summary: String (Optional)
+     *     description: String (Optional)
+     *     templatePath: String (Optional)
+     *     parametersSchema: String (Optional)
+     *     parameters (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
      *             description: String (Optional)
-     *             templatePath: String (Optional)
-     *             parametersSchema: String (Optional)
-     *             parameters (Optional): [
-     *                  (Optional){
-     *                     id: String (Optional)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     default: Object (Optional)
-     *                     type: String(array/boolean/integer/null/number/object/string) (Optional)
-     *                     readOnly: Boolean (Optional)
-     *                     required: Boolean (Optional)
-     *                     allowed (Optional): [
-     *                         Object (Optional)
-     *                     ]
-     *                 }
+     *             default: Object (Optional)
+     *             type: String(array/boolean/integer/null/number/object/string) (Optional)
+     *             readOnly: Boolean (Optional)
+     *             required: Boolean (Optional)
+     *             allowed (Optional): [
+     *                 Object (Optional)
      *             ]
-     *             actions (Optional): [
-     *                  (Optional){
-     *                     id: String (Optional)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     parametersSchema: String (Optional)
-     *                     parameters (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     type: String(Custom/Deploy/Delete) (Optional)
-     *                     typeName: String (Optional)
-     *                     runner: String (Optional)
-     *                 }
-     *             ]
-     *             runner: String (Optional)
-     *             status: String(Enabled/Disabled) (Optional)
-     *             eligibleForLatestVersion: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String (Optional)
+     *     actions (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             parametersSchema: String (Optional)
+     *             parameters (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             type: String(Custom/Deploy/Delete) (Optional)
+     *             typeName: String (Optional)
+     *             runner: String (Optional)
+     *         }
+     *     ]
+     *     runner: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     eligibleForLatestVersion: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -2687,50 +2602,45 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             catalogItemId: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             catalogName: String (Optional)
-     *             version: String (Optional)
-     *             summary: String (Optional)
+     *     catalogItemId: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     catalogName: String (Optional)
+     *     version: String (Optional)
+     *     summary: String (Optional)
+     *     description: String (Optional)
+     *     templatePath: String (Optional)
+     *     parametersSchema: String (Optional)
+     *     parameters (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
      *             description: String (Optional)
-     *             templatePath: String (Optional)
-     *             parametersSchema: String (Optional)
-     *             parameters (Optional): [
-     *                  (Optional){
-     *                     id: String (Optional)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     default: Object (Optional)
-     *                     type: String(array/boolean/integer/null/number/object/string) (Optional)
-     *                     readOnly: Boolean (Optional)
-     *                     required: Boolean (Optional)
-     *                     allowed (Optional): [
-     *                         Object (Optional)
-     *                     ]
-     *                 }
+     *             default: Object (Optional)
+     *             type: String(array/boolean/integer/null/number/object/string) (Optional)
+     *             readOnly: Boolean (Optional)
+     *             required: Boolean (Optional)
+     *             allowed (Optional): [
+     *                 Object (Optional)
      *             ]
-     *             actions (Optional): [
-     *                  (Optional){
-     *                     id: String (Optional)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     parametersSchema: String (Optional)
-     *                     parameters (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     type: String(Custom/Deploy/Delete) (Optional)
-     *                     typeName: String (Optional)
-     *                     runner: String (Optional)
-     *                 }
-     *             ]
-     *             runner: String (Optional)
-     *             status: String(Enabled/Disabled) (Optional)
-     *             eligibleForLatestVersion: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String (Optional)
+     *     actions (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             parametersSchema: String (Optional)
+     *             parameters (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             type: String(Custom/Deploy/Delete) (Optional)
+     *             typeName: String (Optional)
+     *             runner: String (Optional)
+     *         }
+     *     ]
+     *     runner: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     eligibleForLatestVersion: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -2910,14 +2820,9 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             deploymentTargetId: String (Optional)
-     *             status: String(Enabled/Disabled) (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     name: String (Optional)
+     *     deploymentTargetId: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *
@@ -2973,14 +2878,9 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             deploymentTargetId: String (Optional)
-     *             status: String(Enabled/Disabled) (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     name: String (Optional)
+     *     deploymentTargetId: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *
@@ -3021,14 +2921,9 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             deploymentTargetId: String (Optional)
-     *             status: String(Enabled/Disabled) (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     name: String (Optional)
+     *     deploymentTargetId: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *
@@ -3052,30 +2947,25 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             catalogName: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             parameters: Object (Optional)
-     *             scheduledTasks (Optional): {
-     *                 String (Optional): {
-     *                     type: String(AutoExpire) (Required)
-     *                     enabled: String(Enabled/Disabled) (Optional)
-     *                     startTime: OffsetDateTime (Required)
-     *                 }
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             name: String (Optional)
-     *             environmentType: String (Required)
-     *             owner: String (Optional)
-     *             provisioningState: String (Optional)
-     *             resourceGroupId: String (Optional)
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     owner: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
      * }
      * }</pre>
      *
@@ -3121,30 +3011,25 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             catalogName: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             parameters: Object (Optional)
-     *             scheduledTasks (Optional): {
-     *                 String (Optional): {
-     *                     type: String(AutoExpire) (Required)
-     *                     enabled: String(Enabled/Disabled) (Optional)
-     *                     startTime: OffsetDateTime (Required)
-     *                 }
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             name: String (Optional)
-     *             environmentType: String (Required)
-     *             owner: String (Optional)
-     *             provisioningState: String (Optional)
-     *             resourceGroupId: String (Optional)
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     owner: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
      * }
      * }</pre>
      *
@@ -3190,18 +3075,13 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             isDirectory: Boolean (Optional)
-     *             downloadUri: String (Optional)
-     *             fileSize: Float (Optional)
-     *             createdTime: OffsetDateTime (Optional)
-     *             lastModifiedTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     downloadUri: String (Optional)
+     *     fileSize: Float (Optional)
+     *     createdTime: OffsetDateTime (Optional)
+     *     lastModifiedTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -3247,18 +3127,13 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             isDirectory: Boolean (Optional)
-     *             downloadUri: String (Optional)
-     *             fileSize: Float (Optional)
-     *             createdTime: OffsetDateTime (Optional)
-     *             lastModifiedTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     downloadUri: String (Optional)
+     *     fileSize: Float (Optional)
+     *     createdTime: OffsetDateTime (Optional)
+     *     lastModifiedTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -3304,14 +3179,9 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             catalogName: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     catalogName: String (Optional)
      * }
      * }</pre>
      *
@@ -3357,50 +3227,45 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             catalogItemId: String (Optional)
-     *             catalogItemName: String (Optional)
-     *             catalogName: String (Optional)
-     *             version: String (Optional)
-     *             summary: String (Optional)
+     *     catalogItemId: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     catalogName: String (Optional)
+     *     version: String (Optional)
+     *     summary: String (Optional)
+     *     description: String (Optional)
+     *     templatePath: String (Optional)
+     *     parametersSchema: String (Optional)
+     *     parameters (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
      *             description: String (Optional)
-     *             templatePath: String (Optional)
-     *             parametersSchema: String (Optional)
-     *             parameters (Optional): [
-     *                  (Optional){
-     *                     id: String (Optional)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     default: Object (Optional)
-     *                     type: String(array/boolean/integer/null/number/object/string) (Optional)
-     *                     readOnly: Boolean (Optional)
-     *                     required: Boolean (Optional)
-     *                     allowed (Optional): [
-     *                         Object (Optional)
-     *                     ]
-     *                 }
+     *             default: Object (Optional)
+     *             type: String(array/boolean/integer/null/number/object/string) (Optional)
+     *             readOnly: Boolean (Optional)
+     *             required: Boolean (Optional)
+     *             allowed (Optional): [
+     *                 Object (Optional)
      *             ]
-     *             actions (Optional): [
-     *                  (Optional){
-     *                     id: String (Optional)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     parametersSchema: String (Optional)
-     *                     parameters (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     type: String(Custom/Deploy/Delete) (Optional)
-     *                     typeName: String (Optional)
-     *                     runner: String (Optional)
-     *                 }
-     *             ]
-     *             runner: String (Optional)
-     *             status: String(Enabled/Disabled) (Optional)
-     *             eligibleForLatestVersion: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String (Optional)
+     *     actions (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             parametersSchema: String (Optional)
+     *             parameters (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             type: String(Custom/Deploy/Delete) (Optional)
+     *             typeName: String (Optional)
+     *             runner: String (Optional)
+     *         }
+     *     ]
+     *     runner: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     eligibleForLatestVersion: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -3446,14 +3311,9 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             deploymentTargetId: String (Optional)
-     *             status: String(Enabled/Disabled) (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     name: String (Optional)
+     *     deploymentTargetId: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *

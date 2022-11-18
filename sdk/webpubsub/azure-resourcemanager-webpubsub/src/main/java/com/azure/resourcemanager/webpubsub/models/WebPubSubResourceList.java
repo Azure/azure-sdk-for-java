@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Object that includes an array of resources and a possible link for next set. */
 @Fluent
 public final class WebPubSubResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubResourceList.class);
-
     /*
      * List of the resources
      */
@@ -23,12 +19,15 @@ public final class WebPubSubResourceList {
     private List<WebPubSubResourceInner> value;
 
     /*
-     * The URL the client should use to fetch the next page (per server side
-     * paging).
+     * The URL the client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of WebPubSubResourceList class. */
+    public WebPubSubResourceList() {
+    }
 
     /**
      * Get the value property: List of the resources.

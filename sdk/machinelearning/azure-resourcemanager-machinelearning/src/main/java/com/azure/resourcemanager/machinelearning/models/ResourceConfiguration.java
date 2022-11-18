@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** The ResourceConfiguration model. */
 @Fluent
-public final class ResourceConfiguration {
+public class ResourceConfiguration {
     /*
      * Optional number of instances or nodes used by the compute target.
      */
@@ -30,6 +30,10 @@ public final class ResourceConfiguration {
     @JsonProperty(value = "properties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
+
+    /** Creates an instance of ResourceConfiguration class. */
+    public ResourceConfiguration() {
+    }
 
     /**
      * Get the instanceCount property: Optional number of instances or nodes used by the compute target.

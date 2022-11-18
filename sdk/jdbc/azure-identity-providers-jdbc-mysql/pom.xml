@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Providers JDBC MySQL</name>
@@ -22,13 +22,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-providers-core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
     </dependency>
 
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.30</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.0.31</version> <!-- {x-version-update;com.mysql:mysql-connector-j;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -65,7 +65,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>mysql:mysql-connector-java:[8.0.30]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
+                <include>com.mysql:mysql-connector-j:[8.0.31]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

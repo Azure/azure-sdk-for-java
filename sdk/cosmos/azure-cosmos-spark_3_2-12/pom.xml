@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.39.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.40.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -142,7 +142,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
-      <scope>provided</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.micrometer</groupId>
@@ -185,6 +185,7 @@
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.1.1]</include> <!-- {x-include-update;cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.2.0]</include> <!-- {x-include-update;cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;external_dependency} -->
+                <include>org.apache.spark:spark-sql_2.12:[3.3.0]</include> <!-- {x-include-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
                 <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
@@ -396,6 +397,22 @@
                       <shadedPattern>${shadingPrefix}.com.fasterxml</shadedPattern>
                     </relocation>
                     <relocation>
+                      <pattern>io.netty</pattern>
+                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.ctc.wstx</pattern>
+                      <shadedPattern>${shadingPrefix}.com.ctc.wstx</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.codahale.metrics</pattern>
+                      <shadedPattern>${shadingPrefix}.com.codahale.metrics</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.thoughtworks.paranamer</pattern>
+                      <shadedPattern>${shadingPrefix}.com.thoughtworks.paranamer</shadedPattern>
+                    </relocation>
+                    <relocation>
                       <pattern>io.micrometer</pattern>
                       <shadedPattern>${shadingPrefix}.io.micrometer</shadedPattern>
                     </relocation>
@@ -418,10 +435,6 @@
                     <relocation>
                       <pattern>javax.activation</pattern>
                       <shadedPattern>${shadingPrefix}.javax.activation</shadedPattern>
-                    </relocation>
-                    <relocation>
-                      <pattern>javax.xml</pattern>
-                      <shadedPattern>${shadingPrefix}.javax.xml</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.microsoft.azure</pattern>
@@ -591,122 +604,6 @@
             <executions>
               <execution>
                 <id>test</id>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>scala-test</id>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>sparkE2E_3-1</id>
-      <activation>
-        <file>
-          <exists>${basedir}/scalastyle_config.xml</exists>
-        </file>
-        <property>
-          <name>spark-e2e_3-1</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <includes>
-                <include>**/*.*</include>
-                <include>**/*Test.*</include>
-                <include>**/*Suite.*</include>
-                <include>**/*Spec.*</include>
-              </includes>
-              <skipTests>true</skipTests>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
-            <configuration>
-              <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-              <junitxml>.</junitxml>
-              <filereports>SparkTestSuite.txt</filereports>
-              <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
-            </configuration>
-            <executions>
-              <execution>
-                <id>test</id>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>scala-test</id>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>sparkE2E_3-2</id>
-      <activation>
-        <file>
-          <exists>${basedir}/scalastyle_config.xml</exists>
-        </file>
-        <property>
-          <name>spark-e2e_3-2</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <includes>
-                <include>**/*.*</include>
-                <include>**/*Test.*</include>
-                <include>**/*Suite.*</include>
-                <include>**/*Spec.*</include>
-              </includes>
-              <skipTests>true</skipTests>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
-            <configuration>
-              <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-              <junitxml>.</junitxml>
-              <filereports>SparkTestSuite.txt</filereports>
-              <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
-            </configuration>
-            <executions>
-              <execution>
-                <id>test</id>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>scala-test</id>
                 <goals>
                   <goal>test</goal>
                 </goals>

@@ -33,7 +33,7 @@ public final class ProjectsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"auorsukokw\",\"devCenterId\":\"plhlvnuuepzlrp\",\"description\":\"zsoldwey\"},\"location\":\"dunvmnnrwrbiorkt\",\"tags\":{\"miloxggdufiqndie\":\"wjhhgdnhxmsivf\",\"s\":\"zaofjchvcyy\",\"onmacjekniz\":\"gdotcubiipuipwo\"},\"id\":\"hqvcimpevfgmblr\",\"name\":\"ilbywdxsm\",\"type\":\"ccwr\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"rddh\",\"devCenterId\":\"atiz\",\"description\":\"onasxifto\"},\"location\":\"yzhftwesgogczh\",\"tags\":{\"gnyhmossxkkg\":\"xkr\",\"rghxjb\":\"h\",\"rnsvbuswd\":\"hqxvcxgfrpdsofbs\",\"ybycnunvj\":\"z\"},\"id\":\"rtkfawnopq\",\"name\":\"ikyzirtxdy\",\"type\":\"x\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class ProjectsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Project> response =
-            manager.projects().listByResourceGroup("bjcrxgibbdaxco", 456255387, Context.NONE);
+            manager.projects().listByResourceGroup("fcdmqnrojlpijn", 2062903356, Context.NONE);
 
-        Assertions.assertEquals("dunvmnnrwrbiorkt", response.iterator().next().location());
-        Assertions.assertEquals("wjhhgdnhxmsivf", response.iterator().next().tags().get("miloxggdufiqndie"));
-        Assertions.assertEquals("plhlvnuuepzlrp", response.iterator().next().devCenterId());
-        Assertions.assertEquals("zsoldwey", response.iterator().next().description());
+        Assertions.assertEquals("yzhftwesgogczh", response.iterator().next().location());
+        Assertions.assertEquals("xkr", response.iterator().next().tags().get("gnyhmossxkkg"));
+        Assertions.assertEquals("atiz", response.iterator().next().devCenterId());
+        Assertions.assertEquals("onasxifto", response.iterator().next().description());
     }
 }

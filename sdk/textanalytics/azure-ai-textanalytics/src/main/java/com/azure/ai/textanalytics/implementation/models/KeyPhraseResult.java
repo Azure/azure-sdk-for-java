@@ -39,7 +39,7 @@ public final class KeyPhraseResult extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public KeyPhraseResult setErrors(List<DocumentError> errors) {
+    public KeyPhraseResult setErrors(List<InputError> errors) {
         super.setErrors(errors);
         return this;
     }

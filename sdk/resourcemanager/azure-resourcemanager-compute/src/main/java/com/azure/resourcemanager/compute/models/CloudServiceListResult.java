@@ -26,6 +26,10 @@ public final class CloudServiceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CloudServiceListResult class. */
+    public CloudServiceListResult() {
+    }
+
     /**
      * Get the value property: The list of resources.
      *

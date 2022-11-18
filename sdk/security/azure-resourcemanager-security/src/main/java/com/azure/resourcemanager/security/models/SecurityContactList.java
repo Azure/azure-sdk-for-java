@@ -24,6 +24,10 @@ public final class SecurityContactList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SecurityContactList class. */
+    public SecurityContactList() {
+    }
+
     /**
      * Get the value property: List of security contacts.
      *
