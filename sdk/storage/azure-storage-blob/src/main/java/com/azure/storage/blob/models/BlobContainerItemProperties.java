@@ -92,6 +92,9 @@ public final class BlobContainerItemProperties {
     @JsonProperty(value = "ImmutableStorageWithVersioningEnabled")
     private Boolean isImmutableStorageWithVersioningEnabled;
 
+    /** Creates an instance of BlobContainerItemProperties class. */
+    public BlobContainerItemProperties() {}
+
     /**
      * Get the lastModified property: The Last-Modified property.
      *

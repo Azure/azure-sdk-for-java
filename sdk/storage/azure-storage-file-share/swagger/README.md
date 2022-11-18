@@ -15,8 +15,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.0'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/feature/storage/stg85base/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-12-02/file.json
+use: '@autorest/java@4.1.9'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-12-02/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -34,6 +34,8 @@ custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,Fi
 customization-class: src/main/java/ShareStorageCustomization.java
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
+use-input-stream-for-binary: true
+no-custom-headers: true
 ```
 
 ### Query Parameters

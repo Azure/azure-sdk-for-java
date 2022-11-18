@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,7 +50,19 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
+
+    private static final HttpHeaderName X_MS_MARKER = HttpHeaderName.fromString("x-ms-marker");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_NUMBER_OF_HANDLES_CLOSED =
+            HttpHeaderName.fromString("x-ms-number-of-handles-closed");
+
+    private static final HttpHeaderName X_MS_NUMBER_OF_HANDLES_FAILED =
+            HttpHeaderName.fromString("x-ms-number-of-handles-failed");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -58,17 +71,20 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DirectoriesForceCloseHandlesHeaders(HttpHeaders rawHeaders) {
-        this.xMsMarker = rawHeaders.getValue("x-ms-marker");
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        if (rawHeaders.getValue("x-ms-number-of-handles-closed") != null) {
-            this.xMsNumberOfHandlesClosed = Integer.parseInt(rawHeaders.getValue("x-ms-number-of-handles-closed"));
+        this.xMsMarker = rawHeaders.getValue(X_MS_MARKER);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsNumberOfHandlesClosed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_CLOSED);
+        if (xMsNumberOfHandlesClosed != null) {
+            this.xMsNumberOfHandlesClosed = Integer.parseInt(xMsNumberOfHandlesClosed);
         }
-        if (rawHeaders.getValue("x-ms-number-of-handles-failed") != null) {
-            this.xMsNumberOfHandlesFailed = Integer.parseInt(rawHeaders.getValue("x-ms-number-of-handles-failed"));
+        String xMsNumberOfHandlesFailed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_FAILED);
+        if (xMsNumberOfHandlesFailed != null) {
+            this.xMsNumberOfHandlesFailed = Integer.parseInt(xMsNumberOfHandlesFailed);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
         }
     }
 
@@ -173,28 +189,28 @@ public final class DirectoriesForceCloseHandlesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the DirectoriesForceCloseHandlesHeaders object itself.
      */
-    public DirectoriesForceCloseHandlesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public DirectoriesForceCloseHandlesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

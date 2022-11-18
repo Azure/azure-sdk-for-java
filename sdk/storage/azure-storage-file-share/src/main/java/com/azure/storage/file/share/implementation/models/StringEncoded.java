@@ -24,6 +24,9 @@ public final class StringEncoded {
      */
     @JacksonXmlText private String content;
 
+    /** Creates an instance of StringEncoded class. */
+    public StringEncoded() {}
+
     /**
      * Get the encoded property: The Encoded property.
      *

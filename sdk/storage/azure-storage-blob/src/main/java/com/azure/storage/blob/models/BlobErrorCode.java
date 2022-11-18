@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobErrorCode. */
+/** Error codes returned by the service. */
 public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value AccountAlreadyExists for BlobErrorCode. */
     public static final BlobErrorCode ACCOUNT_ALREADY_EXISTS = fromString("AccountAlreadyExists");

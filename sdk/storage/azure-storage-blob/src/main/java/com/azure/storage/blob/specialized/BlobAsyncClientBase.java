@@ -1320,9 +1320,9 @@ public class BlobAsyncClientBase {
 
     private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions,
         String eTag, Boolean getMD5, Context context) {
-        return azureBlobStorage.getBlobs().downloadWithResponseAsync(containerName, blobName, snapshot, versionId, null,
-            range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), eTag,
+        return azureBlobStorage.getBlobs().downloadNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot,
+            versionId, null, range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null,
+            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             customerProvidedKey, context);
     }
