@@ -289,11 +289,11 @@ public class HttpConstants {
         private static final long None = 0; // 0
         private static final long PartitionMerge = 1; // 1 << 0
 
-        public static final long SUPPORTED_CAPABILITIES;
-        public static final long SUPPORTED_CAPABILITIES_NONE;
+        public static final String SUPPORTED_CAPABILITIES;
+        public static final String SUPPORTED_CAPABILITIES_NONE;
         static {
-            SUPPORTED_CAPABILITIES = PartitionMerge;
-            SUPPORTED_CAPABILITIES_NONE = None;
+            SUPPORTED_CAPABILITIES = String.valueOf(PartitionMerge);
+            SUPPORTED_CAPABILITIES_NONE = String.valueOf(None);
         }
     }
 
