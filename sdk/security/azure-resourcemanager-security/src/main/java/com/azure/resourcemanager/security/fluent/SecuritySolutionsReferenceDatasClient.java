@@ -15,16 +15,6 @@ public interface SecuritySolutionsReferenceDatasClient {
     /**
      * Gets a list of all supported Security Solutions for the subscription.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported Security Solutions for the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecuritySolutionsReferenceDataListInner list();
-
-    /**
-     * Gets a list of all supported Security Solutions for the subscription.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,17 +25,14 @@ public interface SecuritySolutionsReferenceDatasClient {
     Response<SecuritySolutionsReferenceDataListInner> listWithResponse(Context context);
 
     /**
-     * Gets list of all supported Security Solutions for subscription and location.
+     * Gets a list of all supported Security Solutions for the subscription.
      *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all supported Security Solutions for subscription and location.
+     * @return a list of all supported Security Solutions for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecuritySolutionsReferenceDataListInner listByHomeRegion(String ascLocation);
+    SecuritySolutionsReferenceDataListInner list();
 
     /**
      * Gets list of all supported Security Solutions for subscription and location.
@@ -60,4 +47,17 @@ public interface SecuritySolutionsReferenceDatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecuritySolutionsReferenceDataListInner> listByHomeRegionWithResponse(String ascLocation, Context context);
+
+    /**
+     * Gets list of all supported Security Solutions for subscription and location.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of all supported Security Solutions for subscription and location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecuritySolutionsReferenceDataListInner listByHomeRegion(String ascLocation);
 }

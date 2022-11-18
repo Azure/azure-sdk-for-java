@@ -26,6 +26,10 @@ public final class SecurityTaskParameters {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of SecurityTaskParameters class. */
+    public SecurityTaskParameters() {
+    }
+
     /**
      * Get the name property: Name of the task type.
      *

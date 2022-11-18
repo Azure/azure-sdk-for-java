@@ -22,6 +22,10 @@ public final class IngestionConnectionString {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /** Creates an instance of IngestionConnectionString class. */
+    public IngestionConnectionString() {
+    }
+
     /**
      * Get the location property: The region where ingested logs and data resides.
      *

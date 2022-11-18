@@ -53,7 +53,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterIotSec")
-    private interface IotSecuritySolutionAnalyticsService {
+    public interface IotSecuritySolutionAnalyticsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
@@ -207,22 +207,6 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecuritySolutionAnalyticsModelListInner list(String resourceGroupName, String solutionName) {
-        return listAsync(resourceGroupName, solutionName).block();
-    }
-
-    /**
-     * Use this method to get IoT security Analytics metrics in an array.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -233,6 +217,22 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
     public Response<IoTSecuritySolutionAnalyticsModelListInner> listWithResponse(
         String resourceGroupName, String solutionName, Context context) {
         return listWithResponseAsync(resourceGroupName, solutionName, context).block();
+    }
+
+    /**
+     * Use this method to get IoT security Analytics metrics in an array.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Security analytics of your IoT Security solution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IoTSecuritySolutionAnalyticsModelListInner list(String resourceGroupName, String solutionName) {
+        return listWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
     }
 
     /**
@@ -357,22 +357,6 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecuritySolutionAnalyticsModelInner get(String resourceGroupName, String solutionName) {
-        return getAsync(resourceGroupName, solutionName).block();
-    }
-
-    /**
-     * Use this method to get IoT Security Analytics metrics.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -383,5 +367,21 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
     public Response<IoTSecuritySolutionAnalyticsModelInner> getWithResponse(
         String resourceGroupName, String solutionName, Context context) {
         return getWithResponseAsync(resourceGroupName, solutionName, context).block();
+    }
+
+    /**
+     * Use this method to get IoT Security Analytics metrics.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security analytics of your IoT Security solution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IoTSecuritySolutionAnalyticsModelInner get(String resourceGroupName, String solutionName) {
+        return getWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
     }
 }

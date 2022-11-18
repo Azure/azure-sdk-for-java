@@ -28,17 +28,6 @@ public final class CustomEntityStoreAssignmentsImpl implements CustomEntityStore
         this.serviceManager = serviceManager;
     }
 
-    public CustomEntityStoreAssignment getByResourceGroup(
-        String resourceGroupName, String customEntityStoreAssignmentName) {
-        CustomEntityStoreAssignmentInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, customEntityStoreAssignmentName);
-        if (inner != null) {
-            return new CustomEntityStoreAssignmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CustomEntityStoreAssignment> getByResourceGroupWithResponse(
         String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
         Response<CustomEntityStoreAssignmentInner> inner =
@@ -56,13 +45,24 @@ public final class CustomEntityStoreAssignmentsImpl implements CustomEntityStore
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String customEntityStoreAssignmentName) {
-        this.serviceClient().delete(resourceGroupName, customEntityStoreAssignmentName);
+    public CustomEntityStoreAssignment getByResourceGroup(
+        String resourceGroupName, String customEntityStoreAssignmentName) {
+        CustomEntityStoreAssignmentInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, customEntityStoreAssignmentName);
+        if (inner != null) {
+            return new CustomEntityStoreAssignmentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(
+    public Response<Void> deleteByResourceGroupWithResponse(
         String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, customEntityStoreAssignmentName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String customEntityStoreAssignmentName) {
+        this.serviceClient().delete(resourceGroupName, customEntityStoreAssignmentName);
     }
 
     public PagedIterable<CustomEntityStoreAssignment> listByResourceGroup(String resourceGroupName) {
@@ -155,7 +155,7 @@ public final class CustomEntityStoreAssignmentsImpl implements CustomEntityStore
                                     + " 'customEntityStoreAssignments'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -178,7 +178,7 @@ public final class CustomEntityStoreAssignmentsImpl implements CustomEntityStore
                                     + " 'customEntityStoreAssignments'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceGroupName, customEntityStoreAssignmentName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, context);
     }
 
     private CustomEntityStoreAssignmentsClient serviceClient() {

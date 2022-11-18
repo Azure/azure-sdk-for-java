@@ -22,6 +22,10 @@ public final class Cve {
     @JsonProperty(value = "link", access = JsonProperty.Access.WRITE_ONLY)
     private String link;
 
+    /** Creates an instance of Cve class. */
+    public Cve() {
+    }
+
     /**
      * Get the title property: CVE title.
      *

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data POST-ed to the nameAvailability action. */
 @Fluent
 public final class NameAvailabilityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityParameters.class);
-
     /*
-     * The resource type. Can be "Microsoft.SignalRService/SignalR" or
-     * "Microsoft.SignalRService/webPubSub"
+     * The resource type. Can be "Microsoft.SignalRService/SignalR" or "Microsoft.SignalRService/webPubSub"
      */
     @JsonProperty(value = "type", required = true)
     private String type;
@@ -26,6 +22,10 @@ public final class NameAvailabilityParameters {
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of NameAvailabilityParameters class. */
+    public NameAvailabilityParameters() {
+    }
 
     /**
      * Get the type property: The resource type. Can be "Microsoft.SignalRService/SignalR" or
@@ -76,14 +76,16 @@ public final class NameAvailabilityParameters {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model NameAvailabilityParameters"));
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model NameAvailabilityParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NameAvailabilityParameters.class);
 }

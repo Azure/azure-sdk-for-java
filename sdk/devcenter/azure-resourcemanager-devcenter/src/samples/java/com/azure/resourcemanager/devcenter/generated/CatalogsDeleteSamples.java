@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Catalogs Delete. */
 public final class CatalogsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Catalogs_Delete.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Catalogs_Delete.json
      */
     /**
      * Sample code: Catalogs_Delete.

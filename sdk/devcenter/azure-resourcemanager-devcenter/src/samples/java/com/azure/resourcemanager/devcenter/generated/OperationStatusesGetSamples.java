@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for OperationStatuses Get. */
 public final class OperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/OperationStatus_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/OperationStatus_Get.json
      */
     /**
      * Sample code: Get OperationStatus.

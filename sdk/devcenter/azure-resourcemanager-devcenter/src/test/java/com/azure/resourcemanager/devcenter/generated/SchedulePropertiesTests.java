@@ -18,13 +18,13 @@ public final class SchedulePropertiesTests {
         ScheduleProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"h\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"acstwityk\",\"timeZone\":\"vxccedcp\",\"state\":\"Disabled\"}")
+                    "{\"provisioningState\":\"kgtdlmkkze\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"pusdstt\",\"timeZone\":\"ogvbbejdcngq\",\"state\":\"Enabled\"}")
                 .toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("acstwityk", model.time());
-        Assertions.assertEquals("vxccedcp", model.timeZone());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("pusdstt", model.time());
+        Assertions.assertEquals("ogvbbejdcngq", model.timeZone());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
     }
 
     @Test
@@ -33,14 +33,14 @@ public final class SchedulePropertiesTests {
             new ScheduleProperties()
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("acstwityk")
-                .withTimeZone("vxccedcp")
-                .withState(EnableStatus.DISABLED);
+                .withTime("pusdstt")
+                .withTimeZone("ogvbbejdcngq")
+                .withState(EnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("acstwityk", model.time());
-        Assertions.assertEquals("vxccedcp", model.timeZone());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("pusdstt", model.time());
+        Assertions.assertEquals("ogvbbejdcngq", model.timeZone());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
     }
 }

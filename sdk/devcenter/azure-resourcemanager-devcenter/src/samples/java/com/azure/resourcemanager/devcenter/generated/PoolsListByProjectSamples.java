@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Pools ListByProject. */
 public final class PoolsListByProjectSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Pools_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Pools_List.json
      */
     /**
      * Sample code: Pools_ListByProject.
