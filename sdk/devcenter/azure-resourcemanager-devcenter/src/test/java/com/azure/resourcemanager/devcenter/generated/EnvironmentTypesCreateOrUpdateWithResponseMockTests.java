@@ -12,8 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
-import com.azure.resourcemanager.devcenter.models.DomainJoinType;
-import com.azure.resourcemanager.devcenter.models.NetworkConnection;
+import com.azure.resourcemanager.devcenter.models.EnvironmentType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -26,15 +25,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class NetworkConnectionsCreateOrUpdateMockTests {
+public final class EnvironmentTypesCreateOrUpdateWithResponseMockTests {
     @Test
-    public void testCreateOrUpdate() throws Exception {
+    public void testCreateOrUpdateWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"healthCheckStatus\":\"Running\",\"networkingResourceGroupName\":\"ov\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"ashcxlpmjerbdk\",\"domainName\":\"vidizozsdb\",\"organizationUnit\":\"xjmonf\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"location\":\"kdasvflyhbxcudch\",\"tags\":{\"ldforobwj\":\"rb\",\"vacqpbtuodxesz\":\"vizbfhfo\",\"rrwoycqucwyhahn\":\"bbelawumuaslzk\"},\"id\":\"mdr\",\"name\":\"ywuhpsvfuur\",\"type\":\"tlwexxwlalniexz\"}";
+            "{\"properties\":{\"provisioningState\":\"trdcnifmzzs\"},\"tags\":{\"suxmpraf\":\"brn\"},\"id\":\"ckh\",\"name\":\"cxvdfffwafqrouda\",\"type\":\"pavehhr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,31 +61,15 @@ public final class NetworkConnectionsCreateOrUpdateMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkConnection response =
+        EnvironmentType response =
             manager
-                .networkConnections()
-                .define("sieekpndzaapm")
-                .withRegion("rddga")
-                .withExistingResourceGroup("ukm")
-                .withTags(mapOf("cdisyir", "hiosrsjuiv", "ujrtrhqvwr", "xzhczexrxz", "gnl", "vk"))
-                .withNetworkingResourceGroupName("dqwyxeb")
-                .withDomainJoinType(DomainJoinType.AZURE_ADJOIN)
-                .withSubnetId("pmzznrtffya")
-                .withDomainName("tmhheioqa")
-                .withOrganizationUnit("v")
-                .withDomainUsername("fakeNamePlaceholder")
-                .withDomainPassword("fakePasswordPlaceholder")
+                .environmentTypes()
+                .define("dgkynscliqhzvhxn")
+                .withExistingDevcenter("krsgsgb", "huzqgn")
+                .withTags(mapOf("frbbc", "zxhi"))
                 .create();
 
-        Assertions.assertEquals("kdasvflyhbxcudch", response.location());
-        Assertions.assertEquals("rb", response.tags().get("ldforobwj"));
-        Assertions.assertEquals("ov", response.networkingResourceGroupName());
-        Assertions.assertEquals(DomainJoinType.HYBRID_AZURE_ADJOIN, response.domainJoinType());
-        Assertions.assertEquals("ashcxlpmjerbdk", response.subnetId());
-        Assertions.assertEquals("vidizozsdb", response.domainName());
-        Assertions.assertEquals("xjmonf", response.organizationUnit());
-        Assertions.assertEquals("fakeNamePlaceholder", response.domainUsername());
-        Assertions.assertEquals("fakePasswordPlaceholder", response.domainPassword());
+        Assertions.assertEquals("brn", response.tags().get("suxmpraf"));
     }
 
     @SuppressWarnings("unchecked")

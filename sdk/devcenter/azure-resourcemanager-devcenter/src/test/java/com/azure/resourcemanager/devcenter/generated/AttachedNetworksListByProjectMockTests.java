@@ -33,7 +33,7 @@ public final class AttachedNetworksListByProjectMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"tjuewbcihx\",\"networkConnectionId\":\"uwhcjyxccybv\",\"networkConnectionLocation\":\"yakk\",\"healthCheckStatus\":\"Failed\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"wjplma\",\"name\":\"stcyohpfkyrkdbd\",\"type\":\"iogsjkmnwq\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"mojmsvpkjprvkw\",\"networkConnectionId\":\"fz\",\"networkConnectionLocation\":\"jyxgtczh\",\"healthCheckStatus\":\"Warning\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"shmkxmaehvbbxur\",\"name\":\"pltfnhtba\",\"type\":\"kgxywr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class AttachedNetworksListByProjectMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AttachedNetworkConnection> response =
-            manager.attachedNetworks().listByProject("t", "gkxnyedabg", 1233839644, Context.NONE);
+            manager.attachedNetworks().listByProject("zuo", "ejwcwwqiok", 2110240419, Context.NONE);
 
-        Assertions.assertEquals("uwhcjyxccybv", response.iterator().next().networkConnectionId());
+        Assertions.assertEquals("fz", response.iterator().next().networkConnectionId());
     }
 }

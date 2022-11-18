@@ -14,23 +14,21 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the DevCenterClientImpl type. */
-@ServiceClientBuilder(serviceClients = {DevCenterClientImpl.class})
-public final class DevCenterClientBuilder {
+/** A builder for creating a new instance of the DevCenterManagementClientImpl type. */
+@ServiceClientBuilder(serviceClients = {DevCenterManagementClientImpl.class})
+public final class DevCenterManagementClientBuilder {
     /*
-     * Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000).
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000).
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
-     * @return the DevCenterClientBuilder.
+     * @return the DevCenterManagementClientBuilder.
      */
-    public DevCenterClientBuilder subscriptionId(String subscriptionId) {
+    public DevCenterManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -44,9 +42,9 @@ public final class DevCenterClientBuilder {
      * Sets server parameter.
      *
      * @param endpoint the endpoint value.
-     * @return the DevCenterClientBuilder.
+     * @return the DevCenterManagementClientBuilder.
      */
-    public DevCenterClientBuilder endpoint(String endpoint) {
+    public DevCenterManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -60,9 +58,9 @@ public final class DevCenterClientBuilder {
      * Sets The environment to connect to.
      *
      * @param environment the environment value.
-     * @return the DevCenterClientBuilder.
+     * @return the DevCenterManagementClientBuilder.
      */
-    public DevCenterClientBuilder environment(AzureEnvironment environment) {
+    public DevCenterManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +74,9 @@ public final class DevCenterClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the DevCenterClientBuilder.
+     * @return the DevCenterManagementClientBuilder.
      */
-    public DevCenterClientBuilder pipeline(HttpPipeline pipeline) {
+    public DevCenterManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +90,9 @@ public final class DevCenterClientBuilder {
      * Sets The default poll interval for long-running operation.
      *
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the DevCenterClientBuilder.
+     * @return the DevCenterManagementClientBuilder.
      */
-    public DevCenterClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public DevCenterManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +106,19 @@ public final class DevCenterClientBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the DevCenterClientBuilder.
+     * @return the DevCenterManagementClientBuilder.
      */
-    public DevCenterClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public DevCenterManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of DevCenterClientImpl with the provided parameters.
+     * Builds an instance of DevCenterManagementClientImpl with the provided parameters.
      *
-     * @return an instance of DevCenterClientImpl.
+     * @return an instance of DevCenterManagementClientImpl.
      */
-    public DevCenterClientImpl buildClient() {
+    public DevCenterManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline =
@@ -133,8 +131,8 @@ public final class DevCenterClientBuilder {
             (serializerAdapter != null)
                 ? serializerAdapter
                 : SerializerFactory.createDefaultManagementSerializerAdapter();
-        DevCenterClientImpl client =
-            new DevCenterClientImpl(
+        DevCenterManagementClientImpl client =
+            new DevCenterManagementClientImpl(
                 localPipeline,
                 localSerializerAdapter,
                 localDefaultPollInterval,

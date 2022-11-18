@@ -9,32 +9,27 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
-import com.azure.resourcemanager.devcenter.models.DomainJoinType;
-import com.azure.resourcemanager.devcenter.models.NetworkConnection;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class NetworkConnectionsListMockTests {
+public final class EnvironmentTypesDeleteWithResponseMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testDeleteWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"ddjib\",\"healthCheckStatus\":\"Failed\",\"networkingResourceGroupName\":\"ititvtzeexavoxt\",\"domainJoinType\":\"AzureADJoin\",\"subnetId\":\"ecdmdqbwpy\",\"domainName\":\"tgsfja\",\"organizationUnit\":\"slhhxudbxv\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"location\":\"zrcxfailcfxwmdbo\",\"tags\":{\"ckknhxkizvy\":\"gsftufqobrjlnacg\",\"nok\":\"nrzvuljraaer\",\"a\":\"gukkjqnvbroy\"},\"id\":\"xulcdisdos\",\"name\":\"jbjsvgjrwh\",\"type\":\"yvycytdclxgcckn\"}]}";
+        String responseStr = "{}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,16 +57,6 @@ public final class NetworkConnectionsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<NetworkConnection> response = manager.networkConnections().list(1190284129, Context.NONE);
-
-        Assertions.assertEquals("zrcxfailcfxwmdbo", response.iterator().next().location());
-        Assertions.assertEquals("gsftufqobrjlnacg", response.iterator().next().tags().get("ckknhxkizvy"));
-        Assertions.assertEquals("ititvtzeexavoxt", response.iterator().next().networkingResourceGroupName());
-        Assertions.assertEquals(DomainJoinType.AZURE_ADJOIN, response.iterator().next().domainJoinType());
-        Assertions.assertEquals("ecdmdqbwpy", response.iterator().next().subnetId());
-        Assertions.assertEquals("tgsfja", response.iterator().next().domainName());
-        Assertions.assertEquals("slhhxudbxv", response.iterator().next().organizationUnit());
-        Assertions.assertEquals("fakeNamePlaceholder", response.iterator().next().domainUsername());
-        Assertions.assertEquals("fakePasswordPlaceholder", response.iterator().next().domainPassword());
+        manager.environmentTypes().deleteWithResponse("vluwmncsttij", "y", "vpo", Context.NONE);
     }
 }

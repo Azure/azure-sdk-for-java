@@ -25,7 +25,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.devcenter.fluent.AttachedNetworksClient;
 import com.azure.resourcemanager.devcenter.fluent.CatalogsClient;
 import com.azure.resourcemanager.devcenter.fluent.DevBoxDefinitionsClient;
-import com.azure.resourcemanager.devcenter.fluent.DevCenterClient;
+import com.azure.resourcemanager.devcenter.fluent.DevCenterManagementClient;
 import com.azure.resourcemanager.devcenter.fluent.DevCentersClient;
 import com.azure.resourcemanager.devcenter.fluent.EnvironmentTypesClient;
 import com.azure.resourcemanager.devcenter.fluent.GalleriesClient;
@@ -50,18 +50,14 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DevCenterClientImpl type. */
-@ServiceClient(builder = DevCenterClientBuilder.class)
-public final class DevCenterClientImpl implements DevCenterClient {
-    /**
-     * Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000).
-     */
+/** Initializes a new instance of the DevCenterManagementClientImpl type. */
+@ServiceClient(builder = DevCenterManagementClientBuilder.class)
+public final class DevCenterManagementClientImpl implements DevCenterManagementClient {
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000).
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -346,17 +342,16 @@ public final class DevCenterClientImpl implements DevCenterClient {
     }
 
     /**
-     * Initializes an instance of DevCenterClient client.
+     * Initializes an instance of DevCenterManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g.
-     *     00000000-0000-0000-0000-000000000000).
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    DevCenterClientImpl(
+    DevCenterManagementClientImpl(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
@@ -368,7 +363,7 @@ public final class DevCenterClientImpl implements DevCenterClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-09-01-preview";
+        this.apiVersion = "2022-10-12-preview";
         this.devCenters = new DevCentersClientImpl(this);
         this.projects = new ProjectsClientImpl(this);
         this.attachedNetworks = new AttachedNetworksClientImpl(this);
@@ -529,5 +524,5 @@ public final class DevCenterClientImpl implements DevCenterClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DevCenterClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DevCenterManagementClientImpl.class);
 }

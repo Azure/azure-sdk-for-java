@@ -7,11 +7,10 @@ package com.azure.resourcemanager.devcenter.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for DevCenterClient class. */
-public interface DevCenterClient {
+/** The interface for DevCenterManagementClient class. */
+public interface DevCenterManagementClient {
     /**
-     * Gets Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000).
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
