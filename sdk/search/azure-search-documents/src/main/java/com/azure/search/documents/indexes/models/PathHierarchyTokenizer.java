@@ -21,7 +21,7 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2";
+    private final String odataType = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2";
 
     /*
      * The delimiter character to use. Default is "/".

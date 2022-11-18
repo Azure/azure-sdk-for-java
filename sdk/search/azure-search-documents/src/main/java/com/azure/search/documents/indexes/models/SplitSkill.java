@@ -21,7 +21,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType = "#Microsoft.Skills.Text.SplitSkill";
+    private final String odataType = "#Microsoft.Skills.Text.SplitSkill";
 
     /*
      * A value indicating which language code to use. Default is en.

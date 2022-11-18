@@ -20,7 +20,7 @@ public final class ConditionalSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType = "#Microsoft.Skills.Util.ConditionalSkill";
+    private final String odataType = "#Microsoft.Skills.Util.ConditionalSkill";
 
     /**
      * Creates an instance of ConditionalSkill class.

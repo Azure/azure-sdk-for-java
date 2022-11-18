@@ -20,7 +20,7 @@ public final class LimitTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.LimitTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.LimitTokenFilter";
 
     /*
      * The maximum number of tokens to produce. Default is 1.

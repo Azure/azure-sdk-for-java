@@ -23,7 +23,7 @@ public final class ShaperSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType = "#Microsoft.Skills.Util.ShaperSkill";
+    private final String odataType = "#Microsoft.Skills.Util.ShaperSkill";
 
     /**
      * Creates an instance of ShaperSkill class.

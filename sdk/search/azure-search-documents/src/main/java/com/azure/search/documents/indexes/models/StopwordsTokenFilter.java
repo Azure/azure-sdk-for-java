@@ -21,7 +21,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.StopwordsTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.StopwordsTokenFilter";
 
     /*
      * The list of stopwords. This property and the stopwords list property cannot both be set.

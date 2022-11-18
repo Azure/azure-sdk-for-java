@@ -20,7 +20,7 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
     /*
      * Identifies the concrete type of the cognitive service resource attached to a skillset.
      */
-    private String odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
+    private final String odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
 
     /*
      * The key used to provision the cognitive service resource attached to a skillset.

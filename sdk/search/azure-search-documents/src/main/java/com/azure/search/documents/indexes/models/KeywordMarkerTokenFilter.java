@@ -20,7 +20,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.KeywordMarkerTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.KeywordMarkerTokenFilter";
 
     /*
      * A list of words to mark as keywords.

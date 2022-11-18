@@ -20,7 +20,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType = "#Microsoft.Skills.Text.V3.EntityLinkingSkill";
+    private final String odataType = "#Microsoft.Skills.Text.V3.EntityLinkingSkill";
 
     /*
      * A value indicating which language code to use. Default is en.

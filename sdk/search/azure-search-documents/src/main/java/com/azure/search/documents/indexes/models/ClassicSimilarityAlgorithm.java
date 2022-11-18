@@ -22,7 +22,7 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
     /*
      * The @odata.type property.
      */
-    private String odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
+    private final String odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
 
     /** Creates an instance of ClassicSimilarityAlgorithm class. */
     public ClassicSimilarityAlgorithm() {}

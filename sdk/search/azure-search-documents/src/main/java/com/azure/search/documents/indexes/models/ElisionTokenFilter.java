@@ -23,7 +23,7 @@ public final class ElisionTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.ElisionTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.ElisionTokenFilter";
 
     /*
      * The set of articles to remove.

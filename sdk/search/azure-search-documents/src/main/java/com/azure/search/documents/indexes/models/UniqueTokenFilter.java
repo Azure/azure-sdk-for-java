@@ -20,7 +20,7 @@ public final class UniqueTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.UniqueTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.UniqueTokenFilter";
 
     /*
      * A value indicating whether to remove duplicates only at the same position. Default is false.

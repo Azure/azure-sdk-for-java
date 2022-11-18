@@ -25,7 +25,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.PatternReplaceTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.PatternReplaceTokenFilter";
 
     /*
      * A regular expression pattern.

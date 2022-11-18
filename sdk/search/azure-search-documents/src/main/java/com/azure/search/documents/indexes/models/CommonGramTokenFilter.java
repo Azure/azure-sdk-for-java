@@ -23,7 +23,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.CommonGramTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.CommonGramTokenFilter";
 
     /*
      * The set of common words.

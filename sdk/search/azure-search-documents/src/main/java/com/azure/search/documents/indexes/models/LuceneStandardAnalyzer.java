@@ -20,7 +20,7 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     /*
      * Identifies the concrete type of the analyzer.
      */
-    private String odataType = "#Microsoft.Azure.Search.StandardAnalyzer";
+    private final String odataType = "#Microsoft.Azure.Search.StandardAnalyzer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token

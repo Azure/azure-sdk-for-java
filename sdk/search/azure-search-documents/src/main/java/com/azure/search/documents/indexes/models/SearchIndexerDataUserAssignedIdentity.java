@@ -20,7 +20,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
     /*
      * Identifies the concrete type of the identity.
      */
-    private String odataType = "#Microsoft.Azure.Search.DataUserAssignedIdentity";
+    private final String odataType = "#Microsoft.Azure.Search.DataUserAssignedIdentity";
 
     /*
      * The fully qualified Azure resource Id of a user assigned managed identity typically in the form

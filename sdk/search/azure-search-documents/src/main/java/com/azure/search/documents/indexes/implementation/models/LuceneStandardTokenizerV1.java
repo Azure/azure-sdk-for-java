@@ -21,7 +21,7 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType = "#Microsoft.Azure.Search.StandardTokenizer";
+    private final String odataType = "#Microsoft.Azure.Search.StandardTokenizer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split.

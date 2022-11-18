@@ -23,7 +23,7 @@ public final class SnowballTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.SnowballTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.SnowballTokenFilter";
 
     /*
      * The language to use.

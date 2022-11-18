@@ -18,7 +18,7 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
     /*
      * Identifies the concrete type of the identity.
      */
-    private String odataType = "#Microsoft.Azure.Search.DataNoneIdentity";
+    private final String odataType = "#Microsoft.Azure.Search.DataNoneIdentity";
 
     /** Creates an instance of SearchIndexerDataNoneIdentity class. */
     public SearchIndexerDataNoneIdentity() {}

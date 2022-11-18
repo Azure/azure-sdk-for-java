@@ -21,7 +21,7 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
     /*
      * Identifies the concrete type of the data change detection policy.
      */
-    private String odataType = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
+    private final String odataType = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
 
     /** Creates an instance of SqlIntegratedChangeTrackingPolicy class. */
     public SqlIntegratedChangeTrackingPolicy() {}

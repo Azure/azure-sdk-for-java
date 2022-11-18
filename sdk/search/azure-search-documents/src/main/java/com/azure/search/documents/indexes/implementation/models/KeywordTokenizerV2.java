@@ -21,7 +21,7 @@ public final class KeywordTokenizerV2 extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType = "#Microsoft.Azure.Search.KeywordTokenizerV2";
+    private final String odataType = "#Microsoft.Azure.Search.KeywordTokenizerV2";
 
     /*
      * The maximum token length. Default is 256. Tokens longer than the maximum length are split. The maximum token

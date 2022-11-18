@@ -20,7 +20,7 @@ public final class LengthTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.LengthTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.LengthTokenFilter";
 
     /*
      * The minimum length in characters. Default is 0. Maximum is 300. Must be less than the value of max.

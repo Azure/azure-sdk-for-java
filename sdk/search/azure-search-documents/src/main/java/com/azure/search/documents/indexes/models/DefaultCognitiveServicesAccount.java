@@ -18,7 +18,7 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     /*
      * Identifies the concrete type of the cognitive service resource attached to a skillset.
      */
-    private String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
+    private final String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
 
     /** Creates an instance of DefaultCognitiveServicesAccount class. */
     public DefaultCognitiveServicesAccount() {}

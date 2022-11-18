@@ -23,7 +23,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType = "#Microsoft.Azure.Search.ClassicTokenizer";
+    private final String odataType = "#Microsoft.Azure.Search.ClassicTokenizer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token

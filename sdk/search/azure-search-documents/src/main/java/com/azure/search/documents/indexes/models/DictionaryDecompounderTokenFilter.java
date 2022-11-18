@@ -20,7 +20,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType = "#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter";
+    private final String odataType = "#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter";
 
     /*
      * The list of words to match against.
