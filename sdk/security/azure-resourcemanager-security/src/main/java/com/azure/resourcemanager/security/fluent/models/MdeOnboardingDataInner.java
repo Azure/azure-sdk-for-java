@@ -17,6 +17,10 @@ public final class MdeOnboardingDataInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private MdeOnboardingDataProperties innerProperties;
 
+    /** Creates an instance of MdeOnboardingDataInner class. */
+    public MdeOnboardingDataInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the MDE configuration or data parameter needed to onboard the
      * machine to MDE.

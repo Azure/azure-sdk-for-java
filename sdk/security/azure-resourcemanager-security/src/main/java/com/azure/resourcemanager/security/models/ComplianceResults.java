@@ -40,18 +40,6 @@ public interface ComplianceResults {
      *
      * @param resourceId The identifier of the resource.
      * @param complianceResultName name of the desired assessment compliance result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a compliance result.
-     */
-    ComplianceResult get(String resourceId, String complianceResultName);
-
-    /**
-     * Security Compliance Result.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param complianceResultName name of the desired assessment compliance result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -59,4 +47,16 @@ public interface ComplianceResults {
      * @return a compliance result along with {@link Response}.
      */
     Response<ComplianceResult> getWithResponse(String resourceId, String complianceResultName, Context context);
+
+    /**
+     * Security Compliance Result.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param complianceResultName name of the desired assessment compliance result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a compliance result.
+     */
+    ComplianceResult get(String resourceId, String complianceResultName);
 }

@@ -5,15 +5,18 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.DiskStorageAccountTypes;
 import com.azure.resourcemanager.compute.models.Gallery;
 import com.azure.resourcemanager.compute.models.GalleryImage;
+import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryImageUpdate;
 import com.azure.resourcemanager.compute.models.GalleryImageVersion;
+import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
@@ -21,6 +24,7 @@ import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
 import com.azure.resourcemanager.compute.models.ResourceRange;
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageInner;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 
@@ -35,6 +39,7 @@ import java.util.Map;
 /** The implementation for GalleryImage and its create and update interfaces. */
 class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImageInner, GalleryImageImpl>
     implements GalleryImage, GalleryImage.Definition, GalleryImage.Update {
+    private static final String FEATURE_SECURITY_TYPE = "SecurityType";
     private final ComputeManager manager;
     private String resourceGroupName;
     private String galleryName;
@@ -225,6 +230,24 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     public String releaseNoteUri() {
         return this.innerModel().releaseNoteUri();
+    }
+
+    @Override
+    public HyperVGeneration hyperVGeneration() {
+        return this.innerModel().hyperVGeneration();
+    }
+
+    @Override
+    public SecurityTypes securityType() {
+        return CoreUtils.isNullOrEmpty(this.innerModel().features())
+            ? null
+            :
+            this.innerModel().features()
+                .stream()
+                .filter(feature -> FEATURE_SECURITY_TYPE.equals(feature.name()))
+                .findAny()
+                .map(feature -> SecurityTypes.fromString(feature.value()))
+                .orElse(null);
     }
 
     @Override
@@ -542,6 +565,28 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
             this.galleryImageUpdate.withTags(tags);
         }
         return this;
+    }
+
+    @Override
+    public GalleryImageImpl withHyperVGeneration(HyperVGeneration hyperVGeneration) {
+        this.innerModel().withHyperVGeneration(hyperVGeneration);
+        return this;
+    }
+
+    @Override
+    public GalleryImageImpl withTrustedLaunch() {
+        ensureFeatures().add(
+            new GalleryImageFeature()
+                .withName(FEATURE_SECURITY_TYPE)
+                .withValue(SecurityTypes.TRUSTED_LAUNCH.toString()));
+        return this;
+    }
+
+    private List<GalleryImageFeature> ensureFeatures() {
+        if (this.innerModel().features() == null) {
+            this.innerModel().withFeatures(new ArrayList<>());
+        }
+        return this.innerModel().features();
     }
 
     private boolean isInUpdateMode() {

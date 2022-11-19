@@ -22,6 +22,10 @@ public final class DataExportSettings extends SettingInner {
     @JsonProperty(value = "properties")
     private DataExportSettingProperties innerProperties;
 
+    /** Creates an instance of DataExportSettings class. */
+    public DataExportSettings() {
+    }
+
     /**
      * Get the innerProperties property: Data export setting data.
      *

@@ -55,7 +55,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterApplic")
-    private interface ApplicationsService {
+    public interface ApplicationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications")
         @ExpectedResponses({200})

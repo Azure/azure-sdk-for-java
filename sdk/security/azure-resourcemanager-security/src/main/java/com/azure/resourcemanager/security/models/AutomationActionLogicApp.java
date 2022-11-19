@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.net.URL;
 
 /**
  * The logic app action that should be triggered. To learn more about Microsoft Defender for Cloud's Workflow Automation
@@ -28,7 +29,11 @@ public final class AutomationActionLogicApp extends AutomationAction {
      * The Logic App trigger URI endpoint (it will not be included in any response).
      */
     @JsonProperty(value = "uri")
-    private String uri;
+    private URL uri;
+
+    /** Creates an instance of AutomationActionLogicApp class. */
+    public AutomationActionLogicApp() {
+    }
 
     /**
      * Get the logicAppResourceId property: The triggered Logic App Azure Resource ID. This can also reside on other
@@ -57,7 +62,7 @@ public final class AutomationActionLogicApp extends AutomationAction {
      *
      * @return the uri value.
      */
-    public String uri() {
+    public URL uri() {
         return this.uri;
     }
 
@@ -67,7 +72,7 @@ public final class AutomationActionLogicApp extends AutomationAction {
      * @param uri the uri value to set.
      * @return the AutomationActionLogicApp object itself.
      */
-    public AutomationActionLogicApp withUri(String uri) {
+    public AutomationActionLogicApp withUri(URL uri) {
         this.uri = uri;
         return this;
     }

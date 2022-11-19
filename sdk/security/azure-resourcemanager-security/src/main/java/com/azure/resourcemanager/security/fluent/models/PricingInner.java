@@ -24,6 +24,10 @@ public final class PricingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private PricingProperties innerProperties;
 
+    /** Creates an instance of PricingInner class. */
+    public PricingInner() {
+    }
+
     /**
      * Get the innerProperties property: Pricing data.
      *

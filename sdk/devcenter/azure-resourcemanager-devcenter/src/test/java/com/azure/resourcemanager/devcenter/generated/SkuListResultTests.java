@@ -14,7 +14,7 @@ public final class SkuListResultTests {
         SkuListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"resourceType\":\"qagvrvm\",\"locations\":[\"ukghimdblxgw\"],\"capabilities\":[],\"name\":\"njhf\",\"tier\":\"Basic\",\"size\":\"szkkfoqre\",\"family\":\"kzikfjawneaivxwc\",\"capacity\":220414413},{\"resourceType\":\"c\",\"locations\":[\"lsfeaenwabfatkld\",\"xbjhwuaanozjosph\"],\"capabilities\":[],\"name\":\"l\",\"tier\":\"Premium\",\"size\":\"xagl\",\"family\":\"imjwosyt\",\"capacity\":802895356},{\"resourceType\":\"skfc\",\"locations\":[\"umiekkezzi\",\"hlyfjhdgqgg\"],\"capabilities\":[],\"name\":\"unygaeqid\",\"tier\":\"Premium\",\"size\":\"t\",\"family\":\"llrxcyjmoad\",\"capacity\":59301648},{\"resourceType\":\"r\",\"locations\":[\"dmjsjqb\",\"hhyxxrw\",\"yc\",\"duhpk\"],\"capabilities\":[],\"name\":\"ymareqnajxqugj\",\"tier\":\"Standard\",\"size\":\"ubeddg\",\"family\":\"ofwq\",\"capacity\":761384571}],\"nextLink\":\"lkrm\"}")
+                    "{\"value\":[{\"resourceType\":\"mabiknsorgjhxb\",\"locations\":[\"lwwrl\",\"dmtnc\"],\"capabilities\":[],\"name\":\"otllxdyhgsyo\",\"tier\":\"Premium\",\"size\":\"ltdtbnnhad\",\"family\":\"crkvcikhnv\",\"capacity\":703916773}],\"nextLink\":\"gxqquezik\"}")
                 .toObject(SkuListResult.class);
     }
 

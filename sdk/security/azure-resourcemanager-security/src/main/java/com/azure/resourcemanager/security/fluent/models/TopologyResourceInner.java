@@ -26,6 +26,10 @@ public final class TopologyResourceInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of TopologyResourceInner class. */
+    public TopologyResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties property.
      *

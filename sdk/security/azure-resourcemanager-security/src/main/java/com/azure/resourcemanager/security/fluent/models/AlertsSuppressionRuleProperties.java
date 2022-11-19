@@ -57,6 +57,10 @@ public final class AlertsSuppressionRuleProperties {
     @JsonProperty(value = "suppressionAlertsScope")
     private SuppressionAlertsScope suppressionAlertsScope;
 
+    /** Creates an instance of AlertsSuppressionRuleProperties class. */
+    public AlertsSuppressionRuleProperties() {
+    }
+
     /**
      * Get the alertType property: Type of the alert to automatically suppress. For all alert types, use '*'.
      *

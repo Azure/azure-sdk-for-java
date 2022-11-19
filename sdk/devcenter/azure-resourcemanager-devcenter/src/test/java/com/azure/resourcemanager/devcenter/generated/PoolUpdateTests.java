@@ -19,12 +19,12 @@ public final class PoolUpdateTests {
         PoolUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"devBoxDefinitionName\":\"wtl\",\"networkConnectionName\":\"guxawqaldsyuuxi\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"tags\":{\"wpfhpagmhrskd\":\"wyznkbyku\"},\"location\":\"fdsd\"}")
+                    "{\"properties\":{\"devBoxDefinitionName\":\"vudutncor\",\"networkConnectionName\":\"lxqtvcofudfl\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"tags\":{\"n\":\"dknnqvsazn\",\"mkycgra\":\"orudsgsa\"},\"location\":\"juetaebur\"}")
                 .toObject(PoolUpdate.class);
-        Assertions.assertEquals("wyznkbyku", model.tags().get("wpfhpagmhrskd"));
-        Assertions.assertEquals("fdsd", model.location());
-        Assertions.assertEquals("wtl", model.devBoxDefinitionName());
-        Assertions.assertEquals("guxawqaldsyuuxi", model.networkConnectionName());
+        Assertions.assertEquals("dknnqvsazn", model.tags().get("n"));
+        Assertions.assertEquals("juetaebur", model.location());
+        Assertions.assertEquals("vudutncor", model.devBoxDefinitionName());
+        Assertions.assertEquals("lxqtvcofudfl", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
     }
@@ -33,17 +33,17 @@ public final class PoolUpdateTests {
     public void testSerialize() {
         PoolUpdate model =
             new PoolUpdate()
-                .withTags(mapOf("wpfhpagmhrskd", "wyznkbyku"))
-                .withLocation("fdsd")
-                .withDevBoxDefinitionName("wtl")
-                .withNetworkConnectionName("guxawqaldsyuuxi")
+                .withTags(mapOf("n", "dknnqvsazn", "mkycgra", "orudsgsa"))
+                .withLocation("juetaebur")
+                .withDevBoxDefinitionName("vudutncor")
+                .withNetworkConnectionName("lxqtvcofudfl")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
                 .withLocalAdministrator(LocalAdminStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(PoolUpdate.class);
-        Assertions.assertEquals("wyznkbyku", model.tags().get("wpfhpagmhrskd"));
-        Assertions.assertEquals("fdsd", model.location());
-        Assertions.assertEquals("wtl", model.devBoxDefinitionName());
-        Assertions.assertEquals("guxawqaldsyuuxi", model.networkConnectionName());
+        Assertions.assertEquals("dknnqvsazn", model.tags().get("n"));
+        Assertions.assertEquals("juetaebur", model.location());
+        Assertions.assertEquals("vudutncor", model.devBoxDefinitionName());
+        Assertions.assertEquals("lxqtvcofudfl", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
     }

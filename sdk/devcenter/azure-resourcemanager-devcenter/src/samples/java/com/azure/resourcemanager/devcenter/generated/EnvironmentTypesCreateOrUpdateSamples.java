@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for EnvironmentTypes CreateOrUpdate. */
 public final class EnvironmentTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/EnvironmentTypes_Put.json
      */
     /**
      * Sample code: EnvironmentTypes_CreateOrUpdate.

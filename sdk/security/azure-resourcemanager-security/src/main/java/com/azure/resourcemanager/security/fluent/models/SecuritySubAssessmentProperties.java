@@ -74,6 +74,10 @@ public final class SecuritySubAssessmentProperties {
     @JsonProperty(value = "additionalData")
     private AdditionalData additionalData;
 
+    /** Creates an instance of SecuritySubAssessmentProperties class. */
+    public SecuritySubAssessmentProperties() {
+    }
+
     /**
      * Get the id property: Vulnerability ID.
      *

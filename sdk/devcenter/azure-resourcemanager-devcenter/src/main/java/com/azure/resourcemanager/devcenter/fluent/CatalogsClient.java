@@ -19,7 +19,7 @@ public interface CatalogsClient {
     /**
      * Lists catalogs for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +32,7 @@ public interface CatalogsClient {
     /**
      * Lists catalogs for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -48,7 +48,7 @@ public interface CatalogsClient {
     /**
      * Gets a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param context The context to associate with this operation.
@@ -64,7 +64,7 @@ public interface CatalogsClient {
     /**
      * Gets a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,7 +78,7 @@ public interface CatalogsClient {
     /**
      * Creates or updates a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param body Represents a catalog.
@@ -94,7 +94,7 @@ public interface CatalogsClient {
     /**
      * Creates or updates a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param body Represents a catalog.
@@ -111,7 +111,7 @@ public interface CatalogsClient {
     /**
      * Creates or updates a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param body Represents a catalog.
@@ -126,7 +126,7 @@ public interface CatalogsClient {
     /**
      * Creates or updates a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param body Represents a catalog.
@@ -143,7 +143,7 @@ public interface CatalogsClient {
     /**
      * Partially updates a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param body Updatable catalog properties.
@@ -159,7 +159,7 @@ public interface CatalogsClient {
     /**
      * Partially updates a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param body Updatable catalog properties.
@@ -176,7 +176,7 @@ public interface CatalogsClient {
     /**
      * Partially updates a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param body Updatable catalog properties.
@@ -191,7 +191,7 @@ public interface CatalogsClient {
     /**
      * Partially updates a catalog.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param body Updatable catalog properties.
@@ -208,7 +208,7 @@ public interface CatalogsClient {
     /**
      * Deletes a catalog resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +222,7 @@ public interface CatalogsClient {
     /**
      * Deletes a catalog resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param context The context to associate with this operation.
@@ -238,7 +238,7 @@ public interface CatalogsClient {
     /**
      * Deletes a catalog resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,7 +251,7 @@ public interface CatalogsClient {
     /**
      * Deletes a catalog resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param context The context to associate with this operation.
@@ -265,7 +265,7 @@ public interface CatalogsClient {
     /**
      * Syncs templates for a template source.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,7 +279,7 @@ public interface CatalogsClient {
     /**
      * Syncs templates for a template source.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param context The context to associate with this operation.
@@ -295,7 +295,7 @@ public interface CatalogsClient {
     /**
      * Syncs templates for a template source.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,7 +308,7 @@ public interface CatalogsClient {
     /**
      * Syncs templates for a template source.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
      * @param context The context to associate with this operation.

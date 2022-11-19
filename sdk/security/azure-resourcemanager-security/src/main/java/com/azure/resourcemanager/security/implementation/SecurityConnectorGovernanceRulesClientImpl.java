@@ -61,7 +61,7 @@ public final class SecurityConnectorGovernanceRulesClientImpl implements Securit
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
-    private interface SecurityConnectorGovernanceRulesService {
+    public interface SecurityConnectorGovernanceRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"

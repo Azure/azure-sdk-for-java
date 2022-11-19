@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Connection state of the private endpoint connection. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);
-
     /*
-     * Indicates whether the connection has been Approved/Rejected/Removed by
-     * the owner of the service.
+     * Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
      */
     @JsonProperty(value = "status")
     private PrivateLinkServiceConnectionStatus status;
@@ -28,11 +23,14 @@ public final class PrivateLinkServiceConnectionState {
     private String description;
 
     /*
-     * A message indicating if changes on the service provider require any
-     * updates on the consumer.
+     * A message indicating if changes on the service provider require any updates on the consumer.
      */
     @JsonProperty(value = "actionsRequired")
     private String actionsRequired;
+
+    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    public PrivateLinkServiceConnectionState() {
+    }
 
     /**
      * Get the status property: Indicates whether the connection has been Approved/Rejected/Removed by the owner of the
