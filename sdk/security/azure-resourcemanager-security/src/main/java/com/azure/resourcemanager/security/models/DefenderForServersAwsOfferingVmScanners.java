@@ -22,6 +22,10 @@ public final class DefenderForServersAwsOfferingVmScanners {
     @JsonProperty(value = "configuration")
     private DefenderForServersAwsOfferingVmScannersConfiguration configuration;
 
+    /** Creates an instance of DefenderForServersAwsOfferingVmScanners class. */
+    public DefenderForServersAwsOfferingVmScanners() {
+    }
+
     /**
      * Get the enabled property: Is Microsoft Defender for Server VM scanning enabled.
      *

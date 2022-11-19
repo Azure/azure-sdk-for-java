@@ -32,6 +32,10 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of JitNetworkAccessPolicyInner class. */
+    public JitNetworkAccessPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties property.
      *

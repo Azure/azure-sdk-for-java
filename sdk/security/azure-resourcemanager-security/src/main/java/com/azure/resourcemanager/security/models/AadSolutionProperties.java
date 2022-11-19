@@ -16,6 +16,10 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
     @JsonProperty(value = "connectivityState")
     private AadConnectivityState connectivityState;
 
+    /** Creates an instance of AadSolutionProperties class. */
+    public AadSolutionProperties() {
+    }
+
     /**
      * Get the connectivityState property: The connectivity state of the external AAD solution.
      *

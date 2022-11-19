@@ -65,6 +65,10 @@ public final class PathRecommendation {
     @JsonProperty(value = "configurationStatus")
     private ConfigurationStatus configurationStatus;
 
+    /** Creates an instance of PathRecommendation class. */
+    public PathRecommendation() {
+    }
+
     /**
      * Get the path property: The full path of the file, or an identifier of the application.
      *

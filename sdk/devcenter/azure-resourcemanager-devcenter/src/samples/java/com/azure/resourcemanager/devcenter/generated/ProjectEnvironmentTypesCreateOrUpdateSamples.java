@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for ProjectEnvironmentTypes CreateOrUpdate. */
 public final class ProjectEnvironmentTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/ProjectEnvironmentTypes_Put.json
      */
     /**
      * Sample code: ProjectEnvironmentTypes_CreateOrUpdate.

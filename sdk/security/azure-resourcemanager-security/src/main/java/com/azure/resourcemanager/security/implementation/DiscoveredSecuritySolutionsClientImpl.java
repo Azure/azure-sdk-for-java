@@ -57,7 +57,7 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterDiscov")
-    private interface DiscoveredSecuritySolutionsService {
+    public interface DiscoveredSecuritySolutionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/discoveredSecuritySolutions")
         @ExpectedResponses({200})
@@ -574,25 +574,6 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param discoveredSecuritySolutionName Name of a discovered security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiscoveredSecuritySolutionInner get(
-        String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName) {
-        return getAsync(resourceGroupName, ascLocation, discoveredSecuritySolutionName).block();
-    }
-
-    /**
-     * Gets a specific discovered Security Solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param discoveredSecuritySolutionName Name of a discovered security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -603,6 +584,25 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
     public Response<DiscoveredSecuritySolutionInner> getWithResponse(
         String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, discoveredSecuritySolutionName, context).block();
+    }
+
+    /**
+     * Gets a specific discovered Security Solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param discoveredSecuritySolutionName Name of a discovered security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific discovered Security Solution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DiscoveredSecuritySolutionInner get(
+        String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName) {
+        return getWithResponse(resourceGroupName, ascLocation, discoveredSecuritySolutionName, Context.NONE).getValue();
     }
 
     /**

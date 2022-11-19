@@ -21,6 +21,10 @@ public final class CefExternalSecuritySolution extends ExternalSecuritySolutionI
     @JsonProperty(value = "properties")
     private CefSolutionProperties properties;
 
+    /** Creates an instance of CefExternalSecuritySolution class. */
+    public CefExternalSecuritySolution() {
+    }
+
     /**
      * Get the properties property: The external security solution properties for CEF solutions.
      *

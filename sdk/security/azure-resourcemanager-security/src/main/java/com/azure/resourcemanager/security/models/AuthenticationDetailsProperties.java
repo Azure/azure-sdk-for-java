@@ -37,6 +37,10 @@ public class AuthenticationDetailsProperties {
     @JsonProperty(value = "grantedPermissions", access = JsonProperty.Access.WRITE_ONLY)
     private List<PermissionProperty> grantedPermissions;
 
+    /** Creates an instance of AuthenticationDetailsProperties class. */
+    public AuthenticationDetailsProperties() {
+    }
+
     /**
      * Get the authenticationProvisioningState property: State of the multi-cloud connector.
      *

@@ -16,6 +16,10 @@ public final class ConnectedWorkspace {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ConnectedWorkspace class. */
+    public ConnectedWorkspace() {
+    }
+
     /**
      * Get the id property: Azure resource ID of the connected OMS workspace.
      *
