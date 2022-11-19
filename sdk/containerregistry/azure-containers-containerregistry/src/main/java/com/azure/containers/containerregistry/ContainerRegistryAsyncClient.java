@@ -184,7 +184,7 @@ public final class ContainerRegistryAsyncClient {
             }
 
             return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
-                .flatMap(UtilsImpl::deleteResponseToSuccess)
+                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);

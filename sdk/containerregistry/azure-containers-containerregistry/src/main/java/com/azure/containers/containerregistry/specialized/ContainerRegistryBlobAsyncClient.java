@@ -39,6 +39,7 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -233,17 +234,6 @@ public class ContainerRegistryBlobAsyncClient {
                 return Mono.just(res);
             }).onErrorMap(UtilsImpl::mapException);
     }
-
-    private String trimNextLink(String locationHeader) {
-        // The location header returned in the nextLink for upload chunk operations starts with a '/'
-        // which the service expects us to remove before calling it.
-        if (locationHeader.startsWith("/")) {
-            return locationHeader.substring(1);
-        }
-
-        return locationHeader;
-    }
-
     /**
      * Download the manifest associated with the given tag or digest.
      * We currently only support downloading OCI manifests.
@@ -394,7 +384,7 @@ public class ContainerRegistryBlobAsyncClient {
         }
 
         return this.blobsImpl.deleteBlobWithResponseAsync(repositoryName, digest, context)
-            .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
+            .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
             .onErrorResume(
                 ex -> ex instanceof HttpResponseException && ((HttpResponseException) ex).getResponse().getStatusCode() == 404,
                 ex -> {
@@ -440,7 +430,7 @@ public class ContainerRegistryBlobAsyncClient {
 
     Mono<Response<Void>> deleteManifestWithResponse(String digest, Context context) {
         return this.registriesImpl.deleteManifestWithResponseAsync(repositoryName, digest, context)
-            .flatMap(UtilsImpl::deleteResponseToSuccess)
+            .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
             .onErrorMap(UtilsImpl::mapException);
     }
 }

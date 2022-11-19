@@ -3,12 +3,10 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.ArtifactManifestPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
-import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
@@ -30,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -151,7 +147,7 @@ public final class ContainerRepositoryAsync {
     Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
             return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
-                .flatMap(UtilsImpl::deleteResponseToSuccess)
+                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -274,7 +270,9 @@ public final class ContainerRepositoryAsync {
 
             final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
             return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
+                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
+                    baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
+                        registryLoginServer)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -284,37 +282,13 @@ public final class ContainerRepositoryAsync {
     Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
             return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
+                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
+                    baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
+                        registryLoginServer)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
-    }
-
-    private List<ArtifactManifestProperties> mapManifestsProperties(List<ManifestAttributesBase> baseArtifacts) {
-        if (baseArtifacts == null) {
-            return null;
-        }
-
-        return baseArtifacts.stream().map(value -> {
-            ArtifactManifestProperties manifestProperties = new ArtifactManifestProperties()
-                .setDeleteEnabled(value.isDeleteEnabled())
-                .setListEnabled(value.isListEnabled())
-                .setWriteEnabled(value.isWriteEnabled())
-                .setReadEnabled(value.isReadEnabled());
-
-            ArtifactManifestPropertiesHelper.setRepositoryName(manifestProperties, repositoryName);
-            ArtifactManifestPropertiesHelper.setRegistryLoginServer(manifestProperties, registryLoginServer);
-            ArtifactManifestPropertiesHelper.setDigest(manifestProperties, value.getDigest());
-            ArtifactManifestPropertiesHelper.setRelatedArtifacts(manifestProperties, value.getRelatedArtifacts());
-            ArtifactManifestPropertiesHelper.setCpuArchitecture(manifestProperties, value.getArchitecture());
-            ArtifactManifestPropertiesHelper.setOperatingSystem(manifestProperties, value.getOperatingSystem());
-            ArtifactManifestPropertiesHelper.setCreatedOn(manifestProperties, value.getCreatedOn());
-            ArtifactManifestPropertiesHelper.setlastUpdatedOn(manifestProperties, value.getLastUpdatedOn());
-            ArtifactManifestPropertiesHelper.setSizeInBytes(manifestProperties, value.getSize());
-            ArtifactManifestPropertiesHelper.setTags(manifestProperties, value.getTags());
-            return manifestProperties;
-        }).collect(Collectors.toList());
     }
 
     /**
