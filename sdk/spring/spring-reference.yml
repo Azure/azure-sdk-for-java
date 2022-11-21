@@ -208,6 +208,7 @@
             DB SQL API using Spring Data.
           type: spring
           links:
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.4.1/sdk/spring/spring-cloud-azure-starter-data-cosmos
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-data-cosmos
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.4.1/cosmos/spring-cloud-azure-starter-data-cosmos/
@@ -362,7 +363,7 @@
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
             msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca/README.md
             repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_2.7.0/keyvault/azure-security-keyvault-jca/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-securtiy-keyvault-jca
     - name: Key Vault - Secrets
       description: |-
         Azure Key Vault Secrets allows you to securely store and tightly control the access to
@@ -1023,14 +1024,14 @@
             Azure Database for MySQL.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_6.0.0-beta.3/sdk/spring/spring-cloud-azure-starter-jdbc-mysql
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.5.0-beta.1/sdk/spring/spring-cloud-azure-starter-jdbc-mysql
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-jdbc-mysql
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.5.0-beta.1/mysql/spring-cloud-azure-starter-jdbc-mysql/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -1066,14 +1067,14 @@
             Azure Database for PostgreSQL.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_6.0.0-beta.3/sdk/spring/spring-cloud-azure-starter-jdbc-postgresql
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.5.0-beta.1/sdk/spring/spring-cloud-azure-starter-jdbc-postgresql
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-jdbc-postgresql
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.5.0-beta.1/postgresql/spring-cloud-azure-starter-jdbc-postgresql/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
