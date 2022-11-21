@@ -15,31 +15,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * extensionProperty Represents an Azure Active Directory object. The directoryObject type is the base type for many
- * other directory entity types.
+ * extensionProperty
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphExtensionPropertyInner extends MicrosoftGraphDirectoryObjectInner {
     /*
-     * Display name of the application object on which this extension property
-     * is defined. Read-only.
+     * Display name of the application object on which this extension property is defined. Read-only.
      */
     @JsonProperty(value = "appDisplayName")
     private String appDisplayName;
 
     /*
-     * Specifies the data type of the value the extension property can hold.
-     * Following values are supported. Not nullable. Binary - 256 bytes
-     * maximumBooleanDateTime - Must be specified in ISO 8601 format. Will be
-     * stored in UTC.Integer - 32-bit value.LargeInteger - 64-bit value.String
-     * - 256 characters maximum
+     * Specifies the data type of the value the extension property can hold. Following values are supported. Not
+     * nullable. Binary - 256 bytes maximumBooleanDateTime - Must be specified in ISO 8601 format. Will be stored in
+     * UTC.Integer - 32-bit value.LargeInteger - 64-bit value.String - 256 characters maximum
      */
     @JsonProperty(value = "dataType")
     private String dataType;
 
     /*
-     * Indicates if this extension property was sycned from onpremises
-     * directory using Azure AD Connect. Read-only.
+     * Indicates if this extension property was sycned from onpremises directory using Azure AD Connect. Read-only.
      */
     @JsonProperty(value = "isSyncedFromOnPremises")
     private Boolean isSyncedFromOnPremises;
@@ -51,17 +49,20 @@ public final class MicrosoftGraphExtensionPropertyInner extends MicrosoftGraphDi
     private String name;
 
     /*
-     * Following values are supported. Not nullable.
-     * UserGroupOrganizationDeviceApplication
+     * Following values are supported. Not nullable. UserGroupOrganizationDeviceApplication
      */
     @JsonProperty(value = "targetObjects")
     private List<String> targetObjects;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphExtensionPropertyInner class. */
+    public MicrosoftGraphExtensionPropertyInner() {
+    }
 
     /**
      * Get the appDisplayName property: Display name of the application object on which this extension property is

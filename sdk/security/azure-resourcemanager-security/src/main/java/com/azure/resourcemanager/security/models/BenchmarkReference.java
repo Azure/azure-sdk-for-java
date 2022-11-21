@@ -22,6 +22,10 @@ public final class BenchmarkReference {
     @JsonProperty(value = "reference")
     private String reference;
 
+    /** Creates an instance of BenchmarkReference class. */
+    public BenchmarkReference() {
+    }
+
     /**
      * Get the benchmark property: The benchmark name.
      *

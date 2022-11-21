@@ -35,15 +35,6 @@ public interface GlobalAdministratorsClient {
     /**
      * Elevates access for a Global Administrator.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void elevateAccess();
-
-    /**
-     * Elevates access for a Global Administrator.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,4 +43,13 @@ public interface GlobalAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> elevateAccessWithResponse(Context context);
+
+    /**
+     * Elevates access for a Global Administrator.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void elevateAccess();
 }

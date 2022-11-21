@@ -5,31 +5,15 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.devcenter.models.OperationStatusError;
+import com.azure.resourcemanager.devcenter.models.ErrorDetail;
+import com.azure.resourcemanager.devcenter.models.OperationStatusResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The current status of an async operation. */
 @Fluent
-public final class OperationStatusInner {
-    /*
-     * Fully qualified ID for the operation status.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /*
-     * The operation id name
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
-     * Provisioning state of the resource.
-     */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
-
+public final class OperationStatusInner extends OperationStatusResult {
     /*
      * The id of the resource.
      */
@@ -37,64 +21,13 @@ public final class OperationStatusInner {
     private String resourceId;
 
     /*
-     * The start time of the operation
-     */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The end time of the operation
-     */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * Percent of the operation that is complete
-     */
-    @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
-    private Float percentComplete;
-
-    /*
      * Custom operation properties, populated only for a successful operation.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private Object properties;
 
-    /*
-     * Operation Error message
-     */
-    @JsonProperty(value = "error")
-    private OperationStatusError error;
-
     /** Creates an instance of OperationStatusInner class. */
     public OperationStatusInner() {
-    }
-
-    /**
-     * Get the id property: Fully qualified ID for the operation status.
-     *
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The operation id name.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the status property: Provisioning state of the resource.
-     *
-     * @return the status value.
-     */
-    public String status() {
-        return this.status;
     }
 
     /**
@@ -107,33 +40,6 @@ public final class OperationStatusInner {
     }
 
     /**
-     * Get the startTime property: The start time of the operation.
-     *
-     * @return the startTime value.
-     */
-    public OffsetDateTime startTime() {
-        return this.startTime;
-    }
-
-    /**
-     * Get the endTime property: The end time of the operation.
-     *
-     * @return the endTime value.
-     */
-    public OffsetDateTime endTime() {
-        return this.endTime;
-    }
-
-    /**
-     * Get the percentComplete property: Percent of the operation that is complete.
-     *
-     * @return the percentComplete value.
-     */
-    public Float percentComplete() {
-        return this.percentComplete;
-    }
-
-    /**
      * Get the properties property: Custom operation properties, populated only for a successful operation.
      *
      * @return the properties value.
@@ -142,23 +48,59 @@ public final class OperationStatusInner {
         return this.properties;
     }
 
-    /**
-     * Get the error property: Operation Error message.
-     *
-     * @return the error value.
-     */
-    public OperationStatusError error() {
-        return this.error;
+    /** {@inheritDoc} */
+    @Override
+    public OperationStatusInner withId(String id) {
+        super.withId(id);
+        return this;
     }
 
-    /**
-     * Set the error property: Operation Error message.
-     *
-     * @param error the error value to set.
-     * @return the OperationStatusInner object itself.
-     */
-    public OperationStatusInner withError(OperationStatusError error) {
-        this.error = error;
+    /** {@inheritDoc} */
+    @Override
+    public OperationStatusInner withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OperationStatusInner withStatus(String status) {
+        super.withStatus(status);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OperationStatusInner withPercentComplete(Float percentComplete) {
+        super.withPercentComplete(percentComplete);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OperationStatusInner withStartTime(OffsetDateTime startTime) {
+        super.withStartTime(startTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OperationStatusInner withEndTime(OffsetDateTime endTime) {
+        super.withEndTime(endTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OperationStatusInner withOperations(List<OperationStatusResult> operations) {
+        super.withOperations(operations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OperationStatusInner withError(ErrorDetail error) {
+        super.withError(error);
         return this;
     }
 
@@ -167,9 +109,8 @@ public final class OperationStatusInner {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
+        super.validate();
     }
 }

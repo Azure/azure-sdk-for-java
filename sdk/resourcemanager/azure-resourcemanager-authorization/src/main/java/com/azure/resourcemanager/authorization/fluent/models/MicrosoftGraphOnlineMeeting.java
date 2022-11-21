@@ -105,6 +105,10 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOnlineMeeting class. */
+    public MicrosoftGraphOnlineMeeting() {
+    }
+
     /**
      * Get the allowedPresenters property: onlineMeetingPresenters.
      *

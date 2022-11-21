@@ -169,6 +169,10 @@ public final class SnapshotProperties {
     @JsonProperty(value = "dataAccessAuthMode")
     private DataAccessAuthMode dataAccessAuthMode;
 
+    /** Creates an instance of SnapshotProperties class. */
+    public SnapshotProperties() {
+    }
+
     /**
      * Get the timeCreated property: The time when the snapshot was created.
      *

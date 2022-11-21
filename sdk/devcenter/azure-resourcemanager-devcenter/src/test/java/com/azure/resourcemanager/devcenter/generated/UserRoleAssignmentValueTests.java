@@ -16,13 +16,14 @@ public final class UserRoleAssignmentValueTests {
     public void testDeserialize() {
         UserRoleAssignmentValue model =
             BinaryData
-                .fromString("{\"roles\":{\"nayqi\":{\"roleName\":\"indoygmifthnzd\",\"description\":\"sl\"}}}")
+                .fromString("{\"roles\":{\"xkvugfhzov\":{\"roleName\":\"hpvgqz\",\"description\":\"rvxdjzlmw\"}}}")
                 .toObject(UserRoleAssignmentValue.class);
     }
 
     @Test
     public void testSerialize() {
-        UserRoleAssignmentValue model = new UserRoleAssignmentValue().withRoles(mapOf("nayqi", new EnvironmentRole()));
+        UserRoleAssignmentValue model =
+            new UserRoleAssignmentValue().withRoles(mapOf("xkvugfhzov", new EnvironmentRole()));
         model = BinaryData.fromObject(model).toObject(UserRoleAssignmentValue.class);
     }
 

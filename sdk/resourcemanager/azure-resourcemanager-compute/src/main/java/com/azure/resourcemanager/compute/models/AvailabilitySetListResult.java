@@ -26,6 +26,10 @@ public final class AvailabilitySetListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AvailabilitySetListResult class. */
+    public AvailabilitySetListResult() {
+    }
+
     /**
      * Get the value property: The list of availability sets.
      *

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.CatalogSyncState;
 import com.azure.resourcemanager.devcenter.models.GitCatalog;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -55,6 +56,15 @@ public final class CatalogInner extends ProxyResource {
      */
     public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the syncState property: The synchronization state of the catalog.
+     *
+     * @return the syncState value.
+     */
+    public CatalogSyncState syncState() {
+        return this.innerProperties() == null ? null : this.innerProperties().syncState();
     }
 
     /**

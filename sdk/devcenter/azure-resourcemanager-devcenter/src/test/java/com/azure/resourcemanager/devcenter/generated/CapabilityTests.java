@@ -12,7 +12,7 @@ public final class CapabilityTests {
     @Test
     public void testDeserialize() {
         Capability model =
-            BinaryData.fromString("{\"name\":\"oruzfgsquyfxrxx\",\"value\":\"ptramxj\"}").toObject(Capability.class);
+            BinaryData.fromString("{\"name\":\"vxwc\",\"value\":\"lpcirelsf\"}").toObject(Capability.class);
     }
 
     @Test

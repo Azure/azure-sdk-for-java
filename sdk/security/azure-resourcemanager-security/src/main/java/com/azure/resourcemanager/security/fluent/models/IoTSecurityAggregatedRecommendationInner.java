@@ -27,6 +27,10 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of IoTSecurityAggregatedRecommendationInner class. */
+    public IoTSecurityAggregatedRecommendationInner() {
+    }
+
     /**
      * Get the innerProperties property: Security Solution data.
      *

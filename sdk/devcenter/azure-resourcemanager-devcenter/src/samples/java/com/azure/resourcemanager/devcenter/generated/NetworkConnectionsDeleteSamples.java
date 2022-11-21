@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkConnections Delete. */
 public final class NetworkConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/NetworkConnections_Delete.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/NetworkConnections_Delete.json
      */
     /**
      * Sample code: NetworkConnections_Delete.

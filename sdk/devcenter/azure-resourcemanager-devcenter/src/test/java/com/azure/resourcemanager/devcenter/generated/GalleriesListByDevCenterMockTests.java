@@ -33,7 +33,7 @@ public final class GalleriesListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"kzbrmsgeivsiy\",\"galleryResourceId\":\"zkdnc\"},\"id\":\"xonbzoggculapz\",\"name\":\"y\",\"type\":\"pgogtqxepny\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"xpgpq\",\"galleryResourceId\":\"hiszepnnbjcrxgib\"},\"id\":\"axconfozauo\",\"name\":\"sukokwbqplhl\",\"type\":\"nuuepzlrp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class GalleriesListByDevCenterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Gallery> response =
-            manager.galleries().listByDevCenter("oqcaaewdaomdj", "l", 986861935, Context.NONE);
+            manager.galleries().listByDevCenter("orwmduvwpklv", "w", 1040061881, Context.NONE);
 
-        Assertions.assertEquals("zkdnc", response.iterator().next().galleryResourceId());
+        Assertions.assertEquals("hiszepnnbjcrxgib", response.iterator().next().galleryResourceId());
     }
 }

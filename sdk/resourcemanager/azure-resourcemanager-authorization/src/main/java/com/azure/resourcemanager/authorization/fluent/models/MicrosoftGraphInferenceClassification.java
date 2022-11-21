@@ -17,8 +17,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphInferenceClassification extends MicrosoftGraphEntity {
     /*
-     * A set of overrides for a user to always classify messages from specific
-     * senders in certain ways: focused, or other. Read-only. Nullable.
+     * A set of overrides for a user to always classify messages from specific senders in certain ways: focused, or
+     * other. Read-only. Nullable.
      */
     @JsonProperty(value = "overrides")
     private List<MicrosoftGraphInferenceClassificationOverride> overrides;
@@ -27,6 +27,10 @@ public final class MicrosoftGraphInferenceClassification extends MicrosoftGraphE
      * inferenceClassification
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphInferenceClassification class. */
+    public MicrosoftGraphInferenceClassification() {
+    }
 
     /**
      * Get the overrides property: A set of overrides for a user to always classify messages from specific senders in

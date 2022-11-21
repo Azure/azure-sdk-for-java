@@ -22,6 +22,10 @@ public final class VirtualMachineScaleSetIpTag {
     @JsonProperty(value = "tag")
     private String tag;
 
+    /** Creates an instance of VirtualMachineScaleSetIpTag class. */
+    public VirtualMachineScaleSetIpTag() {
+    }
+
     /**
      * Get the ipTagType property: IP tag type. Example: FirstPartyUsage.
      *

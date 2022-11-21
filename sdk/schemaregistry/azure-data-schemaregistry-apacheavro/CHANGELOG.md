@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.1 (2022-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.34.0`.
+- Update `azure-data-schemaregistry` dependency to `1.3.1`.
+
 ## 1.1.0 (2022-10-11)
 
 ### Other Changes

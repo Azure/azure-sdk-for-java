@@ -14,7 +14,7 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"hzoymibmrqy\",\"isDataAction\":true,\"display\":{\"provider\":\"fluszdtm\",\"resource\":\"kwofyyvoq\",\"operation\":\"piexpbtgiw\",\"description\":\"oenwashr\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"qxwbpokulpiu\",\"isDataAction\":false,\"display\":{\"provider\":\"ipqiiobyuqerpq\",\"resource\":\"qwcciuqg\",\"operation\":\"butauvfb\",\"description\":\"uwhhmhykojoxafn\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"hkoymkcdyhbp\",\"isDataAction\":true,\"display\":{\"provider\":\"reqnovvqfov\",\"resource\":\"xywsuws\",\"operation\":\"s\",\"description\":\"sytgadgvraea\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"arrwlquu\",\"isDataAction\":false,\"display\":{\"provider\":\"acewiipfpubjibw\",\"resource\":\"f\",\"operation\":\"hqkvpuvksgplsak\",\"description\":\"n\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"ph\"}")
+                    "{\"value\":[{\"name\":\"jnkaljutiiswacff\",\"isDataAction\":false,\"display\":{\"provider\":\"ewkfvhqcrai\",\"resource\":\"pnppfuf\",\"operation\":\"wdmhdlxyjrxs\",\"description\":\"afcnih\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"edgfbcvkcvq\",\"isDataAction\":true,\"display\":{\"provider\":\"dcvd\",\"resource\":\"vo\",\"operation\":\"sotbob\",\"description\":\"opcjwvnhd\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"cxrslpmutwuoe\"}")
                 .toObject(OperationListResult.class);
     }
 

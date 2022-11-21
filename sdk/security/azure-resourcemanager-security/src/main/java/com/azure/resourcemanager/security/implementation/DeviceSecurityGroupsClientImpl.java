@@ -59,7 +59,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterDevice")
-    private interface DeviceSecurityGroupsService {
+    public interface DeviceSecurityGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups")
         @ExpectedResponses({200})
@@ -353,22 +353,6 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceSecurityGroupInner get(String resourceId, String deviceSecurityGroupName) {
-        return getAsync(resourceId, deviceSecurityGroupName).block();
-    }
-
-    /**
-     * Use this method to get the device security group for the specified IoT Hub resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -379,6 +363,22 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
     public Response<DeviceSecurityGroupInner> getWithResponse(
         String resourceId, String deviceSecurityGroupName, Context context) {
         return getWithResponseAsync(resourceId, deviceSecurityGroupName, context).block();
+    }
+
+    /**
+     * Use this method to get the device security group for the specified IoT Hub resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device security group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeviceSecurityGroupInner get(String resourceId, String deviceSecurityGroupName) {
+        return getWithResponse(resourceId, deviceSecurityGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -512,24 +512,6 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
      * @param deviceSecurityGroup Security group object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceSecurityGroupInner createOrUpdate(
-        String resourceId, String deviceSecurityGroupName, DeviceSecurityGroupInner deviceSecurityGroup) {
-        return createOrUpdateAsync(resourceId, deviceSecurityGroupName, deviceSecurityGroup).block();
-    }
-
-    /**
-     * Use this method to creates or updates the device security group on a specified IoT Hub resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
-     * @param deviceSecurityGroup Security group object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -544,6 +526,25 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
         Context context) {
         return createOrUpdateWithResponseAsync(resourceId, deviceSecurityGroupName, deviceSecurityGroup, context)
             .block();
+    }
+
+    /**
+     * Use this method to creates or updates the device security group on a specified IoT Hub resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @param deviceSecurityGroup Security group object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device security group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeviceSecurityGroupInner createOrUpdate(
+        String resourceId, String deviceSecurityGroupName, DeviceSecurityGroupInner deviceSecurityGroup) {
+        return createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, deviceSecurityGroup, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -647,21 +648,6 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceId, String deviceSecurityGroupName) {
-        deleteAsync(resourceId, deviceSecurityGroupName).block();
-    }
-
-    /**
-     * User this method to deletes the device security group.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -671,6 +657,21 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context) {
         return deleteWithResponseAsync(resourceId, deviceSecurityGroupName, context).block();
+    }
+
+    /**
+     * User this method to deletes the device security group.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceId, String deviceSecurityGroupName) {
+        deleteWithResponse(resourceId, deviceSecurityGroupName, Context.NONE);
     }
 
     /**

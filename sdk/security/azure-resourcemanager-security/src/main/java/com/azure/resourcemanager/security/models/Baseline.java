@@ -24,6 +24,10 @@ public final class Baseline {
     @JsonProperty(value = "updatedTime")
     private OffsetDateTime updatedTime;
 
+    /** Creates an instance of Baseline class. */
+    public Baseline() {
+    }
+
     /**
      * Get the expectedResults property: Expected results.
      *

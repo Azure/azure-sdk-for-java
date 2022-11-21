@@ -10,7 +10,7 @@ import com.azure.resourcemanager.webpubsub.models.NameAvailabilityParameters;
 /** Samples for WebPubSub CheckNameAvailability. */
 public final class WebPubSubCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_CheckNameAvailability.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSub_CheckNameAvailability.json
      */
     /**
      * Sample code: WebPubSub_CheckNameAvailability.

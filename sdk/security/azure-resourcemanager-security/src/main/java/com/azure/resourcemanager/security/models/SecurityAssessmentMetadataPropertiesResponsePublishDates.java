@@ -23,6 +23,10 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
     @JsonProperty(value = "public", required = true)
     private String publicProperty;
 
+    /** Creates an instance of SecurityAssessmentMetadataPropertiesResponsePublishDates class. */
+    public SecurityAssessmentMetadataPropertiesResponsePublishDates() {
+    }
+
     /**
      * Get the ga property: The GA property.
      *

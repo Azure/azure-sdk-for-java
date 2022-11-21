@@ -22,15 +22,13 @@ public final class MicrosoftGraphWorkbookSortField {
     private Boolean ascending;
 
     /*
-     * Represents the color that is the target of the condition if the sorting
-     * is on font or cell color.
+     * Represents the color that is the target of the condition if the sorting is on font or cell color.
      */
     @JsonProperty(value = "color")
     private String color;
 
     /*
-     * Represents additional sorting options for this field. The possible
-     * values are: Normal, TextAsNumber.
+     * Represents additional sorting options for this field. The possible values are: Normal, TextAsNumber.
      */
     @JsonProperty(value = "dataOption")
     private String dataOption;
@@ -42,16 +40,14 @@ public final class MicrosoftGraphWorkbookSortField {
     private MicrosoftGraphWorkbookIcon icon;
 
     /*
-     * Represents the column (or row, depending on the sort orientation) that
-     * the condition is on. Represented as an offset from the first column (or
-     * row).
+     * Represents the column (or row, depending on the sort orientation) that the condition is on. Represented as an
+     * offset from the first column (or row).
      */
     @JsonProperty(value = "key")
     private Integer key;
 
     /*
-     * Represents the type of sorting of this condition. The possible values
-     * are: Value, CellColor, FontColor, Icon.
+     * Represents the type of sorting of this condition. The possible values are: Value, CellColor, FontColor, Icon.
      */
     @JsonProperty(value = "sortOn")
     private String sortOn;
@@ -60,6 +56,10 @@ public final class MicrosoftGraphWorkbookSortField {
      * workbookSortField
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookSortField class. */
+    public MicrosoftGraphWorkbookSortField() {
+    }
 
     /**
      * Get the ascending property: Represents whether the sorting is done in an ascending fashion.

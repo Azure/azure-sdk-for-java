@@ -26,6 +26,10 @@ public final class SshPublicKeysGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SshPublicKeysGroupListResult class. */
+    public SshPublicKeysGroupListResult() {
+    }
+
     /**
      * Get the value property: The list of SSH public keys.
      *

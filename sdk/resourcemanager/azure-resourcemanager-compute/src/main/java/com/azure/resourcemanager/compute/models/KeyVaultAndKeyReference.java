@@ -23,6 +23,10 @@ public final class KeyVaultAndKeyReference {
     @JsonProperty(value = "keyUrl", required = true)
     private String keyUrl;
 
+    /** Creates an instance of KeyVaultAndKeyReference class. */
+    public KeyVaultAndKeyReference() {
+    }
+
     /**
      * Get the sourceVault property: Resource id of the KeyVault containing the key or secret.
      *

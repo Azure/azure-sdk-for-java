@@ -75,7 +75,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()),
                                                 new Role()
                                                     .withName("workernode")
@@ -87,7 +87,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()),
                                                 new Role()
                                                     .withName("zookeepernode")
@@ -100,7 +100,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("**********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()))))
                             .withStorageProfile(
                                 new StorageProfile()
@@ -111,7 +111,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                     .withName("storagename.blob.core.windows.net")
                                                     .withIsDefault(true)
                                                     .withContainer("contianername")
-                                                    .withKey("*******")
+                                                    .withKey("fakeTokenPlaceholder")
                                                     .withResourceId(
                                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storagename"))))
                             .withMinSupportedTlsVersion("1.2"))

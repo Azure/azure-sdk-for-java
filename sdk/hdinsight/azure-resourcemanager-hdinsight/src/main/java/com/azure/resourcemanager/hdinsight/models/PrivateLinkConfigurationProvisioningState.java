@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateLinkConfigurationProvisioningState. */
+/** The private link configuration provisioning state, which only appears in the response. */
 public final class PrivateLinkConfigurationProvisioningState
     extends ExpandableStringEnum<PrivateLinkConfigurationProvisioningState> {
     /** Static value InProgress for PrivateLinkConfigurationProvisioningState. */
@@ -37,7 +37,11 @@ public final class PrivateLinkConfigurationProvisioningState
         return fromString(name, PrivateLinkConfigurationProvisioningState.class);
     }
 
-    /** @return known PrivateLinkConfigurationProvisioningState values. */
+    /**
+     * Gets known PrivateLinkConfigurationProvisioningState values.
+     *
+     * @return known PrivateLinkConfigurationProvisioningState values.
+     */
     public static Collection<PrivateLinkConfigurationProvisioningState> values() {
         return values(PrivateLinkConfigurationProvisioningState.class);
     }

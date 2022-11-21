@@ -26,6 +26,10 @@ public class CapacityReservationInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
+    /** Creates an instance of CapacityReservationInstanceView class. */
+    public CapacityReservationInstanceView() {
+    }
+
     /**
      * Get the utilizationInfo property: Unutilized capacity of the capacity reservation.
      *

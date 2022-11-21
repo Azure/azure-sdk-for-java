@@ -66,19 +66,6 @@ public interface Automations {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param automationName The security automation name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
-     */
-    Automation getByResourceGroup(String resourceGroupName, String automationName);
-
-    /**
-     * Retrieves information about the model of a security automation.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,7 +76,7 @@ public interface Automations {
         String resourceGroupName, String automationName, Context context);
 
     /**
-     * Deletes a security automation.
+     * Retrieves information about the model of a security automation.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -97,8 +84,9 @@ public interface Automations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation resource.
      */
-    void deleteByResourceGroup(String resourceGroupName, String automationName);
+    Automation getByResourceGroup(String resourceGroupName, String automationName);
 
     /**
      * Deletes a security automation.
@@ -112,22 +100,19 @@ public interface Automations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String automationName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String automationName, Context context);
 
     /**
-     * Validates the security automation model before create or update. Any validation errors are returned to the
-     * client.
+     * Deletes a security automation.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param automationName The security automation name.
-     * @param automation The security automation resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
      */
-    AutomationValidationStatus validate(String resourceGroupName, String automationName, AutomationInner automation);
+    void deleteByResourceGroup(String resourceGroupName, String automationName);
 
     /**
      * Validates the security automation model before create or update. Any validation errors are returned to the
@@ -145,6 +130,21 @@ public interface Automations {
      */
     Response<AutomationValidationStatus> validateWithResponse(
         String resourceGroupName, String automationName, AutomationInner automation, Context context);
+
+    /**
+     * Validates the security automation model before create or update. Any validation errors are returned to the
+     * client.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @param automation The security automation resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation model state property bag.
+     */
+    AutomationValidationStatus validate(String resourceGroupName, String automationName, AutomationInner automation);
 
     /**
      * Retrieves information about the model of a security automation.

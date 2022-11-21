@@ -36,6 +36,10 @@ public final class VirtualMachineCaptureResultInner extends SubResource {
     @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> resources;
 
+    /** Creates an instance of VirtualMachineCaptureResultInner class. */
+    public VirtualMachineCaptureResultInner() {
+    }
+
     /**
      * Get the schema property: the schema of the captured virtual machine.
      *

@@ -4,40 +4,7 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.ApplicationPackageReference;
-import com.microsoft.azure.batch.protocol.models.AutoScaleRun;
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
-import com.microsoft.azure.batch.protocol.models.CertificateReference;
-import com.microsoft.azure.batch.protocol.models.CloudPool;
-import com.microsoft.azure.batch.protocol.models.CloudServiceConfiguration;
-import com.microsoft.azure.batch.protocol.models.ComputeNode;
-import com.microsoft.azure.batch.protocol.models.ComputeNodeDeallocationOption;
-import com.microsoft.azure.batch.protocol.models.MetadataItem;
-import com.microsoft.azure.batch.protocol.models.NodeRemoveParameter;
-import com.microsoft.azure.batch.protocol.models.PoolAddOptions;
-import com.microsoft.azure.batch.protocol.models.PoolAddParameter;
-import com.microsoft.azure.batch.protocol.models.PoolDeleteOptions;
-import com.microsoft.azure.batch.protocol.models.PoolDisableAutoScaleOptions;
-import com.microsoft.azure.batch.protocol.models.PoolEnableAutoScaleOptions;
-import com.microsoft.azure.batch.protocol.models.PoolEnableAutoScaleParameter;
-import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleOptions;
-import com.microsoft.azure.batch.protocol.models.PoolExistsOptions;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsOptions;
-import com.microsoft.azure.batch.protocol.models.PoolGetOptions;
-import com.microsoft.azure.batch.protocol.models.PoolListOptions;
-import com.microsoft.azure.batch.protocol.models.PoolListUsageMetricsOptions;
-import com.microsoft.azure.batch.protocol.models.PoolPatchOptions;
-import com.microsoft.azure.batch.protocol.models.PoolPatchParameter;
-import com.microsoft.azure.batch.protocol.models.PoolRemoveNodesOptions;
-import com.microsoft.azure.batch.protocol.models.PoolResizeOptions;
-import com.microsoft.azure.batch.protocol.models.PoolResizeParameter;
-import com.microsoft.azure.batch.protocol.models.PoolStatistics;
-import com.microsoft.azure.batch.protocol.models.PoolStopResizeOptions;
-import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesOptions;
-import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesParameter;
-import com.microsoft.azure.batch.protocol.models.PoolUsageMetrics;
-import com.microsoft.azure.batch.protocol.models.StartTask;
-import com.microsoft.azure.batch.protocol.models.VirtualMachineConfiguration;
+import com.microsoft.azure.batch.protocol.models.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
@@ -1138,13 +1105,9 @@ public class PoolOperations implements IInheritedBehaviors {
      *             Batch service.
      */
     public void updatePoolProperties(String poolId, StartTask startTask,
-            Collection<CertificateReference> certificateReferences,
-            Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata,
-            Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        PoolUpdatePropertiesOptions options = new PoolUpdatePropertiesOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
-        bhMgr.applyRequestBehaviors(options);
-
+                                     Collection<CertificateReference> certificateReferences,
+                                     Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata,
+                                     Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolUpdatePropertiesParameter param = new PoolUpdatePropertiesParameter()
                 .withMetadata(metadata == null ? new LinkedList<MetadataItem>() : new LinkedList<>(metadata))
                 .withApplicationPackageReferences(
@@ -1153,6 +1116,56 @@ public class PoolOperations implements IInheritedBehaviors {
                 .withCertificateReferences(certificateReferences == null ? new LinkedList<CertificateReference>()
                         : new LinkedList<>(certificateReferences))
                 .withStartTask(startTask);
+
+        updatePoolProperties(poolId, param, additionalBehaviors);
+    }
+
+    /**
+     * Updates the specified pool. This method fully replaces all the updatable
+     * properties of the pool. For example, if the startTask parameter is null and
+     * the pool has a start task associated with it, then the Batch service will
+     * remove the existing start task.
+     *
+     * @param poolId
+     *            The ID of the pool.
+     * @param param
+     *             The Pool update properties
+     * @throws BatchErrorException
+     *             Exception thrown when an error response is received from the
+     *             Batch service.
+     * @throws IOException
+     *             Exception thrown when there is an error in
+     *             serialization/deserialization of data sent to/received from the
+     *             Batch service.
+     */
+    public void updatePoolProperties(String poolId, PoolUpdatePropertiesParameter param) throws BatchErrorException, IOException {
+        updatePoolProperties(poolId, param, null);
+    }
+
+    /**
+     * Updates the specified pool. This method fully replaces all the updatable
+     * properties of the pool. For example, if the startTask parameter is null and
+     * the pool has a start task associated with it, then the Batch service will
+     * remove the existing start task.
+     *
+     * @param poolId
+     *            The ID of the pool.
+     * @param param
+     *            The Pool update properties
+     * @param additionalBehaviors
+     *            A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
+     * @throws BatchErrorException
+     *             Exception thrown when an error response is received from the
+     *             Batch service.
+     * @throws IOException
+     *             Exception thrown when there is an error in
+     *             serialization/deserialization of data sent to/received from the
+     *             Batch service.
+     */
+    public void updatePoolProperties(String poolId, PoolUpdatePropertiesParameter param, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        PoolUpdatePropertiesOptions options = new PoolUpdatePropertiesOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
 
         this.parentBatchClient.protocolLayer().pools().updateProperties(poolId, param, options);
     }
@@ -1225,10 +1238,6 @@ public class PoolOperations implements IInheritedBehaviors {
     public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
             Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata,
             Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        PoolPatchOptions options = new PoolPatchOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
-        bhMgr.applyRequestBehaviors(options);
-
         PoolPatchParameter param = new PoolPatchParameter().withStartTask(startTask);
         if (metadata != null) {
             param.withMetadata(new LinkedList<>(metadata));
@@ -1239,6 +1248,52 @@ public class PoolOperations implements IInheritedBehaviors {
         if (certificateReferences != null) {
             param.withCertificateReferences(new LinkedList<>(certificateReferences));
         }
+
+        patchPool(poolId, param, additionalBehaviors);
+    }
+
+    /**
+     * Updates the specified pool. This method only replaces the properties
+     * specified with non-null values.
+     *
+     * @param poolId
+     *            The ID of the pool.
+     * @param param
+     *             The Pool patch properties
+     * @throws BatchErrorException
+     *             Exception thrown when an error response is received from the
+     *             Batch service.
+     * @throws IOException
+     *             Exception thrown when there is an error in
+     *             serialization/deserialization of data sent to/received from the
+     *             Batch service.
+     */
+    public void patchPool(String poolId, PoolPatchParameter param) throws BatchErrorException, IOException {
+        patchPool(poolId, param, null);
+    }
+
+    /**
+     * Updates the specified pool. This method only replaces the properties
+     * specified with non-null values.
+     *
+     * @param poolId
+     *            The ID of the pool.
+     * @param param
+     *             The Pool patch properties
+     * @param additionalBehaviors
+     *             A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
+     * @throws BatchErrorException
+     *             Exception thrown when an error response is received from the
+     *             Batch service.
+     * @throws IOException
+     *             Exception thrown when there is an error in
+     *             serialization/deserialization of data sent to/received from the
+     *             Batch service.
+     */
+    public void patchPool(String poolId, PoolPatchParameter param, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        PoolPatchOptions options = new PoolPatchOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
 
         this.parentBatchClient.protocolLayer().pools().patch(poolId, param, options);
     }

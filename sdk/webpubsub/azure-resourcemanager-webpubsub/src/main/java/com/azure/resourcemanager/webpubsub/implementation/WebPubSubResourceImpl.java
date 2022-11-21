@@ -163,6 +163,10 @@ public final class WebPubSubResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WebPubSubResourceInner innerModel() {
         return this.innerObject;
     }
@@ -254,12 +258,12 @@ public final class WebPubSubResourceImpl
         return this;
     }
 
-    public WebPubSubKeys listKeys() {
-        return serviceManager.webPubSubs().listKeys(resourceGroupName, resourceName);
-    }
-
     public Response<WebPubSubKeys> listKeysWithResponse(Context context) {
         return serviceManager.webPubSubs().listKeysWithResponse(resourceGroupName, resourceName, context);
+    }
+
+    public WebPubSubKeys listKeys() {
+        return serviceManager.webPubSubs().listKeys(resourceGroupName, resourceName);
     }
 
     public WebPubSubKeys regenerateKey(RegenerateKeyParameters parameters) {

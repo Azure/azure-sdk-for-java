@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGr
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookWorksheetProtection class. */
+    public MicrosoftGraphWorkbookWorksheetProtection() {
+    }
+
     /**
      * Get the options property: workbookWorksheetProtectionOptions.
      *
