@@ -492,11 +492,8 @@ public final class BinaryData {
      * @return BinaryData wrapping the flux.
      */
     public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length, boolean isReplayable) {
-        if (data == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'data' cannot be null."));
-        }
         if (length != null && length < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'length' cannot be less than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
         return new BinaryData(new FluxByteBufferContent(data, length, isReplayable));
     }

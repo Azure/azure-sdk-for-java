@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
@@ -47,7 +48,7 @@ public class ListByteBufferContent extends BinaryDataContent {
     @Override
     public byte[] toBytes() {
         if (bytes != null) {
-            return bytes;
+            return CoreUtils.clone(bytes);
         }
         if (getLength() > Integer.MAX_VALUE) {
             throw new UnsupportedOperationException("Content cannot fit in a single array.");
