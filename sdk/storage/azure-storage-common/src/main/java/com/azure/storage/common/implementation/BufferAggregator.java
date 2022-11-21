@@ -71,13 +71,7 @@ public final class BufferAggregator {
     }
 
     public BinaryData asBinaryData() {
-        // TODO (jaschrep): DO NOT MERGE await impl of BinaryData.fromListByteBuffer() to avoid copy
-        // for now, copy into single ByteBuffer (not long safe)
-        ByteBuffer bb = ByteBuffer.allocate((int) length);
-        for (ByteBuffer buf : this.buffers) {
-            bb.put(buf);
-        }
-        return BinaryData.fromByteBuffer(bb);
+        return BinaryData.fromList(this.buffers);
     }
 
     /**
