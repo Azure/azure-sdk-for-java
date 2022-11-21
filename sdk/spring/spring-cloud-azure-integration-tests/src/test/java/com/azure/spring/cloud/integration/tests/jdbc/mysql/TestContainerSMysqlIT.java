@@ -7,21 +7,35 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
+@DisabledIfEnvironmentVariable(named = "AZURE_MYSQL_IT_SKIPRUNNING", matches = "skipRunning")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Testcontainers
+@ActiveProfiles("jdbc-mysql-tc")
 public class TestContainerSMysqlIT {
-    private DockerImageName dockerImageName = DockerImageName.parse("mysql");
+    String VALUE = "information_schema,test";
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    private static DockerImageName dockerImageName = DockerImageName.parse("mysql:5.7");
 
     @Container
-    public MySQLContainer mySQLContainer = new MySQLContainer(dockerImageName);
+    public static MySQLContainer mySQLContainer = new MySQLContainer(dockerImageName);
 
 
     @BeforeEach
@@ -34,10 +48,14 @@ public class TestContainerSMysqlIT {
         mySQLContainer.withUsername("passwordless-test")
             .withPassword(password);
     }
-
+    @DynamicPropertySource
+    static void properties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
+//        registry.add("spring.datasource.password", mySQLContainer::getPassword);
+//        registry.add("spring.datasource.username", mySQLContainer::getUsername);
+    }
     @Test
     void testMysqlPassword() {
-        // add your
         String query = "show databases";
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(query);
 
