@@ -145,9 +145,9 @@ public class CloudPool {
     private Integer currentDedicatedNodes;
 
     /**
-     * The number of low-priority Compute Nodes currently in the Pool.
-     * low-priority Compute Nodes which have been preempted are included in
-     * this count.
+     * The number of Spot/Low-priority Compute Nodes currently in the Pool.
+     * Spot/Low-priority Compute Nodes which have been preempted are included
+     * in this count.
      */
     @JsonProperty(value = "currentLowPriorityNodes")
     private Integer currentLowPriorityNodes;
@@ -159,7 +159,7 @@ public class CloudPool {
     private Integer targetDedicatedNodes;
 
     /**
-     * The desired number of low-priority Compute Nodes in the Pool.
+     * The desired number of Spot/Low-priority Compute Nodes in the Pool.
      */
     @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
@@ -310,6 +310,21 @@ public class CloudPool {
      */
     @JsonProperty(value = "identity")
     private BatchPoolIdentity identity;
+
+    /**
+     * The desired node communication mode for the pool.
+     * If omitted, the default value is Default. Possible values include:
+     * 'default', 'classic', 'simplified'.
+     */
+    @JsonProperty(value = "targetNodeCommunicationMode")
+    private NodeCommunicationMode targetNodeCommunicationMode;
+
+    /**
+     * The current state of the pool communication mode.
+     * Possible values include: 'default', 'classic', 'simplified'.
+     */
+    @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
+    private NodeCommunicationMode currentNodeCommunicationMode;
 
     /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
@@ -632,7 +647,7 @@ public class CloudPool {
     }
 
     /**
-     * Get low-priority Compute Nodes which have been preempted are included in this count.
+     * Get spot/Low-priority Compute Nodes which have been preempted are included in this count.
      *
      * @return the currentLowPriorityNodes value
      */
@@ -641,7 +656,7 @@ public class CloudPool {
     }
 
     /**
-     * Set low-priority Compute Nodes which have been preempted are included in this count.
+     * Set spot/Low-priority Compute Nodes which have been preempted are included in this count.
      *
      * @param currentLowPriorityNodes the currentLowPriorityNodes value to set
      * @return the CloudPool object itself.
@@ -1029,6 +1044,35 @@ public class CloudPool {
     public CloudPool withIdentity(BatchPoolIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get if omitted, the default value is Default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @return the targetNodeCommunicationMode value
+     */
+    public NodeCommunicationMode targetNodeCommunicationMode() {
+        return this.targetNodeCommunicationMode;
+    }
+
+    /**
+     * Set if omitted, the default value is Default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
+        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
+        return this;
+    }
+
+    /**
+     * Get possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @return the currentNodeCommunicationMode value
+     */
+    public NodeCommunicationMode currentNodeCommunicationMode() {
+        return this.currentNodeCommunicationMode;
     }
 
 }

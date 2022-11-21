@@ -17,6 +17,10 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
 
+    /** Creates an instance of IntegrationRuntimeDebugResource class. */
+    public IntegrationRuntimeDebugResource() {
+    }
+
     /**
      * Get the properties property: Integration runtime properties.
      *

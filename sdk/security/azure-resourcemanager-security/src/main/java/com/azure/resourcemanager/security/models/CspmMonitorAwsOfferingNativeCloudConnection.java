@@ -16,6 +16,10 @@ public final class CspmMonitorAwsOfferingNativeCloudConnection {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /** Creates an instance of CspmMonitorAwsOfferingNativeCloudConnection class. */
+    public CspmMonitorAwsOfferingNativeCloudConnection() {
+    }
+
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
      *

@@ -5,6 +5,9 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * The options for creating a call.
  */
@@ -27,6 +30,7 @@ public class HangUpOptions {
      */
     public HangUpOptions(boolean isForEveryone) {
         this.isForEveryone = isForEveryone;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**

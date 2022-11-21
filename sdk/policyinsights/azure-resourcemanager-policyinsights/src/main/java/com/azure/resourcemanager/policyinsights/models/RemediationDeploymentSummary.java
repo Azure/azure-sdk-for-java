@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The deployment status summary for all deployments created by the remediation. */
 @Immutable
 public final class RemediationDeploymentSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemediationDeploymentSummary.class);
-
     /*
      * The number of deployments required by the remediation.
      */
@@ -21,8 +17,7 @@ public final class RemediationDeploymentSummary {
     private Integer totalDeployments;
 
     /*
-     * The number of deployments required by the remediation that have
-     * succeeded.
+     * The number of deployments required by the remediation that have succeeded.
      */
     @JsonProperty(value = "successfulDeployments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer successfulDeployments;
@@ -32,6 +27,10 @@ public final class RemediationDeploymentSummary {
      */
     @JsonProperty(value = "failedDeployments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedDeployments;
+
+    /** Creates an instance of RemediationDeploymentSummary class. */
+    public RemediationDeploymentSummary() {
+    }
 
     /**
      * Get the totalDeployments property: The number of deployments required by the remediation.

@@ -1,0 +1,25 @@
+{
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+    },
+    "JavaTestVersion": "1.17",
+    "AZURE_TEST_HTTP_CLIENTS": "netty",
+    "TestGoals": "surefire:test",
+    "VersionOverrides": [
+      "gson_2.4",
+      "gson_2.5",
+      "gson_2.6",
+      "gson_2.7",
+      "gson_2.8",
+      "gson_2.9",
+      "jackson_2.10",
+      "jackson_2.11",
+      "jackson_2.12",
+      "jackson_2.13",
+      "jackson_2.14"
+    ],
+    "AZURE_VERSION_OVERRIDE_TESTS": true,
+    "TestVersionSupport": true
+  }
+}

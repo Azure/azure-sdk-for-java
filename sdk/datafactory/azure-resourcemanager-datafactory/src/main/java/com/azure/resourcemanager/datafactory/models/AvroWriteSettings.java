@@ -40,6 +40,10 @@ public final class AvroWriteSettings extends FormatWriteSettings {
     @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;
 
+    /** Creates an instance of AvroWriteSettings class. */
+    public AvroWriteSettings() {
+    }
+
     /**
      * Get the recordName property: Top level record name in write result, which is required in AVRO spec.
      *

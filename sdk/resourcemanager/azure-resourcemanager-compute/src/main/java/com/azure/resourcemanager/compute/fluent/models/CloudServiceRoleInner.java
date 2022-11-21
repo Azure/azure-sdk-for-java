@@ -48,6 +48,10 @@ public final class CloudServiceRoleInner {
     @JsonProperty(value = "properties")
     private CloudServiceRoleProperties properties;
 
+    /** Creates an instance of CloudServiceRoleInner class. */
+    public CloudServiceRoleInner() {
+    }
+
     /**
      * Get the id property: Resource id.
      *

@@ -48,6 +48,10 @@ public final class PacketCaptureFilter {
     @JsonProperty(value = "remotePort")
     private String remotePort;
 
+    /** Creates an instance of PacketCaptureFilter class. */
+    public PacketCaptureFilter() {
+    }
+
     /**
      * Get the protocol property: Protocol to be filtered on.
      *

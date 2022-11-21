@@ -50,6 +50,8 @@ from utils import version_update_end_marker
 from utils import version_update_marker
 import xml.etree.ElementTree as ET
 
+exception_list = []
+
 def update_versions(update_type, version_map, ext_dep_map, target_file, skip_readme, auto_version_increment, library_array):
 
     newlines = []
@@ -96,7 +98,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                             module = version_map[module_name]
                             new_version = module.current
                             newline = re.sub(version_regex_str_no_anchor, new_version, line)
-                        except AttributeError:
+                        except (KeyError, AttributeError):
                             # This can happen when a dependency is an unreleased_ or beta_ dependency and the tag is current instead of dependency
                             raise ValueError('Module: {0} does not have a current version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     elif version_type == 'dependency':
@@ -104,7 +106,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                             module = version_map[module_name]
                             new_version = module.dependency
                             newline = re.sub(version_regex_str_no_anchor, new_version, line)
-                        except AttributeError:
+                        except (KeyError, AttributeError):
                             # This should never happen unless the version file is malformed
                             raise ValueError('Module: {0} does not have a dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     elif version_type == 'external_dependency':
@@ -114,19 +116,17 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                             continue
                         if is_include:
                             try:
-                                module = ext_dep_map.get(module_name)
-                                if module:
-                                    new_include_version = module.string_for_allowlist_include()
-                                    newline = re.sub(external_dependency_include_regex, new_include_version, line)
-                            except AttributeError:
+                                module = ext_dep_map[module_name]
+                                new_include_version = module.string_for_allowlist_include()
+                                newline = re.sub(external_dependency_include_regex, new_include_version, line)
+                            except (KeyError, AttributeError):
                                 raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                         else:
                             try:
-                                module = ext_dep_map.get(module_name)
-                                if module:
-                                    new_version = module.external_dependency
-                                    newline = re.sub(external_dependency_version_regex, new_version, line)
-                            except AttributeError:
+                                module = ext_dep_map[module_name]
+                                new_version = module.external_dependency
+                                newline = re.sub(external_dependency_version_regex, new_version, line)
+                            except (KeyError, AttributeError):
                                 raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     else:
                         raise ValueError('Invalid version type: {} for module: {}.\nFile={}\nLine={}'.format(version_type, module_name, target_file, line))
@@ -151,8 +151,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                 update_changelog(target_file, auto_version_increment, library_array)
 
     except Exception as e:
-        print("Unexpected exception: " + str(e))
-        traceback.print_exc(file=sys.stderr)
+        exception_list.append(e)
 
 # Updating the changelog is special. Grab the version from the respective pom file
 def update_changelog(pom_file, is_increment, library_array):
@@ -310,6 +309,11 @@ def main():
     elapsed_time = time.time() - start_time
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
+
+    if len(exception_list) > 0:
+        for ex in exception_list:
+            print("ERROR: " + str(ex))
+        sys.exit('There were replacement errors. All errors are immediately above this message.')
 
 if __name__ == '__main__':
     main()

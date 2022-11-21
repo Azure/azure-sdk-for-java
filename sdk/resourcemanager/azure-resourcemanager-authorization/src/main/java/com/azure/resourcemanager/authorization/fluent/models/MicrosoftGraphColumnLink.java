@@ -26,6 +26,10 @@ public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphColumnLink class. */
+    public MicrosoftGraphColumnLink() {
+    }
+
     /**
      * Get the name property: The name of the column in this content type.
      *

@@ -26,6 +26,10 @@ public final class AutomationActionWorkspace extends AutomationAction {
     @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
+    /** Creates an instance of AutomationActionWorkspace class. */
+    public AutomationActionWorkspace() {
+    }
+
     /**
      * Get the workspaceResourceId property: The fully qualified Log Analytics Workspace Azure Resource ID.
      *

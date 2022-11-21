@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkConnections ListHealthDetails. */
 public final class NetworkConnectionsListHealthDetailsSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/NetworkConnections_ListHealthDetails.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/NetworkConnections_ListHealthDetails.json
      */
     /**
      * Sample code: NetworkConnections_ListHealthDetails.

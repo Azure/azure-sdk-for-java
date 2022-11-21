@@ -18,6 +18,10 @@ public final class VirtualMachineSizeListResult {
     @JsonProperty(value = "value")
     private List<VirtualMachineSizeInner> value;
 
+    /** Creates an instance of VirtualMachineSizeListResult class. */
+    public VirtualMachineSizeListResult() {
+    }
+
     /**
      * Get the value property: The list of virtual machine sizes.
      *

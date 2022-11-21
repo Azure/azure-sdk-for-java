@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EnvironmentContainers Delete. */
 public final class EnvironmentContainersDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/EnvironmentContainer/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/EnvironmentContainer/delete.json
      */
     /**
      * Sample code: Delete Environment Container.

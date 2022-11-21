@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for NetworkManagerDeploymentStatusOperation List. */
 public final class NetworkManagerDeploymentStatusOperationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerDeploymentStatusList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerDeploymentStatusList.json
      */
     /**
      * Sample code: NetworkManagerDeploymentStatusList.
@@ -33,6 +33,7 @@ public final class NetworkManagerDeploymentStatusOperationListSamples {
                     .withDeploymentTypes(
                         Arrays.asList(ConfigurationType.CONNECTIVITY, ConfigurationType.fromString("AdminPolicy")))
                     .withSkipToken("FakeSkipTokenCode"),
+                null,
                 Context.NONE);
     }
 }

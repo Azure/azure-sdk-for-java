@@ -33,7 +33,7 @@ public final class EnvironmentTypesListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"moy\"},\"tags\":{\"dnbzydvfvfcjn\":\"yuibhm\",\"fukiscvwmzhw\":\"eoisrvhmgor\"},\"id\":\"efaxvxilc\",\"name\":\"tg\",\"type\":\"hnze\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"tpzdmovzvfvaawzq\"},\"tags\":{\"aecxndtic\":\"lgzurig\"},\"id\":\"pvz\",\"name\":\"lqtmldgxob\",\"type\":\"irclnpk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class EnvironmentTypesListByDevCenterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<EnvironmentType> response =
-            manager.environmentTypes().listByDevCenter("hrv", "bunzozudh", 529725461, Context.NONE);
+            manager.environmentTypes().listByDevCenter("rjvpglydzgkrvqee", "toepryu", 726969242, Context.NONE);
 
-        Assertions.assertEquals("yuibhm", response.iterator().next().tags().get("dnbzydvfvfcjn"));
+        Assertions.assertEquals("lgzurig", response.iterator().next().tags().get("aecxndtic"));
     }
 }

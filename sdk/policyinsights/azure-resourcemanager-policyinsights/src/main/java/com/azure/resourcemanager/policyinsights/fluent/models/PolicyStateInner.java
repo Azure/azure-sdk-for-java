@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.models.ComponentStateDetails;
 import com.azure.resourcemanager.policyinsights.models.PolicyEvaluationDetails;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -20,18 +19,14 @@ import java.util.Map;
 /** Policy state record. */
 @Fluent
 public final class PolicyStateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyStateInner.class);
-
     /*
-     * OData entity ID; always set to null since policy state records do not
-     * have an entity ID.
+     * OData entity ID; always set to null since policy state records do not have an entity ID.
      */
     @JsonProperty(value = "@odata.id")
     private String odataId;
 
     /*
-     * OData context string; used by OData clients to resolve type information
-     * based on metadata.
+     * OData context string; used by OData clients to resolve type information based on metadata.
      */
     @JsonProperty(value = "@odata.context")
     private String odataContext;
@@ -67,9 +62,8 @@ public final class PolicyStateInner {
     private String effectiveParameters;
 
     /*
-     * Flag which states whether the resource is compliant against the policy
-     * assignment it was evaluated against. This property is deprecated; please
-     * use ComplianceState instead.
+     * Flag which states whether the resource is compliant against the policy assignment it was evaluated against. This
+     * property is deprecated; please use ComplianceState instead.
      */
     @JsonProperty(value = "isCompliant")
     private Boolean isCompliant;
@@ -153,43 +147,38 @@ public final class PolicyStateInner {
     private String policySetDefinitionId;
 
     /*
-     * Policy set definition name, if the policy assignment is for a policy
-     * set.
+     * Policy set definition name, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policySetDefinitionName")
     private String policySetDefinitionName;
 
     /*
-     * Policy set definition owner, if the policy assignment is for a policy
-     * set.
+     * Policy set definition owner, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policySetDefinitionOwner")
     private String policySetDefinitionOwner;
 
     /*
-     * Policy set definition category, if the policy assignment is for a policy
-     * set.
+     * Policy set definition category, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policySetDefinitionCategory")
     private String policySetDefinitionCategory;
 
     /*
-     * Policy set definition parameters, if the policy assignment is for a
-     * policy set.
+     * Policy set definition parameters, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policySetDefinitionParameters")
     private String policySetDefinitionParameters;
 
     /*
-     * Comma separated list of management group IDs, which represent the
-     * hierarchy of the management groups the resource is under.
+     * Comma separated list of management group IDs, which represent the hierarchy of the management groups the
+     * resource is under.
      */
     @JsonProperty(value = "managementGroupIds")
     private String managementGroupIds;
 
     /*
-     * Reference ID for the policy definition inside the policy set, if the
-     * policy assignment is for a policy set.
+     * Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
@@ -213,8 +202,7 @@ public final class PolicyStateInner {
     private List<String> policyDefinitionGroupNames;
 
     /*
-     * Components state compliance records populated only when URL contains
-     * $expand=components clause.
+     * Components state compliance records populated only when URL contains $expand=components clause.
      */
     @JsonProperty(value = "components")
     private List<ComponentStateDetails> components;
@@ -241,6 +229,10 @@ public final class PolicyStateInner {
      * Policy state record.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of PolicyStateInner class. */
+    public PolicyStateInner() {
+    }
 
     /**
      * Get the odataId property: OData entity ID; always set to null since policy state records do not have an entity

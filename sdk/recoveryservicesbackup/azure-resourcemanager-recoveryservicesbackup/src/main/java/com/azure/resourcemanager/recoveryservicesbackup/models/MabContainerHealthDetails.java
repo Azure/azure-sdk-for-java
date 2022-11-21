@@ -35,6 +35,10 @@ public final class MabContainerHealthDetails {
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
+    /** Creates an instance of MabContainerHealthDetails class. */
+    public MabContainerHealthDetails() {
+    }
+
     /**
      * Get the code property: Health Code.
      *

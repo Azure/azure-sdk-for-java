@@ -29,7 +29,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
                     .attach()
                     .defineCertificateCredential("cert")
                     .withAsymmetricX509Certificate()
-                    .withPublicKey(readAllBytes(this.getClass().getResourceAsStream("/myTest.cer")))
+                    .withPublicKey(replaceCRLF(readAllBytes(this.getClass().getResourceAsStream("/myTest.cer"))))
                     .withDuration(Duration.ofDays(100))
                     .attach()
                     .create();

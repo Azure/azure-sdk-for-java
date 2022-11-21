@@ -30,7 +30,11 @@ public final class CommunicationCloudEnvironmentModel extends ExpandableStringEn
         return fromString(name, CommunicationCloudEnvironmentModel.class);
     }
 
-    /** @return known CommunicationCloudEnvironmentModel values. */
+    /**
+     * Gets known CommunicationCloudEnvironmentModel values.
+     *
+     * @return known CommunicationCloudEnvironmentModel values.
+     */
     public static Collection<CommunicationCloudEnvironmentModel> values() {
         return values(CommunicationCloudEnvironmentModel.class);
     }

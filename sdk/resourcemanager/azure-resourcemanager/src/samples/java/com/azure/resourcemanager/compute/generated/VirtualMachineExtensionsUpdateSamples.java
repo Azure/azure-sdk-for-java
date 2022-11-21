@@ -44,8 +44,7 @@ public final class VirtualMachineExtensionsUpdateSamples {
                     .withSuppressFailures(true)
                     .withProtectedSettingsFromKeyVault(
                         new KeyVaultSecretReference()
-                            .withSecretUrl(
-                                "https://kvName.vault.azure.net/secrets/secretName/79b88b3a6f5440ffb2e73e44a0db712e")
+                            .withSecretUrl("fakeTokenPlaceholder")
                             .withSourceVault(
                                 new SubResource()
                                     .withId(

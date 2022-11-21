@@ -20,25 +20,25 @@ public final class ProvisionedClustersPropertiesWithSecretsTests {
         ProvisionedClustersPropertiesWithSecrets model =
             BinaryData
                 .fromString(
-                    "{\"aadProfile\":{\"adminGroupObjectIDs\":[\"conuqszfkbeype\",\"rmjmwvvjektc\",\"senhwlrs\",\"frzpwvlqdqgb\"],\"clientAppID\":\"ylihkaetckt\",\"enableAzureRbac\":true,\"managed\":false,\"serverAppID\":\"snkymuctq\",\"tenantID\":\"fbebrjcxer\",\"serverAppSecret\":\"wutttxfvjrbi\"},\"windowsProfile\":{\"adminPassword\":\"xepcyvahfn\",\"adminUsername\":\"kyqxjvuujqgidokg\",\"enableCsiProxy\":true,\"licenseType\":\"Windows_Server\"},\"httpProxyConfig\":{\"password\":\"vcltbgsncgh\",\"httpProxy\":\"esz\",\"httpsProxy\":\"bijhtxfvgxbf\",\"noProxy\":[\"nehmpvecx\",\"odebfqkkrbmpu\",\"gr\"],\"trustedCa\":\"flz\",\"username\":\"bxzpuzycisp\"}}")
+                    "{\"aadProfile\":{\"adminGroupObjectIDs\":[\"conuqszfkbeype\",\"rmjmwvvjektc\",\"senhwlrs\",\"frzpwvlqdqgb\"],\"clientAppID\":\"ylihkaetckt\",\"enableAzureRbac\":true,\"managed\":false,\"serverAppID\":\"snkymuctq\",\"tenantID\":\"fbebrjcxer\",\"serverAppSecret\":\"fakeSecretPlaceholder\"},\"windowsProfile\":{\"adminPassword\":\"fakePasswordPlaceholder\",\"adminUsername\":\"fakeUsernamePlaceholder\",\"enableCsiProxy\":true,\"licenseType\":\"Windows_Server\"},\"httpProxyConfig\":{\"password\":\"fakePasswordPlaceholder\",\"httpProxy\":\"esz\",\"httpsProxy\":\"bijhtxfvgxbf\",\"noProxy\":[\"nehmpvecx\",\"odebfqkkrbmpu\",\"gr\"],\"trustedCa\":\"flz\",\"username\":\"fakeUsernamePlaceholder\"}}")
                 .toObject(ProvisionedClustersPropertiesWithSecrets.class);
-        Assertions.assertEquals("wutttxfvjrbi", model.aadProfile().serverAppSecret());
+        Assertions.assertEquals("fakeSecretPlaceholder", model.aadProfile().serverAppSecret());
         Assertions.assertEquals("conuqszfkbeype", model.aadProfile().adminGroupObjectIDs().get(0));
         Assertions.assertEquals("ylihkaetckt", model.aadProfile().clientAppId());
         Assertions.assertEquals(true, model.aadProfile().enableAzureRbac());
         Assertions.assertEquals(false, model.aadProfile().managed());
         Assertions.assertEquals("snkymuctq", model.aadProfile().serverAppId());
         Assertions.assertEquals("fbebrjcxer", model.aadProfile().tenantId());
-        Assertions.assertEquals("kyqxjvuujqgidokg", model.windowsProfile().adminUsername());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.windowsProfile().adminUsername());
         Assertions.assertEquals(true, model.windowsProfile().enableCsiProxy());
         Assertions.assertEquals(LicenseType.WINDOWS_SERVER, model.windowsProfile().licenseType());
-        Assertions.assertEquals("xepcyvahfn", model.windowsProfile().adminPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.windowsProfile().adminPassword());
         Assertions.assertEquals("esz", model.httpProxyConfig().httpProxy());
         Assertions.assertEquals("bijhtxfvgxbf", model.httpProxyConfig().httpsProxy());
         Assertions.assertEquals("nehmpvecx", model.httpProxyConfig().noProxy().get(0));
         Assertions.assertEquals("flz", model.httpProxyConfig().trustedCa());
-        Assertions.assertEquals("bxzpuzycisp", model.httpProxyConfig().username());
-        Assertions.assertEquals("vcltbgsncgh", model.httpProxyConfig().password());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.httpProxyConfig().username());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.httpProxyConfig().password());
     }
 
     @Test
@@ -47,7 +47,7 @@ public final class ProvisionedClustersPropertiesWithSecretsTests {
             new ProvisionedClustersPropertiesWithSecrets()
                 .withAadProfile(
                     new AadProfile()
-                        .withServerAppSecret("wutttxfvjrbi")
+                        .withServerAppSecret("fakeSecretPlaceholder")
                         .withAdminGroupObjectIDs(
                             Arrays.asList("conuqszfkbeype", "rmjmwvvjektc", "senhwlrs", "frzpwvlqdqgb"))
                         .withClientAppId("ylihkaetckt")
@@ -57,35 +57,35 @@ public final class ProvisionedClustersPropertiesWithSecretsTests {
                         .withTenantId("fbebrjcxer"))
                 .withWindowsProfile(
                     new WindowsProfile()
-                        .withAdminUsername("kyqxjvuujqgidokg")
+                        .withAdminUsername("fakeUsernamePlaceholder")
                         .withEnableCsiProxy(true)
                         .withLicenseType(LicenseType.WINDOWS_SERVER)
-                        .withAdminPassword("xepcyvahfn"))
+                        .withAdminPassword("fakePasswordPlaceholder"))
                 .withHttpProxyConfig(
                     new HttpProxyConfig()
                         .withHttpProxy("esz")
                         .withHttpsProxy("bijhtxfvgxbf")
                         .withNoProxy(Arrays.asList("nehmpvecx", "odebfqkkrbmpu", "gr"))
                         .withTrustedCa("flz")
-                        .withUsername("bxzpuzycisp")
-                        .withPassword("vcltbgsncgh"));
+                        .withUsername("fakeUsernamePlaceholder")
+                        .withPassword("fakePasswordPlaceholder"));
         model = BinaryData.fromObject(model).toObject(ProvisionedClustersPropertiesWithSecrets.class);
-        Assertions.assertEquals("wutttxfvjrbi", model.aadProfile().serverAppSecret());
+        Assertions.assertEquals("fakeSecretPlaceholder", model.aadProfile().serverAppSecret());
         Assertions.assertEquals("conuqszfkbeype", model.aadProfile().adminGroupObjectIDs().get(0));
         Assertions.assertEquals("ylihkaetckt", model.aadProfile().clientAppId());
         Assertions.assertEquals(true, model.aadProfile().enableAzureRbac());
         Assertions.assertEquals(false, model.aadProfile().managed());
         Assertions.assertEquals("snkymuctq", model.aadProfile().serverAppId());
         Assertions.assertEquals("fbebrjcxer", model.aadProfile().tenantId());
-        Assertions.assertEquals("kyqxjvuujqgidokg", model.windowsProfile().adminUsername());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.windowsProfile().adminUsername());
         Assertions.assertEquals(true, model.windowsProfile().enableCsiProxy());
         Assertions.assertEquals(LicenseType.WINDOWS_SERVER, model.windowsProfile().licenseType());
-        Assertions.assertEquals("xepcyvahfn", model.windowsProfile().adminPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.windowsProfile().adminPassword());
         Assertions.assertEquals("esz", model.httpProxyConfig().httpProxy());
         Assertions.assertEquals("bijhtxfvgxbf", model.httpProxyConfig().httpsProxy());
         Assertions.assertEquals("nehmpvecx", model.httpProxyConfig().noProxy().get(0));
         Assertions.assertEquals("flz", model.httpProxyConfig().trustedCa());
-        Assertions.assertEquals("bxzpuzycisp", model.httpProxyConfig().username());
-        Assertions.assertEquals("vcltbgsncgh", model.httpProxyConfig().password());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.httpProxyConfig().username());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.httpProxyConfig().password());
     }
 }

@@ -33,6 +33,10 @@ public final class CollectionOfLinksOfDirectoryObject {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CollectionOfLinksOfDirectoryObject class. */
+    public CollectionOfLinksOfDirectoryObject() {
+    }
+
     /**
      * Get the value property: The value property.
      *

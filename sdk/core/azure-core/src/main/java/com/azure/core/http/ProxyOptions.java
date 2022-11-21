@@ -127,6 +127,8 @@ public class ProxyOptions {
     }
 
     /**
+     * Gets the address of the proxy.
+     *
      * @return the address of the proxy.
      */
     public InetSocketAddress getAddress() {
@@ -134,6 +136,8 @@ public class ProxyOptions {
     }
 
     /**
+     * Gets the type of the prxoy.
+     *
      * @return the type of the proxy.
      */
     public Type getType() {
@@ -141,13 +145,17 @@ public class ProxyOptions {
     }
 
     /**
-     * @return the proxy user name.
+     * Gets the proxy username.
+     *
+     * @return the proxy username.
      */
     public String getUsername() {
         return this.username;
     }
 
     /**
+     * Gets the proxy password.
+     *
      * @return the proxy password.
      */
     public String getPassword() {
@@ -155,6 +163,8 @@ public class ProxyOptions {
     }
 
     /**
+     * Gets the host that bypass the proxy.
+     *
      * @return the hosts that bypass the proxy.
      */
     public String getNonProxyHosts() {

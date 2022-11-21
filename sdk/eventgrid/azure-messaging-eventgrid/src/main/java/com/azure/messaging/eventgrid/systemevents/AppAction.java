@@ -39,7 +39,11 @@ public final class AppAction extends ExpandableStringEnum<AppAction> {
         return fromString(name, AppAction.class);
     }
 
-    /** @return known AppAction values. */
+    /**
+     * Gets known AppAction values.
+     *
+     * @return known AppAction values.
+     */
     public static Collection<AppAction> values() {
         return values(AppAction.class);
     }

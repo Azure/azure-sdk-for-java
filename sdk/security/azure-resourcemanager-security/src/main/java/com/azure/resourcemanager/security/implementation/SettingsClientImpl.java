@@ -57,7 +57,7 @@ public final class SettingsClientImpl implements SettingsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSettin")
-    private interface SettingsService {
+    public interface SettingsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings")
         @ExpectedResponses({200})
@@ -331,20 +331,6 @@ public final class SettingsClientImpl implements SettingsClient {
      * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SettingInner get(SettingName settingName) {
-        return getAsync(settingName).block();
-    }
-
-    /**
-     * Settings of different configurations in Microsoft Defender for Cloud.
-     *
-     * @param settingName The name of the setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -354,6 +340,20 @@ public final class SettingsClientImpl implements SettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SettingInner> getWithResponse(SettingName settingName, Context context) {
         return getWithResponseAsync(settingName, context).block();
+    }
+
+    /**
+     * Settings of different configurations in Microsoft Defender for Cloud.
+     *
+     * @param settingName The name of the setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the kind of the security setting.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SettingInner get(SettingName settingName) {
+        return getWithResponse(settingName, Context.NONE).getValue();
     }
 
     /**
@@ -473,21 +473,6 @@ public final class SettingsClientImpl implements SettingsClient {
      *
      * @param settingName The name of the setting.
      * @param setting Setting object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SettingInner update(SettingName settingName, SettingInner setting) {
-        return updateAsync(settingName, setting).block();
-    }
-
-    /**
-     * updating settings about different configurations in Microsoft Defender for Cloud.
-     *
-     * @param settingName The name of the setting.
-     * @param setting Setting object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -497,6 +482,21 @@ public final class SettingsClientImpl implements SettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SettingInner> updateWithResponse(SettingName settingName, SettingInner setting, Context context) {
         return updateWithResponseAsync(settingName, setting, context).block();
+    }
+
+    /**
+     * updating settings about different configurations in Microsoft Defender for Cloud.
+     *
+     * @param settingName The name of the setting.
+     * @param setting Setting object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the kind of the security setting.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SettingInner update(SettingName settingName, SettingInner setting) {
+        return updateWithResponse(settingName, setting, Context.NONE).getValue();
     }
 
     /**

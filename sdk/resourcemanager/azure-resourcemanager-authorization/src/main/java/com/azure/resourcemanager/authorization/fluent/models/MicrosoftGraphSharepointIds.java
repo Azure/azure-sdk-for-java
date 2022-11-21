@@ -28,8 +28,7 @@ public final class MicrosoftGraphSharepointIds {
     private String listItemId;
 
     /*
-     * The unique identifier (guid) for the item within OneDrive for Business
-     * or a SharePoint site.
+     * The unique identifier (guid) for the item within OneDrive for Business or a SharePoint site.
      */
     @JsonProperty(value = "listItemUniqueId")
     private String listItemUniqueId;
@@ -62,6 +61,10 @@ public final class MicrosoftGraphSharepointIds {
      * sharepointIds
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSharepointIds class. */
+    public MicrosoftGraphSharepointIds() {
+    }
 
     /**
      * Get the listId property: The unique identifier (guid) for the item's list in SharePoint.

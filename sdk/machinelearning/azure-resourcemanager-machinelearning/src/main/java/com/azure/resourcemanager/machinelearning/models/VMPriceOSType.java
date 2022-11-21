@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMPriceOSType. */
+/**
+ * OS type
+ *
+ * <p>Operating system type used by the VM.
+ */
 public final class VMPriceOSType extends ExpandableStringEnum<VMPriceOSType> {
     /** Static value Linux for VMPriceOSType. */
     public static final VMPriceOSType LINUX = fromString("Linux");

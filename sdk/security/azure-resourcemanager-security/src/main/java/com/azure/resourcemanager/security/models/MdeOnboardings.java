@@ -12,15 +12,6 @@ public interface MdeOnboardings {
     /**
      * The configuration or data needed to onboard the machine to MDE.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all MDE onboarding data resources.
-     */
-    MdeOnboardingDataList list();
-
-    /**
-     * The configuration or data needed to onboard the machine to MDE.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,13 +21,13 @@ public interface MdeOnboardings {
     Response<MdeOnboardingDataList> listWithResponse(Context context);
 
     /**
-     * The default configuration or data needed to onboard the machine to MDE.
+     * The configuration or data needed to onboard the machine to MDE.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource of the configuration or data needed to onboard the machine to MDE.
+     * @return list of all MDE onboarding data resources.
      */
-    MdeOnboardingData get();
+    MdeOnboardingDataList list();
 
     /**
      * The default configuration or data needed to onboard the machine to MDE.
@@ -49,4 +40,13 @@ public interface MdeOnboardings {
      *     Response}.
      */
     Response<MdeOnboardingData> getWithResponse(Context context);
+
+    /**
+     * The default configuration or data needed to onboard the machine to MDE.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource of the configuration or data needed to onboard the machine to MDE.
+     */
+    MdeOnboardingData get();
 }

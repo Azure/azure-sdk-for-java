@@ -12,15 +12,13 @@ import java.util.List;
 @Fluent
 public final class AzureActiveDirectoryValidation {
     /*
-     * The configuration settings of the checks that should be made while
-     * validating the JWT Claims.
+     * The configuration settings of the checks that should be made while validating the JWT Claims.
      */
     @JsonProperty(value = "jwtClaimChecks")
     private JwtClaimChecks jwtClaimChecks;
 
     /*
-     * The list of audiences that can make successful
-     * authentication/authorization requests.
+     * The list of audiences that can make successful authentication/authorization requests.
      */
     @JsonProperty(value = "allowedAudiences")
     private List<String> allowedAudiences;
@@ -30,6 +28,10 @@ public final class AzureActiveDirectoryValidation {
      */
     @JsonProperty(value = "defaultAuthorizationPolicy")
     private DefaultAuthorizationPolicy defaultAuthorizationPolicy;
+
+    /** Creates an instance of AzureActiveDirectoryValidation class. */
+    public AzureActiveDirectoryValidation() {
+    }
 
     /**
      * Get the jwtClaimChecks property: The configuration settings of the checks that should be made while validating

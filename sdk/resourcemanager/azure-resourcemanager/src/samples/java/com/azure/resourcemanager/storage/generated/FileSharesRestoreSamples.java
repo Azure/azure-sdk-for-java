@@ -27,7 +27,7 @@ public final class FileSharesRestoreSamples {
                 "res3376",
                 "sto328",
                 "share1249",
-                new DeletedShare().withDeletedShareName("share1249").withDeletedShareVersion("1234567890"),
+                new DeletedShare().withDeletedShareName("share1249").withDeletedShareVersion("fakeVersionPlaceholder"),
                 Context.NONE);
     }
 }

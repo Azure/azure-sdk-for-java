@@ -47,7 +47,7 @@ public class Exceptions {
 
     public static boolean isPartitionCompletingSplittingException(CosmosException cosmosException) {
         return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.GONE) &&
-            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
+            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
     }
 
     public static boolean isPartitionKeyMismatchException(CosmosException cosmosException) {

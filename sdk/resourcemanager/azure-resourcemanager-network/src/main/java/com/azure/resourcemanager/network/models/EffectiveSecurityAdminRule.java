@@ -22,6 +22,10 @@ public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdmin
     @JsonProperty(value = "properties")
     private AdminPropertiesFormat innerProperties;
 
+    /** Creates an instance of EffectiveSecurityAdminRule class. */
+    public EffectiveSecurityAdminRule() {
+    }
+
     /**
      * Get the innerProperties property: Indicates the properties of the security admin rule.
      *

@@ -39,18 +39,6 @@ public interface SecurityContactsClient {
      * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default Security contact configurations for the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityContactInner get(String securityContactName);
-
-    /**
-     * Get Default Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,17 +49,16 @@ public interface SecurityContactsClient {
     Response<SecurityContactInner> getWithResponse(String securityContactName, Context context);
 
     /**
-     * Create security contact configurations for the subscription.
+     * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud.
+     * @return default Security contact configurations for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityContactInner create(String securityContactName, SecurityContactInner securityContact);
+    SecurityContactInner get(String securityContactName);
 
     /**
      * Create security contact configurations for the subscription.
@@ -90,15 +77,17 @@ public interface SecurityContactsClient {
         String securityContactName, SecurityContactInner securityContact, Context context);
 
     /**
-     * Delete security contact configurations for the subscription.
+     * Create security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
+     * @param securityContact Security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String securityContactName);
+    SecurityContactInner create(String securityContactName, SecurityContactInner securityContact);
 
     /**
      * Delete security contact configurations for the subscription.
@@ -112,4 +101,15 @@ public interface SecurityContactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String securityContactName, Context context);
+
+    /**
+     * Delete security contact configurations for the subscription.
+     *
+     * @param securityContactName Name of the security contact object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String securityContactName);
 }

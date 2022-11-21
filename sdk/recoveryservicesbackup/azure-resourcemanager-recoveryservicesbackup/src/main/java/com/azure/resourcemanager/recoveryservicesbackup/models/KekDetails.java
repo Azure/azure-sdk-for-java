@@ -28,6 +28,10 @@ public final class KekDetails {
     @JsonProperty(value = "keyBackupData")
     private String keyBackupData;
 
+    /** Creates an instance of KekDetails class. */
+    public KekDetails() {
+    }
+
     /**
      * Get the keyUrl property: Key is KEK.
      *

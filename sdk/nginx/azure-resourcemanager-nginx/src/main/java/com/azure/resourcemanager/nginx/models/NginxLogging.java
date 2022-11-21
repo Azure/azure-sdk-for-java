@@ -16,6 +16,10 @@ public final class NginxLogging {
     @JsonProperty(value = "storageAccount")
     private NginxStorageAccount storageAccount;
 
+    /** Creates an instance of NginxLogging class. */
+    public NginxLogging() {
+    }
+
     /**
      * Get the storageAccount property: The storageAccount property.
      *

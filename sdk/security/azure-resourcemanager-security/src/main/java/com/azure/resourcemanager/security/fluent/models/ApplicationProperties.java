@@ -37,6 +37,10 @@ public final class ApplicationProperties {
     @JsonProperty(value = "conditionSets", required = true)
     private List<Object> conditionSets;
 
+    /** Creates an instance of ApplicationProperties class. */
+    public ApplicationProperties() {
+    }
+
     /**
      * Get the displayName property: display name of the application.
      *

@@ -28,7 +28,7 @@ import java.util.Arrays;
 /** Samples for VirtualNetworkGateways CreateOrUpdate. */
 public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkGatewayUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayUpdate.json
      */
     /**
      * Sample code: UpdateVirtualNetworkGateway.
@@ -110,7 +110,9 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
                                     .withExternalMappings(
                                         Arrays.asList(new VpnNatRuleMapping().withAddressSpace("30.0.0.0/24")))
                                     .withIpConfigurationId("")))
-                    .withEnableBgpRouteTranslationForNat(false),
+                    .withEnableBgpRouteTranslationForNat(false)
+                    .withAllowVirtualWanTraffic(false)
+                    .withAllowRemoteVnetTraffic(false),
                 Context.NONE);
     }
 }

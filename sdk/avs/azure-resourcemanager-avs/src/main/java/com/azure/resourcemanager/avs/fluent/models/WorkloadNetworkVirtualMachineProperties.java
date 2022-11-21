@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.VMTypeEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Virtual Machine Properties. */
 @Fluent
 public final class WorkloadNetworkVirtualMachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkVirtualMachineProperties.class);
-
     /*
      * Display name of the VM.
      */
@@ -26,6 +22,10 @@ public final class WorkloadNetworkVirtualMachineProperties {
      */
     @JsonProperty(value = "vmType", access = JsonProperty.Access.WRITE_ONLY)
     private VMTypeEnum vmType;
+
+    /** Creates an instance of WorkloadNetworkVirtualMachineProperties class. */
+    public WorkloadNetworkVirtualMachineProperties() {
+    }
 
     /**
      * Get the displayName property: Display name of the VM.

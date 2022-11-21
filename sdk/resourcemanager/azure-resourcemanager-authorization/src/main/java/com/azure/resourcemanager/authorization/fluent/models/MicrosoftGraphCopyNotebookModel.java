@@ -111,6 +111,10 @@ public final class MicrosoftGraphCopyNotebookModel {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphCopyNotebookModel class. */
+    public MicrosoftGraphCopyNotebookModel() {
+    }
+
     /**
      * Get the createdBy property: The createdBy property.
      *

@@ -25,6 +25,10 @@ public final class AsanaLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AsanaLinkedServiceTypeProperties class. */
+    public AsanaLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the apiToken property: The api token for the Asana source.
      *

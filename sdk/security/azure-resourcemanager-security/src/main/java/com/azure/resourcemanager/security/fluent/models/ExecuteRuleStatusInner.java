@@ -16,6 +16,10 @@ public final class ExecuteRuleStatusInner {
     @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
+    /** Creates an instance of ExecuteRuleStatusInner class. */
+    public ExecuteRuleStatusInner() {
+    }
+
     /**
      * Get the operationId property: Unique key for the execution of GovernanceRule.
      *

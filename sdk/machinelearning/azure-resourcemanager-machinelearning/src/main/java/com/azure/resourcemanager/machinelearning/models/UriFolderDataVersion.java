@@ -11,9 +11,13 @@ import java.util.Map;
 
 /** uri-folder data version entity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataType")
-@JsonTypeName("UriFolder")
+@JsonTypeName("uri_folder")
 @Fluent
-public final class UriFolderDataVersion extends DataVersionBaseDetails {
+public final class UriFolderDataVersion extends DataVersionBaseProperties {
+    /** Creates an instance of UriFolderDataVersion class. */
+    public UriFolderDataVersion() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public UriFolderDataVersion withDataUri(String dataUri) {

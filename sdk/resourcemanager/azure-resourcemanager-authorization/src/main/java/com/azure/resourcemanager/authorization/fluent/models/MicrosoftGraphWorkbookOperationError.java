@@ -38,6 +38,10 @@ public final class MicrosoftGraphWorkbookOperationError {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookOperationError class. */
+    public MicrosoftGraphWorkbookOperationError() {
+    }
+
     /**
      * Get the code property: The error code.
      *

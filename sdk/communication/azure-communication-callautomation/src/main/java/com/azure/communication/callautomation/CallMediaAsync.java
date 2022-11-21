@@ -8,6 +8,8 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Error
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
+import com.azure.communication.callautomation.implementation.models.GenderType;
+import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -20,6 +22,7 @@ import com.azure.communication.callautomation.models.CallingServerErrorException
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
+import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -155,7 +158,9 @@ public class CallMediaAsync {
                 if (recognizeOptions.getPlayPrompt() != null) {
                     PlaySource playSource = recognizeOptions.getPlayPrompt();
                     if (playSource instanceof FileSource) {
-                        playSourceInternal = getPlaySourceInternal((FileSource) playSource);
+                        playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
+                    } else if (playSource instanceof TextSource) {
+                        playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
                     }
                 }
 
@@ -224,9 +229,14 @@ public class CallMediaAsync {
     }
 
     PlayRequest getPlayRequest(PlaySource playSource, List<CommunicationIdentifier> playTo, PlayOptions options) {
+        PlaySourceInternal playSourceInternal = new PlaySourceInternal();
         if (playSource instanceof FileSource) {
-            PlaySourceInternal playSourceInternal = getPlaySourceInternal((FileSource) playSource);
+            playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
+        } else if (playSource instanceof TextSource) {
+            playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
+        }
 
+        if (playSourceInternal.getSourceType() != null) {
             PlayRequest request = new PlayRequest()
                 .setPlaySourceInfo(playSourceInternal)
                 .setPlayTo(
@@ -246,12 +256,34 @@ public class CallMediaAsync {
         throw logger.logExceptionAsError(new IllegalArgumentException(playSource.getClass().getCanonicalName()));
     }
 
-    private PlaySourceInternal getPlaySourceInternal(FileSource fileSource) {
-        FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(fileSource.getUri());
+    private PlaySourceInternal getPlaySourceInternalFromFileSource(FileSource playSource) {
+        FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUri());
         PlaySourceInternal playSourceInternal = new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.FILE)
             .setFileSource(fileSourceInternal)
-            .setPlaySourceId(fileSource.getPlaySourceId());
+            .setPlaySourceId(playSource.getPlaySourceId());
+        return playSourceInternal;
+    }
+
+    private PlaySourceInternal getPlaySourceInternalFromTextSource(TextSource playSource) {
+        TextSourceInternal textSourceInternal = new TextSourceInternal().setText(playSource.getText());
+        if (playSource.getVoiceGender() != null) {
+            textSourceInternal.setVoiceGender(GenderType.fromString(playSource.getVoiceGender().toString()));
+        }
+        if (playSource.getSourceLocale() != null) {
+            textSourceInternal.setSourceLocale(playSource.getSourceLocale());
+        }
+        if (playSource.getTargetLocale() != null) {
+            textSourceInternal.setTargetLocale(playSource.getTargetLocale());
+        }
+        if (playSource.getVoiceName() != null) {
+            textSourceInternal.setVoiceName(playSource.getVoiceName());
+        }
+
+        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
+            .setSourceType(PlaySourceTypeInternal.TEXT)
+            .setTextSource(textSourceInternal)
+            .setPlaySourceId(playSource.getPlaySourceId());
         return playSourceInternal;
     }
 }

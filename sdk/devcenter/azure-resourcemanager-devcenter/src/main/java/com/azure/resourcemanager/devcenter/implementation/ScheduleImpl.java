@@ -9,8 +9,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.Schedule;
+import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
+import java.util.Map;
 
 public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedule.Update {
     private ScheduleInner innerObject;
@@ -81,6 +83,8 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
 
     private Integer updateTop;
 
+    private ScheduleUpdate updateBody;
+
     public ScheduleImpl withExistingPool(String resourceGroupName, String projectName, String poolName) {
         this.resourceGroupName = resourceGroupName;
         this.projectName = projectName;
@@ -117,6 +121,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
 
     public ScheduleImpl update() {
         this.updateTop = null;
+        this.updateBody = new ScheduleUpdate();
         return this;
     }
 
@@ -125,8 +130,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
             serviceManager
                 .serviceClient()
                 .getSchedules()
-                .createOrUpdate(
-                    resourceGroupName, projectName, poolName, scheduleName, this.innerModel(), updateTop, Context.NONE);
+                .update(resourceGroupName, projectName, poolName, scheduleName, updateBody, updateTop, Context.NONE);
         return this;
     }
 
@@ -135,8 +139,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
             serviceManager
                 .serviceClient()
                 .getSchedules()
-                .createOrUpdate(
-                    resourceGroupName, projectName, poolName, scheduleName, this.innerModel(), updateTop, context);
+                .update(resourceGroupName, projectName, poolName, scheduleName, updateBody, updateTop, context);
         return this;
     }
 
@@ -177,23 +180,43 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public ScheduleImpl withFrequency(ScheduledFrequency frequency) {
-        this.innerModel().withFrequency(frequency);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withFrequency(frequency);
+            return this;
+        } else {
+            this.updateBody.withFrequency(frequency);
+            return this;
+        }
     }
 
     public ScheduleImpl withTime(String time) {
-        this.innerModel().withTime(time);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTime(time);
+            return this;
+        } else {
+            this.updateBody.withTime(time);
+            return this;
+        }
     }
 
     public ScheduleImpl withTimeZone(String timeZone) {
-        this.innerModel().withTimeZone(timeZone);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTimeZone(timeZone);
+            return this;
+        } else {
+            this.updateBody.withTimeZone(timeZone);
+            return this;
+        }
     }
 
     public ScheduleImpl withState(EnableStatus state) {
-        this.innerModel().withState(state);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withState(state);
+            return this;
+        } else {
+            this.updateBody.withState(state);
+            return this;
+        }
     }
 
     public ScheduleImpl withTop(Integer top) {
@@ -204,6 +227,16 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
             this.updateTop = top;
             return this;
         }
+    }
+
+    public ScheduleImpl withTags(Map<String, String> tags) {
+        this.updateBody.withTags(tags);
+        return this;
+    }
+
+    public ScheduleImpl withType(ScheduledType type) {
+        this.updateBody.withType(type);
+        return this;
     }
 
     private boolean isInCreateMode() {

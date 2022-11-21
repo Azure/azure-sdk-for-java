@@ -19,6 +19,10 @@ public final class CapacityReservationProfile {
     @JsonProperty(value = "capacityReservationGroup")
     private SubResource capacityReservationGroup;
 
+    /** Creates an instance of CapacityReservationProfile class. */
+    public CapacityReservationProfile() {
+    }
+
     /**
      * Get the capacityReservationGroup property: Specifies the capacity reservation group resource id that should be
      * used for allocating the virtual machine or scaleset vm instances provided enough capacity has been reserved.

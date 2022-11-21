@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
+import java.util.Map;
 
 /** An immutable client-side representation of Schedule. */
 public interface Schedule {
@@ -108,7 +109,7 @@ public interface Schedule {
             /**
              * Specifies resourceGroupName, projectName, poolName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param projectName The name of the project.
              * @param poolName Name of the pool.
              * @return the next definition stage.
@@ -212,7 +213,8 @@ public interface Schedule {
 
     /** The template for Schedule update. */
     interface Update
-        extends UpdateStages.WithTypePropertiesType,
+        extends UpdateStages.WithTags,
+            UpdateStages.WithType,
             UpdateStages.WithFrequency,
             UpdateStages.WithTime,
             UpdateStages.WithTimeZone,
@@ -235,15 +237,25 @@ public interface Schedule {
     }
     /** The Schedule update stages. */
     interface UpdateStages {
-        /** The stage of the Schedule update allowing to specify typePropertiesType. */
-        interface WithTypePropertiesType {
+        /** The stage of the Schedule update allowing to specify tags. */
+        interface WithTags {
             /**
-             * Specifies the typePropertiesType property: Supported type this scheduled task represents..
+             * Specifies the tags property: Resource tags..
              *
-             * @param typePropertiesType Supported type this scheduled task represents.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
-            Update withTypePropertiesType(ScheduledType typePropertiesType);
+            Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Schedule update allowing to specify type. */
+        interface WithType {
+            /**
+             * Specifies the type property: Supported type this scheduled task represents..
+             *
+             * @param type Supported type this scheduled task represents.
+             * @return the next definition stage.
+             */
+            Update withType(ScheduledType type);
         }
         /** The stage of the Schedule update allowing to specify frequency. */
         interface WithFrequency {

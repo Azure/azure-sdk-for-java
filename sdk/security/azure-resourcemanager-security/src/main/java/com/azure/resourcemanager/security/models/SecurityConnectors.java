@@ -65,19 +65,6 @@ public interface SecurityConnectors {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource.
-     */
-    SecurityConnector getByResourceGroup(String resourceGroupName, String securityConnectorName);
-
-    /**
-     * Retrieves details of a specific security connector.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,7 +75,7 @@ public interface SecurityConnectors {
         String resourceGroupName, String securityConnectorName, Context context);
 
     /**
-     * Deletes a security connector.
+     * Retrieves details of a specific security connector.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -96,8 +83,9 @@ public interface SecurityConnectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security connector resource.
      */
-    void deleteByResourceGroup(String resourceGroupName, String securityConnectorName);
+    SecurityConnector getByResourceGroup(String resourceGroupName, String securityConnectorName);
 
     /**
      * Deletes a security connector.
@@ -111,7 +99,20 @@ public interface SecurityConnectors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String securityConnectorName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String securityConnectorName, Context context);
+
+    /**
+     * Deletes a security connector.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String resourceGroupName, String securityConnectorName);
 
     /**
      * Retrieves details of a specific security connector.

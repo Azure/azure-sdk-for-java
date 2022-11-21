@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VmPriority. */
+/** Virtual Machine priority. */
 public final class VmPriority extends ExpandableStringEnum<VmPriority> {
     /** Static value Dedicated for VmPriority. */
     public static final VmPriority DEDICATED = fromString("Dedicated");

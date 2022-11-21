@@ -18,6 +18,10 @@ public final class DedicatedHostAvailableCapacity {
     @JsonProperty(value = "allocatableVMs")
     private List<DedicatedHostAllocatableVM> allocatableVMs;
 
+    /** Creates an instance of DedicatedHostAvailableCapacity class. */
+    public DedicatedHostAvailableCapacity() {
+    }
+
     /**
      * Get the allocatableVMs property: The unutilized capacity of the dedicated host represented in terms of each VM
      * size that is allowed to be deployed to the dedicated host.

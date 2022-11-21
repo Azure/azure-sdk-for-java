@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -60,6 +61,21 @@ public class ReadmeSamples {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
         // END: readme-sample-createAsynchronousServiceBusReceiverWithAzureIdentity
+    }
+
+    /**
+     * Code sample for creating an asynchronous Service Bus receiver using {@link AzureNamedKeyCredential}.
+     */
+    public void createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential() {
+        // BEGIN: readme-sample-createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential
+        AzureNamedKeyCredential azureNamedKeyCredential =
+            new AzureNamedKeyCredential("<<azure-service-sas-key-name>>", "<<azure-service-sas-key>>");
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .credential(azureNamedKeyCredential)
+            .receiver()
+            .queueName("<<queue-name>>")
+            .buildAsyncClient();
+        // END: readme-sample-createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential
     }
 
     /**
@@ -215,18 +231,31 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code sample for creating a Service Bus Processor Client.
+     * Code sample for creating a Service Bus Processor Client to receive in PeekLock mode.
      */
-    public void createServiceBusProcessorClient() {
-        // BEGIN: readme-sample-createServiceBusProcessorClient
-        // Sample code that processes a single message
-        Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
-            try {
-                System.out.println(messageContext.getMessage().getMessageId());
-                // other message processing code
-                messageContext.complete();
-            } catch (Exception ex) {
-                messageContext.abandon();
+    public void createServiceBusProcessorClientInPeekLockMode() {
+        // BEGIN: readme-sample-createServiceBusProcessorClientInPeekLockMode
+        // Sample code that processes a single message which is received in PeekLock mode.
+        Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
+            final ServiceBusReceivedMessage message = context.getMessage();
+            // Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+            // handling message reaches desired state such that it doesn't require Service Bus to redeliver
+            // the same message, then context.complete() should be called otherwise context.abandon().
+            final boolean success = Math.random() < 0.5;
+            if (success) {
+                try {
+                    context.complete();
+                } catch (Exception completionError) {
+                    System.out.printf("Completion of the message %s failed\n", message.getMessageId());
+                    completionError.printStackTrace();
+                }
+            } else {
+                try {
+                    context.abandon();
+                } catch (Exception abandonError) {
+                    System.out.printf("Abandoning of the message %s failed\n", message.getMessageId());
+                    abandonError.printStackTrace();
+                }
             }
         };
 
@@ -240,6 +269,8 @@ public class ReadmeSamples {
                                         .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
                                         .processor()
                                         .queueName("<< QUEUE NAME >>")
+                                        .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                                        .disableAutoComplete() // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
                                         .processMessage(processMessage)
                                         .processError(processError)
                                         .disableAutoComplete()
@@ -247,7 +278,40 @@ public class ReadmeSamples {
 
         // Starts the processor in the background and returns immediately
         processorClient.start();
-        // END: readme-sample-createServiceBusProcessorClient
+        // END: readme-sample-createServiceBusProcessorClientInPeekLockMode
+    }
+
+    /**
+     * Code sample for creating a Service Bus Processor Client to receive in ReceiveAndDelete mode.
+     */
+    public void createServiceBusProcessorClientInReceiveAndDelete() {
+        // BEGIN: readme-sample-createServiceBusProcessorClientInReceiveAndDeleteMode
+        // Sample code that processes a single message which is received in ReceiveAndDelete mode.
+        Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
+            final ServiceBusReceivedMessage message = context.getMessage();
+            System.out.printf("handler processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+                message.getSequenceNumber(), message.getBody());
+        };
+
+        // Sample code that gets called if there's an error
+        Consumer<ServiceBusErrorContext> processError = errorContext -> {
+            System.err.println("Error occurred while receiving message: " + errorContext.getException());
+        };
+
+        // create the processor client via the builder and its sub-builder
+        ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .processor()
+            .queueName("<< QUEUE NAME >>")
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+            .processMessage(processMessage)
+            .processError(processError)
+            .disableAutoComplete()
+            .buildProcessorClient();
+
+        // Starts the processor in the background and returns immediately
+        processorClient.start();
+        // END: readme-sample-createServiceBusProcessorClientInReceiveAndDeleteMode
     }
 
     public void connectionSharingAcrossClients() {

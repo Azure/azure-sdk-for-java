@@ -37,15 +37,6 @@ public final class AlertsSuppressionRulesImpl implements AlertsSuppressionRules 
         return Utils.mapPage(inner, inner1 -> new AlertsSuppressionRuleImpl(inner1, this.manager()));
     }
 
-    public AlertsSuppressionRule get(String alertsSuppressionRuleName) {
-        AlertsSuppressionRuleInner inner = this.serviceClient().get(alertsSuppressionRuleName);
-        if (inner != null) {
-            return new AlertsSuppressionRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AlertsSuppressionRule> getWithResponse(String alertsSuppressionRuleName, Context context) {
         Response<AlertsSuppressionRuleInner> inner =
             this.serviceClient().getWithResponse(alertsSuppressionRuleName, context);
@@ -60,10 +51,8 @@ public final class AlertsSuppressionRulesImpl implements AlertsSuppressionRules 
         }
     }
 
-    public AlertsSuppressionRule update(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
-        AlertsSuppressionRuleInner inner =
-            this.serviceClient().update(alertsSuppressionRuleName, alertsSuppressionRule);
+    public AlertsSuppressionRule get(String alertsSuppressionRuleName) {
+        AlertsSuppressionRuleInner inner = this.serviceClient().get(alertsSuppressionRuleName);
         if (inner != null) {
             return new AlertsSuppressionRuleImpl(inner, this.manager());
         } else {
@@ -86,12 +75,23 @@ public final class AlertsSuppressionRulesImpl implements AlertsSuppressionRules 
         }
     }
 
-    public void delete(String alertsSuppressionRuleName) {
-        this.serviceClient().delete(alertsSuppressionRuleName);
+    public AlertsSuppressionRule update(
+        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
+        AlertsSuppressionRuleInner inner =
+            this.serviceClient().update(alertsSuppressionRuleName, alertsSuppressionRule);
+        if (inner != null) {
+            return new AlertsSuppressionRuleImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String alertsSuppressionRuleName, Context context) {
         return this.serviceClient().deleteWithResponse(alertsSuppressionRuleName, context);
+    }
+
+    public void delete(String alertsSuppressionRuleName) {
+        this.serviceClient().delete(alertsSuppressionRuleName);
     }
 
     private AlertsSuppressionRulesClient serviceClient() {

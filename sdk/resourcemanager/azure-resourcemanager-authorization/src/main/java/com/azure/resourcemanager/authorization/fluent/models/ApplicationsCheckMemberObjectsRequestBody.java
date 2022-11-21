@@ -27,6 +27,10 @@ public final class ApplicationsCheckMemberObjectsRequestBody {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ApplicationsCheckMemberObjectsRequestBody class. */
+    public ApplicationsCheckMemberObjectsRequestBody() {
+    }
+
     /**
      * Get the ids property: The ids property.
      *
