@@ -29,11 +29,14 @@ public final class Dimension {
     private String internalName;
 
     /*
-     * A Boolean flag indicating whether this dimension should be included for
-     * the shoebox export scenario.
+     * A Boolean flag indicating whether this dimension should be included for the shoebox export scenario.
      */
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
+
+    /** Creates an instance of Dimension class. */
+    public Dimension() {
+    }
 
     /**
      * Get the name property: The public facing name of the dimension.
