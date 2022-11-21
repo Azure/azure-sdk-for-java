@@ -38,7 +38,7 @@
                 </dependencyManagement>
           springProperties:
             starter: false
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -52,9 +52,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-dependencies
                 version: 6.0.0-beta.3
 - name: Active Directory
   content:
@@ -82,7 +82,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -96,9 +96,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-active-directory
                 version: 6.0.0-beta.3
 - name: Active Directory B2C
   content:
@@ -122,7 +122,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -136,9 +136,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-active-directory-b2c
                 version: 6.0.0-beta.3
 - name: App Configuration
   content:
@@ -168,7 +168,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -182,9 +182,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-appconfiguration
                 version: 6.0.0-beta.3
 - name: Cosmos DB
   content:
@@ -208,10 +208,8 @@
             DB SQL API using Spring Data.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.4.1/sdk/spring/spring-cloud-azure-starter-data-cosmos
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-data-cosmos
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.4.1/cosmos/spring-cloud-azure-starter-data-cosmos/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
@@ -253,7 +251,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -267,12 +265,51 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
                 version: 6.0.0-beta.3
 - name: Key Vault
   content:
+    - name: Key Vault
+      description: Azure Key Vault enables Microsoft Azure applications and users to
+        store and use secrets and certificates.
+      msDocs: https://docs.microsoft.com/azure/key-vault/
+      artifacts:
+        - artifactId: spring-cloud-azure-starter-keyvault
+          groupId: com.azure.spring
+          versionGA: 4.4.1
+          versionPreview: 6.0.0-beta.3
+          description: |-
+            Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
+            Azure Key Vault.
+          type: spring
+          links:
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.4.1/sdk/spring/spring-cloud-azure-starter-keyvault
+            msdocs: https://learn.microsoft.com/azure/key-vault/
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-keyvault
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.4.1/keyvault/spring-cloud-azure-starter-keyvault/
+          springProperties:
+            starter: true
+            bom: spring-cloud-azure-dependencies
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
+            mappings:
+              - compatibilityRange: "[2.5.0,2.5.14]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-keyvault
+                version: 4.4.1
+              - compatibilityRange: "[2.6.0,2.6.12]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-keyvault
+                version: 4.4.1
+              - compatibilityRange: "[2.7.0,2.7.3]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-keyvault
+                version: 4.4.1
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-keyvault
+                version: 6.0.0-beta.3
     - name: Key Vault - Certificates
       description: |-
         Azure Key Vault enables Microsoft Azure applications and users to store and use certificates, which are
@@ -282,38 +319,6 @@
         groupId: com.azure
         artifactId: azure-security-keyvault-certificates
       artifacts:
-        - artifactId: spring-cloud-azure-starter-keyvault
-            groupId: com.azure.spring
-            versionGA: 4.4.1
-            versionPreview: 6.0.0-beta.3
-            description: |-
-              Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
-              Azure Key Vault.
-            type: spring
-            links:
-              github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.4.1/sdk/spring/spring-cloud-azure-starter-keyvault
-              repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-keyvault
-            springProperties:
-              starter: true
-              bom: spring-cloud-azure-dependencies
-              compatibilityRange: "[2.5.0,2.7.3]"
-              mappings:
-                - compatibilityRange: "[2.5.0,2.5.14]"
-                  groupId: com.azure.spring
-                  artifactId: spring-cloud-azure-starter-keyvault-certificates
-                  version: 4.4.1
-                - compatibilityRange: "[2.6.0,2.6.12]"
-                  groupId: com.azure.spring
-                  artifactId: spring-cloud-azure-starter-keyvault-certificates
-                  version: 4.4.1
-                - compatibilityRange: "[2.7.0,2.7.3]"
-                  groupId: com.azure.spring
-                  artifactId: spring-cloud-azure-starter-keyvault-certificates
-                  version: 4.4.1
-                - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
-                  groupId: com.azure.spring
-                  artifactId: spring-cloud-azure-starter-cosmos
-                  version: 6.0.0-beta.3
         - artifactId: spring-cloud-azure-starter-keyvault-certificates
           groupId: com.azure.spring
           versionGA: 4.4.1
@@ -329,7 +334,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -343,11 +348,10 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-keyvault-certificates
                 version: 6.0.0-beta.3
-
         - artifactId: azure-security-keyvault-jca
           groupId: com.azure
           versionGA: 2.7.0
@@ -357,7 +361,6 @@
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
             msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca/README.md
             repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-securtiy-keyvault-jca
     - name: Key Vault - Secrets
       description: |-
         Azure Key Vault Secrets allows you to securely store and tightly control the access to
@@ -387,7 +390,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -401,22 +404,15 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-keyvault-secrets
                 version: 6.0.0-beta.3
 - name: Storage
   content:
-    - name: Storage - Blobs
-      description: |-
-        Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage
-        is optimized for storing massive amounts of unstructured data. Unstructured data is
-        data that does not adhere to a particular data model or definition, such as text or
-        binary data.
+    - name: Storage
+      description: Azure Storage is Microsoft's object storage solution for the cloud.
       msDocs: https://docs.microsoft.com/azure/storage/
-      clientSource:
-        groupId: com.azure
-        artifactId: azure-storage-blob
       artifacts:
         - artifactId: spring-cloud-azure-starter-storage
           groupId: com.azure.spring
@@ -429,29 +425,41 @@
           type: spring
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.4.1/sdk/spring/spring-cloud-azure-starter-storage
+            msdocs: https://docs.microsoft.com/azure/storage/
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-storage
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.4.1/storage/spring-cloud-azure-starter-storage/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-storage-blob
+                artifactId: spring-cloud-azure-starter-storage
                 version: 4.4.1
               - compatibilityRange: "[2.6.0,2.6.12]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-storage-blob
+                artifactId: spring-cloud-azure-starter-storage
                 version: 4.4.1
               - compatibilityRange: "[2.7.0,2.7.3]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-storage-blob
+                artifactId: spring-cloud-azure-starter-storage
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-storage
                 version: 6.0.0-beta.3
+    - name: Storage - Blobs
+      description: |-
+        Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage
+        is optimized for storing massive amounts of unstructured data. Unstructured data is
+        data that does not adhere to a particular data model or definition, such as text or
+        binary data.
+      msDocs: https://docs.microsoft.com/azure/storage/blobs/
+      clientSource:
+        groupId: com.azure
+        artifactId: azure-storage-blob
+      artifacts:
         - artifactId: spring-cloud-azure-starter-storage-blob
           groupId: com.azure.spring
           versionGA: 4.4.1
@@ -469,7 +477,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -483,9 +491,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-storage-blob
                 version: 6.0.0-beta.3
     - name: Storage - Files Shares
       description: |-
@@ -516,7 +524,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -530,9 +538,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-storage-file-share
                 version: 6.0.0-beta.3
     - name: Storage - Queues
       description: |-
@@ -562,7 +570,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -576,9 +584,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-storage-queue
                 version: 6.0.0-beta.3
         - artifactId: spring-cloud-azure-starter-integration-storage-queue
           groupId: com.azure.spring
@@ -596,7 +604,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -610,9 +618,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-integration-storage-queue
                 version: 6.0.0-beta.3
         - artifactId: spring-integration-azure-storage-queue
           groupId: com.azure.spring
@@ -631,7 +639,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -645,9 +653,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-integration-azure-storage-queue
                 version: 6.0.0-beta.3
 - name: Service Bus
   content:
@@ -678,7 +686,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -692,9 +700,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-servicebus
                 version: 6.0.0-beta.3
         - artifactId: spring-cloud-azure-starter-integration-servicebus
           groupId: com.azure.spring
@@ -712,7 +720,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -726,9 +734,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-integration-servicebus
                 version: 6.0.0-beta.3
         - artifactId: spring-integration-azure-servicebus
           groupId: com.azure.spring
@@ -747,7 +755,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -761,9 +769,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-integration-azure-servicebus
                 version: 6.0.0-beta.3
         - artifactId: spring-cloud-azure-stream-binder-servicebus
           groupId: com.azure.spring
@@ -783,7 +791,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -797,9 +805,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-stream-binder-servicebus
                 version: 6.0.0-beta.3
     - name: Service Bus JMS
       description: |-
@@ -825,7 +833,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -839,9 +847,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-servicebus-jms
                 version: 6.0.0-beta.3
 - name: Event Hubs
   content:
@@ -872,7 +880,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -886,9 +894,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-eventhubs
                 version: 6.0.0-beta.3
         - artifactId: spring-cloud-azure-starter-integration-eventhubs
           groupId: com.azure.spring
@@ -906,7 +914,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -920,9 +928,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-starter-integration-eventhubs
                 version: 6.0.0-beta.3
         - artifactId: spring-integration-azure-eventhubs
           groupId: com.azure.spring
@@ -941,7 +949,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -955,9 +963,9 @@
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-integration-azure-eventhubs
                 version: 6.0.0-beta.3
         - artifactId: spring-cloud-azure-stream-binder-eventhubs
           groupId: com.azure.spring
@@ -977,7 +985,7 @@
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,2.7.3]"
+            compatibilityRange: "[2.5.0,3.0.0-RC1]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.14]"
                 groupId: com.azure.spring
@@ -991,24 +999,22 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
                 version: 4.4.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
-                artifactId: spring-cloud-azure-starter-cosmos
+                artifactId: spring-cloud-azure-stream-binder-eventhubs
                 version: 6.0.0-beta.3
-- name: Azure Database for MySQL
+- name: MySQL
   content:
-    - name: Azure Database for MySQL
+    - name: Database for MySQL
       description: |-
-        Azure Database for MySQL is cost effective and easy to set up, operate, and scale. 
-        Enjoy advanced security, same-zone or zone-redundant high availability, and a 
+        Azure Database for MySQL is cost effective and easy to set up, operate, and scale.
+        Enjoy advanced security, same-zone or zone-redundant high availability, and a
         service-level agreement (SLA) of up to 99.99 percent.
       msDocs: https://docs.microsoft.com/azure/mysql/
-      clientSource:
-        groupId: com.azure
-        artifactId: azure-identity-providers-jdbc-mysql
       artifacts:
         - artifactId: spring-cloud-azure-starter-jdbc-mysql
           groupId: com.azure.spring
+          versionGA: 4.5.0-beta.1
           versionPreview: 6.0.0-beta.3
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
@@ -1035,25 +1041,22 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
                 version: 4.5.0-beta.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
                 version: 6.0.0-beta.3
-- name: Azure Database for PostgreSQL
+- name: PostgreSQL
   content:
-    - name: Azure Database for PostgreSQL
+    - name: Database for PostgreSQL
       description: |-
-        Migrate with ease to a fully managed open-source database with support for the 
-        latest PostgreSQL versions. Azure Database for PostgreSQL offers a service-level 
-        agreement (SLA) of up to 99.99 percent uptime, AI-powered performance optimization, 
-        and advanced security.
+        Azure Database for PostgreSQL offers a service-level agreement (SLA)
+        of up to 99.99 percent uptime, AI-powered performance optimization, and
+        advanced security.
       msDocs: https://docs.microsoft.com/azure/postgresql/
-      clientSource:
-        groupId: com.azure
-        artifactId: azure-identity-providers-jdbc-postgresql
       artifacts:
         - artifactId: spring-cloud-azure-starter-jdbc-postgresql
           groupId: com.azure.spring
+          versionGA: 4.5.0-beta.1
           versionPreview: 6.0.0-beta.3
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
@@ -1080,7 +1083,7 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
                 version: 4.5.0-beta.1
-              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC2)"
+              - compatibilityRange: "[3.0.0-RC1,3.0.0-RC1]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
                 version: 6.0.0-beta.3
