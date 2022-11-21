@@ -76,7 +76,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     @Override
     public PagedFlux<RoleAssignment> listByServicePrincipalAsync(String principalId) {
         String filterStr = String.format("principalId eq '%s'", Objects.requireNonNull(principalId));
-        return PagedConverter.mapPage(inner().listAsync(filterStr), this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(filterStr, manager().tenantId()), this::wrapModel);
     }
 
     @Override
