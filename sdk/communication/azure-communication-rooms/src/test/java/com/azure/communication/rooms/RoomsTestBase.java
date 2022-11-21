@@ -39,7 +39,7 @@ public class RoomsTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
-                    "COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
+                    "COMMUNICATION_CONNECTION_STRING_ROOMS",
                 "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
 
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
