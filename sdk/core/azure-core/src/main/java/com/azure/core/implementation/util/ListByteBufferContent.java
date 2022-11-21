@@ -62,7 +62,7 @@ public class ListByteBufferContent extends BinaryDataContent {
             i += remaining;
             bb.reset();
         }
-        return bytes;
+        return CoreUtils.clone(bytes);
     }
 
     @Override
