@@ -46,11 +46,13 @@ public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
             assertEquals(24, responseJsonObject.getJsonArray("upperMargins").size());
 
             JsonArray isAnomalyJA = responseJsonObject.getJsonArray("isAnomaly");
-            for (int i = 0; i < isAnomalyJA.size(); i++)
+            for (int i = 0; i < isAnomalyJA.size(); i++) {
                 assertFalse(isAnomalyJA.getBoolean(i));
+            }
             JsonArray isPositiveAnomalyJA = responseJsonObject.getJsonArray("isPositiveAnomaly");
-            for (int i = 0; i < isPositiveAnomalyJA.size(); i++)
+            for (int i = 0; i < isPositiveAnomalyJA.size(); i++) {
                 assertFalse(isPositiveAnomalyJA.getBoolean(i));
+            }
 
         });
 
