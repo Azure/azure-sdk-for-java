@@ -2204,15 +2204,10 @@ public class ShareFileAsyncClient {
         ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
         context = context == null ? Context.NONE : context;
 
-        Flux<ByteBuffer> data = options.getDataFlux() == null
-            ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), (int) FILE_DEFAULT_BLOCK_SIZE, true)
-            : options.getDataFlux();
-
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(), data,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(),
+                options.getData(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareFileAsyncClient::uploadResponse);
     }
 
