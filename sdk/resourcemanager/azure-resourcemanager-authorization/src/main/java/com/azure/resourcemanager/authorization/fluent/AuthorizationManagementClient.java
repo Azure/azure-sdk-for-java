@@ -38,6 +38,41 @@ public interface AuthorizationManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the ClassicAdministratorsClient object to access its operations.
+     *
+     * @return the ClassicAdministratorsClient object.
+     */
+    ClassicAdministratorsClient getClassicAdministrators();
+
+    /**
+     * Gets the GlobalAdministratorsClient object to access its operations.
+     *
+     * @return the GlobalAdministratorsClient object.
+     */
+    GlobalAdministratorsClient getGlobalAdministrators();
+
+    /**
+     * Gets the DenyAssignmentsClient object to access its operations.
+     *
+     * @return the DenyAssignmentsClient object.
+     */
+    DenyAssignmentsClient getDenyAssignments();
+
+    /**
+     * Gets the ProviderOperationsMetadatasClient object to access its operations.
+     *
+     * @return the ProviderOperationsMetadatasClient object.
+     */
+    ProviderOperationsMetadatasClient getProviderOperationsMetadatas();
+
+    /**
+     * Gets the RoleAssignmentsClient object to access its operations.
+     *
+     * @return the RoleAssignmentsClient object.
+     */
+    RoleAssignmentsClient getRoleAssignments();
+
+    /**
      * Gets the PermissionsClient object to access its operations.
      *
      * @return the PermissionsClient object.
@@ -50,34 +85,6 @@ public interface AuthorizationManagementClient {
      * @return the RoleDefinitionsClient object.
      */
     RoleDefinitionsClient getRoleDefinitions();
-
-    /**
-     * Gets the ProviderOperationsMetadatasClient object to access its operations.
-     *
-     * @return the ProviderOperationsMetadatasClient object.
-     */
-    ProviderOperationsMetadatasClient getProviderOperationsMetadatas();
-
-    /**
-     * Gets the GlobalAdministratorsClient object to access its operations.
-     *
-     * @return the GlobalAdministratorsClient object.
-     */
-    GlobalAdministratorsClient getGlobalAdministrators();
-
-    /**
-     * Gets the RoleAssignmentsClient object to access its operations.
-     *
-     * @return the RoleAssignmentsClient object.
-     */
-    RoleAssignmentsClient getRoleAssignments();
-
-    /**
-     * Gets the ClassicAdministratorsClient object to access its operations.
-     *
-     * @return the ClassicAdministratorsClient object.
-     */
-    ClassicAdministratorsClient getClassicAdministrators();
 
     /**
      * Gets the EligibleChildResourcesClient object to access its operations.

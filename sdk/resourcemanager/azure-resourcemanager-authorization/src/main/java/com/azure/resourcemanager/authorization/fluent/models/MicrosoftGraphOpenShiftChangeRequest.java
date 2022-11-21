@@ -27,6 +27,10 @@ public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphSc
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOpenShiftChangeRequest class. */
+    public MicrosoftGraphOpenShiftChangeRequest() {
+    }
+
     /**
      * Get the openShiftId property: ID for the open shift.
      *

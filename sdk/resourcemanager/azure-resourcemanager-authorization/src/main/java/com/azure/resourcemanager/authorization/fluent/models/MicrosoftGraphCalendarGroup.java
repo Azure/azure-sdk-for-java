@@ -18,9 +18,8 @@ import java.util.UUID;
 @Fluent
 public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
     /*
-     * Identifies the version of the calendar group. Every time the calendar
-     * group is changed, ChangeKey changes as well. This allows Exchange to
-     * apply changes to the correct version of the object. Read-only.
+     * Identifies the version of the calendar group. Every time the calendar group is changed, ChangeKey changes as
+     * well. This allows Exchange to apply changes to the correct version of the object. Read-only.
      */
     @JsonProperty(value = "changeKey")
     private String changeKey;
@@ -38,8 +37,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
     private String name;
 
     /*
-     * The calendars in the calendar group. Navigation property. Read-only.
-     * Nullable.
+     * The calendars in the calendar group. Navigation property. Read-only. Nullable.
      */
     @JsonProperty(value = "calendars")
     private List<MicrosoftGraphCalendar> calendars;
@@ -48,6 +46,10 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
      * calendarGroup
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCalendarGroup class. */
+    public MicrosoftGraphCalendarGroup() {
+    }
 
     /**
      * Get the changeKey property: Identifies the version of the calendar group. Every time the calendar group is

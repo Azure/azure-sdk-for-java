@@ -33,6 +33,10 @@ public final class MicrosoftGraphConversationMember extends MicrosoftGraphEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphConversationMember class. */
+    public MicrosoftGraphConversationMember() {
+    }
+
     /**
      * Get the displayName property: The display name of the user.
      *

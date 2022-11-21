@@ -40,8 +40,7 @@ public final class RoleEligibilityScheduleProperties {
     private PrincipalType principalType;
 
     /*
-     * The id of roleEligibilityScheduleRequest used to create this
-     * roleAssignmentSchedule
+     * The id of roleEligibilityScheduleRequest used to create this roleAssignmentSchedule
      */
     @JsonProperty(value = "roleEligibilityScheduleRequestId")
     private String roleEligibilityScheduleRequestId;
@@ -71,10 +70,9 @@ public final class RoleEligibilityScheduleProperties {
     private OffsetDateTime endDateTime;
 
     /*
-     * The conditions on the role assignment. This limits the resources it can
-     * be assigned to. e.g.:
-     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'
+     * The conditions on the role assignment. This limits the resources it can be assigned to. e.g.:
+     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * 'foo_storage_container'
      */
     @JsonProperty(value = "condition")
     private String condition;
@@ -102,6 +100,10 @@ public final class RoleEligibilityScheduleProperties {
      */
     @JsonProperty(value = "expandedProperties")
     private ExpandedProperties expandedProperties;
+
+    /** Creates an instance of RoleEligibilityScheduleProperties class. */
+    public RoleEligibilityScheduleProperties() {
+    }
 
     /**
      * Get the scope property: The role eligibility schedule scope.

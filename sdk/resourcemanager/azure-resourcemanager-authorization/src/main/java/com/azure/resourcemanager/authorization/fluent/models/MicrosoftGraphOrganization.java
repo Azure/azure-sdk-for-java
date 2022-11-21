@@ -15,21 +15,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * organization The organization resource represents an instance of global settings and resources which operate and are
+ * organization
+ *
+ * <p>The organization resource represents an instance of global settings and resources which operate and are
  * provisioned at the tenant-level.
  */
 @Fluent
 public final class MicrosoftGraphOrganization extends MicrosoftGraphDirectoryObjectInner {
     /*
-     * The collection of service plans associated with the tenant. Not
-     * nullable.
+     * The collection of service plans associated with the tenant. Not nullable.
      */
     @JsonProperty(value = "assignedPlans")
     private List<MicrosoftGraphAssignedPlan> assignedPlans;
 
     /*
-     * Telephone number for the organization. NOTE: Although this is a string
-     * collection, only one number can be set for this property.
+     * Telephone number for the organization. NOTE: Although this is a string collection, only one number can be set
+     * for this property.
      */
     @JsonProperty(value = "businessPhones")
     private List<String> businessPhones;
@@ -53,11 +54,10 @@ public final class MicrosoftGraphOrganization extends MicrosoftGraphDirectoryObj
     private String countryLetterCode;
 
     /*
-     * Timestamp of when the organization was created. The value cannot be
-     * modified and is automatically populated when the organization is
-     * created. The Timestamp type represents date and time information using
-     * ISO 8601 format and is always in UTC time. For example, midnight UTC on
-     * Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
+     * Timestamp of when the organization was created. The value cannot be modified and is automatically populated when
+     * the organization is created. The Timestamp type represents date and time information using ISO 8601 format and
+     * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
+     * Read-only.
      */
     @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
@@ -75,20 +75,17 @@ public final class MicrosoftGraphOrganization extends MicrosoftGraphDirectoryObj
     private List<String> marketingNotificationEmails;
 
     /*
-     * The time and date at which the tenant was last synced with the
-     * on-premise directory. The Timestamp type represents date and time
-     * information using ISO 8601 format and is always in UTC time. For
-     * example, midnight UTC on Jan 1, 2014 would look like this:
-     * '2014-01-01T00:00:00Z'. Read-only.
+     * The time and date at which the tenant was last synced with the on-premise directory. The Timestamp type
+     * represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC
+     * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
      */
     @JsonProperty(value = "onPremisesLastSyncDateTime")
     private OffsetDateTime onPremisesLastSyncDateTime;
 
     /*
-     * true if this object is synced from an on-premises directory; false if
-     * this object was originally synced from an on-premises directory but is
-     * no longer synced; null if this object has never been synced from an
-     * on-premises directory (default).
+     * true if this object is synced from an on-premises directory; false if this object was originally synced from an
+     * on-premises directory but is no longer synced; null if this object has never been synced from an on-premises
+     * directory (default).
      */
     @JsonProperty(value = "onPremisesSyncEnabled")
     private Boolean onPremisesSyncEnabled;
@@ -100,8 +97,7 @@ public final class MicrosoftGraphOrganization extends MicrosoftGraphDirectoryObj
     private String postalCode;
 
     /*
-     * The preferred language for the organization. Should follow ISO 639-1
-     * Code; for example 'en'.
+     * The preferred language for the organization. Should follow ISO 639-1 Code; for example 'en'.
      */
     @JsonProperty(value = "preferredLanguage")
     private String preferredLanguage;
@@ -167,25 +163,27 @@ public final class MicrosoftGraphOrganization extends MicrosoftGraphDirectoryObj
     private MicrosoftGraphMdmAuthority mobileDeviceManagementAuthority;
 
     /*
-     * Navigation property to manage certificate-based authentication
-     * configuration. Only a single instance of
+     * Navigation property to manage certificate-based authentication configuration. Only a single instance of
      * certificateBasedAuthConfiguration can be created in the collection.
      */
     @JsonProperty(value = "certificateBasedAuthConfiguration")
     private List<MicrosoftGraphCertificateBasedAuthConfiguration> certificateBasedAuthConfiguration;
 
     /*
-     * The collection of open extensions defined for the organization.
-     * Read-only. Nullable.
+     * The collection of open extensions defined for the organization. Read-only. Nullable.
      */
     @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
-     * The organization resource represents an instance of global settings and
-     * resources which operate and are provisioned at the tenant-level.
+     * The organization resource represents an instance of global settings and resources which operate and are
+     * provisioned at the tenant-level.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOrganization class. */
+    public MicrosoftGraphOrganization() {
+    }
 
     /**
      * Get the assignedPlans property: The collection of service plans associated with the tenant. Not nullable.

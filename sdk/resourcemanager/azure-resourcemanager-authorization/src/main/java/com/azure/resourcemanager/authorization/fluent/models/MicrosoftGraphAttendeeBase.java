@@ -26,6 +26,10 @@ public class MicrosoftGraphAttendeeBase extends MicrosoftGraphRecipient {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphAttendeeBase class. */
+    public MicrosoftGraphAttendeeBase() {
+    }
+
     /**
      * Get the type property: attendeeType.
      *
