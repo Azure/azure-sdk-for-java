@@ -45,20 +45,6 @@ public interface SignalRPrivateEndpointConnections {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection.
-     */
-    PrivateEndpointConnection get(String privateEndpointConnectionName, String resourceGroupName, String resourceName);
-
-    /**
-     * Get the specified private endpoint connection.
-     *
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,23 +55,18 @@ public interface SignalRPrivateEndpointConnections {
         String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Update the state of specified private endpoint connection.
+     * Get the specified private endpoint connection.
      *
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
-     * @param parameters The resource of private endpoint and its properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection to an azure resource.
+     * @return the specified private endpoint connection.
      */
-    PrivateEndpointConnection update(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnection get(String privateEndpointConnectionName, String resourceGroupName, String resourceName);
 
     /**
      * Update the state of specified private endpoint connection.
@@ -107,6 +88,25 @@ public interface SignalRPrivateEndpointConnections {
         String resourceName,
         PrivateEndpointConnectionInner parameters,
         Context context);
+
+    /**
+     * Update the state of specified private endpoint connection.
+     *
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param parameters The resource of private endpoint and its properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection to an azure resource.
+     */
+    PrivateEndpointConnection update(
+        String privateEndpointConnectionName,
+        String resourceGroupName,
+        String resourceName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Delete the specified private endpoint connection.

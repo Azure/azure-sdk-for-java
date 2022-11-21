@@ -14,7 +14,7 @@ public final class ResourceSku {
     /*
      * The name of the SKU. Required.
      *
-     * Allowed values: Standard_S1, Free_F1
+     * Allowed values: Standard_S1, Free_F1, Premium_P1
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -43,16 +43,21 @@ public final class ResourceSku {
      * Optional, integer. The unit count of the resource. 1 by default.
      *
      * If present, following values are allowed:
-     * Free: 1
-     * Standard: 1,2,5,10,20,50,100
+     * Free: 1;
+     * Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium:  1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
+    /** Creates an instance of ResourceSku class. */
+    public ResourceSku() {
+    }
+
     /**
      * Get the name property: The name of the SKU. Required.
      *
-     * <p>Allowed values: Standard_S1, Free_F1.
+     * <p>Allowed values: Standard_S1, Free_F1, Premium_P1.
      *
      * @return the name value.
      */
@@ -63,7 +68,7 @@ public final class ResourceSku {
     /**
      * Set the name property: The name of the SKU. Required.
      *
-     * <p>Allowed values: Standard_S1, Free_F1.
+     * <p>Allowed values: Standard_S1, Free_F1, Premium_P1.
      *
      * @param name the name value to set.
      * @return the ResourceSku object itself.
@@ -118,7 +123,8 @@ public final class ResourceSku {
     /**
      * Get the capacity property: Optional, integer. The unit count of the resource. 1 by default.
      *
-     * <p>If present, following values are allowed: Free: 1 Standard: 1,2,5,10,20,50,100.
+     * <p>If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;.
      *
      * @return the capacity value.
      */
@@ -129,7 +135,8 @@ public final class ResourceSku {
     /**
      * Set the capacity property: Optional, integer. The unit count of the resource. 1 by default.
      *
-     * <p>If present, following values are allowed: Free: 1 Standard: 1,2,5,10,20,50,100.
+     * <p>If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;.
      *
      * @param capacity the capacity value to set.
      * @return the ResourceSku object itself.

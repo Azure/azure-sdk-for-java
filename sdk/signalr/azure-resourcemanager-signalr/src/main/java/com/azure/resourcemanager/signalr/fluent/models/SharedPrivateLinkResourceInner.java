@@ -26,6 +26,10 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SharedPrivateLinkResourceProperties innerProperties;
 
+    /** Creates an instance of SharedPrivateLinkResourceInner class. */
+    public SharedPrivateLinkResourceInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
