@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -31,9 +31,8 @@ import java.util.function.Supplier;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
-    private static final String RETRY_AFTER_HEADER = "retry-after";
-    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
-    private static final String X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
+    private static final HttpHeaderName RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("retry-after-ms");
+    private static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("x-ms-retry-after-ms");
 
     // future improvement - make this configurable
     public static final int MAX_CACHE_SIZE = 10000;
@@ -67,7 +66,7 @@ public final class ImplUtils {
 
         // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
         // attempt to resolve it as an HTTP date (RFC1123).
-        retryDelay = tryGetRetryDelay(headers, RETRY_AFTER_HEADER,
+        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER,
             headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
         if (retryDelay != null) {
             return retryDelay;
@@ -77,9 +76,9 @@ public final class ImplUtils {
         return null;
     }
 
-    private static Duration tryGetRetryDelay(HttpHeaders headers, String headerNameLowerCase,
+    private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName,
         Function<String, Duration> delayParser) {
-        String headerValue = HttpHeadersHelper.getValueNoKeyFormatting(headers, headerNameLowerCase);
+        String headerValue = headers.getValue(headerName);
 
         return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
     }
