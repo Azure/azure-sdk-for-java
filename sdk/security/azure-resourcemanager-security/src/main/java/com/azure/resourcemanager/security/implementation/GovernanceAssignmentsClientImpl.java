@@ -59,7 +59,7 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterGovern")
-    private interface GovernanceAssignmentsService {
+    public interface GovernanceAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments")
         @ExpectedResponses({200})
@@ -400,24 +400,6 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assignmentKey The security governance assignment key - the assessment key of the required governance
      *     assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governanceAssignment for the requested scope by AssignmentKey.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GovernanceAssignmentInner get(String scope, String assessmentName, String assignmentKey) {
-        return getAsync(scope, assessmentName, assignmentKey).block();
-    }
-
-    /**
-     * Get a specific governanceAssignment for the requested scope by AssignmentKey.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
-     *     assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -428,6 +410,24 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
     public Response<GovernanceAssignmentInner> getWithResponse(
         String scope, String assessmentName, String assignmentKey, Context context) {
         return getWithResponseAsync(scope, assessmentName, assignmentKey, context).block();
+    }
+
+    /**
+     * Get a specific governanceAssignment for the requested scope by AssignmentKey.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
+     *     assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific governanceAssignment for the requested scope by AssignmentKey.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GovernanceAssignmentInner get(String scope, String assessmentName, String assignmentKey) {
+        return getWithResponse(scope, assessmentName, assignmentKey, Context.NONE).getValue();
     }
 
     /**
@@ -576,26 +576,6 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
      * @param assignmentKey The security governance assignment key - the assessment key of the required governance
      *     assignment.
      * @param governanceAssignment GovernanceAssignment over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security GovernanceAssignment over a given scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GovernanceAssignmentInner createOrUpdate(
-        String scope, String assessmentName, String assignmentKey, GovernanceAssignmentInner governanceAssignment) {
-        return createOrUpdateAsync(scope, assessmentName, assignmentKey, governanceAssignment).block();
-    }
-
-    /**
-     * Creates or update a security GovernanceAssignment on the given subscription.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
-     *     assignment.
-     * @param governanceAssignment GovernanceAssignment over a subscription scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -611,6 +591,27 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
         Context context) {
         return createOrUpdateWithResponseAsync(scope, assessmentName, assignmentKey, governanceAssignment, context)
             .block();
+    }
+
+    /**
+     * Creates or update a security GovernanceAssignment on the given subscription.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
+     *     assignment.
+     * @param governanceAssignment GovernanceAssignment over a subscription scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security GovernanceAssignment over a given scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GovernanceAssignmentInner createOrUpdate(
+        String scope, String assessmentName, String assignmentKey, GovernanceAssignmentInner governanceAssignment) {
+        return createOrUpdateWithResponse(scope, assessmentName, assignmentKey, governanceAssignment, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -715,23 +716,6 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assignmentKey The security governance assignment key - the assessment key of the required governance
      *     assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String scope, String assessmentName, String assignmentKey) {
-        deleteAsync(scope, assessmentName, assignmentKey).block();
-    }
-
-    /**
-     * Delete a GovernanceAssignment over a given scope.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
-     *     assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -742,6 +726,23 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
     public Response<Void> deleteWithResponse(
         String scope, String assessmentName, String assignmentKey, Context context) {
         return deleteWithResponseAsync(scope, assessmentName, assignmentKey, context).block();
+    }
+
+    /**
+     * Delete a GovernanceAssignment over a given scope.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
+     *     assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String scope, String assessmentName, String assignmentKey) {
+        deleteWithResponse(scope, assessmentName, assignmentKey, Context.NONE);
     }
 
     /**

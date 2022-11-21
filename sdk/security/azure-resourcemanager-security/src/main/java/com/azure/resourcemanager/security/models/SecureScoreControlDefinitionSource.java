@@ -16,6 +16,10 @@ public final class SecureScoreControlDefinitionSource {
     @JsonProperty(value = "sourceType")
     private ControlType sourceType;
 
+    /** Creates an instance of SecureScoreControlDefinitionSource class. */
+    public SecureScoreControlDefinitionSource() {
+    }
+
     /**
      * Get the sourceType property: The type of security control (for example, BuiltIn).
      *

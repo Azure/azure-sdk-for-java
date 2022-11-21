@@ -18,15 +18,13 @@ public final class ApprovalStage {
     private Integer approvalStageTimeOutInDays;
 
     /*
-     * Determines whether approver need to provide justification for his
-     * decision.
+     * Determines whether approver need to provide justification for his decision.
      */
     @JsonProperty(value = "isApproverJustificationRequired")
     private Boolean isApproverJustificationRequired;
 
     /*
-     * The time in minutes when the approval request would be escalated if the
-     * primary approver does not approve
+     * The time in minutes when the approval request would be escalated if the primary approver does not approve
      */
     @JsonProperty(value = "escalationTimeInMinutes")
     private Integer escalationTimeInMinutes;
@@ -48,6 +46,10 @@ public final class ApprovalStage {
      */
     @JsonProperty(value = "escalationApprovers")
     private List<UserSet> escalationApprovers;
+
+    /** Creates an instance of ApprovalStage class. */
+    public ApprovalStage() {
+    }
 
     /**
      * Get the approvalStageTimeOutInDays property: The time in days when approval request would be timed out.

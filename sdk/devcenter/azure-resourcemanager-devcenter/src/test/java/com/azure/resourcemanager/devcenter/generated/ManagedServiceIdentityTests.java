@@ -19,8 +19,8 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"uxinpmqnjaq\":{},\"jsprozvcpute\":{}}}")
+                    "{\"principalId\":\"ebc3a072-5a8d-4601-b051-def22134612e\",\"tenantId\":\"53185b8b-e6df-478c-bc24-60681d1ad656\",\"type\":\"SystemAssigned,"
+                        + " UserAssigned\",\"userAssignedIdentities\":{\"uxinpmqnjaq\":{\"principalId\":\"d406f4c6-eb9c-4f70-8c44-644b35a077b7\",\"clientId\":\"2dec27fa-ab02-4792-adfc-c2afca88a09a\"},\"jsprozvcpute\":{\"principalId\":\"96617c1e-b4a3-47d4-8cef-28d12173a812\",\"clientId\":\"f9d5e59a-78bc-4438-bc24-4c0c539033fd\"}}}")
                 .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }

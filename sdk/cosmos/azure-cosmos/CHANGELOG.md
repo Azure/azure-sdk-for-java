@@ -1,10 +1,17 @@
 ## Release History
 
-### 4.39.0-beta.1 (Unreleased)
+### 4.40.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+* Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
+
+### 4.39.0 (2022-11-16)
 
 #### Bugs Fixed
 * Fixed a rare race condition for `query plan` cache exceeding the allowed size limit - See [PR 31859](https://github.com/Azure/azure-sdk-for-java/pull/31859)

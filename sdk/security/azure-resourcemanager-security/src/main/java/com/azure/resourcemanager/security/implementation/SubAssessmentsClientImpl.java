@@ -55,7 +55,7 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSubAss")
-    private interface SubAssessmentsService {
+    public interface SubAssessmentsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Security/subAssessments")
         @ExpectedResponses({200})
@@ -531,23 +531,6 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      *     management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param subAssessmentName The Sub-Assessment Key - Unique key for the sub-assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecuritySubAssessmentInner get(String scope, String assessmentName, String subAssessmentName) {
-        return getAsync(scope, assessmentName, subAssessmentName).block();
-    }
-
-    /**
-     * Get a security sub-assessment on your scanned resource.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param subAssessmentName The Sub-Assessment Key - Unique key for the sub-assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -558,6 +541,23 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
     public Response<SecuritySubAssessmentInner> getWithResponse(
         String scope, String assessmentName, String subAssessmentName, Context context) {
         return getWithResponseAsync(scope, assessmentName, subAssessmentName, context).block();
+    }
+
+    /**
+     * Get a security sub-assessment on your scanned resource.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param subAssessmentName The Sub-Assessment Key - Unique key for the sub-assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a security sub-assessment on your scanned resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecuritySubAssessmentInner get(String scope, String assessmentName, String subAssessmentName) {
+        return getWithResponse(scope, assessmentName, subAssessmentName, Context.NONE).getValue();
     }
 
     /**

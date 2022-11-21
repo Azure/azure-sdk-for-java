@@ -22,6 +22,10 @@ public final class SecurityAssessmentPropertiesResponse extends SecurityAssessme
     @JsonProperty(value = "status", required = true)
     private AssessmentStatusResponse status;
 
+    /** Creates an instance of SecurityAssessmentPropertiesResponse class. */
+    public SecurityAssessmentPropertiesResponse() {
+    }
+
     /**
      * Get the status property: The result of the assessment.
      *

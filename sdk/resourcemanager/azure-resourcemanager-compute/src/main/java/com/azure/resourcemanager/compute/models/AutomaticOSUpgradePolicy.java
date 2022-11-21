@@ -33,6 +33,10 @@ public final class AutomaticOSUpgradePolicy {
     @JsonProperty(value = "useRollingUpgradePolicy")
     private Boolean useRollingUpgradePolicy;
 
+    /** Creates an instance of AutomaticOSUpgradePolicy class. */
+    public AutomaticOSUpgradePolicy() {
+    }
+
     /**
      * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
      * set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is

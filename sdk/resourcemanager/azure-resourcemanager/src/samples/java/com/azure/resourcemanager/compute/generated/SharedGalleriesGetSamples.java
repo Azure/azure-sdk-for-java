@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SharedGalleries Get. */
 public final class SharedGalleriesGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/sharedGalleryExamples/SharedGallery_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/sharedGalleryExamples/SharedGallery_Get.json
      */
     /**
      * Sample code: Get a shared gallery.

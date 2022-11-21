@@ -20,6 +20,10 @@ public final class CspmMonitorAwsOffering extends CloudOffering {
     @JsonProperty(value = "nativeCloudConnection")
     private CspmMonitorAwsOfferingNativeCloudConnection nativeCloudConnection;
 
+    /** Creates an instance of CspmMonitorAwsOffering class. */
+    public CspmMonitorAwsOffering() {
+    }
+
     /**
      * Get the nativeCloudConnection property: The native cloud connection configuration.
      *

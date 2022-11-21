@@ -24,6 +24,10 @@ public final class JitNetworkAccessPolicyInitiateVirtualMachine {
     @JsonProperty(value = "ports", required = true)
     private List<JitNetworkAccessPolicyInitiatePort> ports;
 
+    /** Creates an instance of JitNetworkAccessPolicyInitiateVirtualMachine class. */
+    public JitNetworkAccessPolicyInitiateVirtualMachine() {
+    }
+
     /**
      * Get the id property: Resource ID of the virtual machine that is linked to this policy.
      *

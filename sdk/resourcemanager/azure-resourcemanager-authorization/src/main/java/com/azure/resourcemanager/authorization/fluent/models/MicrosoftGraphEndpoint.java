@@ -14,21 +14,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * endpoint Represents an Azure Active Directory object. The directoryObject type is the base type for many other
- * directory entity types.
+ * endpoint
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectInner {
     /*
-     * Describes the capability that is associated with this resource. (e.g.
-     * Messages, Conversations, etc.)  Not nullable. Read-only.
+     * Describes the capability that is associated with this resource. (e.g. Messages, Conversations, etc.)  Not
+     * nullable. Read-only.
      */
     @JsonProperty(value = "capability")
     private String capability;
 
     /*
-     * Application id of the publishing underlying service. Not nullable.
-     * Read-only.
+     * Application id of the publishing underlying service. Not nullable. Read-only.
      */
     @JsonProperty(value = "providerId")
     private String providerId;
@@ -40,8 +41,8 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
     private String providerName;
 
     /*
-     * For Microsoft 365 groups, this is set to a well-known name for the
-     * resource (e.g. Yammer.FeedURL etc.). Not nullable. Read-only.
+     * For Microsoft 365 groups, this is set to a well-known name for the resource (e.g. Yammer.FeedURL etc.). Not
+     * nullable. Read-only.
      */
     @JsonProperty(value = "providerResourceId")
     private String providerResourceId;
@@ -53,10 +54,14 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
     private String uri;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphEndpoint class. */
+    public MicrosoftGraphEndpoint() {
+    }
 
     /**
      * Get the capability property: Describes the capability that is associated with this resource. (e.g. Messages,

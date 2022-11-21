@@ -44,26 +44,26 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     private final AttachedNetworksService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of AttachedNetworksClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AttachedNetworksClientImpl(DevCenterClientImpl client) {
+    AttachedNetworksClientImpl(DevCenterManagementClientImpl client) {
         this.service =
             RestProxy.create(AttachedNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevCenterClientAttachedNetworks to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DevCenterManagementClientAttachedNetworks to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientAttac")
-    private interface AttachedNetworksService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface AttachedNetworksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
@@ -185,7 +185,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a Project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +245,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a Project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -303,7 +303,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a Project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -322,7 +322,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a Project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -340,7 +340,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a Project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -360,7 +360,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a Project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -376,7 +376,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a Project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -394,7 +394,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -450,7 +450,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
@@ -504,7 +504,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,7 +522,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
@@ -541,7 +541,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,7 +559,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,7 +619,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -677,7 +677,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,7 +696,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -715,7 +715,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -735,7 +735,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -752,7 +752,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -770,7 +770,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -826,7 +826,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
@@ -880,7 +880,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -898,7 +898,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
@@ -917,7 +917,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Gets an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -935,7 +935,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1002,7 +1002,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1068,7 +1068,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1099,7 +1099,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1134,7 +1134,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1156,7 +1156,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1180,7 +1180,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1203,7 +1203,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1228,7 +1228,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1249,7 +1249,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Creates or updates an attached NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param body Represents an attached NetworkConnection.
@@ -1273,7 +1273,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,7 +1329,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
@@ -1383,7 +1383,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1405,7 +1405,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
@@ -1428,7 +1428,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1445,7 +1445,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
@@ -1464,7 +1464,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1483,7 +1483,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.
@@ -1503,7 +1503,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1518,7 +1518,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     /**
      * Un-attach a NetworkConnection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
      * @param context The context to associate with this operation.

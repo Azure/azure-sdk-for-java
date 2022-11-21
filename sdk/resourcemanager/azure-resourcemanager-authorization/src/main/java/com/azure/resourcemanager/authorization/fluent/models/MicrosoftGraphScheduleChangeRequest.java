@@ -69,6 +69,10 @@ public class MicrosoftGraphScheduleChangeRequest extends MicrosoftGraphChangeTra
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphScheduleChangeRequest class. */
+    public MicrosoftGraphScheduleChangeRequest() {
+    }
+
     /**
      * Get the assignedTo property: scheduleChangeRequestActor.
      *

@@ -61,7 +61,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterIotSec")
-    private interface IotSecuritySolutionsService {
+    public interface IotSecuritySolutionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/iotSecuritySolutions")
         @ExpectedResponses({200})
@@ -657,22 +657,6 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecuritySolutionModelInner getByResourceGroup(String resourceGroupName, String solutionName) {
-        return getByResourceGroupAsync(resourceGroupName, solutionName).block();
-    }
-
-    /**
-     * User this method to get details of a specific IoT Security solution based on solution name.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -683,6 +667,22 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     public Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(
         String resourceGroupName, String solutionName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, solutionName, context).block();
+    }
+
+    /**
+     * User this method to get details of a specific IoT Security solution based on solution name.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution configuration and resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IoTSecuritySolutionModelInner getByResourceGroup(String resourceGroupName, String solutionName) {
+        return getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
     }
 
     /**
@@ -832,24 +832,6 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param iotSecuritySolutionData The security solution data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecuritySolutionModelInner createOrUpdate(
-        String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
-        return createOrUpdateAsync(resourceGroupName, solutionName, iotSecuritySolutionData).block();
-    }
-
-    /**
-     * Use this method to create or update yours IoT Security solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param iotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -864,6 +846,25 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, solutionName, iotSecuritySolutionData, context)
             .block();
+    }
+
+    /**
+     * Use this method to create or update yours IoT Security solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param iotSecuritySolutionData The security solution data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution configuration and resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IoTSecuritySolutionModelInner createOrUpdate(
+        String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
+        return createOrUpdateWithResponse(resourceGroupName, solutionName, iotSecuritySolutionData, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1019,25 +1020,6 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param updateIotSecuritySolutionData The security solution data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecuritySolutionModelInner update(
-        String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
-        return updateAsync(resourceGroupName, solutionName, updateIotSecuritySolutionData).block();
-    }
-
-    /**
-     * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
-     * use the CreateOrUpdate method.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param updateIotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1051,6 +1033,26 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, solutionName, updateIotSecuritySolutionData, context).block();
+    }
+
+    /**
+     * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
+     * use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param updateIotSecuritySolutionData The security solution data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution configuration and resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IoTSecuritySolutionModelInner update(
+        String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
+        return updateWithResponse(resourceGroupName, solutionName, updateIotSecuritySolutionData, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1172,21 +1174,6 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String solutionName) {
-        deleteAsync(resourceGroupName, solutionName).block();
-    }
-
-    /**
-     * Use this method to delete yours IoT Security solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1196,6 +1183,21 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String solutionName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, solutionName, context).block();
+    }
+
+    /**
+     * Use this method to delete yours IoT Security solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String solutionName) {
+        deleteWithResponse(resourceGroupName, solutionName, Context.NONE);
     }
 
     /**

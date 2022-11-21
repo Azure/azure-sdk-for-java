@@ -32,6 +32,10 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
     @JsonProperty(value = "maxThreshold", required = true)
     private int maxThreshold;
 
+    /** Creates an instance of ThresholdCustomAlertRule class. */
+    public ThresholdCustomAlertRule() {
+    }
+
     /**
      * Get the minThreshold property: The minimum threshold.
      *

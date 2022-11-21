@@ -17,9 +17,8 @@ import java.util.Map;
 @Fluent
 public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChangeRequest {
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "recipientActionDateTime")
     private OffsetDateTime recipientActionDateTime;
@@ -46,6 +45,10 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
      * offerShiftRequest
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOfferShiftRequest class. */
+    public MicrosoftGraphOfferShiftRequest() {
+    }
 
     /**
      * Get the recipientActionDateTime property: The Timestamp type represents date and time information using ISO 8601

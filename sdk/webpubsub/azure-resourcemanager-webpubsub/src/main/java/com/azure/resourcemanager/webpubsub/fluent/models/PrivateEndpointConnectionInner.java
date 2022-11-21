@@ -7,19 +7,15 @@ package com.azure.resourcemanager.webpubsub.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpoint;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A private endpoint connection to an azure resource. */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -27,10 +23,14 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Properties of the private endpoint connection
+     * Private endpoint connection properties
      */
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties innerProperties;
+
+    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    public PrivateEndpointConnectionInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -42,7 +42,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Properties of the private endpoint connection.
+     * Get the innerProperties property: Private endpoint connection properties.
      *
      * @return the innerProperties value.
      */
@@ -51,7 +51,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the private endpoint connection.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -60,7 +60,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the privateEndpoint property: Private endpoint associated with the private endpoint connection.
+     * Get the privateEndpoint property: Private endpoint.
      *
      * @return the privateEndpoint value.
      */
@@ -69,7 +69,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the privateEndpoint property: Private endpoint associated with the private endpoint connection.
+     * Set the privateEndpoint property: Private endpoint.
      *
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionInner object itself.
@@ -92,7 +92,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: Connection state.
+     * Get the privateLinkServiceConnectionState property: Connection state of the private endpoint connection.
      *
      * @return the privateLinkServiceConnectionState value.
      */
@@ -101,7 +101,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: Connection state.
+     * Set the privateLinkServiceConnectionState property: Connection state of the private endpoint connection.
      *
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Pools Get. */
 public final class PoolsGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Pools_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.

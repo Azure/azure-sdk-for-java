@@ -26,6 +26,10 @@ public final class ResourceSkusResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ResourceSkusResult class. */
+    public ResourceSkusResult() {
+    }
+
     /**
      * Get the value property: The list of skus available for the subscription.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDayOfWeek. */
+/** dayOfWeek. */
 public final class MicrosoftGraphDayOfWeek extends ExpandableStringEnum<MicrosoftGraphDayOfWeek> {
     /** Static value sunday for MicrosoftGraphDayOfWeek. */
     public static final MicrosoftGraphDayOfWeek SUNDAY = fromString("sunday");
@@ -42,7 +42,11 @@ public final class MicrosoftGraphDayOfWeek extends ExpandableStringEnum<Microsof
         return fromString(name, MicrosoftGraphDayOfWeek.class);
     }
 
-    /** @return known MicrosoftGraphDayOfWeek values. */
+    /**
+     * Gets known MicrosoftGraphDayOfWeek values.
+     *
+     * @return known MicrosoftGraphDayOfWeek values.
+     */
     public static Collection<MicrosoftGraphDayOfWeek> values() {
         return values(MicrosoftGraphDayOfWeek.class);
     }

@@ -13,7 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** deviceConfigurationSettingState Device Configuration Setting State for a given device. */
+/**
+ * deviceConfigurationSettingState
+ *
+ * <p>Device Configuration Setting State for a given device.
+ */
 @Fluent
 public final class MicrosoftGraphDeviceConfigurationSettingState {
     /*
@@ -92,6 +96,10 @@ public final class MicrosoftGraphDeviceConfigurationSettingState {
      * Device Configuration Setting State for a given device.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeviceConfigurationSettingState class. */
+    public MicrosoftGraphDeviceConfigurationSettingState() {
+    }
 
     /**
      * Get the currentValue property: Current value of setting on device.

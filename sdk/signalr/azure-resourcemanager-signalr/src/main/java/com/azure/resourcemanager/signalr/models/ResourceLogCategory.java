@@ -26,6 +26,10 @@ public final class ResourceLogCategory {
     @JsonProperty(value = "enabled")
     private String enabled;
 
+    /** Creates an instance of ResourceLogCategory class. */
+    public ResourceLogCategory() {
+    }
+
     /**
      * Get the name property: Gets or sets the resource log category's name. Available values: ConnectivityLogs,
      * MessagingLogs. Case insensitive.
