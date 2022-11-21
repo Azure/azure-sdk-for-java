@@ -32,6 +32,10 @@ public final class MicrosoftGraphFolder {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphFolder class. */
+    public MicrosoftGraphFolder() {
+    }
+
     /**
      * Get the childCount property: Number of children contained immediately within this container.
      *

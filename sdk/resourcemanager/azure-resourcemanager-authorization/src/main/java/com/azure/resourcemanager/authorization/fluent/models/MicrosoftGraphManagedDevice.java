@@ -14,7 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** managedDevice Devices that are managed or pre-enrolled through Intune. */
+/**
+ * managedDevice
+ *
+ * <p>Devices that are managed or pre-enrolled through Intune.
+ */
 @Fluent
 public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /*
@@ -54,8 +58,9 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     private MicrosoftGraphComplianceState complianceState;
 
     /*
-     * configurationManagerClientEnabledFeatures configuration Manager client
-     * enabled features
+     * configurationManagerClientEnabledFeatures
+     *
+     * configuration Manager client enabled features
      */
     @JsonProperty(value = "configurationManagerClientEnabledFeatures")
     private MicrosoftGraphConfigurationManagerClientEnabledFeatures configurationManagerClientEnabledFeatures;
@@ -175,15 +180,13 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     private String jailBroken;
 
     /*
-     * The date and time that the device last completed a successful sync with
-     * Intune.
+     * The date and time that the device last completed a successful sync with Intune.
      */
     @JsonProperty(value = "lastSyncDateTime")
     private OffsetDateTime lastSyncDateTime;
 
     /*
-     * Automatically generated name to identify a device. Can be overwritten to
-     * a user friendly name.
+     * Automatically generated name to identify a device. Can be overwritten to a user friendly name.
      */
     @JsonProperty(value = "managedDeviceName")
     private String managedDeviceName;
@@ -243,15 +246,13 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     private String phoneNumber;
 
     /*
-     * An error string that identifies issues when creating Remote Assistance
-     * session objects.
+     * An error string that identifies issues when creating Remote Assistance session objects.
      */
     @JsonProperty(value = "remoteAssistanceSessionErrorDetails")
     private String remoteAssistanceSessionErrorDetails;
 
     /*
-     * Url that allows a Remote Assistance session to be established with the
-     * device.
+     * Url that allows a Remote Assistance session to be established with the device.
      */
     @JsonProperty(value = "remoteAssistanceSessionUrl")
     private String remoteAssistanceSessionUrl;
@@ -311,11 +312,11 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     private List<MicrosoftGraphDeviceConfigurationState> deviceConfigurationStates;
 
     /*
-     * deviceCategory Device categories provides a way to organize your
-     * devices. Using device categories, company administrators can define
-     * their own categories that make sense to their company. These categories
-     * can then be applied to a device in the Intune Azure console or selected
-     * by a user during device enrollment. You can filter reports and create
+     * deviceCategory
+     *
+     * Device categories provides a way to organize your devices. Using device categories, company administrators can
+     * define their own categories that make sense to their company. These categories can then be applied to a device
+     * in the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
      * dynamic Azure Active Directory device groups based on device categories.
      */
     @JsonProperty(value = "deviceCategory")
@@ -325,6 +326,10 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
      * Devices that are managed or pre-enrolled through Intune
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphManagedDevice class. */
+    public MicrosoftGraphManagedDevice() {
+    }
 
     /**
      * Get the activationLockBypassCode property: Code that allows the Activation Lock on a device to be bypassed.
@@ -451,7 +456,8 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the configurationManagerClientEnabledFeatures property: configurationManagerClientEnabledFeatures
-     * configuration Manager client enabled features.
+     *
+     * <p>configuration Manager client enabled features.
      *
      * @return the configurationManagerClientEnabledFeatures value.
      */
@@ -461,7 +467,8 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the configurationManagerClientEnabledFeatures property: configurationManagerClientEnabledFeatures
-     * configuration Manager client enabled features.
+     *
+     * <p>configuration Manager client enabled features.
      *
      * @param configurationManagerClientEnabledFeatures the configurationManagerClientEnabledFeatures value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
@@ -1313,11 +1320,12 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the deviceCategory property: deviceCategory Device categories provides a way to organize your devices. Using
-     * device categories, company administrators can define their own categories that make sense to their company. These
-     * categories can then be applied to a device in the Intune Azure console or selected by a user during device
-     * enrollment. You can filter reports and create dynamic Azure Active Directory device groups based on device
-     * categories.
+     * Get the deviceCategory property: deviceCategory
+     *
+     * <p>Device categories provides a way to organize your devices. Using device categories, company administrators can
+     * define their own categories that make sense to their company. These categories can then be applied to a device in
+     * the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
+     * dynamic Azure Active Directory device groups based on device categories.
      *
      * @return the deviceCategory value.
      */
@@ -1326,11 +1334,12 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the deviceCategory property: deviceCategory Device categories provides a way to organize your devices. Using
-     * device categories, company administrators can define their own categories that make sense to their company. These
-     * categories can then be applied to a device in the Intune Azure console or selected by a user during device
-     * enrollment. You can filter reports and create dynamic Azure Active Directory device groups based on device
-     * categories.
+     * Set the deviceCategory property: deviceCategory
+     *
+     * <p>Device categories provides a way to organize your devices. Using device categories, company administrators can
+     * define their own categories that make sense to their company. These categories can then be applied to a device in
+     * the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
+     * dynamic Azure Active Directory device groups based on device categories.
      *
      * @param deviceCategory the deviceCategory value to set.
      * @return the MicrosoftGraphManagedDevice object itself.

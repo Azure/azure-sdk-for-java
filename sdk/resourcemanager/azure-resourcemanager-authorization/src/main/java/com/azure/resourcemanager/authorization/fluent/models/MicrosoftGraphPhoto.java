@@ -29,8 +29,7 @@ public final class MicrosoftGraphPhoto {
     private String cameraModel;
 
     /*
-     * The denominator for the exposure time fraction from the camera.
-     * Read-only.
+     * The denominator for the exposure time fraction from the camera. Read-only.
      */
     @JsonProperty(value = "exposureDenominator")
     private Double exposureDenominator;
@@ -75,6 +74,10 @@ public final class MicrosoftGraphPhoto {
      * photo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPhoto class. */
+    public MicrosoftGraphPhoto() {
+    }
 
     /**
      * Get the cameraMake property: Camera manufacturer. Read-only.

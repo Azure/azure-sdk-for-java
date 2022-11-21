@@ -44,6 +44,10 @@ public final class MicrosoftGraphFollowupFlag {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphFollowupFlag class. */
+    public MicrosoftGraphFollowupFlag() {
+    }
+
     /**
      * Get the completedDateTime property: dateTimeTimeZone.
      *

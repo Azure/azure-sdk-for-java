@@ -26,6 +26,10 @@ public final class MicrosoftGraphLicenseProcessingState {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphLicenseProcessingState class. */
+    public MicrosoftGraphLicenseProcessingState() {
+    }
+
     /**
      * Get the state property: The state property.
      *

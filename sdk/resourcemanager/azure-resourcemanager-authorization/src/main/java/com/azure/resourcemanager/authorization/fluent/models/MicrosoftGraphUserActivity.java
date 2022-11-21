@@ -19,9 +19,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     /*
-     * Required. URL used to launch the activity in the best native experience
-     * represented by the appId. Might launch a web-based app if no native app
-     * exists.
+     * Required. URL used to launch the activity in the best native experience represented by the appId. Might launch a
+     * web-based app if no native app exists.
      */
     @JsonProperty(value = "activationUrl")
     private String activationUrl;
@@ -33,16 +32,14 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     private String activitySourceHost;
 
     /*
-     * Required. The unique activity ID in the context of the app - supplied by
-     * caller and immutable thereafter.
+     * Required. The unique activity ID in the context of the app - supplied by caller and immutable thereafter.
      */
     @JsonProperty(value = "appActivityId")
     private String appActivityId;
 
     /*
-     * Optional. Short text description of the app used to generate the
-     * activity for use in cases when the app is not installed on the user’s
-     * local device.
+     * Optional. Short text description of the app used to generate the activity for use in cases when the app is not
+     * installed on the user’s local device.
      */
     @JsonProperty(value = "appDisplayName")
     private String appDisplayName;
@@ -55,37 +52,32 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     private Map<String, Object> contentInfo;
 
     /*
-     * Optional. Used in the event the content can be rendered outside of a
-     * native or web-based app experience (for example, a pointer to an item in
-     * an RSS feed).
+     * Optional. Used in the event the content can be rendered outside of a native or web-based app experience (for
+     * example, a pointer to an item in an RSS feed).
      */
     @JsonProperty(value = "contentUrl")
     private String contentUrl;
 
     /*
-     * Set by the server. DateTime in UTC when the object was created on the
-     * server.
+     * Set by the server. DateTime in UTC when the object was created on the server.
      */
     @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
-     * Set by the server. DateTime in UTC when the object expired on the
-     * server.
+     * Set by the server. DateTime in UTC when the object expired on the server.
      */
     @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
-     * Optional. URL used to launch the activity in a web-based app, if
-     * available.
+     * Optional. URL used to launch the activity in a web-based app, if available.
      */
     @JsonProperty(value = "fallbackUrl")
     private String fallbackUrl;
 
     /*
-     * Set by the server. DateTime in UTC when the object was modified on the
-     * server.
+     * Set by the server. DateTime in UTC when the object was modified on the server.
      */
     @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
@@ -97,9 +89,8 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     private MicrosoftGraphStatus status;
 
     /*
-     * Optional. The timezone in which the user's device used to generate the
-     * activity was located at activity creation time; values supplied as Olson
-     * IDs in order to support cross-platform representation.
+     * Optional. The timezone in which the user's device used to generate the activity was located at activity creation
+     * time; values supplied as Olson IDs in order to support cross-platform representation.
      */
     @JsonProperty(value = "userTimezone")
     private String userTimezone;
@@ -111,8 +102,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     private MicrosoftGraphVisualInfo visualElements;
 
     /*
-     * Optional. NavigationProperty/Containment; navigation property to the
-     * activity's historyItems.
+     * Optional. NavigationProperty/Containment; navigation property to the activity's historyItems.
      */
     @JsonProperty(value = "historyItems")
     private List<MicrosoftGraphActivityHistoryItem> historyItems;
@@ -121,6 +111,10 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
      * userActivity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphUserActivity class. */
+    public MicrosoftGraphUserActivity() {
+    }
 
     /**
      * Get the activationUrl property: Required. URL used to launch the activity in the best native experience
