@@ -10,7 +10,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` of authentication to `2022-04-01`.
+- Updated `api-version` of authorization to `2022-04-01`.
 
 ## 2.20.0 (2022-10-26)
 
