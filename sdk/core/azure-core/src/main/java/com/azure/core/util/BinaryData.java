@@ -10,6 +10,7 @@ import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.ListByteBufferContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,6 +30,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
@@ -497,6 +499,16 @@ public final class BinaryData {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
         return new BinaryData(new FluxByteBufferContent(data, length, isReplayable));
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link List} of {@link ByteBuffer}.
+     *
+     * @param data Content the {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
+     */
+    public static BinaryData fromList(List<ByteBuffer> data) {
+        return new BinaryData(new ListByteBufferContent(data));
     }
 
     /**
