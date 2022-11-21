@@ -53,6 +53,10 @@ public class UploadUtils {
                 return uploadFull.apply(data);
             }
         }
+
+        // Since we are processing data of unknown length asynchronously, PayloadSizeGate has optimizations around
+        // garbage collecting ByteBuffers faster, which can't be done with something like BinaryData.fromList().
+        // Therefore, BinaryData.fromFlux(), where gate supplies a Flux instead of BinaryData, is actually optimal here.
         PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSizeLong());
 
         return data.toFluxByteBuffer()
