@@ -34,13 +34,34 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
     ![image](./media/import-notebooks.jpg)
 
-## Attach cluster and Run
+## Attach cluster and Run - multiple containers migration
+
+* In the `CosmosDBLiveParallelContainerMigration` notebook, attach the cluster you created earlier:
+
+    ![image](./media/attach-cluster-p.jpg)
+
+* In the `cosmosDBLiveMigrationList.csv` csv, replace the references to Cosmos DB account URI, key, region, source database/container, target database/container/provisioned throughput, and target container partition key values as approprate:
+
+    ![image](./media/metadata-p.jpg)
+
+* Upload `cosmosDBLiveMigrationList.csv` csv to dbfs:
+    ![image](./media/upload-dbfs.jpg)
+
+* Change the number of containers you want to be migrated in parallel:
+
+    ![image](./media/notebooks-in-p.jpg)
+
+* As long as everything has been configured correctly, all cells should run in sequence. The final cell is executing `CosmosDBLiveContainerMigration` notebook, which is detailed below:
+
+    ![image](./media/live-migration-p.jpg)
+
+## Attach cluster and Run - single container migration
 
 * In the `CosmosDBLiveContainerMigration` notebook, attach the cluster you created earlier:
 
     ![image](./media/attach-cluster.jpg)
 
-* In the `CosmosDBLiveContainerMigration` notebook, replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as approprate that are contained within each cell (see comments in each cell for guidance). Then you are ready to click "Run all":
+* In the `CosmosDBLiveContainerMigration` notebook, replace the references to Cosmos DB account URI, key, region, source database/container, target database/container/provisioned throughput, and target container partition key values as approprate that are contained within each cell (see comments in each cell for guidance). Then you are ready to click "Run all":
 
     ![image](./media/run-notebook.jpg)
 
@@ -67,10 +88,10 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
 * This will be used to create a temp directory in the Azure Databricks file system to manage checkpointing. The Spark job will fail if there is a bad document. The notebook can be restarted after the document is corrected, and processing will start from the check point. If you want to restart from the beginning, you need to either change the value of this variable (so that a new directory is created), or delete the current directory.
 
-* To delete any checkpoint directory, create a new cell in the notebook, add a line like the following ("LiveMigration_checkpoint" is the name of the directory in this case), and run it:
+* To delete any checkpoint directory, create a new cell in the notebook, add a line like the following ("live_migration_checkpoint" is the name of the directory in this case), and run it:
 
 ```shell
-    %sh rm -r /dbfs/tmp/LiveMigration_checkpoint
+    %sh rm -rf /dbfs/tmp/live_migration_checkpoint
 ```
 
 
