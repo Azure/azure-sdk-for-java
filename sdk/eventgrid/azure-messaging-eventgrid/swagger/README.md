@@ -200,30 +200,29 @@ import java.util.stream.Collectors;
  */
 public class EventGridCustomization extends Customization {
 
-    private static final String SYSTEM_EVENT_CLASS_HEADER = "// Copyright (c) Microsoft Corporation. All rights reserved.\n" +
-        "// Licensed under the MIT License.\n" +
-        "\n" +
-        "package com.azure.messaging.eventgrid.implementation;\n\n";
+    private static final String SYSTEM_EVENT_CLASS_HEADER = "// Copyright (c) Microsoft Corporation. All rights reserved." + System.lineSeparator() +
+        "// Licensed under the MIT License." + System.lineSeparator() + System.lineSeparator() +
+        "package com.azure.messaging.eventgrid;" + System.lineSeparator() + System.lineSeparator();
 
-    private static final String CLASS_DEF = "/**\n" +
-        " * This class contains a number of constants that correspond to the value of {@code eventType} of {@link EventGridEvent}s\n" +
-        " * and {@code type} of {@link CloudEvent}s, when the event originated from an Azure service. This list should be\n" +
-        " * updated with all the service event strings. It also contains a mapping from each service event string to the\n" +
-        " * model class that the event string corresponds to in the {@code data} field, which is used to automatically deserialize\n" +
-        " * system events by their known string.\n" +
-        " */\n" +
-        "public final class SystemEventMappingNames {\n";
+    private static final String CLASS_DEF = "/**" + System.lineSeparator() +
+        " * This class contains a number of constants that correspond to the value of {@code eventType} of {@link EventGridEvent}s" + System.lineSeparator() +
+        " * and {@code type} of {@link CloudEvent}s, when the event originated from an Azure service. This list should be" + System.lineSeparator() +
+        " * updated with all the service event strings. It also contains a mapping from each service event string to the" + System.lineSeparator() +
+        " * model class that the event string corresponds to in the {@code data} field, which is used to automatically deserialize" + System.lineSeparator() +
+        " * system events by their known string." + System.lineSeparator() +
+        " */" + System.lineSeparator() +
+        "public final class SystemEventNames {" + System.lineSeparator();
 
-    private static final String PRIVATE_CTOR = "/**\n" +
-        "     * Get a mapping of all the system event type strings to their respective class. This is used by default in\n" +
-        "     * the {@link EventGridEvent} and {@link CloudEvent} classes.\n" +
-        "     * @return a mapping of all the system event strings to system event objects.\n" +
-        "     */\n" +
-        "    public static Map<String, Class<?>> getSystemEventMappings() {\n" +
-        "        return Collections.unmodifiableMap(SYSTEM_EVENT_MAPPINGS);\n" +
-        "    }\n" +
-        "\n" +
-        "    private SystemEventMappingNames() { \n" +
+    private static final String PRIVATE_CTOR = "/**" + System.lineSeparator() +
+        "     * Get a mapping of all the system event type strings to their respective class. This is used by default in" + System.lineSeparator() +
+        "     * the {@link EventGridEvent} and {@link CloudEvent} classes." + System.lineSeparator() +
+        "     * @return a mapping of all the system event strings to system event objects." + System.lineSeparator() +
+        "     */" + System.lineSeparator() +
+        "    public static Map<String, Class<?>> getSystemEventMappings() {" + System.lineSeparator() +
+        "        return Collections.unmodifiableMap(SYSTEM_EVENT_MAPPINGS);" + System.lineSeparator() +
+        "    }" + System.lineSeparator() +
+        System.lineSeparator()  +
+        "    private SystemEventNames() { " + System.lineSeparator() +
         "    }";
 
     @Override
@@ -278,41 +277,56 @@ public class EventGridCustomization extends Customization {
         Collections.sort(imports);
         sb.append(SYSTEM_EVENT_CLASS_HEADER);
 
-        sb.append("import com.azure.core.models.CloudEvent;\n");
-        sb.append("import com.azure.messaging.eventgrid.EventGridEvent;\n");
-        sb.append("import java.util.Collections;\n");
-        sb.append("import java.util.HashMap;\n");
-        sb.append("import java.util.Map;\n");
+        sb.append("import com.azure.core.models.CloudEvent;");
+        sb.append(System.lineSeparator());
+        sb.append("import com.azure.messaging.eventgrid.EventGridEvent;");
+        sb.append(System.lineSeparator());
+        sb.append("import java.util.Collections;");
+        sb.append(System.lineSeparator());
+        sb.append("import java.util.HashMap;");
+        sb.append(System.lineSeparator());
+        sb.append("import java.util.Map;");
+        sb.append(System.lineSeparator());
 
         for (String className : imports) {
-            sb.append("import com.azure.messaging.eventgrid.systemevents." + className + ";\n");
+            sb.append("import com.azure.messaging.eventgrid.systemevents." + className + ";");
+            sb.append(System.lineSeparator());
         }
         sb.append(CLASS_DEF);
 
         for (String className : imports) {
-            sb.append("/**\n");
-            sb.append("* " + descriptionMap.get(className) + "\n");
-            sb.append("*/\n");
+            sb.append("/**");
+            sb.append(System.lineSeparator());
+            sb.append("* " + descriptionMap.get(className));
+            sb.append(System.lineSeparator());
+            sb.append("*/");
+            sb.append(System.lineSeparator());
             sb.append("public static final String " + constantNameMap.get(className) + " = \"" + nameMap.get(className) +
-                "\";\n\n");
+                "\";");
+            sb.append(System.lineSeparator());
+            sb.append(System.lineSeparator());
         }
 
         sb.append("private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>()" +
-            " {{\n");
+            " {{");
+        sb.append(System.lineSeparator());
 
         for (String className : imports) {
-            sb.append("put(" + constantNameMap.get(className) + ", " + classMap.get(className) + ");\n");
+            sb.append("put(" + constantNameMap.get(className) + ", " + classMap.get(className) + ");");
+            sb.append(System.lineSeparator());
         }
-        sb.append("}\n};\n");
+        sb.append("}};");
+        sb.append(System.lineSeparator());
 
         sb.append(PRIVATE_CTOR);
 
-        sb.append("}\n");
+        sb.append("}"); 
+        sb.append(System.lineSeparator());
         logger.info("Total number of events " + eventData.size());
         logger.info("Total number of events with proper description " + validEventDescription.size());
 
         customization.getRawEditor()
-            .addFile("src/main/java/com/azure/messaging/eventgrid/implementation/SystemEventMappingNames.java", sb.toString());
+            .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", sb.toString());
 
         replaceClassAnnotation(customization);
         customizeMediaJobOutputAsset(customization);
