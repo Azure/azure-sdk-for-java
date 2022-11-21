@@ -33,8 +33,8 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
   <properties>
-    <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
-    <compiler.failondeprecatedstatus></compiler.failondeprecatedstatus>
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
   </properties>
   <dependencies>
     <dependency>
@@ -130,7 +130,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.0.0-RC2</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>6.0.0-RC4</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
