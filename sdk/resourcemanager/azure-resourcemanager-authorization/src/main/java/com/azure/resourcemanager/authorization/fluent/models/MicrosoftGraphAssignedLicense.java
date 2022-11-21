@@ -18,8 +18,7 @@ import java.util.UUID;
 @Fluent
 public final class MicrosoftGraphAssignedLicense {
     /*
-     * A collection of the unique identifiers for plans that have been
-     * disabled.
+     * A collection of the unique identifiers for plans that have been disabled.
      */
     @JsonProperty(value = "disabledPlans")
     private List<UUID> disabledPlans;
@@ -34,6 +33,10 @@ public final class MicrosoftGraphAssignedLicense {
      * assignedLicense
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAssignedLicense class. */
+    public MicrosoftGraphAssignedLicense() {
+    }
 
     /**
      * Get the disabledPlans property: A collection of the unique identifiers for plans that have been disabled.

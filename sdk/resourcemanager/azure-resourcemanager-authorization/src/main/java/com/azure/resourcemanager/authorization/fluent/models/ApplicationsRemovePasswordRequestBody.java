@@ -27,6 +27,10 @@ public final class ApplicationsRemovePasswordRequestBody {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ApplicationsRemovePasswordRequestBody class. */
+    public ApplicationsRemovePasswordRequestBody() {
+    }
+
     /**
      * Get the keyId property: The keyId property.
      *

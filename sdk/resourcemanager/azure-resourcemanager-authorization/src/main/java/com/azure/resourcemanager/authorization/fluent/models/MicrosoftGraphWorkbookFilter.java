@@ -26,6 +26,10 @@ public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookFilter class. */
+    public MicrosoftGraphWorkbookFilter() {
+    }
+
     /**
      * Get the criteria property: workbookFilterCriteria.
      *

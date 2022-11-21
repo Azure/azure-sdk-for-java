@@ -455,7 +455,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2015-07-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "23187371-ef93-4d29-b9b0-915d8bd0446a",
@@ -482,7 +482,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Storage/storageAccounts/javacsrg668490/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2015-07-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Storage/storageAccounts/javacsrg668490/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "e1f6937e-7558-4856-bb73-c3b7205e4273",
@@ -509,7 +509,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Authorization/roleAssignments/752d3b80-2095-42ce-be25-1268222dca1a?api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Authorization/roleAssignments/752d3b80-2095-42ce-be25-1268222dca1a?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "af8901f9-39f5-483f-a1b3-3782dd698a3b",
@@ -536,7 +536,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Storage/storageAccounts/javacsrg668490/providers/Microsoft.Authorization/roleAssignments/a1aac5c0-44d4-4116-aac1-1782a08f0217?api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Storage/storageAccounts/javacsrg668490/providers/Microsoft.Authorization/roleAssignments/a1aac5c0-44d4-4116-aac1-1782a08f0217?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "1208355a-83e6-42e5-96b9-9f0e723d874d",
@@ -592,7 +592,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Authorization/roleAssignments?api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Authorization/roleAssignments?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "dffd9f7d-accc-46c1-89c3-1f1ca5cd55d2",
@@ -619,7 +619,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Storage/storageAccounts/javacsrg668490/providers/Microsoft.Authorization/roleAssignments?api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg94380/providers/Microsoft.Storage/storageAccounts/javacsrg668490/providers/Microsoft.Authorization/roleAssignments?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "0a9a4bac-7f72-4437-b097-3e2f54b3578d",

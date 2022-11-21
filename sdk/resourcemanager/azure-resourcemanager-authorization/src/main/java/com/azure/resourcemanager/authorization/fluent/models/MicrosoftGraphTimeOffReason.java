@@ -29,8 +29,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
     private MicrosoftGraphTimeOffReasonIconType iconType;
 
     /*
-     * Indicates whether the timeOffReason can be used when creating new
-     * entities or updating existing ones. Required.
+     * Indicates whether the timeOffReason can be used when creating new entities or updating existing ones. Required.
      */
     @JsonProperty(value = "isActive")
     private Boolean isActive;
@@ -39,6 +38,10 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
      * timeOffReason
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTimeOffReason class. */
+    public MicrosoftGraphTimeOffReason() {
+    }
 
     /**
      * Get the displayName property: The name of the timeOffReason. Required.

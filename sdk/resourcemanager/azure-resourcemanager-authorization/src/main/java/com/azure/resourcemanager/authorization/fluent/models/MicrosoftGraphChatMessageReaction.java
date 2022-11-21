@@ -39,6 +39,10 @@ public final class MicrosoftGraphChatMessageReaction {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphChatMessageReaction class. */
+    public MicrosoftGraphChatMessageReaction() {
+    }
+
     /**
      * Get the createdDateTime property: The createdDateTime property.
      *

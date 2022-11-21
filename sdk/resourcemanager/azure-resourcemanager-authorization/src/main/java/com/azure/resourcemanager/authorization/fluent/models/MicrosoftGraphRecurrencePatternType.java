@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphRecurrencePatternType. */
+/** recurrencePatternType. */
 public final class MicrosoftGraphRecurrencePatternType
     extends ExpandableStringEnum<MicrosoftGraphRecurrencePatternType> {
     /** Static value daily for MicrosoftGraphRecurrencePatternType. */
@@ -40,7 +40,11 @@ public final class MicrosoftGraphRecurrencePatternType
         return fromString(name, MicrosoftGraphRecurrencePatternType.class);
     }
 
-    /** @return known MicrosoftGraphRecurrencePatternType values. */
+    /**
+     * Gets known MicrosoftGraphRecurrencePatternType values.
+     *
+     * @return known MicrosoftGraphRecurrencePatternType values.
+     */
     public static Collection<MicrosoftGraphRecurrencePatternType> values() {
         return values(MicrosoftGraphRecurrencePatternType.class);
     }

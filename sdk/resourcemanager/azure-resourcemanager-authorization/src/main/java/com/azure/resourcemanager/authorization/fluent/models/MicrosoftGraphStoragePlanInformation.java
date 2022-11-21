@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphStoragePlanInformation {
     /*
-     * Indicates whether there are higher storage quota plans available.
-     * Read-only.
+     * Indicates whether there are higher storage quota plans available. Read-only.
      */
     @JsonProperty(value = "upgradeAvailable")
     private Boolean upgradeAvailable;
@@ -26,6 +25,10 @@ public final class MicrosoftGraphStoragePlanInformation {
      * storagePlanInformation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphStoragePlanInformation class. */
+    public MicrosoftGraphStoragePlanInformation() {
+    }
 
     /**
      * Get the upgradeAvailable property: Indicates whether there are higher storage quota plans available. Read-only.

@@ -17,6 +17,10 @@ public final class ResourceLogConfiguration {
     @JsonProperty(value = "categories")
     private List<ResourceLogCategory> categories;
 
+    /** Creates an instance of ResourceLogConfiguration class. */
+    public ResourceLogConfiguration() {
+    }
+
     /**
      * Get the categories property: Gets or sets the list of category configurations.
      *

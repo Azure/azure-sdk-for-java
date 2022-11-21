@@ -38,6 +38,10 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookOperation class. */
+    public MicrosoftGraphWorkbookOperation() {
+    }
+
     /**
      * Get the error property: workbookOperationError.
      *

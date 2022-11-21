@@ -16,8 +16,10 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * servicePrincipal Represents an Azure Active Directory object. The directoryObject type is the base type for many
- * other directory entity types.
+ * servicePrincipal
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDirectoryObjectInner {
@@ -28,18 +30,16 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private Boolean accountEnabled;
 
     /*
-     * Defines custom behavior that a consuming service can use to call an app
-     * in specific contexts. For example, applications that can render file
-     * streams may set the addIns property for its 'FileHandler' functionality.
-     * This will let services like Microsoft 365 call the application in the
-     * context of a document the user is working on.
+     * Defines custom behavior that a consuming service can use to call an app in specific contexts. For example,
+     * applications that can render file streams may set the addIns property for its 'FileHandler' functionality. This
+     * will let services like Microsoft 365 call the application in the context of a document the user is working on.
      */
     @JsonProperty(value = "addIns")
     private List<MicrosoftGraphAddIn> addIns;
 
     /*
-     * Used to retrieve service principals by subscription, identify resource
-     * group and full resource ids for managed identities.
+     * Used to retrieve service principals by subscription, identify resource group and full resource ids for managed
+     * identities.
      */
     @JsonProperty(value = "alternativeNames")
     private List<String> alternativeNames;
@@ -57,38 +57,34 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private String appDisplayName;
 
     /*
-     * The unique identifier for the associated application (its appId
-     * property).
+     * The unique identifier for the associated application (its appId property).
      */
     @JsonProperty(value = "appId")
     private String appId;
 
     /*
-     * Unique identifier of the applicationTemplate that the servicePrincipal
-     * was created from. Read-only.
+     * Unique identifier of the applicationTemplate that the servicePrincipal was created from. Read-only.
      */
     @JsonProperty(value = "applicationTemplateId")
     private String applicationTemplateId;
 
     /*
-     * Contains the tenant id where the application is registered. This is
-     * applicable only to service principals backed by applications.
+     * Contains the tenant id where the application is registered. This is applicable only to service principals backed
+     * by applications.
      */
     @JsonProperty(value = "appOwnerOrganizationId")
     private UUID appOwnerOrganizationId;
 
     /*
-     * Specifies whether users or other service principals need to be granted
-     * an app role assignment for this service principal before users can sign
-     * in or apps can get tokens. The default value is false. Not nullable.
+     * Specifies whether users or other service principals need to be granted an app role assignment for this service
+     * principal before users can sign in or apps can get tokens. The default value is false. Not nullable.
      */
     @JsonProperty(value = "appRoleAssignmentRequired")
     private Boolean appRoleAssignmentRequired;
 
     /*
-     * The roles exposed by the application which this service principal
-     * represents. For more information see the appRoles property definition on
-     * the application entity. Not nullable.
+     * The roles exposed by the application which this service principal represents. For more information see the
+     * appRoles property definition on the application entity. Not nullable.
      */
     @JsonProperty(value = "appRoles")
     private List<MicrosoftGraphAppRole> appRoles;
@@ -118,27 +114,23 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private MicrosoftGraphInformationalUrl info;
 
     /*
-     * The collection of key credentials associated with the service principal.
-     * Not nullable.
+     * The collection of key credentials associated with the service principal. Not nullable.
      */
     @JsonProperty(value = "keyCredentials")
     private List<MicrosoftGraphKeyCredentialInner> keyCredentials;
 
     /*
-     * Specifies the URL where the service provider redirects the user to Azure
-     * AD to authenticate. Azure AD uses the URL to launch the application from
-     * Microsoft 365 or the Azure AD My Apps. When blank, Azure AD performs
-     * IdP-initiated sign-on for applications configured with SAML-based single
-     * sign-on. The user launches the application from Microsoft 365, the Azure
-     * AD My Apps, or the Azure AD SSO URL.
+     * Specifies the URL where the service provider redirects the user to Azure AD to authenticate. Azure AD uses the
+     * URL to launch the application from Microsoft 365 or the Azure AD My Apps. When blank, Azure AD performs
+     * IdP-initiated sign-on for applications configured with SAML-based single sign-on. The user launches the
+     * application from Microsoft 365, the Azure AD My Apps, or the Azure AD SSO URL.
      */
     @JsonProperty(value = "loginUrl")
     private String loginUrl;
 
     /*
-     * Specifies the URL that will be used by Microsoft's authorization service
-     * to logout an user using OpenId Connect front-channel, back-channel or
-     * SAML logout protocols.
+     * Specifies the URL that will be used by Microsoft's authorization service to logout an user using OpenId Connect
+     * front-channel, back-channel or SAML logout protocols.
      */
     @JsonProperty(value = "logoutUrl")
     private String logoutUrl;
@@ -150,34 +142,30 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private String notes;
 
     /*
-     * Specifies the list of email addresses where Azure AD sends a
-     * notification when the active certificate is near the expiration date.
-     * This is only for the certificates used to sign the SAML token issued for
-     * Azure AD Gallery applications.
+     * Specifies the list of email addresses where Azure AD sends a notification when the active certificate is near
+     * the expiration date. This is only for the certificates used to sign the SAML token issued for Azure AD Gallery
+     * applications.
      */
     @JsonProperty(value = "notificationEmailAddresses")
     private List<String> notificationEmailAddresses;
 
     /*
-     * The delegated permissions exposed by the application. For more
-     * information see the oauth2PermissionScopes property on the application
-     * entity's api property. Not nullable.
+     * The delegated permissions exposed by the application. For more information see the oauth2PermissionScopes
+     * property on the application entity's api property. Not nullable.
      */
     @JsonProperty(value = "oauth2PermissionScopes")
     private List<MicrosoftGraphPermissionScope> oauth2PermissionScopes;
 
     /*
-     * The collection of password credentials associated with the service
-     * principal. Not nullable.
+     * The collection of password credentials associated with the service principal. Not nullable.
      */
     @JsonProperty(value = "passwordCredentials")
     private List<MicrosoftGraphPasswordCredentialInner> passwordCredentials;
 
     /*
-     * Specifies the single sign-on mode configured for this application. Azure
-     * AD uses the preferred single sign-on mode to launch the application from
-     * Microsoft 365 or the Azure AD My Apps. The supported values are
-     * password, saml, external, and oidc.
+     * Specifies the single sign-on mode configured for this application. Azure AD uses the preferred single sign-on
+     * mode to launch the application from Microsoft 365 or the Azure AD My Apps. The supported values are password,
+     * saml, external, and oidc.
      */
     @JsonProperty(value = "preferredSingleSignOnMode")
     private String preferredSingleSignOnMode;
@@ -189,9 +177,8 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private String preferredTokenSigningKeyThumbprint;
 
     /*
-     * The URLs that user tokens are sent to for sign in with the associated
-     * application, or the redirect URIs that OAuth 2.0 authorization codes and
-     * access tokens are sent to for the associated application. Not nullable.
+     * The URLs that user tokens are sent to for sign in with the associated application, or the redirect URIs that
+     * OAuth 2.0 authorization codes and access tokens are sent to for the associated application. Not nullable.
      */
     @JsonProperty(value = "replyUrls")
     private List<String> replyUrls;
@@ -203,24 +190,19 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private MicrosoftGraphSamlSingleSignOnSettings samlSingleSignOnSettings;
 
     /*
-     * Contains the list of identifiersUris, copied over from the associated
-     * application. Additional values can be added to hybrid applications.
-     * These values can be used to identify the permissions exposed by this app
-     * within Azure AD. For example,Client apps can specify a resource URI
-     * which is based on the values of this property to acquire an access
-     * token, which is the URI returned in the 'aud' claim.The any operator is
-     * required for filter expressions on multi-valued properties. Not
-     * nullable.
+     * Contains the list of identifiersUris, copied over from the associated application. Additional values can be
+     * added to hybrid applications. These values can be used to identify the permissions exposed by this app within
+     * Azure AD. For example,Client apps can specify a resource URI which is based on the values of this property to
+     * acquire an access token, which is the URI returned in the 'aud' claim.The any operator is required for filter
+     * expressions on multi-valued properties. Not nullable.
      */
     @JsonProperty(value = "servicePrincipalNames")
     private List<String> servicePrincipalNames;
 
     /*
-     * Identifies if the service principal represents an application or a
-     * managed identity. This is set by Azure AD internally. For a service
-     * principal that represents an application this is set as Application. For
-     * a service principal that represent a managed identity this is set as
-     * ManagedIdentity.
+     * Identifies if the service principal represents an application or a managed identity. This is set by Azure AD
+     * internally. For a service principal that represents an application this is set as Application. For a service
+     * principal that represent a managed identity this is set as ManagedIdentity.
      */
     @JsonProperty(value = "servicePrincipalType")
     private String servicePrincipalType;
@@ -232,32 +214,28 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private String signInAudience;
 
     /*
-     * Custom strings that can be used to categorize and identify the service
-     * principal. Not nullable.
+     * Custom strings that can be used to categorize and identify the service principal. Not nullable.
      */
     @JsonProperty(value = "tags")
     private List<String> tags;
 
     /*
-     * Specifies the keyId of a public key from the keyCredentials collection.
-     * When configured, Azure AD issues tokens for this application encrypted
-     * using the key specified by this property. The application code that
-     * receives the encrypted token must use the matching private key to
-     * decrypt the token before it can be used for the signed-in user.
+     * Specifies the keyId of a public key from the keyCredentials collection. When configured, Azure AD issues tokens
+     * for this application encrypted using the key specified by this property. The application code that receives the
+     * encrypted token must use the matching private key to decrypt the token before it can be used for the signed-in
+     * user.
      */
     @JsonProperty(value = "tokenEncryptionKeyId")
     private UUID tokenEncryptionKeyId;
 
     /*
-     * Principals (users, groups, and service principals) that are assigned to
-     * this service principal. Read-only.
+     * Principals (users, groups, and service principals) that are assigned to this service principal. Read-only.
      */
     @JsonProperty(value = "appRoleAssignedTo")
     private List<MicrosoftGraphAppRoleAssignment> appRoleAssignedTo;
 
     /*
-     * Applications that this service principal is assigned to. Read-only.
-     * Nullable.
+     * Applications that this service principal is assigned to. Read-only. Nullable.
      */
     @JsonProperty(value = "appRoleAssignments")
     private List<MicrosoftGraphAppRoleAssignment> appRoleAssignments;
@@ -269,8 +247,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private List<MicrosoftGraphClaimsMappingPolicy> claimsMappingPolicies;
 
     /*
-     * Directory objects created by this service principal. Read-only.
-     * Nullable.
+     * Directory objects created by this service principal. Read-only. Nullable.
      */
     @JsonProperty(value = "createdObjects")
     private List<MicrosoftGraphDirectoryObjectInner> createdObjects;
@@ -282,9 +259,8 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private List<MicrosoftGraphDelegatedPermissionClassification> delegatedPermissionClassifications;
 
     /*
-     * Endpoints available for discovery. Services like Sharepoint populate
-     * this property with a tenant specific SharePoint endpoints that other
-     * applications can discover and use in their experiences.
+     * Endpoints available for discovery. Services like Sharepoint populate this property with a tenant specific
+     * SharePoint endpoints that other applications can discover and use in their experiences.
      */
     @JsonProperty(value = "endpoints")
     private List<MicrosoftGraphEndpoint> endpoints;
@@ -296,30 +272,27 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private List<MicrosoftGraphHomeRealmDiscoveryPolicyInner> homeRealmDiscoveryPolicies;
 
     /*
-     * Roles that this service principal is a member of. HTTP Methods: GET
-     * Read-only. Nullable.
+     * Roles that this service principal is a member of. HTTP Methods: GET Read-only. Nullable.
      */
     @JsonProperty(value = "memberOf")
     private List<MicrosoftGraphDirectoryObjectInner> memberOf;
 
     /*
-     * Delegated permission grants authorizing this service principal to access
-     * an API on behalf of a signed-in user. Read-only. Nullable.
+     * Delegated permission grants authorizing this service principal to access an API on behalf of a signed-in user.
+     * Read-only. Nullable.
      */
     @JsonProperty(value = "oauth2PermissionGrants")
     private List<MicrosoftGraphOAuth2PermissionGrant> oauth2PermissionGrants;
 
     /*
-     * Directory objects that are owned by this service principal. Read-only.
-     * Nullable.
+     * Directory objects that are owned by this service principal. Read-only. Nullable.
      */
     @JsonProperty(value = "ownedObjects")
     private List<MicrosoftGraphDirectoryObjectInner> ownedObjects;
 
     /*
-     * Directory objects that are owners of this servicePrincipal. The owners
-     * are a set of non-admin users or servicePrincipals who are allowed to
-     * modify this object. Read-only. Nullable.
+     * Directory objects that are owners of this servicePrincipal. The owners are a set of non-admin users or
+     * servicePrincipals who are allowed to modify this object. Read-only. Nullable.
      */
     @JsonProperty(value = "owners")
     private List<MicrosoftGraphDirectoryObjectInner> owners;
@@ -343,10 +316,14 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
     private List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphServicePrincipalInner class. */
+    public MicrosoftGraphServicePrincipalInner() {
+    }
 
     /**
      * Get the accountEnabled property: true if the service principal account is enabled; otherwise, false.

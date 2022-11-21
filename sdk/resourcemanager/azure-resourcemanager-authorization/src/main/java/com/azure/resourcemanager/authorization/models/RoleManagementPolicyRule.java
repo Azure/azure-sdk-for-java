@@ -42,6 +42,10 @@ public class RoleManagementPolicyRule {
     @JsonProperty(value = "target")
     private RoleManagementPolicyRuleTarget target;
 
+    /** Creates an instance of RoleManagementPolicyRule class. */
+    public RoleManagementPolicyRule() {
+    }
+
     /**
      * Get the id property: The id of the rule.
      *

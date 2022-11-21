@@ -17,30 +17,25 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphOfficeGraphInsights extends MicrosoftGraphEntity {
     /*
-     * Calculated relationship identifying documents shared with or by the
-     * user. This includes URLs, file attachments, and reference attachments to
-     * OneDrive for Business and SharePoint files found in Outlook messages and
-     * meetings. This also includes URLs and reference attachments to Teams
-     * conversations. Ordered by recency of share.
+     * Calculated relationship identifying documents shared with or by the user. This includes URLs, file attachments,
+     * and reference attachments to OneDrive for Business and SharePoint files found in Outlook messages and meetings.
+     * This also includes URLs and reference attachments to Teams conversations. Ordered by recency of share.
      */
     @JsonProperty(value = "shared")
     private List<MicrosoftGraphSharedInsight> shared;
 
     /*
-     * Calculated relationship identifying documents trending around a user.
-     * Trending documents are calculated based on activity of the user's
-     * closest network of people and include files stored in OneDrive for
-     * Business and SharePoint. Trending insights help the user to discover
-     * potentially useful content that the user has access to, but has never
-     * viewed before.
+     * Calculated relationship identifying documents trending around a user. Trending documents are calculated based on
+     * activity of the user's closest network of people and include files stored in OneDrive for Business and
+     * SharePoint. Trending insights help the user to discover potentially useful content that the user has access to,
+     * but has never viewed before.
      */
     @JsonProperty(value = "trending")
     private List<MicrosoftGraphTrending> trending;
 
     /*
-     * Calculated relationship identifying the latest documents viewed or
-     * modified by a user, including OneDrive for Business and SharePoint
-     * documents, ranked by recency of use.
+     * Calculated relationship identifying the latest documents viewed or modified by a user, including OneDrive for
+     * Business and SharePoint documents, ranked by recency of use.
      */
     @JsonProperty(value = "used")
     private List<MicrosoftGraphUsedInsight> used;
@@ -49,6 +44,10 @@ public final class MicrosoftGraphOfficeGraphInsights extends MicrosoftGraphEntit
      * officeGraphInsights
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOfficeGraphInsights class. */
+    public MicrosoftGraphOfficeGraphInsights() {
+    }
 
     /**
      * Get the shared property: Calculated relationship identifying documents shared with or by the user. This includes
