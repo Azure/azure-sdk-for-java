@@ -25,6 +25,10 @@ public final class MdeOnboardingDataProperties {
     @JsonProperty(value = "onboardingPackageLinux")
     private byte[] onboardingPackageLinux;
 
+    /** Creates an instance of MdeOnboardingDataProperties class. */
+    public MdeOnboardingDataProperties() {
+    }
+
     /**
      * Get the onboardingPackageWindows property: The onboarding package used to onboard Windows machines to MDE, coded
      * in base64. This can also be used for onboarding using the dedicated VM Extension.

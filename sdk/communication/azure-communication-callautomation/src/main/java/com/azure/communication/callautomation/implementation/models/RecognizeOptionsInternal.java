@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The RecognizeOptionsInternal model. */
 @Fluent
@@ -33,6 +34,12 @@ public final class RecognizeOptionsInternal {
      */
     @JsonProperty(value = "dtmfOptions")
     private DtmfOptionsInternal dtmfOptions;
+
+    /*
+     * Defines Ivr choices for recognize.
+     */
+    @JsonProperty(value = "ivrChoiceOptions")
+    private List<RecognizeChoice> ivrChoiceOptions;
 
     /**
      * Get the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
@@ -111,6 +118,26 @@ public final class RecognizeOptionsInternal {
      */
     public RecognizeOptionsInternal setDtmfOptions(DtmfOptionsInternal dtmfOptions) {
         this.dtmfOptions = dtmfOptions;
+        return this;
+    }
+
+    /**
+     * Get the ivrChoiceOptions property: Defines Ivr choices for recognize.
+     *
+     * @return the ivrChoiceOptions value.
+     */
+    public List<RecognizeChoice> getIvrChoiceOptions() {
+        return this.ivrChoiceOptions;
+    }
+
+    /**
+     * Set the ivrChoiceOptions property: Defines Ivr choices for recognize.
+     *
+     * @param ivrChoiceOptions the ivrChoiceOptions value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setIvrChoiceOptions(List<RecognizeChoice> ivrChoiceOptions) {
+        this.ivrChoiceOptions = ivrChoiceOptions;
         return this;
     }
 }

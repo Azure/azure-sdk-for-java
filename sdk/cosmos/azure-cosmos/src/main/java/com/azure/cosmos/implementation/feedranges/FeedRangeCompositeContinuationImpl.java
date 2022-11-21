@@ -230,21 +230,21 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public Mono<ShouldRetryResult> handleSplit(final RxDocumentClientImpl client,
-                                               final GoneException goneException) {
+    public Mono<ShouldRetryResult> handleFeedRangeGone(final RxDocumentClientImpl client,
+                                                       final GoneException goneException) {
 
         checkNotNull(client, "Argument 'client' must not be null");
         checkNotNull(goneException, "Argument 'goeException' must not be null");
 
         Integer nSubStatus = goneException.getSubStatusCode();
 
-        final boolean partitionSplit =
+        final boolean partitionSplitOrMerge =
             goneException.getStatusCode() == HttpConstants.StatusCodes.GONE &&
                 nSubStatus != null &&
                 (nSubStatus == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
-                || nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
+                || nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
 
-        if (!partitionSplit) {
+        if (!partitionSplitOrMerge) {
             return Mono.just(ShouldRetryResult.NO_RETRY);
         }
 
@@ -254,10 +254,15 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.tryGetOverlappingRanges(partitionKeyRangeCache, effectiveTokenRange, true);
 
         return resolvedRangesTask.flatMap(resolvedRanges -> {
-            if (resolvedRanges.v != null && resolvedRanges.v.size() > 0) {
-                this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
+            if (resolvedRanges.v != null) {
+                if (resolvedRanges.v.size() == 1) {
+                    // Merge happen, will continue draining from the current range
+                    LOGGER.debug("ChangeFeedFetcher detected feed range gone due to merge for range [{}]", effectiveTokenRange);
+                } else {
+                    this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
+                    LOGGER.debug("ChangeFeedFetcher detected feed range gone due to split for range [{}]", effectiveTokenRange);
+                }
             }
-
             return Mono.just(ShouldRetryResult.RETRY_NOW);
         });
     }

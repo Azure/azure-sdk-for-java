@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.7.1 (2022-11-17)
+
+### Features Added
+
+- Added user-agent header to Identity requests
+
 ## 1.7.0 (2022-11-04)
 
 ### Other Changes

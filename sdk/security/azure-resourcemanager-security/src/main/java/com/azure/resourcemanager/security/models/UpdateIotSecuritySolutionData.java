@@ -19,6 +19,10 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
     @JsonProperty(value = "properties")
     private UpdateIoTSecuritySolutionProperties innerProperties;
 
+    /** Creates an instance of UpdateIotSecuritySolutionData class. */
+    public UpdateIotSecuritySolutionData() {
+    }
+
     /**
      * Get the innerProperties property: Security Solution data.
      *

@@ -22,6 +22,10 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecurityAssessmentPropertiesResponse innerProperties;
 
+    /** Creates an instance of SecurityAssessmentResponseInner class. */
+    public SecurityAssessmentResponseInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes properties of an assessment.
      *

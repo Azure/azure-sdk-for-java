@@ -14,6 +14,10 @@ import java.util.List;
 @JsonTypeName("LocalUserNotAllowed")
 @Fluent
 public final class LocalUserNotAllowed extends AllowlistCustomAlertRule {
+    /** Creates an instance of LocalUserNotAllowed class. */
+    public LocalUserNotAllowed() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public LocalUserNotAllowed withAllowlistValues(List<String> allowlistValues) {

@@ -18,6 +18,10 @@ public final class AutoProvisioningSettingProperties {
     @JsonProperty(value = "autoProvision", required = true)
     private AutoProvision autoProvision;
 
+    /** Creates an instance of AutoProvisioningSettingProperties class. */
+    public AutoProvisioningSettingProperties() {
+    }
+
     /**
      * Get the autoProvision property: Describes what kind of security agent provisioning action to take.
      *

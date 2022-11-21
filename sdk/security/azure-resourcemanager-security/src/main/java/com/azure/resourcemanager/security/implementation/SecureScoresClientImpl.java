@@ -55,7 +55,7 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecure")
-    private interface SecureScoresService {
+    public interface SecureScoresService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores")
         @ExpectedResponses({200})
@@ -335,22 +335,6 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecureScoreItemInner get(String secureScoreName) {
-        return getAsync(secureScoreName).block();
-    }
-
-    /**
-     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
-     * Default initiative, use 'ascScore'.
-     *
-     * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
-     *     request below.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -361,6 +345,22 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecureScoreItemInner> getWithResponse(String secureScoreName, Context context) {
         return getWithResponseAsync(secureScoreName, context).block();
+    }
+
+    /**
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
+     *
+     * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
+     *     request below.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecureScoreItemInner get(String secureScoreName) {
+        return getWithResponse(secureScoreName, Context.NONE).getValue();
     }
 
     /**

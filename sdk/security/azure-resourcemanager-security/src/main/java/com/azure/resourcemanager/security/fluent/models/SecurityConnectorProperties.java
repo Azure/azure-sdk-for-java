@@ -47,6 +47,10 @@ public final class SecurityConnectorProperties {
     @JsonProperty(value = "environmentData")
     private EnvironmentData environmentData;
 
+    /** Creates an instance of SecurityConnectorProperties class. */
+    public SecurityConnectorProperties() {
+    }
+
     /**
      * Get the hierarchyIdentifier property: The multi cloud resource identifier (account id in case of AWS connector,
      * project number in case of GCP connector).

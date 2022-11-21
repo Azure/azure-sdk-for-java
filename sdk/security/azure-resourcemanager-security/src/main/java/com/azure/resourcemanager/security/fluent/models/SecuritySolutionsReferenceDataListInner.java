@@ -18,6 +18,10 @@ public final class SecuritySolutionsReferenceDataListInner {
     @JsonProperty(value = "value")
     private List<SecuritySolutionsReferenceData> value;
 
+    /** Creates an instance of SecuritySolutionsReferenceDataListInner class. */
+    public SecuritySolutionsReferenceDataListInner() {
+    }
+
     /**
      * Get the value property: The value property.
      *

@@ -36,25 +36,25 @@ public final class UsagesClientImpl implements UsagesClient {
     private final UsagesService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of UsagesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    UsagesClientImpl(DevCenterClientImpl client) {
+    UsagesClientImpl(DevCenterManagementClientImpl client) {
         this.service = RestProxy.create(UsagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevCenterClientUsages to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for DevCenterManagementClientUsages to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientUsage")
-    private interface UsagesService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface UsagesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/locations/{location}/usages")
         @ExpectedResponses({200})
