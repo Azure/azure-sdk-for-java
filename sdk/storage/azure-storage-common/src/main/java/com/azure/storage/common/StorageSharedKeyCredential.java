@@ -234,7 +234,7 @@ public final class StorageSharedKeyCredential {
         final StringBuilder canonicalizedHeaders = new StringBuilder(
             stringBuilderSize + (2 * xmsHeaders.size()) - 1);
 
-        xmsHeaders.sort(ROOT_COLLATOR);
+        xmsHeaders.sort(((o1, o2) -> ROOT_COLLATOR.compare(o1.getName(), o2.getName())));
 
         for (Header xmsHeader : xmsHeaders) {
             if (canonicalizedHeaders.length() > 0) {
