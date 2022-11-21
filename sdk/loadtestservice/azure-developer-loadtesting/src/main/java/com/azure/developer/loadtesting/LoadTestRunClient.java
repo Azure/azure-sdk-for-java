@@ -1170,7 +1170,6 @@ public final class LoadTestRunClient {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param body Load test run model.
-     * @param refreshTime The time in seconds to refresh the polling operation.
      * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
      * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
      * @return A {@link SyncPoller} to poll on and retrieve the test run
@@ -1178,9 +1177,9 @@ public final class LoadTestRunClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginStartTestRun(
-            String testRunId, BinaryData body, int refreshTime, RequestOptions testRunRequestOptions) {
+            String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
         PollerFlux<BinaryData, BinaryData> asyncPoller =
-                this.client.beginStartTestRun(testRunId, body, refreshTime, testRunRequestOptions);
+                this.client.beginStartTestRun(testRunId, body, testRunRequestOptions);
         return asyncPoller.getSyncPoller();
     }
 }

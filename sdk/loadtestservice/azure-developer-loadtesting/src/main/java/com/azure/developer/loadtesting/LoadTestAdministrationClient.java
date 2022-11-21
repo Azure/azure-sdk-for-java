@@ -258,7 +258,6 @@ public final class LoadTestAdministrationClient {
      * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
      * @param fileName Unique name for test file with file extension like : App.jmx.
      * @param body The file content as application/octet-stream.
-     * @param refreshTime The time in seconds to refresh the polling operation.
      * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
      *     it.
      * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
@@ -267,9 +266,9 @@ public final class LoadTestAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<ValidationStatus, BinaryData> beginUploadAndValidate(
-            String testId, String fileName, BinaryData body, int refreshTime, RequestOptions fileUploadRequestOptions) {
+            String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
         PollerFlux<ValidationStatus, BinaryData> asyncPoller =
-                this.client.beginUploadAndValidate(testId, fileName, body, refreshTime, fileUploadRequestOptions);
+                this.client.beginUploadAndValidate(testId, fileName, body, fileUploadRequestOptions);
         return asyncPoller.getSyncPoller();
     }
 

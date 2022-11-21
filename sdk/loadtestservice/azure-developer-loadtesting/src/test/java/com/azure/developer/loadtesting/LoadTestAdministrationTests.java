@@ -11,7 +11,6 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.LoadTestAdministrationAsyncClient.ValidationStatus;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.net.URL;
@@ -83,11 +82,12 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadAndValidate() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions = new RequestOptions().addQueryParam("fileType", "JMX_FILE");
-        SyncPoller<ValidationStatus, BinaryData> poller = builder.buildLoadTestAdministrationClient().beginUploadAndValidate(newTestId, uploadJmxFileName, file, 1, fileUploadRequestOptions);
+        SyncPoller<ValidationStatus, BinaryData> poller = builder.buildLoadTestAdministrationClient().beginUploadAndValidate(newTestId, uploadJmxFileName, file, fileUploadRequestOptions);
+        poller = setPlaybackSyncPollerPollInterval(poller);
         PollResponse<ValidationStatus> response = poller.waitForCompletion();
         BinaryData fileBinary = poller.getFinalResult();
         try {
-            JsonNode fileNode = new ObjectMapper().readTree(fileBinary.toString());
+            JsonNode fileNode = OBJECT_MAPPER.readTree(fileBinary.toString());
             String validationStatus = fileNode.get("validationStatus").asText();
             Assertions.assertTrue(fileNode.get("filename").asText().equals(uploadJmxFileName) && validationStatus.equals(ValidationStatus.VALIDATION_SUCCESS.toString()));
         } catch (Exception e) {
@@ -125,7 +125,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void getFile() {
         Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getTestFileWithResponse(newTestId, uploadJmxFileName, null);
         try {
-            JsonNode file = new ObjectMapper().readTree(response.getValue().toString());
+            JsonNode file = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(file.get("filename").asText().equals(uploadJmxFileName) && file.get("fileType").asText().equals("JMX_FILE"));
         } catch (Exception e) {
             Assertions.assertTrue(false);
@@ -138,7 +138,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void getLoadTest() {
         Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getTestWithResponse(newTestId, null);
         try {
-            JsonNode test = new ObjectMapper().readTree(response.getValue().toString());
+            JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("testId").asText().equals(newTestId));
         } catch (Exception e) {
             Assertions.assertTrue(false);
@@ -151,7 +151,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void getAppComponents() {
         Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getAppComponentsWithResponse(newTestId, null);
         try {
-            JsonNode test = new ObjectMapper().readTree(response.getValue().toString());
+            JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId) && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText().equalsIgnoreCase(defaultAppComponentResourceId));
         } catch (Exception e) {
             Assertions.assertTrue(false);
@@ -164,7 +164,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void getServerMetricsConfig() {
         Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getServerMetricsConfigWithResponse(newTestId, null);
         try {
-            JsonNode test = new ObjectMapper().readTree(response.getValue().toString());
+            JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics").get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,7 +181,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         PagedIterable<BinaryData> response = builder.buildLoadTestAdministrationClient().listTestFiles(newTestId, null);
         boolean found = response.stream().anyMatch((fileBinary) -> {
             try {
-                JsonNode file = new ObjectMapper().readTree(fileBinary.toString());
+                JsonNode file = OBJECT_MAPPER.readTree(fileBinary.toString());
                 if (file.get("filename").asText().equals(uploadJmxFileName) && file.get("fileType").asText().equals("JMX_FILE")) {
                     return true;
                 }
@@ -201,7 +201,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         PagedIterable<BinaryData> response = builder.buildLoadTestAdministrationClient().listTests(reqOpts);
         boolean found = response.stream().anyMatch((testBinary) -> {
             try {
-                JsonNode test = new ObjectMapper().readTree(testBinary.toString());
+                JsonNode test = OBJECT_MAPPER.readTree(testBinary.toString());
                 if (test.get("testId").asText().equals(newTestId)) {
                     return true;
                 }

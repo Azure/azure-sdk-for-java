@@ -12,6 +12,8 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +22,8 @@ import reactor.core.publisher.Mono;
 
 class LoadTestingClientTestBase extends TestBase {
     protected LoadTestingClientBuilder builder;
+
+    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final String defaultEndpoint = "REDACTED.eus.cnt-prod.loadtesting.azure.com";
 

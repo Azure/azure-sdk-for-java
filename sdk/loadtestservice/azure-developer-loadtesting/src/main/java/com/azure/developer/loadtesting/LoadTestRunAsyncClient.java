@@ -30,6 +30,8 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = LoadTestingClientBuilder.class, isAsync = true)
 public final class LoadTestRunAsyncClient {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     @Generated private final LoadTestRunsImpl serviceClient;
 
     /**
@@ -1175,7 +1177,6 @@ public final class LoadTestRunAsyncClient {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param body Load test run model.
-     * @param refreshTime The time in seconds to refresh the polling operation.
      * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
      * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
      * @return A {@link PollerFlux} to poll on and retrieve the test run
@@ -1183,9 +1184,13 @@ public final class LoadTestRunAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginStartTestRun(
-            String testRunId, BinaryData body, int refreshTime, RequestOptions testRunRequestOptions) {
+            String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
+        RequestOptions defaultRequestOptions = new RequestOptions();
+        if (testRunRequestOptions != null) {
+            defaultRequestOptions.setContext(testRunRequestOptions.getContext());
+        }
         return new PollerFlux<>(
-                Duration.ofSeconds(refreshTime),
+                Duration.ofSeconds(5),
                 (context) -> {
                     Mono<BinaryData> testRunMono =
                             createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
@@ -1193,13 +1198,14 @@ public final class LoadTestRunAsyncClient {
                     return testRunMono;
                 },
                 (context) -> {
-                    Mono<BinaryData> testRunMono = getTestRunWithResponse(testRunId, null).flatMap(FluxUtil::toMono);
+                    Mono<BinaryData> testRunMono =
+                            getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono);
                     return testRunMono.flatMap(
                             testRunBinary -> {
                                 String status;
                                 JsonNode testRun;
                                 try {
-                                    testRun = new ObjectMapper().readTree(testRunBinary.toString());
+                                    testRun = OBJECT_MAPPER.readTree(testRunBinary.toString());
                                     status = testRun.get("status").asText();
                                 } catch (JsonProcessingException e) {
                                     return Mono.error(
@@ -1224,12 +1230,11 @@ public final class LoadTestRunAsyncClient {
                                         lroStatus = LongRunningOperationStatus.IN_PROGRESS;
                                         break;
                                 }
-                                return Mono.just(new PollResponse<>(lroStatus, BinaryData.fromString(status)));
+                                return Mono.just(new PollResponse<>(lroStatus, testRunBinary));
                             });
                 },
-                (activationResponse, context) -> {
-                    return Mono.error(new RuntimeException("Cancellation is not supported"));
-                },
-                (context) -> getTestRunWithResponse(testRunId, null).flatMap(FluxUtil::toMono));
+                (activationResponse, context) ->
+                        stopTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono),
+                (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
 }

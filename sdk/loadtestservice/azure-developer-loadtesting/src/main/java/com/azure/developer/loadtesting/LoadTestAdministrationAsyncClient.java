@@ -30,6 +30,8 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = LoadTestingClientBuilder.class, isAsync = true)
 public final class LoadTestAdministrationAsyncClient {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     @Generated private final LoadTestAdministrationsImpl serviceClient;
 
     /**
@@ -276,14 +278,14 @@ public final class LoadTestAdministrationAsyncClient {
         VALIDATION_NOT_REQUIRED
     }
 
-    private Mono<PollResponse<ValidationStatus>> getValidationStatus(BinaryData fileMono) {
+    private Mono<PollResponse<ValidationStatus>> getValidationStatus(BinaryData fileBinary) {
         String validationStatus;
         JsonNode file;
         try {
-            file = new ObjectMapper().readTree(fileMono.toString());
+            file = OBJECT_MAPPER.readTree(fileBinary.toString());
             validationStatus = file.get("validationStatus").asText();
         } catch (JsonProcessingException e) {
-            return Mono.error(new RuntimeException("Encountered exception while retriving validation status"));
+            return Mono.error(new RuntimeException("Encountered exception while retrieving validation status", e));
         }
         LongRunningOperationStatus lroStatus;
         ValidationStatus validationStatusEnum;
@@ -318,7 +320,6 @@ public final class LoadTestAdministrationAsyncClient {
      * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
      * @param fileName Unique name for test file with file extension like : App.jmx.
      * @param body The file content as application/octet-stream.
-     * @param refreshTime The time in seconds to refresh the polling operation.
      * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
      *     it.
      * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
@@ -327,27 +328,30 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ValidationStatus, BinaryData> beginUploadAndValidate(
-            String testId, String fileName, BinaryData body, int refreshTime, RequestOptions fileUploadRequestOptions) {
+            String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
+        RequestOptions defaultRequestOptions = new RequestOptions();
+        if (fileUploadRequestOptions != null) {
+            defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
+        }
         return new PollerFlux<>(
-                Duration.ofSeconds(refreshTime),
+                Duration.ofSeconds(2),
                 (context) -> {
                     Mono<BinaryData> fileMono =
                             uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
                                     .flatMap(FluxUtil::toMono);
-                    Mono<PollResponse<ValidationStatus>> validationPollRespMono =
+                    Mono<PollResponse<ValidationStatus>> fileValidationPollRespMono =
                             fileMono.flatMap(fileBinaryData -> getValidationStatus(fileBinaryData));
-                    return validationPollRespMono.flatMap(
-                            validationPollResp -> {
-                                return Mono.just(validationPollResp.getValue());
-                            });
+                    return fileValidationPollRespMono.flatMap(
+                            fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue()));
                 },
                 (context) -> {
                     Mono<BinaryData> fileMono =
-                            getTestFileWithResponse(testId, fileName, null).flatMap(FluxUtil::toMono);
+                            getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono);
                     return fileMono.flatMap(fileBinaryData -> getValidationStatus(fileBinaryData));
                 },
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                (context) -> getTestFileWithResponse(testId, fileName, null).flatMap(FluxUtil::toMono));
+                (context) ->
+                        getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
 
     /**
