@@ -27,6 +27,10 @@ public final class SshPublicKey {
     @JsonProperty(value = "keyData")
     private String keyData;
 
+    /** Creates an instance of SshPublicKey class. */
+    public SshPublicKey() {
+    }
+
     /**
      * Get the path property: Specifies the full path on the created VM where ssh public key is stored. If the file
      * already exists, the specified key is appended to the file. Example: /home/user/.ssh/authorized_keys.

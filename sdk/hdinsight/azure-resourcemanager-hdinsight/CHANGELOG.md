@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2022-11-17)
+
+- Azure Resource Manager HDInsight client library for Java. This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.Cluster` was modified
+
+* `resourceGroupName()` was added
+
+#### `HDInsightManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `resourceGroupName()` was added
+
+#### `HDInsightManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
 
 ## 1.0.0-beta.5 (2021-10-09)
 

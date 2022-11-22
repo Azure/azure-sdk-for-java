@@ -22,6 +22,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
     @JsonProperty(value = "properties")
     private VirtualMachineRunCommandProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineRunCommandInner class. */
+    public VirtualMachineRunCommandInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine run command.
      *

@@ -47,6 +47,10 @@ public final class CommunityGalleryInfo {
     @JsonProperty(value = "publicNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> publicNames;
 
+    /** Creates an instance of CommunityGalleryInfo class. */
+    public CommunityGalleryInfo() {
+    }
+
     /**
      * Get the publisherUri property: The link to the publisher website. Visible to all users.
      *

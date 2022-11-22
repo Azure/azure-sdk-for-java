@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for InformationUnit. */
 public final class InformationUnit extends ExpandableStringEnum<InformationUnit> {
     /** Static value Unspecified for InformationUnit. */
@@ -56,14 +54,5 @@ public final class InformationUnit extends ExpandableStringEnum<InformationUnit>
      */
     public static InformationUnit fromString(String name) {
         return fromString(name, InformationUnit.class);
-    }
-
-    /**
-     * Gets known InformationUnit values.
-     *
-     * @return known InformationUnit values.
-     */
-    public static Collection<InformationUnit> values() {
-        return values(InformationUnit.class);
     }
 }

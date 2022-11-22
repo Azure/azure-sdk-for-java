@@ -135,7 +135,7 @@ def version_bigger_than(source_version, target_version):
         return sv.minor > tv.minor
     elif sv.major == tv.major and sv.minor == tv.minor and sv.micro != tv.micro:
         return sv.micro >= tv.micro
-    return True
+    return sv > tv
 
 
 def is_invalid_version(verify_version):
@@ -182,6 +182,8 @@ class Tests(unittest.TestCase):
         self.assertEqual(version_bigger_than('3.0.0-M5', '3.0.0-M4'), True)
         self.assertEqual(version_bigger_than('3.0.0-M5', '3.0.0-RC1'), False)
         self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-M5'), True)
+        self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-RC2'), False)
+        self.assertEqual(version_bigger_than('3.0.0-RC2', '3.0.0-RC1'), True)
 
 
 if __name__ == '__main__':

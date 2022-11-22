@@ -28,7 +28,7 @@ public final class HealthcareEntityRelation {
     /*
      * Confidence score between 0 and 1 of the extracted relation.
      */
-    private Double confidenceScore;
+    private double confidenceScore;
 
     static {
         HealthcareEntityRelationPropertiesHelper.setAccessor(
@@ -47,7 +47,7 @@ public final class HealthcareEntityRelation {
 
                 @Override
                 public void setConfidenceScore(HealthcareEntityRelation healthcareEntityRelation,
-                    Double confidenceScore) {
+                    double confidenceScore) {
                     healthcareEntityRelation.setConfidenceScore(confidenceScore);
                 }
             });
@@ -77,7 +77,7 @@ public final class HealthcareEntityRelation {
      *
      * @return the confidenceScore value.
      */
-    public Double getConfidenceScore() {
+    public double getConfidenceScore() {
         return this.confidenceScore;
     }
 
@@ -89,7 +89,7 @@ public final class HealthcareEntityRelation {
         this.roles = roles;
     }
 
-    private void setConfidenceScore(Double confidenceScore) {
+    private void setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
     }
 }

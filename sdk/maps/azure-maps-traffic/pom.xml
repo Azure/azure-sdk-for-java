@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-traffic</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-traffic;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-traffic;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for azure-maps-traffic service</name>
@@ -93,7 +93,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.5.0-RC1</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.5.0</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

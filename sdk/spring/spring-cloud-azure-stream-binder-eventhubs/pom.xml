@@ -32,6 +32,10 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
+  <properties>
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -47,12 +51,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>3.0.0-RC1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>3.0.0-RC2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -65,7 +69,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream-binder-test</artifactId>
-      <version>4.0.0-RC1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
+      <version>4.0.0-RC2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -77,7 +81,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.0.0-RC1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.0.0-RC2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -122,7 +126,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-actuator:[3.0.0-RC1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[3.0.0-RC2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

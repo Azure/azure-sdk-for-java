@@ -789,6 +789,7 @@ public class IdentityClient extends IdentityClientBase {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Metadata", "true");
+                connection.setRequestProperty("User-Agent", userAgent);
                 connection.connect();
 
                 new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
@@ -898,6 +899,7 @@ public class IdentityClient extends IdentityClientBase {
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                    connection.setRequestProperty("User-Agent", userAgent);
                     connection.setDoOutput(true);
                     try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
                         outputStream.write(postData);
@@ -964,6 +966,7 @@ public class IdentityClient extends IdentityClientBase {
                     connection.setRequestProperty("Secret", headerValue);
                 }
                 connection.setRequestProperty("Metadata", "true");
+                connection.setRequestProperty("User-Agent", userAgent);
 
                 connection.connect();
 
@@ -1055,6 +1058,7 @@ public class IdentityClient extends IdentityClientBase {
                     }
                 }
                 connection.setRequestProperty("Metadata", "true");
+                connection.setRequestProperty("User-Agent", userAgent);
 
                 connection.connect();
 
@@ -1116,6 +1120,7 @@ public class IdentityClient extends IdentityClientBase {
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setRequestProperty("Metadata", "true");
+                    connection.setRequestProperty("User-Agent", userAgent);
                     connection.connect();
 
                     Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())

@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.TemperatureResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** Represents the temperature entity resolution model. */
@@ -11,22 +12,26 @@ public final class TemperatureResolution extends BaseResolution {
     /*
      * The temperature Unit of measurement.
      */
-    private final TemperatureUnit unit;
+    private TemperatureUnit unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
+    private double value;
 
-    /**
-     * Create a temperature entity resolution model.
-     *
-     * @param unit The temperature Unit of measurement.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public TemperatureResolution(TemperatureUnit unit, double value) {
-        this.unit = unit;
-        this.value = value;
+    static {
+        TemperatureResolutionPropertiesHelper.setAccessor(
+            new TemperatureResolutionPropertiesHelper.TemperatureResolutionAccessor() {
+                @Override
+                public void setUnit(TemperatureResolution temperatureResolution, TemperatureUnit unit) {
+                    temperatureResolution.setUnit(unit);
+                }
+
+                @Override
+                public void setValue(TemperatureResolution temperatureResolution, double value) {
+                    temperatureResolution.setValue(value);
+                }
+            });
     }
 
     /**
@@ -45,5 +50,13 @@ public final class TemperatureResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setUnit(TemperatureUnit unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }
