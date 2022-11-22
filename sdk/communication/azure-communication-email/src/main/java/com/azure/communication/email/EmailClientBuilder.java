@@ -159,6 +159,25 @@ public final class EmailClientBuilder
     }
 
     /*
+     * The TokenCredential used for authentication.
+     */
+    private TokenCredential tokenCredential;
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return The updated {@link EmailClientBuilder} object.
+     */
+    @Override
+    public EmailClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /*
      * The service endpoint
      */
     @Generated private String endpoint;
