@@ -334,6 +334,7 @@ public class EventGridCustomization extends Customization {
         customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(customization);
         customizeMediaLiveEventIngestHeartbeatEventData(customization);
         customizeResourceEvents(customization, logger);
+        customizeEventGridClientImplImports(customization);
     }
 
     public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
@@ -508,6 +509,19 @@ public class EventGridCustomization extends Customization {
             }
         }
         return result.toUpperCase();
+    }
+
+    public void customizeEventGridClientImplImports(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.implementation");
+        ClassCustomization classCustomization = packageModels.getClass("EventGridPublisherClientImpl");
+    
+        classCustomization.customizeAst(comp -> {
+            comp.getImports().removeIf(p -> {
+                return p.getNameAsString().equals("com.azure.messaging.eventgrid.implementation.models.CloudEvent");
+            });
+            comp.addImport("com.azure.core.models.CloudEvent");
+        });
+
     }
 }
 ```
