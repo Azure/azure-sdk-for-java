@@ -3,6 +3,9 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.ai.anomalydetector.models.DetectRequest;
+import com.azure.ai.anomalydetector.models.LastDetectResponse;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -56,9 +59,10 @@ public class DetectAnomaliesLastPoint {
         InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\request-data.json");
         JsonReader reader = Json.createReader(fileInputStream);
         BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = anomalyDetectorClient.detectUnivariateLastPointWithResponse(detectBody, requestOptions);
-        System.out.println(response.getValue().toString());
 
+        DetectRequest detectRequest = detectBody.toObject(DetectRequest.class);
+        LastDetectResponse lastDetectResponse = anomalyDetectorClient.detectUnivariateLastPoint(detectRequest);
+        System.out.println("ExpectedValue: " + lastDetectResponse.getExpectedValue()
+            + ", Severity: "+ lastDetectResponse.getSeverity());
     }
 }

@@ -3,6 +3,17 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.ai.anomalydetector.models.DetectionRequest;
+import com.azure.ai.anomalydetector.models.DetectionResult;
+import com.azure.ai.anomalydetector.models.DetectionStatus;
+import com.azure.ai.anomalydetector.models.LastDetectionRequest;
+import com.azure.ai.anomalydetector.models.LastDetectionResult;
+import com.azure.ai.anomalydetector.models.Model;
+import com.azure.ai.anomalydetector.models.ModelInfo;
+import com.azure.ai.anomalydetector.models.ModelStatus;
+import com.azure.ai.anomalydetector.models.ErrorResponse;
+import com.azure.ai.anomalydetector.models.AnomalyState;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -16,16 +27,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.http.rest.RequestOptions;
-import org.junit.jupiter.api.Assertions;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.io.StringReader;
 import java.io.InputStream;
 
 import java.nio.ByteBuffer;
@@ -34,16 +41,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-enum ModelStatus {
-    CREATED, RUNNING, READY, FAILED
-}
-enum DetectionStatus {
-    CREATED, RUNNING, READY, FAILED
-}
 
 public class MultivariateSample {
     private static void close(FileOutputStream fos) {
@@ -85,68 +84,45 @@ public class MultivariateSample {
         return anomalyDetectorClient;
     }
 
-    private static UUID createModel(AnomalyDetectorClient client, BinaryData body) {
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.createAndTrainMultivariateModelWithResponse(body, requestOptions);
-        String header = response.getHeaders().get("Location").getValue();
-        String[] modelIds = header.split("/");
-        UUID modelId = UUID.fromString(modelIds[modelIds.length - 1]);
+    private static UUID createModel(AnomalyDetectorClient client, ModelInfo modelInfo) {
+        Model model = client.createAndTrainMultivariateModel(modelInfo);
+        UUID modelId = UUID.fromString(model.getModelId());
         return modelId;
     }
 
-    private static JsonObject getModelInfo(AnomalyDetectorClient client, UUID modelID) {
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getMultivariateModelWithResponse(modelID.toString(), requestOptions);
-        String responseBodyStr = response.getValue().toString();
-        JsonObject jsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
-
-        JsonObject modelInfo = jsonObject.getJsonObject("modelInfo");
-
-        return modelInfo;
+    private static ModelInfo getModelInfo(AnomalyDetectorClient client, UUID modelId) {
+        Model model = client.getMultivariateModel(modelId.toString());
+        return model.getModelInfo();
     }
 
-    private static UUID getResultId(AnomalyDetectorClient client, BinaryData body, UUID modelId) {
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.detectMultivariateBatchAnomalyWithResponse(modelId.toString(), body, requestOptions);
-        String responseBodyStr = response.getValue().toString();
-        JsonObject jsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
-        UUID resultId = UUID.fromString(jsonObject.getString("resultId"));
+    private static UUID getResultId(AnomalyDetectorClient client, DetectionRequest body, UUID modelId) {
+        DetectionResult detectionResult = client.detectMultivariateBatchAnomaly(modelId.toString(), body);
+        UUID resultId = UUID.fromString(detectionResult.getResultId());
         return resultId;
     }
 
-    private static String getInferenceStatus(AnomalyDetectorClient client, UUID resultId) {
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getMultivariateBatchDetectionResultWithResponse(resultId.toString(), requestOptions);
-        String responseBodyStr = response.getValue().toString();
-        JsonObject jsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
-        String status = jsonObject.getJsonObject("summary").getString("status");
-        return status;
+    private static DetectionStatus getInferenceStatus(AnomalyDetectorClient client, UUID resultId) {
+        DetectionResult detectionResult = client.getMultivariateBatchDetectionResult(resultId.toString());
+        return detectionResult.getSummary().getStatus();
     }
 
     private static void getModelList(AnomalyDetectorClient client, Integer skip, Integer top) {
-        RequestOptions requestOptions = new RequestOptions()
-            .addQueryParam("skip", skip.toString())
-            .addQueryParam("top", top.toString());
-        PagedIterable<BinaryData> response = client.listMultivariateModels(requestOptions);
-
-        Iterator<PagedResponse<BinaryData>> ite = response.iterableByPage().iterator();
+        PagedIterable<Model> response = client.listMultivariateModels(skip, top);
+        Iterator<PagedResponse<Model>> ite = response.iterableByPage().iterator();
         int i = 1;
         while (ite.hasNext()) {
-            PagedResponse<BinaryData> items = ite.next();
+            PagedResponse<Model> items = ite.next();
             System.out.println("The result in the page " + i);
             i++;
-            for (BinaryData item : items.getValue()) {
-                JsonObject jsonObject = Json.createReader(new StringReader(item.toString())).readObject();
-                System.out.println("\t" + jsonObject.getString("modelId"));
+            for (Model item : items.getValue()) {
+                System.out.println("\t" + item.getModelId());
             }
         }
     }
 
-    private static Response<BinaryData> getLastDetectResult(AnomalyDetectorClient client, BinaryData body, UUID modelId) {
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.detectMultivariateLastAnomalyWithResponse(modelId.toString(), body, requestOptions);
-
-        return response;
+    private static LastDetectionResult getLastDetectResult(AnomalyDetectorClient client, LastDetectionRequest body, UUID modelId) {
+        LastDetectionResult res = client.detectMultivariateLastAnomaly(modelId.toString(), body);
+        return res;
     }
 
     public static void run(BinaryData trainBody, BinaryData beginInferBody) throws Exception {
@@ -157,33 +133,40 @@ public class MultivariateSample {
         AnomalyDetectorClient client = getClient(endpoint, key);
 
         // Start training and get Model ID
-        UUID modelId = createModel(client, trainBody);
+        ModelInfo trainRequest = trainBody.toObject(ModelInfo.class);
+        UUID modelId = createModel(client, trainRequest);
         System.out.println(modelId);
         // Check model status util the model get ready
         while (true) {
-            JsonObject modelInfo = getModelInfo(client, modelId);
-            ModelStatus modelStatus = ModelStatus.valueOf(modelInfo.getString("status"));
+            ModelInfo modelInfo = getModelInfo(client, modelId);
+            ModelStatus modelStatus = ModelStatus.valueOf(modelInfo.getStatus().toString());
             if (modelStatus == ModelStatus.READY) {
                 System.out.println("READY");
                 break;
             } else if (modelStatus == ModelStatus.FAILED) {
                 System.out.println("FAILED");
-                throw new Exception(modelInfo.getJsonArray("errors").getString(0));
+                String errorStr = "";
+                for (ErrorResponse errorResponse : modelInfo.getErrors()) {
+                    System.out.println(errorResponse.getCode() + errorResponse.getMessage());
+                    errorStr += ";" + errorResponse.getCode() + errorResponse.getMessage();
+                }
+                throw new Exception(errorStr);
             }
             System.out.println("TRAINING");
             TimeUnit.SECONDS.sleep(5);
         }
 
-
         // Start inference and get the Result ID
-        UUID resultId = getResultId(client, beginInferBody, modelId);
-        // Check inference status util the result get ready
-        while (true) {
-            DetectionStatus detectionStatus = DetectionStatus.valueOf(getInferenceStatus(client, resultId));
-            assert detectionStatus != DetectionStatus.FAILED;
+        DetectionRequest detectionRequest = beginInferBody.toObject(DetectionRequest.class);
+        UUID resultId = getResultId(client, detectionRequest, modelId);
+        while (true) { // Check inference status util the result get ready
+            DetectionStatus detectionStatus = getInferenceStatus(client, resultId);
             if (detectionStatus == DetectionStatus.READY) {
                 System.out.println("READY");
                 break;
+            } else if (detectionStatus == DetectionStatus.FAILED) {
+                System.out.println("FAILED");
+                throw new Exception("Inference Failed.");
             }
             System.out.println("INFERRING");
             TimeUnit.SECONDS.sleep(5);
@@ -193,37 +176,17 @@ public class MultivariateSample {
         InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\sync_infer_body.json");
         JsonReader reader = Json.createReader(fileInputStream);
         BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
-        Response<BinaryData> lastDetectResponse = getLastDetectResult(client, detectBody, modelId);
-        String responseBodyStr = lastDetectResponse.getValue().toString();
-        JsonObject lastDetectJsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
-        JsonArray variableStates = lastDetectJsonObject.getJsonArray("variableStates");
-        JsonArray results = lastDetectJsonObject.getJsonArray("results");
-        if (lastDetectResponse.getStatusCode() == 200) {
-            for (int i = 0; i < results.size(); i++) {
-                JsonObject item = results.getJsonObject(i);
-                System.out.print(
-                    "\ntimestamp: "
-                        + item.getString("timestamp")
-                        + ",  isAnomaly: "
-                        + item.getJsonObject("value").getBoolean("isAnomaly")
-                        + ",  Score: "
-                        + item.getJsonObject("value").getJsonNumber("score"));
-            }
-        } else {
-            for (int i = 0; i < results.size(); i++) {
-                JsonObject item = results.getJsonObject(i);
-                System.out.print(
-                    "\ntimestamp: "
-                        + item.getString("timestamp")
-                        + ",  errors: "
-                        + item.getJsonArray("errors").getString(0));
-            }
+        LastDetectionRequest lastDetectionRequest = detectBody.toObject(LastDetectionRequest.class);
+        LastDetectionResult lastDetectionResult = getLastDetectResult(client, lastDetectionRequest, modelId);
+        for (AnomalyState anomalyState : lastDetectionResult.getResults()) {
+            System.out.println("timestamp: " + anomalyState.getTimestamp().toString()
+                + ", isAnomaly: " + anomalyState.getValue().isAnomaly()
+                + ", Score: " + anomalyState.getValue().getScore()
+            );
         }
 
         //Delete model
-        RequestOptions requestOptions = new RequestOptions();
-        Response<Void> deleteMultivariateModelWithResponse = client.deleteMultivariateModelWithResponse(modelId.toString(), requestOptions);
-        Assertions.assertEquals(204, deleteMultivariateModelWithResponse.getStatusCode());
+        client.deleteMultivariateModel(modelId.toString());
 
         //Get model list
         Integer skip = 0;

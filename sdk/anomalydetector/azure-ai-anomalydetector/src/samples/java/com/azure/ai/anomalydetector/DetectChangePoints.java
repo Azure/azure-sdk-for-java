@@ -3,6 +3,9 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
+import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -23,6 +26,7 @@ import javax.json.JsonObjectBuilder;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 
 /**
@@ -66,9 +70,13 @@ public class DetectChangePoints {
         String detectBodyStr = jsonObject.toString();
         System.out.println(detectBodyStr);
         BinaryData detectBody = BinaryData.fromString(detectBodyStr);
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = anomalyDetectorClient.detectUnivariateChangePointWithResponse(detectBody, requestOptions);
-        System.out.println(response.getValue().toString());
+
+        ChangePointDetectRequest changePointDetectRequest = detectBody.toObject(ChangePointDetectRequest.class);
+        ChangePointDetectResponse changePointDetectResponse = anomalyDetectorClient.detectUnivariateChangePoint(changePointDetectRequest);
+        System.out.println(changePointDetectResponse.getPeriod());
+        System.out.println(Arrays.toString(changePointDetectResponse.getIsChangePoint().toArray(new Boolean[0])));
+        System.out.println(Arrays.toString(changePointDetectResponse.getConfidenceScores().toArray(new Double[0])));
+        System.out.println(Arrays.toString(changePointDetectResponse.getIsChangePoint().toArray(new Boolean[0])));
 
     }
 }

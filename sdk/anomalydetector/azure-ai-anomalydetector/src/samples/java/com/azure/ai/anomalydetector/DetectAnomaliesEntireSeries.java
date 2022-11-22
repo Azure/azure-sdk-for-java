@@ -3,6 +3,8 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.ai.anomalydetector.models.DetectRequest;
+import com.azure.ai.anomalydetector.models.EntireDetectResponse;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
@@ -19,9 +21,12 @@ import com.azure.core.util.BinaryData;
 
 import javax.json.Json;
 import javax.json.JsonReader;
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * Sample for detecting anomalies in a piece of time series.
@@ -56,9 +61,14 @@ public class DetectAnomaliesEntireSeries {
         InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\request-data.json");
         JsonReader reader = Json.createReader(fileInputStream);
         BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = anomalyDetectorClient.detectUnivariateEntireSeriesWithResponse(detectBody, requestOptions);
-        System.out.println(response.getValue().toString());
 
+        DetectRequest detectRequest = detectBody.toObject(DetectRequest.class);
+        EntireDetectResponse entireDetectResponse = anomalyDetectorClient.detectUnivariateEntireSeries(detectRequest);
+
+        System.out.println(entireDetectResponse.getPeriod());
+        System.out.println("expectedValues: " + Arrays.toString(entireDetectResponse.getExpectedValues().toArray(new Double[0])));
+        System.out.print("upperMargins: " + Arrays.toString(entireDetectResponse.getUpperMargins().toArray(new Double[0])));
+        System.out.print("lowerMargins: " + Arrays.toString(entireDetectResponse.getLowerMargins().toArray(new Double[0])));
+        System.out.print("isAnomaly: " + Arrays.toString(entireDetectResponse.getIsAnomaly().toArray(new Boolean[0])));
     }
 }
