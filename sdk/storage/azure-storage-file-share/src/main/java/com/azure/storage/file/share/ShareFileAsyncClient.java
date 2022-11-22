@@ -1011,52 +1011,52 @@ public class ShareFileAsyncClient {
             .then(Mono.just(response));
     }
 
-    private Mono<Response<ShareFileProperties>> downloadResponseInChunk2(AsynchronousFileChannel channel,
-        ShareFileRange range, ShareRequestConditions requestConditions, Context context) {
-        ShareFileRange finalRange = range == null ? new ShareFileRange(0) : range;
-        return downloadFirstChunk(finalRange, requestConditions, context)
-            .subscribeOn(Schedulers.boundedElastic())
-            .flatMap(tuple2 -> {
-                Long totalLength = tuple2.getT1();
-                ShareFileDownloadAsyncResponse downloadAsyncResponse = tuple2.getT2();
+//    private Mono<Response<ShareFileProperties>> downloadResponseInChunk2(AsynchronousFileChannel channel,
+//        ShareFileRange range, ShareRequestConditions requestConditions, Context context) {
+//        ShareFileRange finalRange = range == null ? new ShareFileRange(0) : range;
+//        return downloadFirstChunk(finalRange, requestConditions, context)
+//            .subscribeOn(Schedulers.boundedElastic())
+//            .flatMap(tuple2 -> {
+//                Long totalLength = tuple2.getT1();
+//                ShareFileDownloadAsyncResponse downloadAsyncResponse = tuple2.getT2();
+//
+//                int numChunks = calculateNumBlocks(totalLength, Constants.MB * 4);
+//                // In case it is an empty blob, this ensures we still actually perform a download operation.
+//                numChunks = numChunks == 0 ? 1 : numChunks;
+//
+//                return Flux.range(0, numChunks)
+//                    .flatMap(chunkNum -> {
+//
+//                        long modifier = chunkNum.longValue() * Constants.MB * 4;
+//                        long chunkSizeActual = Math.min(Constants.MB * 4, totalLength - modifier);
+//                        ShareFileRange chunkRange = new ShareFileRange(finalRange.getStart() + modifier, chunkSizeActual);
+//
+//                        return downloadChunk(chunkNum, downloadAsyncResponse, finalRange, requestConditions,
+//                            totalLength, context, channel, response -> writeBodyToFile(response, channel, chunkRange, finalRange).flux());
+//                    })
+//                    .then(Mono.just(ModelHelper.buildShareFilePropertiesResponse(downloadAsyncResponse)));
+//            });
+//    }
 
-                int numChunks = calculateNumBlocks(totalLength, Constants.MB * 4);
-                // In case it is an empty blob, this ensures we still actually perform a download operation.
-                numChunks = numChunks == 0 ? 1 : numChunks;
-
-                return Flux.range(0, numChunks)
-                    .flatMap(chunkNum -> {
-
-                        long modifier = chunkNum.longValue() * Constants.MB * 4;
-                        long chunkSizeActual = Math.min(Constants.MB * 4, totalLength - modifier);
-                        ShareFileRange chunkRange = new ShareFileRange(finalRange.getStart() + modifier, chunkSizeActual);
-
-                        return downloadChunk(chunkNum, downloadAsyncResponse, finalRange, requestConditions,
-                            totalLength, context, channel, response -> writeBodyToFile(response, channel, chunkRange, finalRange).flux());
-                    })
-                    .then(Mono.just(ModelHelper.buildShareFilePropertiesResponse(downloadAsyncResponse)));
-            });
-    }
-
-    public <T> Flux<T> downloadChunk(Integer chunkNum, ShareFileDownloadAsyncResponse initialResponse,
-        ShareFileRange finalRange, ShareRequestConditions requestConditions, long newCount, Context context,
-        AsynchronousFileChannel channel, Function<ShareFileDownloadAsyncResponse, Flux<T>> returnTransformer) {
-        // The first chunk was retrieved during setup.
-        if (chunkNum == 0) {
-            return returnTransformer.apply(initialResponse);
-        }
-
-        // Calculate whether we need a full chunk or something smaller because we are at the end.
-        long modifier = chunkNum.longValue() * Constants.MB * 4;
-        long chunkSizeActual = Math.min(Constants.MB * 4, newCount - modifier);
-        ShareFileRange chunkRange = new ShareFileRange(finalRange.getStart() + modifier, chunkSizeActual);
-
-        // Make the download call.
-        return downloadWithResponse(new ShareFileDownloadOptions().setRange(chunkRange).setRangeContentMd5Requested(false)
-            .setRequestConditions(requestConditions), context)
-            .subscribeOn(Schedulers.boundedElastic())
-            .flatMapMany(returnTransformer);
-    }
+//    public <T> Flux<T> downloadChunk(Integer chunkNum, ShareFileDownloadAsyncResponse initialResponse,
+//        ShareFileRange finalRange, ShareRequestConditions requestConditions, long newCount, Context context,
+//        AsynchronousFileChannel channel, Function<ShareFileDownloadAsyncResponse, Flux<T>> returnTransformer) {
+//        // The first chunk was retrieved during setup.
+//        if (chunkNum == 0) {
+//            return returnTransformer.apply(initialResponse);
+//        }
+//
+//        // Calculate whether we need a full chunk or something smaller because we are at the end.
+//        long modifier = chunkNum.longValue() * Constants.MB * 4;
+//        long chunkSizeActual = Math.min(Constants.MB * 4, newCount - modifier);
+//        ShareFileRange chunkRange = new ShareFileRange(finalRange.getStart() + modifier, chunkSizeActual);
+//
+//        // Make the download call.
+//        return downloadWithResponse(new ShareFileDownloadOptions().setRange(chunkRange).setRangeContentMd5Requested(false)
+//            .setRequestConditions(requestConditions), context)
+//            .subscribeOn(Schedulers.boundedElastic())
+//            .flatMapMany(returnTransformer);
+//    }
 
     private static Mono<Void> writeBodyToFile(ShareFileDownloadAsyncResponse response, AsynchronousFileChannel channel,
         ShareFileRange chunkRange, ShareFileRange range) {
@@ -1068,85 +1068,85 @@ public class ShareFileAsyncClient {
                 || throwable instanceof TimeoutException));
     }
 
-    public static int calculateNumBlocks(long dataSize, long blockLength) {
-        // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
-        int numBlocks = toIntExact(dataSize / blockLength);
-        // Include an extra block for trailing data.
-        if (dataSize % blockLength != 0) {
-            numBlocks++;
-        }
-        return numBlocks;
-    }
+//    public static int calculateNumBlocks(long dataSize, long blockLength) {
+//        // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
+//        int numBlocks = toIntExact(dataSize / blockLength);
+//        // Include an extra block for trailing data.
+//        if (dataSize % blockLength != 0) {
+//            numBlocks++;
+//        }
+//        return numBlocks;
+//    }
 
-    public Mono<Tuple2<Long, ShareFileDownloadAsyncResponse>> downloadFirstChunk(ShareFileRange range,
-        ShareRequestConditions requestConditions, Context context) {
-        // We will scope our initial download to either be one chunk or the total size.
-        ShareFileRange finalRange = range == null ? new ShareFileRange(0) : range;
-
-        return downloadWithResponse(new ShareFileDownloadOptions()
-            .setRange(finalRange).setRequestConditions(requestConditions),
-                //.setRangeContentMd5Requested(false),
-            context)
-            // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic provided the same
-            // functionality with the added benefit that it won't infinitely create threads if needed and will instead
-            // queue.
-            .subscribeOn(Schedulers.boundedElastic())
-            .flatMap(response -> {
-
-
-                ShareFileDownloadHeaders deserializedHeaders = response.getDeserializedHeaders();
-                // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
-                long totalLength = deserializedHeaders.getContentRange() == null ? deserializedHeaders.getContentLength()
-                    : Long.parseLong(deserializedHeaders.getContentRange().split("/")[1]);
-
-
-                /*
-                If the user either didn't specify a count or they specified a count greater than the size of the
-                remaining data, take the size of the remaining data. This is to prevent the case where the count
-                is much much larger than the size of the blob and we could try to download at an invalid offset.
-                 */
-                long newCount = range.getEnd() == null || range.getEnd() > (totalLength - range.getStart())
-                    ? totalLength - range.getStart() : range.getEnd();
-
-                return Mono.zip(Mono.just(newCount), Mono.just(response));
-            })
-            .onErrorResume(ShareStorageException.class, shareStorageException -> {
-                /*
-                 * In the case of an empty blob, we still want to report success and give back valid headers.
-                 * Attempting a range download on an empty blob will return an InvalidRange error code and a
-                 * Content-Range header of the format "bytes * /0". We need to double check that the total size is zero
-                 * in the case that the customer has attempted an invalid range on a non-zero length blob.
-                 */
-                /*
-                        int index = contentRange.indexOf('/');
-        return Long.parseLong(contentRange.substring(index + 1));
-                 */
-                if (shareStorageException.getErrorCode() == ShareErrorCode.INVALID_RANGE
-                    && Long.parseLong(shareStorageException.getResponse()
-                    .getHeaders().getValue("Content-Range").split("/")[1]) == 0) {
-
-                    return downloadWithResponse(new ShareFileDownloadOptions().setRange(new ShareFileRange(0, 0L)).setRangeContentMd5Requested(false)
-                        .setRequestConditions(requestConditions), context)
-                        // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic
-                        // provided the same functionality with the added benefit that it won't infinitely create
-                        // threads if needed and will instead queue.
-                        .subscribeOn(Schedulers.boundedElastic())
-                        .flatMap(response -> {
-                            /*
-                            Ensure the blob is still 0 length by checking our download was the full length.
-                            (200 is for full blob; 206 is partial).
-                             */
-                            if (response.getStatusCode() != 200) {
-                                return Mono.error(new IllegalStateException("Blob was modified mid download. It was "
-                                    + "originally 0 bytes and is now larger."));
-                            }
-                            return Mono.zip(Mono.just(0L), Mono.just(response));
-                        });
-                }
-
-                return Mono.error(shareStorageException);
-            });
-    }
+//    public Mono<Tuple2<Long, ShareFileDownloadAsyncResponse>> downloadFirstChunk(ShareFileRange range,
+//        ShareRequestConditions requestConditions, Context context) {
+//        // We will scope our initial download to either be one chunk or the total size.
+//        ShareFileRange finalRange = range == null ? new ShareFileRange(0) : range;
+//
+//        return downloadWithResponse(new ShareFileDownloadOptions()
+//            .setRange(finalRange).setRequestConditions(requestConditions),
+//                //.setRangeContentMd5Requested(false),
+//            context)
+//            // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic provided the same
+//            // functionality with the added benefit that it won't infinitely create threads if needed and will instead
+//            // queue.
+//            .subscribeOn(Schedulers.boundedElastic())
+//            .flatMap(response -> {
+//
+//
+//                ShareFileDownloadHeaders deserializedHeaders = response.getDeserializedHeaders();
+//                // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
+//                long totalLength = deserializedHeaders.getContentRange() == null ? deserializedHeaders.getContentLength()
+//                    : Long.parseLong(deserializedHeaders.getContentRange().split("/")[1]);
+//
+//
+//                /*
+//                If the user either didn't specify a count or they specified a count greater than the size of the
+//                remaining data, take the size of the remaining data. This is to prevent the case where the count
+//                is much much larger than the size of the blob and we could try to download at an invalid offset.
+//                 */
+//                long newCount = range.getEnd() == null || range.getEnd() > (totalLength - range.getStart())
+//                    ? totalLength - range.getStart() : range.getEnd();
+//
+//                return Mono.zip(Mono.just(newCount), Mono.just(response));
+//            })
+//            .onErrorResume(ShareStorageException.class, shareStorageException -> {
+//                /*
+//                 * In the case of an empty blob, we still want to report success and give back valid headers.
+//                 * Attempting a range download on an empty blob will return an InvalidRange error code and a
+//                 * Content-Range header of the format "bytes * /0". We need to double check that the total size is zero
+//                 * in the case that the customer has attempted an invalid range on a non-zero length blob.
+//                 */
+//                /*
+//                        int index = contentRange.indexOf('/');
+//        return Long.parseLong(contentRange.substring(index + 1));
+//                 */
+//                if (shareStorageException.getErrorCode() == ShareErrorCode.INVALID_RANGE
+//                    && Long.parseLong(shareStorageException.getResponse()
+//                    .getHeaders().getValue("Content-Range").split("/")[1]) == 0) {
+//
+//                    return downloadWithResponse(new ShareFileDownloadOptions().setRange(new ShareFileRange(0, 0L)).setRangeContentMd5Requested(false)
+//                        .setRequestConditions(requestConditions), context)
+//                        // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic
+//                        // provided the same functionality with the added benefit that it won't infinitely create
+//                        // threads if needed and will instead queue.
+//                        .subscribeOn(Schedulers.boundedElastic())
+//                        .flatMap(response -> {
+//                            /*
+//                            Ensure the blob is still 0 length by checking our download was the full length.
+//                            (200 is for full blob; 206 is partial).
+//                             */
+//                            if (response.getStatusCode() != 200) {
+//                                return Mono.error(new IllegalStateException("Blob was modified mid download. It was "
+//                                    + "originally 0 bytes and is now larger."));
+//                            }
+//                            return Mono.zip(Mono.just(0L), Mono.just(response));
+//                        });
+//                }
+//
+//                return Mono.error(shareStorageException);
+//            });
+//    }
 
 
     private Mono<Response<ShareFileProperties>> downloadSingleChunk(AsynchronousFileChannel channel, ShareFileRange range,
