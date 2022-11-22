@@ -327,8 +327,7 @@ public class EventGridCustomization extends Customization {
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", sb.toString());
-
-        replaceClassAnnotation(customization);
+        
         customizeMediaJobOutputAsset(customization);
         customizeStorageDirectoryDeletedEventData(customization);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization);
@@ -478,16 +477,6 @@ public class EventGridCustomization extends Customization {
     public void customizeMediaJobOutputAsset(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         packageModels.getClass("MediaJobOutputAsset").setModifier(Modifier.PUBLIC | Modifier.FINAL);
-    }
-    
-    public void replaceClassAnnotation(LibraryCustomization customization) {
-        // HealthcareFhirResource events
-        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
-
-        // Communication events
-        packageModels.getClass("AcsUserDisconnectedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-
     }
     
     public static String getConstantName(String name) {
