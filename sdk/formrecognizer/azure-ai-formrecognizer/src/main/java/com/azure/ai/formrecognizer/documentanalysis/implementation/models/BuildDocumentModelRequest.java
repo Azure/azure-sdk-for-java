@@ -41,6 +41,9 @@ public final class BuildDocumentModelRequest {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
+    /** Creates an instance of BuildDocumentModelRequest class. */
+    public BuildDocumentModelRequest() {}
+
     /**
      * Get the modelId property: Unique document model name.
      *
