@@ -56,6 +56,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -186,23 +187,15 @@ public final class Utility {
     public static Response<IndexDocumentsResult> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
                                                                                        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
                                                                                        Context context, ClientLogger logger) {
-        try {
+        return executeRestCallWithExceptionHandling(() -> {
             Response<com.azure.search.documents.implementation.models.IndexDocumentsResult> response =
                 restClient.getDocuments().indexWithResponse(new IndexBatch(actions), null, context);
             if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
                 throw new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue()));
             }
             return MappingUtils.mappingIndexDocumentResultResponse(response);
-        } catch (SearchErrorException exception) {
-            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
-        } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
-            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
-        } catch (RuntimeException ex) {
-            throw logger.logExceptionAsError(ex);
-        }
+        });
     }
-
-
 
     public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion, String endpoint,
         String indexName, HttpPipeline httpPipeline, SerializerAdapter adapter) {
@@ -218,6 +211,18 @@ public final class Utility {
             return new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8);
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    public static  <T> T executeRestCallWithExceptionHandling(Supplier<T> supplier) {
+        try {
+            return supplier.get();
+        } catch (com.azure.search.documents.indexes.implementation.models.SearchErrorException exception) {
+            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+        } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
+            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+        }  catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
         }
     }
 
