@@ -14,7 +14,7 @@ import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
  * Verify the classes with annotation {@code @Immutable} should have the following rules:
  * <ol>
  *   <li>No public or protected fields</li>
- *   <li>No setter methods</li>
+ *   <li>No public or protected setter methods</li>
  * </ol>
  */
 public class ImmutableClassCheck extends AbstractCheck {
@@ -24,7 +24,8 @@ public class ImmutableClassCheck extends AbstractCheck {
         "Classes annotated with @Immutable cannot have non-final public or protect fields. "
             + "Found non-final public field: %s.";
     static final String SETTER_METHOD_ERROR_TEMPLATE =
-        "Classes annotated with @Immutable cannot have setter methods. Found setter method: %s.";
+        "Classes annotated with @Immutable cannot have public or protected setter methods. "
+            + "Found public setter method: %s.";
 
     private boolean hasImmutableAnnotation;
 
@@ -96,9 +97,9 @@ public class ImmutableClassCheck extends AbstractCheck {
             return;
         }
 
-        // Field has either 'public' or 'protected', immutable classes cannot have public fields.
         Scope scope = ScopeUtil.getScopeFromMods(modifiers);
         if (scope == Scope.PUBLIC || scope == Scope.PROTECTED) {
+            // Field is 'public' or 'protected', immutable classes cannot have public fields.
             log(variableDefinition, String.format(PUBLIC_FIELD_ERROR_TEMPLATE,
                 variableDefinition.findFirstToken(TokenTypes.IDENT).getText()));
         }
@@ -107,10 +108,18 @@ public class ImmutableClassCheck extends AbstractCheck {
     private void checkForSetterMethod(DetailAST methodDefinition) {
         String methodName = methodDefinition.findFirstToken(TokenTypes.IDENT).getText();
 
-        // Method name begins with 'set' and the next character is uppercase, ex 'setField'.
-        // Immutable classes aren't allowed to have setters.
-        if (methodName.startsWith("set") && Character.isUpperCase(methodName.charAt(3))) {
+        if (!isSetterMethod(methodName)) {
+            return;
+        }
+
+        Scope scope = ScopeUtil.getScope(methodDefinition);
+        if (scope == Scope.PUBLIC || scope == Scope.PROTECTED) {
+            // Setter method is 'public' or 'protected', immutable classes cannot have public setters.
             log(methodDefinition, String.format(SETTER_METHOD_ERROR_TEMPLATE, methodName));
         }
+    }
+
+    private static boolean isSetterMethod(String methodName) {
+        return methodName.startsWith("set") && methodName.length() >= 4 && Character.isUpperCase(methodName.charAt(3));
     }
 }

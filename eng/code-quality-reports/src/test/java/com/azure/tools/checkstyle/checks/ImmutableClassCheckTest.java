@@ -118,7 +118,7 @@ public class ImmutableClassCheckTest extends AbstractModuleTestSupport {
     }
 
     @Test
-    public void classWithSetterMethods() throws Exception {
+    public void classWithPublicSetterMethods() throws Exception {
         File file = TestUtils.createCheckFile("emptyClass",
             "package com.azure;",
             "@Immutable",
@@ -134,6 +134,21 @@ public class ImmutableClassCheckTest extends AbstractModuleTestSupport {
             expectedErrorMessage(6, 5, String.format(SETTER_METHOD_ERROR_TEMPLATE, "setInt"))
         };
         verify(checker, new File[]{file}, file.getAbsolutePath(), expected);
+    }
+
+    @Test
+    public void classWithNonPublicSetterMethods() throws Exception {
+        File file = TestUtils.createCheckFile("emptyClass",
+            "package com.azure;",
+            "@Immutable",
+            "public class NonFinalNonPublic {",
+            "    String setString(String string) {",
+            "    }",
+            "    private int setInt(int integer) {",
+            "    }",
+            "}");
+
+        verify(checker, new File[]{file}, file.getAbsolutePath());
     }
 
     @Test
