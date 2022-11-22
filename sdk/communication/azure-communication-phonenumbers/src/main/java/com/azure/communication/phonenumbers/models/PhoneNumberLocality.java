@@ -4,23 +4,23 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberLocality model. */
-@Fluent
+@Immutable
 public final class PhoneNumberLocality {
     /*
      * Represents the localized name of the locality.
      */
-    @JsonProperty(value = "localizedName", required = true)
+    @JsonProperty(value = "localizedName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String localizedName;
 
     /*
      * Represents the name of the administrative division of the locality. e.g.
      * state or province.
      */
-    @JsonProperty(value = "administrativeDivision")
+    @JsonProperty(value = "administrativeDivision", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAdministrativeDivision administrativeDivision;
 
     /**
@@ -33,17 +33,6 @@ public final class PhoneNumberLocality {
     }
 
     /**
-     * Set the localizedName property: Represents the localized name of the locality.
-     *
-     * @param localizedName the localizedName value to set.
-     * @return the PhoneNumberLocality object itself.
-     */
-    public PhoneNumberLocality setLocalizedName(String localizedName) {
-        this.localizedName = localizedName;
-        return this;
-    }
-
-    /**
      * Get the administrativeDivision property: Represents the name of the administrative division of the locality. e.g.
      * state or province.
      *
@@ -51,17 +40,5 @@ public final class PhoneNumberLocality {
      */
     public PhoneNumberAdministrativeDivision getAdministrativeDivision() {
         return this.administrativeDivision;
-    }
-
-    /**
-     * Set the administrativeDivision property: Represents the name of the administrative division of the locality. e.g.
-     * state or province.
-     *
-     * @param administrativeDivision the administrativeDivision value to set.
-     * @return the PhoneNumberLocality object itself.
-     */
-    public PhoneNumberLocality setAdministrativeDivision(PhoneNumberAdministrativeDivision administrativeDivision) {
-        this.administrativeDivision = administrativeDivision;
-        return this;
     }
 }

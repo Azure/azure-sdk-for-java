@@ -23,8 +23,8 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-phonenumber-2022-11-30
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c24836060a7ac3aa6e6d4eb64d4c69ef801bb9cb/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-phonenumber-2022-12-01
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4412bbe05d50af59ea1fcc39854975cdeb71652c/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountries,PhoneNumberCountry,PhoneNumberLocalities,PhoneNumberLocality,PhoneNumberOffering,PhoneNumberOfferings,AreaCodeResult,AreaCodes
 custom-types-subpackage: models
@@ -180,4 +180,14 @@ directive:
     transform: >
       $["properties"]["nextLink"].readOnly = true;
       $["properties"]["phoneNumberOfferings"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberCountry properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCountry
+    transform: >
+      $["properties"]["localizedName"].readOnly = true;
+      $["properties"]["countryCode"].readOnly = true;
 ```

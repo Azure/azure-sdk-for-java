@@ -4,23 +4,23 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AreaCodes model. */
-@Fluent
+@Immutable
 public final class AreaCodes {
     /*
      * Represents a list of available toll-free area codes.
      */
-    @JsonProperty(value = "areaCodes", required = true)
+    @JsonProperty(value = "areaCodes", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<AreaCodeResult> areaCodes;
 
     /*
      * Represents the URL link to the next page of phone number results.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -33,33 +33,11 @@ public final class AreaCodes {
     }
 
     /**
-     * Set the areaCodes property: Represents a list of available toll-free area codes.
-     *
-     * @param areaCodes the areaCodes value to set.
-     * @return the AreaCodes object itself.
-     */
-    public AreaCodes setAreaCodes(List<AreaCodeResult> areaCodes) {
-        this.areaCodes = areaCodes;
-        return this;
-    }
-
-    /**
      * Get the nextLink property: Represents the URL link to the next page of phone number results.
      *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Represents the URL link to the next page of phone number results.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the AreaCodes object itself.
-     */
-    public AreaCodes setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 }

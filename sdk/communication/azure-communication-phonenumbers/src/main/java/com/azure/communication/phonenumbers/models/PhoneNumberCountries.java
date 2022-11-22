@@ -14,8 +14,8 @@ public final class PhoneNumberCountries {
     /*
      * Represents the underlying list of countries.
      */
-    @JsonProperty(value = "phoneNumberCountries")
-    private List<PhoneNumberCountry> phoneNumberCountries;
+    @JsonProperty(value = "countries")
+    private List<PhoneNumberCountry> countries;
 
     /*
      * Represents the URL link to the next page
@@ -24,22 +24,22 @@ public final class PhoneNumberCountries {
     private String nextLink;
 
     /**
-     * Get the phoneNumberCountries property: Represents the underlying list of countries.
+     * Get the countries property: Represents the underlying list of countries.
      *
-     * @return the phoneNumberCountries value.
+     * @return the countries value.
      */
-    public List<PhoneNumberCountry> getPhoneNumberCountries() {
-        return this.phoneNumberCountries;
+    public List<PhoneNumberCountry> getCountries() {
+        return this.countries;
     }
 
     /**
-     * Set the phoneNumberCountries property: Represents the underlying list of countries.
+     * Set the countries property: Represents the underlying list of countries.
      *
-     * @param phoneNumberCountries the phoneNumberCountries value to set.
+     * @param countries the countries value to set.
      * @return the PhoneNumberCountries object itself.
      */
-    public PhoneNumberCountries setPhoneNumberCountries(List<PhoneNumberCountry> phoneNumberCountries) {
-        this.phoneNumberCountries = phoneNumberCountries;
+    public PhoneNumberCountries setCountries(List<PhoneNumberCountry> countries) {
+        this.countries = countries;
         return this;
     }
 

@@ -99,6 +99,7 @@ public final class PhoneNumbersImpl {
                 @QueryParam("skip") Integer skip,
                 @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("administrativeDivision") String administrativeDivision,
+                @QueryParam("api-version") String apiVersion,
                 Context context);
 
         @Get("/availablePhoneNumbers/countries/{countryCode}/areaCodes")
@@ -276,7 +277,7 @@ public final class PhoneNumbersImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getPhoneNumberCountries(),
+                                        res.getValue().getCountries(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -310,7 +311,7 @@ public final class PhoneNumbersImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getPhoneNumberCountries(),
+                                        res.getValue().getCountries(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -424,6 +425,7 @@ public final class PhoneNumbersImpl {
                                         skip,
                                         maxPageSize,
                                         administrativeDivision,
+                                        this.client.getApiVersion(),
                                         context))
                 .map(
                         res ->
@@ -467,6 +469,7 @@ public final class PhoneNumbersImpl {
                         skip,
                         maxPageSize,
                         administrativeDivision,
+                        this.client.getApiVersion(),
                         context)
                 .map(
                         res ->
@@ -2070,7 +2073,7 @@ public final class PhoneNumbersImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getPhoneNumberCountries(),
+                                        res.getValue().getCountries(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -2095,7 +2098,7 @@ public final class PhoneNumbersImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getPhoneNumberCountries(),
+                                        res.getValue().getCountries(),
                                         res.getValue().getNextLink(),
                                         null));
     }

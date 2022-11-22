@@ -4,34 +4,34 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberOffering model. */
-@Fluent
+@Immutable
 public final class PhoneNumberOffering {
     /*
      * Represents the number type of the offering.
      */
-    @JsonProperty(value = "phoneNumberType")
+    @JsonProperty(value = "phoneNumberType", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
 
     /*
      * Represents the assignment type of the offering.
      */
-    @JsonProperty(value = "assignmentType")
+    @JsonProperty(value = "assignmentType", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * Capabilities of a phone number.
      */
-    @JsonProperty(value = "availableCapabilities")
+    @JsonProperty(value = "availableCapabilities", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCapabilities availableCapabilities;
 
     /*
      * The incurred cost for a single phone number.
      */
-    @JsonProperty(value = "cost", required = true)
+    @JsonProperty(value = "cost", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
 
     /**
@@ -44,34 +44,12 @@ public final class PhoneNumberOffering {
     }
 
     /**
-     * Set the phoneNumberType property: Represents the number type of the offering.
-     *
-     * @param phoneNumberType the phoneNumberType value to set.
-     * @return the PhoneNumberOffering object itself.
-     */
-    public PhoneNumberOffering setPhoneNumberType(PhoneNumberType phoneNumberType) {
-        this.phoneNumberType = phoneNumberType;
-        return this;
-    }
-
-    /**
      * Get the assignmentType property: Represents the assignment type of the offering.
      *
      * @return the assignmentType value.
      */
     public PhoneNumberAssignmentType getAssignmentType() {
         return this.assignmentType;
-    }
-
-    /**
-     * Set the assignmentType property: Represents the assignment type of the offering.
-     *
-     * @param assignmentType the assignmentType value to set.
-     * @return the PhoneNumberOffering object itself.
-     */
-    public PhoneNumberOffering setAssignmentType(PhoneNumberAssignmentType assignmentType) {
-        this.assignmentType = assignmentType;
-        return this;
     }
 
     /**
@@ -84,33 +62,11 @@ public final class PhoneNumberOffering {
     }
 
     /**
-     * Set the availableCapabilities property: Capabilities of a phone number.
-     *
-     * @param availableCapabilities the availableCapabilities value to set.
-     * @return the PhoneNumberOffering object itself.
-     */
-    public PhoneNumberOffering setAvailableCapabilities(PhoneNumberCapabilities availableCapabilities) {
-        this.availableCapabilities = availableCapabilities;
-        return this;
-    }
-
-    /**
      * Get the cost property: The incurred cost for a single phone number.
      *
      * @return the cost value.
      */
     public PhoneNumberCost getCost() {
         return this.cost;
-    }
-
-    /**
-     * Set the cost property: The incurred cost for a single phone number.
-     *
-     * @param cost the cost value to set.
-     * @return the PhoneNumberOffering object itself.
-     */
-    public PhoneNumberOffering setCost(PhoneNumberCost cost) {
-        this.cost = cost;
-        return this;
     }
 }

@@ -4,23 +4,23 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PhoneNumberLocalities model. */
-@Fluent
+@Immutable
 public final class PhoneNumberLocalities {
     /*
      * Represents the underlying list of localities, e.g. cities or town.
      */
-    @JsonProperty(value = "phoneNumberLocalities")
+    @JsonProperty(value = "phoneNumberLocalities", access = JsonProperty.Access.WRITE_ONLY)
     private List<PhoneNumberLocality> phoneNumberLocalities;
 
     /*
      * Represents the URL link to the next page
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -33,33 +33,11 @@ public final class PhoneNumberLocalities {
     }
 
     /**
-     * Set the phoneNumberLocalities property: Represents the underlying list of localities, e.g. cities or town.
-     *
-     * @param phoneNumberLocalities the phoneNumberLocalities value to set.
-     * @return the PhoneNumberLocalities object itself.
-     */
-    public PhoneNumberLocalities setPhoneNumberLocalities(List<PhoneNumberLocality> phoneNumberLocalities) {
-        this.phoneNumberLocalities = phoneNumberLocalities;
-        return this;
-    }
-
-    /**
      * Get the nextLink property: Represents the URL link to the next page.
      *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Represents the URL link to the next page.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the PhoneNumberLocalities object itself.
-     */
-    public PhoneNumberLocalities setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 }

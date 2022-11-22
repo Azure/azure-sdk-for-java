@@ -4,16 +4,16 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AreaCodeResult model. */
-@Fluent
+@Immutable
 public final class AreaCodeResult {
     /*
      * An area code as a string.
      */
-    @JsonProperty(value = "areaCode")
+    @JsonProperty(value = "areaCode", access = JsonProperty.Access.WRITE_ONLY)
     private String areaCode;
 
     /**
@@ -23,16 +23,5 @@ public final class AreaCodeResult {
      */
     public String getAreaCode() {
         return this.areaCode;
-    }
-
-    /**
-     * Set the areaCode property: An area code as a string.
-     *
-     * @param areaCode the areaCode value to set.
-     * @return the AreaCodeResult object itself.
-     */
-    public AreaCodeResult setAreaCode(String areaCode) {
-        this.areaCode = areaCode;
-        return this;
     }
 }
