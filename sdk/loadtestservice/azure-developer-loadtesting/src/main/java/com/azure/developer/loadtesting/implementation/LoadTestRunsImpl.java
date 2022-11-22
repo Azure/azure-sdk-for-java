@@ -238,7 +238,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getMetrics(
+        Mono<Response<BinaryData>> listMetrics(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("metricname") String metricname,
@@ -249,7 +249,7 @@ public final class LoadTestRunsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/test-runs/{testRunId}/metric-dimension/{name}/values")
+        @Get("/test-runs/{testRunId}/metric-dimensions/{name}/values")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -261,7 +261,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getMetricDimensionValues(
+        Mono<Response<BinaryData>> listMetricDimensionValues(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @PathParam("name") String name,
@@ -285,7 +285,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateAppComponent(
+        Mono<Response<BinaryData>> createOrUpdateAppComponents(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -306,7 +306,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAppComponents(
+        Mono<Response<BinaryData>> listAppComponents(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -314,7 +314,7 @@ public final class LoadTestRunsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/test-runs/{testRunId}/server-metric-configs")
+        @Patch("/test-runs/{testRunId}/server-metrics-config")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -335,7 +335,7 @@ public final class LoadTestRunsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/test-runs/{testRunId}/server-metric-configs")
+        @Get("/test-runs/{testRunId}/server-metrics-config")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -347,7 +347,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getServerMetricsConfig(
+        Mono<Response<BinaryData>> listServerMetricsConfig(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -501,10 +501,11 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -514,11 +515,12 @@ public final class LoadTestRunsImpl {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -527,7 +529,6 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -608,10 +609,11 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -621,11 +623,12 @@ public final class LoadTestRunsImpl {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -634,7 +637,6 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -754,10 +756,11 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -767,11 +770,12 @@ public final class LoadTestRunsImpl {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -780,7 +784,6 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -861,10 +864,11 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -874,11 +878,12 @@ public final class LoadTestRunsImpl {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -887,7 +892,6 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -987,10 +991,11 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1000,11 +1005,12 @@ public final class LoadTestRunsImpl {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -1013,7 +1019,6 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1120,10 +1125,11 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1133,11 +1139,12 @@ public final class LoadTestRunsImpl {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -1146,7 +1153,6 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1179,10 +1185,11 @@ public final class LoadTestRunsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -1220,10 +1227,11 @@ public final class LoadTestRunsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -1253,7 +1261,7 @@ public final class LoadTestRunsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter can be 500.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -1335,10 +1343,11 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         filename: String (Optional)
+     *                         fileName: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
      *                         validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                         validationFailureDetails: String (Optional)
      *                     }
      *                     testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                     userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1348,11 +1357,12 @@ public final class LoadTestRunsImpl {
      *                     ]
      *                 }
      *                 outputArtifacts (Optional): {
-     *                     resultUrl (Optional): (recursive schema, see resultUrl above)
-     *                     logsUrl (Optional): (recursive schema, see logsUrl above)
+     *                     resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *                     logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *                 }
      *             }
      *             testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *             virtualUsers: Integer (Optional)
      *             testRunId: String (Optional)
      *             displayName: String (Optional)
      *             testId: String (Optional)
@@ -1361,7 +1371,6 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -1415,7 +1424,7 @@ public final class LoadTestRunsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter can be 500.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -1497,10 +1506,11 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         filename: String (Optional)
+     *                         fileName: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
      *                         validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                         validationFailureDetails: String (Optional)
      *                     }
      *                     testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                     userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1510,11 +1520,12 @@ public final class LoadTestRunsImpl {
      *                     ]
      *                 }
      *                 outputArtifacts (Optional): {
-     *                     resultUrl (Optional): (recursive schema, see resultUrl above)
-     *                     logsUrl (Optional): (recursive schema, see logsUrl above)
+     *                     resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *                     logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *                 }
      *             }
      *             testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *             virtualUsers: Integer (Optional)
      *             testRunId: String (Optional)
      *             displayName: String (Optional)
      *             testId: String (Optional)
@@ -1523,7 +1534,6 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -1566,7 +1576,7 @@ public final class LoadTestRunsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter can be 500.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -1648,10 +1658,11 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         filename: String (Optional)
+     *                         fileName: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
      *                         validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                         validationFailureDetails: String (Optional)
      *                     }
      *                     testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                     userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1661,11 +1672,12 @@ public final class LoadTestRunsImpl {
      *                     ]
      *                 }
      *                 outputArtifacts (Optional): {
-     *                     resultUrl (Optional): (recursive schema, see resultUrl above)
-     *                     logsUrl (Optional): (recursive schema, see logsUrl above)
+     *                     resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *                     logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *                 }
      *             }
      *             testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *             virtualUsers: Integer (Optional)
      *             testRunId: String (Optional)
      *             displayName: String (Optional)
      *             testId: String (Optional)
@@ -1674,7 +1686,6 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -1773,10 +1784,11 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1786,11 +1798,12 @@ public final class LoadTestRunsImpl {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -1799,7 +1812,6 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1906,10 +1918,11 @@ public final class LoadTestRunsImpl {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1919,11 +1932,12 @@ public final class LoadTestRunsImpl {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -1932,7 +1946,6 @@ public final class LoadTestRunsImpl {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1958,7 +1971,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Lists the metric namespaces for a load test run.
+     * List the metric namespaces for a load test run.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1999,7 +2012,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Lists the metric namespaces for a load test run.
+     * List the metric namespaces for a load test run.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2029,7 +2042,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Lists the metric definitions for a load test run.
+     * List the metric definitions for a load test run.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2089,7 +2102,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Lists the metric definitions for a load test run.
+     * List the metric definitions for a load test run.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2138,7 +2151,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Lists the metric values for a load test run.
+     * List the metric values for a load test run.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -2214,7 +2227,7 @@ public final class LoadTestRunsImpl {
      * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getMetricsWithResponseAsync(
+    public Mono<Response<BinaryData>> listMetricsWithResponseAsync(
             String testRunId,
             String metricname,
             String metricNamespace,
@@ -2223,7 +2236,7 @@ public final class LoadTestRunsImpl {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getMetrics(
+                        service.listMetrics(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 metricname,
@@ -2236,7 +2249,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Lists the metric values for a load test run.
+     * List the metric values for a load test run.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -2312,17 +2325,17 @@ public final class LoadTestRunsImpl {
      * @return the response to a metrics query along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMetricsWithResponse(
+    public Response<BinaryData> listMetricsWithResponse(
             String testRunId,
             String metricname,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
-        return getMetricsWithResponseAsync(testRunId, metricname, metricNamespace, timespan, requestOptions).block();
+        return listMetricsWithResponseAsync(testRunId, metricname, metricNamespace, timespan, requestOptions).block();
     }
 
     /**
-     * Lists the dimension values for the given metric dimension name.
+     * List the dimension values for the given metric dimension name.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -2360,7 +2373,7 @@ public final class LoadTestRunsImpl {
      * @return metrics dimension values along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getMetricDimensionValuesWithResponseAsync(
+    public Mono<Response<BinaryData>> listMetricDimensionValuesWithResponseAsync(
             String testRunId,
             String name,
             String metricname,
@@ -2370,7 +2383,7 @@ public final class LoadTestRunsImpl {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getMetricDimensionValues(
+                        service.listMetricDimensionValues(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 name,
@@ -2384,7 +2397,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Lists the dimension values for the given metric dimension name.
+     * List the dimension values for the given metric dimension name.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -2422,14 +2435,14 @@ public final class LoadTestRunsImpl {
      * @return metrics dimension values along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMetricDimensionValuesWithResponse(
+    public Response<BinaryData> listMetricDimensionValuesWithResponse(
             String testRunId,
             String name,
             String metricname,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
-        return getMetricDimensionValuesWithResponseAsync(
+        return listMetricDimensionValuesWithResponseAsync(
                         testRunId, name, metricname, metricNamespace, timespan, requestOptions)
                 .block();
     }
@@ -2441,7 +2454,6 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -2453,6 +2465,7 @@ public final class LoadTestRunsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testRunId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -2464,7 +2477,6 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -2476,6 +2488,7 @@ public final class LoadTestRunsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testRunId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -2494,12 +2507,12 @@ public final class LoadTestRunsImpl {
      * @return test run app component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateAppComponentWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponseAsync(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createOrUpdateAppComponent(
+                        service.createOrUpdateAppComponents(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2516,7 +2529,6 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -2528,6 +2540,7 @@ public final class LoadTestRunsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testRunId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -2539,7 +2552,6 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -2551,6 +2563,7 @@ public final class LoadTestRunsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testRunId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -2569,9 +2582,9 @@ public final class LoadTestRunsImpl {
      * @return test run app component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateAppComponentWithResponse(
+    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return createOrUpdateAppComponentWithResponseAsync(testRunId, body, requestOptions).block();
+        return createOrUpdateAppComponentsWithResponseAsync(testRunId, body, requestOptions).block();
     }
 
     /**
@@ -2581,7 +2594,6 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -2593,6 +2605,7 @@ public final class LoadTestRunsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testRunId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -2611,12 +2624,12 @@ public final class LoadTestRunsImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAppComponentsWithResponseAsync(
+    public Mono<Response<BinaryData>> listAppComponentsWithResponseAsync(
             String testRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getAppComponents(
+                        service.listAppComponents(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2632,7 +2645,6 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     testRunId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -2644,6 +2656,7 @@ public final class LoadTestRunsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testRunId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -2662,8 +2675,8 @@ public final class LoadTestRunsImpl {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
-        return getAppComponentsWithResponseAsync(testRunId, requestOptions).block();
+    public Response<BinaryData> listAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
+        return listAppComponentsWithResponseAsync(testRunId, requestOptions).block();
     }
 
     /**
@@ -2725,7 +2738,7 @@ public final class LoadTestRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run server metric configuration along with {@link Response} on successful completion of {@link
+     * @return test run server metrics configuration along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2803,7 +2816,7 @@ public final class LoadTestRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run server metric configuration along with {@link Response}.
+     * @return test run server metrics configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
@@ -2812,7 +2825,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Get server metric configuration for the given test run.
+     * List server metrics configuration for the given test run.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2845,16 +2858,16 @@ public final class LoadTestRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return server metric configuration for the given test run along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return test run server metrics configuration along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponseAsync(
+    public Mono<Response<BinaryData>> listServerMetricsConfigWithResponseAsync(
             String testRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getServerMetricsConfig(
+                        service.listServerMetricsConfig(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2864,7 +2877,7 @@ public final class LoadTestRunsImpl {
     }
 
     /**
-     * Get server metric configuration for the given test run.
+     * List server metrics configuration for the given test run.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2897,11 +2910,11 @@ public final class LoadTestRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return server metric configuration for the given test run along with {@link Response}.
+     * @return test run server metrics configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
-        return getServerMetricsConfigWithResponseAsync(testRunId, requestOptions).block();
+    public Response<BinaryData> listServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
+        return listServerMetricsConfigWithResponseAsync(testRunId, requestOptions).block();
     }
 
     /**
@@ -2979,10 +2992,11 @@ public final class LoadTestRunsImpl {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         filename: String (Optional)
+     *                         fileName: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
      *                         validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                         validationFailureDetails: String (Optional)
      *                     }
      *                     testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                     userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -2992,11 +3006,12 @@ public final class LoadTestRunsImpl {
      *                     ]
      *                 }
      *                 outputArtifacts (Optional): {
-     *                     resultUrl (Optional): (recursive schema, see resultUrl above)
-     *                     logsUrl (Optional): (recursive schema, see logsUrl above)
+     *                     resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *                     logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *                 }
      *             }
      *             testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *             virtualUsers: Integer (Optional)
      *             testRunId: String (Optional)
      *             displayName: String (Optional)
      *             testId: String (Optional)
@@ -3005,7 +3020,6 @@ public final class LoadTestRunsImpl {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)

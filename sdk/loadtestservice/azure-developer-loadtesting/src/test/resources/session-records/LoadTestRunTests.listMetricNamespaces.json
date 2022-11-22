@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012/metric-namespaces?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e6805ddf-9e7f-4c3a-86ab-bd05356d95d7"
+      "x-ms-client-request-id" : "23cfee60-c0ec-4019-806f-987aef9aa1e1"
     },
     "Response" : {
       "content-length" : "155",
@@ -12,12 +12,12 @@
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "d7a3cf0b-5ff6-4451-b6c9-92d0813e1dfe",
+      "mise-correlation-id" : "474c8f55-1802-4b34-b3ab-ee91bdababe7",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"description\":\"JMeter load test run metrics\",\"name\":\"LoadTestRunMetrics\"},{\"description\":\"Engine health metrics\",\"name\":\"EngineHealthMetrics\"}]}",
-      "Date" : "Fri, 18 Nov 2022 06:29:51 GMT",
-      "x-ms-correlation-request-id" : "75944d91-6e63-43f0-b84f-45398080fb53",
+      "Date" : "Tue, 22 Nov 2022 18:55:20 GMT",
+      "x-ms-correlation-request-id" : "f544a916-4b6e-4716-ba37-763621acad27",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

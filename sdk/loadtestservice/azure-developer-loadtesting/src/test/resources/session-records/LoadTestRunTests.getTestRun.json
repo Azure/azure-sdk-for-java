@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "993e8e4d-a71e-418f-9af7-1a476e94f4f4"
+      "x-ms-client-request-id" : "6d6ac44d-0f38-445f-8dc5-abed886c3899"
     },
     "Response" : {
-      "content-length" : "2325",
+      "content-length" : "3166",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "ae483493-f4c9-49fe-acba-070641d7b33c",
+      "mise-correlation-id" : "ba23b6a5-5876-40ae-b5bc-540f863ec452",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"environmentVariables\":{\"duration_in_sec\":\"10\",\"protocol\":\"https\",\"ramp_up_time\":\"0\",\"domain\":\"azure.microsoft.com\",\"threads_per_engine\":\"1\"},\"loadTestConfiguration\":{\"engineInstances\":1,\"splitAllCSVs\":false,\"quickStartTest\":false},\"testArtifacts\":{\"inputArtifacts\":{\"configFileInfo\":{\"url\":\"REDACTED\",\"filename\":\"config.yaml\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-18T07:29:47.4953193\",\"validationStatus\":\"NOT_VALIDATED\"},\"testScriptFileInfo\":{\"url\":\"REDACTED\",\"filename\":\"sample-JMX-file.jmx\",\"fileType\":\"JMX_FILE\",\"expireDateTime\":\"2022-11-18T07:29:47.4940685\",\"validationStatus\":\"VALIDATION_SUCCESS\"},\"inputArtifactsZipFileInfo\":{\"url\":\"REDACTED\",\"filename\":\"inputartifacts.zip\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-18T07:29:47.4957569\",\"validationStatus\":\"NOT_VALIDATED\"},\"additionalFileInfo\":[]},\"outputArtifacts\":{}},\"testResult\":\"NOT_APPLICABLE\",\"testRunId\":\"33333333-1234-1234-1234-123456789012\",\"displayName\":\"Java SDK Sample Test Run\",\"testId\":\"11111111-1234-1234-1234-123456789012\",\"description\":\"Sample Test Run\",\"status\":\"PROVISIONING\",\"startDateTime\":\"2022-11-18T06:29:43.586Z\",\"executedDateTime\":\"2022-11-18T06:29:41.336Z\",\"portalUrl\":\"https://df.onecloud.azure-test.net/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%2f845d3d74-f72e-49dc-97b9-a6a0f77a5e60%2fresourcegroups%2fharshanb-rg%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2fharshanb-loadtest-neu-df/testId/11111111-1234-1234-1234-123456789012/testRunId/33333333-1234-1234-1234-123456789012\",\"createdDateTime\":\"2022-11-18T06:29:42.714Z\",\"lastModifiedDateTime\":\"2022-11-18T06:29:42.714Z\"}",
-      "Date" : "Fri, 18 Nov 2022 06:29:47 GMT",
-      "x-ms-correlation-request-id" : "9051782c-1be5-4d63-8c07-6ae5eb397d79",
+      "Body" : "{\"environmentVariables\":{\"duration_in_sec\":\"10\",\"protocol\":\"https\",\"ramp_up_time\":\"0\",\"domain\":\"azure.microsoft.com\",\"threads_per_engine\":\"1\"},\"loadTestConfiguration\":{\"engineInstances\":1,\"splitAllCSVs\":false,\"quickStartTest\":false},\"testArtifacts\":{\"inputArtifacts\":{\"configFileInfo\":{\"url\":\"REDACTED\",\"fileName\":\"config.yaml\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-22T19:55:16.2454762\",\"validationStatus\":\"NOT_VALIDATED\"},\"testScriptFileInfo\":{\"url\":\"REDACTED\",\"fileName\":\"sample-JMX-file.jmx\",\"fileType\":\"JMX_FILE\",\"expireDateTime\":\"2022-11-22T19:55:16.2445367\",\"validationStatus\":\"VALIDATION_SUCCESS\"},\"inputArtifactsZipFileInfo\":{\"url\":\"REDACTED\",\"fileName\":\"inputartifacts.zip\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-22T19:55:16.245874\",\"validationStatus\":\"NOT_VALIDATED\"},\"additionalFileInfo\":[]},\"outputArtifacts\":{\"resultFileInfo\":{\"url\":\"REDACTED\",\"fileName\":\"csv.zip\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-22T19:55:16.2462668\",\"validationStatus\":\"NOT_VALIDATED\"},\"logsFileInfo\":{\"url\":\"REDACTED\",\"fileName\":\"logs.zip\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-22T19:55:16.2466907\",\"validationStatus\":\"NOT_VALIDATED\"}}},\"testResult\":\"NOT_APPLICABLE\",\"testRunId\":\"33333333-1234-1234-1234-123456789012\",\"displayName\":\"Java SDK Sample Test Run\",\"testId\":\"11111111-1234-1234-1234-123456789012\",\"description\":\"Sample Test Run\",\"status\":\"DONE\",\"startDateTime\":\"2022-11-22T18:53:58.017Z\",\"endDateTime\":\"2022-11-22T18:55:03.256Z\",\"executedDateTime\":\"2022-11-22T18:53:56.254Z\",\"portalUrl\":\"https://df.onecloud.azure-test.net/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%2f845d3d74-f72e-49dc-97b9-a6a0f77a5e60%2fresourcegroups%2fharshanb-rg%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2fharshanb-loadtest-neu-df/testId/11111111-1234-1234-1234-123456789012/testRunId/33333333-1234-1234-1234-123456789012\",\"createdDateTime\":\"2022-11-22T18:53:57.493Z\",\"lastModifiedDateTime\":\"2022-11-22T18:53:57.493Z\"}",
+      "Date" : "Tue, 22 Nov 2022 18:55:16 GMT",
+      "x-ms-correlation-request-id" : "932cbcc3-3e76-4a13-95c2-bd22278f2dee",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

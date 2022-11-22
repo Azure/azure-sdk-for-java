@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/sample-JMX-file.jmx?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "092ce1ea-0648-48f8-a058-c6d344730bb5"
+      "x-ms-client-request-id" : "7d92f067-44fc-459e-8b4e-77b49f076205"
     },
     "Response" : {
       "content-length" : "382",
@@ -12,12 +12,12 @@
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "f5f66002-2173-46c7-bdd9-25330cba958c",
+      "mise-correlation-id" : "c76420fe-e716-444c-9e42-0a4ac4dc5bb5",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"url\":\"REDACTED\",\"filename\":\"sample-JMX-file.jmx\",\"fileType\":\"JMX_FILE\",\"expireDateTime\":\"2022-11-18T06:39:30.9824972\",\"validationStatus\":\"VALIDATION_SUCCESS\"}",
-      "Date" : "Fri, 18 Nov 2022 06:29:30 GMT",
-      "x-ms-correlation-request-id" : "fb3227f5-c274-4c3b-b289-284e38b18c4c",
+      "Body" : "{\"url\":\"REDACTED\",\"fileName\":\"sample-JMX-file.jmx\",\"fileType\":\"JMX_FILE\",\"expireDateTime\":\"2022-11-22T19:03:45.8669716\",\"validationStatus\":\"VALIDATION_SUCCESS\"}",
+      "Date" : "Tue, 22 Nov 2022 18:53:45 GMT",
+      "x-ms-correlation-request-id" : "041efe56-21d9-4fa4-bb36-771830bfd52f",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

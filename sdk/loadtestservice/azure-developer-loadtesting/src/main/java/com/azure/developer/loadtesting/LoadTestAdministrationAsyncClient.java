@@ -45,114 +45,6 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
-     * Associate an app component (collection of azure resources) to a test.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testId: String (Optional)
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testId: String (Optional)
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param body App Component model.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test app component along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateAppComponentWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAppComponentWithResponseAsync(testId, body, requestOptions);
-    }
-
-    /**
-     * Get associated app component (collection of azure resources) for the given test.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testId: String (Optional)
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return associated app component (collection of azure resources) for the given test along with {@link Response}
-     *     on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.getAppComponentsWithResponseAsync(testId, requestOptions);
-    }
-
-    /**
      * Configure server metrics for a test.
      *
      * <p><strong>Request Body Schema</strong>
@@ -211,56 +103,13 @@ public final class LoadTestAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test server metric configuration along with {@link Response} on successful completion of {@link Mono}.
+     * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponse(
             String testId, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateServerMetricsConfigWithResponseAsync(testId, body, requestOptions);
-    }
-
-    /**
-     * Get server metric configuration for the given test.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testId: String (Optional)
-     *     metrics (Optional): {
-     *         String (Optional): {
-     *             id: String (Optional)
-     *             resourceId: String (Required)
-     *             metricNamespace: String (Required)
-     *             displayDescription: String (Optional)
-     *             name: String (Required)
-     *             aggregation: String (Required)
-     *             unit: String (Optional)
-     *             resourceType: String (Required)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return server metric configuration for the given test along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.getServerMetricsConfigWithResponseAsync(testId, requestOptions);
     }
 
     /** Validation status of uploaded file */
@@ -374,10 +223,11 @@ public final class LoadTestAdministrationAsyncClient {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *     ]
      *     nextLink: String (Optional)
@@ -448,10 +298,11 @@ public final class LoadTestAdministrationAsyncClient {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -519,10 +370,11 @@ public final class LoadTestAdministrationAsyncClient {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -628,10 +480,11 @@ public final class LoadTestAdministrationAsyncClient {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -678,7 +531,7 @@ public final class LoadTestAdministrationAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - displayName, createdBy. For example, to search for a test, with display name is Login Test, the search parameter can be Login.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -735,10 +588,11 @@ public final class LoadTestAdministrationAsyncClient {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     filename: String (Optional)
+     *                     fileName: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
      *                     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                     validationFailureDetails: String (Optional)
      *                 }
      *                 testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                 userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -803,10 +657,11 @@ public final class LoadTestAdministrationAsyncClient {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -836,10 +691,11 @@ public final class LoadTestAdministrationAsyncClient {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -878,5 +734,156 @@ public final class LoadTestAdministrationAsyncClient {
     public Mono<Response<Void>> deleteTestFileWithResponse(
             String testId, String fileName, RequestOptions requestOptions) {
         return this.serviceClient.deleteTestFileWithResponseAsync(testId, fileName, requestOptions);
+    }
+
+    /**
+     * Associate an app component (collection of azure resources) to a test.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param body App Component model.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test app component along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponse(
+            String testId, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateAppComponentsWithResponseAsync(testId, body, requestOptions);
+    }
+
+    /**
+     * Get associated app component (collection of azure resources) for the given test.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return associated app component (collection of azure resources) for the given test along with {@link Response}
+     *     on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
+        return this.serviceClient.listAppComponentsWithResponseAsync(testId, requestOptions);
+    }
+
+    /**
+     * List server metrics configuration for the given test.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testId: String (Optional)
+     *     metrics (Optional): {
+     *         String (Optional): {
+     *             id: String (Optional)
+     *             resourceId: String (Required)
+     *             metricNamespace: String (Required)
+     *             displayDescription: String (Optional)
+     *             name: String (Required)
+     *             aggregation: String (Required)
+     *             unit: String (Optional)
+     *             resourceType: String (Required)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
+     *     hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listServerMetricsConfigWithResponse(
+            String testId, RequestOptions requestOptions) {
+        return this.serviceClient.listServerMetricsConfigWithResponseAsync(testId, requestOptions);
     }
 }

@@ -1,11 +1,10 @@
 {
   "networkCallRecords" : [ {
-    "Method" : "PATCH",
+    "Method" : "GET",
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012/server-metrics-config?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f58c51fc-ceab-4503-8969-7f35efc5acdb",
-      "Content-Type" : "application/merge-patch+json"
+      "x-ms-client-request-id" : "6c4f7bb2-69a0-416f-a4cd-53ba3da57abd"
     },
     "Response" : {
       "content-length" : "2285",
@@ -13,12 +12,12 @@
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "f59bc2fb-b879-4745-8307-92ded21fba4d",
+      "mise-correlation-id" : "946ae1d7-2580-4372-9ad4-2cec43ec12ac",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"testRunId\":\"33333333-1234-1234-1234-123456789012\",\"metrics\":{\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration\",\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\",\"metricNamespace\":\"microsoft.insights/components\",\"name\":\"requests/duration\",\"aggregation\":\"Average\",\"resourceType\":\"microsoft.insights/components\"},\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/failed\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/failed\",\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\",\"metricNamespace\":\"microsoft.insights/components\",\"name\":\"requests/failed\",\"aggregation\":\"Total\",\"resourceType\":\"microsoft.insights/components\"},\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/count\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/count\",\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\",\"metricNamespace\":\"microsoft.insights/components\",\"name\":\"requests/count\",\"aggregation\":\"Total\",\"resourceType\":\"microsoft.insights/components\"}},\"createdDateTime\":\"2022-11-22T18:53:57.261Z\",\"lastModifiedDateTime\":\"2022-11-22T18:53:57.261Z\"}",
-      "Date" : "Tue, 22 Nov 2022 18:55:14 GMT",
-      "x-ms-correlation-request-id" : "90bb5f28-3d97-454a-b33b-de3d076ee665",
+      "Date" : "Tue, 22 Nov 2022 18:55:18 GMT",
+      "x-ms-correlation-request-id" : "390595c9-0c75-4dc1-a6fb-fa36c228e5c5",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

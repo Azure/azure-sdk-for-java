@@ -4,21 +4,21 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01&fileType=ADDITIONAL_ARTIFACTS",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "b7928907-b466-43ac-9d05-8ce9ac06e165",
+      "x-ms-client-request-id" : "a62a9a17-6a08-451c-9286-e77e486e4a38",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "content-length" : "393",
+      "content-length" : "395",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "d54d4801-3011-4dda-b55f-ecb7867dff96",
+      "mise-correlation-id" : "32f7f4cb-b778-4402-941d-5348cfc60c72",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 18 Nov 2022 06:29:11 GMT",
-      "x-ms-correlation-request-id" : "8889a2ae-ea50-49a5-ba7b-df21690ba3ad",
+      "Date" : "Tue, 22 Nov 2022 18:53:26 GMT",
+      "x-ms-correlation-request-id" : "f8083ac4-667e-4542-b2db-2a53236e4e85",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Body" : "{\"url\":\"REDACTED\",\"filename\":\"additional-data.csv\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-18T06:39:11.2943593\",\"validationStatus\":\"NOT_VALIDATED\"}",
+      "Body" : "{\"url\":\"REDACTED\",\"fileName\":\"additional-data.csv\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-22T19:03:26.3169017\",\"validationStatus\":\"NOT_VALIDATED\"}",
       "Location" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01",
       "Content-Type" : "application/json; charset=utf-8"
     },

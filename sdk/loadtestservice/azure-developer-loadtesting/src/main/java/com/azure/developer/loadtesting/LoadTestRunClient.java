@@ -35,7 +35,7 @@ public final class LoadTestRunClient {
     }
 
     /**
-     * Lists the metric namespaces for a load test run.
+     * List the metric namespaces for a load test run.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -66,7 +66,7 @@ public final class LoadTestRunClient {
     }
 
     /**
-     * Lists the metric definitions for a load test run.
+     * List the metric definitions for a load test run.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -113,256 +113,6 @@ public final class LoadTestRunClient {
     public Response<BinaryData> listMetricDefinitionsWithResponse(
             String testRunId, String metricNamespace, RequestOptions requestOptions) {
         return this.client.listMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions).block();
-    }
-
-    /**
-     * Lists the metric values for a load test run.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
-     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     filters (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             values (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     timeseries (Optional): [
-     *          (Optional){
-     *             data (Optional): [
-     *                  (Optional){
-     *                     timestamp: String (Optional)
-     *                     value: Double (Optional)
-     *                 }
-     *             ]
-     *             dimensionValues (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param metricname Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     *     'startDateTime_ISO/endDateTime_ISO'.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMetricsWithResponse(
-            String testRunId,
-            String metricname,
-            String metricNamespace,
-            String timespan,
-            RequestOptions requestOptions) {
-        return this.client
-                .getMetricsWithResponse(testRunId, metricname, metricNamespace, timespan, requestOptions)
-                .block();
-    }
-
-    /**
-     * Lists the dimension values for the given metric dimension name.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *         String (Optional)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param name Dimension name.
-     * @param metricname Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     *     'startDateTime_ISO/endDateTime_ISO'.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metrics dimension values along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMetricDimensionValuesWithResponse(
-            String testRunId,
-            String name,
-            String metricname,
-            String metricNamespace,
-            String timespan,
-            RequestOptions requestOptions) {
-        return this.client
-                .getMetricDimensionValuesWithResponse(
-                        testRunId, name, metricname, metricNamespace, timespan, requestOptions)
-                .block();
-    }
-
-    /**
-     * Associate an app component (collection of azure resources) to a test run.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testRunId: String (Optional)
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testRunId: String (Optional)
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param body App Component model.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run app component along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateAppComponentWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.createOrUpdateAppComponentWithResponse(testRunId, body, requestOptions).block();
-    }
-
-    /**
-     * Get associated app component (collection of azure resources) for the given test run.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testRunId: String (Optional)
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return associated app component (collection of azure resources) for the given test run along with {@link
-     *     Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.getAppComponentsWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -424,55 +174,13 @@ public final class LoadTestRunClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run server metric configuration along with {@link Response}.
+     * @return test run server metrics configuration along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
         return this.client.createOrUpdateServerMetricsConfigWithResponse(testRunId, body, requestOptions).block();
-    }
-
-    /**
-     * Get server metric configuration for the given test run.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testRunId: String (Optional)
-     *     metrics (Optional): {
-     *         String (Optional): {
-     *             id: String (Optional)
-     *             resourceId: String (Required)
-     *             metricNamespace: String (Required)
-     *             displayDescription: String (Optional)
-     *             name: String (Required)
-     *             aggregation: String (Required)
-     *             unit: String (Optional)
-     *             resourceType: String (Required)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return server metric configuration for the given test run along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.getServerMetricsConfigWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -576,10 +284,11 @@ public final class LoadTestRunClient {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -589,11 +298,12 @@ public final class LoadTestRunClient {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -602,7 +312,6 @@ public final class LoadTestRunClient {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -683,10 +392,11 @@ public final class LoadTestRunClient {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -696,11 +406,12 @@ public final class LoadTestRunClient {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -709,7 +420,6 @@ public final class LoadTestRunClient {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -810,10 +520,11 @@ public final class LoadTestRunClient {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -823,11 +534,12 @@ public final class LoadTestRunClient {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -836,7 +548,6 @@ public final class LoadTestRunClient {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -872,7 +583,7 @@ public final class LoadTestRunClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields - executedDateTime</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter can be 500.</td></tr>
      *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
      *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
      *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
@@ -954,10 +665,11 @@ public final class LoadTestRunClient {
      *                 inputArtifacts (Optional): {
      *                     configFileInfo (Optional): {
      *                         url: String (Optional)
-     *                         filename: String (Optional)
+     *                         fileName: String (Optional)
      *                         fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                         expireDateTime: OffsetDateTime (Optional)
      *                         validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                         validationFailureDetails: String (Optional)
      *                     }
      *                     testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                     userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -967,11 +679,12 @@ public final class LoadTestRunClient {
      *                     ]
      *                 }
      *                 outputArtifacts (Optional): {
-     *                     resultUrl (Optional): (recursive schema, see resultUrl above)
-     *                     logsUrl (Optional): (recursive schema, see logsUrl above)
+     *                     resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *                     logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *                 }
      *             }
      *             testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *             virtualUsers: Integer (Optional)
      *             testRunId: String (Optional)
      *             displayName: String (Optional)
      *             testId: String (Optional)
@@ -980,7 +693,6 @@ public final class LoadTestRunClient {
      *             startDateTime: OffsetDateTime (Optional)
      *             endDateTime: OffsetDateTime (Optional)
      *             executedDateTime: OffsetDateTime (Optional)
-     *             virtualUsers: Integer (Optional)
      *             portalUrl: String (Optional)
      *             duration: Long (Optional)
      *             subnetId: String (Optional)
@@ -1080,10 +792,11 @@ public final class LoadTestRunClient {
      *         inputArtifacts (Optional): {
      *             configFileInfo (Optional): {
      *                 url: String (Optional)
-     *                 filename: String (Optional)
+     *                 fileName: String (Optional)
      *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                 validationFailureDetails: String (Optional)
      *             }
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1093,11 +806,12 @@ public final class LoadTestRunClient {
      *             ]
      *         }
      *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *             resultFileInfo (Optional): (recursive schema, see resultFileInfo above)
+     *             logsFileInfo (Optional): (recursive schema, see logsFileInfo above)
      *         }
      *     }
      *     testResult: String(PASSED/NOT_APPLICABLE/FAILED) (Optional)
+     *     virtualUsers: Integer (Optional)
      *     testRunId: String (Optional)
      *     displayName: String (Optional)
      *     testId: String (Optional)
@@ -1106,7 +820,6 @@ public final class LoadTestRunClient {
      *     startDateTime: OffsetDateTime (Optional)
      *     endDateTime: OffsetDateTime (Optional)
      *     executedDateTime: OffsetDateTime (Optional)
-     *     virtualUsers: Integer (Optional)
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
@@ -1140,10 +853,11 @@ public final class LoadTestRunClient {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -1181,5 +895,297 @@ public final class LoadTestRunClient {
         PollerFlux<BinaryData, BinaryData> asyncPoller =
                 this.client.beginStartTestRun(testRunId, body, testRunRequestOptions);
         return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * List the metric values for a load test run.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     filters (Optional): [
+     *          (Optional){
+     *             name: String (Optional)
+     *             values (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     timeseries (Optional): [
+     *          (Optional){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: String (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response to a metrics query along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listMetricsWithResponse(
+            String testRunId,
+            String metricname,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        return this.client
+                .listMetricsWithResponse(testRunId, metricname, metricNamespace, timespan, requestOptions)
+                .block();
+    }
+
+    /**
+     * List the dimension values for the given metric dimension name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *         String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param name Dimension name.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listMetricDimensionValuesWithResponse(
+            String testRunId,
+            String name,
+            String metricname,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        return this.client
+                .listMetricDimensionValuesWithResponse(
+                        testRunId, name, metricname, metricNamespace, timespan, requestOptions)
+                .block();
+    }
+
+    /**
+     * Associate an app component (collection of azure resources) to a test run.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testRunId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testRunId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param body App Component model.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test run app component along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
+            String testRunId, BinaryData body, RequestOptions requestOptions) {
+        return this.client.createOrUpdateAppComponentsWithResponse(testRunId, body, requestOptions).block();
+    }
+
+    /**
+     * Get associated app component (collection of azure resources) for the given test run.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testRunId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return associated app component (collection of azure resources) for the given test run along with {@link
+     *     Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.client.listAppComponentsWithResponse(testRunId, requestOptions).block();
+    }
+
+    /**
+     * List server metrics configuration for the given test run.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     metrics (Optional): {
+     *         String (Optional): {
+     *             id: String (Optional)
+     *             resourceId: String (Required)
+     *             metricNamespace: String (Required)
+     *             displayDescription: String (Optional)
+     *             name: String (Required)
+     *             aggregation: String (Required)
+     *             unit: String (Optional)
+     *             resourceType: String (Required)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test run server metrics configuration along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.client.listServerMetricsConfigWithResponse(testRunId, requestOptions).block();
     }
 }

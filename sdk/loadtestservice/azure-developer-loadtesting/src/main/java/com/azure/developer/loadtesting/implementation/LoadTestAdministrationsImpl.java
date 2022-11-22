@@ -241,7 +241,7 @@ public final class LoadTestAdministrationsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateAppComponent(
+        Mono<Response<BinaryData>> createOrUpdateAppComponents(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
                 @QueryParam("api-version") String apiVersion,
@@ -262,7 +262,7 @@ public final class LoadTestAdministrationsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAppComponents(
+        Mono<Response<BinaryData>> listAppComponents(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
                 @QueryParam("api-version") String apiVersion,
@@ -270,7 +270,7 @@ public final class LoadTestAdministrationsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/tests/{testId}/server-metric-configs")
+        @Patch("/tests/{testId}/server-metrics-config")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -291,7 +291,7 @@ public final class LoadTestAdministrationsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/tests/{testId}/server-metric-configs")
+        @Get("/tests/{testId}/server-metrics-config")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -303,7 +303,7 @@ public final class LoadTestAdministrationsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getServerMetricsConfig(
+        Mono<Response<BinaryData>> listServerMetricsConfig(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
                 @QueryParam("api-version") String apiVersion,
@@ -399,10 +399,11 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -470,10 +471,11 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -570,10 +572,11 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -641,10 +644,11 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -774,10 +778,11 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -871,10 +876,11 @@ public final class LoadTestAdministrationsImpl {
      *     inputArtifacts (Optional): {
      *         configFileInfo (Optional): {
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -920,7 +926,7 @@ public final class LoadTestAdministrationsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - displayName, createdBy. For example, to search for a test, with display name is Login Test, the search parameter can be Login.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -977,10 +983,11 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     filename: String (Optional)
+     *                     fileName: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
      *                     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                     validationFailureDetails: String (Optional)
      *                 }
      *                 testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                 userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1046,7 +1053,7 @@ public final class LoadTestAdministrationsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - displayName, createdBy. For example, to search for a test, with display name is Login Test, the search parameter can be Login.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -1103,10 +1110,11 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     filename: String (Optional)
+     *                     fileName: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
      *                     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                     validationFailureDetails: String (Optional)
      *                 }
      *                 testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                 userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1162,7 +1170,7 @@ public final class LoadTestAdministrationsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - displayName, createdBy. For example, to search for a test, with display name is Login Test, the search parameter can be Login.</td></tr>
      *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
      *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response</td></tr>
@@ -1219,10 +1227,11 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     filename: String (Optional)
+     *                     fileName: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
      *                     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                     validationFailureDetails: String (Optional)
      *                 }
      *                 testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                 userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -1286,10 +1295,11 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -1346,10 +1356,11 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -1378,10 +1389,11 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -1419,10 +1431,11 @@ public final class LoadTestAdministrationsImpl {
      * <pre>{@code
      * {
      *     url: String (Optional)
-     *     filename: String (Optional)
+     *     fileName: String (Optional)
      *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
      * }
      * }</pre>
      *
@@ -1508,10 +1521,11 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *     ]
      *     nextLink: String (Optional)
@@ -1570,10 +1584,11 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *     ]
      *     nextLink: String (Optional)
@@ -1621,10 +1636,11 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *     ]
      *     nextLink: String (Optional)
@@ -1652,7 +1668,6 @@ public final class LoadTestAdministrationsImpl {
      *
      * <pre>{@code
      * {
-     *     testId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -1664,6 +1679,7 @@ public final class LoadTestAdministrationsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1675,7 +1691,6 @@ public final class LoadTestAdministrationsImpl {
      *
      * <pre>{@code
      * {
-     *     testId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -1687,6 +1702,7 @@ public final class LoadTestAdministrationsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1705,12 +1721,12 @@ public final class LoadTestAdministrationsImpl {
      * @return test app component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateAppComponentWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponseAsync(
             String testId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createOrUpdateAppComponent(
+                        service.createOrUpdateAppComponents(
                                 this.client.getEndpoint(),
                                 testId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1727,7 +1743,6 @@ public final class LoadTestAdministrationsImpl {
      *
      * <pre>{@code
      * {
-     *     testId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -1739,6 +1754,7 @@ public final class LoadTestAdministrationsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1750,7 +1766,6 @@ public final class LoadTestAdministrationsImpl {
      *
      * <pre>{@code
      * {
-     *     testId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -1762,6 +1777,7 @@ public final class LoadTestAdministrationsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1780,9 +1796,9 @@ public final class LoadTestAdministrationsImpl {
      * @return test app component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateAppComponentWithResponse(
+    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
             String testId, BinaryData body, RequestOptions requestOptions) {
-        return createOrUpdateAppComponentWithResponseAsync(testId, body, requestOptions).block();
+        return createOrUpdateAppComponentsWithResponseAsync(testId, body, requestOptions).block();
     }
 
     /**
@@ -1792,7 +1808,6 @@ public final class LoadTestAdministrationsImpl {
      *
      * <pre>{@code
      * {
-     *     testId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -1804,6 +1819,7 @@ public final class LoadTestAdministrationsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1822,11 +1838,11 @@ public final class LoadTestAdministrationsImpl {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAppComponentsWithResponseAsync(String testId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listAppComponentsWithResponseAsync(String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getAppComponents(
+                        service.listAppComponents(
                                 this.client.getEndpoint(),
                                 testId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1842,7 +1858,6 @@ public final class LoadTestAdministrationsImpl {
      *
      * <pre>{@code
      * {
-     *     testId: String (Optional)
      *     components (Required): {
      *         String (Required): {
      *             resourceId: String (Optional)
@@ -1854,6 +1869,7 @@ public final class LoadTestAdministrationsImpl {
      *             kind: String (Optional)
      *         }
      *     }
+     *     testId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1871,8 +1887,8 @@ public final class LoadTestAdministrationsImpl {
      * @return associated app component (collection of azure resources) for the given test along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        return getAppComponentsWithResponseAsync(testId, requestOptions).block();
+    public Response<BinaryData> listAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
+        return listAppComponentsWithResponseAsync(testId, requestOptions).block();
     }
 
     /**
@@ -1934,7 +1950,7 @@ public final class LoadTestAdministrationsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test server metric configuration along with {@link Response} on successful completion of {@link Mono}.
+     * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponseAsync(
@@ -2011,7 +2027,7 @@ public final class LoadTestAdministrationsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test server metric configuration along with {@link Response}.
+     * @return test server metrics configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
@@ -2020,7 +2036,7 @@ public final class LoadTestAdministrationsImpl {
     }
 
     /**
-     * Get server metric configuration for the given test.
+     * List server metrics configuration for the given test.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2053,16 +2069,15 @@ public final class LoadTestAdministrationsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return server metric configuration for the given test along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponseAsync(
+    public Mono<Response<BinaryData>> listServerMetricsConfigWithResponseAsync(
             String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getServerMetricsConfig(
+                        service.listServerMetricsConfig(
                                 this.client.getEndpoint(),
                                 testId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2072,7 +2087,7 @@ public final class LoadTestAdministrationsImpl {
     }
 
     /**
-     * Get server metric configuration for the given test.
+     * List server metrics configuration for the given test.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2105,11 +2120,11 @@ public final class LoadTestAdministrationsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return server metric configuration for the given test along with {@link Response}.
+     * @return test server metrics configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
-        return getServerMetricsConfigWithResponseAsync(testId, requestOptions).block();
+    public Response<BinaryData> listServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
+        return listServerMetricsConfigWithResponseAsync(testId, requestOptions).block();
     }
 
     /**
@@ -2163,10 +2178,11 @@ public final class LoadTestAdministrationsImpl {
      *             inputArtifacts (Optional): {
      *                 configFileInfo (Optional): {
      *                     url: String (Optional)
-     *                     filename: String (Optional)
+     *                     fileName: String (Optional)
      *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *                     expireDateTime: OffsetDateTime (Optional)
      *                     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                     validationFailureDetails: String (Optional)
      *                 }
      *                 testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *                 userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
@@ -2229,10 +2245,11 @@ public final class LoadTestAdministrationsImpl {
      *     value (Required): [
      *          (Required){
      *             url: String (Optional)
-     *             filename: String (Optional)
+     *             fileName: String (Optional)
      *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
      *         }
      *     ]
      *     nextLink: String (Optional)

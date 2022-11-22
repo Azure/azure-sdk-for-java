@@ -266,7 +266,7 @@ try {
 }
 
 // fetch client metrics using metric namespace and metric name
-Response<BinaryData> clientMetricsOut = testRunClient.getMetricsWithResponse("testrun12345", metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
+Response<BinaryData> clientMetricsOut = testRunClient.listMetricsWithResponse("testrun12345", metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
 System.out.println(clientMetricsOut.getValue().toString());
 ```
 
