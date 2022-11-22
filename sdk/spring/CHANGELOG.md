@@ -1,20 +1,10 @@
 # Release History
 
+## 6.0.0-beta.4 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
+
 ## 6.0.0-beta.3 (2022-11-04)
 Upgrade Spring Boot dependencies version to 3.0.0-RC1 and Spring Cloud dependencies version to 2022.0.0-RC1.
-
-### Spring Cloud Azure Autoconfigure
-This section includes changes in `spring-cloud-azure-autoconfigure` module.
-
-#### Bugs Fixed
-- Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
-- Fix bug: RestTemplate used to get access token should only contain 2 converters. [#31482](https://github.com/Azure/azure-sdk-for-java/issues/31482).
-- Fix bug: RestOperations is not well configured when jwkResolver is null. [#31218](https://github.com/Azure/azure-sdk-for-java/issues/31218).
-- Fix bug: Duplicated "scope" parameter. [#31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
-- Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
-- Fix bug: Proxy setting not work in Azure AD B2C web application. [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
-- Fix Bug: NoClassDefFoundError for JSONArray. [31716](https://github.com/Azure/azure-sdk-for-java/issues/31716)
-- Fix bug: `spring.main.sources` configuration from Spring Cloud Stream Kafka binder cannot take effect. [#31715](https://github.com/Azure/azure-sdk-for-java/pull/31715)
 
 #### Breaking Changes
 - Delete the artifact `spring-cloud-azure-trace-sleuth`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
@@ -31,16 +21,31 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Delete the auto configuration for Spring Cloud Sleuth support[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
 - Use the `com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier#DefaultJWTClaimsVerifier(com.nimbusds.jwt.JWTClaimsSet, java.util.Set<java.lang.String>)` instead of `com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier#DefaultJWTClaimsVerifier()`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
 - Use the `org.springframework.http.ResponseEntity#getStatusCode` instead of `org.springframework.http.ResponseEntity#getStatusCodeValue`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
-- Use the `com.azure.core.util.ConfigurationBuilder#ConfigurationBuilder()` instead the default constructor method `com.azure.core.util.Configuration#Configuration()`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
 - Use an abstract configurer `AbstractHttpConfigurer` instead of `org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
 - Use the annotation `org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity` instead the `org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity`[#31808](https://github.com/Azure/azure-sdk-for-java/pull/31808).
 - Use the class `org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken` instead of `org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken`[#31808](https://github.com/Azure/azure-sdk-for-java/pull/31808).
+
+#### Bugs Fixed
+- Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
+- Fix bug: RestTemplate used to get access token should only contain 2 converters. [#31482](https://github.com/Azure/azure-sdk-for-java/issues/31482).
+- Fix bug: RestOperations is not well configured when jwkResolver is null. [#31218](https://github.com/Azure/azure-sdk-for-java/issues/31218).
+- Fix bug: Duplicated "scope" parameter. [#31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
+- Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
+- Fix bug: Proxy setting not work in Azure AD B2C web application. [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
+- Fix Bug: NoClassDefFoundError for JSONArray. [31716](https://github.com/Azure/azure-sdk-for-java/issues/31716)
+- Fix bug: `spring.main.sources` configuration from Spring Cloud Stream Kafka binder cannot take effect. [#31715](https://github.com/Azure/azure-sdk-for-java/pull/31715)
 
 ## 6.0.0-beta.2 (2022-09-30)
 Upgrade Spring Boot dependencies version to 3.0.0-M4 and Spring Cloud dependencies version to 2022.0.0-M4.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
+- Configure the `spring.main.sources` with `AzureKafkaSpringCloudStreamConfiguration` class for Spring Cloud Stream Kafka Binder context, which helps developers omit customizing the property manually when leveraging Azure Identity with Kafka [#29976](https://github.com/Azure/azure-sdk-for-java/issues/29976).
+- Provide the property of `spring.cloud.azure.eventhubs.kafka.enabled` to turn of/off the OAuth2 support of Spring Cloud Azure for Event Hubs for Kafka [#30574](https://github.com/Azure/azure-sdk-for-java/issues/30574).
+- Support connecting to Azure AD via proxy. To achieve this, customer need provide a custom `RestTemplateCustomizer` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
 
 #### Bugs Fixed
 - Fix bug: Cannot configure "azure" authorization client. [#30354](https://github.com/Azure/azure-sdk-for-java/issues/30354).
@@ -49,25 +54,17 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix Kafka `OAuth2AuthenticateCallbackHandler` cannot work with Kafka refreshing login mechanism [#30719](https://github.com/Azure/azure-sdk-for-java/issues/30719).
 - Fix the cloud type cannot be configured for a consumer/producer/processor of Service Bus / Event Hubs bug [#30936](https://github.com/Azure/azure-sdk-for-java/issues/30936).
 
-#### Features Added
-- Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
-- Configure the `spring.main.sources` with `AzureKafkaSpringCloudStreamConfiguration` class for Spring Cloud Stream Kafka Binder context, which helps developers omit customizing the property manually when leveraging Azure Identity with Kafka [#29976](https://github.com/Azure/azure-sdk-for-java/issues/29976).
-- Provide the property of `spring.cloud.azure.eventhubs.kafka.enabled` to turn of/off the OAuth2 support of Spring Cloud Azure for Event Hubs for Kafka [#30574](https://github.com/Azure/azure-sdk-for-java/issues/30574).
-- Support connecting to Azure AD via proxy. To achieve this, customer need provide a custom `RestTemplateCustomizer` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
-
 ### Spring Cloud Stream Event Hubs Binder
 #### Bugs Fixed
 - Fix the cloud type cannot be configured for Event Hubs Binder bug [#30936](https://github.com/Azure/azure-sdk-for-java/issues/30936).
 
 ### Spring Cloud Stream Service Bus Binder
+#### Breaking Changes
+- Removed Spring Data Cosmos Auto Configuration support as Spring Data 3 is currently not supported.
+
 #### Bugs Fixed
 - Fix the Service Bus Binder cannot automatically create Topic/Subscriptions from consumer bug. [#30722](https://github.com/Azure/azure-sdk-for-java/pull/30722).
 - Fix the cloud type cannot be configured for Service Bus Binder bug [#30936](https://github.com/Azure/azure-sdk-for-java/issues/30936).
-
-
-
-#### Breaking Changes
-- Removed Spring Data Cosmos Auto Configuration support as Spring Data 3 is currently not supported.
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
