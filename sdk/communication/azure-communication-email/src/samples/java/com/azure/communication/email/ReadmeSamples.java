@@ -56,7 +56,8 @@ public class ReadmeSamples {
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(addressList);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
@@ -85,7 +86,8 @@ public class ReadmeSamples {
         ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
         bccAddressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(toAddressList)
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(toAddressList)
             .setCc(ccAddressList)
             .setBcc(bccAddressList);
 
@@ -120,7 +122,8 @@ public class ReadmeSamples {
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(addressList);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");

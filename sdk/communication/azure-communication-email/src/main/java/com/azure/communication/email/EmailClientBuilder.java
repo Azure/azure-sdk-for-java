@@ -15,6 +15,7 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -171,7 +172,6 @@ public final class EmailClientBuilder
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@link EmailClientBuilder} object.
      */
-    @Override
     public EmailClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;

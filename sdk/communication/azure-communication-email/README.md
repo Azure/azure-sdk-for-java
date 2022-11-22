@@ -99,7 +99,8 @@ EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 ArrayList<EmailAddress> addressList = new ArrayList<>();
 addressList.add(emailAddress);
 
-EmailRecipients emailRecipients = new EmailRecipients(addressList);
+EmailRecipients emailRecipients = new EmailRecipients()
+    .setTo(addressList);
 
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
@@ -128,7 +129,8 @@ ccAddressList.add(emailAddress);
 ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
 bccAddressList.add(emailAddress);
 
-EmailRecipients emailRecipients = new EmailRecipients(toAddressList)
+EmailRecipients emailRecipients = new EmailRecipients()
+    .setTo(toAddressList)
     .setCc(ccAddressList)
     .setBcc(bccAddressList);
 
@@ -162,7 +164,8 @@ EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 ArrayList<EmailAddress> addressList = new ArrayList<>();
 addressList.add(emailAddress);
 
-EmailRecipients emailRecipients = new EmailRecipients(addressList);
+EmailRecipients emailRecipients = new EmailRecipients()
+    .setTo(addressList);
 
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
