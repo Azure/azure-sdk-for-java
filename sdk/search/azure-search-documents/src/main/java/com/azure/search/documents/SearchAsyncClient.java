@@ -609,7 +609,7 @@ public final class SearchAsyncClient {
             .collect(Collectors.toList());
 
         boolean throwOnAnyError = options == null || options.throwOnAnyError();
-        return Utility.indexDocumentsWithResponse(restClient, indexActions, throwOnAnyError, context, LOGGER);
+        return Utility.indexDocumentsWithResponseAsync(restClient, indexActions, throwOnAnyError, context, LOGGER);
     }
 
     /**
@@ -1199,7 +1199,7 @@ public final class SearchAsyncClient {
         return String.join(",", elements);
     }
 
-    private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
+    static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         List<IndexAction<T>> actions = new ArrayList<>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)

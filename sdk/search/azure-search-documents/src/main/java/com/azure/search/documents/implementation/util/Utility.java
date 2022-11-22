@@ -5,6 +5,7 @@ package com.azure.search.documents.implementation.util;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -32,6 +33,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
@@ -42,6 +44,7 @@ import com.azure.search.documents.models.IndexDocumentsResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -166,9 +169,9 @@ public final class Utility {
             .build();
     }
 
-    public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
-        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
-        Context context, ClientLogger logger) {
+    public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponseAsync(SearchIndexClientImpl restClient,
+                                                                                       List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+                                                                                       Context context, ClientLogger logger) {
         try {
             return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
@@ -179,6 +182,27 @@ public final class Utility {
             return monoError(logger, ex);
         }
     }
+
+    public static Response<IndexDocumentsResult> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
+                                                                                       List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+                                                                                       Context context, ClientLogger logger) {
+        try {
+            Response<com.azure.search.documents.implementation.models.IndexDocumentsResult> response =
+                restClient.getDocuments().indexWithResponse(new IndexBatch(actions), null, context);
+            if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
+                throw new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue()));
+            }
+            return MappingUtils.mappingIndexDocumentResultResponse(response);
+        } catch (SearchErrorException exception) {
+            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+        } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
+            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
+    }
+
+
 
     public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion, String endpoint,
         String indexName, HttpPipeline httpPipeline, SerializerAdapter adapter) {

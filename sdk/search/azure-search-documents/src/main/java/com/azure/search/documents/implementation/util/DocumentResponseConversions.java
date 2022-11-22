@@ -28,8 +28,11 @@ public final class DocumentResponseConversions {
         if (!(throwable instanceof SearchErrorException)) {
             return throwable;
         }
+        return mapSearchErrorException((SearchErrorException) throwable);
 
-        SearchErrorException exception = (SearchErrorException) throwable;
+    }
+
+    public static HttpResponseException mapSearchErrorException(SearchErrorException exception) {
         if (exception.getResponse().getStatusCode() == 404) {
             return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
         }
