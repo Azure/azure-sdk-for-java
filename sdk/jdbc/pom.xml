@@ -17,8 +17,6 @@
       </activation>
       <modules>
         <module>azure-identity-providers-core</module>
-        <module>azure-identity-providers-jdbc-mysql</module>
-        <module>azure-identity-providers-jdbc-postgresql</module>
       </modules>
     </profile>
 
@@ -27,8 +25,6 @@
       <modules>
         <module>../../eng/code-quality-reports</module>
         <module>azure-identity-providers-core</module>
-        <module>azure-identity-providers-jdbc-mysql</module>
-        <module>azure-identity-providers-jdbc-postgresql</module>
       </modules>
     </profile>
   </profiles>
