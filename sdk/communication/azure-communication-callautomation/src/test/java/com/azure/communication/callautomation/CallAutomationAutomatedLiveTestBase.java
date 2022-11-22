@@ -5,21 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callautomation.models.events.AddParticipantsFailed;
-import com.azure.communication.callautomation.models.events.AddParticipantsSucceeded;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallConnected;
-import com.azure.communication.callautomation.models.events.CallDisconnected;
-import com.azure.communication.callautomation.models.events.CallTransferAccepted;
-import com.azure.communication.callautomation.models.events.CallTransferFailed;
-import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
-import com.azure.communication.callautomation.models.events.PlayCanceled;
-import com.azure.communication.callautomation.models.events.PlayCompleted;
-import com.azure.communication.callautomation.models.events.PlayFailed;
-import com.azure.communication.callautomation.models.events.RecognizeCanceled;
-import com.azure.communication.callautomation.models.events.RecognizeCompleted;
-import com.azure.communication.callautomation.models.events.RecognizeFailed;
-import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.HttpMethod;
@@ -193,11 +179,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
             context.getFullyQualifiedNamespace(), context.getEntityPath());
 
-        if (!(context.getException() instanceof ServiceBusException exception)) {
+        if (!(context.getException() instanceof ServiceBusException)) {
             System.out.printf("Non-ServiceBusException occurred: %s%n", context.getException());
             return;
         }
 
+        ServiceBusException exception = (ServiceBusException) context.getException();
         ServiceBusFailureReason reason = exception.getReason();
 
         if (reason == ServiceBusFailureReason.MESSAGING_ENTITY_DISABLED
