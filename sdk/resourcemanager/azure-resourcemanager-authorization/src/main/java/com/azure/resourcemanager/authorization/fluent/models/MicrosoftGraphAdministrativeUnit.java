@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * administrativeUnit Represents an Azure Active Directory object. The directoryObject type is the base type for many
- * other directory entity types.
+ * administrativeUnit
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphAdministrativeUnit extends MicrosoftGraphDirectoryObjectInner {
@@ -33,26 +35,23 @@ public final class MicrosoftGraphAdministrativeUnit extends MicrosoftGraphDirect
     private String displayName;
 
     /*
-     * Controls whether the administrative unit and its members are hidden or
-     * public. Can be set to HiddenMembership or Public. If not set, default
-     * behavior is Public. When set to HiddenMembership, only members of the
-     * administrative unit can list other members of the adminstrative unit.
+     * Controls whether the administrative unit and its members are hidden or public. Can be set to HiddenMembership or
+     * Public. If not set, default behavior is Public. When set to HiddenMembership, only members of the administrative
+     * unit can list other members of the adminstrative unit.
      */
     @JsonProperty(value = "visibility")
     private String visibility;
 
     /*
-     * Users and groups that are members of this Adminsitrative Unit. HTTP
-     * Methods: GET (list members), POST (add members), DELETE (remove
-     * members).
+     * Users and groups that are members of this Adminsitrative Unit. HTTP Methods: GET (list members), POST (add
+     * members), DELETE (remove members).
      */
     @JsonProperty(value = "members")
     private List<MicrosoftGraphDirectoryObjectInner> members;
 
     /*
-     * Scoped-role members of this Administrative Unit.  HTTP Methods: GET
-     * (list scopedRoleMemberships), POST (add scopedRoleMembership), DELETE
-     * (remove scopedRoleMembership).
+     * Scoped-role members of this Administrative Unit.  HTTP Methods: GET (list scopedRoleMemberships), POST (add
+     * scopedRoleMembership), DELETE (remove scopedRoleMembership).
      */
     @JsonProperty(value = "scopedRoleMembers")
     private List<MicrosoftGraphScopedRoleMembership> scopedRoleMembers;
@@ -64,10 +63,14 @@ public final class MicrosoftGraphAdministrativeUnit extends MicrosoftGraphDirect
     private List<MicrosoftGraphExtension> extensions;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAdministrativeUnit class. */
+    public MicrosoftGraphAdministrativeUnit() {
+    }
 
     /**
      * Get the description property: An optional description for the administrative unit.

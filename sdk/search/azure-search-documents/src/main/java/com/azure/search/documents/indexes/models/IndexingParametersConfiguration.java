@@ -574,9 +574,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                         reader.nextToken();
 
                         if ("parsingMode".equals(fieldName)) {
-                            parsingMode =
-                                    reader.getNullable(
-                                            enumReader -> BlobIndexerParsingMode.fromString(enumReader.getString()));
+                            parsingMode = BlobIndexerParsingMode.fromString(reader.getString());
                         } else if ("excludedFileNameExtensions".equals(fieldName)) {
                             excludedFileNameExtensions = reader.getString();
                         } else if ("indexedFileNameExtensions".equals(fieldName)) {
@@ -596,26 +594,16 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                         } else if ("documentRoot".equals(fieldName)) {
                             documentRoot = reader.getString();
                         } else if ("dataToExtract".equals(fieldName)) {
-                            dataToExtract =
-                                    reader.getNullable(
-                                            enumReader -> BlobIndexerDataToExtract.fromString(enumReader.getString()));
+                            dataToExtract = BlobIndexerDataToExtract.fromString(reader.getString());
                         } else if ("imageAction".equals(fieldName)) {
-                            imageAction =
-                                    reader.getNullable(
-                                            enumReader -> BlobIndexerImageAction.fromString(enumReader.getString()));
+                            imageAction = BlobIndexerImageAction.fromString(reader.getString());
                         } else if ("allowSkillsetToReadFileData".equals(fieldName)) {
                             allowSkillsetToReadFileData = reader.getNullable(JsonReader::getBoolean);
                         } else if ("pdfTextRotationAlgorithm".equals(fieldName)) {
                             pdfTextRotationAlgorithm =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    BlobIndexerPdfTextRotationAlgorithm.fromString(
-                                                            enumReader.getString()));
+                                    BlobIndexerPdfTextRotationAlgorithm.fromString(reader.getString());
                         } else if ("executionEnvironment".equals(fieldName)) {
-                            executionEnvironment =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    IndexerExecutionEnvironment.fromString(enumReader.getString()));
+                            executionEnvironment = IndexerExecutionEnvironment.fromString(reader.getString());
                         } else if ("queryTimeout".equals(fieldName)) {
                             queryTimeout = reader.getString();
                         } else {

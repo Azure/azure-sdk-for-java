@@ -27,10 +27,16 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
     /*
      * The list of returned Autocompleted items.
      */
-    private List<AutocompleteItem> results;
+    private final List<AutocompleteItem> results;
 
-    /** Creates an instance of AutocompleteResult class. */
-    public AutocompleteResult() {}
+    /**
+     * Creates an instance of AutocompleteResult class.
+     *
+     * @param results the results value to set.
+     */
+    public AutocompleteResult(List<AutocompleteItem> results) {
+        this.results = results;
+    }
 
     /**
      * Get the coverage property: A value indicating the percentage of the index that was considered by the autocomplete
@@ -88,8 +94,7 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
                         }
                     }
                     if (resultsFound) {
-                        AutocompleteResult deserializedValue = new AutocompleteResult();
-                        deserializedValue.results = results;
+                        AutocompleteResult deserializedValue = new AutocompleteResult(results);
                         deserializedValue.coverage = coverage;
 
                         return deserializedValue;

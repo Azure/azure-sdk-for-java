@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphItemReference {
     /*
-     * Unique identifier of the drive instance that contains the item.
-     * Read-only.
+     * Unique identifier of the drive instance that contains the item. Read-only.
      */
     @JsonProperty(value = "driveId")
     private String driveId;
@@ -47,8 +46,7 @@ public final class MicrosoftGraphItemReference {
     private String path;
 
     /*
-     * A unique identifier for a shared resource that can be accessed via the
-     * [Shares][] API.
+     * A unique identifier for a shared resource that can be accessed via the [Shares][] API.
      */
     @JsonProperty(value = "shareId")
     private String shareId;
@@ -69,6 +67,10 @@ public final class MicrosoftGraphItemReference {
      * itemReference
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphItemReference class. */
+    public MicrosoftGraphItemReference() {
+    }
 
     /**
      * Get the driveId property: Unique identifier of the drive instance that contains the item. Read-only.

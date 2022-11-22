@@ -22,6 +22,10 @@ public final class AlertSyncSettings extends SettingInner {
     @JsonProperty(value = "properties")
     private AlertSyncSettingProperties innerProperties;
 
+    /** Creates an instance of AlertSyncSettings class. */
+    public AlertSyncSettings() {
+    }
+
     /**
      * Get the innerProperties property: Alert sync setting data.
      *

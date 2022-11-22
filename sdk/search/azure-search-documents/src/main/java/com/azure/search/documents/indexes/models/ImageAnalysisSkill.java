@@ -196,24 +196,11 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getString();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    ImageAnalysisSkillLanguage.fromString(enumReader.getString()));
+                            defaultLanguageCode = ImageAnalysisSkillLanguage.fromString(reader.getString());
                         } else if ("visualFeatures".equals(fieldName)) {
-                            visualFeatures =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    VisualFeature.fromString(enumReader.getString())));
+                            visualFeatures = reader.readArray(reader1 -> VisualFeature.fromString(reader1.getString()));
                         } else if ("details".equals(fieldName)) {
-                            details =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    ImageDetail.fromString(enumReader.getString())));
+                            details = reader.readArray(reader1 -> ImageDetail.fromString(reader1.getString()));
                         } else {
                             reader.skipChildren();
                         }

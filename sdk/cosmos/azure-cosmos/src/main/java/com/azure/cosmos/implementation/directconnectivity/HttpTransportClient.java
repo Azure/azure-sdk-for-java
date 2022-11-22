@@ -864,7 +864,7 @@ public class HttpTransportClient extends TransportClient {
                                         response.headers(),
                                         request.uri().toString());
                                 break;
-                            } else if (nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT) {
+                            } else if (nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE) {
                                 exception = new PartitionKeyRangeIsSplittingException(
                                         String.format(
                                                 RMResources.ExceptionMessage,

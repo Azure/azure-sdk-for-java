@@ -145,20 +145,9 @@ public final class CustomNormalizer extends LexicalNormalizer {
                             name = reader.getString();
                             nameFound = true;
                         } else if ("tokenFilters".equals(fieldName)) {
-                            tokenFilters =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    TokenFilterName.fromString(
-                                                                            enumReader.getString())));
+                            tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
                         } else if ("charFilters".equals(fieldName)) {
-                            charFilters =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    CharFilterName.fromString(enumReader.getString())));
+                            charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
                         } else {
                             reader.skipChildren();
                         }

@@ -26,15 +26,21 @@ public final class SearchError implements JsonSerializable<SearchError> {
     /*
      * A human-readable representation of the error.
      */
-    private String message;
+    private final String message;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
     private List<SearchError> details;
 
-    /** Creates an instance of SearchError class. */
-    public SearchError() {}
+    /**
+     * Creates an instance of SearchError class.
+     *
+     * @param message the message value to set.
+     */
+    public SearchError(String message) {
+        this.message = message;
+    }
 
     /**
      * Get the code property: One of a server-defined set of error codes.
@@ -104,8 +110,7 @@ public final class SearchError implements JsonSerializable<SearchError> {
                         }
                     }
                     if (messageFound) {
-                        SearchError deserializedValue = new SearchError();
-                        deserializedValue.message = message;
+                        SearchError deserializedValue = new SearchError(message);
                         deserializedValue.code = code;
                         deserializedValue.details = details;
 

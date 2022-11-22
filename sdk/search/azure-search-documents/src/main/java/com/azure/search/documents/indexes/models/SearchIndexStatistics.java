@@ -23,15 +23,23 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
     /*
      * The number of documents in the index.
      */
-    private long documentCount;
+    private final long documentCount;
 
     /*
      * The amount of storage in bytes consumed by the index.
      */
-    private long storageSize;
+    private final long storageSize;
 
-    /** Creates an instance of SearchIndexStatistics class. */
-    public SearchIndexStatistics() {}
+    /**
+     * Creates an instance of SearchIndexStatistics class.
+     *
+     * @param documentCount the documentCount value to set.
+     * @param storageSize the storageSize value to set.
+     */
+    public SearchIndexStatistics(long documentCount, long storageSize) {
+        this.documentCount = documentCount;
+        this.storageSize = storageSize;
+    }
 
     /**
      * Get the documentCount property: The number of documents in the index.
@@ -90,9 +98,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
                         }
                     }
                     if (documentCountFound && storageSizeFound) {
-                        SearchIndexStatistics deserializedValue = new SearchIndexStatistics();
-                        deserializedValue.documentCount = documentCount;
-                        deserializedValue.storageSize = storageSize;
+                        SearchIndexStatistics deserializedValue = new SearchIndexStatistics(documentCount, storageSize);
 
                         return deserializedValue;
                     }

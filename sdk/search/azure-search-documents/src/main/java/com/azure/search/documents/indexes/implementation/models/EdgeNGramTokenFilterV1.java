@@ -161,9 +161,7 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
                         } else if ("maxGram".equals(fieldName)) {
                             maxGram = reader.getNullable(JsonReader::getInt);
                         } else if ("side".equals(fieldName)) {
-                            side =
-                                    reader.getNullable(
-                                            enumReader -> EdgeNGramTokenFilterSide.fromString(enumReader.getString()));
+                            side = EdgeNGramTokenFilterSide.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

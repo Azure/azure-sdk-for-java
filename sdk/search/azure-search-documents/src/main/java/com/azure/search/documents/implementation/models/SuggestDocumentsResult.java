@@ -21,7 +21,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
     /*
      * The sequence of results returned by the query.
      */
-    private List<SuggestResult> results;
+    private final List<SuggestResult> results;
 
     /*
      * A value indicating the percentage of the index that was included in the query, or null if minimumCoverage was
@@ -29,8 +29,14 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
      */
     private Double coverage;
 
-    /** Creates an instance of SuggestDocumentsResult class. */
-    public SuggestDocumentsResult() {}
+    /**
+     * Creates an instance of SuggestDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
+    public SuggestDocumentsResult(List<SuggestResult> results) {
+        this.results = results;
+    }
 
     /**
      * Get the results property: The sequence of results returned by the query.
@@ -88,8 +94,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
                         }
                     }
                     if (resultsFound) {
-                        SuggestDocumentsResult deserializedValue = new SuggestDocumentsResult();
-                        deserializedValue.results = results;
+                        SuggestDocumentsResult deserializedValue = new SuggestDocumentsResult(results);
                         deserializedValue.coverage = coverage;
 
                         return deserializedValue;

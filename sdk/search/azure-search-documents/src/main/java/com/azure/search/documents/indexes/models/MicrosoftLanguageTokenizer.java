@@ -165,10 +165,7 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
                         } else if ("isSearchTokenizer".equals(fieldName)) {
                             isSearchTokenizer = reader.getNullable(JsonReader::getBoolean);
                         } else if ("language".equals(fieldName)) {
-                            language =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    MicrosoftTokenizerLanguage.fromString(enumReader.getString()));
+                            language = MicrosoftTokenizerLanguage.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

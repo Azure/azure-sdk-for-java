@@ -199,11 +199,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getString();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    KeyPhraseExtractionSkillLanguage.fromString(
-                                                            enumReader.getString()));
+                            defaultLanguageCode = KeyPhraseExtractionSkillLanguage.fromString(reader.getString());
                         } else if ("maxKeyPhraseCount".equals(fieldName)) {
                             maxKeyPhraseCount = reader.getNullable(JsonReader::getInt);
                         } else if ("modelVersion".equals(fieldName)) {

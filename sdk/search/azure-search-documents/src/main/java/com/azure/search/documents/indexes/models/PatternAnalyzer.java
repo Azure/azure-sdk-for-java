@@ -201,7 +201,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                         } else if ("pattern".equals(fieldName)) {
                             pattern = reader.getString();
                         } else if ("flags".equals(fieldName)) {
-                            flags = reader.getNullable(enumReader -> RegexFlags.fromString(enumReader.getString()));
+                            flags = RegexFlags.fromString(reader.getString());
                         } else if ("stopwords".equals(fieldName)) {
                             stopwords = reader.readArray(reader1 -> reader1.getString());
                         } else {

@@ -102,9 +102,7 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
                         if ("@search.action".equals(fieldName)) {
-                            actionType =
-                                    reader.getNullable(
-                                            enumReader -> IndexActionType.fromString(enumReader.getString()));
+                            actionType = IndexActionType.fromString(reader.getString());
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();

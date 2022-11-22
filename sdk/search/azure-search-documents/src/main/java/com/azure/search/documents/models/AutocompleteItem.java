@@ -21,15 +21,23 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
     /*
      * The completed term.
      */
-    private String text;
+    private final String text;
 
     /*
      * The query along with the completed term.
      */
-    private String queryPlusText;
+    private final String queryPlusText;
 
-    /** Creates an instance of AutocompleteItem class. */
-    public AutocompleteItem() {}
+    /**
+     * Creates an instance of AutocompleteItem class.
+     *
+     * @param text the text value to set.
+     * @param queryPlusText the queryPlusText value to set.
+     */
+    public AutocompleteItem(String text, String queryPlusText) {
+        this.text = text;
+        this.queryPlusText = queryPlusText;
+    }
 
     /**
      * Get the text property: The completed term.
@@ -88,9 +96,7 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
                         }
                     }
                     if (textFound && queryPlusTextFound) {
-                        AutocompleteItem deserializedValue = new AutocompleteItem();
-                        deserializedValue.text = text;
-                        deserializedValue.queryPlusText = queryPlusText;
+                        AutocompleteItem deserializedValue = new AutocompleteItem(text, queryPlusText);
 
                         return deserializedValue;
                     }

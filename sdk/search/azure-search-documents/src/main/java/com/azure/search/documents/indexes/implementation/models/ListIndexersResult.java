@@ -22,10 +22,16 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
     /*
      * The indexers in the Search service.
      */
-    private List<SearchIndexer> indexers;
+    private final List<SearchIndexer> indexers;
 
-    /** Creates an instance of ListIndexersResult class. */
-    public ListIndexersResult() {}
+    /**
+     * Creates an instance of ListIndexersResult class.
+     *
+     * @param indexers the indexers value to set.
+     */
+    public ListIndexersResult(List<SearchIndexer> indexers) {
+        this.indexers = indexers;
+    }
 
     /**
      * Get the indexers property: The indexers in the Search service.
@@ -69,8 +75,7 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
                         }
                     }
                     if (indexersFound) {
-                        ListIndexersResult deserializedValue = new ListIndexersResult();
-                        deserializedValue.indexers = indexers;
+                        ListIndexersResult deserializedValue = new ListIndexersResult(indexers);
 
                         return deserializedValue;
                     }

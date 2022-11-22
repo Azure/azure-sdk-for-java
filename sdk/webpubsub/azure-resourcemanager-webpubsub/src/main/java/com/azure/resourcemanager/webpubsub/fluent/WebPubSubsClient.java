@@ -25,6 +25,21 @@ public interface WebPubSubsClient {
      *
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to check name availability along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(
+        String location, NameAvailabilityParameters parameters, Context context);
+
+    /**
+     * Checks that the resource name is valid and is not already in use.
+     *
+     * @param location the region.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -34,26 +49,12 @@ public interface WebPubSubsClient {
     NameAvailabilityInner checkNameAvailability(String location, NameAvailabilityParameters parameters);
 
     /**
-     * Checks that the resource name is valid and is not already in use.
-     *
-     * @param location the region.
-     * @param parameters Parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters parameters, Context context);
-
-    /**
      * Handles requests to list all resources in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set.
+     * @return object that includes an array of resources and a possible link for next set as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WebPubSubResourceInner> list();
@@ -65,7 +66,8 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set.
+     * @return object that includes an array of resources and a possible link for next set as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WebPubSubResourceInner> list(Context context);
@@ -78,7 +80,8 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set.
+     * @return object that includes an array of resources and a possible link for next set as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WebPubSubResourceInner> listByResourceGroup(String resourceGroupName);
@@ -92,10 +95,27 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set.
+     * @return object that includes an array of resources and a possible link for next set as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WebPubSubResourceInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Get the resource and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource and its properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WebPubSubResourceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Get the resource and its properties.
@@ -112,22 +132,6 @@ public interface WebPubSubsClient {
     WebPubSubResourceInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Get the resource and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebPubSubResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
-
-    /**
      * Create or update a resource.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -137,7 +141,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a resource.
+     * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdate(
@@ -154,7 +158,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a resource.
+     * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdate(
@@ -202,7 +206,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
@@ -217,7 +221,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
@@ -259,7 +263,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a resource.
+     * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdate(
@@ -276,7 +280,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a resource.
+     * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdate(
@@ -320,13 +324,14 @@ public interface WebPubSubsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
+     * @return the access keys of the resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WebPubSubKeysInner listKeys(String resourceGroupName, String resourceName);
+    Response<WebPubSubKeysInner> listKeysWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Get the access keys of the resource.
@@ -334,14 +339,13 @@ public interface WebPubSubsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebPubSubKeysInner> listKeysWithResponse(String resourceGroupName, String resourceName, Context context);
+    WebPubSubKeysInner listKeys(String resourceGroupName, String resourceName);
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
@@ -353,7 +357,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represents the access keys of the resource.
+     * @return the {@link SyncPoller} for polling of a class represents the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKey(
@@ -370,7 +374,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represents the access keys of the resource.
+     * @return the {@link SyncPoller} for polling of a class represents the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKey(
@@ -417,7 +421,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName);
@@ -432,7 +436,7 @@ public interface WebPubSubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName, Context context);
@@ -470,13 +474,14 @@ public interface WebPubSubsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list skus operation response.
+     * @return the list skus operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuListInner listSkus(String resourceGroupName, String resourceName);
+    Response<SkuListInner> listSkusWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
      * List all available skus of the resource.
@@ -484,12 +489,11 @@ public interface WebPubSubsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list skus operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuListInner> listSkusWithResponse(String resourceGroupName, String resourceName, Context context);
+    SkuListInner listSkus(String resourceGroupName, String resourceName);
 }

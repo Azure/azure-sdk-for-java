@@ -142,9 +142,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getString();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    reader.getNullable(
-                                            enumReader -> SentimentSkillLanguage.fromString(enumReader.getString()));
+                            defaultLanguageCode = SentimentSkillLanguage.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

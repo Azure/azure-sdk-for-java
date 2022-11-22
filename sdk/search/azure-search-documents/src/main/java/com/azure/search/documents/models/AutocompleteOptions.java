@@ -289,9 +289,7 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
                         if ("autocompleteMode".equals(fieldName)) {
-                            autocompleteMode =
-                                    reader.getNullable(
-                                            enumReader -> AutocompleteMode.fromString(enumReader.getString()));
+                            autocompleteMode = AutocompleteMode.fromString(reader.getString());
                         } else if ("$filter".equals(fieldName)) {
                             filter = reader.getString();
                         } else if ("UseFuzzyMatching".equals(fieldName)) {

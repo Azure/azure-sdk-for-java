@@ -551,9 +551,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                             name = reader.getString();
                             nameFound = true;
                         } else if ("type".equals(fieldName)) {
-                            type =
-                                    reader.getNullable(
-                                            enumReader -> SearchFieldDataType.fromString(enumReader.getString()));
+                            type = SearchFieldDataType.fromString(reader.getString());
                             typeFound = true;
                         } else if ("key".equals(fieldName)) {
                             key = reader.getNullable(JsonReader::getBoolean);
@@ -568,21 +566,13 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         } else if ("facetable".equals(fieldName)) {
                             facetable = reader.getNullable(JsonReader::getBoolean);
                         } else if ("analyzer".equals(fieldName)) {
-                            analyzerName =
-                                    reader.getNullable(
-                                            enumReader -> LexicalAnalyzerName.fromString(enumReader.getString()));
+                            analyzerName = LexicalAnalyzerName.fromString(reader.getString());
                         } else if ("searchAnalyzer".equals(fieldName)) {
-                            searchAnalyzerName =
-                                    reader.getNullable(
-                                            enumReader -> LexicalAnalyzerName.fromString(enumReader.getString()));
+                            searchAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
                         } else if ("indexAnalyzer".equals(fieldName)) {
-                            indexAnalyzerName =
-                                    reader.getNullable(
-                                            enumReader -> LexicalAnalyzerName.fromString(enumReader.getString()));
+                            indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
                         } else if ("normalizer".equals(fieldName)) {
-                            normalizerName =
-                                    reader.getNullable(
-                                            enumReader -> LexicalNormalizerName.fromString(enumReader.getString()));
+                            normalizerName = LexicalNormalizerName.fromString(reader.getString());
                         } else if ("synonymMaps".equals(fieldName)) {
                             synonymMapNames = reader.readArray(reader1 -> reader1.getString());
                         } else if ("fields".equals(fieldName)) {

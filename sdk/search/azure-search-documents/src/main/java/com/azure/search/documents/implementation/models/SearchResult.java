@@ -24,7 +24,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     /*
      * The relevance score of the document compared to other documents returned by the query.
      */
-    private double score;
+    private final double score;
 
     /*
      * The relevance score computed by the semantic ranker for the top search results. Search results are sorted by the
@@ -49,8 +49,14 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      */
     private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SearchResult class. */
-    public SearchResult() {}
+    /**
+     * Creates an instance of SearchResult class.
+     *
+     * @param score the score value to set.
+     */
+    public SearchResult(double score) {
+        this.score = score;
+    }
 
     /**
      * Get the score property: The relevance score of the document compared to other documents returned by the query.
@@ -170,8 +176,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                         }
                     }
                     if (scoreFound) {
-                        SearchResult deserializedValue = new SearchResult();
-                        deserializedValue.score = score;
+                        SearchResult deserializedValue = new SearchResult(score);
                         deserializedValue.rerankerScore = rerankerScore;
                         deserializedValue.highlights = highlights;
                         deserializedValue.captions = captions;

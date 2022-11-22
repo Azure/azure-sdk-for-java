@@ -853,11 +853,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                         } else if ("orderby".equals(fieldName)) {
                             orderBy = reader.getString();
                         } else if ("queryType".equals(fieldName)) {
-                            queryType = reader.getNullable(enumReader -> QueryType.fromString(enumReader.getString()));
+                            queryType = QueryType.fromString(reader.getString());
                         } else if ("scoringStatistics".equals(fieldName)) {
-                            scoringStatistics =
-                                    reader.getNullable(
-                                            enumReader -> ScoringStatistics.fromString(enumReader.getString()));
+                            scoringStatistics = ScoringStatistics.fromString(reader.getString());
                         } else if ("sessionId".equals(fieldName)) {
                             sessionId = reader.getString();
                         } else if ("scoringParameters".equals(fieldName)) {
@@ -871,15 +869,11 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                         } else if ("searchFields".equals(fieldName)) {
                             searchFields = reader.getString();
                         } else if ("searchMode".equals(fieldName)) {
-                            searchMode =
-                                    reader.getNullable(enumReader -> SearchMode.fromString(enumReader.getString()));
+                            searchMode = SearchMode.fromString(reader.getString());
                         } else if ("queryLanguage".equals(fieldName)) {
-                            queryLanguage =
-                                    reader.getNullable(enumReader -> QueryLanguage.fromString(enumReader.getString()));
+                            queryLanguage = QueryLanguage.fromString(reader.getString());
                         } else if ("speller".equals(fieldName)) {
-                            speller =
-                                    reader.getNullable(
-                                            enumReader -> QuerySpellerType.fromString(enumReader.getString()));
+                            speller = QuerySpellerType.fromString(reader.getString());
                         } else if ("answers".equals(fieldName)) {
                             answers = reader.getString();
                         } else if ("select".equals(fieldName)) {

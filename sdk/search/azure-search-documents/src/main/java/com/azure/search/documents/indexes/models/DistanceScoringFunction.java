@@ -107,10 +107,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
                             boost = reader.getDouble();
                             boostFound = true;
                         } else if ("interpolation".equals(jsonFieldName)) {
-                            interpolation =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    ScoringFunctionInterpolation.fromString(enumReader.getString()));
+                            interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
                         } else if ("distance".equals(jsonFieldName)) {
                             parameters = DistanceScoringParameters.fromJson(reader);
                             parametersFound = true;

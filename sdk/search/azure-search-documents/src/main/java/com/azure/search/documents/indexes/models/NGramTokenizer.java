@@ -162,12 +162,7 @@ public final class NGramTokenizer extends LexicalTokenizer {
                             maxGram = reader.getNullable(JsonReader::getInt);
                         } else if ("tokenChars".equals(fieldName)) {
                             tokenChars =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    TokenCharacterKind.fromString(
-                                                                            enumReader.getString())));
+                                    reader.readArray(reader1 -> TokenCharacterKind.fromString(reader1.getString()));
                         } else {
                             reader.skipChildren();
                         }

@@ -48,15 +48,8 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
     private String eTag;
 
     /** Creates an instance of SynonymMap class. */
-    public SynonymMap() {}
-
-    /**
-     * Get the name property: The name of the synonym map.
-     *
-     * @return the name value.
-     */
-    public String getName() {
-        return this.name;
+    public SynonymMap() {
+        format = "solr";
     }
 
     /**
@@ -79,6 +72,15 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
         this.format = "solr";
         this.name = name;
         this.synonyms = synonyms;
+    }
+
+    /**
+     * Get the name property: The name of the synonym map.
+     *
+     * @return the name value.
+     */
+    public String getName() {
+        return this.name;
     }
 
     /**

@@ -169,7 +169,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
                         reader.nextToken();
 
                         if ("mode".equals(fieldName)) {
-                            mode = reader.getNullable(enumReader -> IndexingMode.fromString(enumReader.getString()));
+                            mode = IndexingMode.fromString(reader.getString());
                         } else if ("allDocsInitialChangeTrackingState".equals(fieldName)) {
                             allDocsInitialChangeTrackingState = reader.getString();
                         } else if ("allDocsFinalChangeTrackingState".equals(fieldName)) {

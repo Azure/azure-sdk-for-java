@@ -178,7 +178,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
                         } else if ("pattern".equals(fieldName)) {
                             pattern = reader.getString();
                         } else if ("flags".equals(fieldName)) {
-                            flags = reader.getNullable(enumReader -> RegexFlags.fromString(enumReader.getString()));
+                            flags = RegexFlags.fromString(reader.getString());
                         } else if ("group".equals(fieldName)) {
                             group = reader.getNullable(JsonReader::getInt);
                         } else {

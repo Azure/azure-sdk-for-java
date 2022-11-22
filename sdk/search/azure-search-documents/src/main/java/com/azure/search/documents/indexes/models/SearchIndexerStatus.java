@@ -22,7 +22,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     /*
      * Overall indexer status.
      */
-    private IndexerStatus status;
+    private final IndexerStatus status;
 
     /*
      * The result of the most recent or an in-progress indexer execution.
@@ -32,15 +32,26 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     /*
      * History of the recent indexer executions, sorted in reverse chronological order.
      */
-    private List<IndexerExecutionResult> executionHistory;
+    private final List<IndexerExecutionResult> executionHistory;
 
     /*
      * The execution limits for the indexer.
      */
-    private SearchIndexerLimits limits;
+    private final SearchIndexerLimits limits;
 
-    /** Creates an instance of SearchIndexerStatus class. */
-    public SearchIndexerStatus() {}
+    /**
+     * Creates an instance of SearchIndexerStatus class.
+     *
+     * @param status the status value to set.
+     * @param executionHistory the executionHistory value to set.
+     * @param limits the limits value to set.
+     */
+    public SearchIndexerStatus(
+            IndexerStatus status, List<IndexerExecutionResult> executionHistory, SearchIndexerLimits limits) {
+        this.status = status;
+        this.executionHistory = executionHistory;
+        this.limits = limits;
+    }
 
     /**
      * Get the status property: Overall indexer status.
@@ -114,7 +125,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                         reader.nextToken();
 
                         if ("status".equals(fieldName)) {
-                            status = reader.getNullable(enumReader -> IndexerStatus.fromString(enumReader.getString()));
+                            status = IndexerStatus.fromString(reader.getString());
                             statusFound = true;
                         } else if ("executionHistory".equals(fieldName)) {
                             executionHistory = reader.readArray(reader1 -> IndexerExecutionResult.fromJson(reader1));
@@ -129,10 +140,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                         }
                     }
                     if (statusFound && executionHistoryFound && limitsFound) {
-                        SearchIndexerStatus deserializedValue = new SearchIndexerStatus();
-                        deserializedValue.status = status;
-                        deserializedValue.executionHistory = executionHistory;
-                        deserializedValue.limits = limits;
+                        SearchIndexerStatus deserializedValue =
+                                new SearchIndexerStatus(status, executionHistory, limits);
                         deserializedValue.lastResult = lastResult;
 
                         return deserializedValue;

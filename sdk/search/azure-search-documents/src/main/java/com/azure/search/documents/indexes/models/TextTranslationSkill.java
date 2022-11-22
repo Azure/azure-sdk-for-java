@@ -196,21 +196,12 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getString();
                         } else if ("defaultToLanguageCode".equals(fieldName)) {
-                            defaultToLanguageCode =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    TextTranslationSkillLanguage.fromString(enumReader.getString()));
+                            defaultToLanguageCode = TextTranslationSkillLanguage.fromString(reader.getString());
                             defaultToLanguageCodeFound = true;
                         } else if ("defaultFromLanguageCode".equals(fieldName)) {
-                            defaultFromLanguageCode =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    TextTranslationSkillLanguage.fromString(enumReader.getString()));
+                            defaultFromLanguageCode = TextTranslationSkillLanguage.fromString(reader.getString());
                         } else if ("suggestedFrom".equals(fieldName)) {
-                            suggestedFrom =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    TextTranslationSkillLanguage.fromString(enumReader.getString()));
+                            suggestedFrom = TextTranslationSkillLanguage.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

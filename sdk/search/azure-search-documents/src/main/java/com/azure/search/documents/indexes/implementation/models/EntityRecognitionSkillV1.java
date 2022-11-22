@@ -238,17 +238,9 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getString();
                         } else if ("categories".equals(fieldName)) {
-                            categories =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    EntityCategory.fromString(enumReader.getString())));
+                            categories = reader.readArray(reader1 -> EntityCategory.fromString(reader1.getString()));
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    EntityRecognitionSkillLanguage.fromString(enumReader.getString()));
+                            defaultLanguageCode = EntityRecognitionSkillLanguage.fromString(reader.getString());
                         } else if ("includeTypelessEntities".equals(fieldName)) {
                             includeTypelessEntities = reader.getNullable(JsonReader::getBoolean);
                         } else if ("minimumPrecision".equals(fieldName)) {

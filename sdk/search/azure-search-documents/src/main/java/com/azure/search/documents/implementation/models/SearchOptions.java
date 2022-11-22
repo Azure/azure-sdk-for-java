@@ -816,7 +816,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                         } else if ("OrderBy".equals(fieldName)) {
                             orderBy = reader.readArray(reader1 -> reader1.getString());
                         } else if ("queryType".equals(fieldName)) {
-                            queryType = reader.getNullable(enumReader -> QueryType.fromString(enumReader.getString()));
+                            queryType = QueryType.fromString(reader.getString());
                         } else if ("ScoringParameters".equals(fieldName)) {
                             scoringParameters = reader.readArray(reader1 -> reader1.getString());
                         } else if ("scoringProfile".equals(fieldName)) {
@@ -826,21 +826,15 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                         } else if ("searchFields".equals(fieldName)) {
                             searchFields = reader.readArray(reader1 -> reader1.getString());
                         } else if ("queryLanguage".equals(fieldName)) {
-                            queryLanguage =
-                                    reader.getNullable(enumReader -> QueryLanguage.fromString(enumReader.getString()));
+                            queryLanguage = QueryLanguage.fromString(reader.getString());
                         } else if ("speller".equals(fieldName)) {
-                            speller =
-                                    reader.getNullable(
-                                            enumReader -> QuerySpellerType.fromString(enumReader.getString()));
+                            speller = QuerySpellerType.fromString(reader.getString());
                         } else if ("answers".equals(fieldName)) {
                             answers = reader.getString();
                         } else if ("searchMode".equals(fieldName)) {
-                            searchMode =
-                                    reader.getNullable(enumReader -> SearchMode.fromString(enumReader.getString()));
+                            searchMode = SearchMode.fromString(reader.getString());
                         } else if ("scoringStatistics".equals(fieldName)) {
-                            scoringStatistics =
-                                    reader.getNullable(
-                                            enumReader -> ScoringStatistics.fromString(enumReader.getString()));
+                            scoringStatistics = ScoringStatistics.fromString(reader.getString());
                         } else if ("sessionId".equals(fieldName)) {
                             sessionId = reader.getString();
                         } else if ("$select".equals(fieldName)) {

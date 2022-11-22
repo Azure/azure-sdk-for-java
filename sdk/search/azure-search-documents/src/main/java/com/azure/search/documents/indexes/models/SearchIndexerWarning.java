@@ -26,7 +26,7 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
     /*
      * The message describing the warning that occurred while processing the item.
      */
-    private String message;
+    private final String message;
 
     /*
      * The name of the source at which the warning originated. For example, this could refer to a particular skill in
@@ -45,8 +45,14 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
      */
     private String documentationLink;
 
-    /** Creates an instance of SearchIndexerWarning class. */
-    public SearchIndexerWarning() {}
+    /**
+     * Creates an instance of SearchIndexerWarning class.
+     *
+     * @param message the message value to set.
+     */
+    public SearchIndexerWarning(String message) {
+        this.message = message;
+    }
 
     /**
      * Get the key property: The key of the item which generated a warning.
@@ -145,8 +151,7 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
                         }
                     }
                     if (messageFound) {
-                        SearchIndexerWarning deserializedValue = new SearchIndexerWarning();
-                        deserializedValue.message = message;
+                        SearchIndexerWarning deserializedValue = new SearchIndexerWarning(message);
                         deserializedValue.key = key;
                         deserializedValue.name = name;
                         deserializedValue.details = details;

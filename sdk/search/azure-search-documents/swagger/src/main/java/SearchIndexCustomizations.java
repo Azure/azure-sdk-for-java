@@ -42,7 +42,6 @@ public class SearchIndexCustomizations extends Customization {
         customizeAutocompleteOptions(packageCustomization.getClass("AutocompleteOptions"));
         customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
-        customizeIndexDocumentsResult(packageCustomization.getClass("IndexDocumentsResult"));
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
@@ -147,44 +146,6 @@ public class SearchIndexCustomizations extends Customization {
 
             field = clazz.getFieldByName("statusCode").get();
             field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
-
-            clazz.getDefaultConstructor().get().setModifiers(Modifier.Keyword.PRIVATE);
-
-            clazz.addConstructor(Modifier.Keyword.PUBLIC)
-                .addParameter("String", "key")
-                .addParameter("boolean", "succeeded")
-                .addParameter("int", "statusCode")
-                .setBody(new BlockStmt(new NodeList<>(
-                    StaticJavaParser.parseStatement("this.key = key;"),
-                    StaticJavaParser.parseStatement("this.succeeded = succeeded;"),
-                    StaticJavaParser.parseStatement("this.statusCode = statusCode;")
-                )))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Creates an instance of IndexingResult class",
-                    " * @param key the key value to set.",
-                    " * @param succeeded the succeeded value to set.",
-                    " * @param statusCode the statusCode value to set."
-                )));
-        });
-    }
-
-    private void customizeIndexDocumentsResult(ClassCustomization classCustomization) {
-        classCustomization.customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
-
-            clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE);
-
-            Javadoc ctorJavadoc = StaticJavaParser.parseJavadoc(joinWithNewline(
-                "/**",
-                "* Constructor of {@link IndexDocumentsResult}.",
-                "* @param results The list of status information for each document in the indexing request.",
-                "*/"
-            ));
-            clazz.addConstructor(Modifier.Keyword.PUBLIC)
-                .addParameter("List<IndexingResult>", "results")
-                .setJavadocComment(ctorJavadoc)
-                .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("this.results = results;"))));
         });
     }
 

@@ -21,27 +21,39 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
     /*
      * The token returned by the analyzer.
      */
-    private String token;
+    private final String token;
 
     /*
      * The index of the first character of the token in the input text.
      */
-    private int startOffset;
+    private final int startOffset;
 
     /*
      * The index of the last character of the token in the input text.
      */
-    private int endOffset;
+    private final int endOffset;
 
     /*
      * The position of the token in the input text relative to other tokens. The first token in the input text has
      * position 0, the next has position 1, and so on. Depending on the analyzer used, some tokens might have the same
      * position, for example if they are synonyms of each other.
      */
-    private int position;
+    private final int position;
 
-    /** Creates an instance of AnalyzedTokenInfo class. */
-    public AnalyzedTokenInfo() {}
+    /**
+     * Creates an instance of AnalyzedTokenInfo class.
+     *
+     * @param token the token value to set.
+     * @param startOffset the startOffset value to set.
+     * @param endOffset the endOffset value to set.
+     * @param position the position value to set.
+     */
+    public AnalyzedTokenInfo(String token, int startOffset, int endOffset, int position) {
+        this.token = token;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
+        this.position = position;
+    }
 
     /**
      * Get the token property: The token returned by the analyzer.
@@ -132,11 +144,8 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
                         }
                     }
                     if (tokenFound && startOffsetFound && endOffsetFound && positionFound) {
-                        AnalyzedTokenInfo deserializedValue = new AnalyzedTokenInfo();
-                        deserializedValue.token = token;
-                        deserializedValue.startOffset = startOffset;
-                        deserializedValue.endOffset = endOffset;
-                        deserializedValue.position = position;
+                        AnalyzedTokenInfo deserializedValue =
+                                new AnalyzedTokenInfo(token, startOffset, endOffset, position);
 
                         return deserializedValue;
                     }

@@ -90,10 +90,7 @@ public final class StemmerTokenFilter extends TokenFilter {
                             name = reader.getString();
                             nameFound = true;
                         } else if ("language".equals(fieldName)) {
-                            language =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    StemmerTokenFilterLanguage.fromString(enumReader.getString()));
+                            language = StemmerTokenFilterLanguage.fromString(reader.getString());
                             languageFound = true;
                         } else {
                             reader.skipChildren();

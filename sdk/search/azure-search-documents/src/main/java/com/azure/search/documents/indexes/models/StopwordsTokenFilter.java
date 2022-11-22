@@ -191,8 +191,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
                         } else if ("stopwords".equals(fieldName)) {
                             stopwords = reader.readArray(reader1 -> reader1.getString());
                         } else if ("stopwordsList".equals(fieldName)) {
-                            stopwordsList =
-                                    reader.getNullable(enumReader -> StopwordsList.fromString(enumReader.getString()));
+                            stopwordsList = StopwordsList.fromString(reader.getString());
                         } else if ("ignoreCase".equals(fieldName)) {
                             caseIgnored = reader.getNullable(JsonReader::getBoolean);
                         } else if ("removeTrailing".equals(fieldName)) {

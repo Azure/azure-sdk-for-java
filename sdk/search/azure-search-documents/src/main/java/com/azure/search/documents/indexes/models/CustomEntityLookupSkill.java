@@ -291,10 +291,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getString();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    CustomEntityLookupSkillLanguage.fromString(enumReader.getString()));
+                            defaultLanguageCode = CustomEntityLookupSkillLanguage.fromString(reader.getString());
                         } else if ("entitiesDefinitionUri".equals(fieldName)) {
                             entitiesDefinitionUri = reader.getString();
                         } else if ("inlineEntitiesDefinition".equals(fieldName)) {

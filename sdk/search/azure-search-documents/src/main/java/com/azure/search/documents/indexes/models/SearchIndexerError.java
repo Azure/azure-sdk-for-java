@@ -26,14 +26,14 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
     /*
      * The message describing the error that occurred while processing the item.
      */
-    private String errorMessage;
+    private final String errorMessage;
 
     /*
      * The status code indicating why the indexing operation failed. Possible values include: 400 for a malformed input
      * document, 404 for document not found, 409 for a version conflict, 422 when the index is temporarily unavailable,
      * or 503 for when the service is too busy.
      */
-    private int statusCode;
+    private final int statusCode;
 
     /*
      * The name of the source at which the error originated. For example, this could refer to a particular skill in the
@@ -52,8 +52,16 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      */
     private String documentationLink;
 
-    /** Creates an instance of SearchIndexerError class. */
-    public SearchIndexerError() {}
+    /**
+     * Creates an instance of SearchIndexerError class.
+     *
+     * @param errorMessage the errorMessage value to set.
+     * @param statusCode the statusCode value to set.
+     */
+    public SearchIndexerError(String errorMessage, int statusCode) {
+        this.errorMessage = errorMessage;
+        this.statusCode = statusCode;
+    }
 
     /**
      * Get the key property: The key of the item for which indexing failed.
@@ -169,9 +177,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
                         }
                     }
                     if (errorMessageFound && statusCodeFound) {
-                        SearchIndexerError deserializedValue = new SearchIndexerError();
-                        deserializedValue.errorMessage = errorMessage;
-                        deserializedValue.statusCode = statusCode;
+                        SearchIndexerError deserializedValue = new SearchIndexerError(errorMessage, statusCode);
                         deserializedValue.key = key;
                         deserializedValue.name = name;
                         deserializedValue.details = details;

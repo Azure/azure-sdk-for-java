@@ -92,10 +92,7 @@ public final class SnowballTokenFilter extends TokenFilter {
                             name = reader.getString();
                             nameFound = true;
                         } else if ("language".equals(fieldName)) {
-                            language =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    SnowballTokenFilterLanguage.fromString(enumReader.getString()));
+                            language = SnowballTokenFilterLanguage.fromString(reader.getString());
                             languageFound = true;
                         } else {
                             reader.skipChildren();

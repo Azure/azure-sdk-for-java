@@ -142,6 +142,7 @@ disable-client-builder: true
 require-x-ms-flattened-to-flatten: true
 pass-discriminator-to-child-deserialization: true
 stream-style-serialization: true
+include-read-only-in-constructor-args: true
 ```
 
 ### Set odata.metadata Accept header in operations

@@ -57,7 +57,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     /*
      * The sequence of results returned by the query.
      */
-    private List<SearchResult> results;
+    private final List<SearchResult> results;
 
     /*
      * Continuation URL returned when Azure Cognitive Search can't return all the requested results in a single Search
@@ -66,8 +66,14 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      */
     private String nextLink;
 
-    /** Creates an instance of SearchDocumentsResult class. */
-    public SearchDocumentsResult() {}
+    /**
+     * Creates an instance of SearchDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
+    public SearchDocumentsResult(List<SearchResult> results) {
+        this.results = results;
+    }
 
     /**
      * Get the count property: The total count of results found by the search operation, or null if the count was not
@@ -205,8 +211,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                         }
                     }
                     if (resultsFound) {
-                        SearchDocumentsResult deserializedValue = new SearchDocumentsResult();
-                        deserializedValue.results = results;
+                        SearchDocumentsResult deserializedValue = new SearchDocumentsResult(results);
                         deserializedValue.count = count;
                         deserializedValue.coverage = coverage;
                         deserializedValue.facets = facets;

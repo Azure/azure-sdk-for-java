@@ -23,6 +23,10 @@ public final class EffectiveNetworkSecurityGroups {
     @JsonProperty(value = "networkSecurityGroups")
     private List<String> networkSecurityGroups;
 
+    /** Creates an instance of EffectiveNetworkSecurityGroups class. */
+    public EffectiveNetworkSecurityGroups() {
+    }
+
     /**
      * Get the networkInterface property: The Azure resource ID of the network interface.
      *

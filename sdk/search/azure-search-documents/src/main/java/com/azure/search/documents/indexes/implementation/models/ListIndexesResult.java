@@ -22,10 +22,16 @@ public final class ListIndexesResult implements JsonSerializable<ListIndexesResu
     /*
      * The indexes in the Search service.
      */
-    private List<SearchIndex> indexes;
+    private final List<SearchIndex> indexes;
 
-    /** Creates an instance of ListIndexesResult class. */
-    public ListIndexesResult() {}
+    /**
+     * Creates an instance of ListIndexesResult class.
+     *
+     * @param indexes the indexes value to set.
+     */
+    public ListIndexesResult(List<SearchIndex> indexes) {
+        this.indexes = indexes;
+    }
 
     /**
      * Get the indexes property: The indexes in the Search service.
@@ -69,8 +75,7 @@ public final class ListIndexesResult implements JsonSerializable<ListIndexesResu
                         }
                     }
                     if (indexesFound) {
-                        ListIndexesResult deserializedValue = new ListIndexesResult();
-                        deserializedValue.indexes = indexes;
+                        ListIndexesResult deserializedValue = new ListIndexesResult(indexes);
 
                         return deserializedValue;
                     }

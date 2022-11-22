@@ -141,7 +141,7 @@ public interface ProjectEnvironmentType {
             /**
              * Specifies resourceGroupName, projectName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param projectName The name of the project.
              * @return the next definition stage.
              */

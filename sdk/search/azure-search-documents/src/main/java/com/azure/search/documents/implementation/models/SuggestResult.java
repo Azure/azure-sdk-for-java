@@ -23,15 +23,21 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
     /*
      * The text of the suggestion result.
      */
-    private String text;
+    private final String text;
 
     /*
      * A result containing a document found by a suggestion query, plus associated metadata.
      */
     private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SuggestResult class. */
-    public SuggestResult() {}
+    /**
+     * Creates an instance of SuggestResult class.
+     *
+     * @param text the text value to set.
+     */
+    public SuggestResult(String text) {
+        this.text = text;
+    }
 
     /**
      * Get the text property: The text of the suggestion result.
@@ -107,8 +113,7 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
                         }
                     }
                     if (textFound) {
-                        SuggestResult deserializedValue = new SuggestResult();
-                        deserializedValue.text = text;
+                        SuggestResult deserializedValue = new SuggestResult(text);
                         deserializedValue.additionalProperties = additionalProperties;
 
                         return deserializedValue;

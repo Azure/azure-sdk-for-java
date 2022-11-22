@@ -22,6 +22,10 @@ public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioning {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /** Creates an instance of DefenderFoDatabasesAwsOfferingArcAutoProvisioning class. */
+    public DefenderFoDatabasesAwsOfferingArcAutoProvisioning() {
+    }
+
     /**
      * Get the enabled property: Is arc auto provisioning enabled.
      *

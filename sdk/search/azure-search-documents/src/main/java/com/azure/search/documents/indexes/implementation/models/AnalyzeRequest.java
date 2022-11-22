@@ -217,32 +217,15 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                             text = reader.getString();
                             textFound = true;
                         } else if ("analyzer".equals(fieldName)) {
-                            analyzer =
-                                    reader.getNullable(
-                                            enumReader -> LexicalAnalyzerName.fromString(enumReader.getString()));
+                            analyzer = LexicalAnalyzerName.fromString(reader.getString());
                         } else if ("tokenizer".equals(fieldName)) {
-                            tokenizer =
-                                    reader.getNullable(
-                                            enumReader -> LexicalTokenizerName.fromString(enumReader.getString()));
+                            tokenizer = LexicalTokenizerName.fromString(reader.getString());
                         } else if ("normalizer".equals(fieldName)) {
-                            normalizer =
-                                    reader.getNullable(
-                                            enumReader -> LexicalNormalizerName.fromString(enumReader.getString()));
+                            normalizer = LexicalNormalizerName.fromString(reader.getString());
                         } else if ("tokenFilters".equals(fieldName)) {
-                            tokenFilters =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    TokenFilterName.fromString(
-                                                                            enumReader.getString())));
+                            tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
                         } else if ("charFilters".equals(fieldName)) {
-                            charFilters =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    CharFilterName.fromString(enumReader.getString())));
+                            charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
                         } else {
                             reader.skipChildren();
                         }

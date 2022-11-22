@@ -20,7 +20,7 @@ import java.util.List;
 public final class IndexingResult implements JsonSerializable<IndexingResult>, Serializable {
 
     /** The key of a document that was in the indexing request. */
-    private String key;
+    private final String key;
 
     /**
      * The error message explaining why the indexing operation failed for the document identified by the key; null if
@@ -29,17 +29,27 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
     private String errorMessage;
 
     /** A value indicating whether the indexing operation succeeded for the document identified by the key. */
-    private boolean succeeded;
+    private final boolean succeeded;
 
     /**
      * The status code of the indexing operation. Possible values include: 200 for a successful update or delete, 201
      * for successful document creation, 400 for a malformed input document, 404 for document not found, 409 for a
      * version conflict, 422 when the index is temporarily unavailable, or 503 for when the service is too busy.
      */
-    private int statusCode;
+    private final int statusCode;
 
-    /** Creates an instance of IndexingResult class. */
-    private IndexingResult() {}
+    /**
+     * Creates an instance of IndexingResult class.
+     *
+     * @param key the key value to set.
+     * @param succeeded the succeeded value to set.
+     * @param statusCode the statusCode value to set.
+     */
+    public IndexingResult(String key, boolean succeeded, int statusCode) {
+        this.key = key;
+        this.succeeded = succeeded;
+        this.statusCode = statusCode;
+    }
 
     /**
      * Get the key property: The key of a document that was in the indexing request.
@@ -130,10 +140,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
                         }
                     }
                     if (keyFound && succeededFound && statusCodeFound) {
-                        IndexingResult deserializedValue = new IndexingResult();
-                        deserializedValue.key = key;
-                        deserializedValue.succeeded = succeeded;
-                        deserializedValue.statusCode = statusCode;
+                        IndexingResult deserializedValue = new IndexingResult(key, succeeded, statusCode);
                         deserializedValue.errorMessage = errorMessage;
                         return deserializedValue;
                     }
@@ -153,17 +160,4 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
     }
 
     private static final long serialVersionUID = -8604424005271188140L;
-
-    /**
-     * /** Creates an instance of IndexingResult class
-     *
-     * @param key the key value to set.
-     * @param succeeded the succeeded value to set.
-     * @param statusCode the statusCode value to set.
-     */
-    public IndexingResult(String key, boolean succeeded, int statusCode) {
-        this.key = key;
-        this.succeeded = succeeded;
-        this.statusCode = statusCode;
-    }
 }

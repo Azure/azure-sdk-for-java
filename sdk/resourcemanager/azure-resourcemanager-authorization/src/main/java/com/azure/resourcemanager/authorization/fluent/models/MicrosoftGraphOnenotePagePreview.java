@@ -32,6 +32,10 @@ public final class MicrosoftGraphOnenotePagePreview {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOnenotePagePreview class. */
+    public MicrosoftGraphOnenotePagePreview() {
+    }
+
     /**
      * Get the links property: onenotePagePreviewLinks.
      *

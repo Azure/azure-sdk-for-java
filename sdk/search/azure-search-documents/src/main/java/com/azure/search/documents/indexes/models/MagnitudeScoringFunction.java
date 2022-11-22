@@ -107,10 +107,7 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
                             boost = reader.getDouble();
                             boostFound = true;
                         } else if ("interpolation".equals(jsonFieldName)) {
-                            interpolation =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    ScoringFunctionInterpolation.fromString(enumReader.getString()));
+                            interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
                         } else if ("magnitude".equals(jsonFieldName)) {
                             parameters = MagnitudeScoringParameters.fromJson(reader);
                             parametersFound = true;

@@ -167,25 +167,12 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
                             name = reader.getString();
                             nameFound = true;
                         } else if ("tokenizer".equals(fieldName)) {
-                            tokenizer =
-                                    reader.getNullable(
-                                            enumReader -> LexicalTokenizerName.fromString(enumReader.getString()));
+                            tokenizer = LexicalTokenizerName.fromString(reader.getString());
                             tokenizerFound = true;
                         } else if ("tokenFilters".equals(fieldName)) {
-                            tokenFilters =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    TokenFilterName.fromString(
-                                                                            enumReader.getString())));
+                            tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
                         } else if ("charFilters".equals(fieldName)) {
-                            charFilters =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    CharFilterName.fromString(enumReader.getString())));
+                            charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
                         } else {
                             reader.skipChildren();
                         }

@@ -22,10 +22,16 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
     /*
      * The skillsets defined in the Search service.
      */
-    private List<SearchIndexerSkillset> skillsets;
+    private final List<SearchIndexerSkillset> skillsets;
 
-    /** Creates an instance of ListSkillsetsResult class. */
-    public ListSkillsetsResult() {}
+    /**
+     * Creates an instance of ListSkillsetsResult class.
+     *
+     * @param skillsets the skillsets value to set.
+     */
+    public ListSkillsetsResult(List<SearchIndexerSkillset> skillsets) {
+        this.skillsets = skillsets;
+    }
 
     /**
      * Get the skillsets property: The skillsets defined in the Search service.
@@ -69,8 +75,7 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
                         }
                     }
                     if (skillsetsFound) {
-                        ListSkillsetsResult deserializedValue = new ListSkillsetsResult();
-                        deserializedValue.skillsets = skillsets;
+                        ListSkillsetsResult deserializedValue = new ListSkillsetsResult(skillsets);
 
                         return deserializedValue;
                     }

@@ -19,6 +19,10 @@ public final class MicrosoftGraphExtension extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphExtension class. */
+    public MicrosoftGraphExtension() {
+    }
+
     /**
      * Get the additionalProperties property: extension.
      *

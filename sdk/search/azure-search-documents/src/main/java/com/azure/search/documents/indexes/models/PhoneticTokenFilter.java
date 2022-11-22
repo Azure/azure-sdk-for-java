@@ -128,9 +128,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
                             name = reader.getString();
                             nameFound = true;
                         } else if ("encoder".equals(fieldName)) {
-                            encoder =
-                                    reader.getNullable(
-                                            enumReader -> PhoneticEncoder.fromString(enumReader.getString()));
+                            encoder = PhoneticEncoder.fromString(reader.getString());
                         } else if ("replace".equals(fieldName)) {
                             originalTokensReplaced = reader.getNullable(JsonReader::getBoolean);
                         } else {

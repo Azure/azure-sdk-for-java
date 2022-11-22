@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NotificationLevel. */
+/** The notification level. */
 public final class NotificationLevel extends ExpandableStringEnum<NotificationLevel> {
     /** Static value None for NotificationLevel. */
     public static final NotificationLevel NONE = fromString("None");
@@ -30,7 +30,11 @@ public final class NotificationLevel extends ExpandableStringEnum<NotificationLe
         return fromString(name, NotificationLevel.class);
     }
 
-    /** @return known NotificationLevel values. */
+    /**
+     * Gets known NotificationLevel values.
+     *
+     * @return known NotificationLevel values.
+     */
     public static Collection<NotificationLevel> values() {
         return values(NotificationLevel.class);
     }

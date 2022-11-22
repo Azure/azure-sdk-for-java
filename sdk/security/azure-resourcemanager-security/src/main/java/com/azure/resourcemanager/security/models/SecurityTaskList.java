@@ -24,6 +24,10 @@ public final class SecurityTaskList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SecurityTaskList class. */
+    public SecurityTaskList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

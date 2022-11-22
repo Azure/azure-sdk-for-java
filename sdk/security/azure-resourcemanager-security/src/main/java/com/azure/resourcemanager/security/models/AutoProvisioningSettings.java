@@ -34,17 +34,6 @@ public interface AutoProvisioningSettings {
      * Details of a specific setting.
      *
      * @param settingName Auto provisioning setting key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
-     */
-    AutoProvisioningSetting get(String settingName);
-
-    /**
-     * Details of a specific setting.
-     *
-     * @param settingName Auto provisioning setting key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,6 +41,17 @@ public interface AutoProvisioningSettings {
      * @return auto provisioning setting along with {@link Response}.
      */
     Response<AutoProvisioningSetting> getWithResponse(String settingName, Context context);
+
+    /**
+     * Details of a specific setting.
+     *
+     * @param settingName Auto provisioning setting key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return auto provisioning setting.
+     */
+    AutoProvisioningSetting get(String settingName);
 
     /**
      * Details of a specific setting.

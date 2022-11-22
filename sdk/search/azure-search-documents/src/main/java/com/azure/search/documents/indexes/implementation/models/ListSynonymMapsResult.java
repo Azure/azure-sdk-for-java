@@ -22,10 +22,16 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
     /*
      * The synonym maps in the Search service.
      */
-    private List<SynonymMap> synonymMaps;
+    private final List<SynonymMap> synonymMaps;
 
-    /** Creates an instance of ListSynonymMapsResult class. */
-    public ListSynonymMapsResult() {}
+    /**
+     * Creates an instance of ListSynonymMapsResult class.
+     *
+     * @param synonymMaps the synonymMaps value to set.
+     */
+    public ListSynonymMapsResult(List<SynonymMap> synonymMaps) {
+        this.synonymMaps = synonymMaps;
+    }
 
     /**
      * Get the synonymMaps property: The synonym maps in the Search service.
@@ -69,8 +75,7 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
                         }
                     }
                     if (synonymMapsFound) {
-                        ListSynonymMapsResult deserializedValue = new ListSynonymMapsResult();
-                        deserializedValue.synonymMaps = synonymMaps;
+                        ListSynonymMapsResult deserializedValue = new ListSynonymMapsResult(synonymMaps);
 
                         return deserializedValue;
                     }

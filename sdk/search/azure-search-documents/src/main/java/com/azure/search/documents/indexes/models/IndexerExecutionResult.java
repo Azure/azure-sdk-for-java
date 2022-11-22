@@ -23,7 +23,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     /*
      * The outcome of this indexer execution.
      */
-    private IndexerExecutionStatus status;
+    private final IndexerExecutionStatus status;
 
     /*
      * The outcome of this indexer execution.
@@ -53,23 +53,23 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     /*
      * The item-level indexing errors.
      */
-    private List<SearchIndexerError> errors;
+    private final List<SearchIndexerError> errors;
 
     /*
      * The item-level indexing warnings.
      */
-    private List<SearchIndexerWarning> warnings;
+    private final List<SearchIndexerWarning> warnings;
 
     /*
      * The number of items that were processed during this indexer execution. This includes both successfully processed
      * items and items where indexing was attempted but failed.
      */
-    private int itemCount;
+    private final int itemCount;
 
     /*
      * The number of items that failed to be indexed during this indexer execution.
      */
-    private int failedItemCount;
+    private final int failedItemCount;
 
     /*
      * Change tracking state with which an indexer execution started.
@@ -81,8 +81,27 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      */
     private String finalTrackingState;
 
-    /** Creates an instance of IndexerExecutionResult class. */
-    public IndexerExecutionResult() {}
+    /**
+     * Creates an instance of IndexerExecutionResult class.
+     *
+     * @param status the status value to set.
+     * @param errors the errors value to set.
+     * @param warnings the warnings value to set.
+     * @param itemCount the itemCount value to set.
+     * @param failedItemCount the failedItemCount value to set.
+     */
+    public IndexerExecutionResult(
+            IndexerExecutionStatus status,
+            List<SearchIndexerError> errors,
+            List<SearchIndexerWarning> warnings,
+            int itemCount,
+            int failedItemCount) {
+        this.status = status;
+        this.errors = errors;
+        this.warnings = warnings;
+        this.itemCount = itemCount;
+        this.failedItemCount = failedItemCount;
+    }
 
     /**
      * Get the status property: The outcome of this indexer execution.
@@ -245,9 +264,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                         reader.nextToken();
 
                         if ("status".equals(fieldName)) {
-                            status =
-                                    reader.getNullable(
-                                            enumReader -> IndexerExecutionStatus.fromString(enumReader.getString()));
+                            status = IndexerExecutionStatus.fromString(reader.getString());
                             statusFound = true;
                         } else if ("errors".equals(fieldName)) {
                             errors = reader.readArray(reader1 -> SearchIndexerError.fromJson(reader1));
@@ -262,10 +279,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                             failedItemCount = reader.getInt();
                             failedItemCountFound = true;
                         } else if ("statusDetail".equals(fieldName)) {
-                            statusDetail =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    IndexerExecutionStatusDetail.fromString(enumReader.getString()));
+                            statusDetail = IndexerExecutionStatusDetail.fromString(reader.getString());
                         } else if ("currentState".equals(fieldName)) {
                             currentState = IndexerCurrentState.fromJson(reader);
                         } else if ("errorMessage".equals(fieldName)) {
@@ -287,12 +301,8 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                         }
                     }
                     if (statusFound && errorsFound && warningsFound && itemCountFound && failedItemCountFound) {
-                        IndexerExecutionResult deserializedValue = new IndexerExecutionResult();
-                        deserializedValue.status = status;
-                        deserializedValue.errors = errors;
-                        deserializedValue.warnings = warnings;
-                        deserializedValue.itemCount = itemCount;
-                        deserializedValue.failedItemCount = failedItemCount;
+                        IndexerExecutionResult deserializedValue =
+                                new IndexerExecutionResult(status, errors, warnings, itemCount, failedItemCount);
                         deserializedValue.statusDetail = statusDetail;
                         deserializedValue.currentState = currentState;
                         deserializedValue.errorMessage = errorMessage;

@@ -165,11 +165,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
                         } else if ("isSearchTokenizer".equals(fieldName)) {
                             isSearchTokenizerUsed = reader.getNullable(JsonReader::getBoolean);
                         } else if ("language".equals(fieldName)) {
-                            language =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    MicrosoftStemmingTokenizerLanguage.fromString(
-                                                            enumReader.getString()));
+                            language = MicrosoftStemmingTokenizerLanguage.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

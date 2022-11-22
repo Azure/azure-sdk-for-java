@@ -22,10 +22,16 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
     /*
      * The datasources in the Search service.
      */
-    private List<SearchIndexerDataSourceConnection> dataSources;
+    private final List<SearchIndexerDataSourceConnection> dataSources;
 
-    /** Creates an instance of ListDataSourcesResult class. */
-    public ListDataSourcesResult() {}
+    /**
+     * Creates an instance of ListDataSourcesResult class.
+     *
+     * @param dataSources the dataSources value to set.
+     */
+    public ListDataSourcesResult(List<SearchIndexerDataSourceConnection> dataSources) {
+        this.dataSources = dataSources;
+    }
 
     /**
      * Get the dataSources property: The datasources in the Search service.
@@ -70,8 +76,7 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
                         }
                     }
                     if (dataSourcesFound) {
-                        ListDataSourcesResult deserializedValue = new ListDataSourcesResult();
-                        deserializedValue.dataSources = dataSources;
+                        ListDataSourcesResult deserializedValue = new ListDataSourcesResult(dataSources);
 
                         return deserializedValue;
                     }

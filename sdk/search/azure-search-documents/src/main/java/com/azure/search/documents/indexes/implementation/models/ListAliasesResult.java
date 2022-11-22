@@ -22,10 +22,16 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
     /*
      * The aliases in the Search service.
      */
-    private List<SearchAlias> aliases;
+    private final List<SearchAlias> aliases;
 
-    /** Creates an instance of ListAliasesResult class. */
-    public ListAliasesResult() {}
+    /**
+     * Creates an instance of ListAliasesResult class.
+     *
+     * @param aliases the aliases value to set.
+     */
+    public ListAliasesResult(List<SearchAlias> aliases) {
+        this.aliases = aliases;
+    }
 
     /**
      * Get the aliases property: The aliases in the Search service.
@@ -69,8 +75,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
                         }
                     }
                     if (aliasesFound) {
-                        ListAliasesResult deserializedValue = new ListAliasesResult();
-                        deserializedValue.aliases = aliases;
+                        ListAliasesResult deserializedValue = new ListAliasesResult(aliases);
 
                         return deserializedValue;
                     }

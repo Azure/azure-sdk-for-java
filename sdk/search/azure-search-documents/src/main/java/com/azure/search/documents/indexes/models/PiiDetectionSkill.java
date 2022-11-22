@@ -326,10 +326,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                         } else if ("minimumPrecision".equals(fieldName)) {
                             minimumPrecision = reader.getNullable(JsonReader::getDouble);
                         } else if ("maskingMode".equals(fieldName)) {
-                            maskingMode =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    PiiDetectionSkillMaskingMode.fromString(enumReader.getString()));
+                            maskingMode = PiiDetectionSkillMaskingMode.fromString(reader.getString());
                         } else if ("maskingCharacter".equals(fieldName)) {
                             maskingCharacter = reader.getString();
                         } else if ("modelVersion".equals(fieldName)) {

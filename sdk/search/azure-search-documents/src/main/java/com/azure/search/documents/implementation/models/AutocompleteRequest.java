@@ -342,9 +342,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
                             suggesterName = reader.getString();
                             suggesterNameFound = true;
                         } else if ("autocompleteMode".equals(fieldName)) {
-                            autocompleteMode =
-                                    reader.getNullable(
-                                            enumReader -> AutocompleteMode.fromString(enumReader.getString()));
+                            autocompleteMode = AutocompleteMode.fromString(reader.getString());
                         } else if ("filter".equals(fieldName)) {
                             filter = reader.getString();
                         } else if ("fuzzy".equals(fieldName)) {

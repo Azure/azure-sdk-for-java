@@ -197,14 +197,11 @@ public final class OcrSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getString();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    reader.getNullable(
-                                            enumReader -> OcrSkillLanguage.fromString(enumReader.getString()));
+                            defaultLanguageCode = OcrSkillLanguage.fromString(reader.getString());
                         } else if ("detectOrientation".equals(fieldName)) {
                             shouldDetectOrientation = reader.getNullable(JsonReader::getBoolean);
                         } else if ("lineEnding".equals(fieldName)) {
-                            lineEnding =
-                                    reader.getNullable(enumReader -> LineEnding.fromString(enumReader.getString()));
+                            lineEnding = LineEnding.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

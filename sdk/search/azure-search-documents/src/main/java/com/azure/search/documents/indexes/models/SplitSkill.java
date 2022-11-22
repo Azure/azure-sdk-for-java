@@ -192,12 +192,9 @@ public final class SplitSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getString();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    reader.getNullable(
-                                            enumReader -> SplitSkillLanguage.fromString(enumReader.getString()));
+                            defaultLanguageCode = SplitSkillLanguage.fromString(reader.getString());
                         } else if ("textSplitMode".equals(fieldName)) {
-                            textSplitMode =
-                                    reader.getNullable(enumReader -> TextSplitMode.fromString(enumReader.getString()));
+                            textSplitMode = TextSplitMode.fromString(reader.getString());
                         } else if ("maximumPageLength".equals(fieldName)) {
                             maximumPageLength = reader.getNullable(JsonReader::getInt);
                         } else {

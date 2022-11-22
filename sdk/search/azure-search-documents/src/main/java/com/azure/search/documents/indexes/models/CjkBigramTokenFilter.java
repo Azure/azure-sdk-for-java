@@ -136,11 +136,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
                         } else if ("ignoreScripts".equals(fieldName)) {
                             ignoreScripts =
                                     reader.readArray(
-                                            reader1 ->
-                                                    reader1.getNullable(
-                                                            enumReader ->
-                                                                    CjkBigramTokenFilterScripts.fromString(
-                                                                            enumReader.getString())));
+                                            reader1 -> CjkBigramTokenFilterScripts.fromString(reader1.getString()));
                         } else if ("outputUnigrams".equals(fieldName)) {
                             outputUnigrams = reader.getNullable(JsonReader::getBoolean);
                         } else {

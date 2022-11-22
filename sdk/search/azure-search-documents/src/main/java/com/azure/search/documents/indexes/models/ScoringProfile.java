@@ -159,10 +159,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
                         } else if ("functions".equals(fieldName)) {
                             functions = reader.readArray(reader1 -> ScoringFunction.fromJson(reader1));
                         } else if ("functionAggregation".equals(fieldName)) {
-                            functionAggregation =
-                                    reader.getNullable(
-                                            enumReader ->
-                                                    ScoringFunctionAggregation.fromString(enumReader.getString()));
+                            functionAggregation = ScoringFunctionAggregation.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

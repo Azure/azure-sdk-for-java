@@ -24,6 +24,10 @@ public final class JitNetworkAccessRequestVirtualMachine {
     @JsonProperty(value = "ports", required = true)
     private List<JitNetworkAccessRequestPort> ports;
 
+    /** Creates an instance of JitNetworkAccessRequestVirtualMachine class. */
+    public JitNetworkAccessRequestVirtualMachine() {
+    }
+
     /**
      * Get the id property: Resource ID of the virtual machine that is linked to this policy.
      *
