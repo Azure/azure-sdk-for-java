@@ -122,6 +122,9 @@ public final class SearchIndex {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
+    /** Creates an instance of SearchIndex class. */
+    public SearchIndex() {}
+
     /**
      * Get the name property: The name of the index.
      *

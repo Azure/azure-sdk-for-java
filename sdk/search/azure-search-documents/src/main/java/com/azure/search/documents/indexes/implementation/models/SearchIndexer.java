@@ -103,6 +103,9 @@ public final class SearchIndexer {
     @JsonProperty(value = "cache")
     private SearchIndexerCache cache;
 
+    /** Creates an instance of SearchIndexer class. */
+    public SearchIndexer() {}
+
     /**
      * Get the name property: The name of the indexer.
      *

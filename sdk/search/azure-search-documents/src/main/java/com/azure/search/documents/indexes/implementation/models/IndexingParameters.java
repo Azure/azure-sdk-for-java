@@ -41,6 +41,9 @@ public final class IndexingParameters {
     @JsonProperty(value = "configuration")
     private IndexingParametersConfiguration configuration;
 
+    /** Creates an instance of IndexingParameters class. */
+    public IndexingParameters() {}
+
     /**
      * Get the batchSize property: The number of items that are read from the data source and indexed as a single batch
      * in order to improve performance. The default depends on the data source type.

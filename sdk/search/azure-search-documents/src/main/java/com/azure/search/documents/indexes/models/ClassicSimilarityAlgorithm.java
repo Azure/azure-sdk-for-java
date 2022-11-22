@@ -31,4 +31,7 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
     @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
+
+    /** Creates an instance of ClassicSimilarityAlgorithm class. */
+    public ClassicSimilarityAlgorithm() {}
 }

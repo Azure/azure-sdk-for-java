@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -32,16 +31,8 @@ public final class SearchError {
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchError> details;
 
-    /**
-     * Creates an instance of SearchError class.
-     *
-     * @param message the message value to set.
-     */
-    @JsonCreator
-    public SearchError(
-            @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
-        this.message = message;
-    }
+    /** Creates an instance of SearchError class. */
+    public SearchError() {}
 
     /**
      * Get the code property: One of a server-defined set of error codes.

@@ -6,7 +6,7 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.search.documents.indexes.models.SnowballTokenFilterLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         property = "@odata.type",
         visible = true)
 @JsonTypeName("#Microsoft.Azure.Search.SnowballTokenFilter")
-@Fluent
+@Immutable
 public final class SnowballTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.

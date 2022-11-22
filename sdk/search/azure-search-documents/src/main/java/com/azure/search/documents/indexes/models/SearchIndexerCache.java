@@ -24,6 +24,9 @@ public final class SearchIndexerCache {
     @JsonProperty(value = "enableReprocessing")
     private Boolean enableReprocessing;
 
+    /** Creates an instance of SearchIndexerCache class. */
+    public SearchIndexerCache() {}
+
     /**
      * Get the storageConnectionString property: The connection string to the storage account where the cache data will
      * be persisted.

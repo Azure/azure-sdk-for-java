@@ -5,7 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeId;
@@ -24,7 +24,7 @@ import java.util.List;
         property = "@odata.type",
         visible = true)
 @JsonTypeName("#Microsoft.Azure.Search.MappingCharFilter")
-@Fluent
+@Immutable
 public final class MappingCharFilter extends CharFilter {
 
     /*

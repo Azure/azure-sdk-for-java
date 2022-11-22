@@ -137,6 +137,9 @@ public final class IndexingParametersConfiguration {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IndexingParametersConfiguration class. */
+    public IndexingParametersConfiguration() {}
+
     /**
      * Get the parsingMode property: Represents the parsing mode for indexing from an Azure blob data source.
      *

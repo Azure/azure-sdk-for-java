@@ -192,6 +192,9 @@ public final class SearchOptions {
     @JsonProperty(value = "semanticFields")
     private List<String> semanticFields;
 
+    /** Creates an instance of SearchOptions class. */
+    public SearchOptions() {}
+
     /**
      * Get the includeTotalCount property: A value that specifies whether to fetch the total count of results. Default
      * is false. Setting this value to true may have a performance impact. Note that the count returned is an

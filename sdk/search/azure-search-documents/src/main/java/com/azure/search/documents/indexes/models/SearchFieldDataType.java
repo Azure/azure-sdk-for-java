@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SearchFieldDataType. */
+/** Defines the data type of a field in a search index. */
 public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldDataType> {
 
     /** Static value Edm.String for SearchFieldDataType. */

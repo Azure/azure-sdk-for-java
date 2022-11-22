@@ -19,6 +19,9 @@ public final class SemanticSettings {
     @JsonProperty(value = "configurations")
     private List<SemanticConfiguration> configurations;
 
+    /** Creates an instance of SemanticSettings class. */
+    public SemanticSettings() {}
+
     /**
      * Get the configurations property: The semantic configurations for the index.
      *

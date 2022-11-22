@@ -30,4 +30,7 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
     @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
+
+    /** Creates an instance of SqlIntegratedChangeTrackingPolicy class. */
+    public SqlIntegratedChangeTrackingPolicy() {}
 }

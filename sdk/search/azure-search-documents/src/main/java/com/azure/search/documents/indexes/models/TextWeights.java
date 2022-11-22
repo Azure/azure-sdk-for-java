@@ -6,13 +6,13 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Defines weights on index fields for which matches should boost scoring in search queries. */
-@Fluent
+@Immutable
 public final class TextWeights {
     /*
      * The dictionary of per-field weights to boost document scoring. The keys are field names and the values are the

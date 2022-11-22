@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImageAnalysisSkillLanguage. */
+/** The language codes supported for input by ImageAnalysisSkill. */
 public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<ImageAnalysisSkillLanguage> {
     /** Static value ar for ImageAnalysisSkillLanguage. */
     public static final ImageAnalysisSkillLanguage AR = fromString("ar");

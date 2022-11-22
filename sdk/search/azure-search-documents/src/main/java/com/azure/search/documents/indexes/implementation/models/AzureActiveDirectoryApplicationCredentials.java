@@ -29,6 +29,9 @@ public final class AzureActiveDirectoryApplicationCredentials {
     @JsonProperty(value = "applicationSecret")
     private String applicationSecret;
 
+    /** Creates an instance of AzureActiveDirectoryApplicationCredentials class. */
+    public AzureActiveDirectoryApplicationCredentials() {}
+
     /**
      * Get the applicationId property: An AAD Application ID that was granted the required access permissions to the
      * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused

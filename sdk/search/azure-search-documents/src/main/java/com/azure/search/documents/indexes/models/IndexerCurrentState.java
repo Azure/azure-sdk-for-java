@@ -57,6 +57,9 @@ public final class IndexerCurrentState {
     @JsonProperty(value = "resetDatasourceDocumentIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> resetDatasourceDocumentIds;
 
+    /** Creates an instance of IndexerCurrentState class. */
+    public IndexerCurrentState() {}
+
     /**
      * Get the mode property: The mode the indexer is running in.
      *

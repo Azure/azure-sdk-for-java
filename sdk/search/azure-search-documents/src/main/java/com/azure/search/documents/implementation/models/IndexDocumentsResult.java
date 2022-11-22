@@ -27,8 +27,8 @@ public final class IndexDocumentsResult {
      */
     @JsonCreator
     public IndexDocumentsResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<IndexingResult> results) {
+        @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            List<IndexingResult> results) {
         this.results = results;
     }
 

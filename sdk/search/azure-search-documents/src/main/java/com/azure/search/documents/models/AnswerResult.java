@@ -52,6 +52,9 @@ public final class AnswerResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of AnswerResult class. */
+    public AnswerResult() {}
+
     /**
      * Get the score property: The score value represents how relevant the answer is to the query relative to other
      * answers returned for the query.

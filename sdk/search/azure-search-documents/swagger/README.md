@@ -111,7 +111,7 @@ This swagger is ready for C# and Java.
 output-folder: ../
 java: true
 use: '@autorest/java@4.1.2'
-sync-methods: none
+enable-sync-stack: true
 generate-client-interfaces: false
 context-client-method-parameter: true
 generate-client-as-impl: true

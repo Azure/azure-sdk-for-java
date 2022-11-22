@@ -43,6 +43,9 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     @JsonProperty(value = "softDeleteMarkerValue")
     private String softDeleteMarkerValue;
 
+    /** Creates an instance of SoftDeleteColumnDeletionDetectionPolicy class. */
+    public SoftDeleteColumnDeletionDetectionPolicy() {}
+
     /**
      * Get the softDeleteColumnName property: The name of the column to use for soft-deletion detection.
      *

@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VisualFeature. */
+/** The strings indicating what visual feature types to return. */
 public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
     /** Static value adult for VisualFeature. */
     public static final VisualFeature ADULT = fromString("adult");
