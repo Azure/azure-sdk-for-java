@@ -539,7 +539,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return this.queryInfo;
     }
 
-    QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
+    public QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
         return queryPlanDiagnosticsContext;
     }
 

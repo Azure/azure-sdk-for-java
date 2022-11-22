@@ -43,7 +43,7 @@ public final class CosmosDiagnostics {
         this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
     }
 
-    CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
+    public CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.feedResponseDiagnostics = feedResponseDiagnostics;
     }
@@ -142,7 +142,7 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getContactedRegionNames();
     }
 
-    FeedResponseDiagnostics getFeedResponseDiagnostics() {
+    public FeedResponseDiagnostics getFeedResponseDiagnostics() {
         return feedResponseDiagnostics;
     }
 

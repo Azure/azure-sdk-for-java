@@ -104,6 +104,7 @@ import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.models.ModelBridgeInternal.getQueryPlanDiagnosticsContext;
 import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
 
 /**
@@ -2269,10 +2270,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<T> finalList = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
                                 ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                                List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
+                                QueryInfo.QueryPlanDiagnosticsContext firstQueryPlanDiagnosticContext = null;
                                 double requestCharge = 0;
                                 for (FeedResponse<Document> page : feedList) {
                                     ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
                                         ModelBridgeInternal.queryMetrics(page);
+                                    FeedResponseDiagnostics pageDiagnostics = page.getCosmosDiagnostics().getFeedResponseDiagnostics();
                                     if (pageQueryMetrics != null) {
                                         pageQueryMetrics.forEach(
                                             aggregatedQueryMetrics::putIfAbsent);
@@ -2282,11 +2286,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                    aggregateRequestStatistics.addAll(pageDiagnostics.getClientSideRequestStatisticsList());
+                                    if (firstQueryPlanDiagnosticContext == null)
+                                        firstQueryPlanDiagnosticContext = page.getQueryPlanDiagnosticsContext();
                                 }
+                                FeedResponseDiagnostics aggregateFeedResponseDiagnostics = new FeedResponseDiagnostics(aggregatedQueryMetrics);
+                                aggregateFeedResponseDiagnostics.addClientSideRequestStatistics(aggregateRequestStatistics);
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
                                 FeedResponse<T> frp = BridgeInternal
-                                    .createFeedResponse(finalList, headers);
+                                    .createFeedResponseWithQueryMetrics(
+                                        finalList,
+                                        headers,
+                                        aggregatedQueryMetrics,
+                                        firstQueryPlanDiagnosticContext,
+                                        false,
+                                        false,
+                                        new CosmosDiagnostics(aggregateFeedResponseDiagnostics));
                                 return frp;
                             });
                     });
