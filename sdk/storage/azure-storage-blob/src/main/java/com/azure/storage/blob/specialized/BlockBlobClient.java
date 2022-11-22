@@ -32,17 +32,12 @@ import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -481,12 +476,14 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
-        try {
-            return blockWithOptionalTimeout(upload, timeout);
-        } catch (UncheckedIOException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        return client.uploadWithResponseSync(options, context);
+
+        // TODO: Execute this in a thread with a timeout.
+//        try {
+//            return blockWithOptionalTimeout(upload, timeout);
+//        } catch (UncheckedIOException e) {
+//            throw LOGGER.logExceptionAsError(e);
+//        }
     }
 
     /**
@@ -595,12 +592,15 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
                                                              Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadFromUrlWithResponse(options, context);
-        try {
-            return blockWithOptionalTimeout(upload, timeout);
-        } catch (UncheckedIOException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        return client.uploadFromUrlWithResponseSync(options, context);
+
+        // TODO: Execute this in a thread with a timeout.
+
+//        try {
+//            return blockWithOptionalTimeout(upload, timeout);
+//        } catch (UncheckedIOException e) {
+//            throw LOGGER.logExceptionAsError(e);
+//        }
     }
 
     /**
@@ -692,12 +692,10 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
-
-        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
-            fbb.subscribeOn(Schedulers.boundedElastic()), length, contentMd5, leaseId, context);
-        return blockWithOptionalTimeout(response, timeout);
+        // TODO: Execute this in a thread with a timeout.
+        return client.stageBlockWithResponseSync(base64BlockId,
+            BinaryData.fromStream(data, length), contentMd5, leaseId, context);
+        // return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -731,9 +729,10 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
         Objects.requireNonNull(options, "options must not be null");
-        Mono<Response<Void>> response = client.stageBlockWithResponse(
+        // TODO: Execute this in a thread with a timeout.
+        return client.stageBlockWithResponseSync(
             options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(), context);
-        return blockWithOptionalTimeout(response, timeout);
+//        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -840,8 +839,9 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
         Context context) {
-        Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(options, context);
-        return blockWithOptionalTimeout(response, timeout);
+        // TODO: Execute this in a thread with a timeout.
+        return client.stageBlockFromUrlWithResponseSync(options, context);
+//        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -934,7 +934,9 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
         Context context) {
-        return blockWithOptionalTimeout(client.listBlocksWithResponse(options, context), timeout);
+        // TODO: Execute this in a thread with a timeout.
+        return client.listBlocksWithResponseSync(options, context);
+//        return blockWithOptionalTimeout(, timeout);
     }
 
     /**
@@ -1089,9 +1091,9 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Duration timeout, Context context) {
-        Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
+        // TODO: Execute this in a thread with a timeout.
+        return client.commitBlockListWithResponseSync(
             options, context);
-
-        return blockWithOptionalTimeout(response, timeout);
+//        return blockWithOptionalTimeout(response, timeout);
     }
 }
