@@ -806,9 +806,10 @@ class FileAPITests extends APISpec {
         }
 
         when:
-        fileClient.downloadToFile(outFile.toPath().toString())
+        def response = fileClient.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null)
 
         then:
+        System.out.println(response.getStatusCode())
         compareFiles(file, outFile, 0, fileSize)
 
         cleanup:
