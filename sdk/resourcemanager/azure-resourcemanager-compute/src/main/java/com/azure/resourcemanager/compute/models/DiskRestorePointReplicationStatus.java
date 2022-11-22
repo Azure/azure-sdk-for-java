@@ -22,6 +22,10 @@ public final class DiskRestorePointReplicationStatus {
     @JsonProperty(value = "completionPercent")
     private Integer completionPercent;
 
+    /** Creates an instance of DiskRestorePointReplicationStatus class. */
+    public DiskRestorePointReplicationStatus() {
+    }
+
     /**
      * Get the status property: The resource status information.
      *

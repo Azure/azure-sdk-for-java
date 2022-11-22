@@ -59,7 +59,7 @@ public final class SecurityConnectorApplicationsClientImpl implements SecurityCo
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
-    private interface SecurityConnectorApplicationsService {
+    public interface SecurityConnectorApplicationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"

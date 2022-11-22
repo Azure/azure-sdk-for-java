@@ -69,6 +69,10 @@ public final class RoleManagementPolicyProperties {
     @JsonProperty(value = "policyProperties", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyProperties policyProperties;
 
+    /** Creates an instance of RoleManagementPolicyProperties class. */
+    public RoleManagementPolicyProperties() {
+    }
+
     /**
      * Get the scope property: The role management policy scope.
      *

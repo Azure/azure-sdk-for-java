@@ -33,9 +33,8 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     private Base64Url content;
 
     /*
-     * An eTag for the content of the item. This eTag is not changed if only
-     * the metadata is changed. Note This property is not returned if the item
-     * is a folder. Read-only.
+     * An eTag for the content of the item. This eTag is not changed if only the metadata is changed. Note This
+     * property is not returned if the item is a folder. Read-only.
      */
     @JsonProperty(value = "cTag")
     private String cTag;
@@ -168,8 +167,8 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     private MicrosoftGraphItemAnalytics analytics;
 
     /*
-     * Collection containing Item objects for the immediate children of Item.
-     * Only items representing folders have children. Read-only. Nullable.
+     * Collection containing Item objects for the immediate children of Item. Only items representing folders have
+     * children. Read-only. Nullable.
      */
     @JsonProperty(value = "children")
     private List<MicrosoftGraphDriveItem> children;
@@ -187,22 +186,21 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     private List<MicrosoftGraphPermission> permissions;
 
     /*
-     * The set of subscriptions on the item. Only supported on the root of a
-     * drive.
+     * The set of subscriptions on the item. Only supported on the root of a drive.
      */
     @JsonProperty(value = "subscriptions")
     private List<MicrosoftGraphSubscription> subscriptions;
 
     /*
-     * Collection containing [ThumbnailSet][] objects associated with the item.
-     * For more info, see [getting thumbnails][]. Read-only. Nullable.
+     * Collection containing [ThumbnailSet][] objects associated with the item. For more info, see [getting
+     * thumbnails][]. Read-only. Nullable.
      */
     @JsonProperty(value = "thumbnails")
     private List<MicrosoftGraphThumbnailSet> thumbnails;
 
     /*
-     * The list of previous versions of the item. For more info, see [getting
-     * previous versions][]. Read-only. Nullable.
+     * The list of previous versions of the item. For more info, see [getting previous versions][]. Read-only.
+     * Nullable.
      */
     @JsonProperty(value = "versions")
     private List<MicrosoftGraphDriveItemVersion> versions;
@@ -211,6 +209,10 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      * driveItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDriveItem class. */
+    public MicrosoftGraphDriveItem() {
+    }
 
     /**
      * Get the audio property: audio.

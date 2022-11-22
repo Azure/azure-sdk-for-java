@@ -15,6 +15,7 @@ import com.azure.resourcemanager.signalr.models.ManagedIdentityType;
 import com.azure.resourcemanager.signalr.models.NetworkAcl;
 import com.azure.resourcemanager.signalr.models.PrivateEndpointAcl;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
+import com.azure.resourcemanager.signalr.models.ServerlessSettings;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.SignalRCorsSettings;
 import com.azure.resourcemanager.signalr.models.SignalRFeature;
@@ -33,7 +34,7 @@ import java.util.Map;
 /** Samples for SignalR Update. */
 public final class SignalRUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Update.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalR_Update.json
      */
     /**
      * Sample code: SignalR_Update.
@@ -77,6 +78,7 @@ public final class SignalRUpdateSamples {
                     .withCategories(
                         Arrays.asList(new LiveTraceCategory().withName("ConnectivityLogs").withEnabled("true"))))
             .withCors(new SignalRCorsSettings().withAllowedOrigins(Arrays.asList("https://foo.com", "https://bar.com")))
+            .withServerless(new ServerlessSettings().withConnectionTimeoutInSeconds(5))
             .withUpstream(
                 new ServerlessUpstreamSettings()
                     .withTemplates(

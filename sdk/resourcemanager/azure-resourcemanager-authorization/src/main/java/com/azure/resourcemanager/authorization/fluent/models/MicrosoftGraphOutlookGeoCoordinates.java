@@ -16,9 +16,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphOutlookGeoCoordinates {
     /*
-     * The accuracy of the latitude and longitude. As an example, the accuracy
-     * can be measured in meters, such as the latitude and longitude are
-     * accurate to within 50 meters.
+     * The accuracy of the latitude and longitude. As an example, the accuracy can be measured in meters, such as the
+     * latitude and longitude are accurate to within 50 meters.
      */
     @JsonProperty(value = "accuracy")
     private Double accuracy;
@@ -51,6 +50,10 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
      * outlookGeoCoordinates
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOutlookGeoCoordinates class. */
+    public MicrosoftGraphOutlookGeoCoordinates() {
+    }
 
     /**
      * Get the accuracy property: The accuracy of the latitude and longitude. As an example, the accuracy can be

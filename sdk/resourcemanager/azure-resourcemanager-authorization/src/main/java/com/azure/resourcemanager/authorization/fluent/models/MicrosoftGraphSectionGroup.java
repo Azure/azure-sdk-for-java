@@ -18,15 +18,14 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntityHierarchyModel {
     /*
-     * The URL for the sectionGroups navigation property, which returns all the
-     * section groups in the section group. Read-only.
+     * The URL for the sectionGroups navigation property, which returns all the section groups in the section group.
+     * Read-only.
      */
     @JsonProperty(value = "sectionGroupsUrl")
     private String sectionGroupsUrl;
 
     /*
-     * The URL for the sections navigation property, which returns all the
-     * sections in the section group. Read-only.
+     * The URL for the sections navigation property, which returns all the sections in the section group. Read-only.
      */
     @JsonProperty(value = "sectionsUrl")
     private String sectionsUrl;
@@ -59,6 +58,10 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
      * sectionGroup
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSectionGroup class. */
+    public MicrosoftGraphSectionGroup() {
+    }
 
     /**
      * Get the sectionGroupsUrl property: The URL for the sectionGroups navigation property, which returns all the

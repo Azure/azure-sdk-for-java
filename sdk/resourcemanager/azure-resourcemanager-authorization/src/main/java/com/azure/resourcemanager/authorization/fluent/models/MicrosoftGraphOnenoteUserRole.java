@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphOnenoteUserRole. */
+/** onenoteUserRole. */
 public final class MicrosoftGraphOnenoteUserRole extends ExpandableStringEnum<MicrosoftGraphOnenoteUserRole> {
     /** Static value None for MicrosoftGraphOnenoteUserRole. */
     public static final MicrosoftGraphOnenoteUserRole NONE = fromString("None");
@@ -33,7 +33,11 @@ public final class MicrosoftGraphOnenoteUserRole extends ExpandableStringEnum<Mi
         return fromString(name, MicrosoftGraphOnenoteUserRole.class);
     }
 
-    /** @return known MicrosoftGraphOnenoteUserRole values. */
+    /**
+     * Gets known MicrosoftGraphOnenoteUserRole values.
+     *
+     * @return known MicrosoftGraphOnenoteUserRole values.
+     */
     public static Collection<MicrosoftGraphOnenoteUserRole> values() {
         return values(MicrosoftGraphOnenoteUserRole.class);
     }

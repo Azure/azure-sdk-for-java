@@ -20,6 +20,10 @@ public final class RoleManagementPolicyApprovalRule extends RoleManagementPolicy
     @JsonProperty(value = "setting")
     private ApprovalSettings setting;
 
+    /** Creates an instance of RoleManagementPolicyApprovalRule class. */
+    public RoleManagementPolicyApprovalRule() {
+    }
+
     /**
      * Get the setting property: The approval setting.
      *

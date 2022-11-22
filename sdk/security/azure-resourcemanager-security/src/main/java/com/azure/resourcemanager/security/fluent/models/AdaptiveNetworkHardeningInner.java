@@ -21,6 +21,10 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AdaptiveNetworkHardeningProperties innerProperties;
 
+    /** Creates an instance of AdaptiveNetworkHardeningInner class. */
+    public AdaptiveNetworkHardeningInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Adaptive Network Hardening resource.
      *

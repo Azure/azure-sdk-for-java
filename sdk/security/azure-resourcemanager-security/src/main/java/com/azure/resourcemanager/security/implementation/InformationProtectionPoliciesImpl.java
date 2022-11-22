@@ -29,16 +29,6 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
         this.serviceManager = serviceManager;
     }
 
-    public InformationProtectionPolicy get(
-        String scope, InformationProtectionPolicyName informationProtectionPolicyName) {
-        InformationProtectionPolicyInner inner = this.serviceClient().get(scope, informationProtectionPolicyName);
-        if (inner != null) {
-            return new InformationProtectionPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<InformationProtectionPolicy> getWithResponse(
         String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context) {
         Response<InformationProtectionPolicyInner> inner =
@@ -49,6 +39,16 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new InformationProtectionPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public InformationProtectionPolicy get(
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName) {
+        InformationProtectionPolicyInner inner = this.serviceClient().get(scope, informationProtectionPolicyName);
+        if (inner != null) {
+            return new InformationProtectionPolicyImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -48,6 +48,13 @@ public interface Catalog {
     String provisioningState();
 
     /**
+     * Gets the syncState property: The synchronization state of the catalog.
+     *
+     * @return the syncState value.
+     */
+    CatalogSyncState syncState();
+
+    /**
      * Gets the lastSyncTime property: When the catalog was last synced.
      *
      * @return the lastSyncTime value.
@@ -96,7 +103,7 @@ public interface Catalog {
             /**
              * Specifies resourceGroupName, devCenterName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param devCenterName The name of the devcenter.
              * @return the next definition stage.
              */

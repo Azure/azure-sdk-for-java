@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProjectEnvironmentTypes Get. */
 public final class ProjectEnvironmentTypesGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/ProjectEnvironmentTypes_Get.json
      */
     /**
      * Sample code: ProjectEnvironmentTypes_Get.

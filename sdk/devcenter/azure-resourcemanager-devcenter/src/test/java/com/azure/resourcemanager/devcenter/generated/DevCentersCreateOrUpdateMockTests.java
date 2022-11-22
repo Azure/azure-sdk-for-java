@@ -35,8 +35,7 @@ public final class DevCentersCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"xhwgfwsrtaw\",\"tags\":{\"ookk\":\"zbrhubskhudyg\",\"fmluiqtqzfavyvn\":\"fqjbvleo\",\"jkqa\":\"qybaryeua\"},\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"57258ed7-cab9-4a06-8576-ecf9dbb042c1\",\"tenantId\":\"e064c520-6ca1-409e-8ceb-325eb04c31c9\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"mdscwxqupev\",\"tags\":{\"jujbypelmcuvhixb\":\"stotxh\"},\"id\":\"xyfwnylrcool\",\"name\":\"ttpkiwkkbnujrywv\",\"type\":\"y\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,19 +66,28 @@ public final class DevCentersCreateOrUpdateMockTests {
         DevCenter response =
             manager
                 .devCenters()
-                .define("hmkxmaehvbb")
-                .withRegion("gx")
-                .withExistingResourceGroup("ydbsd")
-                .withTags(mapOf("dpvruud", "ckpyklyhplu"))
+                .define("uzlm")
+                .withRegion("jwmwkpnbs")
+                .withExistingResourceGroup("wslolbqp")
+                .withTags(
+                    mapOf(
+                        "sxtta",
+                        "jjoqkagf",
+                        "mkqjj",
+                        "gzxnfaazpxdtnk",
+                        "pyouaibrebqaays",
+                        "wuenvr",
+                        "zlwfffiakp",
+                        "kixqtnqtt"))
                 .withIdentity(
                     new ManagedServiceIdentity()
                         .withType(ManagedServiceIdentityType.NONE)
                         .withUserAssignedIdentities(mapOf()))
                 .create();
 
-        Assertions.assertEquals("xhwgfwsrtaw", response.location());
-        Assertions.assertEquals("zbrhubskhudyg", response.tags().get("ookk"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("mdscwxqupev", response.location());
+        Assertions.assertEquals("stotxh", response.tags().get("jujbypelmcuvhixb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 
     @SuppressWarnings("unchecked")

@@ -22,9 +22,8 @@ public final class MicrosoftGraphFile {
     private MicrosoftGraphHashes hashes;
 
     /*
-     * The MIME type for the file. This is determined by logic on the server
-     * and might not be the value provided when the file was uploaded.
-     * Read-only.
+     * The MIME type for the file. This is determined by logic on the server and might not be the value provided when
+     * the file was uploaded. Read-only.
      */
     @JsonProperty(value = "mimeType")
     private String mimeType;
@@ -39,6 +38,10 @@ public final class MicrosoftGraphFile {
      * file
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFile class. */
+    public MicrosoftGraphFile() {
+    }
 
     /**
      * Get the hashes property: hashes.

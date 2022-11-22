@@ -45,6 +45,10 @@ public final class MicrosoftGraphPublicInnerError {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPublicInnerError class. */
+    public MicrosoftGraphPublicInnerError() {
+    }
+
     /**
      * Get the code property: The code property.
      *

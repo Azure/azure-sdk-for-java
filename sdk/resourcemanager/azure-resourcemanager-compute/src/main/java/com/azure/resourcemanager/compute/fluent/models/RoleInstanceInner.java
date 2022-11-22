@@ -56,6 +56,10 @@ public final class RoleInstanceInner {
     @JsonProperty(value = "properties")
     private RoleInstancePropertiesInner properties;
 
+    /** Creates an instance of RoleInstanceInner class. */
+    public RoleInstanceInner() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

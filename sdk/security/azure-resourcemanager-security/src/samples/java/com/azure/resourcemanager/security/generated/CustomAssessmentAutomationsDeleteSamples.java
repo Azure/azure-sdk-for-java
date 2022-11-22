@@ -19,6 +19,6 @@ public final class CustomAssessmentAutomationsDeleteSamples {
     public static void deleteACustomAssessmentAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .customAssessmentAutomations()
-            .deleteWithResponse("TestResourceGroup", "MyCustomAssessmentAutomation", Context.NONE);
+            .deleteByResourceGroupWithResponse("TestResourceGroup", "MyCustomAssessmentAutomation", Context.NONE);
     }
 }

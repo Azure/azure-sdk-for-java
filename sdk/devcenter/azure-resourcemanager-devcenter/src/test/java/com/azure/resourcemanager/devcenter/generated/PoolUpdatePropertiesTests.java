@@ -17,26 +17,26 @@ public final class PoolUpdatePropertiesTests {
         PoolUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"devBoxDefinitionName\":\"mrv\",\"networkConnectionName\":\"ztvbtqgsfr\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"}")
+                    "{\"devBoxDefinitionName\":\"sdbnwdcfhucqdpf\",\"networkConnectionName\":\"glsbjjc\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"}")
                 .toObject(PoolUpdateProperties.class);
-        Assertions.assertEquals("mrv", model.devBoxDefinitionName());
-        Assertions.assertEquals("ztvbtqgsfr", model.networkConnectionName());
+        Assertions.assertEquals("sdbnwdcfhucqdpf", model.devBoxDefinitionName());
+        Assertions.assertEquals("glsbjjc", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
-        Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
+        Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
     }
 
     @Test
     public void testSerialize() {
         PoolUpdateProperties model =
             new PoolUpdateProperties()
-                .withDevBoxDefinitionName("mrv")
-                .withNetworkConnectionName("ztvbtqgsfr")
+                .withDevBoxDefinitionName("sdbnwdcfhucqdpf")
+                .withNetworkConnectionName("glsbjjc")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
-                .withLocalAdministrator(LocalAdminStatus.DISABLED);
+                .withLocalAdministrator(LocalAdminStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(PoolUpdateProperties.class);
-        Assertions.assertEquals("mrv", model.devBoxDefinitionName());
-        Assertions.assertEquals("ztvbtqgsfr", model.networkConnectionName());
+        Assertions.assertEquals("sdbnwdcfhucqdpf", model.devBoxDefinitionName());
+        Assertions.assertEquals("glsbjjc", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
-        Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
+        Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
     }
 }

@@ -64,19 +64,6 @@ public interface IotSecuritySolutions {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
-     */
-    IoTSecuritySolutionModel getByResourceGroup(String resourceGroupName, String solutionName);
-
-    /**
-     * User this method to get details of a specific IoT Security solution based on solution name.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,7 +74,7 @@ public interface IotSecuritySolutions {
         String resourceGroupName, String solutionName, Context context);
 
     /**
-     * Use this method to delete yours IoT Security solution.
+     * User this method to get details of a specific IoT Security solution based on solution name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -95,8 +82,9 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution configuration and resource information.
      */
-    void deleteByResourceGroup(String resourceGroupName, String solutionName);
+    IoTSecuritySolutionModel getByResourceGroup(String resourceGroupName, String solutionName);
 
     /**
      * Use this method to delete yours IoT Security solution.
@@ -110,7 +98,19 @@ public interface IotSecuritySolutions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String solutionName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String solutionName, Context context);
+
+    /**
+     * Use this method to delete yours IoT Security solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String resourceGroupName, String solutionName);
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
