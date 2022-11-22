@@ -60,8 +60,8 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class)
 public final class DocumentAnalysisClient {
+    private static final ClientLogger LOGGER = new ClientLogger(DocumentAnalysisClient.class);
     private final FormRecognizerClientImpl service;
-    private final ClientLogger logger = new ClientLogger(DocumentAnalysisClient.class);
 
     /**
      * Create a {@link DocumentAnalysisClient client} that sends requests to the Document Analysis service's endpoint.
@@ -160,11 +160,11 @@ public final class DocumentAnalysisClient {
     SyncPoller<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrlSync(String documentUrl, String modelId,
         AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(documentUrl)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
                 + " be null or empty"));
         }
         if (CoreUtils.isNullOrEmpty(modelId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
         }
         final AnalyzeDocumentOptions finalAnalyzeDocumentOptions = getAnalyzeDocumentOptions(analyzeDocumentOptions);
@@ -267,7 +267,7 @@ public final class DocumentAnalysisClient {
                              AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         Objects.requireNonNull(document, "'document' is required and cannot be null.");
         if (CoreUtils.isNullOrEmpty(modelId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
         }
 
@@ -289,28 +289,23 @@ public final class DocumentAnalysisClient {
 
     private Function<PollingContext<OperationResult>, OperationResult> analyzeActivationOperation(
         String modelId, List<String> pages, String locale, BinaryData document, String documentUrl, Context context) {
-        return (pollingContext) -> {
-            try {
-                return Transforms.toDocumentOperationResult(analyzeDocument(modelId,
-                    pages,
-                    locale,
-                    document,
-                    documentUrl,
-                    context)
-                    .getDeserializedHeaders().getOperationLocation());
-            } catch (RuntimeException e) {
-                throw logger.logExceptionAsError(e);
-            }
-        };
+        return (pollingContext) ->
+            Transforms.toDocumentOperationResult(analyzeDocument(modelId,
+                CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
+                locale,
+                document,
+                documentUrl,
+                context)
+                .getDeserializedHeaders().getOperationLocation());
     }
 
-    private ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, List<String> pages, String locale,
+    private ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
         BinaryData document, String documentUrl, Context context) {
         try {
             if (documentUrl == null) {
                 return service.analyzeDocumentWithResponse(modelId,
                     null,
-                    CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
+                    pages,
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
                     document,
@@ -318,21 +313,21 @@ public final class DocumentAnalysisClient {
                     context);
             } else {
                 return service.analyzeDocumentWithResponse(modelId,
-                    CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
+                    pages,
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
                     new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                     context);
             }
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
 
         }
     }
     private BiFunction<PollingContext<OperationResult>, PollResponse<OperationResult>, OperationResult>
         getCancellationIsNotSupported() {
         return (pollingContext, activationResponse) -> {
-            throw logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
         };
     }
 
@@ -342,8 +337,12 @@ public final class DocumentAnalysisClient {
             final PollResponse<OperationResult> operationResultPollResponse
                 = pollingContext.getLatestResponse();
             final String resultId = operationResultPollResponse.getValue().getOperationId();
-            Response<AnalyzeResultOperation> modelResponse = service.getAnalyzeDocumentResultWithResponse(
-                modelId, resultId, finalContext);
+            Response<AnalyzeResultOperation> modelResponse;
+            try {
+                modelResponse = service.getAnalyzeDocumentResultWithResponse(modelId, resultId, finalContext);
+            } catch (ErrorResponseException ex) {
+                throw LOGGER.logExceptionAsError(Transforms.getHttpResponseException(ex));
+            }
             return processAnalyzeModelResponse(modelResponse, operationResultPollResponse);
         };
     }
@@ -361,7 +360,7 @@ public final class DocumentAnalysisClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                throw logger.logExceptionAsError(Transforms
+                throw LOGGER.logExceptionAsError(Transforms
                     .mapResponseErrorToHttpResponseException(analyzeResultOperationResponse.getValue().getError()));
             default:
                 status = LongRunningOperationStatus.fromString(
@@ -376,11 +375,15 @@ public final class DocumentAnalysisClient {
         String modelId, Context finalContext) {
         return pollingContext -> {
             final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
-            return Transforms.toAnalyzeResultOperation(service.getAnalyzeDocumentResultWithResponse(
-                    modelId,
-                    resultId,
-                    finalContext)
-                .getValue().getAnalyzeResult());
+            try {
+                return Transforms.toAnalyzeResultOperation(service.getAnalyzeDocumentResultWithResponse(
+                        modelId,
+                        resultId,
+                        finalContext)
+                    .getValue().getAnalyzeResult());
+            } catch (ErrorResponseException ex) {
+                throw LOGGER.logExceptionAsError(Transforms.getHttpResponseException(ex));
+            }
         };
     }
 }

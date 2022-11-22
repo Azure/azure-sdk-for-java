@@ -84,8 +84,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  */
 @ServiceClient(builder = DocumentModelAdministrationClientBuilder.class)
 public final class DocumentModelAdministrationClient {
-
-    private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DocumentModelAdministrationClient.class);
     private final FormRecognizerClientImpl service;
     private final DocumentAnalysisAudience audience;
     /**
@@ -303,7 +302,7 @@ public final class DocumentModelAdministrationClient {
 
             return new SimpleResponse<>(response, Transforms.toAccountProperties(response.getValue()));
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -350,14 +349,14 @@ public final class DocumentModelAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDocumentModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
         }
         try {
             return
                 service.deleteDocumentModelWithResponse(modelId, enableSyncRestProxy(getTracingContext(context)));
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -447,7 +446,7 @@ public final class DocumentModelAdministrationClient {
 
             return new SimpleResponse<>(response, Transforms.toCopyAuthorization(response.getValue()));
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -558,7 +557,7 @@ public final class DocumentModelAdministrationClient {
     SyncPoller<OperationResult, DocumentModelDetails> beginComposeDocumentModelSync(List<String> componentModelIds,
         ComposeDocumentModelOptions composeDocumentModelOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(componentModelIds)) {
-            throw logger.logExceptionAsError(new NullPointerException("'componentModelIds' cannot be null or empty"));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'componentModelIds' cannot be null or empty"));
         }
 
         composeDocumentModelOptions = getComposeModelOptions(composeDocumentModelOptions);
@@ -749,7 +748,7 @@ public final class DocumentModelAdministrationClient {
                     res.getContinuationToken(),
                     null);
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -768,7 +767,7 @@ public final class DocumentModelAdministrationClient {
                 res.getContinuationToken(),
                 null);
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -836,7 +835,7 @@ public final class DocumentModelAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentModelDetails> getDocumentModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
         }
         try {
@@ -845,7 +844,7 @@ public final class DocumentModelAdministrationClient {
 
             return new SimpleResponse<>(response, Transforms.toDocumentModelDetails(response.getValue()));
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -911,7 +910,7 @@ public final class DocumentModelAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationDetails> getOperationWithResponse(String operationId, Context context) {
         if (CoreUtils.isNullOrEmpty(operationId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'operationId' is required and cannot"
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'operationId' is required and cannot"
                 + " be null or empty"));
         }
         try {
@@ -920,7 +919,7 @@ public final class DocumentModelAdministrationClient {
 
             return new SimpleResponse<>(response, Transforms.toOperationDetails(response.getValue()));
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -1001,7 +1000,7 @@ public final class DocumentModelAdministrationClient {
                 res.getContinuationToken(),
                 null);
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -1021,7 +1020,7 @@ public final class DocumentModelAdministrationClient {
                 res.getContinuationToken(),
                 null);
         } catch (ErrorResponseException ex) {
-            throw logger.logExceptionAsError(getHttpResponseException(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
     private Function<PollingContext<OperationResult>, OperationResult> buildModelActivationOperation(
@@ -1039,7 +1038,7 @@ public final class DocumentModelAdministrationClient {
                 return Transforms.toDocumentOperationResult(
                     response.getDeserializedHeaders().getOperationLocation());
             } catch (ErrorResponseException ex) {
-                throw logger.logExceptionAsError(getHttpResponseException(ex));
+                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }
         };
     }
@@ -1055,7 +1054,7 @@ public final class DocumentModelAdministrationClient {
                     modelSimpleResponse = service.getOperationWithResponse(modelId, context);
                 return processBuildingModelResponse(modelSimpleResponse.getValue(), operationResultPollResponse);
             } catch (ErrorResponseException ex) {
-                throw logger.logExceptionAsError(getHttpResponseException(ex));
+                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }
         };
     }
@@ -1073,7 +1072,7 @@ public final class DocumentModelAdministrationClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     Transforms.mapResponseErrorToHttpResponseException(getOperationResponse.getError()));
             case CANCELED:
             default:
@@ -1088,7 +1087,7 @@ public final class DocumentModelAdministrationClient {
     private BiFunction<PollingContext<OperationResult>, PollResponse<OperationResult>, OperationResult>
         getCancellationIsNotSupported() {
         return (pollingContext, activationResponse) -> {
-            throw logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
         };
     }
 
@@ -1101,7 +1100,7 @@ public final class DocumentModelAdministrationClient {
                     Transforms.toDocumentModelFromOperationId(service.getOperationWithResponse(modelId,
                         context).getValue());
             } catch (ErrorResponseException ex) {
-                throw logger.logExceptionAsError(getHttpResponseException(ex));
+                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }
         };
     }
@@ -1115,7 +1114,7 @@ public final class DocumentModelAdministrationClient {
                 return Transforms.toDocumentOperationResult(
                     response.getDeserializedHeaders().getOperationLocation());
             } catch (ErrorResponseException ex) {
-                throw logger.logExceptionAsError(getHttpResponseException(ex));
+                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }
         };
     }
@@ -1134,7 +1133,7 @@ public final class DocumentModelAdministrationClient {
                 return Transforms.toDocumentOperationResult(
                             response.getDeserializedHeaders().getOperationLocation());
             }  catch (ErrorResponseException ex) {
-                throw logger.logExceptionAsError(getHttpResponseException(ex));
+                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }
         };
     }
