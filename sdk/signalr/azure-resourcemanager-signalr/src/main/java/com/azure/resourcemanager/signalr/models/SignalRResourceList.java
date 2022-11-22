@@ -19,12 +19,15 @@ public final class SignalRResourceList {
     private List<SignalRResourceInner> value;
 
     /*
-     * The URL the client should use to fetch the next page (per server side
-     * paging).
+     * The URL the client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SignalRResourceList class. */
+    public SignalRResourceList() {
+    }
 
     /**
      * Get the value property: List of the resources.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphFreeBusyStatus. */
+/** freeBusyStatus. */
 public final class MicrosoftGraphFreeBusyStatus extends ExpandableStringEnum<MicrosoftGraphFreeBusyStatus> {
     /** Static value unknown for MicrosoftGraphFreeBusyStatus. */
     public static final MicrosoftGraphFreeBusyStatus UNKNOWN = fromString("unknown");
@@ -39,7 +39,11 @@ public final class MicrosoftGraphFreeBusyStatus extends ExpandableStringEnum<Mic
         return fromString(name, MicrosoftGraphFreeBusyStatus.class);
     }
 
-    /** @return known MicrosoftGraphFreeBusyStatus values. */
+    /**
+     * Gets known MicrosoftGraphFreeBusyStatus values.
+     *
+     * @return known MicrosoftGraphFreeBusyStatus values.
+     */
     public static Collection<MicrosoftGraphFreeBusyStatus> values() {
         return values(MicrosoftGraphFreeBusyStatus.class);
     }

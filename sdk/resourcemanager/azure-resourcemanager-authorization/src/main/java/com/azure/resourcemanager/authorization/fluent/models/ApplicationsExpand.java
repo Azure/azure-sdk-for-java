@@ -27,7 +27,11 @@ public final class ApplicationsExpand extends ExpandableStringEnum<ApplicationsE
         return fromString(name, ApplicationsExpand.class);
     }
 
-    /** @return known ApplicationsExpand values. */
+    /**
+     * Gets known ApplicationsExpand values.
+     *
+     * @return known ApplicationsExpand values.
+     */
     public static Collection<ApplicationsExpand> values() {
         return values(ApplicationsExpand.class);
     }

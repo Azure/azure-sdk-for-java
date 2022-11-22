@@ -32,6 +32,10 @@ public final class MicrosoftGraphContentTypeInfo {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphContentTypeInfo class. */
+    public MicrosoftGraphContentTypeInfo() {
+    }
+
     /**
      * Get the id property: The id of the content type.
      *

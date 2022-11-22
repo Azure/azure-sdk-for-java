@@ -29,6 +29,10 @@ public final class ResourceType {
     @JsonProperty(value = "operations")
     private List<ProviderOperation> operations;
 
+    /** Creates an instance of ResourceType class. */
+    public ResourceType() {
+    }
+
     /**
      * Get the name property: The resource type name.
      *
