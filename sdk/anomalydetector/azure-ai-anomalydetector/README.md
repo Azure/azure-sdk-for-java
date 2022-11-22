@@ -59,6 +59,30 @@ You will also need to [register a new AAD application][register_aad_app] and [gr
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
+##### Sync client
+```java readme-sample-createAnomalyDetectorClient
+String endpoint = "<anomaly-detector-resource-endpoint>";
+String key = "<anomaly-detector-resource-key>";
+
+HttpHeaders headers = new HttpHeaders()
+    .put("Accept", ContentType.APPLICATION_JSON);
+
+HttpPipelinePolicy authPolicy = new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key",
+    new AzureKeyCredential(key));
+AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
+
+HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
+    .policies(authPolicy, addHeadersPolicy).build();
+// Instantiate a client that will be used to call the service.
+HttpLogOptions httpLogOptions = new HttpLogOptions();
+httpLogOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
+
+AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
+    .pipeline(httpPipeline)
+    .endpoint(endpoint)
+    .httpLogOptions(httpLogOptions)
+    .buildClient();
+```
 
 ## Key concepts
 
