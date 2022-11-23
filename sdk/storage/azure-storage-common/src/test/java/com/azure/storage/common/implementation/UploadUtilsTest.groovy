@@ -3,16 +3,22 @@
 
 package com.azure.storage.common.implementation
 
+import com.azure.core.http.HttpResponse
+import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.BinaryData
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
+import com.azure.storage.common.ParallelTransferOptions
+import com.azure.storage.common.test.shared.BinaryDataProvider
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.security.MessageDigest
+import java.util.function.Function
 
 class UploadUtilsTest extends Specification {
 
@@ -82,5 +88,50 @@ class UploadUtilsTest extends Specification {
         ["Hello ", "World!"] || _
         ["H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d", "!"] || _
         ["Hel", "lo World!"] || _
+    }
+
+    def "uploadFullOrChunked chunked various sources"() {
+        setup:
+        def parallel = new ParallelTransferOptions().setBlockSizeLong(64)
+            .setMaxSingleUploadSizeLong(64).setMaxConcurrency(8)
+
+        when:
+        UploadUtils.uploadFullOrChunked(data.getData(), parallel, this::consumeData, this::consumeData)
+
+        then:
+        notThrown(Exception)
+
+        where:
+        data << BinaryDataProvider.all(Constants.KB, null, getRng(new Random(123456789L))).toList()
+    }
+
+    def "uploadFullOrChunked full various sources"() {
+        setup:
+        def parallel = new ParallelTransferOptions().setBlockSizeLong(Integer.MAX_VALUE)
+            .setMaxSingleUploadSizeLong(Integer.MAX_VALUE).setMaxConcurrency(8)
+
+        when:
+        UploadUtils.uploadFullOrChunked(data.getData(), parallel, this::consumeData, this::consumeData)
+
+        then:
+        notThrown(Exception)
+
+        where:
+        data << BinaryDataProvider.all(Constants.KB, null, getRng(new Random(123456789L))).toList()
+    }
+
+    private static Function<Integer, byte[]> getRng(Random random) {
+        return { Integer size ->
+            def bytes = new byte[size]
+            random.nextBytes()
+            return bytes
+        }
+    }
+
+    private static Mono<HttpResponse> consumeData(BinaryData data) {
+        data.toFluxByteBuffer()
+            .map({it.get(new byte[it.remaining()])})
+            .blockLast()
+        return Mono.just(new MockHttpResponse(null, 201))
     }
 }
