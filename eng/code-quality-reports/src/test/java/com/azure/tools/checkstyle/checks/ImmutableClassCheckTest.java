@@ -103,6 +103,42 @@ public class ImmutableClassCheckTest extends AbstractModuleTestSupport {
     }
 
     @Test
+    public void publicInnerClassWithNonFinalPublicFields() throws Exception {
+        File file = TestUtils.createCheckFile("emptyClass",
+            "package com.azure;",
+            "@Immutable",
+            "public class NonFinalNonPublic {",
+            "    @Immutable",
+            "    public static final class InnerClass {",
+            "        public int intField;",
+            "        protected String stringField;",
+            "    }",
+            "}");
+
+        String[] expected = {
+            expectedErrorMessage(6, 9, String.format(PUBLIC_FIELD_ERROR_TEMPLATE, "intField")),
+            expectedErrorMessage(7, 9, String.format(PUBLIC_FIELD_ERROR_TEMPLATE, "stringField"))
+        };
+        verify(checker, new File[]{file}, file.getAbsolutePath(), expected);
+    }
+
+    @Test
+    public void nonPublicInnerClassWithNonFinalPublicFields() throws Exception {
+        File file = TestUtils.createCheckFile("emptyClass",
+            "package com.azure;",
+            "@Immutable",
+            "public class NonFinalNonPublic {",
+            "    @Immutable",
+            "    static final class InnerClass {",
+            "        public int intField;",
+            "        protected String stringField;",
+            "    }",
+            "}");
+
+        verify(checker, new File[]{file}, file.getAbsolutePath());
+    }
+
+    @Test
     public void classWithOnlyGetterMethods() throws Exception {
         File file = TestUtils.createCheckFile("emptyClass",
             "package com.azure;",
@@ -134,6 +170,46 @@ public class ImmutableClassCheckTest extends AbstractModuleTestSupport {
             expectedErrorMessage(6, 5, String.format(SETTER_METHOD_ERROR_TEMPLATE, "setInt"))
         };
         verify(checker, new File[]{file}, file.getAbsolutePath(), expected);
+    }
+
+    @Test
+    public void publicInnerClassWithPublicSetterMethods() throws Exception {
+        File file = TestUtils.createCheckFile("emptyClass",
+            "package com.azure;",
+            "@Immutable",
+            "public class NonFinalNonPublic {",
+            "    @Immutable",
+            "    public static final class InnerClass {",
+            "        public String setString(String string) {",
+            "        }",
+            "        public int setInt(int integer) {",
+            "        }",
+            "    }",
+            "}");
+
+        String[] expected = {
+            expectedErrorMessage(6, 9, String.format(SETTER_METHOD_ERROR_TEMPLATE, "setString")),
+            expectedErrorMessage(8, 9, String.format(SETTER_METHOD_ERROR_TEMPLATE, "setInt"))
+        };
+        verify(checker, new File[]{file}, file.getAbsolutePath(), expected);
+    }
+
+    @Test
+    public void nonPublicInnerClassWithPublicSetterMethods() throws Exception {
+        File file = TestUtils.createCheckFile("emptyClass",
+            "package com.azure;",
+            "@Immutable",
+            "public class NonFinalNonPublic {",
+            "    @Immutable",
+            "    static final class InnerClass {",
+            "        public String setString(String string) {",
+            "        }",
+            "        public int setInt(int integer) {",
+            "        }",
+            "    }",
+            "}");
+
+        verify(checker, new File[]{file}, file.getAbsolutePath());
     }
 
     @Test

@@ -10,6 +10,8 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
+import java.util.Stack;
+
 /**
  * Verify the classes with annotation {@code @Immutable} should have the following rules:
  * <ol>
@@ -27,7 +29,7 @@ public class ImmutableClassCheck extends AbstractCheck {
         "Classes annotated with @Immutable cannot have public or protected setter methods. "
             + "Found public setter method: %s.";
 
-    private boolean hasImmutableAnnotation;
+    private Stack<Boolean> hasImmutableAnnotationStack;
 
     @Override
     public int[] getDefaultTokens() {
@@ -50,24 +52,24 @@ public class ImmutableClassCheck extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST root) {
-        hasImmutableAnnotation = false;
+        hasImmutableAnnotationStack = new Stack<>();
     }
 
     @Override
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                hasImmutableAnnotation = hasImmutableAnnotation(token);
+                hasImmutableAnnotationStack.add(hasImmutableAnnotation(token));
                 break;
 
             case TokenTypes.VARIABLE_DEF:
-                if (hasImmutableAnnotation) {
+                if (!hasImmutableAnnotationStack.isEmpty() && hasImmutableAnnotationStack.peek()) {
                     checkForPublicField(token);
                 }
                 break;
 
             case TokenTypes.METHOD_DEF:
-                if (hasImmutableAnnotation) {
+                if (!hasImmutableAnnotationStack.isEmpty() && hasImmutableAnnotationStack.peek()) {
                     checkForSetterMethod(token);
                 }
                 break;
@@ -75,6 +77,13 @@ public class ImmutableClassCheck extends AbstractCheck {
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;
+        }
+    }
+
+    @Override
+    public void leaveToken(DetailAST ast) {
+        if (ast.getType() == TokenTypes.CLASS_DEF && !hasImmutableAnnotationStack.isEmpty()) {
+            hasImmutableAnnotationStack.pop();
         }
     }
 
@@ -97,8 +106,7 @@ public class ImmutableClassCheck extends AbstractCheck {
             return;
         }
 
-        Scope scope = ScopeUtil.getScopeFromMods(modifiers);
-        if (scope == Scope.PUBLIC || scope == Scope.PROTECTED) {
+        if (isScopeAndSurroundingScopePublic(variableDefinition)) {
             // Field is 'public' or 'protected', immutable classes cannot have public fields.
             log(variableDefinition, String.format(PUBLIC_FIELD_ERROR_TEMPLATE,
                 variableDefinition.findFirstToken(TokenTypes.IDENT).getText()));
@@ -112,8 +120,7 @@ public class ImmutableClassCheck extends AbstractCheck {
             return;
         }
 
-        Scope scope = ScopeUtil.getScope(methodDefinition);
-        if (scope == Scope.PUBLIC || scope == Scope.PROTECTED) {
+        if (isScopeAndSurroundingScopePublic(methodDefinition)) {
             // Setter method is 'public' or 'protected', immutable classes cannot have public setters.
             log(methodDefinition, String.format(SETTER_METHOD_ERROR_TEMPLATE, methodName));
         }
@@ -121,5 +128,13 @@ public class ImmutableClassCheck extends AbstractCheck {
 
     private static boolean isSetterMethod(String methodName) {
         return methodName.startsWith("set") && methodName.length() >= 4 && Character.isUpperCase(methodName.charAt(3));
+    }
+
+    private static boolean isScopeAndSurroundingScopePublic(DetailAST detailAST) {
+        Scope scope = ScopeUtil.getScope(detailAST);
+        Scope surroundingScope = ScopeUtil.getSurroundingScope(detailAST);
+
+        return (scope == Scope.PUBLIC || scope == Scope.PROTECTED)
+            && (surroundingScope == Scope.PUBLIC || surroundingScope == Scope.PROTECTED);
     }
 }
