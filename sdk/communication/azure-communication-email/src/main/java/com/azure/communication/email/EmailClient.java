@@ -10,6 +10,7 @@ import com.azure.communication.email.models.EmailMessage;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 
 /** Initializes a new instance of the synchronous EmailClient type. */
@@ -39,11 +40,12 @@ public final class EmailClient {
     /**
      * Gets the status of a message sent previously.
      * @param messageId System generated message id (GUID) returned from a previous call to send email.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return the status of a message sent previously along with {@link Response}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendStatusResult> getSendStatusWithResponse(String messageId) {
-        return this.client.getSendStatusWithResponse(messageId).block();
+    public Response<SendStatusResult> getSendStatusWithResponse(String messageId, RequestOptions requestOptions) {
+        return this.client.getSendStatusWithResponse(messageId, requestOptions).block();
     }
 
     /**
@@ -59,10 +61,11 @@ public final class EmailClient {
     /**
      * Queues an email message to be sent to one or more recipients
      * @param emailMessage Message payload for sending an email.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return the result of the email sent along with {@link Response}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendEmailResult> sendWithResponse(EmailMessage emailMessage) {
-        return this.client.sendWithResponse(emailMessage).block();
+    public Response<SendEmailResult> sendWithResponse(EmailMessage emailMessage, RequestOptions requestOptions) {
+        return this.client.sendWithResponse(emailMessage, requestOptions).block();
     }
 }

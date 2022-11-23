@@ -11,6 +11,7 @@ import com.azure.communication.email.implementation.EmailsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
@@ -46,11 +47,12 @@ public final class EmailAsyncClient {
     /**
      * Gets the status of a message sent previously.
      * @param messageId System generated message id (GUID) returned from a previous call to send email.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return the status of a message sent previously with {@link Response} on successful completion of {@link Mono}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendStatusResult>> getSendStatusWithResponse(String messageId) {
-        return this.serviceClient.getSendStatusWithResponseAsync(messageId, null)
+    public Mono<Response<SendStatusResult>> getSendStatusWithResponse(String messageId, RequestOptions requestOptions) {
+        return this.serviceClient.getSendStatusWithResponseAsync(messageId, requestOptions)
             .flatMap((Response<BinaryData> response) -> {
                 return Mono.just(new SimpleResponse<>(
                     response,
@@ -78,11 +80,12 @@ public final class EmailAsyncClient {
     /**
      * Queues an email message to be sent to one or more recipients
      * @param emailMessage Message payload for sending an email.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return the SendEmailResult along with {@link Response} on successful completion of {@link Mono}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendEmailResult>> sendWithResponse(EmailMessage emailMessage) {
-        return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(emailMessage), null)
+    public Mono<Response<SendEmailResult>> sendWithResponse(EmailMessage emailMessage, RequestOptions requestOptions) {
+        return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(emailMessage), requestOptions)
             .flatMap((Response<Void> response) -> {
                 SendEmailResult result = new SendEmailResult(
                     response.getHeaders().getValue("x-ms-request-id")
