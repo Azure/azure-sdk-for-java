@@ -32,7 +32,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.util.Base64Url;
@@ -410,8 +409,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 } else {
                     final String headerValue = serialize(serializer, methodArgument);
                     if (headerValue != null) {
-                        HttpHeadersHelper.setNoKeyFormatting(httpHeaders, headerSubstitution.getLowerCaseHeaderName(),
-                            headerSubstitution.getUrlParameterName(), headerValue);
+                        httpHeaders.set(headerSubstitution.getHeaderName(), headerValue);
                     }
                 }
             }

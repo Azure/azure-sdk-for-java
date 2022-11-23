@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments List. */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListDeployments.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListDeployments.json
      */
     /**
      * Sample code: ListDeployments.
