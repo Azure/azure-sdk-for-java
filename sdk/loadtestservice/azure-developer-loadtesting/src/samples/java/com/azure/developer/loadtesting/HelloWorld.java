@@ -125,6 +125,21 @@ public final class HelloWorld {
          */
 
         /*
+         * BEGIN: Stop test run
+         */
+        try {
+            Thread.sleep(10 * 1000);
+        } catch (InterruptedException e) {
+            // handle interruption
+        }
+
+         Response<BinaryData> stoppedTestRunOut = testRunClient.stopTestRunWithResponse(testRunId, null);
+        System.out.println(stoppedTestRunOut.getValue().toString());
+        /*
+         * END: Stop test run
+         */
+
+        /*
          * BEGIN: List metrics
          */
         // wait for test to reach terminal state
@@ -143,7 +158,7 @@ public final class HelloWorld {
 
             // wait and check test status every 5 seconds
             try {
-                Thread.sleep(5000);
+                Thread.sleep(5 * 1000);
             } catch (InterruptedException e) {
                 // handle interruption
             }
