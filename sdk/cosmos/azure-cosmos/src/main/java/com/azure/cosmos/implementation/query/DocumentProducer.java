@@ -240,7 +240,7 @@ class DocumentProducer<T> {
                             // The feedRange is gone due to merge
                             // we are going to continue drain the current document producer
                             // Due to the feedRange does not cover full partition anymore, during populateHeaders, startEpk and endEpk headers will be added
-                            if (logger.isDebugEnabled()) {
+                            if (logger.isInfoEnabled()) {
                                 logger.info(
                                     "Cross Partition Query Execution detected partition gone due to merge for feedRange [{}] with continuationToken [{}]",
                                     this.feedRange,
