@@ -4,6 +4,8 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.models.CloudEvent;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedEventData;
@@ -160,102 +162,107 @@ import java.util.Map;
  */
 public final class SystemEventNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted event. */
-    public static final String ACS_CHAT_MESSAGE_DELETED = "Microsoft.Communication.ChatMessageDeleted";
+    public static final String COMMUNICATION_CHAT_MESSAGE_DELETED = "Microsoft.Communication.ChatMessageDeleted";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread event.
      */
-    public static final String ACS_CHAT_MESSAGE_DELETED_IN_THREAD =
+    public static final String COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD =
             "Microsoft.Communication.ChatMessageDeletedInThread";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEdited event. */
-    public static final String ACS_CHAT_MESSAGE_EDITED = "Microsoft.Communication.ChatMessageEdited";
+    public static final String COMMUNICATION_CHAT_MESSAGE_EDITED = "Microsoft.Communication.ChatMessageEdited";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEditedInThread event.
      */
-    public static final String ACS_CHAT_MESSAGE_EDITED_IN_THREAD = "Microsoft.Communication.ChatMessageEditedInThread";
+    public static final String COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD =
+            "Microsoft.Communication.ChatMessageEditedInThread";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceived event. */
-    public static final String ACS_CHAT_MESSAGE_RECEIVED = "Microsoft.Communication.ChatMessageReceived";
+    public static final String COMMUNICATION_CHAT_MESSAGE_RECEIVED = "Microsoft.Communication.ChatMessageReceived";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceivedInThread event.
      */
-    public static final String ACS_CHAT_MESSAGE_RECEIVED_IN_THREAD =
+    public static final String COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD =
             "Microsoft.Communication.ChatMessageReceivedInThread";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadParticipantAdded event.
      */
-    public static final String ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD =
+    public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD =
             "Microsoft.Communication.ChatThreadParticipantAdded";
 
     /**
      * Schema of the Data property of an EventGridEvent for a
      * Microsoft.Communication.ChatParticipantAddedToThreadWithUser event.
      */
-    public static final String ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
+    public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
             "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadParticipantRemoved
      * event.
      */
-    public static final String ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD =
+    public static final String COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD =
             "Microsoft.Communication.ChatThreadParticipantRemoved";
 
     /**
      * Schema of the Data property of an EventGridEvent for a
      * Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser event.
      */
-    public static final String ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER =
+    public static final String COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER =
             "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadCreated event. */
-    public static final String ACS_CHAT_THREAD_CREATED = "Microsoft.Communication.ChatThreadCreated";
+    public static final String COMMUNICATION_CHAT_THREAD_CREATED = "Microsoft.Communication.ChatThreadCreated";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadCreatedWithUser event.
      */
-    public static final String ACS_CHAT_THREAD_CREATED_WITH_USER = "Microsoft.Communication.ChatThreadCreatedWithUser";
+    public static final String COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER =
+            "Microsoft.Communication.ChatThreadCreatedWithUser";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadDeleted event. */
-    public static final String ACS_CHAT_THREAD_DELETED = "Microsoft.Communication.ChatThreadDeleted";
+    public static final String COMMUNICATION_CHAT_THREAD_DELETED = "Microsoft.Communication.ChatThreadDeleted";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated event.
      */
-    public static final String ACS_CHAT_THREAD_PROPERTIES_UPDATED =
+    public static final String COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED =
             "Microsoft.Communication.ChatThreadPropertiesUpdated";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
      * event.
      */
-    public static final String ACS_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER =
+    public static final String COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER =
             "Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadWithUserDeleted event.
      */
-    public static final String ACS_CHAT_THREAD_WITH_USER_DELETED = "Microsoft.Communication.ChatThreadWithUserDeleted";
+    public static final String COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED =
+            "Microsoft.Communication.ChatThreadWithUserDeleted";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
      */
-    public static final String ACS_RECORDING_FILE_STATUS_UPDATED = "Microsoft.Communication.RecordingFileStatusUpdated";
+    public static final String COMMUNICATION_RECORDING_FILE_STATUS_UPDATED =
+            "Microsoft.Communication.RecordingFileStatusUpdated";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event.
      */
-    public static final String ACS_SMS_DELIVERY_REPORT_RECEIVED = "Microsoft.Communication.SMSDeliveryReportReceived";
+    public static final String COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED =
+            "Microsoft.Communication.SMSDeliveryReportReceived";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSReceived event. */
-    public static final String ACS_SMS_RECEIVED = "Microsoft.Communication.SMSReceived";
+    public static final String COMMUNICATION_SMS_RECEIVED = "Microsoft.Communication.SMSReceived";
 
     /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event. */
-    public static final String ACS_USER_DISCONNECTED = "Microsoft.Communication.UserDisconnected";
+    public static final String COMMUNICATION_USER_DISCONNECTED = "Microsoft.Communication.UserDisconnected";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiCreated event. */
     public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.ApiCreated";
@@ -361,7 +368,7 @@ public final class SystemEventNames {
     public static final String IOT_HUB_DEVICE_TELEMETRY = "Microsoft.Devices.DeviceTelemetry";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.VaultAccessPolicyChanged event. */
-    public static final String KEY_VAULT_ACCESS_POLICY_CHANGED = "Microsoft.KeyVault.VaultAccessPolicyChanged";
+    public static final String KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED = "Microsoft.KeyVault.VaultAccessPolicyChanged";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateExpired event. */
     public static final String KEY_VAULT_CERTIFICATE_EXPIRED = "Microsoft.KeyVault.CertificateExpired";
@@ -395,27 +402,24 @@ public final class SystemEventNames {
      * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.DatasetDriftDetected
      * event.
      */
-    public static final String MACHINE_LEARNING_SERVICES_DATASET_DRIFT_DETECTED =
+    public static final String MACHINE_LEARNING_DATASET_DRIFT_DETECTED =
             "Microsoft.MachineLearningServices.DatasetDriftDetected";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelDeployed event. */
-    public static final String MACHINE_LEARNING_SERVICES_MODEL_DEPLOYED =
-            "Microsoft.MachineLearningServices.ModelDeployed";
+    public static final String MACHINE_LEARNING_MODEL_DEPLOYED = "Microsoft.MachineLearningServices.ModelDeployed";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelRegistered event.
      */
-    public static final String MACHINE_LEARNING_SERVICES_MODEL_REGISTERED =
-            "Microsoft.MachineLearningServices.ModelRegistered";
+    public static final String MACHINE_LEARNING_MODEL_REGISTERED = "Microsoft.MachineLearningServices.ModelRegistered";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunCompleted event. */
-    public static final String MACHINE_LEARNING_SERVICES_RUN_COMPLETED =
-            "Microsoft.MachineLearningServices.RunCompleted";
+    public static final String MACHINE_LEARNING_RUN_COMPLETED = "Microsoft.MachineLearningServices.RunCompleted";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunStatusChanged event.
      */
-    public static final String MACHINE_LEARNING_SERVICES_RUN_STATUS_CHANGED =
+    public static final String MACHINE_LEARNING_RUN_STATUS_CHANGED =
             "Microsoft.MachineLearningServices.RunStatusChanged";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceEntered event. */
@@ -554,14 +558,14 @@ public final class SystemEventNames {
      * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
      */
-    public static final String MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC =
+    public static final String MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUTOFSYNC =
             "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
 
     /**
      * Incoming video stream out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
      */
-    public static final String MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC =
+    public static final String MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUTOFSYNC =
             "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
 
     /**
@@ -656,7 +660,7 @@ public final class SystemEventNames {
      * Schema of the Data property of an EventGridEvent for a
      * Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications event.
      */
-    public static final String SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATIONS =
+    public static final String SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION =
             "Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications";
 
     /**
@@ -670,27 +674,27 @@ public final class SystemEventNames {
      * Schema of the Data property of an EventGridEvent for a
      * Microsoft.ServiceBus.DeadletterMessagesAvailablePeriodicNotifications event.
      */
-    public static final String SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATIONS =
+    public static final String SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION =
             "Microsoft.ServiceBus.DeadletterMessagesAvailablePeriodicNotifications";
 
     /**
      * Schema of the Data property of an EventGridEvent for a
      * Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners event.
      */
-    public static final String SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENERS =
+    public static final String SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER =
             "Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.SignalRService.ClientConnectionConnected event.
      */
-    public static final String SIGNAL_RSERVICE_CLIENT_CONNECTION_CONNECTED =
+    public static final String SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED =
             "Microsoft.SignalRService.ClientConnectionConnected";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.SignalRService.ClientConnectionDisconnected
      * event.
      */
-    public static final String SIGNAL_RSERVICE_CLIENT_CONNECTION_DISCONNECTED =
+    public static final String SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED =
             "Microsoft.SignalRService.ClientConnectionDisconnected";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.AsyncOperationInitiated event. */
@@ -725,10 +729,10 @@ public final class SystemEventNames {
     public static final String STORAGE_LIFECYCLE_POLICY_COMPLETED = "Microsoft.Storage.LifecyclePolicyCompleted";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionDeletedEvent event. */
-    public static final String SUBSCRIPTION_DELETED = "Microsoft.EventGrid.SubscriptionDeletedEvent";
+    public static final String EVENT_GRID_SUBSCRIPTION_DELETED = "Microsoft.EventGrid.SubscriptionDeletedEvent";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent event. */
-    public static final String SUBSCRIPTION_VALIDATION = "Microsoft.EventGrid.SubscriptionValidationEvent";
+    public static final String EVENT_GRID_SUBSCRIPTION_VALIDATION = "Microsoft.EventGrid.SubscriptionValidationEvent";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.AppServicePlanUpdated event. */
     public static final String WEB_APP_SERVICE_PLAN_UPDATED = "Microsoft.Web.AppServicePlanUpdated";
@@ -769,35 +773,54 @@ public final class SystemEventNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.SlotSwapWithPreviewStarted event. */
     public static final String WEB_SLOT_SWAP_WITH_PREVIEW_STARTED = "Microsoft.Web.SlotSwapWithPreviewStarted";
 
+    /** @deprecated This event does not exist. */
+    @Deprecated
+    public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER =
+            "Microsoft.Communication.ChatMemberAddedToThreadWithUser";
+    /** @deprecated This event does not exist. */
+    @Deprecated
+    public static final String COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER =
+            "Microsoft.Communication.ChatMemberRemovedFromThreadWithUser";
+    /** @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}. */
+    @Deprecated
+    public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD =
+            "Microsoft.Communication.ChatThreadParticipantRemoved";
+    /** @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER}. */
+    @Deprecated
+    public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER =
+            "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
+
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS =
             new HashMap<String, Class<?>>() {
                 {
-                    put(ACS_CHAT_MESSAGE_DELETED, AcsChatMessageDeletedEventData.class);
-                    put(ACS_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
-                    put(ACS_CHAT_MESSAGE_EDITED, AcsChatMessageEditedEventData.class);
-                    put(ACS_CHAT_MESSAGE_EDITED_IN_THREAD, AcsChatMessageEditedInThreadEventData.class);
-                    put(ACS_CHAT_MESSAGE_RECEIVED, AcsChatMessageReceivedEventData.class);
-                    put(ACS_CHAT_MESSAGE_RECEIVED_IN_THREAD, AcsChatMessageReceivedInThreadEventData.class);
-                    put(ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD, AcsChatParticipantAddedToThreadEventData.class);
+                    put(COMMUNICATION_CHAT_MESSAGE_DELETED, AcsChatMessageDeletedEventData.class);
+                    put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
+                    put(COMMUNICATION_CHAT_MESSAGE_EDITED, AcsChatMessageEditedEventData.class);
+                    put(COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD, AcsChatMessageEditedInThreadEventData.class);
+                    put(COMMUNICATION_CHAT_MESSAGE_RECEIVED, AcsChatMessageReceivedEventData.class);
+                    put(COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD, AcsChatMessageReceivedInThreadEventData.class);
+                    put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD, AcsChatParticipantAddedToThreadEventData.class);
                     put(
-                            ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER,
+                            COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER,
                             AcsChatParticipantAddedToThreadWithUserEventData.class);
-                    put(ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);
                     put(
-                            ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER,
+                            COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD,
+                            AcsChatParticipantRemovedFromThreadEventData.class);
+                    put(
+                            COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER,
                             AcsChatParticipantRemovedFromThreadWithUserEventData.class);
-                    put(ACS_CHAT_THREAD_CREATED, AcsChatThreadCreatedEventData.class);
-                    put(ACS_CHAT_THREAD_CREATED_WITH_USER, AcsChatThreadCreatedWithUserEventData.class);
-                    put(ACS_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
-                    put(ACS_CHAT_THREAD_PROPERTIES_UPDATED, AcsChatThreadPropertiesUpdatedEventData.class);
+                    put(COMMUNICATION_CHAT_THREAD_CREATED, AcsChatThreadCreatedEventData.class);
+                    put(COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER, AcsChatThreadCreatedWithUserEventData.class);
+                    put(COMMUNICATION_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
+                    put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED, AcsChatThreadPropertiesUpdatedEventData.class);
                     put(
-                            ACS_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER,
+                            COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER,
                             AcsChatThreadPropertiesUpdatedPerUserEventData.class);
-                    put(ACS_CHAT_THREAD_WITH_USER_DELETED, AcsChatThreadWithUserDeletedEventData.class);
-                    put(ACS_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
-                    put(ACS_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
-                    put(ACS_SMS_RECEIVED, AcsSmsReceivedEventData.class);
-                    put(ACS_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
+                    put(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED, AcsChatThreadWithUserDeletedEventData.class);
+                    put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
+                    put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
+                    put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
+                    put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
                     put(API_MANAGEMENT_API_CREATED, ApiManagementApiCreatedEventData.class);
                     put(API_MANAGEMENT_API_DELETED, ApiManagementApiDeletedEventData.class);
                     put(API_MANAGEMENT_API_RELEASE_CREATED, ApiManagementApiReleaseCreatedEventData.class);
@@ -833,7 +856,7 @@ public final class SystemEventNames {
                     put(IOT_HUB_DEVICE_DELETED, IotHubDeviceDeletedEventData.class);
                     put(IOT_HUB_DEVICE_DISCONNECTED, IotHubDeviceDisconnectedEventData.class);
                     put(IOT_HUB_DEVICE_TELEMETRY, IotHubDeviceTelemetryEventData.class);
-                    put(KEY_VAULT_ACCESS_POLICY_CHANGED, KeyVaultAccessPolicyChangedEventData.class);
+                    put(KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED, KeyVaultAccessPolicyChangedEventData.class);
                     put(KEY_VAULT_CERTIFICATE_EXPIRED, KeyVaultCertificateExpiredEventData.class);
                     put(KEY_VAULT_CERTIFICATE_NEAR_EXPIRY, KeyVaultCertificateNearExpiryEventData.class);
                     put(KEY_VAULT_CERTIFICATE_NEW_VERSION_CREATED, KeyVaultCertificateNewVersionCreatedEventData.class);
@@ -844,16 +867,12 @@ public final class SystemEventNames {
                     put(KEY_VAULT_SECRET_NEAR_EXPIRY, KeyVaultSecretNearExpiryEventData.class);
                     put(KEY_VAULT_SECRET_NEW_VERSION_CREATED, KeyVaultSecretNewVersionCreatedEventData.class);
                     put(
-                            MACHINE_LEARNING_SERVICES_DATASET_DRIFT_DETECTED,
+                            MACHINE_LEARNING_DATASET_DRIFT_DETECTED,
                             MachineLearningServicesDatasetDriftDetectedEventData.class);
-                    put(MACHINE_LEARNING_SERVICES_MODEL_DEPLOYED, MachineLearningServicesModelDeployedEventData.class);
-                    put(
-                            MACHINE_LEARNING_SERVICES_MODEL_REGISTERED,
-                            MachineLearningServicesModelRegisteredEventData.class);
-                    put(MACHINE_LEARNING_SERVICES_RUN_COMPLETED, MachineLearningServicesRunCompletedEventData.class);
-                    put(
-                            MACHINE_LEARNING_SERVICES_RUN_STATUS_CHANGED,
-                            MachineLearningServicesRunStatusChangedEventData.class);
+                    put(MACHINE_LEARNING_MODEL_DEPLOYED, MachineLearningServicesModelDeployedEventData.class);
+                    put(MACHINE_LEARNING_MODEL_REGISTERED, MachineLearningServicesModelRegisteredEventData.class);
+                    put(MACHINE_LEARNING_RUN_COMPLETED, MachineLearningServicesRunCompletedEventData.class);
+                    put(MACHINE_LEARNING_RUN_STATUS_CHANGED, MachineLearningServicesRunStatusChangedEventData.class);
                     put(MAPS_GEOFENCE_ENTERED, MapsGeofenceEnteredEventData.class);
                     put(MAPS_GEOFENCE_EXITED, MapsGeofenceExitedEventData.class);
                     put(MAPS_GEOFENCE_RESULT, MapsGeofenceResultEventData.class);
@@ -883,10 +902,10 @@ public final class SystemEventNames {
                             MediaLiveEventIncomingDataChunkDroppedEventData.class);
                     put(MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED, MediaLiveEventIncomingStreamReceivedEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC,
+                            MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUTOFSYNC,
                             MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC,
+                            MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUTOFSYNC,
                             MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
                     put(MEDIA_LIVE_EVENT_INGEST_HEARTBEAT, MediaLiveEventIngestHeartbeatEventData.class);
                     put(
@@ -909,22 +928,22 @@ public final class SystemEventNames {
                     put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureEventData.class);
                     put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessEventData.class);
                     put(
-                            SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATIONS,
+                            SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION,
                             ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.class);
                     put(
                             SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_WITH_NO_LISTENERS,
                             ServiceBusActiveMessagesAvailableWithNoListenersEventData.class);
                     put(
-                            SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATIONS,
+                            SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION,
                             ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData.class);
                     put(
-                            SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENERS,
+                            SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER,
                             ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class);
                     put(
-                            SIGNAL_RSERVICE_CLIENT_CONNECTION_CONNECTED,
+                            SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED,
                             SignalRServiceClientConnectionConnectedEventData.class);
                     put(
-                            SIGNAL_RSERVICE_CLIENT_CONNECTION_DISCONNECTED,
+                            SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED,
                             SignalRServiceClientConnectionDisconnectedEventData.class);
                     put(STORAGE_ASYNC_OPERATION_INITIATED, StorageAsyncOperationInitiatedEventData.class);
                     put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
@@ -936,8 +955,8 @@ public final class SystemEventNames {
                     put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
                     put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
                     put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
-                    put(SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
-                    put(SUBSCRIPTION_VALIDATION, SubscriptionValidationEventData.class);
+                    put(EVENT_GRID_SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
+                    put(EVENT_GRID_SUBSCRIPTION_VALIDATION, SubscriptionValidationEventData.class);
                     put(WEB_APP_SERVICE_PLAN_UPDATED, WebAppServicePlanUpdatedEventData.class);
                     put(WEB_APP_UPDATED, WebAppUpdatedEventData.class);
                     put(WEB_BACKUP_OPERATION_COMPLETED, WebBackupOperationCompletedEventData.class);
@@ -951,6 +970,18 @@ public final class SystemEventNames {
                     put(WEB_SLOT_SWAP_STARTED, WebSlotSwapStartedEventData.class);
                     put(WEB_SLOT_SWAP_WITH_PREVIEW_CANCELLED, WebSlotSwapWithPreviewCancelledEventData.class);
                     put(WEB_SLOT_SWAP_WITH_PREVIEW_STARTED, WebSlotSwapWithPreviewStartedEventData.class);
+                    put(
+                            COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD,
+                            AcsChatParticipantRemovedFromThreadEventData.class);
+                    put(
+                            COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER,
+                            AcsChatParticipantRemovedFromThreadWithUserEventData.class);
+                    put(
+                            COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER,
+                            AcsChatMemberAddedToThreadWithUserEventData.class);
+                    put(
+                            COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER,
+                            AcsChatMemberRemovedFromThreadWithUserEventData.class);
                 }
             };
     /**

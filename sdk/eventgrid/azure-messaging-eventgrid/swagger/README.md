@@ -191,6 +191,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -262,7 +263,7 @@ public class EventGridCustomization extends Customization {
                 int endIndex = classCustomization.getJavadoc().getDescription().indexOf(" ", startIndex);
                 String eventName = classCustomization.getJavadoc().getDescription().substring(startIndex, endIndex);
                 String className = classCustomization.getClassName();
-                String constantName = getConstantName(className.replace("EventData", ""));
+                String constantName = getReplacementName(getConstantName(className.replace("EventData", "")));
 
                 constantNameMap.put(className, constantName);
                 nameMap.put(className, eventName);
@@ -287,7 +288,11 @@ public class EventGridCustomization extends Customization {
         sb.append(System.lineSeparator());
         sb.append("import java.util.Map;");
         sb.append(System.lineSeparator());
-
+        // these two imports are for deprecated events.
+        sb.append("import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;");
+        sb.append(System.lineSeparator());
+        sb.append("import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;");
+        sb.append(System.lineSeparator());
         for (String className : imports) {
             sb.append("import com.azure.messaging.eventgrid.systemevents." + className + ";");
             sb.append(System.lineSeparator());
@@ -306,6 +311,56 @@ public class EventGridCustomization extends Customization {
             sb.append(System.lineSeparator());
             sb.append(System.lineSeparator());
         }
+        // Add deprecated events
+        sb.append("/**");
+        sb.append(System.lineSeparator());
+        sb.append(" * @deprecated This event does not exist.");
+        sb.append(System.lineSeparator());
+        sb.append(" */");
+        sb.append(System.lineSeparator());
+        sb.append("@Deprecated");
+        sb.append(System.lineSeparator());
+        sb.append("public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER =");
+        sb.append(System.lineSeparator());
+        sb.append("\"Microsoft.Communication.ChatMemberAddedToThreadWithUser\";");
+        sb.append(System.lineSeparator());
+        sb.append("/**");
+        sb.append(System.lineSeparator());
+        sb.append(" * @deprecated This event does not exist.");
+        sb.append(System.lineSeparator());
+        sb.append(" */");
+        sb.append(System.lineSeparator());
+        sb.append("@Deprecated");
+        sb.append(System.lineSeparator());
+        sb.append("public static final String COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER =");
+        sb.append(System.lineSeparator());
+        sb.append("\"Microsoft.Communication.ChatMemberRemovedFromThreadWithUser\";");
+        sb.append(System.lineSeparator());
+        sb.append("/**");
+        sb.append(System.lineSeparator());
+        sb.append(" * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}.");
+        sb.append(System.lineSeparator());
+        sb.append(" */");
+        sb.append(System.lineSeparator());
+        sb.append("@Deprecated");
+        sb.append(System.lineSeparator());
+        sb.append("public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD =");
+        sb.append(System.lineSeparator());
+        sb.append("\"Microsoft.Communication.ChatThreadParticipantRemoved\";");
+        sb.append(System.lineSeparator());
+
+        sb.append("/**");
+        sb.append(System.lineSeparator());
+        sb.append(" * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER}.");
+        sb.append(System.lineSeparator());
+        sb.append(" */");
+        sb.append(System.lineSeparator());
+        sb.append("@Deprecated");
+        sb.append(System.lineSeparator());
+        sb.append("public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER =");
+        sb.append(System.lineSeparator());
+        sb.append("\"Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser\";");
+        sb.append(System.lineSeparator());
 
         sb.append("private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>()" +
             " {{");
@@ -315,6 +370,14 @@ public class EventGridCustomization extends Customization {
             sb.append("put(" + constantNameMap.get(className) + ", " + classMap.get(className) + ");");
             sb.append(System.lineSeparator());
         }
+        sb.append("put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);");
+        sb.append(System.lineSeparator());
+        sb.append("put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER, AcsChatParticipantRemovedFromThreadWithUserEventData.class);");
+        sb.append(System.lineSeparator());
+        sb.append("put(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER, AcsChatMemberAddedToThreadWithUserEventData.class);");
+        sb.append(System.lineSeparator());
+        sb.append("put(COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER, AcsChatMemberRemovedFromThreadWithUserEventData.class);");
+        sb.append(System.lineSeparator());
         sb.append("}};");
         sb.append(System.lineSeparator());
 
@@ -522,6 +585,53 @@ public class EventGridCustomization extends Customization {
             comp.addImport("com.azure.core.models.CloudEvent");
         });
 
+    }
+
+    private static final Map<String, String> replacementNames = new HashMap<String,String>() {
+        {
+            put("ACS_CHAT_MESSAGE_DELETED","COMMUNICATION_CHAT_MESSAGE_DELETED");
+            put("ACS_CHAT_MESSAGE_DELETED_IN_THREAD","COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD");
+            put("ACS_CHAT_MESSAGE_EDITED","COMMUNICATION_CHAT_MESSAGE_EDITED");
+            put("ACS_CHAT_MESSAGE_EDITED_IN_THREAD","COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD");
+            put("ACS_CHAT_MESSAGE_RECEIVED","COMMUNICATION_CHAT_MESSAGE_RECEIVED");
+            put("ACS_CHAT_MESSAGE_RECEIVED_IN_THREAD","COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD");
+            put("ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD","COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD");
+            put("ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER","COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER");
+            put("ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD","COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD");
+            put("ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER","COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER");
+            put("ACS_CHAT_THREAD_CREATED","COMMUNICATION_CHAT_THREAD_CREATED");
+            put("ACS_CHAT_THREAD_CREATED_WITH_USER","COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER");
+            put("ACS_CHAT_THREAD_DELETED","COMMUNICATION_CHAT_THREAD_DELETED");
+            put("ACS_CHAT_THREAD_PROPERTIES_UPDATED","COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED");
+            put("ACS_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER","COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER");
+            put("ACS_CHAT_THREAD_WITH_USER_DELETED","COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED");
+            put("ACS_RECORDING_FILE_STATUS_UPDATED","COMMUNICATION_RECORDING_FILE_STATUS_UPDATED");
+            put("ACS_SMS_DELIVERY_REPORT_RECEIVED","COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED");
+            put("ACS_SMS_RECEIVED","COMMUNICATION_SMS_RECEIVED");
+            put("ACS_USER_DISCONNECTED","COMMUNICATION_USER_DISCONNECTED");
+            put("SUBSCRIPTION_DELETED","EVENT_GRID_SUBSCRIPTION_DELETED");
+            put("SUBSCRIPTION_VALIDATION","EVENT_GRID_SUBSCRIPTION_VALIDATION");
+            put("MACHINE_LEARNING_SERVICES_DATASET_DRIFT_DETECTED","MACHINE_LEARNING_DATASET_DRIFT_DETECTED");
+            put("MACHINE_LEARNING_SERVICES_MODEL_DEPLOYED","MACHINE_LEARNING_MODEL_DEPLOYED");
+            put("MACHINE_LEARNING_SERVICES_MODEL_REGISTERED","MACHINE_LEARNING_MODEL_REGISTERED");
+            put("MACHINE_LEARNING_SERVICES_RUN_COMPLETED","MACHINE_LEARNING_RUN_COMPLETED");
+            put("MACHINE_LEARNING_SERVICES_RUN_STATUS_CHANGED","MACHINE_LEARNING_RUN_STATUS_CHANGED");
+            put("KEY_VAULT_ACCESS_POLICY_CHANGED","KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED");
+            put("MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC","MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUTOFSYNC");
+            put("MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC","MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUTOFSYNC");
+            put("SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATIONS","SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION");
+            put("SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATIONS","SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION");
+            put("SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENERS","SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER");
+            put("SIGNAL_RSERVICE_CLIENT_CONNECTION_CONNECTED","SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED");
+            put("SIGNAL_RSERVICE_CLIENT_CONNECTION_DISCONNECTED","SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED");
+        }
+    };
+
+    private String getReplacementName(String name) {
+        if (replacementNames.containsKey(name)) {
+            return replacementNames.get(name);
+        }
+        return name;
     }
 }
 ```
