@@ -264,16 +264,11 @@ public final class EmailClientBuilder
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.tokenCredential != null && this.azureKeyCredential != null) {
-            throw new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used.");
-        }
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
                 this.tokenCredential, "https://communication.azure.com//.default");
-        } else if (this.azureKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
-            throw new IllegalArgumentException("Missing credential information while building a client.");
+            return new HmacAuthenticationPolicy(this.azureKeyCredential);
         }
     }
 
