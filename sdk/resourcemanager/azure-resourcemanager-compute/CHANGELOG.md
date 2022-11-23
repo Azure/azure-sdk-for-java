@@ -9,10 +9,15 @@
 - Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress.
 - Supported `withTrustedLaunch`, `withSecureBoot` and `withVTpm` methods in `VirtualMachine`.
 - Supported `UBUNTU_SERVER_18_04_LTS_GEN2`, `UBUNTU_SERVER_20_04_LTS` and `UBUNTU_SERVER_20_04_LTS_GEN2` in `KnownLinuxVirtualMachineImage`.
+- Supported `WINDOWS_SERVER_2019_DATACENTER_GEN2`, `WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2`, 
+  `WINDOWS_SERVER_2016_DATACENTER_GEN2` and `WINDOWS_DESKTOP_10_21H2_PRO_GEN2` in `KnownWindowsVirtualMachineImage`.
+- Supported `withTrustedLaunch` and `withHyperVGeneration` methods in `GalleryImage`.
 
 ### Breaking Changes
 
-- Property `uri` removed from `GalleryArtifactVersionSource`. This property was non-functional.
+- Property `uri` removed from class `GalleryArtifactVersionSource`. This property was non-functional.
+- Type of property `GalleryImageVersionStorageProfile.source` changed to the class `GalleryArtifactVersionFullSource`, a subclass of `GalleryArtifactVersionSource`.
+- Type of property `GalleryOSDiskImage.source` changed to the class `GalleryDiskImageSource`, a subclass of `GalleryArtifactVersionSource`.
 
 ### Other Changes
 

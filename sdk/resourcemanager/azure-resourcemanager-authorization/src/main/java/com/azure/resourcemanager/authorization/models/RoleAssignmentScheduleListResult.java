@@ -24,6 +24,10 @@ public final class RoleAssignmentScheduleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RoleAssignmentScheduleListResult class. */
+    public RoleAssignmentScheduleListResult() {
+    }
+
     /**
      * Get the value property: Role assignment schedule list.
      *

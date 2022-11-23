@@ -40,6 +40,10 @@ public final class DomainAvailabilityInner {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of DomainAvailabilityInner class. */
+    public DomainAvailabilityInner() {
+    }
+
     /**
      * Get the isSubdomainAvailable property: Indicates the given SKU is available or not.
      *

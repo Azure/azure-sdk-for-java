@@ -33,6 +33,10 @@ public final class CollectionOfDomain {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CollectionOfDomain class. */
+    public CollectionOfDomain() {
+    }
+
     /**
      * Get the value property: The value property.
      *

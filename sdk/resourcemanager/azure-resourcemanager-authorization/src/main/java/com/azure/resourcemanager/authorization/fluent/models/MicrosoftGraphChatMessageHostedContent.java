@@ -19,6 +19,10 @@ public final class MicrosoftGraphChatMessageHostedContent extends MicrosoftGraph
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphChatMessageHostedContent class. */
+    public MicrosoftGraphChatMessageHostedContent() {
+    }
+
     /**
      * Get the additionalProperties property: chatMessageHostedContent.
      *

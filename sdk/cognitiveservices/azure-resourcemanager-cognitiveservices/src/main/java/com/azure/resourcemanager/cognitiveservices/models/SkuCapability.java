@@ -22,6 +22,10 @@ public final class SkuCapability {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of SkuCapability class. */
+    public SkuCapability() {
+    }
+
     /**
      * Get the name property: The name of the SkuCapability.
      *

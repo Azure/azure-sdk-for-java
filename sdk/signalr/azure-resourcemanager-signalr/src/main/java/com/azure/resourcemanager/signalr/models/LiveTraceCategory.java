@@ -26,6 +26,10 @@ public final class LiveTraceCategory {
     @JsonProperty(value = "enabled")
     private String enabled;
 
+    /** Creates an instance of LiveTraceCategory class. */
+    public LiveTraceCategory() {
+    }
+
     /**
      * Get the name property: Gets or sets the live trace category's name. Available values: ConnectivityLogs,
      * MessagingLogs. Case insensitive.

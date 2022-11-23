@@ -22,8 +22,7 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
     private MicrosoftGraphChatMessagePolicyViolationDlpActionTypes dlpAction;
 
     /*
-     * Justification text provided by the sender of the message when overriding
-     * a policy violation.
+     * Justification text provided by the sender of the message when overriding a policy violation.
      */
     @JsonProperty(value = "justificationText")
     private String justificationText;
@@ -50,6 +49,10 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
      * chatMessagePolicyViolation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphChatMessagePolicyViolation class. */
+    public MicrosoftGraphChatMessagePolicyViolation() {
+    }
 
     /**
      * Get the dlpAction property: chatMessagePolicyViolationDlpActionTypes.

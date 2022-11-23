@@ -80,6 +80,9 @@ public class OperationDetails {
     @JsonProperty(value = "error")
     private Error error;
 
+    /** Creates an instance of OperationDetails class. */
+    public OperationDetails() {}
+
     /**
      * Get the operationId property: Operation ID.
      *

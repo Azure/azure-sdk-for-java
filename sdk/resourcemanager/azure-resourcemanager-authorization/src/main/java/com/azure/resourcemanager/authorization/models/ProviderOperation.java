@@ -40,6 +40,16 @@ public final class ProviderOperation {
     @JsonProperty(value = "properties")
     private Object properties;
 
+    /*
+     * The dataAction flag to specify the operation type.
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
+
+    /** Creates an instance of ProviderOperation class. */
+    public ProviderOperation() {
+    }
+
     /**
      * Get the name property: The operation name.
      *
@@ -137,6 +147,26 @@ public final class ProviderOperation {
      */
     public ProviderOperation withProperties(Object properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the isDataAction property: The dataAction flag to specify the operation type.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set the isDataAction property: The dataAction flag to specify the operation type.
+     *
+     * @param isDataAction the isDataAction value to set.
+     * @return the ProviderOperation object itself.
+     */
+    public ProviderOperation withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
         return this;
     }
 
