@@ -22,9 +22,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
@@ -89,8 +87,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 import reactor.util.retry.Retry;
 
@@ -123,7 +119,6 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
-import static java.lang.StrictMath.toIntExact;
 
 
 /**
@@ -968,95 +963,11 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
         ShareRequestConditions requestConditions, Context context) {
-//        AsynchronousFileChannel channel = channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW);
-//        Mono<Response<ShareFileProperties>> response = downloadResponseInChunk2(channel, range, requestConditions, context);
-//        channelCleanUp(channel);
-//        return response;
-//        return Mono.using(() ->
-//                channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
-//            channel -> getPropertiesWithResponse(requestConditions, context).flatMap(response ->
-//                downloadResponseInChunk(response, channel, range, requestConditions, context)), this::channelCleanUp);
-//        downloadFirstChunk(range, requestConditions, context);
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
             channel ->
                 downloadSingleChunk(channel, range, requestConditions, context), this::channelCleanUp);
     }
 
-    private Mono<Response<ShareFileProperties>> downloadResponseInChunk(Response<ShareFileProperties> response,
-        AsynchronousFileChannel channel, ShareFileRange range, ShareRequestConditions requestConditions,
-        Context context) {
-        return Mono.justOrEmpty(range).switchIfEmpty(Mono.defer(() -> Mono.just(new ShareFileRange(0, response.getValue()
-            .getContentLength()))))
-            .map(currentRange -> {
-                List<ShareFileRange> chunks = new ArrayList<>();
-                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
-                    long count = FILE_DEFAULT_BLOCK_SIZE;
-                    if (pos + count > currentRange.getEnd()) {
-                        count = currentRange.getEnd() - pos;
-                    }
-                    chunks.add(new ShareFileRange(pos, pos + count - 1));
-                }
-                return chunks;
-            }).flatMapMany(Flux::fromIterable)
-            .flatMap(chunk ->
-                downloadWithResponse(new ShareFileDownloadOptions().setRange(chunk).setRangeContentMd5Requested(false)
-                    .setRequestConditions(requestConditions), context)
-                .map(ShareFileDownloadAsyncResponse::getValue)
-                .subscribeOn(Schedulers.boundedElastic())
-                .flatMap(fbb -> FluxUtil
-                    .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
-                    .subscribeOn(Schedulers.boundedElastic())
-                    .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
-                        || throwable instanceof TimeoutException))))
-            .then(Mono.just(response));
-    }
-
-//    private Mono<Response<ShareFileProperties>> downloadResponseInChunk2(AsynchronousFileChannel channel,
-//        ShareFileRange range, ShareRequestConditions requestConditions, Context context) {
-//        ShareFileRange finalRange = range == null ? new ShareFileRange(0) : range;
-//        return downloadFirstChunk(finalRange, requestConditions, context)
-//            .subscribeOn(Schedulers.boundedElastic())
-//            .flatMap(tuple2 -> {
-//                Long totalLength = tuple2.getT1();
-//                ShareFileDownloadAsyncResponse downloadAsyncResponse = tuple2.getT2();
-//
-//                int numChunks = calculateNumBlocks(totalLength, Constants.MB * 4);
-//                // In case it is an empty blob, this ensures we still actually perform a download operation.
-//                numChunks = numChunks == 0 ? 1 : numChunks;
-//
-//                return Flux.range(0, numChunks)
-//                    .flatMap(chunkNum -> {
-//
-//                        long modifier = chunkNum.longValue() * Constants.MB * 4;
-//                        long chunkSizeActual = Math.min(Constants.MB * 4, totalLength - modifier);
-//                        ShareFileRange chunkRange = new ShareFileRange(finalRange.getStart() + modifier, chunkSizeActual);
-//
-//                        return downloadChunk(chunkNum, downloadAsyncResponse, finalRange, requestConditions,
-//                            totalLength, context, channel, response -> writeBodyToFile(response, channel, chunkRange, finalRange).flux());
-//                    })
-//                    .then(Mono.just(ModelHelper.buildShareFilePropertiesResponse(downloadAsyncResponse)));
-//            });
-//    }
-
-//    public <T> Flux<T> downloadChunk(Integer chunkNum, ShareFileDownloadAsyncResponse initialResponse,
-//        ShareFileRange finalRange, ShareRequestConditions requestConditions, long newCount, Context context,
-//        AsynchronousFileChannel channel, Function<ShareFileDownloadAsyncResponse, Flux<T>> returnTransformer) {
-//        // The first chunk was retrieved during setup.
-//        if (chunkNum == 0) {
-//            return returnTransformer.apply(initialResponse);
-//        }
-//
-//        // Calculate whether we need a full chunk or something smaller because we are at the end.
-//        long modifier = chunkNum.longValue() * Constants.MB * 4;
-//        long chunkSizeActual = Math.min(Constants.MB * 4, newCount - modifier);
-//        ShareFileRange chunkRange = new ShareFileRange(finalRange.getStart() + modifier, chunkSizeActual);
-//
-//        // Make the download call.
-//        return downloadWithResponse(new ShareFileDownloadOptions().setRange(chunkRange).setRangeContentMd5Requested(false)
-//            .setRequestConditions(requestConditions), context)
-//            .subscribeOn(Schedulers.boundedElastic())
-//            .flatMapMany(returnTransformer);
-//    }
 
     private static Mono<Void> writeBodyToFile(ShareFileDownloadAsyncResponse response, AsynchronousFileChannel channel,
         ShareFileRange chunkRange, ShareFileRange range) {
@@ -1068,170 +979,17 @@ public class ShareFileAsyncClient {
                 || throwable instanceof TimeoutException));
     }
 
-//    public static int calculateNumBlocks(long dataSize, long blockLength) {
-//        // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
-//        int numBlocks = toIntExact(dataSize / blockLength);
-//        // Include an extra block for trailing data.
-//        if (dataSize % blockLength != 0) {
-//            numBlocks++;
-//        }
-//        return numBlocks;
-//    }
-
-//    public Mono<Tuple2<Long, ShareFileDownloadAsyncResponse>> downloadFirstChunk(ShareFileRange range,
-//        ShareRequestConditions requestConditions, Context context) {
-//        // We will scope our initial download to either be one chunk or the total size.
-//        ShareFileRange finalRange = range == null ? new ShareFileRange(0) : range;
-//
-//        return downloadWithResponse(new ShareFileDownloadOptions()
-//            .setRange(finalRange).setRequestConditions(requestConditions),
-//                //.setRangeContentMd5Requested(false),
-//            context)
-//            // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic provided the same
-//            // functionality with the added benefit that it won't infinitely create threads if needed and will instead
-//            // queue.
-//            .subscribeOn(Schedulers.boundedElastic())
-//            .flatMap(response -> {
-//
-//
-//                ShareFileDownloadHeaders deserializedHeaders = response.getDeserializedHeaders();
-//                // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
-//                long totalLength = deserializedHeaders.getContentRange() == null ? deserializedHeaders.getContentLength()
-//                    : Long.parseLong(deserializedHeaders.getContentRange().split("/")[1]);
-//
-//
-//                /*
-//                If the user either didn't specify a count or they specified a count greater than the size of the
-//                remaining data, take the size of the remaining data. This is to prevent the case where the count
-//                is much much larger than the size of the blob and we could try to download at an invalid offset.
-//                 */
-//                long newCount = range.getEnd() == null || range.getEnd() > (totalLength - range.getStart())
-//                    ? totalLength - range.getStart() : range.getEnd();
-//
-//                return Mono.zip(Mono.just(newCount), Mono.just(response));
-//            })
-//            .onErrorResume(ShareStorageException.class, shareStorageException -> {
-//                /*
-//                 * In the case of an empty blob, we still want to report success and give back valid headers.
-//                 * Attempting a range download on an empty blob will return an InvalidRange error code and a
-//                 * Content-Range header of the format "bytes * /0". We need to double check that the total size is zero
-//                 * in the case that the customer has attempted an invalid range on a non-zero length blob.
-//                 */
-//                /*
-//                        int index = contentRange.indexOf('/');
-//        return Long.parseLong(contentRange.substring(index + 1));
-//                 */
-//                if (shareStorageException.getErrorCode() == ShareErrorCode.INVALID_RANGE
-//                    && Long.parseLong(shareStorageException.getResponse()
-//                    .getHeaders().getValue("Content-Range").split("/")[1]) == 0) {
-//
-//                    return downloadWithResponse(new ShareFileDownloadOptions().setRange(new ShareFileRange(0, 0L)).setRangeContentMd5Requested(false)
-//                        .setRequestConditions(requestConditions), context)
-//                        // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic
-//                        // provided the same functionality with the added benefit that it won't infinitely create
-//                        // threads if needed and will instead queue.
-//                        .subscribeOn(Schedulers.boundedElastic())
-//                        .flatMap(response -> {
-//                            /*
-//                            Ensure the blob is still 0 length by checking our download was the full length.
-//                            (200 is for full blob; 206 is partial).
-//                             */
-//                            if (response.getStatusCode() != 200) {
-//                                return Mono.error(new IllegalStateException("Blob was modified mid download. It was "
-//                                    + "originally 0 bytes and is now larger."));
-//                            }
-//                            return Mono.zip(Mono.just(0L), Mono.just(response));
-//                        });
-//                }
-//
-//                return Mono.error(shareStorageException);
-//            });
-//    }
-
-
     private Mono<Response<ShareFileProperties>> downloadSingleChunk(AsynchronousFileChannel channel, ShareFileRange range,
         ShareRequestConditions requestConditions, Context context) {
-
-//        ShareFileRange finalRange = range == null ? new ShareFileRange(0, 4L * Constants.MB) : range;
         ShareFileRange finalRange = range == null ? new ShareFileRange(0) : range;
         return downloadWithResponse(new ShareFileDownloadOptions().setRange(finalRange)
-            //.setRangeContentMd5Requested(false)
             .setRequestConditions(requestConditions), context)
-//            .map(ShareFileDownloadAsyncResponse::getValue)
             .subscribeOn(Schedulers.boundedElastic())
             .flatMap(response ->
-                {
-                    ShareFileDownloadHeaders deserializedHeaders = response.getDeserializedHeaders();
-                    long totalLength = deserializedHeaders.getContentRange() == null ? deserializedHeaders.getContentLength()
-                        : Long.parseLong(deserializedHeaders.getContentRange().split("/")[1]);
-                    if (totalLength > FILE_DEFAULT_BLOCK_SIZE) {
-                        // do some repeating logic here
-                        List<ShareFileRange> chunks = listOfChunks(new ShareFileRange(FILE_DEFAULT_BLOCK_SIZE, totalLength));
-                    }
-
-                    return writeBodyToFile(response, channel, finalRange, range).then(Mono.just(ModelHelper.buildShareFilePropertiesResponse(response)));
-//                    return FluxUtil.writeFile(response.getValue(), channel, finalRange.getStart() - (range == null ? 0 : range.getStart()))
-//                        .subscribeOn(Schedulers.boundedElastic())
-//                        .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
-//                            || throwable instanceof TimeoutException)).then(Mono.just(ModelHelper.buildShareFilePropertiesResponse(response)));
-                });
+                writeBodyToFile(response, channel, finalRange, range)
+                    .then(Mono.just(ModelHelper.buildShareFilePropertiesResponse(response))));
     }
 
-    private List<ShareFileRange> listOfChunks(ShareFileRange currentRange) {
-        List<ShareFileRange> chunks = new ArrayList<>();
-        for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
-            long count = FILE_DEFAULT_BLOCK_SIZE;
-            if (pos + count > currentRange.getEnd()) {
-                count = currentRange.getEnd() - pos;
-            }
-            chunks.add(new ShareFileRange(pos, pos + count - 1));
-        }
-        return chunks;
-    }
-
-//    private Mono<ShareFileRange> downloadFirstChunk(ShareFileRange range, ShareRequestConditions requestConditions, Context context) {
-//        ShareFileRange finalRange = range == null ? new ShareFileRange(0, 4L * Constants.MB) : range;
-//
-//        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-//
-//        return downloadRange(finalRange, false, requestConditions, context)
-//            .subscribeOn(Schedulers.boundedElastic())
-//            .map(response -> {
-//                String eTag = ModelHelper.getETag(response.getHeaders());
-//                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
-//                    response.getDeserializedHeaders(), response.getHeaders());
-//
-//                long finalEnd = headers.getContentRange() == null ? headers.getContentLength() : Long.parseLong(headers.getContentRange().split("/")[1]);
-//                LOGGER.warning("final length is: " + finalEnd);
-//                return new ShareFileRange(0, finalEnd);
-//            });
-//    }
-
-//    Mono<ShareFileDownloadAsyncResponse> downloadToFileHelper(ShareFileDownloadOptions options, Context context) {
-//        options = options == null ? new ShareFileDownloadOptions() : options;
-//        ShareFileRange range = options.getRange() == null ? new ShareFileRange(0) : options.getRange();
-//        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-//            ? new ShareRequestConditions() : options.getRequestConditions();
-//        DownloadRetryOptions retryOptions = options.getRetryOptions() == null ? new DownloadRetryOptions()
-//            : options.getRetryOptions();
-//        Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
-//
-//        return downloadRange(range, getRangeContentMd5, requestConditions, context)
-//            .map(response -> {
-//                String eTag = ModelHelper.getETag(response.getHeaders());
-//                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
-//                    response.getDeserializedHeaders(), response.getHeaders());
-//
-//                // logic for parsing the length and seeing if its more than 4MB
-//                long finalEnd = headers.getContentRange() == null ? headers.getContentLength()
-//                    : Long.parseLong(headers.getContentRange().split("/")[1]);
-//
-//                return finalEnd;
-//
-////                return new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-////                    response.getHeaders(), bufferFlux, headers);
-//            });
-//    }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
         try {
