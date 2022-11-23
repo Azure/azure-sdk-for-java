@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
