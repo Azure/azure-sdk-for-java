@@ -14,6 +14,7 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -24,6 +25,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -51,7 +53,8 @@ public final class EmailClientBuilder
                 ConfigurationTrait<EmailClientBuilder>,
                 AzureKeyCredentialTrait<EmailClientBuilder>,
                 EndpointTrait<EmailClientBuilder>,
-                ConnectionStringTrait<EmailClientBuilder> {
+                ConnectionStringTrait<EmailClientBuilder>,
+                TokenCredentialTrait<EmailClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -172,6 +175,7 @@ public final class EmailClientBuilder
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@link EmailClientBuilder} object.
      */
+    @Override
     public EmailClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
@@ -259,6 +263,20 @@ public final class EmailClientBuilder
         return client;
     }
 
+    private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+        if (this.tokenCredential != null && this.azureKeyCredential != null) {
+            throw new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used.");
+        }
+        if (this.tokenCredential != null) {
+            return new BearerTokenAuthenticationPolicy(
+                this.tokenCredential, "https://communication.azure.com//.default");
+        } else if (this.azureKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.azureKeyCredential);
+        } else {
+            throw new IllegalArgumentException("Missing credential information while building a client.");
+        }
+    }
+
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -286,7 +304,7 @@ public final class EmailClientBuilder
                         .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
-        policies.add(new HmacAuthenticationPolicy(this.azureKeyCredential));
+        policies.add(createHttpPipelineAuthPolicy());
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         policies.addAll(

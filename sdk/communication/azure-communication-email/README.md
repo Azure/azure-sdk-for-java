@@ -88,6 +88,20 @@ EmailClient emailClient = new EmailClientBuilder()
     .buildClient();
 ```
 
+### Azure Active Directory Token Authentication
+A `DefaultAzureCredential` object must be passed to the `EmailClientBuilder` via the credential() function. Endpoint must also be set via the endpoint() function.
+
+`AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables are needed to create a DefaultAzureCredential object.
+
+```java readme-sample-createEmailClientWithAAD
+// You can find your endpoint and access key from your resource in the Azure Portal
+String endpoint = "https://<resource-name>.communication.azure.com/";
+
+EmailClient emailClient = new EmailClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
 
 ### Send an Email Message
 

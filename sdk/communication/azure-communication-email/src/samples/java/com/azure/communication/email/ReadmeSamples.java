@@ -13,6 +13,7 @@ import com.azure.communication.email.models.EmailAttachmentType;
 
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
 import java.io.File;
@@ -43,6 +44,20 @@ public class ReadmeSamples {
             .connectionString(connectionString)
             .buildClient();
         // END: readme-sample-createEmailClientWithConnectionString
+
+        return emailClient;
+    }
+
+    public EmailClient createEmailClientWithAAD() {
+        // BEGIN: readme-sample-createEmailClientWithAAD
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<resource-name>.communication.azure.com/";
+
+        EmailClient emailClient = new EmailClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+        // END: readme-sample-createEmailClientWithAAD
 
         return emailClient;
     }
