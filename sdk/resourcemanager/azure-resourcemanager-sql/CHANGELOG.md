@@ -2,13 +2,25 @@
 
 ## 2.22.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Removed `NEW` from `SecurityAlertPolicyState`. The constant is non-functional. 
+- Removed `withPolicyNew` method from `SqlDatabaseThreatDetectionPolicy` since `NEW` is no longer supported in `SecurityAlertPolicyState`.
+- Removed `nextResetTime` and `resourceName` methods from `ServerMetric` and `SqlDatabase`. The methods are non-functional.
+- Removed `listMetricsDefinitions` and `listMetrics` methods from `SqlDatabase`. Metrics in SQL have been replaced by the Azure monitor shoebox metrics API. Not in SQL any more.
+- Removed `listServiceTierAdvisors` method from `SqlDatabase`. It's no longer supported.
+- Removed class `ElasticPoolDatabaseActivity`. It's removed from service definition.
+- Removed `listDatabaseActivities`, `listDatabaseMetricDefinitions` and `listDatabaseMetrics` methods from `SqlElasticPool`. 
+- Removed `elasticPoolName` and `serviceLevelObjective` methods from `SqlRestorableDroppedDatabase`. 
+- Removed `getServiceObjective`, `listRecommendedElasticPools`, `listServiceObjectives` methods from `SqlServer`.
+- Removed `withCreationDate` and `withThumbprint` from SqlServerKeyOperations. The properties are no longer mutable.
+- Renamed class from `TransparentDataEncryptionInner` to `LogicalDatabaseTransparentDataEncryptionInner`.
+- Removed class `TransparentDataEncryptionActivity`. The class is no longer functional.
+- Removed `listActivities` from `TransparentDataEncryption` since `TransparentDataEncryptionActivity` is removed.
+- Renamed `TransparentDataEncryptionStatus` to `TransparentDataEncryptionState`.
+- Removed `location`, `requestedDatabaseDtuCap`, `requestedDatabaseDtuGuarantee`, `requestedDatabaseDtuMax`, `requestedDatabaseDtuMin`, 
+  `requestedDtu`, `requestedDtuGuarantee` and `requestedElasticPoolName`, `requestedStorageLimitInGB` and `requestedStorageLimitInMB` methods from `ElasticPoolActivity`. The properties are no longer functional.
+- Renamed class from `ElasticPoolActivityInner` to `ElasticPoolOperationInner`.
 
 ## 2.21.0 (2022-11-24)
 

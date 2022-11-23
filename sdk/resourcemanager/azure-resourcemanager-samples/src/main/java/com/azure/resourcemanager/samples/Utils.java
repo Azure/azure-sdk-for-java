@@ -180,7 +180,6 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
-import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.PartnerInfo;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric;
@@ -1992,29 +1991,6 @@ public final class Utils {
 
         System.out.println(builder.toString());
 
-    }
-
-    /**
-     * Prints information of the database activity.
-     *
-     * @param databaseActivity database activity to be printed
-     */
-    public static void print(ElasticPoolDatabaseActivity databaseActivity) {
-        StringBuilder builder = new StringBuilder().append("Sql elastic pool database activity: ").append(databaseActivity.id())
-                .append("Name: ").append(databaseActivity.name())
-                .append("\n\tResource group: ").append(databaseActivity.resourceGroupName())
-                .append("\n\tSQL Server Name: ").append(databaseActivity.serverName())
-                .append("\n\tDatabase name name: ").append(databaseActivity.databaseName())
-                .append("\n\tCurrent elastic pool name of the database: ").append(databaseActivity.currentElasticPoolName())
-                .append("\n\tState: ").append(databaseActivity.state())
-                .append("\n\tStart time of activity: ").append(databaseActivity.startTime())
-                .append("\n\tEnd time of activity: ").append(databaseActivity.endTime())
-                .append("\n\tCompleted percentage: ").append(databaseActivity.percentComplete())
-                .append("\n\tError code of activity: ").append(databaseActivity.errorCode())
-                .append("\n\tError message of activity: ").append(databaseActivity.errorMessage())
-                .append("\n\tError severity of activity: ").append(databaseActivity.errorSeverity());
-
-        System.out.println(builder.toString());
     }
 
     /**
