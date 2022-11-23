@@ -1,14 +1,25 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2022-11-23)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.DeploymentModel` was modified
 
-### Bugs Fixed
+* `callRateLimit()` was added
 
-### Other Changes
+#### `models.AccountModel` was modified
+
+* `callRateLimit()` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `raiPolicyName()` was added
+* `callRateLimit()` was added
+* `withRaiPolicyName(java.lang.String)` was added
+* `capabilities()` was added
 
 ## 1.0.0-beta.5 (2022-06-20)
 
