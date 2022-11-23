@@ -29,6 +29,10 @@ public final class CallRateLimit {
     @JsonProperty(value = "rules")
     private List<ThrottlingRule> rules;
 
+    /** Creates an instance of CallRateLimit class. */
+    public CallRateLimit() {
+    }
+
     /**
      * Get the count property: The count value of Call Rate Limit.
      *
