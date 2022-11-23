@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the user's elastic account. */
 @Immutable
 public final class ElasticCloudUser {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticCloudUser.class);
-
     /*
      * Email of the Elastic User Account.
      */
@@ -31,6 +27,10 @@ public final class ElasticCloudUser {
      */
     @JsonProperty(value = "elasticCloudSsoDefaultUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String elasticCloudSsoDefaultUrl;
+
+    /** Creates an instance of ElasticCloudUser class. */
+    public ElasticCloudUser() {
+    }
 
     /**
      * Get the emailAddress property: Email of the Elastic User Account.

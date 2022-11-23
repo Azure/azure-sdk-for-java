@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphTimeOffReasonIconType. */
+/** timeOffReasonIconType. */
 public final class MicrosoftGraphTimeOffReasonIconType
     extends ExpandableStringEnum<MicrosoftGraphTimeOffReasonIconType> {
     /** Static value none for MicrosoftGraphTimeOffReasonIconType. */
@@ -88,7 +88,11 @@ public final class MicrosoftGraphTimeOffReasonIconType
         return fromString(name, MicrosoftGraphTimeOffReasonIconType.class);
     }
 
-    /** @return known MicrosoftGraphTimeOffReasonIconType values. */
+    /**
+     * Gets known MicrosoftGraphTimeOffReasonIconType values.
+     *
+     * @return known MicrosoftGraphTimeOffReasonIconType values.
+     */
     public static Collection<MicrosoftGraphTimeOffReasonIconType> values() {
         return values(MicrosoftGraphTimeOffReasonIconType.class);
     }

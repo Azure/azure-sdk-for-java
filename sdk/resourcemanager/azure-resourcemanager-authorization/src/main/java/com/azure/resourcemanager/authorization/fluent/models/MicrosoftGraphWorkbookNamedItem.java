@@ -29,15 +29,14 @@ public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity 
     private String name;
 
     /*
-     * Indicates whether the name is scoped to the workbook or to a specific
-     * worksheet. Read-only.
+     * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
      */
     @JsonProperty(value = "scope")
     private String scope;
 
     /*
-     * Indicates what type of reference is associated with the name. The
-     * possible values are: String, Integer, Double, Boolean, Range. Read-only.
+     * Indicates what type of reference is associated with the name. The possible values are: String, Integer, Double,
+     * Boolean, Range. Read-only.
      */
     @JsonProperty(value = "type")
     private String type;
@@ -65,6 +64,10 @@ public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity 
      * workbookNamedItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookNamedItem class. */
+    public MicrosoftGraphWorkbookNamedItem() {
+    }
 
     /**
      * Get the comment property: Represents the comment associated with this name.

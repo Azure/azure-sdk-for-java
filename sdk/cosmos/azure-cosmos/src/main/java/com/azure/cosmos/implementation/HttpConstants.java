@@ -365,9 +365,10 @@ public class HttpConstants {
         public static final int CROSS_PARTITION_QUERY_NOT_SERVABLE = 1004;
 
         // 410: StatusCodeType_Gone: substatus
+        // Merge or split share the same status code and subStatusCode
         public static final int NAME_CACHE_IS_STALE = 1000;
         public static final int PARTITION_KEY_RANGE_GONE = 1002;
-        public static final int COMPLETING_SPLIT = 1007;
+        public static final int COMPLETING_SPLIT_OR_MERGE = 1007;
         public static final int COMPLETING_PARTITION_MIGRATION = 1008;
 
         // 403: Forbidden substatus

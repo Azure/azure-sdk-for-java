@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphOnenotePatchInsertPosition. */
+/** onenotePatchInsertPosition. */
 public final class MicrosoftGraphOnenotePatchInsertPosition
     extends ExpandableStringEnum<MicrosoftGraphOnenotePatchInsertPosition> {
     /** Static value After for MicrosoftGraphOnenotePatchInsertPosition. */
@@ -28,7 +28,11 @@ public final class MicrosoftGraphOnenotePatchInsertPosition
         return fromString(name, MicrosoftGraphOnenotePatchInsertPosition.class);
     }
 
-    /** @return known MicrosoftGraphOnenotePatchInsertPosition values. */
+    /**
+     * Gets known MicrosoftGraphOnenotePatchInsertPosition values.
+     *
+     * @return known MicrosoftGraphOnenotePatchInsertPosition values.
+     */
     public static Collection<MicrosoftGraphOnenotePatchInsertPosition> values() {
         return values(MicrosoftGraphOnenotePatchInsertPosition.class);
     }

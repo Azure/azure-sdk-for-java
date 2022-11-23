@@ -35,9 +35,8 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
     private MicrosoftGraphResourceVisualization resourceVisualization;
 
     /*
-     * Value indicating how much the document is currently trending. The larger
-     * the number, the more the document is currently trending around the user
-     * (the more relevant it is). Returned documents are sorted by this value.
+     * Value indicating how much the document is currently trending. The larger the number, the more the document is
+     * currently trending around the user (the more relevant it is). Returned documents are sorted by this value.
      */
     @JsonProperty(value = "weight")
     private Double weight;
@@ -52,6 +51,10 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
      * trending
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTrending class. */
+    public MicrosoftGraphTrending() {
+    }
 
     /**
      * Get the lastModifiedDateTime property: The lastModifiedDateTime property.

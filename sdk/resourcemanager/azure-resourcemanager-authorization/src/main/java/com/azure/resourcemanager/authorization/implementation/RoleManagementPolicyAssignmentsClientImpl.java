@@ -64,7 +64,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
-    private interface RoleManagementPolicyAssignmentsService {
+    public interface RoleManagementPolicyAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments"
@@ -229,30 +229,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleManagementPolicyAssignmentInner> getAsync(String scope, String roleManagementPolicyAssignmentName) {
         return getWithResponseAsync(scope, roleManagementPolicyAssignmentName)
-            .flatMap(
-                (Response<RoleManagementPolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the specified role management policy assignment for a resource scope.
-     *
-     * @param scope The scope of the role management policy.
-     * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role management policy assignment for a resource scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleManagementPolicyAssignmentInner get(String scope, String roleManagementPolicyAssignmentName) {
-        return getAsync(scope, roleManagementPolicyAssignmentName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -271,6 +248,22 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     public Response<RoleManagementPolicyAssignmentInner> getWithResponse(
         String scope, String roleManagementPolicyAssignmentName, Context context) {
         return getWithResponseAsync(scope, roleManagementPolicyAssignmentName, context).block();
+    }
+
+    /**
+     * Get the specified role management policy assignment for a resource scope.
+     *
+     * @param scope The scope of the role management policy.
+     * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
+     *     get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role management policy assignment for a resource scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleManagementPolicyAssignmentInner get(String scope, String roleManagementPolicyAssignmentName) {
+        return getWithResponse(scope, roleManagementPolicyAssignmentName, Context.NONE).getValue();
     }
 
     /**
@@ -394,32 +387,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     public Mono<RoleManagementPolicyAssignmentInner> createAsync(
         String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters) {
         return createWithResponseAsync(scope, roleManagementPolicyAssignmentName, parameters)
-            .flatMap(
-                (Response<RoleManagementPolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create a role management policy assignment.
-     *
-     * @param scope The scope of the role management policy assignment to upsert.
-     * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
-     * @param parameters Parameters for the role management policy assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role management policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleManagementPolicyAssignmentInner create(
-        String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters) {
-        return createAsync(scope, roleManagementPolicyAssignmentName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -442,6 +410,24 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         RoleManagementPolicyAssignmentInner parameters,
         Context context) {
         return createWithResponseAsync(scope, roleManagementPolicyAssignmentName, parameters, context).block();
+    }
+
+    /**
+     * Create a role management policy assignment.
+     *
+     * @param scope The scope of the role management policy assignment to upsert.
+     * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
+     *     upsert.
+     * @param parameters Parameters for the role management policy assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role management policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleManagementPolicyAssignmentInner create(
+        String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters) {
+        return createWithResponse(scope, roleManagementPolicyAssignmentName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -538,23 +524,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String scope, String roleManagementPolicyAssignmentName) {
-        return deleteWithResponseAsync(scope, roleManagementPolicyAssignmentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a role management policy assignment.
-     *
-     * @param scope The scope of the role management policy assignment to delete.
-     * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String scope, String roleManagementPolicyAssignmentName) {
-        deleteAsync(scope, roleManagementPolicyAssignmentName).block();
+        return deleteWithResponseAsync(scope, roleManagementPolicyAssignmentName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -572,6 +542,21 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String scope, String roleManagementPolicyAssignmentName, Context context) {
         return deleteWithResponseAsync(scope, roleManagementPolicyAssignmentName, context).block();
+    }
+
+    /**
+     * Delete a role management policy assignment.
+     *
+     * @param scope The scope of the role management policy assignment to delete.
+     * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
+     *     delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String scope, String roleManagementPolicyAssignmentName) {
+        deleteWithResponse(scope, roleManagementPolicyAssignmentName, Context.NONE);
     }
 
     /**
@@ -716,7 +701,8 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -752,7 +738,8 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

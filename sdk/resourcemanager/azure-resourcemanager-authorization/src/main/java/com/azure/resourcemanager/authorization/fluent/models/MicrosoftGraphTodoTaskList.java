@@ -57,6 +57,10 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTodoTaskList class. */
+    public MicrosoftGraphTodoTaskList() {
+    }
+
     /**
      * Get the displayName property: The name of the task list.
      *

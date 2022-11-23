@@ -75,8 +75,10 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
 
     @Override
     public PagedFlux<RoleAssignment> listByServicePrincipalAsync(String principalId) {
-        String filterStr = String.format("principalId eq '%s'", Objects.requireNonNull(principalId));
-        return PagedConverter.mapPage(inner().listAsync(filterStr), this::wrapModel);
+        PercentEscaper percentEscaper = new PercentEscaper("-._~" + "/?", false);
+        String filterStr = percentEscaper.escape(
+            String.format("principalId eq '%s'", Objects.requireNonNull(principalId)));
+        return PagedConverter.mapPage(inner().listAsync(filterStr, null), this::wrapModel);
     }
 
     @Override

@@ -23,6 +23,10 @@ public final class RoleAssignmentScheduleRequestPropertiesScheduleInfo {
     @JsonProperty(value = "expiration")
     private RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration expiration;
 
+    /** Creates an instance of RoleAssignmentScheduleRequestPropertiesScheduleInfo class. */
+    public RoleAssignmentScheduleRequestPropertiesScheduleInfo() {
+    }
+
     /**
      * Get the startDateTime property: Start DateTime of the role assignment schedule.
      *

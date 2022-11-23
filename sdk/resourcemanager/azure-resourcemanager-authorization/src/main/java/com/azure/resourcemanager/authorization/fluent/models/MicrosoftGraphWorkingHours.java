@@ -45,6 +45,10 @@ public final class MicrosoftGraphWorkingHours {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkingHours class. */
+    public MicrosoftGraphWorkingHours() {
+    }
+
     /**
      * Get the daysOfWeek property: The days of the week on which the user works.
      *

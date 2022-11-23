@@ -33,6 +33,10 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphDirectory class. */
+    public MicrosoftGraphDirectory() {
+    }
+
     /**
      * Get the administrativeUnits property: The administrativeUnits property.
      *

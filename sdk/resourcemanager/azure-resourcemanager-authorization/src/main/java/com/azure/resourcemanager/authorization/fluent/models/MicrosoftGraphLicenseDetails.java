@@ -18,15 +18,14 @@ import java.util.UUID;
 @Fluent
 public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
     /*
-     * Information about the service plans assigned with the license.
-     * Read-only, Not nullable
+     * Information about the service plans assigned with the license. Read-only, Not nullable
      */
     @JsonProperty(value = "servicePlans")
     private List<MicrosoftGraphServicePlanInfo> servicePlans;
 
     /*
-     * Unique identifier (GUID) for the service SKU. Equal to the skuId
-     * property on the related SubscribedSku object. Read-only
+     * Unique identifier (GUID) for the service SKU. Equal to the skuId property on the related SubscribedSku object.
+     * Read-only
      */
     @JsonProperty(value = "skuId")
     private UUID skuId;
@@ -41,6 +40,10 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
      * licenseDetails
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphLicenseDetails class. */
+    public MicrosoftGraphLicenseDetails() {
+    }
 
     /**
      * Get the servicePlans property: Information about the service plans assigned with the license. Read-only, Not
