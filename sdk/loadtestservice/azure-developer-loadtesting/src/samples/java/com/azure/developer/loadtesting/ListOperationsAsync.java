@@ -11,8 +11,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Sample demonstrates how to list tests, test files and test runs for a given resource.
+ */
 public final class ListOperationsAsync {
-    public void listTests() {
+    /**
+     * Authenticates with the load testing resource and shows how to list tests, test files and test runs
+     * for a given resource.
+     *
+     * @param args Unused. Arguments to the program.
+     *
+     * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
+     * @throws ResourceNotFoundException - when test with `testId` does not exist when listing files.
+     */
+    public static void main(String[] args) {
+        listTests();
+        listTestRuns();
+        listTestFiles();
+    }
+
+    public static void listTests() {
         // BEGIN: java-listOperationsAsync-sample-listTests
         LoadTestAdministrationAsyncClient client = new LoadTestingClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -38,7 +56,7 @@ public final class ListOperationsAsync {
         // END: java-listOperationsAsync-sample-listTests
     }
 
-    public void listTestRuns() {
+    public static void listTestRuns() {
         // BEGIN: java-listOperationsAsync-sample-listTestRuns
         LoadTestRunAsyncClient client = new LoadTestingClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -67,7 +85,7 @@ public final class ListOperationsAsync {
         // END: java-listOperationsAsync-sample-listTestRuns
     }
 
-    public void listTestFiles() {
+    public static void listTestFiles() {
         // BEGIN: java-listOperationsAsync-sample-listTestFiles
         LoadTestAdministrationAsyncClient client = new LoadTestingClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())

@@ -17,6 +17,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Sample demonstrates how to uploading and validating a test file, and running a test run.
+ *
+ * Authenticates with the load testing resource and shows how to uploading and validating a test file, and running
+ * a test run in a given resource.
+ *
+ * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
+ * @throws ResourceNotFoundException - when test with `testId` does not exist when uploading file.
+ */
 public final class LongRunningOperationsAsync {
     public void beginUploadAndValidate() {
         // BEGIN: java-longRunningOperationsAsync-sample-beginUploadAndValidate
@@ -62,8 +71,8 @@ public final class LongRunningOperationsAsync {
         // END: java-longRunningOperationsAsync-sample-beginUploadAndValidate
     }
 
-    public void beginStartTestRun() {
-        // BEGIN: java-longRunningOperationsAsync-sample-beginStartTestRun
+    public void beginTestRun() {
+        // BEGIN: java-longRunningOperationsAsync-sample-beginTestRun
         LoadTestRunAsyncClient client = new LoadTestingClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
@@ -79,7 +88,7 @@ public final class LongRunningOperationsAsync {
 
         BinaryData inputTestRunBinary = BinaryData.fromObject(testRunMap);
 
-        PollerFlux<BinaryData, BinaryData> poller = client.beginStartTestRun(inputTestRunId, inputTestRunBinary, null);
+        PollerFlux<BinaryData, BinaryData> poller = client.beginTestRun(inputTestRunId, inputTestRunBinary, null);
         poller = poller.setPollInterval(Duration.ofSeconds(5));
 
         poller.subscribe(pollResponse -> {
@@ -99,6 +108,6 @@ public final class LongRunningOperationsAsync {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        // END: java-longRunningOperationsAsync-sample-beginStartTestRun
+        // END: java-longRunningOperationsAsync-sample-beginTestRun
     }
 }

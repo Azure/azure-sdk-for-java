@@ -18,6 +18,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Sample demonstrates how to uploading and validating a test file, and running a test run.
+ *
+ * Authenticates with the load testing resource and shows how to uploading and validating a test file, and running
+ * a test run in a given resource.
+ *
+ * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
+ * @throws ResourceNotFoundException - when test with `testId` does not exist when uploading file.
+ */
 public final class LongRunningOperations {
     public void beginUploadAndValidate() {
         // BEGIN: java-longRunningOperations-sample-beginUploadAndValidate
@@ -65,8 +74,8 @@ public final class LongRunningOperations {
         // END: java-longRunningOperations-sample-beginUploadAndValidate
     }
 
-    public void beginStartTestRun() {
-        // BEGIN: java-longRunningOperations-sample-beginStartTestRun
+    public void beginTestRun() {
+        // BEGIN: java-longRunningOperations-sample-beginTestRun
         LoadTestRunClient client = new LoadTestingClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
@@ -82,7 +91,7 @@ public final class LongRunningOperations {
 
         BinaryData inputTestRunBinary = BinaryData.fromObject(testRunMap);
 
-        SyncPoller<BinaryData, BinaryData> poller = client.beginStartTestRun(inputTestRunId, inputTestRunBinary, null);
+        SyncPoller<BinaryData, BinaryData> poller = client.beginTestRun(inputTestRunId, inputTestRunBinary, null);
         poller = poller.setPollInterval(Duration.ofSeconds(5));
 
         PollResponse<BinaryData> pollResponse = poller.poll();
@@ -104,6 +113,6 @@ public final class LongRunningOperations {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        // END: java-longRunningOperations-sample-beginStartTestRun
+        // END: java-longRunningOperations-sample-beginTestRun
     }
 }

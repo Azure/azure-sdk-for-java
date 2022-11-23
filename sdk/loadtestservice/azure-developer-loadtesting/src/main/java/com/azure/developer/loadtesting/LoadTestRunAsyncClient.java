@@ -904,7 +904,7 @@ public final class LoadTestRunAsyncClient {
      *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStartTestRun(
+    public PollerFlux<BinaryData, BinaryData> beginTestRun(
             String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (testRunRequestOptions != null) {

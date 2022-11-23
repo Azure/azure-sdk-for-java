@@ -18,7 +18,7 @@ This document explains samples and how to use them.
 
 ### Hello World Samples
 
-* [ReadmeSamples.java][sample_readme] - Contains samples for following scenarios:
+* [HelloWorld.java][sample_helloWorld] - Contains samples for following scenarios:
   * Authenticate client
   * Create Load Test
   * Upload Test File
@@ -53,7 +53,7 @@ try {
 
 <!-- LINKS -->
 <!-- FIX LINK BRANCH AFTER PR MERGE -->
-[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/ReadmeSamples.java
+[sample_helloWorld]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/HelloWorld.java
 [sample_list]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/ListOperations.java
 [sample_listAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/ListOperationsAsync.java
 [sample_longRunning]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/LongRunningOperations.java

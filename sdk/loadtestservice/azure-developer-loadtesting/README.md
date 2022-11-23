@@ -143,7 +143,7 @@ testMap.put("description", "Sample Description");
 // loadTestConfig describes the number of test engines to generate load
 Map<String, Object> loadTestConfigMap = new HashMap<String, Object>();
 loadTestConfigMap.put("engineInstances", 1);
-testMap.put("loadTestConfig", loadTestConfigMap);
+testMap.put("loadTestConfiguration", loadTestConfigMap);
 
 // environmentVariables are plain-text data passed to test engines
 Map<String, Object> envVarMap = new HashMap<String, Object>();

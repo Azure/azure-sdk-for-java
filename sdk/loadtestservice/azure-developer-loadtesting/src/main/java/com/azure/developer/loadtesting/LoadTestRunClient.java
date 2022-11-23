@@ -890,10 +890,10 @@ public final class LoadTestRunClient {
      *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginStartTestRun(
+    public SyncPoller<BinaryData, BinaryData> beginTestRun(
             String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
         PollerFlux<BinaryData, BinaryData> asyncPoller =
-                this.client.beginStartTestRun(testRunId, body, testRunRequestOptions);
+                this.client.beginTestRun(testRunId, body, testRunRequestOptions);
         return asyncPoller.getSyncPoller();
     }
 
