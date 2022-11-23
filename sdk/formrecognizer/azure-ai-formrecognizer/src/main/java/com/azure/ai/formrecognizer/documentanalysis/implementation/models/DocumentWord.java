@@ -38,6 +38,9 @@ public final class DocumentWord {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
+    /** Creates an instance of DocumentWord class. */
+    public DocumentWord() {}
+
     /**
      * Get the content property: Text content of the word.
      *

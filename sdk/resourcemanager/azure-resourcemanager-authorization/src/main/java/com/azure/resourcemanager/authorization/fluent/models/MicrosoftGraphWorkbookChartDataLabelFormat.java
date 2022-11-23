@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookChartDataLabelFormat extends MicrosoftG
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartDataLabelFormat class. */
+    public MicrosoftGraphWorkbookChartDataLabelFormat() {
+    }
+
     /**
      * Get the fill property: workbookChartFill.
      *

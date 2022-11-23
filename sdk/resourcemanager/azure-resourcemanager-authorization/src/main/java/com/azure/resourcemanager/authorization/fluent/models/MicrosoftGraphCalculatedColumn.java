@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphCalculatedColumn {
     /*
-     * For dateTime output types, the format of the value. Must be one of
-     * dateOnly or dateTime.
+     * For dateTime output types, the format of the value. Must be one of dateOnly or dateTime.
      */
     @JsonProperty(value = "format")
     private String format;
@@ -29,8 +28,8 @@ public final class MicrosoftGraphCalculatedColumn {
     private String formula;
 
     /*
-     * The output type used to format values in this column. Must be one of
-     * boolean, currency, dateTime, number, or text.
+     * The output type used to format values in this column. Must be one of boolean, currency, dateTime, number, or
+     * text.
      */
     @JsonProperty(value = "outputType")
     private String outputType;
@@ -39,6 +38,10 @@ public final class MicrosoftGraphCalculatedColumn {
      * calculatedColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCalculatedColumn class. */
+    public MicrosoftGraphCalculatedColumn() {
+    }
 
     /**
      * Get the format property: For dateTime output types, the format of the value. Must be one of dateOnly or dateTime.

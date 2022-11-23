@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDeviceEnrollmentType. */
+/** deviceEnrollmentType. */
 public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEnum<MicrosoftGraphDeviceEnrollmentType> {
     /** Static value unknown for MicrosoftGraphDeviceEnrollmentType. */
     public static final MicrosoftGraphDeviceEnrollmentType UNKNOWN = fromString("unknown");
@@ -54,7 +54,11 @@ public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEn
         return fromString(name, MicrosoftGraphDeviceEnrollmentType.class);
     }
 
-    /** @return known MicrosoftGraphDeviceEnrollmentType values. */
+    /**
+     * Gets known MicrosoftGraphDeviceEnrollmentType values.
+     *
+     * @return known MicrosoftGraphDeviceEnrollmentType values.
+     */
     public static Collection<MicrosoftGraphDeviceEnrollmentType> values() {
         return values(MicrosoftGraphDeviceEnrollmentType.class);
     }

@@ -500,6 +500,11 @@ public final class Utils {
         StringBuilder zones = new StringBuilder().append("\n\tZones: ");
         zones.append(resource.availabilityZones());
 
+        StringBuilder securityProfile = new StringBuilder().append("\n\tSecurityProfile: ");
+        securityProfile.append("\n\t\t\tSecurity type: ").append(resource.securityType());
+        securityProfile.append("\n\t\t\tSecure Boot enabled: ").append(resource.isSecureBootEnabled());
+        securityProfile.append("\n\t\t\tvTPM enabled: ").append(resource.isVTpmEnabled());
+
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -513,6 +518,7 @@ public final class Utils {
                 .append(extensions)
                 .append(msi)
                 .append(zones)
+                .append(securityProfile)
                 .toString());
     }
 

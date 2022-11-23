@@ -23,8 +23,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
     private Double height;
 
     /*
-     * The distance, in points, from the left side of the chart to the
-     * worksheet origin.
+     * The distance, in points, from the left side of the chart to the worksheet origin.
      */
     @JsonProperty(value = "left")
     private Double left;
@@ -36,9 +35,8 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
     private String name;
 
     /*
-     * Represents the distance, in points, from the top edge of the object to
-     * the top of row 1 (on a worksheet) or the top of the chart area (on a
-     * chart).
+     * Represents the distance, in points, from the top edge of the object to the top of row 1 (on a worksheet) or the
+     * top of the chart area (on a chart).
      */
     @JsonProperty(value = "top")
     private Double top;
@@ -74,8 +72,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
     private MicrosoftGraphWorkbookChartLegend legend;
 
     /*
-     * Represents either a single series or collection of series in the chart.
-     * Read-only.
+     * Represents either a single series or collection of series in the chart. Read-only.
      */
     @JsonProperty(value = "series")
     private List<MicrosoftGraphWorkbookChartSeries> series;
@@ -96,6 +93,10 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
      * workbookChart
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChart class. */
+    public MicrosoftGraphWorkbookChart() {
+    }
 
     /**
      * Get the height property: Represents the height, in points, of the chart object.

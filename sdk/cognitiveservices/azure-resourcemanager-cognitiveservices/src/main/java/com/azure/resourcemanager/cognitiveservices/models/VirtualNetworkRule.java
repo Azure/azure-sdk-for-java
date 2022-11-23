@@ -30,6 +30,10 @@ public final class VirtualNetworkRule {
     @JsonProperty(value = "ignoreMissingVnetServiceEndpoint")
     private Boolean ignoreMissingVnetServiceEndpoint;
 
+    /** Creates an instance of VirtualNetworkRule class. */
+    public VirtualNetworkRule() {
+    }
+
     /**
      * Get the id property: Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.

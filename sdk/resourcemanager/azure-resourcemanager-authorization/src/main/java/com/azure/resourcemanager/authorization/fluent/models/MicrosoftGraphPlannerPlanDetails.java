@@ -34,6 +34,10 @@ public final class MicrosoftGraphPlannerPlanDetails extends MicrosoftGraphEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPlannerPlanDetails class. */
+    public MicrosoftGraphPlannerPlanDetails() {
+    }
+
     /**
      * Get the categoryDescriptions property: plannerCategoryDescriptions.
      *

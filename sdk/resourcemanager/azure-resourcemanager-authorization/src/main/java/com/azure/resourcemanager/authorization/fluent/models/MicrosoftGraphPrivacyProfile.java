@@ -16,16 +16,14 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphPrivacyProfile {
     /*
-     * A valid smtp email address for the privacy statement contact. Not
-     * required.
+     * A valid smtp email address for the privacy statement contact. Not required.
      */
     @JsonProperty(value = "contactEmail")
     private String contactEmail;
 
     /*
-     * A valid URL format that begins with http:// or https://. Maximum length
-     * is 255 characters. The URL that directs to the company's privacy
-     * statement. Not required.
+     * A valid URL format that begins with http:// or https://. Maximum length is 255 characters. The URL that directs
+     * to the company's privacy statement. Not required.
      */
     @JsonProperty(value = "statementUrl")
     private String statementUrl;
@@ -34,6 +32,10 @@ public final class MicrosoftGraphPrivacyProfile {
      * privacyProfile
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPrivacyProfile class. */
+    public MicrosoftGraphPrivacyProfile() {
+    }
 
     /**
      * Get the contactEmail property: A valid smtp email address for the privacy statement contact. Not required.

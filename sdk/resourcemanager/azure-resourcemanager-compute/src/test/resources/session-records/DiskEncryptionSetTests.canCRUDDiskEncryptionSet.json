@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69906/providers/Microsoft.KeyVault/vaults/kv2745314e0/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Administrator%27&api-version=2015-07-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69906/providers/Microsoft.KeyVault/vaults/kv2745314e0/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Administrator%27&api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "0502f7a6-0e12-41a8-8184-c4162e2edaa4",
@@ -161,7 +161,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69906/providers/Microsoft.KeyVault/vaults/kv2745314e0/providers/Microsoft.Authorization/roleAssignments/72aceb76-030b-4cc3-be6f-e40b1f6d5c14?api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69906/providers/Microsoft.KeyVault/vaults/kv2745314e0/providers/Microsoft.Authorization/roleAssignments/72aceb76-030b-4cc3-be6f-e40b1f6d5c14?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "c48cfbc4-6315-45e5-a180-71accb3b97c1",
@@ -307,7 +307,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69906/providers/Microsoft.KeyVault/vaults/kv2745314e0/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Crypto%20Service%20Encryption%20User%27&api-version=2015-07-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69906/providers/Microsoft.KeyVault/vaults/kv2745314e0/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Crypto%20Service%20Encryption%20User%27&api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "ee8584ca-a286-4031-802c-382da2710d0e",
@@ -334,7 +334,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69906/providers/Microsoft.KeyVault/vaults/kv2745314e0/providers/Microsoft.Authorization/roleAssignments/a20ad75f-e559-45d6-9a13-e50ec941e0d6?api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69906/providers/Microsoft.KeyVault/vaults/kv2745314e0/providers/Microsoft.Authorization/roleAssignments/a20ad75f-e559-45d6-9a13-e50ec941e0d6?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "838ffa48-2d55-4141-975f-c803e6e73073",

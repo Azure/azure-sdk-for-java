@@ -40,6 +40,10 @@ public final class MicrosoftGraphAlternativeSecurityId {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphAlternativeSecurityId class. */
+    public MicrosoftGraphAlternativeSecurityId() {
+    }
+
     /**
      * Get the identityProvider property: For internal use only.
      *
