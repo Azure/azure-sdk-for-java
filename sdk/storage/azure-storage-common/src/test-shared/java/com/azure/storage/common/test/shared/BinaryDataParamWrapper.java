@@ -4,7 +4,7 @@ import com.azure.core.util.BinaryData;
 
 /**
  * Wrapper class for supplying {@link BinaryData} to parameterized tests. Spock calls toString() on parameters, and
- * for some {@code BinaryDataContent} implementations, toString() consumes a stream that cannot be reconsumed.
+ * for some {@code BinaryDataContent} implementations, toString() consumes a stream that cannot be re-consumed.
  * Wrapping the parameter with a safe toString prevents this (and also provides a more helpful string for Spock
  * outputs).
  */
