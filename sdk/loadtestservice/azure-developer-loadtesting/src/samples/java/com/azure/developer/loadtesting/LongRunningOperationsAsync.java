@@ -12,7 +12,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.developer.loadtesting.LoadTestAdministrationAsyncClient.ValidationStatus;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,15 +33,20 @@ public final class LongRunningOperationsAsync {
         RequestOptions reqOpts = new RequestOptions()
                 .addQueryParam("fileType", "JMX_FILE");
 
-        PollerFlux<ValidationStatus, BinaryData> poller = client.beginUploadAndValidate(inputTestId, inputFileName, fileData, reqOpts);
+        PollerFlux<BinaryData, BinaryData> poller = client.beginUploadAndValidate(inputTestId, inputFileName, fileData, reqOpts);
         poller = poller.setPollInterval(Duration.ofSeconds(1));
 
         poller.subscribe(pollResponse -> {
-            ValidationStatus validationStatus = pollResponse.getValue();
-            System.out.println("Validation Status: " + validationStatus.toString());
+            try {
+                JsonNode file = new ObjectMapper().readTree(pollResponse.getValue().toString());
+                String validationStatus = file.get("validationStatus").asText();
+                System.out.println("Validation Status: " + validationStatus.toString());
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         });
 
-        AsyncPollResponse<ValidationStatus, BinaryData> pollResponse = poller.blockLast();
+        AsyncPollResponse<BinaryData, BinaryData> pollResponse = poller.blockLast();
         BinaryData fileBinary = pollResponse.getFinalResult().block();
 
         try {

@@ -17,7 +17,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.LoadTestAdministrationAsyncClient.ValidationStatus;
 
 /** Initializes a new instance of the synchronous LoadTestingClient type. */
 @ServiceClient(builder = LoadTestingClientBuilder.class)
@@ -112,13 +111,12 @@ public final class LoadTestAdministrationClient {
      * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
      *     it.
      * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
-     * @return A {@link SyncPoller} to poll on and retrieve the validation
-     *     status(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED).
+     * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ValidationStatus, BinaryData> beginUploadAndValidate(
+    public SyncPoller<BinaryData, BinaryData> beginUploadAndValidate(
             String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
-        PollerFlux<ValidationStatus, BinaryData> asyncPoller =
+        PollerFlux<BinaryData, BinaryData> asyncPoller =
                 this.client.beginUploadAndValidate(testId, fileName, body, fileUploadRequestOptions);
         return asyncPoller.getSyncPoller();
     }

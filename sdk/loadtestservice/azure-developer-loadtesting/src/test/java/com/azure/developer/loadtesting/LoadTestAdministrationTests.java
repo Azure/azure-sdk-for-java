@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.LoadTestAdministrationAsyncClient.ValidationStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.File;
@@ -82,18 +81,18 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadAndValidate() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions = new RequestOptions().addQueryParam("fileType", "JMX_FILE");
-        SyncPoller<ValidationStatus, BinaryData> poller = builder.buildLoadTestAdministrationClient().beginUploadAndValidate(newTestId, uploadJmxFileName, file, fileUploadRequestOptions);
+        SyncPoller<BinaryData, BinaryData> poller = builder.buildLoadTestAdministrationClient().beginUploadAndValidate(newTestId, uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackSyncPollerPollInterval(poller);
-        PollResponse<ValidationStatus> response = poller.waitForCompletion();
+        PollResponse<BinaryData> response = poller.waitForCompletion();
         BinaryData fileBinary = poller.getFinalResult();
         try {
             JsonNode fileNode = OBJECT_MAPPER.readTree(fileBinary.toString());
             String validationStatus = fileNode.get("validationStatus").asText();
-            Assertions.assertTrue(fileNode.get("fileName").asText().equals(uploadJmxFileName) && validationStatus.equals(ValidationStatus.VALIDATION_SUCCESS.toString()));
+            Assertions.assertTrue(fileNode.get("fileName").asText().equals(uploadJmxFileName) && "VALIDATION_SUCCESS".equals(validationStatus));
         } catch (Exception e) {
             Assertions.assertTrue(false);
         }
-        Assertions.assertEquals(ValidationStatus.VALIDATION_SUCCESS, response.getValue());
+        Assertions.assertNotNull(response.getValue());
     }
 
     @Test

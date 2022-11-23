@@ -112,22 +112,7 @@ public final class LoadTestAdministrationAsyncClient {
         return this.serviceClient.createOrUpdateServerMetricsConfigWithResponseAsync(testId, body, requestOptions);
     }
 
-    /** Validation status of uploaded file */
-    public enum ValidationStatus {
-
-        /** Validation not initiated */
-        NOT_VALIDATED,
-        /** Validation successful */
-        VALIDATION_SUCCESS,
-        /** Validation failed */
-        VALIDATION_FAILURE,
-        /** Validation initiated */
-        VALIDATION_INITIATED,
-        /** Validation not required for file type */
-        VALIDATION_NOT_REQUIRED
-    }
-
-    private Mono<PollResponse<ValidationStatus>> getValidationStatus(BinaryData fileBinary) {
+    private Mono<PollResponse<BinaryData>> getValidationStatus(BinaryData fileBinary) {
         String validationStatus;
         JsonNode file;
         try {
@@ -137,30 +122,22 @@ public final class LoadTestAdministrationAsyncClient {
             return Mono.error(new RuntimeException("Encountered exception while retrieving validation status", e));
         }
         LongRunningOperationStatus lroStatus;
-        ValidationStatus validationStatusEnum;
         switch (validationStatus) {
+            case "VALIDATION_NOT_REQUIRED":
             case "VALIDATION_SUCCESS":
                 lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                validationStatusEnum = ValidationStatus.VALIDATION_SUCCESS;
                 break;
             case "VALIDATION_FAILURE":
                 lroStatus = LongRunningOperationStatus.FAILED;
-                validationStatusEnum = ValidationStatus.VALIDATION_FAILURE;
                 break;
             case "VALIDATION_INITIATED":
                 lroStatus = LongRunningOperationStatus.IN_PROGRESS;
-                validationStatusEnum = ValidationStatus.VALIDATION_INITIATED;
-                break;
-            case "VALIDATION_NOT_REQUIRED":
-                lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                validationStatusEnum = ValidationStatus.VALIDATION_NOT_REQUIRED;
                 break;
             default:
                 lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                validationStatusEnum = ValidationStatus.NOT_VALIDATED;
                 break;
         }
-        return Mono.just(new PollResponse<>(lroStatus, validationStatusEnum));
+        return Mono.just(new PollResponse<>(lroStatus, fileBinary));
     }
 
     /**
@@ -172,11 +149,10 @@ public final class LoadTestAdministrationAsyncClient {
      * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
      *     it.
      * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
-     * @return A {@link PollerFlux} to poll on and retrieve the validation
-     *     status(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED).
+     * @return A {@link PollerFlux} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ValidationStatus, BinaryData> beginUploadAndValidate(
+    public PollerFlux<BinaryData, BinaryData> beginUploadAndValidate(
             String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (fileUploadRequestOptions != null) {
@@ -188,7 +164,7 @@ public final class LoadTestAdministrationAsyncClient {
                     Mono<BinaryData> fileMono =
                             uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
                                     .flatMap(FluxUtil::toMono);
-                    Mono<PollResponse<ValidationStatus>> fileValidationPollRespMono =
+                    Mono<PollResponse<BinaryData>> fileValidationPollRespMono =
                             fileMono.flatMap(fileBinaryData -> getValidationStatus(fileBinaryData));
                     return fileValidationPollRespMono.flatMap(
                             fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue()));
