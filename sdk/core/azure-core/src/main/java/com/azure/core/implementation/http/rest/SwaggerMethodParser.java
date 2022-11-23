@@ -108,17 +108,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
 
-    /**
-     * Create a SwaggerMethodParser object using the provided fully qualified method name.
-     *
-     * @param swaggerMethod the Swagger method to parse.
-     */
-    public SwaggerMethodParser(Method swaggerMethod) {
-        this(SwaggerInterfaceParser.getInstance(swaggerMethod.getDeclaringClass()), swaggerMethod);
-    }
-
-    SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
-        this.rawHost = interfaceParser.getHost();
+    SwaggerMethodParser(String rawHost, String serviceName, Method swaggerMethod) {
+        this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
 
@@ -279,7 +270,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
         this.ignoreResponseBody = isResponseBodyIgnored(unwrappedReturnType);
-        this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
+        this.spanName = serviceName + "." + swaggerMethod.getName();
     }
 
     /**

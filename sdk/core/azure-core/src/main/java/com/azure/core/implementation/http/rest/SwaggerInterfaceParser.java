@@ -7,8 +7,10 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
 
 import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
 
@@ -16,11 +18,12 @@ import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
  * The type responsible for creating individual Swagger interface method parsers from a Swagger interface.
  */
 public final class SwaggerInterfaceParser {
-    private static final Map<Class<?>, SwaggerInterfaceParser> INTERFACE_PARSERS = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, SwaggerInterfaceParser> INTERFACE_PARSERS = new HashMap<>();
+    private static final Object INTERFACE_PARSERS_WRITE_LOCK = new Object();
 
     private final String host;
     private final String serviceName;
-    private final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>();
+    private final MethodAndSwaggerMethodParser[] methodParsers;
 
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface name.
@@ -29,11 +32,18 @@ public final class SwaggerInterfaceParser {
      * @return The {@link SwaggerInterfaceParser} for the passed interface.
      */
     public static SwaggerInterfaceParser getInstance(Class<?> swaggerInterface) {
-        if (INTERFACE_PARSERS.size() >= MAX_CACHE_SIZE) {
-            INTERFACE_PARSERS.clear();
+        SwaggerInterfaceParser parser = INTERFACE_PARSERS.get(swaggerInterface);
+        if (parser != null) {
+            return parser;
         }
 
-        return INTERFACE_PARSERS.computeIfAbsent(swaggerInterface, SwaggerInterfaceParser::new);
+        synchronized (INTERFACE_PARSERS_WRITE_LOCK) {
+            if (INTERFACE_PARSERS.size() >= MAX_CACHE_SIZE) {
+                INTERFACE_PARSERS.clear();
+            }
+
+            return INTERFACE_PARSERS.computeIfAbsent(swaggerInterface, SwaggerInterfaceParser::new);
+        }
     }
 
     SwaggerInterfaceParser(Class<?> swaggerInterface) {
@@ -50,6 +60,13 @@ public final class SwaggerInterfaceParser {
         } else {
             throw new MissingRequiredAnnotationException(ServiceInterface.class, swaggerInterface);
         }
+
+        Method[] methods = swaggerInterface.getDeclaredMethods();
+        this.methodParsers = new MethodAndSwaggerMethodParser[methods.length];
+        for (int i = 0; i < methods.length; i++) {
+            methodParsers[i] = new MethodAndSwaggerMethodParser(methods[i], host, serviceName);
+        }
+        Arrays.sort(methodParsers);
     }
 
     /**
@@ -60,7 +77,8 @@ public final class SwaggerInterfaceParser {
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
-        return methodParsers.computeIfAbsent(swaggerMethod, sm -> new SwaggerMethodParser(this, sm));
+        int index = Arrays.binarySearch(methodParsers, new MethodAndSwaggerMethodParser(swaggerMethod));
+        return methodParsers[index].methodParser;
     }
 
     /**
@@ -75,5 +93,39 @@ public final class SwaggerInterfaceParser {
 
     public String getServiceName() {
         return serviceName;
+    }
+
+    private static final class MethodAndSwaggerMethodParser implements Comparable<MethodAndSwaggerMethodParser> {
+        private final SwaggerMethodParser methodParser;
+        private final String methodString;
+
+        private MethodAndSwaggerMethodParser(Method method) {
+            this.methodParser = null;
+            this.methodString = method.toString();
+        }
+
+        private MethodAndSwaggerMethodParser(Method method, String rawHost, String serviceName) {
+            this.methodParser = new SwaggerMethodParser(rawHost, serviceName, method);
+            this.methodString = method.toString();
+        }
+
+        @Override
+        public int hashCode() {
+            return methodString.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof MethodAndSwaggerMethodParser)) {
+                return false;
+            }
+
+            return Objects.equals(methodString, ((MethodAndSwaggerMethodParser) obj).methodString);
+        }
+
+        @Override
+        public int compareTo(MethodAndSwaggerMethodParser o) {
+            return methodString.compareTo(o.methodString);
+        }
     }
 }
