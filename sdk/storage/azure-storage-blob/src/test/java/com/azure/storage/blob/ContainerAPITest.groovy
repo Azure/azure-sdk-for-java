@@ -1843,19 +1843,22 @@ class ContainerAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
     def "List blobs hier segment with version prefix and delimiter"() {
         setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.createIfNotExists()
         def options = new ListBlobsOptions()
             .setDetails(new BlobListDetails().setRetrieveVersions(true))
             .setPrefix("baz")
 
-        setupContainerForListing(cc)
+        setupContainerForListing(versionedCC)
 
         def foundBlobs = [] as Set
         def foundPrefixes = [] as Set
 
         when:
-        cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList())
+        versionedCC.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList())
             .forEach { blobItem ->
                 if (blobItem.isPrefix()) {
                     foundPrefixes << blobItem
@@ -1870,6 +1873,9 @@ class ContainerAPITest extends APISpec {
         foundBlobs[0].getName() == "baz"
         foundBlobs[0].getVersionId() != null
         foundPrefixes[0].getName() == "baz/"
+
+        cleanup:
+        versionedCC.delete()
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
