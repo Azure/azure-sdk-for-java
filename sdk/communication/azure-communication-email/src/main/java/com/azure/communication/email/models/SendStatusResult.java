@@ -14,12 +14,12 @@ public final class SendStatusResult {
     /*
      * System generated id of an email message sent.
      */
-    private String messageId;
+    private final String messageId;
 
     /*
      * The type indicating the status of a request.
      */
-    private SendStatus status;
+    private final SendStatus status;
 
     /**
      * Constructor for SendStatusResult
@@ -45,33 +45,11 @@ public final class SendStatusResult {
     }
 
     /**
-     * Set the messageId property: System generated id of an email message sent.
-     *
-     * @param messageId the messageId value to set.
-     * @return the SendStatusResult object itself.
-     */
-    public SendStatusResult setMessageId(String messageId) {
-        this.messageId = messageId;
-        return this;
-    }
-
-    /**
      * Get the status property: The type indicating the status of a request.
      *
      * @return the status value.
      */
     public SendStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The type indicating the status of a request.
-     *
-     * @param status the status value to set.
-     * @return the SendStatusResult object itself.
-     */
-    public SendStatusResult setStatus(SendStatus status) {
-        this.status = status;
-        return this;
     }
 }
