@@ -15,6 +15,8 @@ public final class JdbcPropertyConstants {
     public static final String POSTGRESQL_PROPERTY_NAME_SSL_MODE = "sslmode";
     public static final String POSTGRESQL_PROPERTY_VALUE_SSL_MODE = "require";
     public static final String POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME = "ApplicationName";
+    public static final String POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION = "assumeMinServerVersion";
+    public static final String POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION = "9.0.0";
 
     public static final String MYSQL_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     public static final String MYSQL_AUTH_PLUGIN_CLASS_NAME = "com.azure.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin";
