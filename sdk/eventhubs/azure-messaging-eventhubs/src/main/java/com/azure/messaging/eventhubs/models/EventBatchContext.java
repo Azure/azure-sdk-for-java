@@ -88,7 +88,6 @@ public class EventBatchContext {
      * done.
      *
      * @return Gets a {@link Mono} that completes when the checkpoint is updated.
-     * @throws AmqpException if an error occurs when updating the checkpoint.
      */
     public Mono<Void> updateCheckpointAsync() {
         if (this.events.isEmpty()) {
@@ -111,8 +110,6 @@ public class EventBatchContext {
      * {@link #getEvents()}. This will serve as the last known successfully processed event in this partition
      * if the update is successful. If {@link #getEvents()} returns an empty, no update to checkpoint will be
      * done.
-     *
-     * @throws AmqpException if an error occurs while updating the checkpoint.
      */
     public void updateCheckpoint() {
         this.updateCheckpointAsync().block();
