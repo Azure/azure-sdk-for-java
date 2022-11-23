@@ -61,6 +61,6 @@ public class DetectAnomaliesLastPoint {
         DetectRequest detectRequest = detectBody.toObject(DetectRequest.class);
         LastDetectResponse lastDetectResponse = anomalyDetectorClient.detectUnivariateLastPoint(detectRequest);
         System.out.println("ExpectedValue: " + lastDetectResponse.getExpectedValue()
-            + ", Severity: "+ lastDetectResponse.getSeverity());
+            + ", Severity: " + lastDetectResponse.getSeverity());
     }
 }
