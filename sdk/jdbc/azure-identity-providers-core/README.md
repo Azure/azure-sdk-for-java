@@ -51,7 +51,7 @@
     * [Next steps](#next-steps)
     * [Contributing](#contributing)
 
-# Azure identity JDBC MySQL plugin library for Java
+# [Azure identity JDBC MySQL plugin library for Java](#tab/mysql)
 
 This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted MySQL services.
 
@@ -316,7 +316,7 @@ If you encounter any bugs, please file issues via [Issues](https://github.com/Az
 For details on contributing to this repository, see
 the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
-# Azure identity JDBC PostgreSQL plugin library for Java
+# [Azure identity JDBC PostgreSQL plugin library for Java](#tab/postgresql)
 
 This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted PostgreSQL services.
 
@@ -582,6 +582,8 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
+
+---
 
 <!-- LINKS -->
 
