@@ -4,9 +4,9 @@
 
 ### Features Added
 
-- AAD token auth has been added for EmailClient and EmailAsyncClient
-- overloads have been added for creating an email address object
-- withResponse methods have been added for send and getSendStatus
+- AAD token auth has been added for `EmailClient` and `EmailAsyncClient`
+- Overloads have been added for creating an email address object
+- `withResponse` methods have been added for `send` and `getSendStatus` operations
 
 ### Breaking Changes
 
