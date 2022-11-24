@@ -5,6 +5,19 @@
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
 
 ### Bugs Fixed
+- Fix [CVE-2021-26291](https://nvd.nist.gov/vuln/detail/CVE-2021-26291)
+- Fix [CVE-2019-20444](https://nvd.nist.gov/vuln/detail/CVE-2019-20444)
+- Fix [CVE-2019-20445](https://nvd.nist.gov/vuln/detail/CVE-2019-20445)
+- Fix [CVE-2015-2156](https://nvd.nist.gov/vuln/detail/CVE-2015-2156)
+- Fix [CVE-2019-16869](https://nvd.nist.gov/vuln/detail/CVE-2019-16869)
+- Fix [CVE-2021-37136](https://nvd.nist.gov/vuln/detail/CVE-2021-37136)
+- Fix [CVE-2021-37137](https://nvd.nist.gov/vuln/detail/CVE-2021-37137)
+- Fix [CVE-2014-3488](https://nvd.nist.gov/vuln/detail/CVE-2014-3488)
+- Fix [CVE-2021-21290](https://nvd.nist.gov/vuln/detail/CVE-2021-21290)
+- Fix [CVE-2021-21295](https://nvd.nist.gov/vuln/detail/CVE-2021-21295)
+- Fix [CVE-2021-21409](https://nvd.nist.gov/vuln/detail/CVE-2021-21409)
+- Fix [CVE-2022-24823](https://nvd.nist.gov/vuln/detail/CVE-2022-24823)
+- Fix [CVE-2021-43797](https://nvd.nist.gov/vuln/detail/CVE-2021-43797)
 - Fixed an issue where Feature Flags didn't NormalizeNull on refresh checks, causing `(No Label)`/empty label feature flags to not cause refreshes when their value changed.
 
 ## 2.9.0 (2022-09-22)
