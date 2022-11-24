@@ -143,6 +143,13 @@ public interface DevCenterManagementClient {
     UsagesClient getUsages();
 
     /**
+     * Gets the CheckNameAvailabilitiesClient object to access its operations.
+     *
+     * @return the CheckNameAvailabilitiesClient object.
+     */
+    CheckNameAvailabilitiesClient getCheckNameAvailabilities();
+
+    /**
      * Gets the SkusClient object to access its operations.
      *
      * @return the SkusClient object.
