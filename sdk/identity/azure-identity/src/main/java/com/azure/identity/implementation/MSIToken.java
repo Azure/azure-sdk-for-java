@@ -70,7 +70,7 @@ public final class MSIToken extends AccessToken {
     private static Long parseDateToEpochSeconds(String dateTime) {
         try {
             Long expiresInSeconds = Long.parseLong(dateTime);
-            return Instant.from(OffsetDateTime.now().plusSeconds(expiresInSeconds).toInstant()).getEpochSecond();
+            return OffsetDateTime.now().plusSeconds(expiresInSeconds).toEpochSecond();
         } catch (NumberFormatException e) {
             LOGGER.verbose(e.getMessage());
         }
