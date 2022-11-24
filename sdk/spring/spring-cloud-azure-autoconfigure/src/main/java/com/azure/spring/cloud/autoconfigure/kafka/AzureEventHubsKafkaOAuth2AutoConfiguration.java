@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.PASSWORDLESS_KAFKA_PROPERTIES_BEAN_POST_PROCESSOR_BEAN_NAME;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka support. Provide Azure Identity-based
  * OAuth2 authentication for Event Hubs for Kafka on the basis of Spring Boot Autoconfiguration.
@@ -23,7 +25,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
-    @Bean
+    @Bean(PASSWORDLESS_KAFKA_PROPERTIES_BEAN_POST_PROCESSOR_BEAN_NAME)
     static BeanPostProcessor kafkaPropertiesBeanPostProcessor(AzureGlobalProperties properties) {
         return new KafkaPropertiesBeanPostProcessor(properties);
     }

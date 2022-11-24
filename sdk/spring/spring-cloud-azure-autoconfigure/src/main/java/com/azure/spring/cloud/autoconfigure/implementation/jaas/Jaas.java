@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.implementation.kafka.jaas;
+package com.azure.spring.cloud.autoconfigure.implementation.jaas;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.AZURE_CONFIGURED_JAAS_OPTIONS_KEY;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.AZURE_CONFIGURED_JAAS_OPTIONS_VALUE;
 
 public class Jaas {
 
@@ -22,7 +19,6 @@ public class Jaas {
     public Jaas(String loginModule, String controlFlag) {
         this.loginModule = loginModule;
         this.controlFlag = controlFlag;
-        this.options.put(AZURE_CONFIGURED_JAAS_OPTIONS_KEY, AZURE_CONFIGURED_JAAS_OPTIONS_VALUE);
     }
 
     /**
@@ -68,7 +64,8 @@ public class Jaas {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(String.format(JAAS_PREFIX, loginModule, controlFlag));
+        StringBuilder builder = new StringBuilder(String.format(JAAS_PREFIX,
+            loginModule == null ? "" : loginModule, controlFlag == null ? "" : controlFlag));
         options.forEach((k, v) -> builder.append(String.format(JAAS_OPTIONS_FORMAT, k, v)));
         builder.append(TERMINATOR);
         return builder.toString();

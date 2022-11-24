@@ -40,7 +40,6 @@ class AzureKafkaConfigurationUtilsTest {
     @Test
     void testWhenSecurityProtocolNotConfigured() {
         Map<String, Object> sourceConfigs = new HashMap<>();
-        Map<String, String> targetConfigs = new HashMap<>();
         sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, eventHubsBootStrapServer);
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
     }

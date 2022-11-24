@@ -21,6 +21,7 @@ import java.util.Map;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.VERSION;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.JAAS_OPTIONS_PATTERN;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -39,11 +40,14 @@ public final class AzureKafkaConfigurationUtils {
         + " And configure Kafka bootstrap servers instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.";
     private static final String KAFKA_OAUTH2_USER_AGENT = "." + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
 
+    public static final String PASSWORDLESS_KAFKA_PROPERTIES_BEAN_POST_PROCESSOR_BEAN_NAME =
+        "azurePasswordlessKafkaPropertiesBeanPostProcessor";
     public static final String LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE = "OAUTHBEARER authentication property {} will be configured as {} to support Azure Identity credentials.";
     public static final String LOG_OAUTH_AUTOCONFIGURATION_CONFIGURE = "Spring Cloud Azure auto-configuration for Kafka OAUTHBEARER authentication will be loaded to configure your Kafka security and sasl properties to support Azure Identity credentials.";
     public static final Map<String, String> KAFKA_OAUTH_CONFIGS;
     public static final String SECURITY_PROTOCOL_CONFIG_SASL = SASL_SSL.name();
     public static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
+    public static final String DEFAULT_SASL_JAAS_CONFIG_OAUTH = SASL_JAAS_CONFIG_OAUTH_PREFIX + ";";
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS_KEY = "azure.configured";
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS_VALUE = "true";
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS = String.format(JAAS_OPTIONS_PATTERN, AZURE_CONFIGURED_JAAS_OPTIONS_KEY, AZURE_CONFIGURED_JAAS_OPTIONS_VALUE);

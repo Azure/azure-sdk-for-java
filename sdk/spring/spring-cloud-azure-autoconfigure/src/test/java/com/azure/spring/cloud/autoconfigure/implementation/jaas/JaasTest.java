@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.implementation.kafka.jaas;
+package com.azure.spring.cloud.autoconfigure.implementation.jaas;
 
 import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils;
 import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
@@ -16,7 +16,7 @@ class JaasTest {
     void testToString() {
         Jaas jaas = new Jaas("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule");
         String jaasStr = jaas.toString();
-        assertEquals(AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX + AzureKafkaConfigurationUtils.AZURE_CONFIGURED_JAAS_OPTIONS + ";", jaasStr);
+        assertEquals(AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX + ";", jaasStr);
     }
 
     @Test
