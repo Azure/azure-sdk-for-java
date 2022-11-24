@@ -4,15 +4,13 @@
 
 # Release History
 
-## 1.0.1 (unreleased)
+## 1.0.0 (2022-11-11)
+
+This is the 1.0.0 GA version of Azure identity JDBC plugin library for Java.
 
 ### Breaking Changes
 
 Move `azure-identity-providers-core, `azure-identity-providers-jdbc-mysql`, `azure-identity-providers-jdbc-postgresql` into one module [#32282](https://github.com/Azure/azure-sdk-for-java/pull/32282).
-
-## 1.0.0 (2022-11-11)
-
-This is the 1.0.0 GA version of Azure identity JDBC plugin library for Java.
 
 ### Bugs Fixed
 
