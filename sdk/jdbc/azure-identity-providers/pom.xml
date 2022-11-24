@@ -10,8 +10,8 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-identity-providers-core</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
+  <artifactId>azure-identity-providers</artifactId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Providers Core</name>
