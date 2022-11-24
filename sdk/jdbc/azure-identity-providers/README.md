@@ -1,4 +1,4 @@
-- [Azure identity authentication providers library for Java](#azure-identity-authentication-providers-library-for-java)
+- [Azure identity authentication providers library plugin for Java](#azure-identity-authentication-providers-plugin-library-for-java)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
   - [Key concepts](#key-concepts)
@@ -7,7 +7,7 @@
   - [Next steps](#next-steps)
   - [Contributing](#contributing)
     
-# Azure identity authentication providers library for Java
+# Azure identity authentication providers library plugin for Java
 
 This package contains authentication providers to get a token from Azure Active Directory (Azure AD) for Azure services, like Azure Database for MySQL.
 
@@ -44,5 +44,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
-[azure-identity-providers-jdbc-mysql]: ./Azure-Database-for-MySQL-README.md
-[azure-identity-providers-jdbc-postgresql]: ./Azure-Database-for-PostgreSQL-README.md
+[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/Azure-Database-for-MySQL-README.md
+[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/Azure-Database-for-PostgreSQL-README.md
