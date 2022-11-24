@@ -89,7 +89,7 @@ EmailClient emailClient = new EmailClientBuilder()
 ```
 
 ### Azure Active Directory Token Authentication
-A `DefaultAzureCredential` object must be passed to the `EmailClientBuilder` via the credential() function. Endpoint must also be set via the endpoint() function.
+A `DefaultAzureCredential` object must be passed to the `EmailClientBuilder` via the `credential()` method. An endpoint must also be set via the `endpoint()` method.
 
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables are needed to create a DefaultAzureCredential object.
 
