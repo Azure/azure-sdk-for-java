@@ -10,7 +10,7 @@
 
 ### Breaking Changes
 
-- recipients is a required property in the EmailMessage object and must now be passed in through the constructor
+- `recipients` is a required property in the `EmailMessage` object and must now be passed in through the constructor
 
 ### Bugs Fixed
 
