@@ -44,7 +44,7 @@ public interface Schedule {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the typePropertiesType property: Supported type this scheduled task represents.

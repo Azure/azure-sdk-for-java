@@ -18,12 +18,12 @@ public final class ScheduleInnerTests {
         ScheduleInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"qgsfraoyzkoow\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"xawqaldsyuuxim\",\"timeZone\":\"qfobwyz\",\"state\":\"Enabled\"},\"id\":\"kutwpf\",\"name\":\"pagmhrskdsnf\",\"type\":\"sd\"}")
+                    "{\"properties\":{\"provisioningState\":\"Running\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jhdgqggebdunyga\",\"timeZone\":\"idb\",\"state\":\"Enabled\"},\"id\":\"pxllrx\",\"name\":\"yjmoadsu\",\"type\":\"arm\"}")
                 .toObject(ScheduleInner.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("xawqaldsyuuxim", model.time());
-        Assertions.assertEquals("qfobwyz", model.timeZone());
+        Assertions.assertEquals("jhdgqggebdunyga", model.time());
+        Assertions.assertEquals("idb", model.timeZone());
         Assertions.assertEquals(EnableStatus.ENABLED, model.state());
     }
 
@@ -33,14 +33,14 @@ public final class ScheduleInnerTests {
             new ScheduleInner()
                 .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("xawqaldsyuuxim")
-                .withTimeZone("qfobwyz")
+                .withTime("jhdgqggebdunyga")
+                .withTimeZone("idb")
                 .withState(EnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleInner.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("xawqaldsyuuxim", model.time());
-        Assertions.assertEquals("qfobwyz", model.timeZone());
+        Assertions.assertEquals("jhdgqggebdunyga", model.time());
+        Assertions.assertEquals("idb", model.timeZone());
         Assertions.assertEquals(EnableStatus.ENABLED, model.state());
     }
 }

@@ -35,7 +35,7 @@ public final class SchedulesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"yui\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"fpphoj\",\"timeZone\":\"vyhyhsgzfc\",\"state\":\"Disabled\"},\"id\":\"mfg\",\"name\":\"eglqgleohibetn\",\"type\":\"uankrrfxeeeb\"}";
+            "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"kdlpa\",\"timeZone\":\"rcxfailcfxwmdb\",\"state\":\"Disabled\"},\"id\":\"gsftufqobrjlnacg\",\"name\":\"ckknhxkizvy\",\"type\":\"nrzvuljraaer\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,13 +66,13 @@ public final class SchedulesGetWithResponseMockTests {
         Schedule response =
             manager
                 .schedules()
-                .getWithResponse("lzo", "hpc", "fnmdxotn", "fdgugeyzi", 2139513367, Context.NONE)
+                .getWithResponse("gsfjac", "slhhxudbxv", "d", "tnsi", 531273427, Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.frequency());
-        Assertions.assertEquals("fpphoj", response.time());
-        Assertions.assertEquals("vyhyhsgzfc", response.timeZone());
+        Assertions.assertEquals("kdlpa", response.time());
+        Assertions.assertEquals("rcxfailcfxwmdb", response.timeZone());
         Assertions.assertEquals(EnableStatus.DISABLED, response.state());
     }
 }

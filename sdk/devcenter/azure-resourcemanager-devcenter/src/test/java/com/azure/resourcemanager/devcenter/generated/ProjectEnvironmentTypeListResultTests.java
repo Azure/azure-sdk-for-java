@@ -14,8 +14,7 @@ public final class ProjectEnvironmentTypeListResultTests {
         ProjectEnvironmentTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"xwtctyqiklbbovpl\",\"deploymentTargetId\":\"bhvgy\",\"status\":\"Disabled\",\"userRoleAssignments\":{}},\"tags\":{\"l\":\"kfssxqukkf\",\"xnkjzkdesl\":\"mg\",\"kdwzbaiuebbaumny\":\"vlopwiyighx\",\"txp\":\"upedeojnabckhs\"},\"identity\":{\"principalId\":\"844c9b2b-cc4f-4dbb-8ec3-998e97921226\",\"tenantId\":\"b7504218-2d27-46ba-889a-228b9ebe37dd\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"vpesapskrdqmhjjd\",\"id\":\"ldwkyzxuutkn\",\"name\":\"ws\",\"type\":\"wsvlxotogtwrupqs\"}],\"nextLink\":\"nmic\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"deploymentTargetId\":\"ewrmjmwvvjektc\",\"status\":\"Enabled\",\"userRoleAssignments\":{}},\"tags\":{\"ylihkaetckt\":\"rsffrzpwvlqdqgbi\"},\"identity\":{\"principalId\":\"c5356d2b-50a9-4bce-aa69-bd5136611e36\",\"tenantId\":\"81fe2a9f-4a52-4893-a099-bf77790a6267\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"nkymuctqhjfbebrj\",\"id\":\"erfuwuttt\",\"name\":\"fvjrbirphxepcy\",\"type\":\"ahfn\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"deploymentTargetId\":\"xjvuujqgidokg\",\"status\":\"Disabled\",\"userRoleAssignments\":{}},\"tags\":{\"jeszzhbijhtxfv\":\"vcltbgsncgh\"},\"identity\":{\"principalId\":\"617ea177-add2-4ead-8c99-52f164d43527\",\"tenantId\":\"06f279f7-934a-45bb-b1b8-228e412f0dd6\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"nehmpvecx\",\"id\":\"debfqkkrbmpukgri\",\"name\":\"flz\",\"type\":\"fbxzpuzycisp\"}],\"nextLink\":\"zahmgkbrpyydhibn\"}")
                 .toObject(ProjectEnvironmentTypeListResult.class);
     }
 

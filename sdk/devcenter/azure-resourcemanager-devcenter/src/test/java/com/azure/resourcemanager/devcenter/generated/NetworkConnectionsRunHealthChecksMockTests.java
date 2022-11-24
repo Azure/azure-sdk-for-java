@@ -22,9 +22,9 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class NetworkConnectionsRunHealthChecksWithResponseMockTests {
+public final class NetworkConnectionsRunHealthChecksMockTests {
     @Test
-    public void testRunHealthChecksWithResponse() throws Exception {
+    public void testRunHealthChecks() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
@@ -57,6 +57,6 @@ public final class NetworkConnectionsRunHealthChecksWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.networkConnections().runHealthChecksWithResponse("cfhmlrqryxyn", "nzrdpsovwxz", Context.NONE);
+        manager.networkConnections().runHealthChecks("zhczexrxzbujrtrh", "vwrevkhgnlnzon", Context.NONE);
     }
 }

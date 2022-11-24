@@ -66,7 +66,7 @@ public interface ProjectEnvironmentType {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
