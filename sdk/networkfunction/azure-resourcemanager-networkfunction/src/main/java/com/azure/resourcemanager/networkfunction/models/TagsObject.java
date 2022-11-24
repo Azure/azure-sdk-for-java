@@ -19,6 +19,10 @@ public final class TagsObject {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of TagsObject class. */
+    public TagsObject() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *
