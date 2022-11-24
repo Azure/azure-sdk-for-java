@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.managedIdentityEnabled;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.managedIdentityEnabled;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureOAuthBearerTokenTest.FAKE_TOKEN;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;

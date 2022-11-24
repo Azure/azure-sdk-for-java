@@ -9,17 +9,21 @@ import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordl
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Store the constants for customized Azure properties with Kafka.
  */
 public final class AzureKafkaPropertiesUtils {
     public static final String SASL_JAAS_CONFIG_OAUTH_PREFIX = OAuthBearerLoginModule.class.getName() + " required";
+    public static final String JAAS_OPTIONS_PATTERN = " %s=\"%s\"";
 
     private AzureKafkaPropertiesUtils() {
     }
@@ -30,63 +34,48 @@ public final class AzureKafkaPropertiesUtils {
     static final String CREDENTIAL_PREFIX = "azure.credential.";
     static final String PROFILE_PREFIX = "azure.profile.";
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
-    static final String JAAS_KEY_VALUE_PATTERN = " %s=\"%s\"";
 
-    public static void convertConfigMapToAzureProperties(Map<String, ?> source,
-                                                         AzurePasswordlessProperties target) {
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> m.setter.accept(target, (String) p));
-        }
-    }
+//    public static void convertConfigMapToAzureProperties(Map<String, ?> source,
+//                                                         AzurePasswordlessProperties target) {
+//        for (Mapping m : Mapping.values()) {
+//            PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> m.setter.accept(target, (String) p));
+//        }
+//    }
 
-    public static void convertAzurePropertiesToConfigMap(AzurePasswordlessProperties source,
-                                                         Map<String, String> target) {
-        //TODO(yiliu6): used only in tests now, remove it after merged with passwordless-branch
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));
-        }
-    }
-
-    public static void convertJaasPropertyToAzureProperties(String source, AzurePasswordlessProperties target) {
-        if (source == null || !source.startsWith(SASL_JAAS_CONFIG_OAUTH_PREFIX) || !source.endsWith(";")) {
-            return;
-        }
-        Map<String, String> map = Arrays.stream(source.substring(0, source.length() - 1).split(" "))
-            .filter(str -> str.contains("="))
-            .map(str -> str.split("=", 2))
-            .collect(Collectors.toMap(s -> s[0], s -> {
-                if (s[1].length() > 2 && s[1].startsWith("\"") && s[1].endsWith("\"")) {
-                    return s[1].substring(1, s[1].length() - 1);
-                }
-                return null;
-            }));
-
-        for (Mapping m : Mapping.values()) {
+    public static void copyJaasPropertyToAzureProperties(String source, AzurePasswordlessProperties target) {
+        Map<String, String> map = convertJaasStringToMap(source);
+        for (AzureKafkaPasswordlessPropertiesMapping m : AzureKafkaPasswordlessPropertiesMapping.values()) {
             PROPERTY_MAPPER.from(map.get(m.propertyKey)).to(v -> m.setter.accept(target, v));
         }
     }
 
-    public static String convertAzurePropertiesToJaasProperty(AzurePasswordlessProperties source, String target) {
-        StringBuilder builder = new StringBuilder(target.endsWith(";") ? target.substring(0, target.length() - 1) : target);
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> builder.append(String.format(JAAS_KEY_VALUE_PATTERN, m.propertyKey, p)));
+    public static Map<String, String> convertJaasStringToMap(String source) {
+        if (source == null || !source.startsWith(SASL_JAAS_CONFIG_OAUTH_PREFIX) || !source.endsWith(";")) {
+            return Collections.EMPTY_MAP;
         }
-        return builder.append(";").toString();
+        Map<String, String> map = Arrays.stream(source.substring(0, source.length() - 1).split(" "))
+            .filter(str -> str.contains("="))
+            .map(str -> str.split("=", 2))
+            .filter(arr -> AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys().contains(arr[0]))
+            .collect(Collectors.toMap(arr -> arr[0], arr -> {
+                if (arr[1].length() > 2 && arr[1].startsWith("\"") && arr[1].endsWith("\"")) {
+                    return arr[1].substring(1, arr[1].length() - 1);
+                }
+                return null;
+            }));
+        return map;
     }
 
-    public static void clearAzureProperties(Map<String, ?> source) {
-        for (Mapping m : Mapping.values()) {
-            source.remove(m.propertyKey);
-        }
-    }
 
-    public static void copyAzureProperties(Map<String, ?> source, Map<String, Object> target) {
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> target.putIfAbsent(m.propertyKey, p));
-        }
-    }
+//    public static String convertAzurePropertiesToJaasProperty(AzureProperties source, String target) {
+//        StringBuilder builder = new StringBuilder(target.endsWith(";") ? target.substring(0, target.length() - 1) : target);
+//        for (Mapping m : Mapping.values()) {
+//            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> builder.append(String.format(JAAS_OPTIONS_PATTERN, m.propertyKey, p)));
+//        }
+//        return builder.append(";").toString();
+//    }
 
-    enum Mapping {
+    public enum AzureKafkaPasswordlessPropertiesMapping {
 
         clientCertificatePassword(CREDENTIAL_PREFIX + "client-certificate-password",
             p -> p.getCredential().getClientCertificatePassword(),
@@ -204,26 +193,36 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getProfile().getTenantId(),
             (p, s) -> p.getProfile().setTenantId(s));
 
+        private static List<String> PROPERTY_KEYS = buildPropertyKeys();
+
+        public static List<String> getPropertyKeys() {
+            return PROPERTY_KEYS;
+        }
+
+        private static List<String> buildPropertyKeys() {
+            return Stream.of(AzureKafkaPasswordlessPropertiesMapping.values()).map(m -> m.propertyKey).collect(Collectors.toUnmodifiableList());
+        }
+
         private String propertyKey;
         private Function<AzureProperties, String> getter;
         private BiConsumer<AzurePasswordlessProperties, String> setter;
 
-        Mapping(String propertyKey, Function<AzureProperties, String> getter, BiConsumer<AzurePasswordlessProperties,
+        AzureKafkaPasswordlessPropertiesMapping(String propertyKey, Function<AzureProperties, String> getter, BiConsumer<AzurePasswordlessProperties,
             String> setter) {
             this.propertyKey = propertyKey;
             this.getter = getter;
             this.setter = setter;
         }
 
-        String propertyKey() {
+        public String propertyKey() {
             return propertyKey;
         }
 
-        Function<AzureProperties, String> getter() {
+        public Function<AzureProperties, String> getter() {
             return getter;
         }
 
-        BiConsumer<AzurePasswordlessProperties, String> setter() {
+        public BiConsumer<AzurePasswordlessProperties, String> setter() {
             return setter;
         }
 

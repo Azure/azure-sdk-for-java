@@ -53,7 +53,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
         if (configs.get(SASL_JAAS_CONFIG) instanceof Password) {
-            AzureKafkaPropertiesUtils.convertJaasPropertyToAzureProperties(((Password) configs.get(SASL_JAAS_CONFIG)).value(), properties);
+            AzureKafkaPropertiesUtils.copyJaasPropertyToAzureProperties(((Password) configs.get(SASL_JAAS_CONFIG)).value(), properties);
         }
         TokenRequestContext request = buildTokenRequestContext(configs);
         this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
