@@ -74,14 +74,14 @@ The package is not part of the `azure-sdk-bom` now, so it can only be included v
 
 #### Include direct dependency
 
-[//]: # ({x-version-update-start;com.azure:azure-identity-providers-jdbc-mysql;current})
+[//]: # ({x-version-update-start;com.azure:azure-identity-providers-jdbc-core;current})
 
 ```xml
 
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;dependency} -->
+    <artifactId>azure-identity-providers-jdbc-core</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-core;dependency} -->
 </dependency>
 ```
 
@@ -339,15 +339,15 @@ The package is not part of the `azure-sdk-bom` now, so it can only be included v
 
 #### Include direct dependency
 
-[//]: # ({x-version-update-start;com.azure:azure-identity-providers-jdbc-postgresql;current})
+[//]: # ({x-version-update-start;com.azure:azure-identity-providers-jdbc-core;current})
 
 ```xml
 
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
+    <artifactId>azure-identity-providers-jdbc-core</artifactId>
     <version>1.0.0-beta.1
-    </version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-postgresql;dependency} -->
+    </version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-core;dependency} -->
 </dependency>
 ```
 
@@ -589,9 +589,6 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core/src/main/java/com/azure/identity/providers/mysql
-[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core/src/main/java/com/azure/identity/providers/postgresql
-[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core
 [postgresql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core/src/main/java/com/azure/identity/providers/postgresql
 [mysql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core/src/main/java/com/azure/identity/providers/mysql
 [docs]: https://azure.github.io/azure-sdk-for-java/
