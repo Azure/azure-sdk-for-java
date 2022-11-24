@@ -44,5 +44,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
-[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/Azure-Database-for-MySQL-README.md
-[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/Azure-Database-for-PostgreSQL-README.md
+[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/sdk/jdbc/Azure-Database-for-MySQL-README.md
+[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/sdk/jdbc/Azure-Database-for-PostgreSQL-README.md
