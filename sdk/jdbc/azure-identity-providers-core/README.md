@@ -1,11 +1,3 @@
-- [Azure identity JDBC plugin library for Java](#azure-identity-jdbc-plugin-library-for-java)
-  * [Getting started](#getting-started)
-    + [Prerequisites](#prerequisites)
-  * [Key concepts](#key-concepts)
-  * [Examples](#examples)
-  * [Troubleshooting](#troubleshooting)
-  * [Next steps](#next-steps)
-  * [Contributing](#contributing)
 - [Azure identity JDBC MySQL plugin library for Java](#azure-identity-jdbc-mysql-plugin-library-for-java)
     * [Getting started](#getting-started)
         + [Prerequisites](#prerequisites)
@@ -59,47 +51,11 @@
     * [Next steps](#next-steps)
     * [Contributing](#contributing)
 
-# Azure identity JDBC plugin library for Java
-
-This package contains a template framework to get a token from Azure Active Directory (Azure AD).
-For now, it is used by `azure-identity-providers-jdbc-mysql` and `azure-identity-providers-jdbc-postgresql` as the common framework
-to get a token as the password for connection.
-
-## Getting started
-
-### Prerequisites
-
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/).
-- [Java Development Kit (JDK)][jdk] with version 8 or above.
-- [Apache Maven](https://maven.apache.org/download.cgi).
-
-## Key concepts
-
-Azure Identity Providers Core contains a common template framework for users to get a token from Azure AD and
-use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure AD and use the
-token as a password to connect with MySQL.
-
-## Examples
-For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for MySQL](https://aka.ms/passwordless/quickstart/mysql) and [Quickstart:Use Java and JDBC with Azure Database for PostgreSQL](https://aka.ms/passwordless/quickstart/postgresql).
-
-
-## Troubleshooting
-If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
-
-## Next steps
-Other useful packages are:
-* [azure-identity-providers-jdbc-mysql][azure-identity-providers-jdbc-mysql]:  Azure identity JDBC MySQL plugin library for Java.
-* [azure-identity-providers-jdbc-postgresql][azure-identity-providers-jdbc-postgresql]:  Azure identity JDBC PostgreSQL plugin library for Java.
-
-## Contributing
-
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
-
 # Azure identity JDBC MySQL plugin library for Java
 
 This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted MySQL services.
 
-[Source code][source] | [API reference documentation][docs] | [Product documentation][product_docs]
+[Source code][mysql_source] | [API reference documentation][docs] | [Product documentation][mysql_product_docs]
 | [Quickstart][quick_start_mysql]
 
 ## Getting started
@@ -364,7 +320,7 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted PostgreSQL services.
 
-[Source code][source] | [API reference documentation][docs] | [Product documentation][product_docs]
+[Source code][postgresql_source] | [API reference documentation][docs] | [Product documentation][postgresql_product_docs]
 | [Quickstart][quick_start_postgresql]
 
 ## Getting started
@@ -628,29 +584,19 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 1. Create new Pull Request
 
 <!-- LINKS -->
-[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-mysql
-[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-postgresql
-<!-- LINKS -->
 
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-postgresql
+[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core/src/main/java/com/azure/identity/providers/mysql
+[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core/src/main/java/com/azure/identity/providers/postgresql
 [azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-mysql
+[postgresql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core/src/main/java/com/azure/identity/providers/postgresql
+[mysql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core/src/main/java/com/azure/identity/providers/mysql
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[product_docs]: https://docs.microsoft.com/azure/mysql/single-server/overview
+[postgresql_product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
+[mysql_product_docs]: https://docs.microsoft.com/azure/mysql/single-server/overview
+[quick_start_postgresql]: https://aka.ms/passwordless/quickstart/postgresql
 [quick_start_mysql]: https://aka.ms/passwordless/quickstart/mysql
+[Use Azure Active Directory for authenticating with PostgreSQL]:https://docs.microsoft.com/azure/postgresql/single-server/concepts-azure-ad-authentication
 [Azure Active Directory for authenticating with MySQL]:https://docs.microsoft.com/azure/mysql/single-server/concepts-azure-ad-authentication
 [whatismyip.akamai.com]: https://whatismyip.akamai.com/
-<!-- LINKS -->
-
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
-[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-mysql
-[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-postgresql
-[docs]: https://azure.github.io/azure-sdk-for-java/
-[product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
-[quick_start_postgresql]: https://aka.ms/passwordless/quickstart/postgresql
-[Use Azure Active Directory for authenticating with PostgreSQL]:https://docs.microsoft.com/azure/postgresql/single-server/concepts-azure-ad-authentication
-[whatismyip.akamai.com]: https://whatismyip.akamai.com/
-
