@@ -44,7 +44,7 @@ public final class AzureKafkaPropertiesUtils {
 
     public static Map<String, String> convertJaasStringToMap(String source) {
         if (source == null || !source.startsWith(SASL_JAAS_CONFIG_OAUTH_PREFIX) || !source.endsWith(";")) {
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         }
         Map<String, String> map = Arrays.stream(source.substring(0, source.length() - 1).split(" "))
             .filter(str -> str.contains("="))
@@ -185,7 +185,7 @@ public final class AzureKafkaPropertiesUtils {
         }
 
         private static List<String> buildPropertyKeys() {
-            return Stream.of(AzureKafkaPasswordlessPropertiesMapping.values()).map(m -> m.propertyKey).collect(Collectors.toUnmodifiableList());
+            return Collections.unmodifiableList(Stream.of(AzureKafkaPasswordlessPropertiesMapping.values()).map(m -> m.propertyKey).collect(Collectors.toList()));
         }
 
         private String propertyKey;
