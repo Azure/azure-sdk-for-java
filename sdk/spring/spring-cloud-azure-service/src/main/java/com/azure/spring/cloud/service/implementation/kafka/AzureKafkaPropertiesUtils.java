@@ -178,7 +178,7 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getProfile().getTenantId(),
             (p, s) -> p.getProfile().setTenantId(s));
 
-        private static List<String> PROPERTY_KEYS = buildPropertyKeys();
+        private static final List<String> PROPERTY_KEYS = buildPropertyKeys();
 
         public static List<String> getPropertyKeys() {
             return PROPERTY_KEYS;

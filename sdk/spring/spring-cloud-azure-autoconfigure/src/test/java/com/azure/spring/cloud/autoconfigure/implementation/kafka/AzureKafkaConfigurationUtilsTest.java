@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.util.ReflectionUtils;
 
-//import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_MECHANISM_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SECURITY_PROTOCOL_CONFIG_SASL;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureKafkaUserAgent;
@@ -45,8 +43,6 @@ class AzureKafkaConfigurationUtilsTest {
         Map<String, String> targetConfigs = new HashMap<>();
         sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, eventHubsBootStrapServer);
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
-//        configureOAuth2Properties(targetConfigs);
-//        shouldConfigureOAuthTargetProperties(targetConfigs);
     }
 
     @Test
@@ -65,8 +61,6 @@ class AzureKafkaConfigurationUtilsTest {
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         targetConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
-//        configureOAuth2Properties(targetConfigs);
-//        shouldConfigureOAuthTargetProperties(targetConfigs);
     }
 
     @Test
@@ -90,8 +84,6 @@ class AzureKafkaConfigurationUtilsTest {
         targetConfigs.put(SASL_JAAS_CONFIG, "fake-value");
         targetConfigs.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, "fake-value");
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
-//        configureOAuth2Properties(targetConfigs);
-//        shouldConfigureOAuthTargetProperties(targetConfigs);
     }
 
     @Test
@@ -144,13 +136,6 @@ class AzureKafkaConfigurationUtilsTest {
             assertEquals(VERSION, apiVersionsRequestData.clientSoftwareVersion());
             assertTrue(apiVersionsRequest.isValid());
         });
-    }
-
-    private void shouldConfigureOAuthTargetProperties(Map<String, String> targetConfigs) {
-        assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, targetConfigs.get(SECURITY_PROTOCOL_CONFIG));
-        assertEquals(SASL_MECHANISM_OAUTH, targetConfigs.get(SASL_MECHANISM));
-//        assertEquals(SASL_JAAS_CONFIG_OAUTH, targetConfigs.get(SASL_JAAS_CONFIG));
-        assertEquals(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH, targetConfigs.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
     }
 
     private Optional<Method> getApiVersionsRequestData() {

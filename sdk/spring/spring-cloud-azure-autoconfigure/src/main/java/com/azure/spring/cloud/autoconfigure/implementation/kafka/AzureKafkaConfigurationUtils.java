@@ -111,7 +111,7 @@ public final class AzureKafkaConfigurationUtils {
         return saslMechanism == null || SASL_MECHANISM_OAUTH.equalsIgnoreCase(saslMechanism);
     }
     private static boolean meetJaasConditions(String jaasConfig) {
-        return jaasConfig== null || jaasConfig.contains(AZURE_CONFIGURED_JAAS_OPTIONS);
+        return jaasConfig == null || jaasConfig.contains(AZURE_CONFIGURED_JAAS_OPTIONS);
     }
 
     private static boolean meetAzureBootstrapServerConditions(Map<String, Object> sourceProperties) {
