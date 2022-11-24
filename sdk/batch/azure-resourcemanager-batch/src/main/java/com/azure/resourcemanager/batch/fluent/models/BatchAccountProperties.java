@@ -4,11 +4,12 @@
 
 package com.azure.resourcemanager.batch.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageProperties;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
 import com.azure.resourcemanager.batch.models.KeyVaultReference;
+import com.azure.resourcemanager.batch.models.NetworkProfile;
 import com.azure.resourcemanager.batch.models.PoolAllocationMode;
 import com.azure.resourcemanager.batch.models.ProvisioningState;
 import com.azure.resourcemanager.batch.models.PublicNetworkAccessType;
@@ -17,13 +18,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Account specific properties. */
-@Immutable
+@Fluent
 public final class BatchAccountProperties {
     /*
      * The account endpoint used to interact with the Batch service.
      */
     @JsonProperty(value = "accountEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String accountEndpoint;
+
+    /*
+     * The endpoint used by compute node to connect to the Batch node management service.
+     */
+    @JsonProperty(value = "nodeManagementEndpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String nodeManagementEndpoint;
 
     /*
      * The provisioned state of the resource
@@ -46,8 +53,14 @@ public final class BatchAccountProperties {
     /*
      * If not specified, the default value is 'enabled'.
      */
-    @JsonProperty(value = "publicNetworkAccess", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessType publicNetworkAccess;
+
+    /*
+     * The network profile only takes effect when publicNetworkAccess is enabled.
+     */
+    @JsonProperty(value = "networkProfile")
+    private NetworkProfile networkProfile;
 
     /*
      * List of private endpoint connections associated with the Batch account
@@ -56,55 +69,49 @@ public final class BatchAccountProperties {
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
-     * Contains information about the auto-storage account associated with a
-     * Batch account.
+     * Contains information about the auto-storage account associated with a Batch account.
      */
     @JsonProperty(value = "autoStorage", access = JsonProperty.Access.WRITE_ONLY)
     private AutoStorageProperties autoStorage;
 
     /*
-     * Configures how customer data is encrypted inside the Batch account. By
-     * default, accounts are encrypted using a Microsoft managed key. For
-     * additional control, a customer-managed key can be used instead.
+     * Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a
+     * Microsoft managed key. For additional control, a customer-managed key can be used instead.
      */
     @JsonProperty(value = "encryption", access = JsonProperty.Access.WRITE_ONLY)
     private EncryptionProperties encryption;
 
     /*
-     * The dedicated core quota for the Batch account. For accounts with
-     * PoolAllocationMode set to UserSubscription, quota is managed on the
-     * subscription so this value is not returned.
+     * The dedicated core quota for the Batch account.
+     *
+     * For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value
+     * is not returned.
      */
     @JsonProperty(value = "dedicatedCoreQuota", access = JsonProperty.Access.WRITE_ONLY)
     private Integer dedicatedCoreQuota;
 
     /*
-     * The Spot/low-priority core quota for the Batch account. For accounts
-     * with PoolAllocationMode set to UserSubscription, quota is managed on the
-     * subscription so this value is not returned.
+     * The Spot/low-priority core quota for the Batch account.
+     *
+     * For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value
+     * is not returned.
      */
     @JsonProperty(value = "lowPriorityCoreQuota", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lowPriorityCoreQuota;
 
     /*
-     * A list of the dedicated core quota per Virtual Machine family for the
-     * Batch account. For accounts with PoolAllocationMode set to
-     * UserSubscription, quota is managed on the subscription so this value is
-     * not returned.
+     * A list of the dedicated core quota per Virtual Machine family for the Batch account. For accounts with
+     * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
      */
     @JsonProperty(value = "dedicatedCoreQuotaPerVMFamily", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineFamilyCoreQuota> dedicatedCoreQuotaPerVMFamily;
 
     /*
-     * A value indicating whether core quotas per Virtual Machine family are
-     * enforced for this account Batch is transitioning its core quota system
-     * for dedicated cores to be enforced per Virtual Machine family. During
-     * this transitional phase, the dedicated core quota per Virtual Machine
-     * family may not yet be enforced. If this flag is false, dedicated core
-     * quota is enforced via the old dedicatedCoreQuota property on the account
-     * and does not consider Virtual Machine family. If this flag is true,
-     * dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily
-     * property on the account, and the old dedicatedCoreQuota does not apply.
+     * A value indicating whether core quotas per Virtual Machine family are enforced for this account
+     *
+     * If this flag is true, dedicated core quota is enforced via both the dedicatedCoreQuotaPerVMFamily and
+     * dedicatedCoreQuota properties on the account. If this flag is false, dedicated core quota is enforced only via
+     * the dedicatedCoreQuota property on the account and does not consider Virtual Machine family.
      */
     @JsonProperty(value = "dedicatedCoreQuotaPerVMFamilyEnforced", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean dedicatedCoreQuotaPerVMFamilyEnforced;
@@ -122,12 +129,15 @@ public final class BatchAccountProperties {
     private Integer activeJobAndJobScheduleQuota;
 
     /*
-     * List of allowed authentication modes for the Batch account that can be
-     * used to authenticate with the data plane. This does not affect
-     * authentication with the control plane.
+     * List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.
+     * This does not affect authentication with the control plane.
      */
     @JsonProperty(value = "allowedAuthenticationModes", access = JsonProperty.Access.WRITE_ONLY)
     private List<AuthenticationMode> allowedAuthenticationModes;
+
+    /** Creates an instance of BatchAccountProperties class. */
+    public BatchAccountProperties() {
+    }
 
     /**
      * Get the accountEndpoint property: The account endpoint used to interact with the Batch service.
@@ -136,6 +146,16 @@ public final class BatchAccountProperties {
      */
     public String accountEndpoint() {
         return this.accountEndpoint;
+    }
+
+    /**
+     * Get the nodeManagementEndpoint property: The endpoint used by compute node to connect to the Batch node
+     * management service.
+     *
+     * @return the nodeManagementEndpoint value.
+     */
+    public String nodeManagementEndpoint() {
+        return this.nodeManagementEndpoint;
     }
 
     /**
@@ -175,6 +195,37 @@ public final class BatchAccountProperties {
     }
 
     /**
+     * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the BatchAccountProperties object itself.
+     */
+    public BatchAccountProperties withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @return the networkProfile value.
+     */
+    public NetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the BatchAccountProperties object itself.
+     */
+    public BatchAccountProperties withNetworkProfile(NetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the Batch
      * account.
      *
@@ -206,8 +257,10 @@ public final class BatchAccountProperties {
     }
 
     /**
-     * Get the dedicatedCoreQuota property: The dedicated core quota for the Batch account. For accounts with
-     * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
+     * Get the dedicatedCoreQuota property: The dedicated core quota for the Batch account.
+     *
+     * <p>For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this
+     * value is not returned.
      *
      * @return the dedicatedCoreQuota value.
      */
@@ -216,8 +269,10 @@ public final class BatchAccountProperties {
     }
 
     /**
-     * Get the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account. For accounts with
-     * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
+     * Get the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account.
+     *
+     * <p>For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this
+     * value is not returned.
      *
      * @return the lowPriorityCoreQuota value.
      */
@@ -238,12 +293,11 @@ public final class BatchAccountProperties {
 
     /**
      * Get the dedicatedCoreQuotaPerVMFamilyEnforced property: A value indicating whether core quotas per Virtual
-     * Machine family are enforced for this account Batch is transitioning its core quota system for dedicated cores to
-     * be enforced per Virtual Machine family. During this transitional phase, the dedicated core quota per Virtual
-     * Machine family may not yet be enforced. If this flag is false, dedicated core quota is enforced via the old
-     * dedicatedCoreQuota property on the account and does not consider Virtual Machine family. If this flag is true,
-     * dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily property on the account, and the old
-     * dedicatedCoreQuota does not apply.
+     * Machine family are enforced for this account
+     *
+     * <p>If this flag is true, dedicated core quota is enforced via both the dedicatedCoreQuotaPerVMFamily and
+     * dedicatedCoreQuota properties on the account. If this flag is false, dedicated core quota is enforced only via
+     * the dedicatedCoreQuota property on the account and does not consider Virtual Machine family.
      *
      * @return the dedicatedCoreQuotaPerVMFamilyEnforced value.
      */
@@ -287,6 +341,9 @@ public final class BatchAccountProperties {
     public void validate() {
         if (keyVaultReference() != null) {
             keyVaultReference().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
