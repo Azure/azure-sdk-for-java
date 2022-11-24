@@ -31,7 +31,7 @@ public class BlockBlobItem {
      * @param encryptionKeySha256 The encryption key used to encrypt the block blob.
      */
     public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-        final boolean isServerEncrypted, final String encryptionKeySha256) {
+        final Boolean isServerEncrypted, final String encryptionKeySha256) {
         this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, null);
     }
 
@@ -46,7 +46,7 @@ public class BlockBlobItem {
      * @param encryptionScope The encryption scope used to encrypt the block blob.
      */
     public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-        final boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope) {
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope) {
         this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, encryptionScope, null);
     }
 
@@ -62,7 +62,7 @@ public class BlockBlobItem {
      * @param versionId The version identifier of the block blob.
      */
     public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-                         final boolean isServerEncrypted, final String encryptionKeySha256,
+                         final Boolean isServerEncrypted, final String encryptionKeySha256,
                          final String encryptionScope, final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
