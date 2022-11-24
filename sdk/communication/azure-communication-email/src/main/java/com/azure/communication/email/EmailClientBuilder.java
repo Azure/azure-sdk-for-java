@@ -39,6 +39,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,8 @@ public final class EmailClientBuilder
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
+
+    private final ClientLogger logger = new ClientLogger(EmailClientBuilder.class);
 
     @Generated
     private final Map<String, String> properties = CoreUtils.getProperties("azure-communication-email.properties");
@@ -267,8 +270,11 @@ public final class EmailClientBuilder
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
                 this.tokenCredential, "https://communication.azure.com//.default");
-        } else {
+        } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
     }
 
