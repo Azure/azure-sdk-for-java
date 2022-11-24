@@ -186,38 +186,6 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
             });
     }
 
-//    @Override
-//    protected Map<String, Object> getConsumerProperties(KafkaProperties properties) {
-//        return ReflectionTestUtils.invokeMethod(processor,
-//            "getMergedConsumerProperties", properties);
-//    }
-//
-//    @Override
-//    protected Map<String, Object> getProducerProperties(KafkaProperties properties) {
-//        return properties.buildProducerProperties();
-//    }
-//
-//    @Override
-//    protected Map<String, Object> getAdminProperties(KafkaProperties properties) {
-//        return properties.buildAdminProperties();
-//    }
-//
-//    @Override
-//    protected String getProducerJaasProperties(KafkaProperties properties) {
-//        return (String) getProducerProperties(properties).get(SASL_JAAS_CONFIG);
-//    }
-//
-//    @Override
-//    protected String getConsumerJaasProperties(KafkaProperties properties) {
-//        return (String) getConsumerProperties(properties).get(SASL_JAAS_CONFIG);
-//
-//    }
-//
-//    @Override
-//    protected String getAdminJaasProperties(KafkaProperties properties) {
-//        return (String) getAdminProperties(properties).get(SASL_JAAS_CONFIG);
-//    }
-
     @Override
     protected KafkaProperties getKafkaSpringProperties(ApplicationContext context) {
         return context.getBean(KafkaProperties.class);

@@ -6,7 +6,6 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -16,7 +15,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKaf
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_MECHANISM_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SECURITY_PROTOCOL_CONFIG_SASL;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.JAAS_OPTIONS_PATTERN;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -24,7 +22,6 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HAN
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -114,26 +111,6 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B> {
                 configurationProperties.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
     }
 
-//    protected void assertConsumerFactoryAndPropsConfigured(ApplicationContext context, String removedProperty, String filledProperty, Class<?> targetCredentialType) {
-//        Map<String, Object> consumerProperties = ((DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class))
-//            .getConfigurationProperties();
-//        assertPropertiesConfigured(consumerProperties, (String) consumerProperties.get(SASL_JAAS_CONFIG),
-//            removedProperty, filledProperty);
-//        assertPropertiesConfigured(getConsumerProperties(context), getConsumerJaasProperties(context),
-//            removedProperty, filledProperty);
-//        assertCredentialConfigured(consumerProperties, (TokenCredential) context.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME), targetCredentialType);
-
-//    }
-//    protected void assertProducerFactoryAndPropsConfigured(ApplicationContext context, String removedProperty, String filledProperty, Class<?> targetCredentialType) {
-//        Map<String, Object> producerProperties = ((DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class))
-//                .getConfigurationProperties();
-//        assertPropertiesConfigured(producerProperties, (String) producerProperties.get(SASL_JAAS_CONFIG),
-//                removedProperty, filledProperty);
-//        assertPropertiesConfigured(getProducerProperties(context), getProducerJaasProperties(context),
-//                removedProperty, filledProperty);
-//        assertCredentialConfigured(producerProperties, (TokenCredential) context.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME), targetCredentialType);
-//    }
-
     protected void assertConsumerPropsConfigured(P properties, String removedProperty, String filledProperty) {
         assertPropertiesConfigured(getConsumerProperties(properties), getConsumerJaasProperties(properties),
             removedProperty, filledProperty);
@@ -148,15 +125,6 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B> {
         assertPropertiesConfigured(getAdminProperties(properties), getAdminJaasProperties(properties),
             removedProperty, filledProperty);
     }
-
-//    protected void assertCredentialConfigured(Map<String, Object> factoryProperties, TokenCredential defaultAzureCredential, Class<?> targetCredentialType) {
-//        if (targetCredentialType.isAssignableFrom(DefaultAzureCredential.class)) {
-//            assertEquals(defaultAzureCredential, factoryProperties.get(AZURE_TOKEN_CREDENTIAL));
-//        } else {
-//            assertNotEquals(defaultAzureCredential, factoryProperties.get(AZURE_TOKEN_CREDENTIAL));
-//            assertTrue(targetCredentialType.isInstance(factoryProperties.get(AZURE_TOKEN_CREDENTIAL)));
-//        }
-//    }
 
     protected void assertPropertiesConfigured(Map<String, Object> configs, String jaas, String removedProperty, String filledProperty) {
         shouldConfigureOAuthProperties(configs);

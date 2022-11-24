@@ -47,7 +47,6 @@ public final class AzureKafkaConfigurationUtils {
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS_KEY = "azure.configured";
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS_VALUE = "true";
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS = String.format(JAAS_OPTIONS_PATTERN, AZURE_CONFIGURED_JAAS_OPTIONS_KEY, AZURE_CONFIGURED_JAAS_OPTIONS_VALUE);
-//    public static final String SASL_JAAS_CONFIG_OAUTH = AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX + AZURE_CONFIGURED_JAAS_OPTIONS + ";";
     public static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
         KafkaOAuth2AuthenticateCallbackHandler.class.getName();
 
@@ -138,54 +137,4 @@ public final class AzureKafkaConfigurationUtils {
         return serverList.size() == 1 && serverList.get(0).endsWith(":9093");
     }
 
-//    /**
-//     * Configure necessary OAuth properties for kafka properties.
-//     *
-//     * @param propertiesToConfigure kafka properties to be customized
-//     */
-//    public static void configureOAuth2Properties(Map<String, String> propertiesToConfigure) {
-//        propertiesToConfigure.putAll(AzureKafkaConfigurationUtils.KAFKA_OAUTH_CONFIGS);
-//    }
-
-
-
-//    /**
-//     * Build {@link AzurePasswordlessProperties} from Kafka custom properties and {@link AzureGlobalProperties}.
-//     *
-//     * @param kafkaProperties the kafka custom property map
-//     * @param azureGlobalProperties Azure global properties
-//     * @return a {@link AzurePasswordlessProperties}
-//     */
-//    public static AzurePasswordlessProperties buildAzureProperties(Map<String, Object> kafkaProperties,
-//                                                                   AzureGlobalProperties azureGlobalProperties) {
-//        AzurePasswordlessProperties azurePasswordlessProperties = new AzurePasswordlessProperties();
-//        copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), azurePasswordlessProperties.getProfile());
-//        copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azurePasswordlessProperties.getCredential());
-//        //for spring boot, the condition is never not met, but we put any spring boot customized properties into jaas config;
-//        // thus for scs, there are always spring-boot-kafka customized props which has higher priority than azure prop, but lower than scs prop: e.g., spring.kafka.producer.properties.sasl.jaas.config
-//        if (kafkaProperties.containsKey(SASL_JAAS_CONFIG)) {
-//            convertJaasPropertyToAzureProperties((String) kafkaProperties.get(SASL_JAAS_CONFIG), azurePasswordlessProperties);
-//        }
-//        //kafkaProperties always stand for the highest priority for both boot and scs.
-//        convertConfigMapToAzureProperties(kafkaProperties, azurePasswordlessProperties);
-//        return azurePasswordlessProperties;
-//    }
-
-//    /**
-//     * This method do 3 things to configure OAuth2 properties:
-//     * 1. configure the 4 basic properties for Kafka OAuth2 to the source Kafka properties.
-//     * 2. Merge all Azure properties from the merged Kafka consumer/producer/admin configuration and Azure global properties to {@link AzurePasswordlessProperties}.
-//     * 3. Then convert the merged {@link AzurePasswordlessProperties} to a string as JAAS pattern and put it to the source Kafka properties.
-//     * @param mergedConfiguration the merged Kafka consumer/producer/admin configuration
-//     * @param sourceProperties the source Kafka properties to configure
-//     * @param azureGlobalProperties Spring Cloud Azure global properties
-//     */
-//    public static void configureKafkaOAuth2Properties(Map<String, Object> mergedConfiguration, AzureGlobalProperties azureGlobalProperties, Map<String, String> sourceProperties) {
-//        configureOAuth2Properties(sourceProperties);
-//        AzurePasswordlessProperties azurePasswordlessProperties =
-//                buildAzureProperties(mergedConfiguration, azureGlobalProperties);
-//        sourceProperties.put(SASL_JAAS_CONFIG,
-//                convertAzurePropertiesToJaasProperty(azurePasswordlessProperties, SASL_JAAS_CONFIG_OAUTH));
-//        logConfigureOAuthProperties();
-//    }
 }

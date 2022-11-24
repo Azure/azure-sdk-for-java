@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.JAAS_OPTIONS_PATTERN;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -122,18 +121,10 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                         "spring.kafka.bootstrap-servers=myehnamespace.servicebus.windows.net:9093"
                 )
                 .run(context -> {
-//                    KafkaBinderConfigurationProperties kafkaProperties = getKafkaSpringProperties(context);
-//                    Map<String, String> kafkaConfiguration = kafkaProperties.getConfiguration();
-//                    assertFalse(kafkaConfiguration.containsKey(CLIENT_ID));
-//                    assertTrue(kafkaConfiguration.get(SASL_JAAS_CONFIG).contains(CLIENT_ID + "=\"cloud-client-id\""));
-
                     KafkaBinderConfigurationProperties kafkaSpringProperties = getKafkaSpringProperties(context);
                     assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"cloud-consumer-client-id\"");
                     assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"cloud-client-id\"");
                     assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"cloud-client-id\"");
-//                    assertPropertiesConfigured(getAdminProperties(kafkaSpringProperties), getAdminJaasProperties(kafkaSpringProperties), CLIENT_ID, CLIENT_ID + "=\"cloud-client-id\"");
-//                    assertPropertiesConfigured(getConsumerProperties(kafkaSpringProperties), getConsumerJaasProperties(kafkaSpringProperties), CLIENT_ID, CLIENT_ID + "=\"cloud-consumer-client-id\"");
-//                    assertPropertiesConfigured(getProducerProperties(kafkaSpringProperties), getProducerJaasProperties(kafkaSpringProperties), CLIENT_ID, CLIENT_ID + "=\"cloud-client-id\"");
                 });
     }
 
@@ -188,39 +179,6 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof DefaultAzureCredential);
             });
     }
-
-//    @Override
-//    protected Map<String, Object> getConsumerProperties(KafkaBinderConfigurationProperties properties) {
-//        return ReflectionTestUtils.invokeMethod(processor,
-//            "getMergedConsumerProperties", properties);
-//    }
-//
-//    @Override
-//    protected Map<String, Object> getProducerProperties(KafkaBinderConfigurationProperties properties) {
-//        return ReflectionTestUtils.invokeMethod(processor,
-//            "getMergedProducerProperties", properties);
-//    }
-//
-//    @Override
-//    protected Map<String, Object> getAdminProperties(KafkaBinderConfigurationProperties properties) {
-//        return ReflectionTestUtils.invokeMethod(processor,
-//                "getMergedAdminProperties", properties);
-//    }
-//
-//    @Override
-//    protected String getProducerJaasProperties(KafkaBinderConfigurationProperties properties) {
-//        return (String) getProducerProperties(properties).get(SASL_JAAS_CONFIG);
-//    }
-//
-//    @Override
-//    protected String getConsumerJaasProperties(KafkaBinderConfigurationProperties properties) {
-//        return (String) getConsumerProperties(properties).get(SASL_JAAS_CONFIG);
-//    }
-//
-//    @Override
-//    protected String getAdminJaasProperties(KafkaBinderConfigurationProperties properties) {
-//        return (String) getAdminProperties(properties).get(SASL_JAAS_CONFIG);
-//    }
 
     @Override
     protected KafkaBinderConfigurationProperties getKafkaSpringProperties(ApplicationContext context) {

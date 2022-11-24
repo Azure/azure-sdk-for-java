@@ -35,13 +35,6 @@ public final class AzureKafkaPropertiesUtils {
     static final String PROFILE_PREFIX = "azure.profile.";
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
 
-//    public static void convertConfigMapToAzureProperties(Map<String, ?> source,
-//                                                         AzurePasswordlessProperties target) {
-//        for (Mapping m : Mapping.values()) {
-//            PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> m.setter.accept(target, (String) p));
-//        }
-//    }
-
     public static void copyJaasPropertyToAzureProperties(String source, AzurePasswordlessProperties target) {
         Map<String, String> map = convertJaasStringToMap(source);
         for (AzureKafkaPasswordlessPropertiesMapping m : AzureKafkaPasswordlessPropertiesMapping.values()) {
@@ -66,14 +59,6 @@ public final class AzureKafkaPropertiesUtils {
         return map;
     }
 
-
-//    public static String convertAzurePropertiesToJaasProperty(AzureProperties source, String target) {
-//        StringBuilder builder = new StringBuilder(target.endsWith(";") ? target.substring(0, target.length() - 1) : target);
-//        for (Mapping m : Mapping.values()) {
-//            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> builder.append(String.format(JAAS_OPTIONS_PATTERN, m.propertyKey, p)));
-//        }
-//        return builder.append(";").toString();
-//    }
 
     public enum AzureKafkaPasswordlessPropertiesMapping {
 
