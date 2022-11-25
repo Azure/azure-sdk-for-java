@@ -274,7 +274,7 @@ public final class EmailClientBuilder
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
+                new IllegalStateException("Missing credential information while building a client. Use one of the credential methods to set the credential."));
         }
     }
 
