@@ -16,16 +16,17 @@ public class MSITokenTests {
     public void canParseLong() {
         // expires in one hour: 3600 seconds
         String expiresInSeconds = "3600";
-        MSIToken token = new MSIToken("fake_token", expiresInSeconds, null);
+        String expiresOn = "1578668608";
+        MSIToken token = new MSIToken("fake_token", expiresOn, null);
         MSIToken token2 = new MSIToken("fake_token", null, expiresInSeconds);
-        MSIToken token3 = new MSIToken("fake_token", expiresInSeconds, expiresInSeconds);
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        Assert.assertEquals(expiresOn.toEpochSecond(), token.getExpiresAt().toEpochSecond());
-        Assert.assertFalse(token.isExpired());
-        Assert.assertEquals(expiresOn.toEpochSecond(), token2.getExpiresAt().toEpochSecond());
+        MSIToken token3 = new MSIToken("fake_token", expiresOn, expiresInSeconds);
+        OffsetDateTime expiresInExpected = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
+        Assert.assertTrue(token.isExpired());
+        Assert.assertEquals(expiresInExpected.toEpochSecond(), token2.getExpiresAt().toEpochSecond());
         Assert.assertFalse(token2.isExpired());
-        Assert.assertEquals(expiresOn.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
-        Assert.assertFalse(token3.isExpired());
+        Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
+        Assert.assertTrue(token3.isExpired());
     }
 
     @Test

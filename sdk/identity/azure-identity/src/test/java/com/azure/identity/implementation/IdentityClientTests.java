@@ -182,11 +182,11 @@ public class IdentityClientTests {
         String secret = "secret";
         String thumbprint = "950a2c88d57b5e19ac5119315f9ec199ff3cb823";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         configuration.put("IDENTITY_ENDPOINT", endpoint);
         configuration.put("IDENTITY_HEADER", secret);
         configuration.put("IDENTITY_SERVER_THUMBPRINT", thumbprint);
-        // expires in one hour: 3600 seconds
-        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_in\" : \"3600\" }";
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.toEpochSecond() + "\" }";
 
         // mock
         IdentityClientOptions options = new IdentityClientOptions()
@@ -199,10 +199,8 @@ public class IdentityClientTests {
         mockForServiceFabricCodeFlow(tokenJson, () -> {
             // test
             AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
-            OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
             Assert.assertEquals("token1", token.getToken());
             Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-            Assert.assertFalse(token.isExpired());
         });
     }
 

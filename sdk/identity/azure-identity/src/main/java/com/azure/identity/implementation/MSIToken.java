@@ -55,10 +55,10 @@ public final class MSIToken extends AccessToken {
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
         @JsonProperty(value = "expires_in") String expiresIn) {
-        super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn
-            : expiresOn)));
+        super(token, EPOCH.plusSeconds(CoreUtils.isNullOrEmpty(expiresOn) ? parseSecondsToEpochSeconds(expiresIn)
+            : parseDateToEpochSeconds(expiresOn)));
         this.accessToken = token;
-        this.expiresOn =  expiresOn;
+        this.expiresOn = expiresOn;
         this.expiresIn = expiresIn;
     }
 
@@ -67,10 +67,32 @@ public final class MSIToken extends AccessToken {
         return accessToken;
     }
 
-    private static Long parseDateToEpochSeconds(String dateTime) {
+    private static Long parseSecondsToEpochSeconds(String dateTime) {
         try {
             Long expiresInSeconds = Long.parseLong(dateTime);
             return OffsetDateTime.now().plusSeconds(expiresInSeconds).toEpochSecond();
+        } catch (NumberFormatException e) {
+            LOGGER.error(e.getMessage());
+        }
+
+        try {
+            return Instant.from(DTF.parse(dateTime)).getEpochSecond();
+        } catch (DateTimeParseException e) {
+            LOGGER.verbose(e.getMessage());
+        }
+
+        try {
+            return Instant.from(DTF_WINDOWS.parse(dateTime)).getEpochSecond();
+        } catch (DateTimeParseException e) {
+            LOGGER.verbose(e.getMessage());
+        }
+
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));
+    }
+
+    private static Long parseDateToEpochSeconds(String dateTime) {
+        try {
+            return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
             LOGGER.verbose(e.getMessage());
         }
