@@ -25,8 +25,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      * @param properties the properties.
      */
     public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
-        this.azureAuthenticationTemplate = new AzureAuthenticationTemplate();
-        azureAuthenticationTemplate.init(properties);
+        this(new AzureAuthenticationTemplate(), properties);
     }
 
     AzureIdentityPostgresqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate, Properties properties) {
@@ -35,7 +34,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
     }
 
     /**
-     * Get the password.
+     * Get the password from AzureAuthentication.
      *
      * @param art the authentication request type.
      * @return the password.
