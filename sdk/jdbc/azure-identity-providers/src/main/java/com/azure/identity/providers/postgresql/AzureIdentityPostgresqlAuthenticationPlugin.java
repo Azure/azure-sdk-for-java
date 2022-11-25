@@ -34,15 +34,23 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
     }
 
     /**
-     * Get the password from AzureAuthentication.
+     * Callback method to provide the password to use for authentication.
      *
-     * @param art the authentication request type.
-     * @return the password.
-     * @throws PSQLException when an error occurs.
+     * @param type The authentication method that the server is requesting.<br/>
+     *             <br/>
+     *             <p>AzureIdentityPostgresqlAuthenticationPlugin is used as an extension to<br/>
+     *             perform authentication with Azure AD,the value here is CLEARTEXT_PASSWORD.</p>
+     *             <br/>
+     *             When PostgreSQL client trying to connect with PostgreSQL server:<br/>
+     *             1. Client will send startup packet to server, the server will return the AuthenticationRequestType it accepts,
+     *                If the username is used to perform Azure AD authentication, the server will return CLEARTEXT_PASSWORD.<br/>
+     *             2. Client will do authentication (until AuthenticationOk).<br/>
+     *
+     * @return The password to use.
+     * @throws PSQLException It will return a PSQLException if the password is null.
      */
-    // TODO (zhihaoguo): We need to know the usage of AuthenticationRequestType.
     @Override
-    public char[] getPassword(AuthenticationRequestType art) throws PSQLException {
+    public char[] getPassword(AuthenticationRequestType type) throws PSQLException {
         String password = azureAuthenticationTemplate.getTokenAsPassword();
         if (password != null) {
             return password.toCharArray();
