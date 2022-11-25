@@ -17,6 +17,10 @@ public final class ActivateApplicationPackageParameters {
     @JsonProperty(value = "format", required = true)
     private String format;
 
+    /** Creates an instance of ActivateApplicationPackageParameters class. */
+    public ActivateApplicationPackageParameters() {
+    }
+
     /**
      * Get the format property: The format of the application package binary file.
      *

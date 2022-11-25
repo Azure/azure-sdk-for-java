@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateLinkResourcesClient;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkResourceList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WebPubSubPrivateLinkResourcesClient. */
 public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubPrivateLinkResourcesClient {
-    private final ClientLogger logger = new ClientLogger(WebPubSubPrivateLinkResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WebPubSubPrivateLinkResourcesService service;
 
@@ -62,7 +59,7 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebPubSubManagementC")
-    private interface WebPubSubPrivateLinkResourcesService {
+    public interface WebPubSubPrivateLinkResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
@@ -98,7 +95,8 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a resource.
+     * @return the private link resources that need to be created for a resource along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
@@ -157,7 +155,8 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a resource.
+     * @return the private link resources that need to be created for a resource along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
@@ -212,7 +211,8 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a resource.
+     * @return the private link resources that need to be created for a resource as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String resourceName) {
@@ -230,7 +230,8 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a resource.
+     * @return the private link resources that need to be created for a resource as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkResourceInner> listAsync(
@@ -249,7 +250,8 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a resource.
+     * @return the private link resources that need to be created for a resource as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String resourceName) {
@@ -266,7 +268,8 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a resource.
+     * @return the private link resources that need to be created for a resource as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> list(
@@ -277,11 +280,13 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains a list of PrivateLinkResource and a possible link to query more results.
+     * @return contains a list of PrivateLinkResource and a possible link to query more results along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -312,12 +317,14 @@ public final class WebPubSubPrivateLinkResourcesClientImpl implements WebPubSubP
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains a list of PrivateLinkResource and a possible link to query more results.
+     * @return contains a list of PrivateLinkResource and a possible link to query more results along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -16,16 +16,6 @@ public interface PricingsClient {
     /**
      * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PricingListInner list();
-
-    /**
-     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,16 +26,14 @@ public interface PricingsClient {
     Response<PricingListInner> listWithResponse(Context context);
 
     /**
-     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
-     * @param pricingName name of the pricing configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+     * @return list of pricing configurations response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PricingInner get(String pricingName);
+    PricingListInner list();
 
     /**
      * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
@@ -62,18 +50,16 @@ public interface PricingsClient {
     Response<PricingInner> getWithResponse(String pricingName, Context context);
 
     /**
-     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
-     * @param pricing Pricing object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PricingInner update(String pricingName, PricingInner pricing);
+    PricingInner get(String pricingName);
 
     /**
      * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
@@ -89,4 +75,18 @@ public interface PricingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PricingInner> updateWithResponse(String pricingName, PricingInner pricing, Context context);
+
+    /**
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+     *
+     * @param pricingName name of the pricing configuration.
+     * @param pricing Pricing object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
+     *     available with a trial period.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PricingInner update(String pricingName, PricingInner pricing);
 }

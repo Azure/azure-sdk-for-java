@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.devcenter.models;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -60,7 +59,7 @@ public interface NetworkConnection {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the healthCheckStatus property: Overall health status of the network connection. Health checks are run on
@@ -183,7 +182,7 @@ public interface NetworkConnection {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
@@ -416,20 +415,19 @@ public interface NetworkConnection {
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> runHealthChecksWithResponse(Context context);
+    void runHealthChecks();
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void runHealthChecks();
+    void runHealthChecks(Context context);
 }

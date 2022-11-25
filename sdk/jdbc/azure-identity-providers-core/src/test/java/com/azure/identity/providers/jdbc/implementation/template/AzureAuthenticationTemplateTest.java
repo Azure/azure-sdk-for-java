@@ -30,7 +30,6 @@ class AzureAuthenticationTemplateTest {
 
     private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
-    @SuppressWarnings("deprecation")
     @Test
     void testInitShouldCalledOnlyOnce() {
         AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();

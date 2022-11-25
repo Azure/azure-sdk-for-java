@@ -44,6 +44,10 @@ public final class MicrosoftGraphPhone {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPhone class. */
+    public MicrosoftGraphPhone() {
+    }
+
     /**
      * Get the language property: The language property.
      *

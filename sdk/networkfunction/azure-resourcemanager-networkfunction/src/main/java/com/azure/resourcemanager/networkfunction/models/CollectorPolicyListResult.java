@@ -24,6 +24,10 @@ public final class CollectorPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of CollectorPolicyListResult class. */
+    public CollectorPolicyListResult() {
+    }
+
     /**
      * Get the value property: A list of collection policies.
      *

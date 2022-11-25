@@ -25,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class SettingInner extends ProxyResource {
+    /** Creates an instance of SettingInner class. */
+    public SettingInner() {
+    }
+
     /**
      * Validates the instance.
      *

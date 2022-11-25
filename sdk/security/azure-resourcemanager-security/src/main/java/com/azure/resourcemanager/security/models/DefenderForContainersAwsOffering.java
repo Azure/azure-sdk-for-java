@@ -74,6 +74,10 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
     @JsonProperty(value = "scubaExternalId")
     private String scubaExternalId;
 
+    /** Creates an instance of DefenderForContainersAwsOffering class. */
+    public DefenderForContainersAwsOffering() {
+    }
+
     /**
      * Get the kubernetesService property: The kubernetes service connection configuration.
      *

@@ -17,6 +17,10 @@ public final class MdeOnboardingDataListInner {
     @JsonProperty(value = "value")
     private List<MdeOnboardingDataInner> value;
 
+    /** Creates an instance of MdeOnboardingDataListInner class. */
+    public MdeOnboardingDataListInner() {
+    }
+
     /**
      * Get the value property: List of the resources of the configuration or data needed to onboard the machine to MDE.
      *

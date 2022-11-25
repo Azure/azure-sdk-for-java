@@ -458,7 +458,6 @@ public class ParallelDocumentQueryExecutionContext<T>
 
     protected DocumentProducer<T> createDocumentProducer(
             String collectionRid,
-            PartitionKeyRange targetRange,
             String initialContinuationToken,
             int initialPageSize,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
@@ -472,7 +471,6 @@ public class ParallelDocumentQueryExecutionContext<T>
                 cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeFunc,
-                targetRange,
                 collectionRid,
                 createRetryPolicyFunc,
                 resourceType,

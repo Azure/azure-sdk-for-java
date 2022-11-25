@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IpAddressProvisioningType. */
+/** The provisioning type for Public IP Addresses for the Batch Pool. */
 public enum IpAddressProvisioningType {
     /** Enum value BatchManaged. */
     BATCH_MANAGED("BatchManaged"),
@@ -33,6 +33,9 @@ public enum IpAddressProvisioningType {
      */
     @JsonCreator
     public static IpAddressProvisioningType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IpAddressProvisioningType[] items = IpAddressProvisioningType.values();
         for (IpAddressProvisioningType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum IpAddressProvisioningType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

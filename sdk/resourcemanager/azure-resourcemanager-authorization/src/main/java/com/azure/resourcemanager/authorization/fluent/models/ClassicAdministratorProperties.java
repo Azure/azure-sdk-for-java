@@ -22,6 +22,10 @@ public final class ClassicAdministratorProperties {
     @JsonProperty(value = "role")
     private String role;
 
+    /** Creates an instance of ClassicAdministratorProperties class. */
+    public ClassicAdministratorProperties() {
+    }
+
     /**
      * Get the emailAddress property: The email address of the administrator.
      *

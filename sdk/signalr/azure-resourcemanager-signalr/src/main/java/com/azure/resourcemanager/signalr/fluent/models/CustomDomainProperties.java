@@ -31,6 +31,10 @@ public final class CustomDomainProperties {
     @JsonProperty(value = "customCertificate", required = true)
     private ResourceReference customCertificate;
 
+    /** Creates an instance of CustomDomainProperties class. */
+    public CustomDomainProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the resource.
      *

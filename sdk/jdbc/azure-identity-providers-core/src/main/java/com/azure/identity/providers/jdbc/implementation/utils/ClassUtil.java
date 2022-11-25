@@ -173,8 +173,6 @@ public final class ClassUtil {
         }
     }
 
-
-    @SuppressWarnings("deprecation")
     private static void makeAccessible(Constructor<?> ctor) {
         if ((!Modifier.isPublic(ctor.getModifiers())
             || !Modifier.isPublic(ctor.getDeclaringClass().getModifiers())) && !ctor.isAccessible()) {

@@ -24,6 +24,10 @@ public final class AzureTrafficCollectorListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AzureTrafficCollectorListResult class. */
+    public AzureTrafficCollectorListResult() {
+    }
+
     /**
      * Get the value property: A list of Traffic Collector resources.
      *

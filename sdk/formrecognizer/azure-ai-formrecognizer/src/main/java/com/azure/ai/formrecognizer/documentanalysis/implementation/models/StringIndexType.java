@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StringIndexType. */
+/** Method used to compute string offset and length. */
 public final class StringIndexType extends ExpandableStringEnum<StringIndexType> {
     /** Static value textElements for StringIndexType. */
     public static final StringIndexType TEXT_ELEMENTS = fromString("textElements");

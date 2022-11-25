@@ -14,7 +14,7 @@ public final class HealthCheckStatusDetailsListResultTests {
         HealthCheckStatusDetailsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-09-16T04:19:40Z\",\"endDateTime\":\"2021-03-09T16:30:01Z\",\"healthChecks\":[]},\"id\":\"asxifto\",\"name\":\"qyzhf\",\"type\":\"wesgogczh\"}],\"nextLink\":\"nxkrlgnyhmossxkk\"}")
+                    "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-11-30T02:44:30Z\",\"endDateTime\":\"2021-02-08T05:43:26Z\",\"healthChecks\":[]},\"id\":\"wcsdbnwdcfhucq\",\"name\":\"pfuvglsbjjca\",\"type\":\"vxb\"},{\"properties\":{\"startDateTime\":\"2021-05-11T02:00:05Z\",\"endDateTime\":\"2021-04-07T04:06:35Z\",\"healthChecks\":[]},\"id\":\"cormr\",\"name\":\"xqtvcofu\",\"type\":\"f\"},{\"properties\":{\"startDateTime\":\"2021-10-24T03:31:48Z\",\"endDateTime\":\"2021-04-04T17:02:59Z\",\"healthChecks\":[]},\"id\":\"dknnqvsazn\",\"name\":\"n\",\"type\":\"orudsgsa\"},{\"properties\":{\"startDateTime\":\"2021-05-15T08:27:32Z\",\"endDateTime\":\"2021-03-28T14:55:38Z\",\"healthChecks\":[]},\"id\":\"uwjuetaeburuvdmo\",\"name\":\"s\",\"type\":\"zlxwabmqoefkifr\"}],\"nextLink\":\"puqujmqlgkfbtn\"}")
                 .toObject(HealthCheckStatusDetailsListResult.class);
     }
 

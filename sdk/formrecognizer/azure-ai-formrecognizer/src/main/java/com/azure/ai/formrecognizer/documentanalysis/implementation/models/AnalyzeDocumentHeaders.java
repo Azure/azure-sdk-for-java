@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,6 +18,8 @@ public final class AnalyzeDocumentHeaders {
     @JsonProperty(value = "Operation-Location")
     private String operationLocation;
 
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of AnalyzeDocumentHeaders class.
@@ -24,7 +27,7 @@ public final class AnalyzeDocumentHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public AnalyzeDocumentHeaders(HttpHeaders rawHeaders) {
-        this.operationLocation = rawHeaders.getValue("Operation-Location");
+        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
     }
 
     /**

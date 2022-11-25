@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("FileUploadsNotInAllowedRange")
 @Fluent
 public final class FileUploadsNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of FileUploadsNotInAllowedRange class. */
+    public FileUploadsNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public FileUploadsNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

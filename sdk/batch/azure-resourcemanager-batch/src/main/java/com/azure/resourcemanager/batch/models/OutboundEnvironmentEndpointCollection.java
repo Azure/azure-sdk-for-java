@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class OutboundEnvironmentEndpointCollection {
     /*
-     * The collection of outbound network dependency endpoints returned by the
-     * listing operation.
+     * The collection of outbound network dependency endpoints returned by the listing operation.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OutboundEnvironmentEndpointInner> value;
@@ -24,6 +23,10 @@ public final class OutboundEnvironmentEndpointCollection {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of OutboundEnvironmentEndpointCollection class. */
+    public OutboundEnvironmentEndpointCollection() {
+    }
 
     /**
      * Get the value property: The collection of outbound network dependency endpoints returned by the listing

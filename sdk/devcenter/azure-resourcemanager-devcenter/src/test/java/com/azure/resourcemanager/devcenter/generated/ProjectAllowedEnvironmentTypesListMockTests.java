@@ -32,7 +32,7 @@ public final class ProjectAllowedEnvironmentTypesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"smieknlra\"},\"id\":\"aawiuagydwqfb\",\"name\":\"lyr\",\"type\":\"giagtcojo\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"uewbc\",\"name\":\"hxuuwhcjyxccybvp\",\"type\":\"yakk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +61,6 @@ public final class ProjectAllowedEnvironmentTypesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AllowedEnvironmentType> response =
-            manager.projectAllowedEnvironmentTypes().list("qxtjjfzqlqhyca", "odggx", 996464751, Context.NONE);
+            manager.projectAllowedEnvironmentTypes().list("ordilmywwtkgkxny", "dabg", 1233839644, Context.NONE);
     }
 }

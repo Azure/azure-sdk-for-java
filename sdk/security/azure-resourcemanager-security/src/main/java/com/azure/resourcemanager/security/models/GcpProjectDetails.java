@@ -28,6 +28,10 @@ public final class GcpProjectDetails {
     @JsonProperty(value = "workloadIdentityPoolId", access = JsonProperty.Access.WRITE_ONLY)
     private String workloadIdentityPoolId;
 
+    /** Creates an instance of GcpProjectDetails class. */
+    public GcpProjectDetails() {
+    }
+
     /**
      * Get the projectNumber property: The unique GCP Project number.
      *

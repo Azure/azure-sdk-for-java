@@ -29,6 +29,9 @@ public final class DocumentLine {
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;
 
+    /** Creates an instance of DocumentLine class. */
+    public DocumentLine() {}
+
     /**
      * Get the content property: Concatenated content of the contained elements in reading order.
      *

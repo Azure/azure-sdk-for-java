@@ -33,6 +33,10 @@ public final class CollectionOfLinksOfHomeRealmDiscoveryPolicy {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CollectionOfLinksOfHomeRealmDiscoveryPolicy class. */
+    public CollectionOfLinksOfHomeRealmDiscoveryPolicy() {
+    }
+
     /**
      * Get the value property: The value property.
      *

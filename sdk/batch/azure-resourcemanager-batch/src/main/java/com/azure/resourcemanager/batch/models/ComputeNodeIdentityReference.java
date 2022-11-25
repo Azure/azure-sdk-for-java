@@ -16,6 +16,10 @@ public final class ComputeNodeIdentityReference {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
+    /** Creates an instance of ComputeNodeIdentityReference class. */
+    public ComputeNodeIdentityReference() {
+    }
+
     /**
      * Get the resourceId property: The ARM resource id of the user assigned identity.
      *

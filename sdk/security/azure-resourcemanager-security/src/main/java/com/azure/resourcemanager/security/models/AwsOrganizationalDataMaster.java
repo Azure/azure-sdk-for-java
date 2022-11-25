@@ -27,6 +27,10 @@ public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
     @JsonProperty(value = "excludedAccountIds")
     private List<String> excludedAccountIds;
 
+    /** Creates an instance of AwsOrganizationalDataMaster class. */
+    public AwsOrganizationalDataMaster() {
+    }
+
     /**
      * Get the stacksetName property: If the multi cloud account is of membership type organization, this will be the
      * name of the onboarding stackset.

@@ -33,15 +33,12 @@ public final class ConnectorsCreateOrUpdateSamples {
                     .withOrganizationId("AscDemoOrg")
                     .withType("service_account")
                     .withProjectId("asc-project-1234")
-                    .withPrivateKeyId("6efg587hra2568as34d22326b044cc20dc2af")
-                    .withPrivateKey(
-                        "-----BEGIN PRIVATE KEY-----\n"
-                            + "FAKE_PRIVATE_KEY_PLACEHOLDER"
-                            + "-----END PRIVATE KEY-----\n")
+                    .withPrivateKeyId("fakeTokenPlaceholder")
+                    .withPrivateKey("fakeTokenPlaceholder")
                     .withClientEmail("asc-135@asc-project-1234.iam.gserviceaccount.com")
                     .withClientId("105889053725632919854")
                     .withAuthUri("https://accounts.google.com/o/oauth2/auth")
-                    .withTokenUri("https://oauth2.googleapis.com/token")
+                    .withTokenUri("fakeTokenPlaceholder")
                     .withAuthProviderX509CertUrl("https://www.googleapis.com/oauth2/v1/certs")
                     .withClientX509CertUrl(
                         "https://www.googleapis.com/robot/v1/metadata/x509/asc-135%40asc-project-1234.iam.gserviceaccount.com"))
@@ -70,11 +67,11 @@ public final class ConnectorsCreateOrUpdateSamples {
                     .withServicePrincipal(
                         new ServicePrincipalProperties()
                             .withApplicationId("ad9bcd79-be9c-45ab-abd8-80ca1654a7d1")
-                            .withSecret("<secret>")))
+                            .withSecret("fakeTokenPlaceholder")))
             .withAuthenticationDetails(
                 new AwsCredsAuthenticationDetailsProperties()
-                    .withAwsAccessKeyId("AKIARPZCNODDNAEQFSOE")
-                    .withAwsSecretAccessKey("<awsSecretAccessKey>"))
+                    .withAwsAccessKeyId("fakeTokenPlaceholder")
+                    .withAwsSecretAccessKey("fakeTokenPlaceholder"))
             .create();
     }
 
@@ -100,7 +97,7 @@ public final class ConnectorsCreateOrUpdateSamples {
                     .withServicePrincipal(
                         new ServicePrincipalProperties()
                             .withApplicationId("ad9bcd79-be9c-45ab-abd8-80ca1654a7d1")
-                            .withSecret("<secret>")))
+                            .withSecret("fakeTokenPlaceholder")))
             .withAuthenticationDetails(
                 new AwAssumeRoleAuthenticationDetailsProperties()
                     .withAwsAssumeRoleArn("arn:aws:iam::81231569658:role/AscConnector")

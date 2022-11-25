@@ -47,24 +47,6 @@ public final class RegulatoryComplianceAssessmentsImpl implements RegulatoryComp
         return Utils.mapPage(inner, inner1 -> new RegulatoryComplianceAssessmentImpl(inner1, this.manager()));
     }
 
-    public RegulatoryComplianceAssessment get(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName) {
-        RegulatoryComplianceAssessmentInner inner =
-            this
-                .serviceClient()
-                .get(
-                    regulatoryComplianceStandardName,
-                    regulatoryComplianceControlName,
-                    regulatoryComplianceAssessmentName);
-        if (inner != null) {
-            return new RegulatoryComplianceAssessmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RegulatoryComplianceAssessment> getWithResponse(
         String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName,
@@ -84,6 +66,24 @@ public final class RegulatoryComplianceAssessmentsImpl implements RegulatoryComp
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RegulatoryComplianceAssessmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegulatoryComplianceAssessment get(
+        String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName,
+        String regulatoryComplianceAssessmentName) {
+        RegulatoryComplianceAssessmentInner inner =
+            this
+                .serviceClient()
+                .get(
+                    regulatoryComplianceStandardName,
+                    regulatoryComplianceControlName,
+                    regulatoryComplianceAssessmentName);
+        if (inner != null) {
+            return new RegulatoryComplianceAssessmentImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -17,32 +17,29 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphRecurrenceRange {
     /*
-     * The date to stop applying the recurrence pattern. Depending on the
-     * recurrence pattern of the event, the last occurrence of the meeting may
-     * not be this date. Required if type is endDate.
+     * The date to stop applying the recurrence pattern. Depending on the recurrence pattern of the event, the last
+     * occurrence of the meeting may not be this date. Required if type is endDate.
      */
     @JsonProperty(value = "endDate")
     private LocalDate endDate;
 
     /*
-     * The number of times to repeat the event. Required and must be positive
-     * if type is numbered.
+     * The number of times to repeat the event. Required and must be positive if type is numbered.
      */
     @JsonProperty(value = "numberOfOccurrences")
     private Integer numberOfOccurrences;
 
     /*
-     * Time zone for the startDate and endDate properties. Optional. If not
-     * specified, the time zone of the event is used.
+     * Time zone for the startDate and endDate properties. Optional. If not specified, the time zone of the event is
+     * used.
      */
     @JsonProperty(value = "recurrenceTimeZone")
     private String recurrenceTimeZone;
 
     /*
-     * The date to start applying the recurrence pattern. The first occurrence
-     * of the meeting may be this date or later, depending on the recurrence
-     * pattern of the event. Must be the same value as the start property of
-     * the recurring event. Required.
+     * The date to start applying the recurrence pattern. The first occurrence of the meeting may be this date or
+     * later, depending on the recurrence pattern of the event. Must be the same value as the start property of the
+     * recurring event. Required.
      */
     @JsonProperty(value = "startDate")
     private LocalDate startDate;
@@ -57,6 +54,10 @@ public final class MicrosoftGraphRecurrenceRange {
      * recurrenceRange
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphRecurrenceRange class. */
+    public MicrosoftGraphRecurrenceRange() {
+    }
 
     /**
      * Get the endDate property: The date to stop applying the recurrence pattern. Depending on the recurrence pattern

@@ -5,7 +5,9 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.GenderType;
 import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -21,8 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CallMediaUnitTests {
 
     private CallMedia callMedia;
-    private FileSource playSource;
+    private FileSource playFileSource;
     private PlayOptions playOptions;
+    private TextSource playTextSource;
 
     @BeforeEach
     public void setup() {
@@ -32,9 +35,16 @@ public class CallMediaUnitTests {
             );
         callMedia = callConnection.getCallMedia();
 
-        playSource = new FileSource();
-        playSource.setPlaySourceId("playSourceId");
-        playSource.setUri("filePath");
+        playFileSource = new FileSource();
+        playFileSource.setPlaySourceId("playTextSourceId");
+        playFileSource.setUri("filePath");
+
+        playTextSource = new TextSource();
+        playTextSource.setPlaySourceId("playTextSourceId");
+        playTextSource.setVoiceGender(GenderType.M);
+        playTextSource.setSourceLocale("en-US");
+        playTextSource.setTargetLocale("en-CA");
+        playTextSource.setVoiceName("LULU");
 
         playOptions = new PlayOptions()
             .setLoop(false)
@@ -43,14 +53,27 @@ public class CallMediaUnitTests {
 
     @Test
     public void playFileWithResponseTest() {
-        Response<Void> response = callMedia.playWithResponse(playSource,
+        Response<Void> response = callMedia.playWithResponse(playFileSource,
             Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void playFileToAllWithResponseTest() {
-        Response<Void> response = callMedia.playToAllWithResponse(playSource, playOptions, Context.NONE);
+        Response<Void> response = callMedia.playToAllWithResponse(playFileSource, playOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void playTextWithResponseTest() {
+        Response<Void> response = callMedia.playWithResponse(playTextSource,
+            Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void playTextToAllWithResponseTest() {
+        Response<Void> response = callMedia.playToAllWithResponse(playTextSource, playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 

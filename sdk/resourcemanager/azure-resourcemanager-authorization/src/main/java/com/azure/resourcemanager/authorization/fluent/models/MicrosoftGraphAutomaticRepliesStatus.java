@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphAutomaticRepliesStatus. */
+/** automaticRepliesStatus. */
 public final class MicrosoftGraphAutomaticRepliesStatus
     extends ExpandableStringEnum<MicrosoftGraphAutomaticRepliesStatus> {
     /** Static value disabled for MicrosoftGraphAutomaticRepliesStatus. */
@@ -31,7 +31,11 @@ public final class MicrosoftGraphAutomaticRepliesStatus
         return fromString(name, MicrosoftGraphAutomaticRepliesStatus.class);
     }
 
-    /** @return known MicrosoftGraphAutomaticRepliesStatus values. */
+    /**
+     * Gets known MicrosoftGraphAutomaticRepliesStatus values.
+     *
+     * @return known MicrosoftGraphAutomaticRepliesStatus values.
+     */
     public static Collection<MicrosoftGraphAutomaticRepliesStatus> values() {
         return values(MicrosoftGraphAutomaticRepliesStatus.class);
     }
