@@ -179,7 +179,7 @@
     "current" : false,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : null,
+    "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.6.14",
     "spring-cloud-version" : "2021.0.5"
   },
