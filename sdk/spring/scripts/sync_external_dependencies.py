@@ -148,6 +148,7 @@ def special_version_bigger_than(version1, version2):
     v2 = version2.split('.')
     len_1 = len(v1)
     len_2 = len(v2)
+
     max_len = max(len_1, len_2)
     for i in range(max_len):
         if i < len_1 and i < len_2:
