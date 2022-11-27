@@ -2251,8 +2251,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         //Create the range query map that contains the query to be run for that
                         // partitionkeyrange
-                        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap;
-                        rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap, collection.getPartitionKey());
+                        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap, collection.getPartitionKey());
 
                         // create point reads
                         Flux<FeedResponse<Document>> pointReads = createPointReadOperations(
@@ -2261,16 +2260,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             options,
                             klass);
 
-
                         // create the executable query
-                        Flux<FeedResponse<Document>> queries = rangeQueryMap.keySet().size() > 0 ? createReadManyQuery(
+                        Flux<FeedResponse<Document>> queries = createReadManyQuery(
                             resourceLink,
                             new SqlQuerySpec(DUMMY_SQL_QUERY),
                             options,
                             Document.class,
                             ResourceType.Document,
                             collection,
-                            Collections.unmodifiableMap(rangeQueryMap)) : Flux.empty();
+                            Collections.unmodifiableMap(rangeQueryMap));
 
                         // merge results from point reads and queries
                         return Flux.merge(pointReads, queries)
@@ -2422,6 +2420,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceTypeEnum,
         DocumentCollection collection,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap) {
+
+        if (rangeQueryMap.keySet().size() == 0) {
+            return Flux.empty();
+        }
 
         UUID activityId = Utils.randomUUID();
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
