@@ -14,7 +14,7 @@ public final class ImageInnerTests {
         ImageInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"grhpdjpju\",\"publisher\":\"sxazjpq\",\"offer\":\"gual\",\"sku\":\"xxhejjzzvd\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"slfhotwm\"},\"id\":\"npwlbjnpg\",\"name\":\"cftadeh\",\"type\":\"nltyfsoppusuesnz\"}")
+                    "{\"properties\":{\"description\":\"fsxlzevgbmqjqa\",\"publisher\":\"y\",\"offer\":\"ivkwlzuvccfwnfnb\",\"sku\":\"fionl\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"Creating\"},\"id\":\"tzxdpnqbqqwx\",\"name\":\"jfeallnwsub\",\"type\":\"snjampmng\"}")
                 .toObject(ImageInner.class);
     }
 

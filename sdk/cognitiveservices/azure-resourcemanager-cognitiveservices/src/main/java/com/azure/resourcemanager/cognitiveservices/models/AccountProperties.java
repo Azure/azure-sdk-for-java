@@ -15,8 +15,7 @@ import java.util.Map;
 @Fluent
 public final class AccountProperties {
     /*
-     * Gets the status of the cognitive services account at the time the
-     * operation was called.
+     * Gets the status of the cognitive services account at the time the operation was called.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -34,9 +33,8 @@ public final class AccountProperties {
     private String internalId;
 
     /*
-     * Gets the capabilities of the cognitive services account. Each item
-     * indicates the capability of a specific feature. The values are read-only
-     * and for reference only.
+     * Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific
+     * feature. The values are read-only and for reference only.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
@@ -66,8 +64,7 @@ public final class AccountProperties {
     private String customSubDomainName;
 
     /*
-     * A collection of rules governing the accessibility from specific network
-     * locations.
+     * A collection of rules governing the accessibility from specific network locations.
      */
     @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
@@ -85,8 +82,7 @@ public final class AccountProperties {
     private List<UserOwnedStorage> userOwnedStorage;
 
     /*
-     * The private endpoint connection associated with the Cognitive Services
-     * account.
+     * The private endpoint connection associated with the Cognitive Services account.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
@@ -169,6 +165,10 @@ public final class AccountProperties {
      */
     @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
     private String scheduledPurgeDate;
+
+    /** Creates an instance of AccountProperties class. */
+    public AccountProperties() {
+    }
 
     /**
      * Get the provisioningState property: Gets the status of the cognitive services account at the time the operation

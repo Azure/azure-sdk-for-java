@@ -10,7 +10,7 @@ import com.azure.resourcemanager.batch.models.Certificate;
 /** Samples for Certificate Update. */
 public final class CertificateUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/CertificateUpdate.json
      */
     /**
      * Sample code: UpdateCertificate.

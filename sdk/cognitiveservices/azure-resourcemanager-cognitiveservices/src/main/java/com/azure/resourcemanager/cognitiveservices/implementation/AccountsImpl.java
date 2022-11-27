@@ -45,15 +45,6 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().delete(resourceGroupName, accountName, context);
     }
 
-    public Account getByResourceGroup(String resourceGroupName, String accountName) {
-        AccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
-        if (inner != null) {
-            return new AccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Account> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context) {
         Response<AccountInner> inner =
@@ -64,6 +55,15 @@ public final class AccountsImpl implements Accounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Account getByResourceGroup(String resourceGroupName, String accountName) {
+        AccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
+        if (inner != null) {
+            return new AccountImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -89,15 +89,6 @@ public final class AccountsImpl implements Accounts {
         return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
-    public ApiKeys listKeys(String resourceGroupName, String accountName) {
-        ApiKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
-        if (inner != null) {
-            return new ApiKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApiKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
         Response<ApiKeysInner> inner =
             this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
@@ -112,8 +103,8 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public ApiKeys regenerateKey(String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
-        ApiKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, accountName, parameters);
+    public ApiKeys listKeys(String resourceGroupName, String accountName) {
+        ApiKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
         if (inner != null) {
             return new ApiKeysImpl(inner, this.manager());
         } else {
@@ -136,10 +127,10 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public AccountSkuListResult listSkus(String resourceGroupName, String accountName) {
-        AccountSkuListResultInner inner = this.serviceClient().listSkus(resourceGroupName, accountName);
+    public ApiKeys regenerateKey(String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
+        ApiKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, accountName, parameters);
         if (inner != null) {
-            return new AccountSkuListResultImpl(inner, this.manager());
+            return new ApiKeysImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -160,10 +151,10 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public UsageListResult listUsages(String resourceGroupName, String accountName) {
-        UsageListResultInner inner = this.serviceClient().listUsages(resourceGroupName, accountName);
+    public AccountSkuListResult listSkus(String resourceGroupName, String accountName) {
+        AccountSkuListResultInner inner = this.serviceClient().listSkus(resourceGroupName, accountName);
         if (inner != null) {
-            return new UsageListResultImpl(inner, this.manager());
+            return new AccountSkuListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -179,6 +170,15 @@ public final class AccountsImpl implements Accounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new UsageListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public UsageListResult listUsages(String resourceGroupName, String accountName) {
+        UsageListResultInner inner = this.serviceClient().listUsages(resourceGroupName, accountName);
+        if (inner != null) {
+            return new UsageListResultImpl(inner, this.manager());
         } else {
             return null;
         }

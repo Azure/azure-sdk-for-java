@@ -33,7 +33,7 @@ try {
 With async clients, you can catch and handle exceptions in the error callbacks:
 
 ```java readme-sample-async-handlingException
-administrationAsyncClient.deleteModel("{modelId}")
+administrationAsyncClient.deleteDocumentModel("{modelId}")
     .doOnSuccess(
         ignored -> System.out.println("Success!"))
     .doOnError(

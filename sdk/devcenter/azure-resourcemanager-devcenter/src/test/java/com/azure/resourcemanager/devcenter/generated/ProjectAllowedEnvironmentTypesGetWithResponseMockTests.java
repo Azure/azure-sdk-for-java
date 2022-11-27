@@ -31,7 +31,7 @@ public final class ProjectAllowedEnvironmentTypesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"dggxdbeesmi\"},\"id\":\"nlrariaawiuagy\",\"name\":\"wqfbylyrfgiagt\",\"type\":\"ojocqwogf\"}";
+            "{\"properties\":{\"provisioningState\":\"Created\"},\"id\":\"wqjnob\",\"name\":\"iyhddvi\",\"type\":\"cegfnmntfp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class ProjectAllowedEnvironmentTypesGetWithResponseMockTests {
         AllowedEnvironmentType response =
             manager
                 .projectAllowedEnvironmentTypes()
-                .getWithResponse("btgn", "nzeyqxtjj", "zqlqhyc", Context.NONE)
+                .getWithResponse("dzpxgwjpl", "agst", "yohpfkyrkdbdgiog", Context.NONE)
                 .getValue();
     }
 }

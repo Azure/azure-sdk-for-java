@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Projects Update. */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Projects_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Projects_Patch.json
      */
     /**
      * Sample code: Projects_Update.
@@ -21,7 +21,7 @@ public final class ProjectsUpdateSamples {
      */
     public static void projectsUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         Project resource =
-            manager.projects().getByResourceGroupWithResponse("rg1", "{projectName}", Context.NONE).getValue();
+            manager.projects().getByResourceGroupWithResponse("rg1", "DevProject", Context.NONE).getValue();
         resource.update().withTags(mapOf("CostCenter", "R&D")).withDescription("This is my first project.").apply();
     }
 

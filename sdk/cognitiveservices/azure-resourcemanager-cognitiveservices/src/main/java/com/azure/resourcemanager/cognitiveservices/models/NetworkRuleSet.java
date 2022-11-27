@@ -12,9 +12,8 @@ import java.util.List;
 @Fluent
 public final class NetworkRuleSet {
     /*
-     * The default action when no rule from ipRules and from
-     * virtualNetworkRules match. This is only used after the bypass property
-     * has been evaluated.
+     * The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the
+     * bypass property has been evaluated.
      */
     @JsonProperty(value = "defaultAction")
     private NetworkRuleAction defaultAction;
@@ -30,6 +29,10 @@ public final class NetworkRuleSet {
      */
     @JsonProperty(value = "virtualNetworkRules")
     private List<VirtualNetworkRule> virtualNetworkRules;
+
+    /** Creates an instance of NetworkRuleSet class. */
+    public NetworkRuleSet() {
+    }
 
     /**
      * Get the defaultAction property: The default action when no rule from ipRules and from virtualNetworkRules match.

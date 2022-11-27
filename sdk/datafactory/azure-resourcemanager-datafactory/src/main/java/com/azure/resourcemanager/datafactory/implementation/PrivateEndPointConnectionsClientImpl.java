@@ -57,7 +57,7 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface PrivateEndPointConnectionsService {
+    public interface PrivateEndPointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

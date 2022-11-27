@@ -29,6 +29,10 @@ public final class QuotaLimit {
     @JsonProperty(value = "rules")
     private List<ThrottlingRule> rules;
 
+    /** Creates an instance of QuotaLimit class. */
+    public QuotaLimit() {
+    }
+
     /**
      * Get the count property: The count property.
      *

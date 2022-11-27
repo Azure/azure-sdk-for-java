@@ -23,6 +23,10 @@ public final class ResourceSkuRestrictionInfo {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of ResourceSkuRestrictionInfo class. */
+    public ResourceSkuRestrictionInfo() {
+    }
+
     /**
      * Get the locations property: Locations where the SKU is restricted.
      *

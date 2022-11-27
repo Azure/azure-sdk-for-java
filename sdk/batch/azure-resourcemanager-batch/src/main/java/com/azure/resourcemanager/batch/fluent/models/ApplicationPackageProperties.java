@@ -37,11 +37,14 @@ public final class ApplicationPackageProperties {
     private OffsetDateTime storageUrlExpiry;
 
     /*
-     * The time at which the package was last activated, if the package is
-     * active.
+     * The time at which the package was last activated, if the package is active.
      */
     @JsonProperty(value = "lastActivationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastActivationTime;
+
+    /** Creates an instance of ApplicationPackageProperties class. */
+    public ApplicationPackageProperties() {
+    }
 
     /**
      * Get the state property: The current state of the application package.
