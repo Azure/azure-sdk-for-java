@@ -2276,7 +2276,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 for (FeedResponse<Document> page : feedList) {
                                     ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
                                         ModelBridgeInternal.queryMetrics(page);
-                                    FeedResponseDiagnostics pageDiagnostics = page.getCosmosDiagnostics().getFeedResponseDiagnostics();
                                     if (pageQueryMetrics != null) {
                                         pageQueryMetrics.forEach(
                                             aggregatedQueryMetrics::putIfAbsent);
@@ -2286,12 +2285,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
-                                    aggregateRequestStatistics.addAll(pageDiagnostics.getClientSideRequestStatisticsList());
+                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
                                     if (firstQueryPlanDiagnosticContext == null)
-                                        firstQueryPlanDiagnosticContext = page.getQueryPlanDiagnosticsContext();
+                                        firstQueryPlanDiagnosticContext = ModelBridgeInternal.getQueryPlanDiagnosticsContext(page);
                                 }
-                                FeedResponseDiagnostics aggregateFeedResponseDiagnostics = new FeedResponseDiagnostics(aggregatedQueryMetrics);
-                                aggregateFeedResponseDiagnostics.addClientSideRequestStatistics(aggregateRequestStatistics);
+                                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
                                 FeedResponse<T> frp = BridgeInternal
@@ -2302,7 +2301,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                         firstQueryPlanDiagnosticContext,
                                         false,
                                         false,
-                                        new CosmosDiagnostics(aggregateFeedResponseDiagnostics));
+                                        aggregatedDiagnostics);
                                 return frp;
                             });
                     });
