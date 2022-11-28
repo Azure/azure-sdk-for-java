@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.jaas;
 
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
@@ -29,7 +27,7 @@ public final class JaasResolver {
     }
 
     private static Map<String, String> convertJaasOptionsFromStringToMap(String source) {
-        if (source == null || !source.startsWith(AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX) || !source.endsWith(";")) {
+        if (source == null || source.split(" ").length < 3 || !source.endsWith(";")) {
             return Collections.emptyMap();
         }
         Map<String, String> map = Arrays.stream(source.substring(0, source.length() - 1).split(" "))

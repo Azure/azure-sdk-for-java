@@ -99,7 +99,7 @@ public final class AzureKafkaConfigurationUtils {
         String securityProtocol = (String) sourceProperties.get(SECURITY_PROTOCOL_CONFIG);
         String saslMechanism = (String) sourceProperties.get(SASL_MECHANISM);
         String jaasConfig = (String) sourceProperties.get(SASL_JAAS_CONFIG);
-        if (meetSecurityProtocolConditions(securityProtocol) && meetSaslMechanismConditions(saslMechanism)
+        if (meetSaslProtocolConditions(securityProtocol) && meetSaslOAuth2MechanismConditions(saslMechanism)
             && meetJaasConditions(jaasConfig)) {
             return true;
         }
@@ -107,11 +107,11 @@ public final class AzureKafkaConfigurationUtils {
         return false;
     }
 
-    private static boolean meetSecurityProtocolConditions(String securityProtocol) {
+    private static boolean meetSaslProtocolConditions(String securityProtocol) {
         return securityProtocol == null || SECURITY_PROTOCOL_CONFIG_SASL.equalsIgnoreCase(securityProtocol);
     }
 
-    private static boolean meetSaslMechanismConditions(String saslMechanism) {
+    private static boolean meetSaslOAuth2MechanismConditions(String saslMechanism) {
         return saslMechanism == null || SASL_MECHANISM_OAUTH.equalsIgnoreCase(saslMechanism);
     }
     private static boolean meetJaasConditions(String jaasConfig) {

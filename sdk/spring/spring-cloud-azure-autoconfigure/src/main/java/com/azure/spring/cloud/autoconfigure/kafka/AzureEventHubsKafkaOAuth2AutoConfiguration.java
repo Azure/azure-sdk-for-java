@@ -25,6 +25,8 @@ import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKaf
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
+    static final String AZURE_EVENT_HUBS_KAFKA_OAUTH2_AUTO_CONFIGURATION_CLASS = AzureEventHubsKafkaOAuth2AutoConfiguration.class.getName();
+
     @Bean(PASSWORDLESS_KAFKA_PROPERTIES_BEAN_POST_PROCESSOR_BEAN_NAME)
     static BeanPostProcessor kafkaPropertiesBeanPostProcessor(AzureGlobalProperties properties) {
         return new KafkaPropertiesBeanPostProcessor(properties);

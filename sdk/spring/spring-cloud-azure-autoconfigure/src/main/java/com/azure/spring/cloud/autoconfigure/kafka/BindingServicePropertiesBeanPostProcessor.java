@@ -21,6 +21,8 @@ import java.util.Map;
 class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
 
     static final String SPRING_MAIN_SOURCES_PROPERTY = "spring.main.sources";
+    static final String KAFKA_OAUTH2_SPRING_MAIN_SOURCES = AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS
+        + AzureEventHubsKafkaOAuth2AutoConfiguration.AZURE_EVENT_HUBS_KAFKA_OAUTH2_AUTO_CONFIGURATION_CLASS;
     private static final String KAKFA_BINDER_DEFAULT_NAME = "kafka";
     private static final String KAKFA_BINDER_TYPE = "kafka";
 
@@ -50,7 +52,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
     }
 
     void configureBinderSources(Map<String, Object> originalSources) {
-        StringBuilder sources = new StringBuilder(AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
+        StringBuilder sources = new StringBuilder(KAFKA_OAUTH2_SPRING_MAIN_SOURCES);
         if (StringUtils.hasText((String) originalSources.get("sources"))) {
             sources.append("," + originalSources.get("sources"));
         }
