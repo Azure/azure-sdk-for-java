@@ -80,6 +80,7 @@ public class DetectChangePoints {
             .collect(Collectors.toList());
 
         System.out.println("Detecting change points...");
+        // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
         ChangePointDetectRequest request = new ChangePointDetectRequest(series, TimeGranularity.DAILY);
         ChangePointDetectResponse response = anomalyDetectorClient.detectUnivariateChangePoint(request);
         if (response.getIsChangePoint().contains(true)) {

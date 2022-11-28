@@ -81,6 +81,7 @@ public class DetectAnomaliesLastPoint {
 
         System.out.println("Determining if latest data point is an anomaly...");
         DetectRequest request = new DetectRequest(series);
+        // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
         request.setGranularity(TimeGranularity.DAILY);
         request.setImputeMode(ImputeMode.AUTO);
 
