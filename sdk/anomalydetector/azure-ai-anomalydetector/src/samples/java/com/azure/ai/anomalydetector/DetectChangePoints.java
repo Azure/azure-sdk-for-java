@@ -5,6 +5,8 @@ package com.azure.ai.anomalydetector;
 
 import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
 import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
+import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
+import com.azure.ai.anomalydetector.models.TimeGranularity;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
@@ -15,16 +17,15 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.BinaryData;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonObjectBuilder;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -57,24 +58,47 @@ public class DetectChangePoints {
             .endpoint(endpoint)
             .buildClient();
 
-        InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\request-data.json");
-        JsonReader reader = Json.createReader(fileInputStream);
-        JsonObject jsonObject = reader.readObject();
+        // Read the time series from csv file and organize the time series into list of TimeSeriesPoint.
+        // The sample csv file has no header, and it contains 2 columns, namely timestamp and value.
+        // The following is a snippet of the sample csv file:
+        //      2018-03-01T00:00:00Z,32858923
+        //      2018-03-02T00:00:00Z,29615278
+        //      2018-03-03T00:00:00Z,22839355
+        //      2018-03-04T00:00:00Z,25948736
+        Path path = Paths.get("azure-ai-anomalydetector/src/samples/java/sample_data/request-data.csv");
+        List<String> requestData = Files.readAllLines(path);
+        List<TimeSeriesPoint> series = requestData.stream()
+            .map(line -> line.trim())
+            .filter(line -> line.length() > 0)
+            .map(line -> line.split(",", 2))
+            .filter(splits -> splits.length == 2)
+            .map(splits -> {
+                TimeSeriesPoint timeSeriesPoint = new TimeSeriesPoint(Float.parseFloat(splits[1]));
+                timeSeriesPoint.setTimestamp(OffsetDateTime.parse(splits[0]));
+                return timeSeriesPoint;
+            })
+            .collect(Collectors.toList());
 
-        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder(jsonObject);
-        jsonObjectBuilder.add("granularity", "daily");
-        jsonObject = jsonObjectBuilder.build();
+        System.out.println("Detecting change points...");
+        ChangePointDetectRequest request = new ChangePointDetectRequest(series, TimeGranularity.DAILY);
+        ChangePointDetectResponse response = anomalyDetectorClient.detectUnivariateChangePoint(request);
+        if (response.getIsChangePoint().contains(true)) {
+            System.out.println("Change points found in the following data positions:");
+            for (int i = 0; i < request.getSeries().size(); ++i) {
+                if (response.getIsChangePoint().get(i)) {
+                    System.out.print(i + " ");
+                }
+            }
+            System.out.println();
+        } else {
+            System.out.println("No change points were found in the series.");
+        }
 
-        String detectBodyStr = jsonObject.toString();
-        System.out.println(detectBodyStr);
-        BinaryData detectBody = BinaryData.fromString(detectBodyStr);
-
-        ChangePointDetectRequest changePointDetectRequest = detectBody.toObject(ChangePointDetectRequest.class);
-        ChangePointDetectResponse changePointDetectResponse = anomalyDetectorClient.detectUnivariateChangePoint(changePointDetectRequest);
-        System.out.println(changePointDetectResponse.getPeriod());
-        System.out.println(Arrays.toString(changePointDetectResponse.getIsChangePoint().toArray(new Boolean[0])));
-        System.out.println(Arrays.toString(changePointDetectResponse.getConfidenceScores().toArray(new Double[0])));
-        System.out.println(Arrays.toString(changePointDetectResponse.getIsChangePoint().toArray(new Boolean[0])));
+        System.out.println("All response data: ");
+        System.out.println(response.getPeriod());
+        System.out.println(Arrays.toString(response.getIsChangePoint().toArray(new Boolean[0])));
+        System.out.println(Arrays.toString(response.getConfidenceScores().toArray(new Double[0])));
+        System.out.println(Arrays.toString(response.getIsChangePoint().toArray(new Boolean[0])));
 
     }
 }
