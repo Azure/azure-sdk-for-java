@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-abstract class AbstractKafkaPropertiesBeanPostProcessorTest<P extends AbstractKafkaPropertiesBeanPostProcessor> {
+abstract class AbstractKafkaPropertiesBeanPostProcessorTest<P extends AbstractKafkaPropertiesBeanPostProcessor<T>, T> {
 
     private final P processor;
 

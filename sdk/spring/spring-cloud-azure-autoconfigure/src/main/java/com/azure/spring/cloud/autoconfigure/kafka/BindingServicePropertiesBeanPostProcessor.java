@@ -22,7 +22,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
 
     static final String SPRING_MAIN_SOURCES_PROPERTY = "spring.main.sources";
     static final String KAFKA_OAUTH2_SPRING_MAIN_SOURCES = AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS
-        + AzureEventHubsKafkaOAuth2AutoConfiguration.AZURE_EVENT_HUBS_KAFKA_OAUTH2_AUTO_CONFIGURATION_CLASS;
+        + "," + AzureEventHubsKafkaOAuth2AutoConfiguration.AZURE_EVENT_HUBS_KAFKA_OAUTH2_AUTO_CONFIGURATION_CLASS;
     private static final String KAKFA_BINDER_DEFAULT_NAME = "kafka";
     private static final String KAKFA_BINDER_TYPE = "kafka";
 

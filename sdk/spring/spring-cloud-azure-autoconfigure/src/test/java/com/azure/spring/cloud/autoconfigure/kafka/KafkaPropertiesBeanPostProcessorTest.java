@@ -3,9 +3,10 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
 public class KafkaPropertiesBeanPostProcessorTest
-    extends AbstractKafkaPropertiesBeanPostProcessorTest<KafkaPropertiesBeanPostProcessor> {
+    extends AbstractKafkaPropertiesBeanPostProcessorTest<KafkaPropertiesBeanPostProcessor, KafkaProperties> {
 
     KafkaPropertiesBeanPostProcessorTest() {
         super(new KafkaPropertiesBeanPostProcessor(new AzureGlobalProperties()));
