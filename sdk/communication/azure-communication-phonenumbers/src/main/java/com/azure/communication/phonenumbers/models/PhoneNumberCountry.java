@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class PhoneNumberCountry {
     /*
-     * Represents the name of the country/region.
+     * Represents the name of the country.
      */
     @JsonProperty(value = "localizedName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String localizedName;
 
     /*
-     * Represents the abbreviated name of the country/region.
+     * Represents the abbreviated name of the country.
      */
     @JsonProperty(value = "countryCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String countryCode;
 
     /**
-     * Get the localizedName property: Represents the name of the country/region.
+     * Get the localizedName property: Represents the name of the country.
      *
      * @return the localizedName value.
      */
@@ -32,7 +32,7 @@ public final class PhoneNumberCountry {
     }
 
     /**
-     * Get the countryCode property: Represents the abbreviated name of the country/region.
+     * Get the countryCode property: Represents the abbreviated name of the country.
      *
      * @return the countryCode value.
      */

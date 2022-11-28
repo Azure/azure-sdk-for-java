@@ -4,24 +4,24 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberAdministrativeDivision model. */
-@Fluent
+@Immutable
 public final class PhoneNumberAdministrativeDivision {
     /*
      * Represents the localized name of the administrative division of the
      * locality. e.g. state or province localized name.
      */
-    @JsonProperty(value = "localizedName", required = true)
+    @JsonProperty(value = "localizedName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String localizedName;
 
     /*
      * Represents the abbreviated name of the administrative division of the
-     * locality. e.g. state or province abbreviation such as WA (Washington)
+     * locality. e.g. state or province abbreviation such as WA (Washington).
      */
-    @JsonProperty(value = "abbreviatedName", required = true)
+    @JsonProperty(value = "abbreviatedName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String abbreviatedName;
 
     /**
@@ -35,18 +35,6 @@ public final class PhoneNumberAdministrativeDivision {
     }
 
     /**
-     * Set the localizedName property: Represents the localized name of the administrative division of the locality.
-     * e.g. state or province localized name.
-     *
-     * @param localizedName the localizedName value to set.
-     * @return the PhoneNumberAdministrativeDivision object itself.
-     */
-    public PhoneNumberAdministrativeDivision setLocalizedName(String localizedName) {
-        this.localizedName = localizedName;
-        return this;
-    }
-
-    /**
      * Get the abbreviatedName property: Represents the abbreviated name of the administrative division of the locality.
      * e.g. state or province abbreviation such as WA (Washington).
      *
@@ -54,17 +42,5 @@ public final class PhoneNumberAdministrativeDivision {
      */
     public String getAbbreviatedName() {
         return this.abbreviatedName;
-    }
-
-    /**
-     * Set the abbreviatedName property: Represents the abbreviated name of the administrative division of the locality.
-     * e.g. state or province abbreviation such as WA (Washington).
-     *
-     * @param abbreviatedName the abbreviatedName value to set.
-     * @return the PhoneNumberAdministrativeDivision object itself.
-     */
-    public PhoneNumberAdministrativeDivision setAbbreviatedName(String abbreviatedName) {
-        this.abbreviatedName = abbreviatedName;
-        return this;
     }
 }

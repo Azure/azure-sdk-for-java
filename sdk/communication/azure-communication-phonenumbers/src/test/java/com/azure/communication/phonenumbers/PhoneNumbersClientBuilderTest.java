@@ -436,6 +436,7 @@ public class PhoneNumbersClientBuilderTest {
         final ArgumentCaptor<String> uaPolicySdkVersionArg = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<Configuration> uaPolicyConfigArg = ArgumentCaptor.forClass(Configuration.class);
         final ArgumentCaptor<HttpLogOptions> httpLogOptionsArg = ArgumentCaptor.forClass(HttpLogOptions.class);
+        final ArgumentCaptor<String> acceptLanguage = ArgumentCaptor.forClass(String.class);
 
         ClientBuilderSpyHelper(PhoneNumbersClientBuilder clientBuilder) {
             this.clientBuilder = clientBuilder;
@@ -482,7 +483,7 @@ public class PhoneNumbersClientBuilderTest {
 
         void capturePhoneNumberAdminClientImpl() {
             verify(this.clientBuilder, times(1))
-                .createPhoneNumberAsyncClient(this.phoneNumberAdminClientArg.capture());
+                .createPhoneNumberAsyncClient(this.phoneNumberAdminClientArg.capture(), this.acceptLanguage.capture());
         }
 
         void captureHttpPipelineSettings() {

@@ -17,8 +17,7 @@ public final class PhoneNumberLocality {
     private String localizedName;
 
     /*
-     * Represents the name of the administrative division of the locality. e.g.
-     * state or province.
+     * Represents an administrative division. e.g. state or province.
      */
     @JsonProperty(value = "administrativeDivision", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAdministrativeDivision administrativeDivision;
@@ -33,8 +32,7 @@ public final class PhoneNumberLocality {
     }
 
     /**
-     * Get the administrativeDivision property: Represents the name of the administrative division of the locality. e.g.
-     * state or province.
+     * Get the administrativeDivision property: Represents an administrative division. e.g. state or province.
      *
      * @return the administrativeDivision value.
      */

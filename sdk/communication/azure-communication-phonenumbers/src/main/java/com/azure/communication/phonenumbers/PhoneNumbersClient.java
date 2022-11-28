@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
-import com.azure.communication.phonenumbers.models.AreaCodeResult;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
@@ -60,7 +60,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PurchasedPhoneNumber getPurchasedPhoneNumber(String phoneNumber) {
         Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-        return client.getByNumber(phoneNumber, acceptLanguage);
+        return client.getByNumber(phoneNumber);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class PhoneNumbersClient {
     public Response<PurchasedPhoneNumber> getPurchasedPhoneNumberWithResponse(String phoneNumber, Context context) {
         Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
         context = context == null ? Context.NONE : context;
-        return client.getByNumberWithResponseAsync(phoneNumber, acceptLanguage, context).block();
+        return client.getByNumberWithResponseAsync(phoneNumber, context).block();
     }
 
     /**
@@ -97,7 +97,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PurchasedPhoneNumber> listPurchasedPhoneNumbers(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.listPhoneNumbers(null, null, acceptLanguage, context);
+        return client.listPhoneNumbers(null, null, context);
     }
 
     /**
@@ -258,7 +258,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberCountry> listAvailableCountries(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.listAvailableCountries(acceptLanguage, null, null, context);
+        return client.listAvailableCountries(null, null, acceptLanguage, context);
     }
 
     /**
@@ -284,17 +284,17 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.listAvailableLocalities(countryCode, acceptLanguage, null, null, administrativeDivision, context);
+        return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage, context);
     }
 
     /**
      * Gets the list of the available Toll-Free area codes for a given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @return A {@link PagedIterable} of {@link AreaCodeResult} instances representing available area codes.
+     * @return A {@link PagedIterable} of {@link PhoneNumberAreaCode} instances representing available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode) {
+    public PagedIterable<PhoneNumberAreaCode> listAvailableTollFreeAreaCodes(String countryCode) {
         return this.listAvailableTollFreeAreaCodes(countryCode, null);
     }
 
@@ -303,11 +303,11 @@ public final class PhoneNumbersClient {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param context A {@link Context} representing the request context.
-     * @return A {@link PagedIterable} of {@link AreaCodeResult} instances representing available area codes.
+     * @return A {@link PagedIterable} of {@link PhoneNumberAreaCode} instances representing available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode, Context context) {
-        return client.listAreaCodes(countryCode, null, null, PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, null, null);
+    public PagedIterable<PhoneNumberAreaCode> listAvailableTollFreeAreaCodes(String countryCode, Context context) {
+        return client.listAreaCodes(countryCode, PhoneNumberType.TOLL_FREE, null, null, PhoneNumberAssignmentType.APPLICATION, null, null, acceptLanguage);
     }
 
     /**
@@ -317,10 +317,10 @@ public final class PhoneNumbersClient {
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
      * @param locality The name of the locality (e.g. city or town name) in which to fetch area codes.
      * @param administrativeDivision An optional parameter. The name of the administrative division (e.g. state or province) of the locality.
-     * @return A {@link PagedIterable} of {@link AreaCodeResult} instances representing purchased telephone numbers.
+     * @return A {@link PagedIterable} of {@link PhoneNumberAreaCode} instances representing purchased telephone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AreaCodeResult> listAvailableGeographicAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
+    public PagedIterable<PhoneNumberAreaCode> listAvailableGeographicAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
         return this.listAvailableGeographicAreaCodes(countryCode, assignmentType, locality, administrativeDivision, null);
     }
 
@@ -332,12 +332,12 @@ public final class PhoneNumbersClient {
      * @param locality The name of the locality (e.g. city or town name) in which to fetch area codes.
      * @param administrativeDivision An optional parameter. The name of the administrative division (e.g. state or province) of the locality.
      * @param context A {@link Context} representing the request context.
-     * @return A {@link PagedIterable} of {@link AreaCodeResult} instances representing purchased telephone numbers.
+     * @return A {@link PagedIterable} of {@link PhoneNumberAreaCode} instances representing purchased telephone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AreaCodeResult> listAvailableGeographicAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision, Context context) {
+    public PagedIterable<PhoneNumberAreaCode> listAvailableGeographicAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.listAreaCodes(countryCode, null, null, PhoneNumberType.GEOGRAPHIC, assignmentType, locality, administrativeDivision, context);
+        return client.listAreaCodes(countryCode, PhoneNumberType.GEOGRAPHIC, null, null, assignmentType, locality, administrativeDivision, acceptLanguage, context);
     }
 
     /**
@@ -365,6 +365,6 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberOffering> listAvailableOfferings(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.listOfferings(countryCode, phoneNumberType, assignmentType, null, null, context);
+        return client.listOfferings(countryCode, null, null, phoneNumberType, assignmentType, acceptLanguage, context);
     }
 }

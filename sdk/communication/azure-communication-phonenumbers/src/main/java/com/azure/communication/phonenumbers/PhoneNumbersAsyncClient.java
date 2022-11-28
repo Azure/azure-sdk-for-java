@@ -6,6 +6,7 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
@@ -16,7 +17,6 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCap
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
-import com.azure.communication.phonenumbers.models.AreaCodeResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
@@ -83,7 +83,7 @@ public final class PhoneNumbersAsyncClient {
         if (Objects.isNull(phoneNumber)) {
             return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
-        return client.getByNumberAsync(phoneNumber, acceptLanguage)
+        return client.getByNumberAsync(phoneNumber)
             .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
@@ -99,7 +99,7 @@ public final class PhoneNumbersAsyncClient {
         if (Objects.isNull(phoneNumber)) {
             return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
-        return client.getByNumberWithResponseAsync(phoneNumber, acceptLanguage)
+        return client.getByNumberWithResponseAsync(phoneNumber)
             .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
@@ -111,7 +111,7 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PurchasedPhoneNumber> listPurchasedPhoneNumbers() {
         try {
-            return client.listPhoneNumbersAsync(null, null, acceptLanguage);
+            return client.listPhoneNumbersAsync(null, null);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -163,14 +163,10 @@ public final class PhoneNumbersAsyncClient {
 
             String areaCode = null;
             Integer quantity = null;
-            String locality = null;
-            String administrativeDivision = null;
 
             if (searchOptions != null) {
                 areaCode = searchOptions.getAreaCode();
                 quantity = searchOptions.getQuantity();
-                locality = searchOptions.getLocality();
-                administrativeDivision = searchOptions.getAdministrativeDivision();
             }
             PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
             searchRequest
@@ -178,9 +174,7 @@ public final class PhoneNumbersAsyncClient {
                 .setAssignmentType(assignmentType)
                 .setCapabilities(capabilities)
                 .setAreaCode(areaCode)
-                .setQuantity(quantity)
-                .setLocality(locality)
-                .setAdministrativeDivision(administrativeDivision);
+                .setQuantity(quantity);
 
             return new PollerFlux<>(defaultPollInterval,
                 searchAvailableNumbersInitOperation(countryCode, searchRequest, context),
@@ -400,7 +394,7 @@ public final class PhoneNumbersAsyncClient {
     private Function<PollingContext<PhoneNumberOperation>, Mono<PurchasedPhoneNumber>>
         updateNumberCapabilitiesFetchFinalResultOperation(String phoneNumber) {
         return (pollingContext) -> {
-            return client.getByNumberAsync(phoneNumber, acceptLanguage)
+            return client.getByNumberAsync(phoneNumber)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         };
     }
@@ -413,7 +407,7 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberCountry> listAvailableCountries() {
         try {
-            return client.listAvailableCountriesAsync(acceptLanguage, null, null);
+            return client.listAvailableCountriesAsync(null, null, acceptLanguage);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -429,7 +423,7 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision) {
         try {
-            return client.listAvailableLocalitiesAsync(countryCode, acceptLanguage, null, null, administrativeDivision);
+            return client.listAvailableLocalitiesAsync(countryCode, null, null, administrativeDivision, acceptLanguage);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -440,12 +434,12 @@ public final class PhoneNumbersAsyncClient {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
-     * @return A {@link PagedFlux} of {@link AreaCodeResult} instances representing available area codes.
+     * @return A {@link PagedFlux} of {@link PhoneNumberAreaCode} instances representing available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType) {
+    public PagedFlux<PhoneNumberAreaCode> listAvailableTollFreeAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType) {
         try {
-            return client.listAreaCodesAsync(countryCode, null, null, PhoneNumberType.TOLL_FREE, assignmentType, null, null);
+            return client.listAreaCodesAsync(countryCode, PhoneNumberType.TOLL_FREE, null, null, assignmentType, null, null, acceptLanguage);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -458,12 +452,12 @@ public final class PhoneNumbersAsyncClient {
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
      * @param locality The name of the locality (e.g. city or town name) in which to fetch area codes.
      * @param administrativeDivision An optional parameter. The name of the administrative division (e.g. state or province) of the locality.
-     * @return A {@link PagedFlux} of {@link AreaCodeResult} instances representing purchased telephone numbers.
+     * @return A {@link PagedFlux} of {@link PhoneNumberAreaCode} instances representing purchased telephone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AreaCodeResult> listAvailableGeographicAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
+    public PagedFlux<PhoneNumberAreaCode> listAvailableGeographicAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
         try {
-            return client.listAreaCodesAsync(countryCode, null, null, PhoneNumberType.GEOGRAPHIC, assignmentType, locality, administrativeDivision);
+            return client.listAreaCodesAsync(countryCode, PhoneNumberType.GEOGRAPHIC, null, null, assignmentType, locality, administrativeDivision, acceptLanguage);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -480,7 +474,7 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberOffering> listAvailableOfferings(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType) {
         try {
-            return client.listOfferingsAsync(countryCode, phoneNumberType, assignmentType, null, null);
+            return client.listOfferingsAsync(countryCode, null, null, phoneNumberType, assignmentType, acceptLanguage);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
