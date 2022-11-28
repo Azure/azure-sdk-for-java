@@ -12,6 +12,7 @@ public abstract class AzureContextUtils {
 
     }
 
+
     /**
      * Default token credential bean name.
      */
@@ -87,4 +88,6 @@ public abstract class AzureContextUtils {
     public static final String STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME =
         "springCloudAzureStorageBlobClientBuilder";
 
+    public static final String PASSWORDLESS_KAFKA_PROPERTIES_BEAN_POST_PROCESSOR_BEAN_NAME =
+        "azurePasswordlessKafkaPropertiesBeanPostProcessor";
 }

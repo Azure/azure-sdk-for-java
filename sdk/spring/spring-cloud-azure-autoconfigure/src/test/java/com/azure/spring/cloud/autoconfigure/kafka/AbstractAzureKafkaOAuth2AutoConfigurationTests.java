@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -51,9 +52,9 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B> {
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertTrue(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 P kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"true\"");
-                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"true\"");
-                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"true\"");
+                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
+                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
+                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
             });
     }
 
@@ -111,25 +112,25 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B> {
                 configurationProperties.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
     }
 
-    protected void assertConsumerPropsConfigured(P properties, String removedProperty, String filledProperty) {
+    protected void assertConsumerPropsConfigured(P properties, String key, String value) {
         assertPropertiesConfigured(getConsumerProperties(properties), getConsumerJaasProperties(properties),
-            removedProperty, filledProperty);
+            key, value);
     }
 
-    protected void assertProducerPropsConfigured(P properties, String removedProperty, String filledProperty) {
+    protected void assertProducerPropsConfigured(P properties, String key, String value) {
         assertPropertiesConfigured(getProducerProperties(properties), getProducerJaasProperties(properties),
-            removedProperty, filledProperty);
+            key, value);
     }
 
-    protected void assertAdminPropsConfigured(P properties, String removedProperty, String filledProperty) {
+    protected void assertAdminPropsConfigured(P properties, String key, String value) {
         assertPropertiesConfigured(getAdminProperties(properties), getAdminJaasProperties(properties),
-            removedProperty, filledProperty);
+            key, value);
     }
 
-    protected void assertPropertiesConfigured(Map<String, Object> configs, String jaas, String removedProperty, String filledProperty) {
+    protected void assertPropertiesConfigured(Map<String, Object> configs, String jaas, String key, String value) {
         shouldConfigureOAuthProperties(configs);
-        assertFalse(configs.containsKey(removedProperty));
-        assertTrue(jaas.contains(filledProperty));
+        assertFalse(configs.containsKey(key));
+        assertTrue(jaas.contains(String.format(AzureKafkaPropertiesUtils.JAAS_OPTIONS_PATTERN, key, value)));
     }
 
 }

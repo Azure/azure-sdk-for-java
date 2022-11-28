@@ -93,9 +93,9 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"true\"");
-                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"false\"");
-                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"true\"");
+                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
+                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "false");
+                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
             });
     }
 
@@ -110,9 +110,9 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"common\"");
-                assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"common\"");
-                assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"common\"");
+                assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "common");
+                assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "common");
+                assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, "common");
             });
     }
 
@@ -127,9 +127,9 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"global\"");
-                assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"client\"");
-                assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"global\"");
+                assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "global");
+                assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "client");
+                assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, "global");
             });
     }
 

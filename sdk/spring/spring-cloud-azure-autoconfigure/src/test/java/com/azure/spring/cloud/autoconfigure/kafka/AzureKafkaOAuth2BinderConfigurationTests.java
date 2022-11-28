@@ -103,9 +103,9 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaBinderConfigurationProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"true\"");
-                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"true\"");
-                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, MANAGED_IDENTITY_ENABLED + "=\"true\"");
+                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
+                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
+                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
             });
     }
 
@@ -122,9 +122,9 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 )
                 .run(context -> {
                     KafkaBinderConfigurationProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                    assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"cloud-consumer-client-id\"");
-                    assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"cloud-client-id\"");
-                    assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, CLIENT_ID + "=\"cloud-client-id\"");
+                    assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "cloud-consumer-client-id");
+                    assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "cloud-client-id");
+                    assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, "cloud-client-id");
                 });
     }
 

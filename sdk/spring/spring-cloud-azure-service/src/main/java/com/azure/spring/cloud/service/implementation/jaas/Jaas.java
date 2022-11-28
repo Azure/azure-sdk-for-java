@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.jaas;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +13,6 @@ public class Jaas {
     public static final String JAAS_OPTIONS_FORMAT = " %s=\"%s\"";
     public static final String TERMINATOR = ";";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Jaas.class);
-
     public Jaas(String loginModule) {
         this(loginModule, "required");
     }
@@ -25,6 +22,8 @@ public class Jaas {
     }
 
     public Jaas(String loginModule, String controlFlag, Map<String, String> options) {
+        Assert.hasText(loginModule, "The login module of JAAS should not be null");
+        Assert.hasText(controlFlag, "The control flag of JAAS should not be null");
         this.loginModule = loginModule;
         this.controlFlag = controlFlag;
         this.options = options;
@@ -77,14 +76,8 @@ public class Jaas {
 
     @Override
     public String toString() {
-        if (loginModule == null) {
-            LOGGER.error("The login module of JAAS should not be null");
-        }
-        if (controlFlag == null) {
-            LOGGER.error("The control flag of JAAS should not be null");
-        }
         StringBuilder builder = new StringBuilder(String.format(JAAS_PREFIX_FORMAT,
-            loginModule == null ? "" : loginModule, controlFlag == null ? "" : controlFlag));
+            loginModule, controlFlag));
         options.forEach((k, v) -> builder.append(String.format(JAAS_OPTIONS_FORMAT, k, v)));
         builder.append(TERMINATOR);
         return builder.toString();
