@@ -32,7 +32,7 @@ public class ChangeFeedProcessorLatestVersionChangesCodeSnippet {
         // END: com.azure.cosmos.latestVersionChanges.builder
     }
 
-    public void handleChangesCodeSnippet() {
+    public void handleLatestVersionChangesCodeSnippet() {
         String hostName = "test-host-name";
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)

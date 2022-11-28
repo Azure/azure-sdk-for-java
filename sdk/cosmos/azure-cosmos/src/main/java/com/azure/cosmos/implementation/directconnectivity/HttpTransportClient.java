@@ -93,7 +93,7 @@ public class HttpTransportClient extends TransportClient {
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL, HttpConstants.HeaderValues.NO_CACHE);
         this.defaultHeaders.put(
             HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
-            String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES));
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
         if (userAgent == null) {
             userAgent = new UserAgentContainer();

@@ -126,7 +126,9 @@ public class ChangeFeedProcessorBuilder {
      */
     public ChangeFeedProcessorBuilder handleChanges(Consumer<List<JsonNode>> consumer) {
         checkNotNull(consumer, "Argument 'consumer' can not be null");
-        checkArgument(this.incrementalModeLeaseConsumerEpkVersion == null, "consumer has already been defined");
+        checkArgument(
+            this.incrementalModeLeaseConsumerEpkVersion == null,
+            "handleLatestVersionChanges consumer has already been defined");
 
         this.incrementalModeLeaseConsumerPkRangeIdVersion = consumer;
         this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
@@ -155,7 +157,9 @@ public class ChangeFeedProcessorBuilder {
     @Beta(value = Beta.SinceVersion.V4_40_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleLatestVersionChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         checkNotNull(consumer, "Argument 'consumer' can not be null");
-        checkArgument(this.incrementalModeLeaseConsumerPkRangeIdVersion == null, "consumer has already been defined");
+        checkArgument(
+            this.incrementalModeLeaseConsumerPkRangeIdVersion == null,
+            "handleChanges consumer has already been defined");
 
         this.incrementalModeLeaseConsumerEpkVersion = consumer;
         this.changeFeedMode = ChangeFeedMode.INCREMENTAL;

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.util.CoreUtils;
 
+import java.util.EnumSet;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -285,16 +286,17 @@ public class HttpConstants {
         public static final String FULL_FIDELITY_FEED = "Full-Fidelity Feed";
     }
 
-    public static class SDKSupportedCapabilities {
-        private static final long None = 0; // 0
-        private static final long PartitionMerge = 1; // 1 << 0
+    public enum SDKSupportedCapabilities {
+        NONE(1 << 0),
+        PARTITION_MERGE(1 << 1);
 
-        public static final String SUPPORTED_CAPABILITIES;
-        public static final String SUPPORTED_CAPABILITIES_NONE;
-        static {
-            SUPPORTED_CAPABILITIES = String.valueOf(PartitionMerge);
-            SUPPORTED_CAPABILITIES_NONE = String.valueOf(None);
+        private final int value;
+        SDKSupportedCapabilities(int value) {
+            this.value = value;
         }
+
+        public static final String SUPPORTED_CAPABILITIES = EnumSet.of(PARTITION_MERGE).toString();
+        public static final String SUPPORTED_CAPABILITIES_NONE = EnumSet.of(NONE).toString();
     }
 
     public static class Versions {
