@@ -5,31 +5,25 @@ package com.azure.spring.cloud.service.implementation.jaas;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class JaasResolverTest {
 
     @Test
     void testResolveJaasWithInvalidLoginModule() {
-        Jaas jaas = JaasResolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required");
-        assertNull(jaas.getLoginModule());
-        assertNull(jaas.getControlFlag());
-        assertTrue(jaas.getOptions().isEmpty());
-
-        jaas = JaasResolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModulerequired;");
-        assertNull(jaas.getLoginModule());
-        assertNull(jaas.getControlFlag());
-        assertTrue(jaas.getOptions().isEmpty());
-
-        jaas = JaasResolver.resolve(null);
-        assertNull(jaas.getLoginModule());
-        assertNull(jaas.getControlFlag());
-        assertTrue(jaas.getOptions().isEmpty());
+        JaasResolver resolver = new JaasResolver();
+        assertThrows(NoSuchElementException.class, () -> resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required").get());
+        assertThrows(NoSuchElementException.class, () -> resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModulerequired;").get());
+        assertThrows(NoSuchElementException.class, () -> resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required test;").get());
+        assertThrows(NoSuchElementException.class, () -> resolver.resolve(null).get());
     }
 
     @Test
     void testResolveJaasWithoutAzureProperties() {
-        Jaas jaas = JaasResolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;");
+        JaasResolver resolver = new JaasResolver();
+        Jaas jaas = resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;").get();
         assertEquals("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule", jaas.getLoginModule());
         assertEquals("required", jaas.getControlFlag());
         assertTrue(jaas.getOptions().isEmpty());
@@ -37,8 +31,9 @@ class JaasResolverTest {
 
     @Test
     void testResolveJaasWithAzureProperties() {
-        Jaas jaas = JaasResolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required "
-            + "azure.credential.managed-identity-enabled=\"true\" azure.credential.client-id=\"test\" azure.profile.cloud-type=\"azure\";");
+        JaasResolver resolver = new JaasResolver();
+        Jaas jaas = resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required "
+            + "azure.credential.managed-identity-enabled=\"true\" azure.credential.client-id=\"test\" azure.profile.cloud-type=\"azure\";").get();
         assertEquals(3, jaas.getOptions().size());
         assertEquals("true", jaas.getOptions().get("azure.credential.managed-identity-enabled"));
         assertEquals("test", jaas.getOptions().get("azure.credential.client-id"));

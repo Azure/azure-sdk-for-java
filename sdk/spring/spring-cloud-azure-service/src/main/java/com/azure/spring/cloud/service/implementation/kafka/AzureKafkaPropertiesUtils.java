@@ -5,6 +5,7 @@ package com.azure.spring.cloud.service.implementation.kafka;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.service.implementation.jaas.Jaas;
 import com.azure.spring.cloud.service.implementation.jaas.JaasResolver;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
@@ -36,7 +37,9 @@ public final class AzureKafkaPropertiesUtils {
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
 
     public static void copyJaasPropertyToAzureProperties(String source, AzurePasswordlessProperties target) {
-        Map<String, String> map = JaasResolver.resolve(source).getOptions();
+        JaasResolver resolver = new JaasResolver();
+        Jaas jaas = resolver.resolve(source).orElse(new Jaas(OAuthBearerLoginModule.class.getName()));
+        Map<String, String> map = jaas.getOptions();
         for (AzureKafkaPasswordlessPropertiesMapping m : AzureKafkaPasswordlessPropertiesMapping.values()) {
             PROPERTY_MAPPER.from(map.get(m.propertyKey)).to(v -> m.setter.accept(target, v));
         }

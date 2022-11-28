@@ -2,23 +2,32 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.jaas;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Jaas {
 
-    public static final String JAAS_PREFIX = "%s %s";
+    public static final String JAAS_PREFIX_FORMAT = "%s %s";
     public static final String JAAS_OPTIONS_FORMAT = " %s=\"%s\"";
     public static final String TERMINATOR = ";";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Jaas.class);
 
     public Jaas(String loginModule) {
         this(loginModule, "required");
     }
 
     public Jaas(String loginModule, String controlFlag) {
+        this(loginModule, controlFlag, new HashMap<>());
+    }
+
+    public Jaas(String loginModule, String controlFlag, Map<String, String> options) {
         this.loginModule = loginModule;
         this.controlFlag = controlFlag;
+        this.options = options;
     }
 
     /**
@@ -34,7 +43,7 @@ public class Jaas {
     /**
      * Additional JAAS options.
      */
-    private final Map<String, String> options = new HashMap<>();
+    private Map<String, String> options;
 
     public String getLoginModule() {
         return this.loginModule;
@@ -57,6 +66,10 @@ public class Jaas {
     }
 
     public void setOptions(Map<String, String> options) {
+        this.options = options;
+    }
+
+    public void putOptions(Map<String, String> options) {
         if (options != null) {
             this.options.putAll(options);
         }
@@ -64,7 +77,13 @@ public class Jaas {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(String.format(JAAS_PREFIX,
+        if (loginModule == null) {
+            LOGGER.error("The login module of JAAS should not be null");
+        }
+        if (controlFlag == null) {
+            LOGGER.error("The control flag of JAAS should not be null");
+        }
+        StringBuilder builder = new StringBuilder(String.format(JAAS_PREFIX_FORMAT,
             loginModule == null ? "" : loginModule, controlFlag == null ? "" : controlFlag));
         options.forEach((k, v) -> builder.append(String.format(JAAS_OPTIONS_FORMAT, k, v)));
         builder.append(TERMINATOR);

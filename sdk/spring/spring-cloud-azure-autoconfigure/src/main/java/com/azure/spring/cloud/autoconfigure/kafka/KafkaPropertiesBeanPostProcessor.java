@@ -55,7 +55,7 @@ class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostPr
     }
 
     @Override
-    protected void customize(KafkaProperties properties) {
+    protected void customizeProcess(KafkaProperties properties) {
         clearAzureProperties(properties.getProperties());
     }
 
