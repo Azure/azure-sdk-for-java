@@ -37,12 +37,8 @@ public class ChangeFeedStateTest {
             { ChangeFeedMode.INCREMENTAL, ChangeFeedStartFromTypes.BEGINNING, false },
             { ChangeFeedMode.INCREMENTAL, ChangeFeedStartFromTypes.NOW, false },
             { ChangeFeedMode.INCREMENTAL, ChangeFeedStartFromTypes.POINT_IN_TIME, false },
-            { ChangeFeedMode.FULL_FIDELITY, ChangeFeedStartFromTypes.BEGINNING, true },
             { ChangeFeedMode.FULL_FIDELITY, ChangeFeedStartFromTypes.NOW, true },
-            { ChangeFeedMode.FULL_FIDELITY, ChangeFeedStartFromTypes.POINT_IN_TIME, true },
-            { ChangeFeedMode.FULL_FIDELITY, ChangeFeedStartFromTypes.BEGINNING, false },
-            { ChangeFeedMode.FULL_FIDELITY, ChangeFeedStartFromTypes.NOW, false },
-            { ChangeFeedMode.FULL_FIDELITY, ChangeFeedStartFromTypes.POINT_IN_TIME, false },
+            { ChangeFeedMode.FULL_FIDELITY, ChangeFeedStartFromTypes.NOW, false }
         };
     }
 
