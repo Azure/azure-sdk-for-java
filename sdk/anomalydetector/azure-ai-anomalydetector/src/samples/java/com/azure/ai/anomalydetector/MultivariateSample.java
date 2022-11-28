@@ -3,16 +3,7 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.DetectionRequest;
-import com.azure.ai.anomalydetector.models.DetectionResult;
-import com.azure.ai.anomalydetector.models.DetectionStatus;
-import com.azure.ai.anomalydetector.models.LastDetectionRequest;
-import com.azure.ai.anomalydetector.models.LastDetectionResult;
-import com.azure.ai.anomalydetector.models.Model;
-import com.azure.ai.anomalydetector.models.ModelInfo;
-import com.azure.ai.anomalydetector.models.ModelStatus;
-import com.azure.ai.anomalydetector.models.ErrorResponse;
-import com.azure.ai.anomalydetector.models.AnomalyState;
+import com.azure.ai.anomalydetector.models.*;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
@@ -36,12 +27,15 @@ import java.io.UncheckedIOException;
 import java.io.InputStream;
 
 import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.json.Json;
-import javax.json.JsonReader;
+import javax.json.*;
 
 
 public class MultivariateSample {
@@ -125,17 +119,29 @@ public class MultivariateSample {
         return res;
     }
 
-    public static void run(BinaryData trainBody, BinaryData beginInferBody) throws Exception {
+    public static void run(String datasource, DataSchema dataSchema) throws Exception {
         String endpoint = "<anomaly-detector-resource-endpoint>";
         String key = "<anomaly-detector-resource-key>";
 
         // Get multivariate client
         AnomalyDetectorClient client = getClient(endpoint, key);
 
+        // set training request
+        OffsetDateTime startTime = OffsetDateTime.of(2021, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime endTime = OffsetDateTime.of(2021, 1, 2, 5, 0, 0, 0, ZoneOffset.UTC);
+        ModelInfo trainRequest = new ModelInfo(datasource, startTime, endTime);
+        trainRequest.setSlidingWindow(200);
+        AlignPolicy alignPolicy = new AlignPolicy();
+        alignPolicy.setAlignMode(AlignMode.OUTER);
+        alignPolicy.setFillNAMethod(FillNAMethod.LINEAR);
+        alignPolicy.setPaddingValue(0.0);
+        trainRequest.setAlignPolicy(alignPolicy);
+        trainRequest.setDataSchema(dataSchema);
+        trainRequest.setDisplayName("SampleRequest");
+
         // Start training and get Model ID
-        ModelInfo trainRequest = trainBody.toObject(ModelInfo.class);
         UUID modelId = createModel(client, trainRequest);
-        System.out.println(modelId);
+        System.out.println("modelId: " + modelId);
         // Check model status util the model get ready
         while (true) {
             ModelInfo modelInfo = getModelInfo(client, modelId);
@@ -157,8 +163,10 @@ public class MultivariateSample {
         }
 
         // Start inference and get the Result ID
-        DetectionRequest detectionRequest = beginInferBody.toObject(DetectionRequest.class);
+        OffsetDateTime endTimeDetect = OffsetDateTime.of(2021, 1, 2, 12, 0, 0, 0, ZoneOffset.UTC);
+        DetectionRequest detectionRequest = new DetectionRequest(datasource, 10, startTime, endTimeDetect);
         UUID resultId = getResultId(client, detectionRequest, modelId);
+        System.out.println("resultId: " + resultId);
         while (true) { // Check inference status util the result get ready
             DetectionStatus detectionStatus = getInferenceStatus(client, resultId);
             if (detectionStatus == DetectionStatus.READY) {
@@ -175,8 +183,26 @@ public class MultivariateSample {
         // Synchronized anomaly detection
         InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\sync_infer_body.json");
         JsonReader reader = Json.createReader(fileInputStream);
-        BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
-        LastDetectionRequest lastDetectionRequest = detectBody.toObject(LastDetectionRequest.class);
+        JsonObject jsonObject = reader.readObject();
+        JsonArray variablesJson = jsonObject.getJsonArray("variables");
+        List<VariableValues> variables = new ArrayList<>();
+        for (int i = 0; i < variablesJson.size(); i++) {
+            JsonObject jo = variablesJson.getJsonObject(i);
+            String variable = jo.getString("variable");
+            List<String> timestamps = new ArrayList<>();
+            for (JsonString js : jo.getJsonArray("timestamps").getValuesAs(JsonString.class)) {
+                timestamps.add(js.getString());
+            }
+            List<Double> values = new ArrayList<>();
+            for (JsonNumber jn : jo.getJsonArray("values").getValuesAs(JsonNumber.class)) {
+                values.add(new Double(jn.doubleValue()));
+            }
+
+            VariableValues variableValues = new VariableValues(variable, timestamps, values);
+            variables.add(variableValues);
+        }
+        int topContributorCount = jsonObject.getInt("topContributorCount");
+        LastDetectionRequest lastDetectionRequest = new LastDetectionRequest(variables, topContributorCount);
         LastDetectionResult lastDetectionResult = getLastDetectResult(client, lastDetectionRequest, modelId);
         for (AnomalyState anomalyState : lastDetectionResult.getResults()) {
             System.out.println("timestamp: " + anomalyState.getTimestamp().toString()
@@ -195,17 +221,10 @@ public class MultivariateSample {
     }
 
     public static void main(final String[] args) throws Exception {
-        // test MultiTables
-        System.out.println("============================== Test MultiTables =========================================");
-        BinaryData trainBodyMultiTables = BinaryData.fromString("{\"slidingWindow\":200,\"alignPolicy\":{\"alignMode\":\"Outer\",\"fillNAMethod\":\"Linear\",\"paddingValue\":0},\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000\",\"dataSchema\":\"MultiTable\",\"startTime\":\"2021-01-02T00:00:00Z\",\"endTime\":\"2021-01-02T05:00:00Z\",\"displayName\":\"SampleRequest\"}");
-        BinaryData beginInferBodyMultiTables = BinaryData.fromString("{\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000\",\"topContributorCount\":10,\"startTime\":\"2021-01-01T00:00:00Z\",\"endTime\":\"2021-01-01T12:00:00Z\"}");
-        run(trainBodyMultiTables, beginInferBodyMultiTables);
+        System.out.println("Test MultiTables");
+        run("https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000", DataSchema.MULTI_TABLE);
 
-        // test OneTable
-        System.out.println("============================= Test OneTable =============================================");
-        BinaryData trainBodyOneTable = BinaryData.fromString("{\"slidingWindow\":200,\"alignPolicy\":{\"alignMode\":\"Outer\",\"fillNAMethod\":\"Linear\",\"paddingValue\":0},\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-onetable/sample_data_20_3000.csv\",\"dataSchema\":\"OneTable\",\"startTime\":\"2021-01-02T00:00:00Z\",\"endTime\":\"2021-01-02T05:00:00Z\",\"displayName\":\"SampleRequest\"}");
-        BinaryData beginInferBodyOneTable = BinaryData.fromString("{\"dataSource\":\"https://mvaddataset.blob.core.windows.net/sample-onetable/sample_data_20_3000.csv\",\"topContributorCount\":10,\"startTime\":\"2021-01-01T00:00:00Z\",\"endTime\":\"2021-01-01T12:00:00Z\"}");
-        run(trainBodyOneTable, beginInferBodyOneTable);
-
+        System.out.println("Test OneTable");
+        run("https://mvaddataset.blob.core.windows.net/sample-onetable/sample_data_20_3000.csv", DataSchema.ONE_TABLE);
     }
 }
