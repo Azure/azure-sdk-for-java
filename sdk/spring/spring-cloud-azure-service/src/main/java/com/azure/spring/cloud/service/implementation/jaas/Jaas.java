@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.implementation.jaas;
+package com.azure.spring.cloud.service.implementation.jaas;
 
 import java.util.HashMap;
 import java.util.Map;

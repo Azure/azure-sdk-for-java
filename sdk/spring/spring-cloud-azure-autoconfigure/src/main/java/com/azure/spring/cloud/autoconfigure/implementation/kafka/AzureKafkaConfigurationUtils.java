@@ -47,10 +47,10 @@ public final class AzureKafkaConfigurationUtils {
     public static final Map<String, String> KAFKA_OAUTH_CONFIGS;
     public static final String SECURITY_PROTOCOL_CONFIG_SASL = SASL_SSL.name();
     public static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
-    public static final String DEFAULT_SASL_JAAS_CONFIG_OAUTH = SASL_JAAS_CONFIG_OAUTH_PREFIX + ";";
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS_KEY = "azure.configured";
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS_VALUE = "true";
     public static final String AZURE_CONFIGURED_JAAS_OPTIONS = String.format(JAAS_OPTIONS_PATTERN, AZURE_CONFIGURED_JAAS_OPTIONS_KEY, AZURE_CONFIGURED_JAAS_OPTIONS_VALUE);
+    public static final String DEFAULT_SASL_JAAS_CONFIG_OAUTH = SASL_JAAS_CONFIG_OAUTH_PREFIX + ";";
     public static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
         KafkaOAuth2AuthenticateCallbackHandler.class.getName();
 

@@ -6,8 +6,6 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.copyJaasPropertyToAzureProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -15,22 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureKafkaPropertiesUtilsTest {
-
-    @Test
-    void testConvertJaasStringToMapWithoutAzureProperties() {
-        Map<String, String> target = AzureKafkaPropertiesUtils.convertJaasStringToMap("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\";");
-        assertTrue(target.isEmpty());
-    }
-
-    @Test
-    void testConvertJaasStringToMapWithAzureProperties() {
-        Map<String, String> target = AzureKafkaPropertiesUtils.convertJaasStringToMap("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\" "
-            + "azure.credential.managed-identity-enabled=\"true\" azure.credential.client-id=\"test\" azure.profile.cloud-type=\"azure\";");
-        assertEquals(3, target.size());
-        assertEquals("true", target.get("azure.credential.managed-identity-enabled"));
-        assertEquals("test", target.get("azure.credential.client-id"));
-        assertEquals("azure", target.get("azure.profile.cloud-type"));
-    }
 
     @Test
     void testCopyJaasPropertyToAzureProperties() {

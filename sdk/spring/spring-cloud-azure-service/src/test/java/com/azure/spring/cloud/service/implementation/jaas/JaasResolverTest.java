@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.implementation.jaas;
+package com.azure.spring.cloud.service.implementation.jaas;
 
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class JaasResolverTest {
 
@@ -15,36 +14,35 @@ class JaasResolverTest {
         Jaas jaas = JaasResolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required");
         assertNull(jaas.getLoginModule());
         assertNull(jaas.getControlFlag());
-        assertThat(jaas.getOptions().size()).isEqualTo(0);
+        assertTrue(jaas.getOptions().isEmpty());
 
         jaas = JaasResolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModulerequired;");
         assertNull(jaas.getLoginModule());
         assertNull(jaas.getControlFlag());
-        assertThat(jaas.getOptions().size()).isEqualTo(0);
+        assertTrue(jaas.getOptions().isEmpty());
 
         jaas = JaasResolver.resolve(null);
         assertNull(jaas.getLoginModule());
         assertNull(jaas.getControlFlag());
-        assertThat(jaas.getOptions().size()).isEqualTo(0);
+        assertTrue(jaas.getOptions().isEmpty());
     }
 
     @Test
     void testResolveJaasWithoutAzureProperties() {
         Jaas jaas = JaasResolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;");
-        assertThat(jaas.getLoginModule()).isEqualTo("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule");
-        assertThat(jaas.getOptions().size()).isEqualTo(0);
-        assertThat(jaas.getControlFlag()).isEqualTo("required");
+        assertEquals("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule", jaas.getLoginModule());
+        assertEquals("required", jaas.getControlFlag());
+        assertTrue(jaas.getOptions().isEmpty());
     }
 
     @Test
     void testResolveJaasWithAzureProperties() {
         Jaas jaas = JaasResolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required "
             + "azure.credential.managed-identity-enabled=\"true\" azure.credential.client-id=\"test\" azure.profile.cloud-type=\"azure\";");
-        assertThat(jaas.getOptions().size()).isEqualTo(3);
-        assertThat(jaas.getOptions().get("azure.credential.managed-identity-enabled")).isEqualTo("true");
-        assertThat(jaas.getOptions().get("azure.credential.client-id")).isEqualTo("test");
-        assertThat(jaas.getOptions().get("azure.profile.cloud-type")).isEqualTo("azure");
-        assertThat(jaas.getControlFlag()).isEqualTo("required");
-        assertThat(jaas.getLoginModule()).isEqualTo(OAuthBearerLoginModule.class.getName());
+        assertEquals(3, jaas.getOptions().size());
+        assertEquals("true", jaas.getOptions().get("azure.credential.managed-identity-enabled"));
+        assertEquals("test", jaas.getOptions().get("azure.credential.client-id"));
+        assertEquals("required", jaas.getControlFlag());
+        assertEquals(OAuthBearerLoginModule.class.getName(), jaas.getLoginModule());
     }
 }

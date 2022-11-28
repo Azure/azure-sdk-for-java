@@ -5,10 +5,10 @@ package com.azure.spring.cloud.service.implementation.kafka;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.service.implementation.jaas.JaasResolver;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -36,29 +36,11 @@ public final class AzureKafkaPropertiesUtils {
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
 
     public static void copyJaasPropertyToAzureProperties(String source, AzurePasswordlessProperties target) {
-        Map<String, String> map = convertJaasStringToMap(source);
+        Map<String, String> map = JaasResolver.resolve(source).getOptions();
         for (AzureKafkaPasswordlessPropertiesMapping m : AzureKafkaPasswordlessPropertiesMapping.values()) {
             PROPERTY_MAPPER.from(map.get(m.propertyKey)).to(v -> m.setter.accept(target, v));
         }
     }
-
-    public static Map<String, String> convertJaasStringToMap(String source) {
-        if (source == null || !source.startsWith(SASL_JAAS_CONFIG_OAUTH_PREFIX) || !source.endsWith(";")) {
-            return Collections.emptyMap();
-        }
-        Map<String, String> map = Arrays.stream(source.substring(0, source.length() - 1).split(" "))
-            .filter(str -> str.contains("="))
-            .map(str -> str.split("=", 2))
-            .filter(arr -> AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys().contains(arr[0]))
-            .collect(Collectors.toMap(arr -> arr[0], arr -> {
-                if (arr[1].length() > 2 && arr[1].startsWith("\"") && arr[1].endsWith("\"")) {
-                    return arr[1].substring(1, arr[1].length() - 1);
-                }
-                return null;
-            }));
-        return map;
-    }
-
 
     public enum AzureKafkaPasswordlessPropertiesMapping {
 

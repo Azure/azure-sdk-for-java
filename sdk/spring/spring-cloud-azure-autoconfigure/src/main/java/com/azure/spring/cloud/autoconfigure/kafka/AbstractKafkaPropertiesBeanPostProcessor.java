@@ -8,8 +8,8 @@ import java.util.Optional;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils;
-import com.azure.spring.cloud.autoconfigure.implementation.jaas.Jaas;
-import com.azure.spring.cloud.autoconfigure.implementation.jaas.JaasResolver;
+import com.azure.spring.cloud.service.implementation.jaas.Jaas;
+import com.azure.spring.cloud.service.implementation.jaas.JaasResolver;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
@@ -132,7 +132,7 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     private void replaceAzurePropertiesWithJaas(Map<String, Object> mergedProperties, Map<String, String> rawPropertiesMap) {
         resolveJaasForAzure(mergedProperties)
             .ifPresent(jaas -> {
-                configJaasToKafka(rawPropertiesMap, jaas);
+                configJaasToKafkaRawProperties(jaas, rawPropertiesMap);
                 logConfigureOAuthProperties();
                 configureKafkaUserAgent();
             });
@@ -156,7 +156,7 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         return StringUtils.hasText(jaas) ? jaas : DEFAULT_SASL_JAAS_CONFIG_OAUTH;
     }
 
-    private void configJaasToKafka(Map<String, String> rawPropertiesMap, Jaas jaas) {
+    private void configJaasToKafkaRawProperties(Jaas jaas, Map<String, String> rawPropertiesMap) {
         rawPropertiesMap.putAll(AzureKafkaConfigurationUtils.KAFKA_OAUTH_CONFIGS);
         rawPropertiesMap.put(SASL_JAAS_CONFIG, jaas.toString());
     }
