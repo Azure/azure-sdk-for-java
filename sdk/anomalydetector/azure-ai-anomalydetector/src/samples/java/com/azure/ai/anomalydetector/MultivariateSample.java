@@ -183,26 +183,8 @@ public class MultivariateSample {
         // Synchronized anomaly detection
         InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\sync_infer_body.json");
         JsonReader reader = Json.createReader(fileInputStream);
-        JsonObject jsonObject = reader.readObject();
-        JsonArray variablesJson = jsonObject.getJsonArray("variables");
-        List<VariableValues> variables = new ArrayList<>();
-        for (int i = 0; i < variablesJson.size(); i++) {
-            JsonObject jo = variablesJson.getJsonObject(i);
-            String variable = jo.getString("variable");
-            List<String> timestamps = new ArrayList<>();
-            for (JsonString js : jo.getJsonArray("timestamps").getValuesAs(JsonString.class)) {
-                timestamps.add(js.getString());
-            }
-            List<Double> values = new ArrayList<>();
-            for (JsonNumber jn : jo.getJsonArray("values").getValuesAs(JsonNumber.class)) {
-                values.add(new Double(jn.doubleValue()));
-            }
-
-            VariableValues variableValues = new VariableValues(variable, timestamps, values);
-            variables.add(variableValues);
-        }
-        int topContributorCount = jsonObject.getInt("topContributorCount");
-        LastDetectionRequest lastDetectionRequest = new LastDetectionRequest(variables, topContributorCount);
+        BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
+        LastDetectionRequest lastDetectionRequest = detectBody.toObject(LastDetectionRequest.class);
         LastDetectionResult lastDetectionResult = getLastDetectResult(client, lastDetectionRequest, modelId);
         for (AnomalyState anomalyState : lastDetectionResult.getResults()) {
             System.out.println("timestamp: " + anomalyState.getTimestamp().toString()
