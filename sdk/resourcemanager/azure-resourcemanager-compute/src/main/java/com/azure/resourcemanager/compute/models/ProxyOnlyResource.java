@@ -28,6 +28,10 @@ public class ProxyOnlyResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ProxyOnlyResource class. */
+    public ProxyOnlyResource() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

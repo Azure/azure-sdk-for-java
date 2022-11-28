@@ -27,15 +27,6 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
         this.serviceManager = serviceManager;
     }
 
-    public Application get(String resourceGroupName, String securityConnectorName, String applicationId) {
-        ApplicationInner inner = this.serviceClient().get(resourceGroupName, securityConnectorName, applicationId);
-        if (inner != null) {
-            return new ApplicationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Application> getWithResponse(
         String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
         Response<ApplicationInner> inner =
@@ -51,10 +42,8 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
         }
     }
 
-    public Application createOrUpdate(
-        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application) {
-        ApplicationInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, securityConnectorName, applicationId, application);
+    public Application get(String resourceGroupName, String securityConnectorName, String applicationId) {
+        ApplicationInner inner = this.serviceClient().get(resourceGroupName, securityConnectorName, applicationId);
         if (inner != null) {
             return new ApplicationImpl(inner, this.manager());
         } else {
@@ -84,8 +73,15 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
         }
     }
 
-    public void delete(String resourceGroupName, String securityConnectorName, String applicationId) {
-        this.serviceClient().delete(resourceGroupName, securityConnectorName, applicationId);
+    public Application createOrUpdate(
+        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application) {
+        ApplicationInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, securityConnectorName, applicationId, application);
+        if (inner != null) {
+            return new ApplicationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -93,6 +89,10 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, securityConnectorName, applicationId, context);
+    }
+
+    public void delete(String resourceGroupName, String securityConnectorName, String applicationId) {
+        this.serviceClient().delete(resourceGroupName, securityConnectorName, applicationId);
     }
 
     private SecurityConnectorApplicationOperationsClient serviceClient() {

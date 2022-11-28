@@ -33,6 +33,8 @@ custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHead
 custom-types-subpackage: models
 customization-class: src/main/java/BlobStorageCustomization.java
 generic-response-type: true
+use-input-stream-for-binary: true
+no-custom-headers: true
 ```
 
 ### /{containerName}/{blob}

@@ -31,6 +31,10 @@ public final class RunCommandInput {
     @JsonProperty(value = "parameters")
     private List<RunCommandInputParameter> parameters;
 
+    /** Creates an instance of RunCommandInput class. */
+    public RunCommandInput() {
+    }
+
     /**
      * Get the commandId property: The run command id.
      *

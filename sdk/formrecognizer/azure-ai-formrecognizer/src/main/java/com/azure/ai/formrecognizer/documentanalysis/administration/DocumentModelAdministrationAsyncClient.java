@@ -19,9 +19,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComponentDocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility;
@@ -50,9 +48,13 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getAuthorizeCopyRequest;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getBuildDocumentModelRequest;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getComposeDocumentModelRequest;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getInnerCopyAuthorization;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getComposeModelOptions;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -455,11 +457,8 @@ public final class DocumentModelAdministrationAsyncClient {
         String modelId = copyAuthorizationOptions.getModelId();
         modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
-        AuthorizeCopyRequest authorizeCopyRequest
-            = new AuthorizeCopyRequest()
-            .setModelId(modelId)
-            .setDescription(copyAuthorizationOptions.getDescription())
-            .setTags(copyAuthorizationOptions.getTags());
+        AuthorizeCopyRequest authorizeCopyRequest =
+            getAuthorizeCopyRequest(copyAuthorizationOptions, modelId);
 
         return service.authorizeCopyDocumentModelWithResponseAsync(authorizeCopyRequest, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
@@ -573,21 +572,12 @@ public final class DocumentModelAdministrationAsyncClient {
             if (CoreUtils.isNullOrEmpty(componentModelIds)) {
                 throw logger.logExceptionAsError(new NullPointerException("'componentModelIds' cannot be null or empty"));
             }
-            composeDocumentModelOptions =  composeDocumentModelOptions == null
-                ? new ComposeDocumentModelOptions() : composeDocumentModelOptions;
-
             String modelId = composeDocumentModelOptions.getModelId();
             modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
             composeDocumentModelOptions = getComposeModelOptions(composeDocumentModelOptions);
 
-            final ComposeDocumentModelRequest composeRequest = new ComposeDocumentModelRequest()
-                .setComponentModels(componentModelIds.stream()
-                    .map(modelIdString -> new ComponentDocumentModelDetails().setModelId(modelIdString))
-                    .collect(Collectors.toList()))
-                .setModelId(modelId)
-                .setDescription(composeDocumentModelOptions.getDescription())
-                .setTags(composeDocumentModelOptions.getTags());
+            final ComposeDocumentModelRequest composeRequest = getComposeDocumentModelRequest(componentModelIds, composeDocumentModelOptions, modelId);
 
             return new PollerFlux<OperationResult, DocumentModelDetails>(
                 DEFAULT_POLL_INTERVAL,
@@ -938,15 +928,9 @@ public final class DocumentModelAdministrationAsyncClient {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(blobContainerUrl, "'blobContainerUrl' cannot be null.");
-                BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest()
-                    .setModelId(modelId)
-                    .setBuildMode(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
-                        .fromString(buildMode.toString()))
-                    .setAzureBlobSource(new AzureBlobContentSource()
-                        .setContainerUrl(blobContainerUrl)
-                        .setPrefix(prefix))
-                    .setDescription(buildDocumentModelOptions.getDescription())
-                    .setTags(buildDocumentModelOptions.getTags());
+                BuildDocumentModelRequest buildDocumentModelRequest =
+                    getBuildDocumentModelRequest(blobContainerUrl, buildMode, modelId, prefix,
+                        buildDocumentModelOptions);
 
                 return service.buildDocumentModelWithResponseAsync(buildDocumentModelRequest, context)
                     .map(response ->
@@ -992,13 +976,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 Objects.requireNonNull(modelId, "'modelId' cannot be null.");
                 Objects.requireNonNull(target, "'target' cannot be null.");
                 com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization copyRequest
-                    = new com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization()
-                    .setTargetModelLocation(target.getTargetModelLocation())
-                    .setTargetResourceId(target.getTargetResourceId())
-                    .setTargetResourceRegion(target.getTargetResourceRegion())
-                    .setTargetModelId(target.getTargetModelId())
-                    .setAccessToken(target.getAccessToken())
-                    .setExpirationDateTime(target.getExpiresOn());
+                    = getInnerCopyAuthorization(target);
                 return service.copyDocumentModelToWithResponseAsync(modelId, copyRequest, context)
                     .map(response ->
                         Transforms.toDocumentOperationResult(
@@ -1076,10 +1054,5 @@ public final class DocumentModelAdministrationAsyncClient {
                 Transforms.toOperationSummary(res.getValue()),
                 res.getContinuationToken(),
                 null));
-    }
-
-    private static ComposeDocumentModelOptions
-        getComposeModelOptions(ComposeDocumentModelOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new ComposeDocumentModelOptions() : userProvidedOptions;
     }
 }

@@ -16,6 +16,10 @@ public final class AzureResourceLink {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of AzureResourceLink class. */
+    public AzureResourceLink() {
+    }
+
     /**
      * Get the id property: Azure resource Id.
      *

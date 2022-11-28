@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RegressionModels. */
+/** Enum for all Regression models supported by AutoML. */
 public final class RegressionModels extends ExpandableStringEnum<RegressionModels> {
     /** Static value ElasticNet for RegressionModels. */
     public static final RegressionModels ELASTIC_NET = fromString("ElasticNet");

@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for EnvironmentTypes CreateOrUpdate. */
 public final class EnvironmentTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/EnvironmentTypes_Put.json
      */
     /**
      * Sample code: EnvironmentTypes_CreateOrUpdate.
@@ -20,7 +20,7 @@ public final class EnvironmentTypesCreateOrUpdateSamples {
     public static void environmentTypesCreateOrUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         manager
             .environmentTypes()
-            .define("{environmentTypeName}")
+            .define("DevTest")
             .withExistingDevcenter("rg1", "Contoso")
             .withTags(mapOf("Owner", "superuser"))
             .create();

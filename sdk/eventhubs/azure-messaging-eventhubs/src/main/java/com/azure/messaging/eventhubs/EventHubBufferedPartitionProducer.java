@@ -7,8 +7,10 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import com.azure.messaging.eventhubs.implementation.UncheckedExecutionException;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
@@ -55,10 +57,11 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final AtomicBoolean isFlushing = new AtomicBoolean(false);
     private final Semaphore flushSemaphore = new Semaphore(1);
     private final PublishResultSubscriber publishResultSubscriber;
+    private final EventHubsTracer tracer;
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
         BufferedProducerClientOptions options, AmqpRetryOptions retryOptions, Sinks.Many<EventData> eventSink,
-        Queue<EventData> eventQueue) {
+        Queue<EventData> eventQueue, Tracer tracer) {
 
         this.client = client;
         this.partitionId = partitionId;
@@ -78,6 +81,8 @@ class EventHubBufferedPartitionProducer implements Closeable {
         this.publishSubscription = publishEvents(eventDataBatchFlux)
             .publishOn(Schedulers.boundedElastic(), 1)
             .subscribeWith(publishResultSubscriber);
+
+        this.tracer = new EventHubsTracer(tracer, client.getFullyQualifiedNamespace(), client.getEventHubName());
     }
 
     /**
@@ -118,6 +123,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 return;
             }
 
+            tracer.reportMessageSpan(eventData, eventData.getContext());
             final Sinks.EmitResult emitResult = eventSink.tryEmitNext(eventData);
             if (emitResult.isSuccess()) {
                 sink.success();

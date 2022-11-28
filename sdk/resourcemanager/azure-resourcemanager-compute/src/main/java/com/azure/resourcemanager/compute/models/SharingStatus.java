@@ -25,6 +25,10 @@ public final class SharingStatus {
     @JsonProperty(value = "summary")
     private List<RegionalSharingStatus> summary;
 
+    /** Creates an instance of SharingStatus class. */
+    public SharingStatus() {
+    }
+
     /**
      * Get the aggregatedState property: The sharing state of the gallery.
      *

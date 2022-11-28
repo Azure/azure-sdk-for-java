@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InstanceSegmentationPrimaryMetrics. */
+/** Primary metrics for InstanceSegmentation tasks. */
 public final class InstanceSegmentationPrimaryMetrics extends ExpandableStringEnum<InstanceSegmentationPrimaryMetrics> {
     /** Static value MeanAveragePrecision for InstanceSegmentationPrimaryMetrics. */
     public static final InstanceSegmentationPrimaryMetrics MEAN_AVERAGE_PRECISION = fromString("MeanAveragePrecision");

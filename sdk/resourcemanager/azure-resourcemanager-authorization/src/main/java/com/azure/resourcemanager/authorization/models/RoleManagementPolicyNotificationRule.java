@@ -40,11 +40,14 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
     private List<String> notificationRecipients;
 
     /*
-     * Determines if the notification will be sent to the recipient type
-     * specified in the policy rule.
+     * Determines if the notification will be sent to the recipient type specified in the policy rule.
      */
     @JsonProperty(value = "isDefaultRecipientsEnabled")
     private Boolean isDefaultRecipientsEnabled;
+
+    /** Creates an instance of RoleManagementPolicyNotificationRule class. */
+    public RoleManagementPolicyNotificationRule() {
+    }
 
     /**
      * Get the notificationType property: The type of notification.

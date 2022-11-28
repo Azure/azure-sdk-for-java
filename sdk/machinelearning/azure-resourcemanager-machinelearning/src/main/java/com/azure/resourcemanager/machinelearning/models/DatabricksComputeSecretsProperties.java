@@ -16,6 +16,10 @@ public class DatabricksComputeSecretsProperties {
     @JsonProperty(value = "databricksAccessToken")
     private String databricksAccessToken;
 
+    /** Creates an instance of DatabricksComputeSecretsProperties class. */
+    public DatabricksComputeSecretsProperties() {
+    }
+
     /**
      * Get the databricksAccessToken property: access token for databricks account.
      *

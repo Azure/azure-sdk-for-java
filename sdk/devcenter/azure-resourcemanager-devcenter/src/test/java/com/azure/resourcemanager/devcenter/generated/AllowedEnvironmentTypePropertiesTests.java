@@ -13,7 +13,7 @@ public final class AllowedEnvironmentTypePropertiesTests {
     public void testDeserialize() {
         AllowedEnvironmentTypeProperties model =
             BinaryData
-                .fromString("{\"provisioningState\":\"nwbmeh\"}")
+                .fromString("{\"provisioningState\":\"Accepted\"}")
                 .toObject(AllowedEnvironmentTypeProperties.class);
     }
 

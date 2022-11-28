@@ -38,15 +38,6 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
         return Utils.mapPage(inner, inner1 -> new CustomCertificateImpl(inner1, this.manager()));
     }
 
-    public CustomCertificate get(String resourceGroupName, String resourceName, String certificateName) {
-        CustomCertificateInner inner = this.serviceClient().get(resourceGroupName, resourceName, certificateName);
-        if (inner != null) {
-            return new CustomCertificateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CustomCertificate> getWithResponse(
         String resourceGroupName, String resourceName, String certificateName, Context context) {
         Response<CustomCertificateInner> inner =
@@ -62,13 +53,22 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
         }
     }
 
-    public void delete(String resourceGroupName, String resourceName, String certificateName) {
-        this.serviceClient().delete(resourceGroupName, resourceName, certificateName);
+    public CustomCertificate get(String resourceGroupName, String resourceName, String certificateName) {
+        CustomCertificateInner inner = this.serviceClient().get(resourceGroupName, resourceName, certificateName);
+        if (inner != null) {
+            return new CustomCertificateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, String certificateName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, certificateName, context);
+    }
+
+    public void delete(String resourceGroupName, String resourceName, String certificateName) {
+        this.serviceClient().delete(resourceGroupName, resourceName, certificateName);
     }
 
     public CustomCertificate getById(String id) {

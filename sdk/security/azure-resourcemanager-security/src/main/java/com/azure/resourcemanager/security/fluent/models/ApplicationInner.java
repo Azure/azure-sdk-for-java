@@ -19,6 +19,10 @@ public final class ApplicationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ApplicationProperties innerProperties;
 
+    /** Creates an instance of ApplicationInner class. */
+    public ApplicationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a security application.
      *

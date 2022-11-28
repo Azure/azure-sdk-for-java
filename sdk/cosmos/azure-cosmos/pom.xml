@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.39.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.40.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -39,6 +39,21 @@ Licensed under the MIT License.
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
+      --add-exports java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/java.lang=ALL-UNNAMED
+      --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+      --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+      --add-opens java.base/java.io=ALL-UNNAMED
+      --add-opens java.base/java.net=ALL-UNNAMED
+      --add-opens java.base/java.nio=ALL-UNNAMED
+      --add-opens java.base/java.util=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
+      --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/sun.nio.cs=ALL-UNNAMED
+      --add-opens java.base/sun.security.action=ALL-UNNAMED
+      --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+
       --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
@@ -107,19 +122,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.33.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.34.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -182,8 +197,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.3.0</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <version>7.5</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <!-- Excluding these 2 dependencies as they have vulnerabilities and we don't use them -->
+        <exclusion>
+          <groupId>org.apache.ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.yaml</groupId>
+          <artifactId>snakeyaml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -211,13 +237,6 @@ Licensed under the MIT License.
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
       <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>25.0-jre</version> <!-- {x-version-update;cosmos_com.google.guava:guava;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -326,6 +345,18 @@ Licensed under the MIT License.
       <activation>
         <property>
           <name>spark-e2e_3-2</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>sparkE2E_3-3</id>
+      <activation>
+        <property>
+          <name>spark-e2e_3-3</name>
         </property>
       </activation>
       <properties>

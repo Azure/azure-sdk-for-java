@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphTeamsAsyncOperationType. */
+/** teamsAsyncOperationType. */
 public final class MicrosoftGraphTeamsAsyncOperationType
     extends ExpandableStringEnum<MicrosoftGraphTeamsAsyncOperationType> {
     /** Static value invalid for MicrosoftGraphTeamsAsyncOperationType. */
@@ -40,7 +40,11 @@ public final class MicrosoftGraphTeamsAsyncOperationType
         return fromString(name, MicrosoftGraphTeamsAsyncOperationType.class);
     }
 
-    /** @return known MicrosoftGraphTeamsAsyncOperationType values. */
+    /**
+     * Gets known MicrosoftGraphTeamsAsyncOperationType values.
+     *
+     * @return known MicrosoftGraphTeamsAsyncOperationType values.
+     */
     public static Collection<MicrosoftGraphTeamsAsyncOperationType> values() {
         return values(MicrosoftGraphTeamsAsyncOperationType.class);
     }

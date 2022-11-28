@@ -25,6 +25,10 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of SecuritySolutionsReferenceData class. */
+    public SecuritySolutionsReferenceData() {
+    }
+
     /**
      * Get the innerProperties property: The properties property.
      *

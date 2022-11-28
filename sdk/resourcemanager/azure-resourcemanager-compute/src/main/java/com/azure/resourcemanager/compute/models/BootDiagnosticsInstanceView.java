@@ -31,6 +31,10 @@ public final class BootDiagnosticsInstanceView {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceViewStatus status;
 
+    /** Creates an instance of BootDiagnosticsInstanceView class. */
+    public BootDiagnosticsInstanceView() {
+    }
+
     /**
      * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. &lt;br&gt;&lt;br&gt;NOTE: This will
      * **not** be set if boot diagnostics is currently enabled with managed storage.

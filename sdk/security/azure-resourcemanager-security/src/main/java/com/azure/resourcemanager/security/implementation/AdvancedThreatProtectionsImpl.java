@@ -27,15 +27,6 @@ public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtec
         this.serviceManager = serviceManager;
     }
 
-    public AdvancedThreatProtectionSetting get(String resourceId) {
-        AdvancedThreatProtectionSettingInner inner = this.serviceClient().get(resourceId);
-        if (inner != null) {
-            return new AdvancedThreatProtectionSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AdvancedThreatProtectionSetting> getWithResponse(String resourceId, Context context) {
         Response<AdvancedThreatProtectionSettingInner> inner =
             this.serviceClient().getWithResponse(resourceId, context);
@@ -45,6 +36,15 @@ public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtec
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AdvancedThreatProtectionSettingImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AdvancedThreatProtectionSetting get(String resourceId) {
+        AdvancedThreatProtectionSettingInner inner = this.serviceClient().get(resourceId);
+        if (inner != null) {
+            return new AdvancedThreatProtectionSettingImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuScaleType. */
+/** Node scaling setting for the compute sku. */
 public final class SkuScaleType extends ExpandableStringEnum<SkuScaleType> {
     /** Static value Automatic for SkuScaleType. */
     public static final SkuScaleType AUTOMATIC = fromString("Automatic");

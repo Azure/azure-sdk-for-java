@@ -12,10 +12,9 @@ import com.azure.resourcemanager.hdinsight.fluent.ScriptExecutionHistoriesClient
 import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDetailInner;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
 import com.azure.resourcemanager.hdinsight.models.ScriptExecutionHistories;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ScriptExecutionHistoriesImpl implements ScriptExecutionHistories {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptExecutionHistoriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionHistoriesImpl.class);
 
     private final ScriptExecutionHistoriesClient innerClient;
 
@@ -41,13 +40,13 @@ public final class ScriptExecutionHistoriesImpl implements ScriptExecutionHistor
         return Utils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
     }
 
-    public void promote(String resourceGroupName, String clusterName, String scriptExecutionId) {
-        this.serviceClient().promote(resourceGroupName, clusterName, scriptExecutionId);
-    }
-
     public Response<Void> promoteWithResponse(
         String resourceGroupName, String clusterName, String scriptExecutionId, Context context) {
         return this.serviceClient().promoteWithResponse(resourceGroupName, clusterName, scriptExecutionId, context);
+    }
+
+    public void promote(String resourceGroupName, String clusterName, String scriptExecutionId) {
+        this.serviceClient().promote(resourceGroupName, clusterName, scriptExecutionId);
     }
 
     private ScriptExecutionHistoriesClient serviceClient() {

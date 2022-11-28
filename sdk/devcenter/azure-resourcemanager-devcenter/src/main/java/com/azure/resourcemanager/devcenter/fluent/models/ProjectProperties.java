@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a project. */
@@ -14,7 +15,13 @@ public final class ProjectProperties extends ProjectUpdateProperties {
      * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /*
+     * The URI of the resource.
+     */
+    @JsonProperty(value = "devCenterUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String devCenterUri;
 
     /** Creates an instance of ProjectProperties class. */
     public ProjectProperties() {
@@ -25,8 +32,17 @@ public final class ProjectProperties extends ProjectUpdateProperties {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the devCenterUri property: The URI of the resource.
+     *
+     * @return the devCenterUri value.
+     */
+    public String devCenterUri() {
+        return this.devCenterUri;
     }
 
     /** {@inheritDoc} */

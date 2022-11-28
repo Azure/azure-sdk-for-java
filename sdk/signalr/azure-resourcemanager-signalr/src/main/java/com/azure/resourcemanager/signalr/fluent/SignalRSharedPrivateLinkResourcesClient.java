@@ -53,22 +53,6 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedPrivateLinkResourceInner get(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
-
-    /**
-     * Get the specified shared private link resource.
-     *
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,6 +62,22 @@ public interface SignalRSharedPrivateLinkResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SharedPrivateLinkResourceInner> getWithResponse(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get the specified shared private link resource.
+     *
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified shared private link resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SharedPrivateLinkResourceInner get(
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
 
     /**
      * Create or update a shared private link resource.

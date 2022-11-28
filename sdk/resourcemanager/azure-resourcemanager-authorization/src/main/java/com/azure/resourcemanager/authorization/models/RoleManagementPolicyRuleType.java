@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoleManagementPolicyRuleType. */
+/** The type of rule. */
 public final class RoleManagementPolicyRuleType extends ExpandableStringEnum<RoleManagementPolicyRuleType> {
     /** Static value RoleManagementPolicyApprovalRule for RoleManagementPolicyRuleType. */
     public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_APPROVAL_RULE =
@@ -41,7 +41,11 @@ public final class RoleManagementPolicyRuleType extends ExpandableStringEnum<Rol
         return fromString(name, RoleManagementPolicyRuleType.class);
     }
 
-    /** @return known RoleManagementPolicyRuleType values. */
+    /**
+     * Gets known RoleManagementPolicyRuleType values.
+     *
+     * @return known RoleManagementPolicyRuleType values.
+     */
     public static Collection<RoleManagementPolicyRuleType> values() {
         return values(RoleManagementPolicyRuleType.class);
     }

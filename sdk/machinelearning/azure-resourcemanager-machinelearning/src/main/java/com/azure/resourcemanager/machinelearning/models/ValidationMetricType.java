@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ValidationMetricType. */
+/** Metric computation method to use for validation metrics in image tasks. */
 public final class ValidationMetricType extends ExpandableStringEnum<ValidationMetricType> {
     /** Static value None for ValidationMetricType. */
     public static final ValidationMetricType NONE = fromString("None");

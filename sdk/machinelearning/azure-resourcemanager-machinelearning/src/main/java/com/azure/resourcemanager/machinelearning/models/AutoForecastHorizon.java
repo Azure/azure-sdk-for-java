@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Auto")
 @Immutable
 public final class AutoForecastHorizon extends ForecastHorizon {
+    /** Creates an instance of AutoForecastHorizon class. */
+    public AutoForecastHorizon() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("UserIdentity")
 @Immutable
 public class UserIdentity extends IdentityConfiguration {
+    /** Creates an instance of UserIdentity class. */
+    public UserIdentity() {
+    }
+
     /**
      * Validates the instance.
      *

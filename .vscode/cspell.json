@@ -1,3 +1,4 @@
+
 {
   "version": "0.2",
   "language": "en",
@@ -130,6 +131,7 @@
     "sdk/core/azure-json-gson/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
     "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-spring-data-cosmos-test/**",
@@ -165,7 +167,6 @@
     "sdk/parents/azure-client-sdk-parent/**",
     "sdk/parents/azure-sdk-parent/**",
     "sdk/parents/azure-data-sdk-parent/**",
-    "sdk/metricsadvisor/azure-ai-metricsadvisor/**",
     "sdk/personalizer/azure-ai-personalizer/**",
     "sdk/purview/azure-analytics-purview-administration/**",
     "sdk/quantum/azure-quantum-jobs/**",
@@ -177,7 +178,6 @@
     "sdk/schemaregistry/azure-data-schemaregistry-apacheavro/**",
     "sdk/servicebus/build/**",
     "sdk/spring/scripts/**",
-    "sdk/servicebus/azure-messaging-servicebus/**",
     "sdk/spring/spring-cloud-azure-actuator/**",
     "sdk/spring/spring-cloud-azure-actuator-autoconfigure/**",
     "sdk/spring/spring-cloud-azure-integration-tests/**",
@@ -208,10 +208,8 @@
     "sdk/spring/spring-cloud-azure-starter-stream-servicebus/**",
     "sdk/spring/spring-cloud-azure-autoconfigure/**",
     "sdk/spring/spring-cloud-azure-stream-binder-eventhubs/**",
-    "sdk/spring/spring-cloud-azure-test-servicebus-binder/**",
     "sdk/spring/spring-cloud-azure-trace-sleuth/**",
     "sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/**",
-    "sdk/spring/spring-cloud-azure-test-eventhubs-binder/**",
     "sdk/spring/spring-cloud-azure-stream-binder-servicebus/**",
     "sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/**",
     "sdk/spring/spring-integration-azure-core/**",
@@ -223,6 +221,7 @@
     "sdk/spring-experimental/spring-cloud-azure-native-configuration/**",
     "sdk/spring/spring-messaging-azure-servicebus/**",
     "sdk/spring/spring-messaging-azure-eventhubs/**",
+    "sdk/spring/spring-cloud-azure-resourcemanager/**",
     "sdk/storage/azure-storage-internal-avro/**",
     "sdk/storage/azure-storage-queue/**",
     "sdk/synapse/azure-analytics-synapse-accesscontrol/**",
@@ -258,6 +257,7 @@
   "words": [
     "adal",
     "amqp",
+    "Apim",
     "AUHours",
     "autoscale",
     "autodetection",
@@ -266,6 +266,11 @@
     "azurestackhci",
     "backoff",
     "boringssl",
+    "Dgpg",
+    "Dskip",
+    "mvnw",
+    "TBLPROPERTIES",
+    "Cyclomatic",
     "branchcoverage",
     "cacerts",
     "checkstyle",
@@ -296,6 +301,7 @@
     "eastus",
     "embedme",
     "encryptor",
+    "endtoend",
     "etag",
     "eventhub",
     "eventhubs",
@@ -320,6 +326,7 @@
     "jacoco",
     "javadoc",
     "javadocs",
+    "Jdbc",
     "JSESSIONID",
     "junitxml",
     "jtoken",
@@ -392,6 +399,78 @@
     "XLint"
   ],
   "overrides": [
+    {
+      "filename": "sdk/maps/azure-maps-traffic/README.md",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/ProjectionStandard.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/SpeedUnit.java",
+      "words": [
+        "KMPH"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentOptions.java",
+      "words": [
+        "EPSG", "KMPH"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficAsyncClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentDataProperties.java",
+      "words": [
+        "openlr"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewport.java",
+      "words": [
+        "viewp"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/samples/java/com/azure/maps/traffic/samples/GetTrafficIncidentDetail.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficIncidentViewportOptions.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/UnitType.java",
+      "words": [
+        "HECTO"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
+      "words": [
+        "Decibles"
+      ]
+    },
     {
       "filename": "**/pom.xml",
       "patterns": [
@@ -634,6 +713,19 @@
       ]
     },
     {
+      "filename": "sdk/spring/README.md",
+      "words": [
+        "Dcheckstyle",
+        "Dcodesnippet",
+        "Djacoco",
+        "Drevapi",
+        "Dskip",
+        "Dspotbugs",
+        "Pdev",
+        ""
+      ]
+    },
+    {
       "filename": "sdk/storage/azure-storage-common/**",
       "words": [
         "alzimmer",
@@ -645,6 +737,61 @@
       "filename": "sdk/storage/azure-storage-blob-cryptography/**",
       "words": [
         "akek"
+      ]
+    },
+    {
+      "filename": "NOTICE.txt",
+      "words": [
+        "Tatu",
+        "Saloranta",
+        "JAXB",
+        "Stax",
+        "Tene",
+        "Azul",
+        "rkuhn",
+        "benjchristensen",
+        "viktorklang",
+        "Klang",
+        "smaldini",
+        "Stephane",
+        "Maldini",
+        "savulchik",
+        "Savulchik",
+        "ktoso",
+        "Malawski",
+        "ouertani",
+        "Ouertani",
+        "Mickevičius",
+        "ldaley",
+        "colinrgodsey",
+        "Godsey",
+        "davidmoten",
+        "Moten",
+        "Mauswerks",
+        "rstoyanchev",
+        "Rossen",
+        "Stoyanchev",
+        "Bjorn",
+        "anthonyvdotbe",
+        "Vanelverdinghe",
+        "seratch",
+        "akarnokd",
+        "Karnok",
+        "egetman",
+        "Evgeniy",
+        "patriknw",
+        "Patrik",
+        "angelsanz",
+        "Ángel",
+        "Sanz",
+        "shenghaiyang",
+        "kiiadi",
+        "jroper",
+        "olegdokuka",
+        "Oleh",
+        "Dokuka",
+        "Netifi",
+        "Zaugg"
       ]
     },
     {
@@ -671,6 +818,34 @@
         "RAGRS",
         "saoid"
       ]
+    },
+    {
+      "filename": "sdk/metricsadvisor/azure-ai-metricsadvisor/**",
+      "words": [
+        "APIV",
+        "bacf",
+        "alertme",
+        "adwiki",
+        "howto",
+        "bpfdfee",
+        "deduped",
+        "dedupe",
+        "POSTGRE",
+        "dgfbbbb",
+        "gdgfbbbb",
+        "dvhkl",
+        "yufrjo",
+        "kldn",
+        "dccf"
+      ]
+    },
+    {
+      "filename": "sdk/servicebus/azure-messaging-servicebus/**",
+      "words": [
+        "Conniey",
+        "qpid",
+        "unretriable"
+        ]
     }
   ],
   "allowCompoundWords": true

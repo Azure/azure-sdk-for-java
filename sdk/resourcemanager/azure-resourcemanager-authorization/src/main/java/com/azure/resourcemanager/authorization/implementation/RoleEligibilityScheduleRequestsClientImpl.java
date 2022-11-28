@@ -62,7 +62,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
      */
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
-    private interface RoleEligibilityScheduleRequestsService {
+    public interface RoleEligibilityScheduleRequestsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests"
@@ -274,35 +274,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
     public Mono<RoleEligibilityScheduleRequestInner> createAsync(
         String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters) {
         return createWithResponseAsync(scope, roleEligibilityScheduleRequestName, parameters)
-            .flatMap(
-                (Response<RoleEligibilityScheduleRequestInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a role eligibility schedule request.
-     *
-     * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
-     * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
-     * @param parameters Parameters for the role eligibility schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Eligibility schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleEligibilityScheduleRequestInner create(
-        String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters) {
-        return createAsync(scope, roleEligibilityScheduleRequestName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -328,6 +300,27 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
         RoleEligibilityScheduleRequestInner parameters,
         Context context) {
         return createWithResponseAsync(scope, roleEligibilityScheduleRequestName, parameters, context).block();
+    }
+
+    /**
+     * Creates a role eligibility schedule request.
+     *
+     * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
+     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     for a resource.
+     * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
+     * @param parameters Parameters for the role eligibility schedule request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Eligibility schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleEligibilityScheduleRequestInner create(
+        String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters) {
+        return createWithResponse(scope, roleEligibilityScheduleRequestName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -425,29 +418,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleEligibilityScheduleRequestInner> getAsync(String scope, String roleEligibilityScheduleRequestName) {
         return getWithResponseAsync(scope, roleEligibilityScheduleRequestName)
-            .flatMap(
-                (Response<RoleEligibilityScheduleRequestInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the specified role eligibility schedule request.
-     *
-     * @param scope The scope of the role eligibility schedule request.
-     * @param roleEligibilityScheduleRequestName The name (guid) of the role eligibility schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleEligibilityScheduleRequestInner get(String scope, String roleEligibilityScheduleRequestName) {
-        return getAsync(scope, roleEligibilityScheduleRequestName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -465,6 +436,21 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
     public Response<RoleEligibilityScheduleRequestInner> getWithResponse(
         String scope, String roleEligibilityScheduleRequestName, Context context) {
         return getWithResponseAsync(scope, roleEligibilityScheduleRequestName, context).block();
+    }
+
+    /**
+     * Get the specified role eligibility schedule request.
+     *
+     * @param scope The scope of the role eligibility schedule request.
+     * @param roleEligibilityScheduleRequestName The name (guid) of the role eligibility schedule request to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role eligibility schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleEligibilityScheduleRequestInner get(String scope, String roleEligibilityScheduleRequestName) {
+        return getWithResponse(scope, roleEligibilityScheduleRequestName, Context.NONE).getValue();
     }
 
     /**
@@ -746,22 +732,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String scope, String roleEligibilityScheduleRequestName) {
-        return cancelWithResponseAsync(scope, roleEligibilityScheduleRequestName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancels a pending role eligibility schedule request.
-     *
-     * @param scope The scope of the role eligibility request to cancel.
-     * @param roleEligibilityScheduleRequestName The name of the role eligibility request to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String scope, String roleEligibilityScheduleRequestName) {
-        cancelAsync(scope, roleEligibilityScheduleRequestName).block();
+        return cancelWithResponseAsync(scope, roleEligibilityScheduleRequestName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -778,6 +749,20 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String scope, String roleEligibilityScheduleRequestName, Context context) {
         return cancelWithResponseAsync(scope, roleEligibilityScheduleRequestName, context).block();
+    }
+
+    /**
+     * Cancels a pending role eligibility schedule request.
+     *
+     * @param scope The scope of the role eligibility request to cancel.
+     * @param roleEligibilityScheduleRequestName The name of the role eligibility request to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancel(String scope, String roleEligibilityScheduleRequestName) {
+        cancelWithResponse(scope, roleEligibilityScheduleRequestName, Context.NONE);
     }
 
     /**
@@ -898,31 +883,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
     public Mono<RoleEligibilityScheduleRequestInner> validateAsync(
         String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters) {
         return validateWithResponseAsync(scope, roleEligibilityScheduleRequestName, parameters)
-            .flatMap(
-                (Response<RoleEligibilityScheduleRequestInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Validates a new role eligibility schedule request.
-     *
-     * @param scope The scope of the role eligibility request to validate.
-     * @param roleEligibilityScheduleRequestName The name of the role eligibility request to validate.
-     * @param parameters Parameters for the role eligibility schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Eligibility schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleEligibilityScheduleRequestInner validate(
-        String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters) {
-        return validateAsync(scope, roleEligibilityScheduleRequestName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -947,9 +908,27 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
     }
 
     /**
+     * Validates a new role eligibility schedule request.
+     *
+     * @param scope The scope of the role eligibility request to validate.
+     * @param roleEligibilityScheduleRequestName The name of the role eligibility request to validate.
+     * @param parameters Parameters for the role eligibility schedule request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Eligibility schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleEligibilityScheduleRequestInner validate(
+        String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters) {
+        return validateWithResponse(scope, roleEligibilityScheduleRequestName, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -985,7 +964,8 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

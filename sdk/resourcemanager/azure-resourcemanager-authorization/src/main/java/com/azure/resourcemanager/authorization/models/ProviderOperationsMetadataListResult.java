@@ -24,6 +24,10 @@ public final class ProviderOperationsMetadataListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ProviderOperationsMetadataListResult class. */
+    public ProviderOperationsMetadataListResult() {
+    }
+
     /**
      * Get the value property: The list of providers.
      *

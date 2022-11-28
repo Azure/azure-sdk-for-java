@@ -68,6 +68,10 @@ public final class AdaptiveApplicationControlGroupData {
     @JsonProperty(value = "pathRecommendations")
     private List<PathRecommendation> pathRecommendations;
 
+    /** Creates an instance of AdaptiveApplicationControlGroupData class. */
+    public AdaptiveApplicationControlGroupData() {
+    }
+
     /**
      * Get the enforcementMode property: The application control policy enforcement/protection mode of the machine
      * group.

@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.azure.communication.identity.CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityClientUtilsTests {
@@ -75,5 +76,19 @@ public class CommunicationIdentityClientUtilsTests {
         // Assert
         assertNull(request.getExpiresInMinutes());
         assertEquals(scopes, request.getScopes());
+    }
+
+    @Test()
+    public void createCommunicationIdentityCreateRequestWithCustomTokenValidityException() {
+        // Arrange
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        Duration tokenExpiresIn = Duration.ofHours(Integer.MAX_VALUE);
+
+        // Action
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger));
+
+        // Assert
+        assertEquals(TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
     }
 }

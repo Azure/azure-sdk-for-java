@@ -17,16 +17,27 @@ public final class EnvironmentTypeInnerTests {
         EnvironmentTypeInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"wsvlxotogtwrupqs\"},\"tags\":{\"notyfjfcnjbkcn\":\"micykvceoveilo\"},\"id\":\"hbttkphyw\",\"name\":\"nv\",\"type\":\"t\"}")
+                    "{\"properties\":{\"provisioningState\":\"NotSpecified\"},\"tags\":{\"grxwbu\":\"xmzsbbzogg\",\"dptkoenkouk\":\"vjxxjnsp\",\"pocipazyxoegu\":\"vudwtiukbldng\",\"npiucgygevqznty\":\"g\"},\"id\":\"rbpizc\",\"name\":\"r\",\"type\":\"j\"}")
                 .toObject(EnvironmentTypeInner.class);
-        Assertions.assertEquals("micykvceoveilo", model.tags().get("notyfjfcnjbkcn"));
+        Assertions.assertEquals("xmzsbbzogg", model.tags().get("grxwbu"));
     }
 
     @Test
     public void testSerialize() {
-        EnvironmentTypeInner model = new EnvironmentTypeInner().withTags(mapOf("notyfjfcnjbkcn", "micykvceoveilo"));
+        EnvironmentTypeInner model =
+            new EnvironmentTypeInner()
+                .withTags(
+                    mapOf(
+                        "grxwbu",
+                        "xmzsbbzogg",
+                        "dptkoenkouk",
+                        "vjxxjnsp",
+                        "pocipazyxoegu",
+                        "vudwtiukbldng",
+                        "npiucgygevqznty",
+                        "g"));
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeInner.class);
-        Assertions.assertEquals("micykvceoveilo", model.tags().get("notyfjfcnjbkcn"));
+        Assertions.assertEquals("xmzsbbzogg", model.tags().get("grxwbu"));
     }
 
     @SuppressWarnings("unchecked")

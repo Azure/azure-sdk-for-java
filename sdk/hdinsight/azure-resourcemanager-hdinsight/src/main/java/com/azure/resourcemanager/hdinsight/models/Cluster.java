@@ -99,6 +99,13 @@ public interface Cluster {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.ClusterInner object.
      *
      * @return the inner object.
@@ -284,22 +291,22 @@ public interface Cluster {
     /**
      * Gets the gateway settings for the specified cluster.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the gateway settings for the specified cluster along with {@link Response}.
+     */
+    Response<GatewaySettings> getGatewaySettingsWithResponse(Context context);
+
+    /**
+     * Gets the gateway settings for the specified cluster.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the gateway settings for the specified cluster.
      */
     GatewaySettings getGatewaySettings();
-
-    /**
-     * Gets the gateway settings for the specified cluster.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the gateway settings for the specified cluster.
-     */
-    Response<GatewaySettings> getGatewaySettingsWithResponse(Context context);
 
     /**
      * Configures the gateway settings on the specified cluster.
