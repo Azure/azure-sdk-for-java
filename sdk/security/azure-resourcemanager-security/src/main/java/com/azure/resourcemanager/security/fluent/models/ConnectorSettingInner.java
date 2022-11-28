@@ -19,6 +19,10 @@ public final class ConnectorSettingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ConnectorSettingProperties innerProperties;
 
+    /** Creates an instance of ConnectorSettingInner class. */
+    public ConnectorSettingInner() {
+    }
+
     /**
      * Get the innerProperties property: Connector setting data.
      *

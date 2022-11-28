@@ -52,6 +52,10 @@ public final class ProximityPlacementGroupProperties {
     @JsonProperty(value = "intent")
     private ProximityPlacementGroupPropertiesIntent intent;
 
+    /** Creates an instance of ProximityPlacementGroupProperties class. */
+    public ProximityPlacementGroupProperties() {
+    }
+
     /**
      * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
      * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure

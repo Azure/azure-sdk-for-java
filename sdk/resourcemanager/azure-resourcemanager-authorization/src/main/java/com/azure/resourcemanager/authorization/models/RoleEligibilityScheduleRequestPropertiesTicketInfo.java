@@ -22,6 +22,10 @@ public final class RoleEligibilityScheduleRequestPropertiesTicketInfo {
     @JsonProperty(value = "ticketSystem")
     private String ticketSystem;
 
+    /** Creates an instance of RoleEligibilityScheduleRequestPropertiesTicketInfo class. */
+    public RoleEligibilityScheduleRequestPropertiesTicketInfo() {
+    }
+
     /**
      * Get the ticketNumber property: Ticket number for the role eligibility.
      *

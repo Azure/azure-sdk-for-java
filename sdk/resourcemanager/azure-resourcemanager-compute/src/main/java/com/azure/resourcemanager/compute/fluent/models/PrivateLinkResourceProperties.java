@@ -29,6 +29,10 @@ public final class PrivateLinkResourceProperties {
     @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
 
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
+
     /**
      * Get the groupId property: The private link resource group id.
      *

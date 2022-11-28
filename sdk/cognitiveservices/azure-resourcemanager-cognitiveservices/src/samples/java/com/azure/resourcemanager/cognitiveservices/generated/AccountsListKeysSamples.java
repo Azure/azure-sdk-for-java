@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListKeys. */
 public final class AccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListKeys.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListKeys.json
      */
     /**
      * Sample code: List Keys.

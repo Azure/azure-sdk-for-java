@@ -29,6 +29,10 @@ public final class PolicyAssignmentPropertiesPolicy {
     @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
+    /** Creates an instance of PolicyAssignmentPropertiesPolicy class. */
+    public PolicyAssignmentPropertiesPolicy() {
+    }
+
     /**
      * Get the id property: Id of the policy.
      *

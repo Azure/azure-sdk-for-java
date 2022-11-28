@@ -35,8 +35,7 @@ public final class DevCentersCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"xhwgfwsrtaw\",\"tags\":{\"ookk\":\"zbrhubskhudyg\",\"fmluiqtqzfavyvn\":\"fqjbvleo\",\"jkqa\":\"qybaryeua\"},\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"dhszfjv\"},\"identity\":{\"principalId\":\"76a1a0f6-be18-4551-8ef6-bc4e975f65a0\",\"tenantId\":\"b25e406a-3f34-476b-bbb3-7743a40acae4\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"a\",\"tags\":{\"ojnal\":\"mqhldvrii\",\"qhhahhxvrhmzkwpj\":\"hfkvtvsexsowuel\",\"ughftqsx\":\"wws\"},\"id\":\"qxujxukndxd\",\"name\":\"grjguufzd\",\"type\":\"syqtfi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,19 +66,19 @@ public final class DevCentersCreateOrUpdateMockTests {
         DevCenter response =
             manager
                 .devCenters()
-                .define("hmkxmaehvbb")
-                .withRegion("gx")
-                .withExistingResourceGroup("ydbsd")
-                .withTags(mapOf("dpvruud", "ckpyklyhplu"))
+                .define("hneuyowqkd")
+                .withRegion("zimejzanlfzx")
+                .withExistingResourceGroup("smwutwbdsrezpd")
+                .withTags(mapOf("okixrjqcir", "rmbzo", "szrnwo", "zpfrla"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.NONE)
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                         .withUserAssignedIdentities(mapOf()))
                 .create();
 
-        Assertions.assertEquals("xhwgfwsrtaw", response.location());
-        Assertions.assertEquals("zbrhubskhudyg", response.tags().get("ookk"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("a", response.location());
+        Assertions.assertEquals("mqhldvrii", response.tags().get("ojnal"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
     @SuppressWarnings("unchecked")

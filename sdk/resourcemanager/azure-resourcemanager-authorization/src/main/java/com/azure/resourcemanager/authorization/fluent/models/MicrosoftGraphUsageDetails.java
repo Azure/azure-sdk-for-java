@@ -17,19 +17,17 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphUsageDetails {
     /*
-     * The date and time the resource was last accessed by the user. The
-     * timestamp represents date and time information using ISO 8601 format and
-     * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would
-     * look like this: 2014-01-01T00:00:00Z. Read-only.
+     * The date and time the resource was last accessed by the user. The timestamp represents date and time information
+     * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * 2014-01-01T00:00:00Z. Read-only.
      */
     @JsonProperty(value = "lastAccessedDateTime")
     private OffsetDateTime lastAccessedDateTime;
 
     /*
-     * The date and time the resource was last modified by the user. The
-     * timestamp represents date and time information using ISO 8601 format and
-     * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would
-     * look like this: 2014-01-01T00:00:00Z. Read-only.
+     * The date and time the resource was last modified by the user. The timestamp represents date and time information
+     * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * 2014-01-01T00:00:00Z. Read-only.
      */
     @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
@@ -38,6 +36,10 @@ public final class MicrosoftGraphUsageDetails {
      * usageDetails
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphUsageDetails class. */
+    public MicrosoftGraphUsageDetails() {
+    }
 
     /**
      * Get the lastAccessedDateTime property: The date and time the resource was last accessed by the user. The

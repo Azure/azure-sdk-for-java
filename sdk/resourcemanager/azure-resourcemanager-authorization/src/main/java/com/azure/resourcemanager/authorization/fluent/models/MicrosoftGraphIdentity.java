@@ -16,11 +16,9 @@ import java.util.Map;
 @Fluent
 public class MicrosoftGraphIdentity {
     /*
-     * The identity's display name. Note that this may not always be available
-     * or up to date. For example, if a user changes their display name, the
-     * API may show the new value in a future response, but the items
-     * associated with the user won't show up as having changed when using
-     * delta.
+     * The identity's display name. Note that this may not always be available or up to date. For example, if a user
+     * changes their display name, the API may show the new value in a future response, but the items associated with
+     * the user won't show up as having changed when using delta.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
@@ -35,6 +33,10 @@ public class MicrosoftGraphIdentity {
      * identity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphIdentity class. */
+    public MicrosoftGraphIdentity() {
+    }
 
     /**
      * Get the displayName property: The identity's display name. Note that this may not always be available or up to

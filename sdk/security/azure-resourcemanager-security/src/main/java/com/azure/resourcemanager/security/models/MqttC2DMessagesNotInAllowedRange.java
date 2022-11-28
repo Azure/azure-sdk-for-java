@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("MqttC2DMessagesNotInAllowedRange")
 @Fluent
 public final class MqttC2DMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of MqttC2DMessagesNotInAllowedRange class. */
+    public MqttC2DMessagesNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public MqttC2DMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

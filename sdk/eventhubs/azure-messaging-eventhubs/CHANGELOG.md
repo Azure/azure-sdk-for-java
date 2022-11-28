@@ -1,22 +1,41 @@
 # Release History
 
-## 5.15.0-beta.1 (Unreleased)
+## 5.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed incorrect proxy configuration using environment variables. ([#24230](https://github.com/Azure/azure-sdk-for-java/issues/24230)) 
+
 ### Other Changes
+
+## 5.15.0 (2022-11-16)
+
+### Features Added
+
+- Added `EventHubBufferedProducerBuilder.fullyQualifiedNamespace(String)`
+- Added `EventHubBufferedProducerBuilder.eventHubName(String)`
+
+### Bugs Fixed
+
+- Fixed incorrect proxy configuration using environment variables. ([#24230](https://github.com/Azure/azure-sdk-for-java/issues/24230))
+
+### Other Changes
+
 - Changed the log level for adding credits from Info to Debug. ([#20836](https://github.com/Azure/azure-sdk-for-java/issues/20836))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.34.0`.
+- Upgraded `azure-core-amqp` to `2.8.0`.
 
 ## 5.14.0 (2022-10-13)
 
 ### Features Added
 
 - Enabled metrics for sent events, consumer lag, checkpointing. ([#31024](https://github.com/Azure/azure-sdk-for-java/pull/31024))
-- Enabled distributed tracing for consumer and batch processor. ([#31197](https://github.com/Azure/azure-sdk-for-java/pull/31197)) 
+- Enabled distributed tracing for consumer and batch processor. ([#31197](https://github.com/Azure/azure-sdk-for-java/pull/31197))
 - Added algorithm for mapping partition keys to partition ids.
 - Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
 

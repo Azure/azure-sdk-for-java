@@ -7,7 +7,11 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DiskEncryptionTarget. */
+/**
+ * The disks to encrypt on each compute node.
+ *
+ * <p>If omitted, no disks on the compute nodes in the pool will be encrypted.
+ */
 public enum DiskEncryptionTarget {
     /** Enum value OsDisk. */
     OS_DISK("OsDisk"),
@@ -30,6 +34,9 @@ public enum DiskEncryptionTarget {
      */
     @JsonCreator
     public static DiskEncryptionTarget fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DiskEncryptionTarget[] items = DiskEncryptionTarget.values();
         for (DiskEncryptionTarget item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +46,7 @@ public enum DiskEncryptionTarget {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

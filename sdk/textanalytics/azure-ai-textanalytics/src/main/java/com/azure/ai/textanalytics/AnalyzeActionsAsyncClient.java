@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
@@ -94,8 +94,8 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRec
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksOld;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksSentimentAnalysisTasksItem;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -166,7 +166,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toExtractSummary
 import static com.azure.ai.textanalytics.implementation.Utility.toLabelClassificationResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeCustomEntitiesResultCollection;
-import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
@@ -406,8 +405,8 @@ class AnalyzeActionsAsyncClient {
             actions.getSingleLabelClassifyActions();
         final Iterable<MultiLabelClassifyAction> multiCategoryClassifyActions =
             actions.getMultiLabelClassifyActions();
-        final Iterable<AbstractiveSummaryAction> abstractiveSummaryActions =
-            actions.getAbstractiveSummaryActions();
+        final Iterable<AbstractSummaryAction> abstractSummaryActions =
+            actions.getAbstractSummaryActions();
         final Iterable<ExtractSummaryAction> extractSummaryActions = actions.getExtractSummaryActions();
 
         if (recognizeEntitiesActions != null) {
@@ -447,8 +446,8 @@ class AnalyzeActionsAsyncClient {
             multiCategoryClassifyActions.forEach(action -> tasks.add(toCustomMultiLabelClassificationLROTask(action)));
         }
 
-        if (abstractiveSummaryActions != null) {
-            abstractiveSummaryActions.forEach(action -> tasks.add(toAbstractiveSummarizationLROTask(action)));
+        if (abstractSummaryActions != null) {
+            abstractSummaryActions.forEach(action -> tasks.add(toAbstractiveSummarizationLROTask(action)));
         }
 
         if (extractSummaryActions != null) {
@@ -782,7 +781,7 @@ class AnalyzeActionsAsyncClient {
             .setSortBy(orderBy == null ? null : ExtractiveSummarizationSortingCriteria.fromString(orderBy.toString()));
     }
 
-    private AbstractiveSummarizationLROTask toAbstractiveSummarizationLROTask(AbstractiveSummaryAction action) {
+    private AbstractiveSummarizationLROTask toAbstractiveSummarizationLROTask(AbstractSummaryAction action) {
         if (action == null) {
             return null;
         }
@@ -792,7 +791,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private AbstractiveSummarizationTaskParameters getAbstractiveSummarizationTaskParameters(
-        AbstractiveSummaryAction action) {
+        AbstractSummaryAction action) {
         return new AbstractiveSummarizationTaskParameters()
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setSentenceCount(action.getMaxSentenceCount())
@@ -953,7 +952,7 @@ class AnalyzeActionsAsyncClient {
                 final EntitiesResult results = taskItem.getResults();
                 if (results != null) {
                     RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
-                        toRecognizeEntitiesResultCollectionResponse(results));
+                        Utility.toRecognizeEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
@@ -1081,7 +1080,7 @@ class AnalyzeActionsAsyncClient {
         final List<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesActionResults = new ArrayList<>();
         final List<SingleLabelClassifyActionResult> singleLabelClassifyActionResults = new ArrayList<>();
         final List<MultiLabelClassifyActionResult> multiLabelClassifyActionResults = new ArrayList<>();
-        final List<AbstractiveSummaryActionResult> abstractiveSummaryActionResults = new ArrayList<>();
+        final List<AbstractSummaryActionResult> abstractSummaryActionResults = new ArrayList<>();
         final List<ExtractSummaryActionResult> extractSummaryActionResults = new ArrayList<>();
 
         if (!CoreUtils.isNullOrEmpty(tasksResults)) {
@@ -1093,7 +1092,7 @@ class AnalyzeActionsAsyncClient {
                     final EntitiesResult results = entityTaskResult.getResults();
                     if (results != null) {
                         RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
-                            toRecognizeEntitiesResultCollectionResponse(results));
+                            Utility.toRecognizeEntitiesResultCollection(results));
                     }
                     TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
                         entityTaskResult.getTaskName());
@@ -1231,17 +1230,17 @@ class AnalyzeActionsAsyncClient {
                 } else if (taskResult instanceof AbstractiveSummarizationLROResult) {
                     final AbstractiveSummarizationLROResult abstractiveSummarizationLROResult =
                         (AbstractiveSummarizationLROResult) taskResult;
-                    final AbstractiveSummaryActionResult actionResult = new AbstractiveSummaryActionResult();
+                    final AbstractSummaryActionResult actionResult = new AbstractSummaryActionResult();
                     final AbstractiveSummarizationResult results = abstractiveSummarizationLROResult.getResults();
                     if (results != null) {
-                        AbstractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        AbstractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
                             toAbstractiveSummaryResultCollection(results));
                     }
                     TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
                         abstractiveSummarizationLROResult.getTaskName());
                     TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                         abstractiveSummarizationLROResult.getLastUpdateDateTime());
-                    abstractiveSummaryActionResults.add(actionResult);
+                    abstractSummaryActionResults.add(actionResult);
                 } else {
                     throw logger.logExceptionAsError(new RuntimeException(
                         "Invalid Long running operation task result: " + taskResult.getClass()));
@@ -1280,7 +1279,7 @@ class AnalyzeActionsAsyncClient {
                     } else if (EXTRACTIVE_SUMMARIZATION.equals(taskName)) {
                         actionResult = extractSummaryActionResults.get(taskIndex);
                     } else if (ABSTRACTIVE_SUMMARIZATION.equals(taskName)) {
-                        actionResult = abstractiveSummaryActionResults.get(taskIndex);
+                        actionResult = abstractSummaryActionResults.get(taskIndex);
                     } else {
                         throw logger.logExceptionAsError(new RuntimeException(
                             "Invalid task name in target reference, " + taskName));
@@ -1316,7 +1315,7 @@ class AnalyzeActionsAsyncClient {
         AnalyzeActionsResultPropertiesHelper.setClassifyMultiCategoryResults(analyzeActionsResult,
             IterableStream.of(multiLabelClassifyActionResults));
         AnalyzeActionsResultPropertiesHelper.setAbstractiveSummaryResults(analyzeActionsResult,
-            IterableStream.of(abstractiveSummaryActionResults));
+            IterableStream.of(abstractSummaryActionResults));
         AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
             IterableStream.of(extractSummaryActionResults));
         return analyzeActionsResult;

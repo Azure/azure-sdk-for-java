@@ -6,9 +6,9 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.SummaryContext;
@@ -60,7 +60,7 @@ public class AbstractiveSummarization {
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions()
                     .setDisplayName("{tasks_display_name}")
-                    .setAbstractiveSummaryActions(new AbstractiveSummaryAction().setMaxSentenceCount(3)),
+                    .setAbstractSummaryActions(new AbstractSummaryAction().setMaxSentenceCount(3)),
                 "en",
                 new AnalyzeActionsOptions());
 
@@ -68,14 +68,14 @@ public class AbstractiveSummarization {
 
         syncPoller.getFinalResult().forEach(actionsResult -> {
             System.out.println("Abstractive summarization action results:");
-            for (AbstractiveSummaryActionResult actionResult : actionsResult.getAbstractiveSummaryResults()) {
+            for (AbstractSummaryActionResult actionResult : actionsResult.getAbstractSummaryResults()) {
                 if (!actionResult.isError()) {
-                    for (AbstractiveSummaryResult documentResult : actionResult.getDocumentsResults()) {
+                    for (AbstractSummaryResult documentResult : actionResult.getDocumentsResults()) {
                         if (!documentResult.isError()) {
                             System.out.println("\tAbstract summary sentences:");
                             for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                                 System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                                for (SummaryContext summaryContext : summarySentence.getSummaryContexts()) {
+                                for (SummaryContext summaryContext : summarySentence.getContexts()) {
                                     System.out.printf("\t\t offset: %d, length: %d%n",
                                         summaryContext.getOffset(), summaryContext.getLength());
                                 }

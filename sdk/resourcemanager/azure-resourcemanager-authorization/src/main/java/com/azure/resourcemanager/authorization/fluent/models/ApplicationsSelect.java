@@ -42,7 +42,11 @@ public final class ApplicationsSelect extends ExpandableStringEnum<ApplicationsS
         return fromString(name, ApplicationsSelect.class);
     }
 
-    /** @return known ApplicationsSelect values. */
+    /**
+     * Gets known ApplicationsSelect values.
+     *
+     * @return known ApplicationsSelect values.
+     */
     public static Collection<ApplicationsSelect> values() {
         return values(ApplicationsSelect.class);
     }

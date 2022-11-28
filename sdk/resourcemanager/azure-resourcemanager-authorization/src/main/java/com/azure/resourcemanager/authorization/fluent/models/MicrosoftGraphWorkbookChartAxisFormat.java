@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookChartAxisFormat extends MicrosoftGraphE
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartAxisFormat class. */
+    public MicrosoftGraphWorkbookChartAxisFormat() {
+    }
+
     /**
      * Get the font property: workbookChartFont.
      *

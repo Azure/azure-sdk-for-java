@@ -16,19 +16,6 @@ public interface InformationProtectionPolicies {
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
      *     management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param informationProtectionPolicyName Name of the information protection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
-     */
-    InformationProtectionPolicy get(String scope, InformationProtectionPolicyName informationProtectionPolicyName);
-
-    /**
-     * Details of the information protection policy.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param informationProtectionPolicyName Name of the information protection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,6 +24,19 @@ public interface InformationProtectionPolicies {
      */
     Response<InformationProtectionPolicy> getWithResponse(
         String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context);
+
+    /**
+     * Details of the information protection policy.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param informationProtectionPolicyName Name of the information protection policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information protection policy.
+     */
+    InformationProtectionPolicy get(String scope, InformationProtectionPolicyName informationProtectionPolicyName);
 
     /**
      * Information protection policies of a specific management group.

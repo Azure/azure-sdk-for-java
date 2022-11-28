@@ -7,6 +7,7 @@ package com.azure.storage.blob.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.LeaseDurationType;
@@ -119,6 +120,32 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
+    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_IMMUTABLE_STORAGE_WITH_VERSIONING_ENABLED =
+            HttpHeaderName.fromString("x-ms-immutable-storage-with-versioning-enabled");
+
+    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
+
+    private static final HttpHeaderName X_MS_DENY_ENCRYPTION_SCOPE_OVERRIDE =
+            HttpHeaderName.fromString("x-ms-deny-encryption-scope-override");
+
+    private static final HttpHeaderName X_MS_HAS_LEGAL_HOLD = HttpHeaderName.fromString("x-ms-has-legal-hold");
+
+    private static final HttpHeaderName X_MS_DEFAULT_ENCRYPTION_SCOPE =
+            HttpHeaderName.fromString("x-ms-default-encryption-scope");
+
+    private static final HttpHeaderName X_MS_HAS_IMMUTABILITY_POLICY =
+            HttpHeaderName.fromString("x-ms-has-immutability-policy");
+
+    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_BLOB_PUBLIC_ACCESS = HttpHeaderName.fromString("x-ms-blob-public-access");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainersGetPropertiesHeaders class.
@@ -126,53 +153,53 @@ public final class ContainersGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
+        String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
         if (xMsLeaseStatus != null) {
             this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
         }
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String xMsImmutableStorageWithVersioningEnabled =
-                rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled");
+                rawHeaders.getValue(X_MS_IMMUTABLE_STORAGE_WITH_VERSIONING_ENABLED);
         if (xMsImmutableStorageWithVersioningEnabled != null) {
             this.xMsImmutableStorageWithVersioningEnabled =
                     Boolean.parseBoolean(xMsImmutableStorageWithVersioningEnabled);
         }
-        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
+        String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
         if (xMsLeaseState != null) {
             this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
         }
-        String xMsDenyEncryptionScopeOverride = rawHeaders.getValue("x-ms-deny-encryption-scope-override");
+        String xMsDenyEncryptionScopeOverride = rawHeaders.getValue(X_MS_DENY_ENCRYPTION_SCOPE_OVERRIDE);
         if (xMsDenyEncryptionScopeOverride != null) {
             this.xMsDenyEncryptionScopeOverride = Boolean.parseBoolean(xMsDenyEncryptionScopeOverride);
         }
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        String date = rawHeaders.getValue("Date");
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        String xMsHasLegalHold = rawHeaders.getValue("x-ms-has-legal-hold");
+        String xMsHasLegalHold = rawHeaders.getValue(X_MS_HAS_LEGAL_HOLD);
         if (xMsHasLegalHold != null) {
             this.xMsHasLegalHold = Boolean.parseBoolean(xMsHasLegalHold);
         }
-        this.xMsDefaultEncryptionScope = rawHeaders.getValue("x-ms-default-encryption-scope");
-        this.eTag = rawHeaders.getValue("ETag");
-        String xMsHasImmutabilityPolicy = rawHeaders.getValue("x-ms-has-immutability-policy");
+        this.xMsDefaultEncryptionScope = rawHeaders.getValue(X_MS_DEFAULT_ENCRYPTION_SCOPE);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsHasImmutabilityPolicy = rawHeaders.getValue(X_MS_HAS_IMMUTABILITY_POLICY);
         if (xMsHasImmutabilityPolicy != null) {
             this.xMsHasImmutabilityPolicy = Boolean.parseBoolean(xMsHasImmutabilityPolicy);
         }
-        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
+        String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
         if (xMsLeaseDuration != null) {
             this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
         }
-        String xMsBlobPublicAccess = rawHeaders.getValue("x-ms-blob-public-access");
+        String xMsBlobPublicAccess = rawHeaders.getValue(X_MS_BLOB_PUBLIC_ACCESS);
         if (xMsBlobPublicAccess != null) {
             this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {

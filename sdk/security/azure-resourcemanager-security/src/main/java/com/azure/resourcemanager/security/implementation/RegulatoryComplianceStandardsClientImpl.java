@@ -59,7 +59,7 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterRegula")
-    private interface RegulatoryComplianceStandardsService {
+    public interface RegulatoryComplianceStandardsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards")
         @ExpectedResponses({200})
@@ -368,20 +368,6 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * Supported regulatory compliance details state for selected standard.
      *
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegulatoryComplianceStandardInner get(String regulatoryComplianceStandardName) {
-        return getAsync(regulatoryComplianceStandardName).block();
-    }
-
-    /**
-     * Supported regulatory compliance details state for selected standard.
-     *
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -392,6 +378,20 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
     public Response<RegulatoryComplianceStandardInner> getWithResponse(
         String regulatoryComplianceStandardName, Context context) {
         return getWithResponseAsync(regulatoryComplianceStandardName, context).block();
+    }
+
+    /**
+     * Supported regulatory compliance details state for selected standard.
+     *
+     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return regulatory compliance standard details and state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RegulatoryComplianceStandardInner get(String regulatoryComplianceStandardName) {
+        return getWithResponse(regulatoryComplianceStandardName, Context.NONE).getValue();
     }
 
     /**

@@ -5,13 +5,21 @@
     "snapshot" : true,
     "supportStatus" : "TODO",
     "spring-boot-version" : "3.0.0-SNAPSHOT",
-    "spring-cloud-version" : "2022.0.0-RC1"
+    "spring-cloud-version" : "2022.0.0-RC2"
   },
   {
     "current" : false,
     "releaseStatus" : "PRERELEASE",
     "snapshot" : false,
     "supportStatus" : "TODO",
+    "spring-boot-version" : "3.0.0-RC2",
+    "spring-cloud-version" : "2022.0.0-RC2"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "PRERELEASE",
+    "snapshot" : false,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.0.0-RC1",
     "spring-cloud-version" : "2022.0.0-RC1"
   },

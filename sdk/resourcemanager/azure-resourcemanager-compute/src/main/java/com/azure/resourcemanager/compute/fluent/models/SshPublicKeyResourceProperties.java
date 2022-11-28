@@ -19,6 +19,10 @@ public final class SshPublicKeyResourceProperties {
     @JsonProperty(value = "publicKey")
     private String publicKey;
 
+    /** Creates an instance of SshPublicKeyResourceProperties class. */
+    public SshPublicKeyResourceProperties() {
+    }
+
     /**
      * Get the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when

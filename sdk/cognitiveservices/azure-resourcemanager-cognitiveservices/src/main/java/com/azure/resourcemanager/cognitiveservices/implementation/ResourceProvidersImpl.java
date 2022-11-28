@@ -31,15 +31,6 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceManager = serviceManager;
     }
 
-    public SkuAvailabilityListResult checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters) {
-        SkuAvailabilityListResultInner inner = this.serviceClient().checkSkuAvailability(location, parameters);
-        if (inner != null) {
-            return new SkuAvailabilityListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(
         String location, CheckSkuAvailabilityParameter parameters, Context context) {
         Response<SkuAvailabilityListResultInner> inner =
@@ -55,10 +46,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public DomainAvailability checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
-        DomainAvailabilityInner inner = this.serviceClient().checkDomainAvailability(parameters);
+    public SkuAvailabilityListResult checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters) {
+        SkuAvailabilityListResultInner inner = this.serviceClient().checkSkuAvailability(location, parameters);
         if (inner != null) {
-            return new DomainAvailabilityImpl(inner, this.manager());
+            return new SkuAvailabilityListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -74,6 +65,15 @@ public final class ResourceProvidersImpl implements ResourceProviders {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DomainAvailabilityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DomainAvailability checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
+        DomainAvailabilityInner inner = this.serviceClient().checkDomainAvailability(parameters);
+        if (inner != null) {
+            return new DomainAvailabilityImpl(inner, this.manager());
         } else {
             return null;
         }

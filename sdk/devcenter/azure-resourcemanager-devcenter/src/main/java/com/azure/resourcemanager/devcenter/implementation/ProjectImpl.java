@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectInner;
 import com.azure.resourcemanager.devcenter.models.Project;
 import com.azure.resourcemanager.devcenter.models.ProjectUpdate;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import java.util.Collections;
 import java.util.Map;
 
@@ -47,8 +48,12 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public String devCenterUri() {
+        return this.innerModel().devCenterUri();
     }
 
     public String devCenterId() {

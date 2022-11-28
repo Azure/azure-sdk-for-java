@@ -1,5 +1,21 @@
 # Release History
 
+## 4.3.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.3.0-beta.1 (2022-11-11)
+
+### Features Added
+- Added `KeyVaultSettingsClient` and `KeyVaultSettingsAsyncClient` to get and update Managed HSM settings.
+- Added support for service version `7.4-preview.1`.
+
 ## 4.2.2 (2022-11-10)
 
 ### Other Changes

@@ -41,15 +41,6 @@ public final class IngestionSettingsImpl implements IngestionSettings {
         return Utils.mapPage(inner, inner1 -> new IngestionSettingImpl(inner1, this.manager()));
     }
 
-    public IngestionSetting get(String ingestionSettingName) {
-        IngestionSettingInner inner = this.serviceClient().get(ingestionSettingName);
-        if (inner != null) {
-            return new IngestionSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IngestionSetting> getWithResponse(String ingestionSettingName, Context context) {
         Response<IngestionSettingInner> inner = this.serviceClient().getWithResponse(ingestionSettingName, context);
         if (inner != null) {
@@ -63,21 +54,21 @@ public final class IngestionSettingsImpl implements IngestionSettings {
         }
     }
 
-    public void delete(String ingestionSettingName) {
-        this.serviceClient().delete(ingestionSettingName);
+    public IngestionSetting get(String ingestionSettingName) {
+        IngestionSettingInner inner = this.serviceClient().get(ingestionSettingName);
+        if (inner != null) {
+            return new IngestionSettingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String ingestionSettingName, Context context) {
         return this.serviceClient().deleteWithResponse(ingestionSettingName, context);
     }
 
-    public IngestionSettingToken listTokens(String ingestionSettingName) {
-        IngestionSettingTokenInner inner = this.serviceClient().listTokens(ingestionSettingName);
-        if (inner != null) {
-            return new IngestionSettingTokenImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String ingestionSettingName) {
+        this.serviceClient().delete(ingestionSettingName);
     }
 
     public Response<IngestionSettingToken> listTokensWithResponse(String ingestionSettingName, Context context) {
@@ -94,10 +85,10 @@ public final class IngestionSettingsImpl implements IngestionSettings {
         }
     }
 
-    public ConnectionStrings listConnectionStrings(String ingestionSettingName) {
-        ConnectionStringsInner inner = this.serviceClient().listConnectionStrings(ingestionSettingName);
+    public IngestionSettingToken listTokens(String ingestionSettingName) {
+        IngestionSettingTokenInner inner = this.serviceClient().listTokens(ingestionSettingName);
         if (inner != null) {
-            return new ConnectionStringsImpl(inner, this.manager());
+            return new IngestionSettingTokenImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -112,6 +103,15 @@ public final class IngestionSettingsImpl implements IngestionSettings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConnectionStringsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConnectionStrings listConnectionStrings(String ingestionSettingName) {
+        ConnectionStringsInner inner = this.serviceClient().listConnectionStrings(ingestionSettingName);
+        if (inner != null) {
+            return new ConnectionStringsImpl(inner, this.manager());
         } else {
             return null;
         }
