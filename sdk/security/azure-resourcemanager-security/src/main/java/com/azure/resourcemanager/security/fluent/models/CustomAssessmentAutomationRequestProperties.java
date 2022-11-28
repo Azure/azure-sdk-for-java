@@ -48,6 +48,10 @@ public final class CustomAssessmentAutomationRequestProperties {
     @JsonProperty(value = "remediationDescription")
     private String remediationDescription;
 
+    /** Creates an instance of CustomAssessmentAutomationRequestProperties class. */
+    public CustomAssessmentAutomationRequestProperties() {
+    }
+
     /**
      * Get the compressedQuery property: Base 64 encoded KQL query representing the assessment automation results
      * required.

@@ -14,24 +14,24 @@ public interface VMIngestions {
      *
      * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
      * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vm ingestion details to install an agent.
+     * @return the vm ingestion details to install an agent along with {@link Response}.
      */
-    VMIngestionDetailsResponse details(String resourceGroupName, String monitorName);
+    Response<VMIngestionDetailsResponse> detailsWithResponse(
+        String resourceGroupName, String monitorName, Context context);
 
     /**
      * List the vm ingestion details that will be monitored by the Elastic monitor resource.
      *
      * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
      * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the vm ingestion details to install an agent.
      */
-    Response<VMIngestionDetailsResponse> detailsWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    VMIngestionDetailsResponse details(String resourceGroupName, String monitorName);
 }

@@ -13,19 +13,21 @@ import java.util.List;
 @Fluent
 public final class WorkspaceListResult {
     /*
-     * The list of machine learning workspaces. Since this list may be
-     * incomplete, the nextLink field should be used to request the next list
-     * of machine learning workspaces.
+     * The list of machine learning workspaces. Since this list may be incomplete, the nextLink field should be used to
+     * request the next list of machine learning workspaces.
      */
     @JsonProperty(value = "value")
     private List<WorkspaceInner> value;
 
     /*
-     * The URI that can be used to request the next list of machine learning
-     * workspaces.
+     * The URI that can be used to request the next list of machine learning workspaces.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of WorkspaceListResult class. */
+    public WorkspaceListResult() {
+    }
 
     /**
      * Get the value property: The list of machine learning workspaces. Since this list may be incomplete, the nextLink

@@ -54,6 +54,10 @@ public final class UsageInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private UsageName name;
 
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
+
     /**
      * Get the id property: Specifies the resource ID.
      *

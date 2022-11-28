@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class DataVersionBaseResourceArmPaginatedResult {
     /*
-     * The link to the next page of DataVersionBase objects. If null, there are
-     * no additional pages.
+     * The link to the next page of DataVersionBase objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class DataVersionBaseResourceArmPaginatedResult {
      * An array of objects of type DataVersionBase.
      */
     @JsonProperty(value = "value")
-    private List<DataVersionBaseDataInner> value;
+    private List<DataVersionBaseInner> value;
+
+    /** Creates an instance of DataVersionBaseResourceArmPaginatedResult class. */
+    public DataVersionBaseResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of DataVersionBase objects. If null, there are no additional
@@ -52,7 +55,7 @@ public final class DataVersionBaseResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<DataVersionBaseDataInner> value() {
+    public List<DataVersionBaseInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class DataVersionBaseResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the DataVersionBaseResourceArmPaginatedResult object itself.
      */
-    public DataVersionBaseResourceArmPaginatedResult withValue(List<DataVersionBaseDataInner> value) {
+    public DataVersionBaseResourceArmPaginatedResult withValue(List<DataVersionBaseInner> value) {
         this.value = value;
         return this;
     }

@@ -22,7 +22,7 @@ its `eventType` string is added as a constant and a mapping to the event data mo
 `SystemEventMappings` file.
 
 ```yaml
-use: '@autorest/java@4.0.24'
+use: '@autorest/java@4.1.0'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client
@@ -74,26 +74,26 @@ custom-types: CloudEvent,EventGridEvent
 model-override-setter-from-superclass: true
 
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.KeyVault/stable/2018-01-01/KeyVault.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.HealthcareApis/stable/2018-01-01/HealthcareApis.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.KeyVault/stable/2018-01-01/KeyVault.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.HealthcareApis/stable/2018-01-01/HealthcareApis.json
 ```
 
 ### KeyVault updates
@@ -101,28 +101,83 @@ input-file:
 ```yaml
 directive:
 - from: swagger-document
-  where: $.definitions
+  where: $.definitions.KeyVaultVaultAccessPolicyChangedEventData.properties
   transform: >
-    $.KeyVaultVaultAccessPolicyChangedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultVaultAccessPolicyChangedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultCertificateNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultCertificateNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultCertificateNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultCertificateNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultCertificateExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultCertificateExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultKeyNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultKeyNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultKeyNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultKeyNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultKeyExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultKeyExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultSecretNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultSecretNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultSecretNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultSecretNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
-    $.KeyVaultSecretExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
-    $.KeyVaultSecretExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $["NBF"]["x-ms-client-name"] = "Nbf";
+    $["EXP"]["x-ms-client-name"] = "Exp";
+      
+- from: swagger-document
+  where: $.definitions.KeyVaultCertificateNewVersionCreatedEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultCertificateNearExpiryEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultCertificateExpiredEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultKeyNewVersionCreatedEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultKeyNearExpiryEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultKeyExpiredEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultSecretNewVersionCreatedEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultSecretNearExpiryEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+- from: swagger-document
+  where: $.definitions.KeyVaultSecretExpiredEventData.properties
+  transform: >
+      $["NBF"]["x-ms-client-name"] = "Nbf";
+      $["EXP"]["x-ms-client-name"] = "Exp";
+```
+
+### Mark a discriminator property as "required"
+
+Newer versions of AutoRest complain during validation about the discriminator property being required
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.MediaJobOutput
+    transform: >
+      $.required.push("@odata.type");
+```
+
+### Fixup ApiManagement comments
+
+```yaml
+directive:
+    from: swagger-document
+    where: $.definitions
+    transform: >
+        for (const definition in $) {
+            if (definition.startsWith("ApiManagement")) {
+              $[definition]["description"] = $[definition]["description"].replace("ApiManagement.API", "ApiManagement.Api");
+
+            }
+        }
 ```
 
 ### Customization
@@ -130,7 +185,9 @@ directive:
 ```java
 import org.slf4j.Logger;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -258,17 +315,163 @@ public class EventGridCustomization extends Customization {
             .addFile("src/main/java/com/azure/messaging/eventgrid/implementation/SystemEventMappingNames.java", sb.toString());
 
         replaceClassAnnotation(customization);
+        customizeMediaJobOutputAsset(customization);
+        customizeStorageDirectoryDeletedEventData(customization);
+        customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization);
+        customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(customization);
+        customizeMediaLiveEventIngestHeartbeatEventData(customization);
+        customizeResourceEvents(customization, logger);
+    }
+
+    public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+
+        Arrays.asList("Action", "Delete", "Write").forEach(action -> {
+            Arrays.asList("Cancel", "Failure", "Success").forEach(result -> {
+                String className = String.format("Resource%s%sEventData", action, result);
+                ClassCustomization classCustomization = packageModels.getClass(className);
+                classCustomization.addStaticBlock(String.format("static final ClientLogger LOGGER = new ClientLogger(%s.class);", className),
+                        Arrays.asList("com.azure.core.util.logging.ClientLogger"));
+                classCustomization.addStaticBlock("static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();",
+                        Arrays.asList("com.azure.core.util.serializer.JacksonAdapter", "com.azure.core.util.serializer.SerializerAdapter", "com.azure.core.util.serializer.SerializerEncoding"));
+                Arrays.asList("Authorization", "Claims", "HttpRequest").forEach(method -> {
+                    classCustomization.getMethod(String.format("get%s", method)).rename(String.format("getResource%s", method));
+                    classCustomization.getMethod(String.format("set%s", method)).rename(String.format("setResource%s", method));
+                });
+
+                classCustomization.addMethod("@Deprecated public String getClaims() { final Map<String, String> resourceClaims = getResourceClaims(); if (!resourceClaims.isEmpty()) { try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } } return null; }");
+                classCustomization.addMethod(String.format("@Deprecated public %s setClaims(String claims) { try { setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }", className), Arrays.asList("java.io.IOException", "java.io.UncheckedIOException"));
+                classCustomization.addMethod("@Deprecated public String getHttpRequest() { ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest(); try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } }");
+                classCustomization.addMethod(String.format("@Deprecated public %s setHttpRequest(String httpRequest) { try { setResourceHttpRequest( DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }", className));
+                classCustomization.addMethod("@Deprecated public String getAuthorization() { final ResourceAuthorization resourceAuthorization = getResourceAuthorization(); try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } }");
+                classCustomization.addMethod(String.format("@Deprecated public %s setAuthorization(String authorization) { try { setResourceAuthorization( DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }", className));
+
+
+                classCustomization.getMethod("getClaims")
+                    .getJavadoc()
+                    .setDescription("Get the claims property: The properties of the claims.")
+                    .setReturn("the claims value.")
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#getResourceClaims()} instead.", className));
+
+                classCustomization.getMethod("setClaims")
+                    .getJavadoc()
+                    .setDescription("Set the claims property: The properties of the claims.")
+                    .setParam("claims", "the claims value to set.")
+                    .setReturn(String.format("the %s object itself.", className))
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#setResourceClaims(Map)} instead.", className));
+
+                classCustomization.getMethod("getAuthorization")
+                    .getJavadoc()
+                    .setDescription("Get the authorization property: The requested authorization for the operation.")
+                    .setReturn("the authorization value.")
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#getResourceAuthorization()} instead.", className));
+
+                classCustomization.getMethod("setAuthorization")
+                    .getJavadoc()
+                    .setDescription("Set the authorization property: The requested authorization for the operation.")
+                    .setParam("authorization", "the authorization value to set.")
+                    .setReturn(String.format("the %s object itself.", className))
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#setResourceAuthorization(ResourceAuthorization)} instead.", className));
+
+                classCustomization.getMethod("getHttpRequest")
+                    .getJavadoc()
+                    .setDescription("Get the httpRequest property: The details of the operation.")
+                    .setReturn("the httpRequest value.")
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#getResourceHttpRequest()} instead.", className));
+
+                classCustomization.getMethod("setHttpRequest")
+                    .getJavadoc()
+                    .setDescription("Set the httpRequest property: The details of the operation.")
+                    .setParam("httpRequest", "the httpRequest value to set.")
+                    .setReturn(String.format("the %s object itself.", className))
+                    .setDeprecated(String.format("This method is no longer supported since v4.9.0. <p> Use {@link %s#setResourceHttpRequest(ResourceHttpRequest)} instead.", className));
+
+
+            });
+        });
+    }
+
+    public void customizeMediaLiveEventIngestHeartbeatEventData(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventIngestHeartbeatEventData");
+        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);", Arrays.asList("com.azure.core.util.logging.ClientLogger"));
+        classCustomization.getMethod("getIngestDriftValue")
+            .setReturnType("Integer", "")
+            .replaceBody("if (\"n/a\".equals(this.ingestDriftValue)) { return null; } try { return Integer.parseInt(this.ingestDriftValue); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; }");
+
+        classCustomization.getMethod("getLastFragmentArrivalTime")
+            .setReturnType("OffsetDateTime", "")
+            .replaceBody("return OffsetDateTime.parse(this.lastFragmentArrivalTime);", Arrays.asList("java.time.OffsetDateTime"));
+
+    }
+    
+    public void customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventChannelArchiveHeartbeatEventData");
+        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);");
+
+        PropertyCustomization property = classCustomization.getProperty("channelLatencyMs");
+        property.generateGetterAndSetter();
+
+        classCustomization.getMethod("getChannelLatencyMs")
+            .rename("getChannelLatency")
+            .setReturnType("Duration", "")
+            .replaceBody("if (\"n/a\".equals(this.channelLatencyMs)) { return null; } Long channelLatencyMsLong; try { channelLatencyMsLong = Long.parseLong(this.channelLatencyMs); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; } return Duration.ofMillis(channelLatencyMsLong);", Arrays.asList("java.time.Duration"))
+            .getJavadoc()
+            .setDescription("Gets the duration of channel latency.")
+            .setReturn("the duration of channel latency.");
+
+        try {
+            classCustomization.removeMethod("setChannelLatencyMs");
+            classCustomization.removeMethod("setLatencyResultCode");
+            classCustomization.removeMethod("getLogger");
+        } catch (IllegalArgumentException none) {}
+    }
+    
+    public void customizeAcsRecordingFileStatusUpdatedEventDataDuration(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsRecordingFileStatusUpdatedEventData");
+        PropertyCustomization property = classCustomization.getProperty("recordingDurationMs");
+        property.generateGetterAndSetter();
+
+        classCustomization.getMethod("getRecordingDurationMs")
+            .rename("getRecordingDuration")
+            .setReturnType("Duration", "Duration.ofMillis(%s)")
+            .replaceBody("if (this.recordingDurationMs != null) { return Duration.ofMillis(this.recordingDurationMs); } return null;", Arrays.asList("java.time.Duration"))
+            .getJavadoc()
+            .setDescription("Get the recordingDuration property: The recording duration.")
+            .setReturn("the recordingDuration value.");
+
+
+        classCustomization.getMethod("setRecordingDurationMs")
+            .rename("setRecordingDuration")
+            .replaceParameters("Duration recordingDuration")
+            .replaceBody("if (recordingDuration != null) { this.recordingDurationMs = recordingDuration.toMillis(); } else { this.recordingDurationMs = null; } return this;")
+            .getJavadoc()
+            .setDescription("Set the recordingDuration property: The recording duration.")
+            .setParam("recordingDuration", "the recordingDuration value to set.")
+            .removeParam("recordingDurationMs");
+
+    }
+
+    public void customizeStorageDirectoryDeletedEventData(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("StorageDirectoryDeletedEventData");
+        classCustomization.getMethod("getRecursive").rename("isRecursive").setReturnType("Boolean", "Boolean.getBoolean(%s)");
+        classCustomization.getMethod("setRecursive").replaceParameters("Boolean recursive").replaceBody("this.recursive = String.valueOf(recursive); return this;");
+    }
+
+    public void customizeMediaJobOutputAsset(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        packageModels.getClass("MediaJobOutputAsset").setModifier(Modifier.PUBLIC | Modifier.FINAL);
     }
     
     public void replaceClassAnnotation(LibraryCustomization customization) {
         // HealthcareFhirResource events
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
-        packageModels.getClass("HealthcareFhirResourceCreatedEventData").removeAnnotation("@Immutable")
-            .addAnnotation("@Fluent");
-        packageModels.getClass("HealthcareFhirResourceDeletedEventData").removeAnnotation("@Immutable")
-            .addAnnotation("@Fluent");
-        packageModels.getClass("HealthcareFhirResourceUpdatedEventData").removeAnnotation("@Immutable")
-            .addAnnotation("@Fluent");
+        packageModels.getClass("HealthcareFhirResourceCreatedEventData").removeAnnotation("@Immutable");
+        packageModels.getClass("HealthcareFhirResourceDeletedEventData").removeAnnotation("@Immutable");
+        packageModels.getClass("HealthcareFhirResourceUpdatedEventData").removeAnnotation("@Immutable");
         // Communication events
         packageModels.getClass("AcsUserDisconnectedEventData").removeAnnotation("@Fluent")
             .addAnnotation("@Immutable");

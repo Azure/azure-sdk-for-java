@@ -20,6 +20,10 @@ public final class Mpi extends DistributionConfiguration {
     @JsonProperty(value = "processCountPerInstance")
     private Integer processCountPerInstance;
 
+    /** Creates an instance of Mpi class. */
+    public Mpi() {
+    }
+
     /**
      * Get the processCountPerInstance property: Number of processes per MPI node.
      *

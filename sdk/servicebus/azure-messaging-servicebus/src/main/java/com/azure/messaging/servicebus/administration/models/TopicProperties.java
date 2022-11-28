@@ -47,7 +47,7 @@ public final class TopicProperties {
     private long maxMessageSizeInKilobytes;
     private final MessageCountDetails messageCountDetails;
     private boolean requiresDuplicateDetection;
-    private final int sizeInBytes;
+    private final long sizeInBytes;
     private final int subscriptionCount;
     private boolean supportOrdering;
     private final boolean enablePartitioning;
@@ -365,7 +365,7 @@ public final class TopicProperties {
      *
      * @return the sizeInBytes value.
      */
-    int getSizeInBytes() {
+    long getSizeInBytes() {
         return this.sizeInBytes;
     }
 

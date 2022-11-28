@@ -24,7 +24,6 @@ import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -138,6 +137,23 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
         createRsaKeyRunner((keyToCreate) ->
             StepVerifier.create(keyAsyncClient.createRsaKey(keyToCreate))
+                .assertNext(response -> assertKeyEquals(keyToCreate, response))
+                .verifyComplete());
+    }
+
+    /**
+     * Tests that an OKP key can be created in the key vault.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // OKP keys are currently only supported in Managed HSM.
+        Assumptions.assumeTrue(runManagedHsmTest);
+
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        createOkpKeyRunner((keyToCreate) ->
+            StepVerifier.create(keyAsyncClient.createOkpKey(keyToCreate))
                 .assertNext(response -> assertKeyEquals(keyToCreate, response))
                 .verifyComplete());
     }
@@ -549,7 +565,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         createKeyAsyncClient(httpClient, serviceVersion);
 
         listKeyVersionsRunner((keysToList) -> {
-            List<KeyProperties> output = new ArrayList<>();
             String keyName = null;
 
             for (CreateKeyOptions key : keysToList) {
@@ -562,11 +577,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             sleepInRecordMode(30000);
 
-            keyAsyncClient.listPropertiesOfKeyVersions(keyName).subscribe(output::add);
-
-            sleepInRecordMode(30000);
-
-            assertEquals(keysToList.size(), output.size());
+            StepVerifier.create(keyAsyncClient.listPropertiesOfKeyVersions(keyName).collectList())
+                .assertNext(actualKeys -> assertEquals(keysToList.size(), actualKeys.size()))
+                .verifyComplete();
         });
 
     }

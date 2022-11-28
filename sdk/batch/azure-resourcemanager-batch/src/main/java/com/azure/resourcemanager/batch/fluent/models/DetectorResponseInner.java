@@ -23,6 +23,10 @@ public final class DetectorResponseInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of DetectorResponseInner class. */
+    public DetectorResponseInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties associated with the detector.
      *

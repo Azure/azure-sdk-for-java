@@ -42,6 +42,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Subsc
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -387,8 +388,9 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName,
         String subscriptionName, CreateSubscriptionOptions subscriptionOptions) {
-        return withContext(context -> createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions,
-            context));
+        // Create with no default rule. RuleOptions to be set to null.
+        return withContext(context -> createSubscriptionWithResponse(topicName, subscriptionName, null,
+            subscriptionOptions, null, context));
     }
 
     /**
@@ -1366,6 +1368,65 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
+     * Creates a subscription with a default rule using {@link CreateSubscriptionOptions} and {@link CreateRuleOptions}.
+     *
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param ruleName Name of the default rule the subscription should be created with.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
+     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
+     *                    If null, then pass-through filter will be created.
+     *
+     * @return A Mono that completes with information about the created subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws NullPointerException if {@code subscriptionOptions} is null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SubscriptionProperties> createSubscription(String topicName, String subscriptionName, String ruleName,
+                                                           CreateSubscriptionOptions subscriptionOptions,
+                                                           CreateRuleOptions ruleOptions) {
+
+        return createSubscriptionWithResponse(topicName, subscriptionName, ruleName, subscriptionOptions, ruleOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a subscription with default rule and returns the created subscription in addition to the HTTP response.
+     *
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param ruleName Name of the default rule the subscription should be created with.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
+     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
+     *                    If null, then pass-through filter will be created.
+     *
+     * @return A Mono that returns the created subscription in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws NullPointerException if {@code subscriptionOptions} is null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName,
+                                                                                 String subscriptionName,
+                                                                                 String ruleName,
+                                                                                 CreateSubscriptionOptions subscriptionOptions,
+                                                                                 CreateRuleOptions ruleOptions) {
+        return withContext(context -> createSubscriptionWithResponse(topicName, subscriptionName, ruleName,
+            subscriptionOptions, ruleOptions, context));
+    }
+
+    /**
      * Creates a queue with its context.
      *
      * @param createQueueOptions Queue to create.
@@ -1446,13 +1507,18 @@ public final class ServiceBusAdministrationAsyncClient {
     /**
      * Creates a subscription with its context.
      *
-     * @param subscriptionOptions Subscription to create.
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param ruleName Name of the default rule the subscription should be created with.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
+     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
+     *                    If null, then pass-through filter will be created.
      * @param context Context to pass into request.
      *
      * @return A Mono that completes with the created {@link SubscriptionProperties}.
      */
     Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName, String subscriptionName,
-        CreateSubscriptionOptions subscriptionOptions, Context context) {
+        String ruleName, CreateSubscriptionOptions subscriptionOptions, CreateRuleOptions ruleOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
             return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
@@ -1478,6 +1544,16 @@ public final class ServiceBusAdministrationAsyncClient {
             subscriptionOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
 
+        if (ruleOptions != null) {
+            if (ruleOptions.getFilter() == null) {
+                return monoError(LOGGER, new IllegalArgumentException("'RuleFilter' cannot be null."));
+            }
+            final RuleDescription rule = new RuleDescription()
+                .setAction(ruleOptions.getAction() != null ? EntityHelper.toImplementation(ruleOptions.getAction()) : null)
+                .setFilter(EntityHelper.toImplementation(ruleOptions.getFilter()))
+                .setName(ruleName);
+            subscriptionOptions.setDefaultRule(EntityHelper.toModel(rule));
+        }
         final CreateSubscriptionBody createEntity =
                 getCreateSubscriptionBody(EntityHelper.getSubscriptionDescription(subscriptionOptions));
         try {

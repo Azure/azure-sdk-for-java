@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.security.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.AzureResourceLink;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionSource;
@@ -12,13 +12,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information about the security control. */
-@Fluent
+@Immutable
 public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
     /*
      * Security Control Definition Properties.
      */
     @JsonProperty(value = "properties")
     private SecureScoreControlDefinitionItemProperties innerProperties;
+
+    /** Creates an instance of SecureScoreControlDefinitionItemInner class. */
+    public SecureScoreControlDefinitionItemInner() {
+    }
 
     /**
      * Get the innerProperties property: Security Control Definition Properties.

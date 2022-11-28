@@ -129,7 +129,8 @@ public class ShareFileClient {
      * @throws ShareStorageException If a storage service error occurred.
      */
     public final StorageFileInputStream openInputStream(ShareFileRange range) {
-        return new StorageFileInputStream(shareFileAsyncClient, range.getStart(), range.getEnd());
+        return new StorageFileInputStream(shareFileAsyncClient, range.getStart(),
+            range.getEnd() == null ? null : (range.getEnd() - range.getStart() + 1));
     }
 
     /**

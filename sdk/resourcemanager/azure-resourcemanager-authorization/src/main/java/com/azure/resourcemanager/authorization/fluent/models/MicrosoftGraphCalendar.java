@@ -17,40 +17,35 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /*
-     * Represent the online meeting service providers that can be used to
-     * create online meetings in this calendar. Possible values are: unknown,
-     * skypeForBusiness, skypeForConsumer, teamsForBusiness.
+     * Represent the online meeting service providers that can be used to create online meetings in this calendar.
+     * Possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness.
      */
     @JsonProperty(value = "allowedOnlineMeetingProviders")
     private List<MicrosoftGraphOnlineMeetingProviderType> allowedOnlineMeetingProviders;
 
     /*
-     * True if the user can write to the calendar, false otherwise. This
-     * property is true for the user who created the calendar. This property is
-     * also true for a user who has been shared a calendar and granted write
-     * access.
+     * True if the user can write to the calendar, false otherwise. This property is true for the user who created the
+     * calendar. This property is also true for a user who has been shared a calendar and granted write access.
      */
     @JsonProperty(value = "canEdit")
     private Boolean canEdit;
 
     /*
-     * True if the user has the permission to share the calendar, false
-     * otherwise. Only the user who created the calendar can share it.
+     * True if the user has the permission to share the calendar, false otherwise. Only the user who created the
+     * calendar can share it.
      */
     @JsonProperty(value = "canShare")
     private Boolean canShare;
 
     /*
-     * True if the user can read calendar items that have been marked private,
-     * false otherwise.
+     * True if the user can read calendar items that have been marked private, false otherwise.
      */
     @JsonProperty(value = "canViewPrivateItems")
     private Boolean canViewPrivateItems;
 
     /*
-     * Identifies the version of the calendar object. Every time the calendar
-     * is changed, changeKey changes as well. This allows Exchange to apply
-     * changes to the correct version of the object. Read-only.
+     * Identifies the version of the calendar object. Every time the calendar is changed, changeKey changes as well.
+     * This allows Exchange to apply changes to the correct version of the object. Read-only.
      */
     @JsonProperty(value = "changeKey")
     private String changeKey;
@@ -80,16 +75,14 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     private Boolean isDefaultCalendar;
 
     /*
-     * Indicates whether this user calendar can be deleted from the user
-     * mailbox.
+     * Indicates whether this user calendar can be deleted from the user mailbox.
      */
     @JsonProperty(value = "isRemovable")
     private Boolean isRemovable;
 
     /*
-     * Indicates whether this user calendar supports tracking of meeting
-     * responses. Only meeting invites sent from users' primary calendars
-     * support tracking of meeting responses.
+     * Indicates whether this user calendar supports tracking of meeting responses. Only meeting invites sent from
+     * users' primary calendars support tracking of meeting responses.
      */
     @JsonProperty(value = "isTallyingResponses")
     private Boolean isTallyingResponses;
@@ -125,15 +118,13 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     private List<MicrosoftGraphEvent> events;
 
     /*
-     * The collection of multi-value extended properties defined for the
-     * calendar. Read-only. Nullable.
+     * The collection of multi-value extended properties defined for the calendar. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
-     * The collection of single-value extended properties defined for the
-     * calendar. Read-only. Nullable.
+     * The collection of single-value extended properties defined for the calendar. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
@@ -142,6 +133,10 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * calendar
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCalendar class. */
+    public MicrosoftGraphCalendar() {
+    }
 
     /**
      * Get the allowedOnlineMeetingProviders property: Represent the online meeting service providers that can be used

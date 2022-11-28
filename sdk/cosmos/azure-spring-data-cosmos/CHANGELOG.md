@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.30.0-beta.1 (Unreleased)
+### 3.31.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,18 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.30.0 (2022-11-16)
+### Other Changes
+* Updated `azure-cosmos` to version `4.39.0`.
+
+### 3.29.1 (2022-10-21)
+#### Bugs Fixed
+* Fixed serialization and persistence issues for UUID for JDK 16 and above - See [PR 31417](https://github.com/Azure/azure-sdk-for-java/pull/31417)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.38.1`.
+* `azure-cosmos` version 4.38.1 fixes two CVEs related to jackson-databind and apache commons-text dependencies.
 
 ### 3.29.0 (2022-10-12)
 #### Other Changes

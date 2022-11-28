@@ -9,6 +9,10 @@ import com.azure.core.annotation.Immutable;
 /** Azure IaaS VM workload-specific Health Details. */
 @Immutable
 public final class AzureIaaSvmHealthDetails extends ResourceHealthDetails {
+    /** Creates an instance of AzureIaaSvmHealthDetails class. */
+    public AzureIaaSvmHealthDetails() {
+    }
+
     /**
      * Validates the instance.
      *

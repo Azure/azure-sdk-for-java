@@ -4,16 +4,15 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import reactor.core.publisher.Mono;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,18 +30,16 @@ import java.util.UUID;
  */
 public class RequestIdPolicy implements HttpPipelinePolicy {
 
-    private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
-    private final String requestIdHeaderName;
-    private final String requestIdHeaderNameLowerCase;
+    private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
+    private final HttpHeaderName requestIdHeaderName;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             HttpHeaders headers = context.getHttpRequest().getHeaders();
-            String requestId = HttpHeadersHelper.getValueNoKeyFormatting(headers, requestIdHeaderNameLowerCase);
+            String requestId = headers.getValue(requestIdHeaderName);
             if (requestId == null) {
-                HttpHeadersHelper.setNoKeyFormatting(headers, requestIdHeaderNameLowerCase, requestIdHeaderName,
-                    UUID.randomUUID().toString());
+                headers.set(requestIdHeaderName, UUID.randomUUID().toString());
             }
         }
     };
@@ -52,9 +49,8 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
      * @param requestIdHeaderName to be used to set in {@link HttpRequest}.
      */
     public RequestIdPolicy(String requestIdHeaderName) {
-        this.requestIdHeaderName = Objects.requireNonNull(requestIdHeaderName,
-            "requestIdHeaderName can not be null.");
-        this.requestIdHeaderNameLowerCase = requestIdHeaderName.toLowerCase(Locale.ROOT);
+        this.requestIdHeaderName = HttpHeaderName.fromString(Objects.requireNonNull(requestIdHeaderName,
+            "requestIdHeaderName can not be null."));
     }
 
     /**
@@ -62,7 +58,6 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
      */
     public RequestIdPolicy() {
         this.requestIdHeaderName = REQUEST_ID_HEADER;
-        this.requestIdHeaderNameLowerCase = REQUEST_ID_HEADER;
     }
 
     @Override

@@ -42,6 +42,10 @@ public class VirtualMachineImageResourceInner extends SubResource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
+    /** Creates an instance of VirtualMachineImageResourceInner class. */
+    public VirtualMachineImageResourceInner() {
+    }
+
     /**
      * Get the name property: The name of the resource.
      *

@@ -16,6 +16,10 @@ public final class DefenderForContainersAwsOfferingKubernetesScubaReader {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /** Creates an instance of DefenderForContainersAwsOfferingKubernetesScubaReader class. */
+    public DefenderForContainersAwsOfferingKubernetesScubaReader() {
+    }
+
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature used for reading data.
      *

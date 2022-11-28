@@ -29,8 +29,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     private String parentFolderId;
 
     /*
-     * The collection of child folders in the folder. Navigation property.
-     * Read-only. Nullable.
+     * The collection of child folders in the folder. Navigation property. Read-only. Nullable.
      */
     @JsonProperty(value = "childFolders")
     private List<MicrosoftGraphContactFolder> childFolders;
@@ -42,15 +41,13 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     private List<MicrosoftGraphContact> contacts;
 
     /*
-     * The collection of multi-value extended properties defined for the
-     * contactFolder. Read-only. Nullable.
+     * The collection of multi-value extended properties defined for the contactFolder. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
-     * The collection of single-value extended properties defined for the
-     * contactFolder. Read-only. Nullable.
+     * The collection of single-value extended properties defined for the contactFolder. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
@@ -59,6 +56,10 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
      * contactFolder
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphContactFolder class. */
+    public MicrosoftGraphContactFolder() {
+    }
 
     /**
      * Get the displayName property: The folder's display name.

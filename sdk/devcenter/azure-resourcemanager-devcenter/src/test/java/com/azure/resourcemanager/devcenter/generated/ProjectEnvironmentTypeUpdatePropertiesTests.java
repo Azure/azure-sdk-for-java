@@ -21,25 +21,41 @@ public final class ProjectEnvironmentTypeUpdatePropertiesTests {
         ProjectEnvironmentTypeUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"deploymentTargetId\":\"cqaqtdoqmcbx\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"lmpewwwfbkr\":{\"roleName\":\"qbhsfxobl\",\"description\":\"k\"}}},\"userRoleAssignments\":{\"shqjohxcrsbf\":{\"roles\":{}}}}")
+                    "{\"deploymentTargetId\":\"wzbhvgyugu\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{\"mg\":{\"roleName\":\"sxqu\",\"description\":\"fpl\"},\"wzbaiue\":{\"roleName\":\"nkjzkdeslpvlop\",\"description\":\"yighxpk\"},\"smtxpsieb\":{\"roleName\":\"a\",\"description\":\"nyqupedeojnabck\"}}},\"userRoleAssignments\":{\"esap\":{\"roles\":{}},\"dqmh\":{\"roles\":{}},\"htldwk\":{\"roles\":{}},\"uutkncw\":{\"roles\":{}}}}")
                 .toObject(ProjectEnvironmentTypeUpdateProperties.class);
-        Assertions.assertEquals("cqaqtdoqmcbx", model.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.status());
+        Assertions.assertEquals("wzbhvgyugu", model.deploymentTargetId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
     }
 
     @Test
     public void testSerialize() {
         ProjectEnvironmentTypeUpdateProperties model =
             new ProjectEnvironmentTypeUpdateProperties()
-                .withDeploymentTargetId("cqaqtdoqmcbx")
-                .withStatus(EnableStatus.ENABLED)
+                .withDeploymentTargetId("wzbhvgyugu")
+                .withStatus(EnableStatus.DISABLED)
                 .withCreatorRoleAssignment(
                     new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
-                        .withRoles(mapOf("lmpewwwfbkr", new EnvironmentRole())))
-                .withUserRoleAssignments(mapOf("shqjohxcrsbf", new UserRoleAssignmentValue().withRoles(mapOf())));
+                        .withRoles(
+                            mapOf(
+                                "mg",
+                                new EnvironmentRole(),
+                                "wzbaiue",
+                                new EnvironmentRole(),
+                                "smtxpsieb",
+                                new EnvironmentRole())))
+                .withUserRoleAssignments(
+                    mapOf(
+                        "esap",
+                        new UserRoleAssignmentValue().withRoles(mapOf()),
+                        "dqmh",
+                        new UserRoleAssignmentValue().withRoles(mapOf()),
+                        "htldwk",
+                        new UserRoleAssignmentValue().withRoles(mapOf()),
+                        "uutkncw",
+                        new UserRoleAssignmentValue().withRoles(mapOf())));
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdateProperties.class);
-        Assertions.assertEquals("cqaqtdoqmcbx", model.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.status());
+        Assertions.assertEquals("wzbhvgyugu", model.deploymentTargetId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
     }
 
     @SuppressWarnings("unchecked")

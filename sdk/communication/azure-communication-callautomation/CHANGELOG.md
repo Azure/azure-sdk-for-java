@@ -16,6 +16,7 @@ This is the first version of the restart of Azure Communication Service Call Aut
 - Call recording.
 - Get, add and remove participants from the call.
 - Recording download apis.
+- Optimized the logic for deserializing types derived from the `CommunicationIdentifier`.
 
 ### Breaking Changes
 - Incompatible with previous version of service

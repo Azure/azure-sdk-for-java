@@ -22,6 +22,10 @@ public final class ApiKeysInner {
     @JsonProperty(value = "key2")
     private String key2;
 
+    /** Creates an instance of ApiKeysInner class. */
+    public ApiKeysInner() {
+    }
+
     /**
      * Get the key1 property: Gets the value of key 1.
      *

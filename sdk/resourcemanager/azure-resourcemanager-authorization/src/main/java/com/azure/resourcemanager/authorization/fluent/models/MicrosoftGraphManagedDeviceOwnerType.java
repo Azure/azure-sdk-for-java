@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphManagedDeviceOwnerType. */
+/** managedDeviceOwnerType. */
 public final class MicrosoftGraphManagedDeviceOwnerType
     extends ExpandableStringEnum<MicrosoftGraphManagedDeviceOwnerType> {
     /** Static value unknown for MicrosoftGraphManagedDeviceOwnerType. */
@@ -31,7 +31,11 @@ public final class MicrosoftGraphManagedDeviceOwnerType
         return fromString(name, MicrosoftGraphManagedDeviceOwnerType.class);
     }
 
-    /** @return known MicrosoftGraphManagedDeviceOwnerType values. */
+    /**
+     * Gets known MicrosoftGraphManagedDeviceOwnerType values.
+     *
+     * @return known MicrosoftGraphManagedDeviceOwnerType values.
+     */
     public static Collection<MicrosoftGraphManagedDeviceOwnerType> values() {
         return values(MicrosoftGraphManagedDeviceOwnerType.class);
     }

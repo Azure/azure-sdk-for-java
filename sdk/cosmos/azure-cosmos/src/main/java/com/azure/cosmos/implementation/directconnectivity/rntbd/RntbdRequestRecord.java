@@ -67,6 +67,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     private volatile Instant timeReceived;
     private volatile boolean sendingRequestHasStarted;
     private volatile RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+    private volatile RntbdClientChannelHealthChecker.Timestamps timestamps;
 
     protected RntbdRequestRecord(final RntbdRequestArgs args) {
 
@@ -260,7 +261,16 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         }
 
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+
+        if (this.timestamps != null) {
+            this.timestamps.transitTimeout();
+        }
+
         return this.completeExceptionally(error);
+    }
+
+    public void setTimestamps(RntbdClientChannelHealthChecker.Timestamps timestamps) {
+        this.timestamps = timestamps;
     }
 
     public abstract Timeout newTimeout(final TimerTask task);

@@ -24,6 +24,10 @@ public final class GovernanceAssignmentsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GovernanceAssignmentsList class. */
+    public GovernanceAssignmentsList() {
+    }
+
     /**
      * Get the value property: Collection of governance assignments in this page.
      *

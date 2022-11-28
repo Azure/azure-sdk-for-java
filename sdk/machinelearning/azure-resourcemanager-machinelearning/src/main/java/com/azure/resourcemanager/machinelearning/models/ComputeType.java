@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ComputeType. */
+/** The type of compute. */
 public final class ComputeType extends ExpandableStringEnum<ComputeType> {
     /** Static value AKS for ComputeType. */
     public static final ComputeType AKS = fromString("AKS");

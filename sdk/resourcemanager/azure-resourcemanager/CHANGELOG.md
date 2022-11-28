@@ -1,14 +1,24 @@
 # Release History
 
-## 2.20.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.21.0 (2022-11-24)
 
 ### Breaking Changes
 
+- Property `uri` removed from class `GalleryArtifactVersionSource`. This property was non-functional.
+- Type of property `GalleryImageVersionStorageProfile.source` changed to the class `GalleryArtifactVersionFullSource`, a subclass of `GalleryArtifactVersionSource`.
+- Type of property `GalleryOSDiskImage.source` changed to the class `GalleryDiskImageSource`, a subclass of `GalleryArtifactVersionSource`.
+
+## 2.20.0 (2022-10-26)
+
 ### Bugs Fixed
 
+- Fixed bug that `ProviderRegistrationPolicy` does not work.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.19.0 (2022-09-23)
 

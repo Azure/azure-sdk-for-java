@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupResourceStorageConfigsNonCrr Get. */
 public final class BackupResourceStorageConfigsNonCrrGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/BackupStorageConfig_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupStorageConfig_Get.json
      */
     /**
      * Sample code: Get Vault Storage Configuration.

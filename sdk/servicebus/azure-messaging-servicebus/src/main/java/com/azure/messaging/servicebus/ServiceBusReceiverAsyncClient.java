@@ -823,15 +823,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiveMessagesNoBackPressure().limitRate(1, 0);
     }
 
+    @SuppressWarnings("try")
     Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
         return receiveMessagesWithContext(0)
-            .handle((serviceBusMessageContext, sink) -> {
-                if (serviceBusMessageContext.hasError()) {
-                    sink.error(serviceBusMessageContext.getThrowable());
-                    return;
-                }
-                sink.next(serviceBusMessageContext.getMessage());
-            });
+                .handle((serviceBusMessageContext, sink) -> {
+                    try (AutoCloseable scope  = tracer.makeSpanCurrent(serviceBusMessageContext.getMessage().getContext())) {
+                        if (serviceBusMessageContext.hasError()) {
+                            sink.error(serviceBusMessageContext.getThrowable());
+                            return;
+                        }
+                        sink.next(serviceBusMessageContext.getMessage());
+                    } catch (Exception ex) {
+                        LOGGER.verbose("Error disposing scope", ex);
+                    }
+                });
     }
 
     /**
@@ -1308,8 +1313,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         try {
-            // releated with issue https://github.com/Azure/azure-sdk-for-java/issues/25709. When defining ServiceBusProcessorClient as bean in SpringBoot application and throw error in processMessage(), the application can not be shutdown gracefully using ctrl-c.
-            // The cause is completionLock's acquire stucks. So we add a timeout for acquiring lock here to avoid the stuck.
+            // Related with issue https://github.com/Azure/azure-sdk-for-java/issues/25709. When defining ServiceBusProcessorClient as bean in SpringBoot application and throw error in processMessage(), the application can not be shutdown gracefully using ctrl-c.
+            // The cause is completionLock's acquire method is stuck. So we have added a timeout for acquiring the lock, to work around the issue.
             boolean acquired = completionLock.tryAcquire(5, TimeUnit.SECONDS);
             if (!acquired) {
                 LOGGER.info("Unable to obtain completion lock.");
@@ -1506,7 +1511,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
                 .addKeyValue("mode", receiverOptions.getReceiveMode())
-                .addKeyValue("isSessionEnabled", CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()))
+                .addKeyValue("isSessionEnabled", receiverOptions.isSessionReceiver())
                 .addKeyValue(ENTITY_TYPE_KEY, entityType)
                 .log("Created consumer for Service Bus resource.");
         });

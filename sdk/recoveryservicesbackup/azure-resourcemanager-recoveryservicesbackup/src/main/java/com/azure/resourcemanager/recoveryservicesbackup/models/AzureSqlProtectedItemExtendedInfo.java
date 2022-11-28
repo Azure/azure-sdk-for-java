@@ -29,6 +29,10 @@ public final class AzureSqlProtectedItemExtendedInfo {
     @JsonProperty(value = "policyState")
     private String policyState;
 
+    /** Creates an instance of AzureSqlProtectedItemExtendedInfo class. */
+    public AzureSqlProtectedItemExtendedInfo() {
+    }
+
     /**
      * Get the oldestRecoveryPoint property: The oldest backup copy available for this item in the service.
      *

@@ -26,6 +26,10 @@ public final class AllowedConnectionsResourceInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of AllowedConnectionsResourceInner class. */
+    public AllowedConnectionsResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes the allowed traffic between Azure resources.
      *

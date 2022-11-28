@@ -85,6 +85,10 @@ public final class IoTSecuritySolutionProperties {
     @JsonProperty(value = "additionalWorkspaces")
     private List<AdditionalWorkspacesProperties> additionalWorkspaces;
 
+    /** Creates an instance of IoTSecuritySolutionProperties class. */
+    public IoTSecuritySolutionProperties() {
+    }
+
     /**
      * Get the workspace property: Workspace resource ID.
      *

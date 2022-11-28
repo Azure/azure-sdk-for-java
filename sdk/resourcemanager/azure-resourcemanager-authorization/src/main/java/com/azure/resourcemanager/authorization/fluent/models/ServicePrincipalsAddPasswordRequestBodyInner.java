@@ -26,6 +26,10 @@ public final class ServicePrincipalsAddPasswordRequestBodyInner {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ServicePrincipalsAddPasswordRequestBodyInner class. */
+    public ServicePrincipalsAddPasswordRequestBodyInner() {
+    }
+
     /**
      * Get the passwordCredential property: passwordCredential.
      *

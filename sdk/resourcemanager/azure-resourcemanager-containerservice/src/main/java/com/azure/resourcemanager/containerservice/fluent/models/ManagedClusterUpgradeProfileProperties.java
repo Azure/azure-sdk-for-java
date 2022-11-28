@@ -25,6 +25,10 @@ public final class ManagedClusterUpgradeProfileProperties {
     @JsonProperty(value = "agentPoolProfiles", required = true)
     private List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles;
 
+    /** Creates an instance of ManagedClusterUpgradeProfileProperties class. */
+    public ManagedClusterUpgradeProfileProperties() {
+    }
+
     /**
      * Get the controlPlaneProfile property: The list of available upgrade versions for the control plane.
      *

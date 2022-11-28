@@ -18,6 +18,10 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
     @JsonProperty(value = "properties")
     private SshPublicKeyResourceProperties innerProperties;
 
+    /** Creates an instance of SshPublicKeyUpdateResource class. */
+    public SshPublicKeyUpdateResource() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the SSH public key.
      *

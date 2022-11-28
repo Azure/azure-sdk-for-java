@@ -24,7 +24,7 @@ import java.util.Map;
 /** Samples for OnlineDeployments CreateOrUpdate. */
 public final class OnlineDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Kubernetes Online Deployment.
@@ -40,7 +40,8 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
             .withExistingOnlineEndpoint("test-rg", "my-aml-workspace", "testEndpointName")
             .withProperties(
                 new KubernetesOnlineDeployment()
-                    .withCodeConfiguration(new CodeConfiguration().withCodeId("string").withScoringScript("string"))
+                    .withCodeConfiguration(
+                        new CodeConfiguration().withCodeId("fakeTokenPlaceholder").withScoringScript("string"))
                     .withDescription("string")
                     .withEnvironmentId("string")
                     .withEnvironmentVariables(mapOf("string", "string"))
@@ -88,7 +89,7 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Managed Online Deployment.
@@ -104,7 +105,8 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
             .withExistingOnlineEndpoint("test-rg", "my-aml-workspace", "testEndpointName")
             .withProperties(
                 new ManagedOnlineDeployment()
-                    .withCodeConfiguration(new CodeConfiguration().withCodeId("string").withScoringScript("string"))
+                    .withCodeConfiguration(
+                        new CodeConfiguration().withCodeId("fakeTokenPlaceholder").withScoringScript("string"))
                     .withDescription("string")
                     .withEnvironmentId("string")
                     .withEnvironmentVariables(mapOf("string", "string"))

@@ -29,9 +29,11 @@ import java.time.OffsetDateTime;
             value = CustomMultiLabelClassificationLROResult.class),
     @JsonSubTypes.Type(name = "EntityLinkingLROResults", value = EntityLinkingLROResult.class),
     @JsonSubTypes.Type(name = "PiiEntityRecognitionLROResults", value = PiiEntityRecognitionLROResult.class),
+    @JsonSubTypes.Type(name = "ExtractiveSummarizationLROResults", value = ExtractiveSummarizationLROResult.class),
     @JsonSubTypes.Type(name = "HealthcareLROResults", value = HealthcareLROResult.class),
     @JsonSubTypes.Type(name = "SentimentAnalysisLROResults", value = SentimentLROResult.class),
-    @JsonSubTypes.Type(name = "KeyPhraseExtractionLROResults", value = KeyPhraseExtractionLROResult.class)
+    @JsonSubTypes.Type(name = "KeyPhraseExtractionLROResults", value = KeyPhraseExtractionLROResult.class),
+    @JsonSubTypes.Type(name = "AbstractiveSummarizationLROResults", value = AbstractiveSummarizationLROResult.class)
 })
 @Fluent
 public class AnalyzeTextLROResult extends TaskState {

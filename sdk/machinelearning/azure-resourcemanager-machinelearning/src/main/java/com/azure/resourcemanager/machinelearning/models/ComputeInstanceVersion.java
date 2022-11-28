@@ -16,6 +16,10 @@ public final class ComputeInstanceVersion {
     @JsonProperty(value = "runtime")
     private String runtime;
 
+    /** Creates an instance of ComputeInstanceVersion class. */
+    public ComputeInstanceVersion() {
+    }
+
     /**
      * Get the runtime property: Runtime of compute instance.
      *

@@ -47,6 +47,10 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphItemActivity class. */
+    public MicrosoftGraphItemActivity() {
+    }
+
     /**
      * Get the access property: accessAction.
      *

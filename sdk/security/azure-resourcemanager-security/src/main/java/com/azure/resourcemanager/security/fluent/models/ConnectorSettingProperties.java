@@ -24,6 +24,10 @@ public final class ConnectorSettingProperties {
     @JsonProperty(value = "authenticationDetails")
     private AuthenticationDetailsProperties authenticationDetails;
 
+    /** Creates an instance of ConnectorSettingProperties class. */
+    public ConnectorSettingProperties() {
+    }
+
     /**
      * Get the hybridComputeSettings property: Settings for hybrid compute management. These settings are relevant only
      * for Arc autoProvision (Hybrid Compute).

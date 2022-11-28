@@ -28,6 +28,10 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
     @JsonProperty(value = "properties")
     private SecurityAssessmentMetadataPropertiesResponse innerProperties;
 
+    /** Creates an instance of SecurityAssessmentMetadataResponseInner class. */
+    public SecurityAssessmentMetadataResponseInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes properties of an assessment metadata response.
      *

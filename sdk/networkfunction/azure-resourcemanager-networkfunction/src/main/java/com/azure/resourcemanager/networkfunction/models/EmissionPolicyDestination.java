@@ -16,6 +16,10 @@ public final class EmissionPolicyDestination {
     @JsonProperty(value = "destinationType")
     private DestinationType destinationType;
 
+    /** Creates an instance of EmissionPolicyDestination class. */
+    public EmissionPolicyDestination() {
+    }
+
     /**
      * Get the destinationType property: Emission destination type.
      *

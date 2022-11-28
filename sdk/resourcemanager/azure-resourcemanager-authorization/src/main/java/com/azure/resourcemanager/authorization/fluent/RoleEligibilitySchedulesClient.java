@@ -47,19 +47,6 @@ public interface RoleEligibilitySchedulesClient {
      *
      * @param scope The scope of the role eligibility schedule.
      * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule for a resource scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleEligibilityScheduleInner get(String scope, String roleEligibilityScheduleName);
-
-    /**
-     * Get the specified role eligibility schedule for a resource scope.
-     *
-     * @param scope The scope of the role eligibility schedule.
-     * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,6 +56,19 @@ public interface RoleEligibilitySchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleEligibilityScheduleInner> getWithResponse(
         String scope, String roleEligibilityScheduleName, Context context);
+
+    /**
+     * Get the specified role eligibility schedule for a resource scope.
+     *
+     * @param scope The scope of the role eligibility schedule.
+     * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role eligibility schedule for a resource scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleEligibilityScheduleInner get(String scope, String roleEligibilityScheduleName);
 
     /**
      * Gets role eligibility schedules for a resource scope.

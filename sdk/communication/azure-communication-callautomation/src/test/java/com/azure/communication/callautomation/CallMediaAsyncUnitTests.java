@@ -6,6 +6,8 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.GenderType;
+import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -24,7 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CallMediaAsyncUnitTests {
 
     private CallMediaAsync callMedia;
-    private FileSource playSource;
+    private FileSource playFileSource;
+    private TextSource playTextSource;
+
 
     private PlayOptions playOptions;
 
@@ -36,9 +40,16 @@ public class CallMediaAsyncUnitTests {
             );
         callMedia = callConnection.getCallMediaAsync();
 
-        playSource = new FileSource();
-        playSource.setPlaySourceId("playSourceId");
-        playSource.setUri("filePath");
+        playFileSource = new FileSource();
+        playFileSource.setPlaySourceId("playFileSourceId");
+        playFileSource.setUri("filePath");
+
+        playTextSource = new TextSource();
+        playTextSource.setPlaySourceId("playTextSourceId");
+        playTextSource.setVoiceGender(GenderType.M);
+        playTextSource.setSourceLocale("en-US");
+        playTextSource.setTargetLocale("en-CA");
+        playTextSource.setVoiceName("LULU");
 
         playOptions = new PlayOptions()
             .setLoop(false)
@@ -48,7 +59,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playFileWithResponseTest() {
         StepVerifier.create(
-            callMedia.playWithResponse(playSource,
+            callMedia.playWithResponse(playFileSource,
                 Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
@@ -57,7 +68,24 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playFileToAllWithResponseTest() {
         StepVerifier.create(
-                callMedia.playToAllWithResponse(playSource, playOptions))
+                callMedia.playToAllWithResponse(playFileSource, playOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void playTextWithResponseTest() {
+        StepVerifier.create(
+            callMedia.playWithResponse(playTextSource,
+                Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void playTextToAllWithResponseTest() {
+        StepVerifier.create(
+                callMedia.playToAllWithResponse(playTextSource, playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
