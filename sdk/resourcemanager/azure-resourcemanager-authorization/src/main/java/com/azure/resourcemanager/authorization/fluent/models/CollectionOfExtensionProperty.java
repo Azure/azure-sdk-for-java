@@ -33,6 +33,10 @@ public final class CollectionOfExtensionProperty {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CollectionOfExtensionProperty class. */
+    public CollectionOfExtensionProperty() {
+    }
+
     /**
      * Get the value property: The value property.
      *

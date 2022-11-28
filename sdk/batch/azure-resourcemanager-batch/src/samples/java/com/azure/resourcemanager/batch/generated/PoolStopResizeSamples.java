@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Pool StopResize. */
 public final class PoolStopResizeSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolStopResize.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PoolStopResize.json
      */
     /**
      * Sample code: StopPoolResize.

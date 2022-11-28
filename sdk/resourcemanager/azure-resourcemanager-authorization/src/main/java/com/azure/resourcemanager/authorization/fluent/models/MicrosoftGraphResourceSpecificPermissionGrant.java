@@ -14,8 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * resourceSpecificPermissionGrant Represents an Azure Active Directory object. The directoryObject type is the base
- * type for many other directory entity types.
+ * resourceSpecificPermissionGrant
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphResourceSpecificPermissionGrant extends MicrosoftGraphDirectoryObjectInner {
@@ -50,10 +52,14 @@ public final class MicrosoftGraphResourceSpecificPermissionGrant extends Microso
     private String resourceAppId;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphResourceSpecificPermissionGrant class. */
+    public MicrosoftGraphResourceSpecificPermissionGrant() {
+    }
 
     /**
      * Get the clientAppId property: The clientAppId property.

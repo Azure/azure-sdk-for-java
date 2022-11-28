@@ -38,6 +38,10 @@ public class MicrosoftGraphInsightIdentity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphInsightIdentity class. */
+    public MicrosoftGraphInsightIdentity() {
+    }
+
     /**
      * Get the address property: The email address of the user who shared the item.
      *

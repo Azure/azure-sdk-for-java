@@ -12,6 +12,7 @@ import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
+import com.azure.resourcemanager.signalr.models.ServerlessSettings;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
 import com.azure.resourcemanager.signalr.models.SignalRCorsSettings;
@@ -54,6 +55,10 @@ public final class SignalRResourceInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of SignalRResourceInner class. */
+    public SignalRResourceInner() {
+    }
 
     /**
      * Get the sku property: The billing information of the resource.
@@ -352,6 +357,29 @@ public final class SignalRResourceInner extends Resource {
             this.innerProperties = new SignalRProperties();
         }
         this.innerProperties().withCors(cors);
+        return this;
+    }
+
+    /**
+     * Get the serverless property: Serverless settings.
+     *
+     * @return the serverless value.
+     */
+    public ServerlessSettings serverless() {
+        return this.innerProperties() == null ? null : this.innerProperties().serverless();
+    }
+
+    /**
+     * Set the serverless property: Serverless settings.
+     *
+     * @param serverless the serverless value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withServerless(ServerlessSettings serverless) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withServerless(serverless);
         return this;
     }
 

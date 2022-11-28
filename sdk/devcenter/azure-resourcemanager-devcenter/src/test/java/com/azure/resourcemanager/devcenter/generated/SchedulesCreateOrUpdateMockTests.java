@@ -34,7 +34,7 @@ public final class SchedulesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jltfvnzcyjtotpv\",\"timeZone\":\"vpbdbzqgq\",\"state\":\"Disabled\"},\"id\":\"dsvqwt\",\"name\":\"mkyi\",\"type\":\"cysihs\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"z\",\"timeZone\":\"hokvbwnh\",\"state\":\"Enabled\"},\"id\":\"gehgppi\",\"name\":\"ifhpf\",\"type\":\"oajvgcxtxjcs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +65,20 @@ public final class SchedulesCreateOrUpdateMockTests {
         Schedule response =
             manager
                 .schedules()
-                .define("hriypoqeyhlqhy")
-                .withExistingPool("yxoaf", "aoqltfaey", "inmfgvxirp")
+                .define("xgccknfnw")
+                .withExistingPool("b", "svgjrwhryvy", "ytdc")
                 .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("tyasiibmiybnnust")
-                .withTimeZone("ljhnmgixhcmav")
-                .withState(EnableStatus.ENABLED)
-                .withTop(1099905966)
+                .withTime("dhttzaefedxihchr")
+                .withTimeZone("k")
+                .withState(EnableStatus.DISABLED)
+                .withTop(1304888190)
                 .create();
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.frequency());
-        Assertions.assertEquals("jltfvnzcyjtotpv", response.time());
-        Assertions.assertEquals("vpbdbzqgq", response.timeZone());
-        Assertions.assertEquals(EnableStatus.DISABLED, response.state());
+        Assertions.assertEquals("z", response.time());
+        Assertions.assertEquals("hokvbwnh", response.timeZone());
+        Assertions.assertEquals(EnableStatus.ENABLED, response.state());
     }
 }

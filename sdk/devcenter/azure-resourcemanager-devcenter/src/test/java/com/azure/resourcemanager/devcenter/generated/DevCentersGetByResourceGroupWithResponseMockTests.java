@@ -33,7 +33,7 @@ public final class DevCentersGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"ejvegrhbpnaixex\"},\"identity\":{\"principalId\":\"bf580118-75b1-40e9-a603-3a5c19583f00\",\"tenantId\":\"42c49511-3c10-4c62-b7c2-338d4b5713ea\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hcexdrrvqa\",\"tags\":{\"jnhyjsvf\":\"ghtpw\",\"mtg\":\"cxzbfvoowvr\",\"y\":\"qp\"},\"id\":\"s\",\"name\":\"ronzmyhgfip\",\"type\":\"sxkm\"}";
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"devCenterUri\":\"mkrefajpjorwkq\"},\"identity\":{\"principalId\":\"ec08b2b1-d1de-4f3f-a07c-23b1c306fcf6\",\"tenantId\":\"71bd909a-1f26-427f-84ce-b46ae805950a\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"jivfxzsjabib\",\"tags\":{\"jxbkzbzkdvn\":\"tawfsdjpvkvp\",\"zhjjklffhmouwq\":\"jabudurgkakmo\",\"eeyebi\":\"gzrf\"},\"id\":\"ikayuhqlbjbsybb\",\"name\":\"wrv\",\"type\":\"ldgmfpgvmpip\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,10 @@ public final class DevCentersGetByResourceGroupWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DevCenter response =
-            manager.devCenters().getByResourceGroupWithResponse("dn", "itvgbmhrixkwm", Context.NONE).getValue();
+        DevCenter response = manager.devCenters().getByResourceGroupWithResponse("p", "kghv", Context.NONE).getValue();
 
-        Assertions.assertEquals("hcexdrrvqa", response.location());
-        Assertions.assertEquals("ghtpw", response.tags().get("jnhyjsvf"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("jivfxzsjabib", response.location());
+        Assertions.assertEquals("tawfsdjpvkvp", response.tags().get("jxbkzbzkdvn"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 }

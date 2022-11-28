@@ -66,26 +66,6 @@ public interface RoleAssignmentScheduleRequestsClient {
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
      *     different for each role assignment.
      * @param parameters Parameters for the role assignment schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentScheduleRequestInner create(
-        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters);
-
-    /**
-     * Creates a role assignment schedule request.
-     *
-     * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
-     * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
-     *     different for each role assignment.
-     * @param parameters Parameters for the role assignment schedule request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,6 +78,26 @@ public interface RoleAssignmentScheduleRequestsClient {
         String roleAssignmentScheduleRequestName,
         RoleAssignmentScheduleRequestInner parameters,
         Context context);
+
+    /**
+     * Creates a role assignment schedule request.
+     *
+     * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
+     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     for a resource.
+     * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
+     *     different for each role assignment.
+     * @param parameters Parameters for the role assignment schedule request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignment schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentScheduleRequestInner create(
+        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters);
 
     /**
      * Get the specified role assignment schedule request.
@@ -132,19 +132,6 @@ public interface RoleAssignmentScheduleRequestsClient {
      *
      * @param scope The scope of the role assignment schedule request.
      * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentScheduleRequestInner get(String scope, String roleAssignmentScheduleRequestName);
-
-    /**
-     * Get the specified role assignment schedule request.
-     *
-     * @param scope The scope of the role assignment schedule request.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -154,6 +141,19 @@ public interface RoleAssignmentScheduleRequestsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleAssignmentScheduleRequestInner> getWithResponse(
         String scope, String roleAssignmentScheduleRequestName, Context context);
+
+    /**
+     * Get the specified role assignment schedule request.
+     *
+     * @param scope The scope of the role assignment schedule request.
+     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role assignment schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentScheduleRequestInner get(String scope, String roleAssignmentScheduleRequestName);
 
     /**
      * Gets role assignment schedule requests for a scope.
@@ -247,18 +247,6 @@ public interface RoleAssignmentScheduleRequestsClient {
      *
      * @param scope The scope of the role assignment request to cancel.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String scope, String roleAssignmentScheduleRequestName);
-
-    /**
-     * Cancels a pending role assignment schedule request.
-     *
-     * @param scope The scope of the role assignment request to cancel.
-     * @param roleAssignmentScheduleRequestName The name of the role assignment request to cancel.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -267,6 +255,18 @@ public interface RoleAssignmentScheduleRequestsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelWithResponse(String scope, String roleAssignmentScheduleRequestName, Context context);
+
+    /**
+     * Cancels a pending role assignment schedule request.
+     *
+     * @param scope The scope of the role assignment request to cancel.
+     * @param roleAssignmentScheduleRequestName The name of the role assignment request to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancel(String scope, String roleAssignmentScheduleRequestName);
 
     /**
      * Validates a new role assignment schedule request.
@@ -304,21 +304,6 @@ public interface RoleAssignmentScheduleRequestsClient {
      * @param scope The scope of the role assignment request to validate.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to validate.
      * @param parameters Parameters for the role assignment schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentScheduleRequestInner validate(
-        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters);
-
-    /**
-     * Validates a new role assignment schedule request.
-     *
-     * @param scope The scope of the role assignment request to validate.
-     * @param roleAssignmentScheduleRequestName The name of the role assignment request to validate.
-     * @param parameters Parameters for the role assignment schedule request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -331,4 +316,19 @@ public interface RoleAssignmentScheduleRequestsClient {
         String roleAssignmentScheduleRequestName,
         RoleAssignmentScheduleRequestInner parameters,
         Context context);
+
+    /**
+     * Validates a new role assignment schedule request.
+     *
+     * @param scope The scope of the role assignment request to validate.
+     * @param roleAssignmentScheduleRequestName The name of the role assignment request to validate.
+     * @param parameters Parameters for the role assignment schedule request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignment schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentScheduleRequestInner validate(
+        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters);
 }

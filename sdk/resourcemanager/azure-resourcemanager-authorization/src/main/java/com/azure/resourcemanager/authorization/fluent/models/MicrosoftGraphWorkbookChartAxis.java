@@ -73,6 +73,10 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartAxis class. */
+    public MicrosoftGraphWorkbookChartAxis() {
+    }
+
     /**
      * Get the majorUnit property: Json.
      *

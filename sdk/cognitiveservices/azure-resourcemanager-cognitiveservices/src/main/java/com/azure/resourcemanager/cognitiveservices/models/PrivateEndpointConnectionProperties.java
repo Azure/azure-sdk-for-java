@@ -19,8 +19,7 @@ public final class PrivateEndpointConnectionProperties {
     private PrivateEndpoint privateEndpoint;
 
     /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * A collection of information about the state of the connection between service consumer and provider.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState", required = true)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
@@ -36,6 +35,10 @@ public final class PrivateEndpointConnectionProperties {
      */
     @JsonProperty(value = "groupIds")
     private List<String> groupIds;
+
+    /** Creates an instance of PrivateEndpointConnectionProperties class. */
+    public PrivateEndpointConnectionProperties() {
+    }
 
     /**
      * Get the privateEndpoint property: The resource of private end point.

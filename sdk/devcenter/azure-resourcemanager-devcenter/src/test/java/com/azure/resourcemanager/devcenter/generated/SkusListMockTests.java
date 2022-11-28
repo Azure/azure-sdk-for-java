@@ -34,7 +34,7 @@ public final class SkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"mvpdvjdhttzaef\",\"locations\":[\"ihchrphkmcrjdqn\"],\"capabilities\":[{\"name\":\"pbgtgkylkdghrj\",\"value\":\"utlwxezwzhok\"},{\"name\":\"wnhhtqlgehgppip\",\"value\":\"hpfeoajvgcxtxjc\"},{\"name\":\"eafidltugsresm\",\"value\":\"sjhoiftxfkfwegpr\"}],\"name\":\"ptil\",\"tier\":\"Standard\",\"size\":\"iqtgdqoh\",\"family\":\"wsldrizetpwbr\",\"capacity\":1596471966}]}";
+            "{\"value\":[{\"resourceType\":\"fc\",\"locations\":[\"pimaqxzhemjyh\",\"hujswtwkozzwcul\",\"bawpfajnjwltlwt\",\"j\"],\"capabilities\":[{\"name\":\"alhsnvkc\",\"value\":\"xzrpo\"},{\"name\":\"mlnwiaaomylweazu\",\"value\":\"sethwwn\"},{\"name\":\"hlf\",\"value\":\"wpchwahf\"},{\"name\":\"usnfepgfewet\",\"value\":\"yxgncxykxhdjhli\"}],\"name\":\"mbcxfhbcp\",\"tier\":\"Basic\",\"size\":\"xcjzhqizxfpxt\",\"family\":\"scjavftju\",\"capacity\":562191246}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class SkusListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DevCenterSku> response = manager.skus().list(1455211628, Context.NONE);
+        PagedIterable<DevCenterSku> response = manager.skus().list(2138880865, Context.NONE);
 
-        Assertions.assertEquals("ptil", response.iterator().next().name());
-        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().tier());
-        Assertions.assertEquals("iqtgdqoh", response.iterator().next().size());
-        Assertions.assertEquals("wsldrizetpwbr", response.iterator().next().family());
-        Assertions.assertEquals(1596471966, response.iterator().next().capacity());
+        Assertions.assertEquals("mbcxfhbcp", response.iterator().next().name());
+        Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().tier());
+        Assertions.assertEquals("xcjzhqizxfpxt", response.iterator().next().size());
+        Assertions.assertEquals("scjavftju", response.iterator().next().family());
+        Assertions.assertEquals(562191246, response.iterator().next().capacity());
     }
 }

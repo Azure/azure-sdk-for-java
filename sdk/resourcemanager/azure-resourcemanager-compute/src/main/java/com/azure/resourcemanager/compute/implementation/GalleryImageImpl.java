@@ -35,6 +35,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** The implementation for GalleryImage and its create and update interfaces. */
 class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImageInner, GalleryImageImpl>
@@ -575,10 +577,16 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withTrustedLaunch() {
-        ensureFeatures().add(
-            new GalleryImageFeature()
-                .withName(FEATURE_SECURITY_TYPE)
-                .withValue(SecurityTypes.TRUSTED_LAUNCH.toString()));
+        this.innerModel().withFeatures(
+            Stream.concat(
+                ensureFeatures()
+                    .stream()
+                    .filter(feature -> !FEATURE_SECURITY_TYPE.equals(feature.name())),
+                Stream.of(new GalleryImageFeature()
+                    .withName(FEATURE_SECURITY_TYPE)
+                    .withValue(SecurityTypes.TRUSTED_LAUNCH.toString()))
+            ).collect(Collectors.toList())
+        );
         return this;
     }
 

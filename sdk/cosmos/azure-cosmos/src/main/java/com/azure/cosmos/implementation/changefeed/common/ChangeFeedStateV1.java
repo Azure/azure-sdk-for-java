@@ -114,6 +114,23 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 new FeedRangeEpkImpl(continuationToken.getRange()));
         }
 
+        this.populateStartFrom(this.startFromSettings, effectiveStartFrom, request);
+    }
+
+    private void populateStartFrom(
+        ChangeFeedStartFromInternal initialStartFrom,
+        ChangeFeedStartFromInternal effectiveStartFrom,
+        RxDocumentServiceRequest request) {
+
+        checkNotNull(initialStartFrom, "Argument 'initialStartFrom' should not be null");
+        checkNotNull(effectiveStartFrom, "Argument 'effectiveStartFromSettings' should not be null");
+        checkNotNull(request, "Argument 'request' should not be null");
+
+        // When a merge happens, the child partition will contain documents ordered by LSN but the _ts/creation time
+        // of the documents may not be sequential. So when reading the changeFeed by LSN, it is possible to encounter documents with lower _ts.
+        // In order to guarantee we always get the documents after customer's point start time, we will need to always pass the start time in the header.
+        // NOTE: the sequence of calling populate request order matters here, as both can try to populate the same header, effective ones will win
+        initialStartFrom.populateRequest(request, this.mode);
         effectiveStartFrom.populateRequest(request, this.mode);
     }
 

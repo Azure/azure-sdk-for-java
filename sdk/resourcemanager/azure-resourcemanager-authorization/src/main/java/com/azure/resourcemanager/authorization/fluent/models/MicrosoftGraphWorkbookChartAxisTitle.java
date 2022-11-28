@@ -38,6 +38,10 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartAxisTitle class. */
+    public MicrosoftGraphWorkbookChartAxisTitle() {
+    }
+
     /**
      * Get the text property: Represents the axis title.
      *

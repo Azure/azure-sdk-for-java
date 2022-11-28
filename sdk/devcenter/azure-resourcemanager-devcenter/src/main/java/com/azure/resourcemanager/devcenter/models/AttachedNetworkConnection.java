@@ -43,7 +43,7 @@ public interface AttachedNetworkConnection {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the networkConnectionId property: The resource ID of the NetworkConnection you want to attach.

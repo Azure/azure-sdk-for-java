@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 2.21.0 (2022-11-24)
+
+### Breaking Changes
+
+- `filter` parameters in list API from `RoleAssignmentsClient` is required to be encoded by user.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of authorization to `2022-04-01`.
+
 ## 2.20.0 (2022-10-26)
 
 ### Features Added

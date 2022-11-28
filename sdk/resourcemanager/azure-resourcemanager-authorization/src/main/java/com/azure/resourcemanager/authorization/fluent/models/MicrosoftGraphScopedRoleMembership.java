@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEntity {
     /*
-     * Unique identifier for the administrative unit that the directory role is
-     * scoped to
+     * Unique identifier for the administrative unit that the directory role is scoped to
      */
     @JsonProperty(value = "administrativeUnitId")
     private String administrativeUnitId;
@@ -38,6 +37,10 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
      * scopedRoleMembership
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphScopedRoleMembership class. */
+    public MicrosoftGraphScopedRoleMembership() {
+    }
 
     /**
      * Get the administrativeUnitId property: Unique identifier for the administrative unit that the directory role is

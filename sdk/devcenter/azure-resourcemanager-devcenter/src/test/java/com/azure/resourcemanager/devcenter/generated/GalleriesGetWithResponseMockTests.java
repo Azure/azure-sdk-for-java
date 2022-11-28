@@ -32,7 +32,7 @@ public final class GalleriesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"sivfomilo\",\"galleryResourceId\":\"ggdufiqndieu\"},\"id\":\"ofjchvcyyysf\",\"name\":\"dotcubiipuip\",\"type\":\"oqonma\"}";
+            "{\"properties\":{\"provisioningState\":\"Running\",\"galleryResourceId\":\"mrfhirctymox\"},\"id\":\"tpipiwyczuhx\",\"name\":\"cpqjlihhyu\",\"type\":\"pskasdvlmfwdg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,9 +60,8 @@ public final class GalleriesGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Gallery response =
-            manager.galleries().getWithResponse("wzsoldweyuqdunv", "nnrwrbiork", "alywjhhgdn", Context.NONE).getValue();
+        Gallery response = manager.galleries().getWithResponse("n", "bgye", "rymsgaojfmw", Context.NONE).getValue();
 
-        Assertions.assertEquals("ggdufiqndieu", response.galleryResourceId());
+        Assertions.assertEquals("mrfhirctymox", response.galleryResourceId());
     }
 }
