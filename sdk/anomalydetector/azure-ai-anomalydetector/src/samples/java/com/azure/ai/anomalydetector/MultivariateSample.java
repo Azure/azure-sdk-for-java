@@ -146,6 +146,7 @@ public class MultivariateSample {
                     System.out.println(errorResponse.getCode() + errorResponse.getMessage());
                     errorStr += ";" + errorResponse.getCode() + errorResponse.getMessage();
                 }
+                throw new RuntimeException("Training Failed. Error: " + errorStr);
             }
             System.out.println("TRAINING");
             TimeUnit.SECONDS.sleep(5);
@@ -163,7 +164,8 @@ public class MultivariateSample {
                 break;
             } else if (detectionStatus == DetectionStatus.FAILED) {
                 System.out.println("FAILED");
-                throw new Exception("Inference Failed.");
+                throw new RuntimeException("Inference Failed.");
+
             }
             System.out.println("INFERRING");
             TimeUnit.SECONDS.sleep(5);
