@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GeoReplicationStatusType. */
+/** The status of the secondary location. */
 public final class GeoReplicationStatusType extends ExpandableStringEnum<GeoReplicationStatusType> {
     /** Static value live for GeoReplicationStatusType. */
     public static final GeoReplicationStatusType LIVE = fromString("live");

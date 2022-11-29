@@ -35,6 +35,9 @@ public final class QueryOptions {
     @JsonProperty(value = "Filter")
     private String filter;
 
+    /** Creates an instance of QueryOptions class. */
+    public QueryOptions() {}
+
     /**
      * Get the format property: Specifies the media type for the response.
      *

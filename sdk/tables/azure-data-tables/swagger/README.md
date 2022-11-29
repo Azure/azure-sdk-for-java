@@ -27,7 +27,7 @@ output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.data.tables
 generate-client-interfaces: false
-sync-methods: none
+enable-sync-stack: true
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models

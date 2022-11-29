@@ -34,6 +34,9 @@ public final class Metrics {
     @JsonProperty(value = "RetentionPolicy")
     private RetentionPolicy retentionPolicy;
 
+    /** Creates an instance of Metrics class. */
+    public Metrics() {}
+
     /**
      * Get the version property: The version of Analytics to configure.
      *

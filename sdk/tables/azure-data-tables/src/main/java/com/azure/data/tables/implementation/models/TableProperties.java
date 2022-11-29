@@ -16,6 +16,9 @@ public final class TableProperties {
     @JsonProperty(value = "TableName")
     private String tableName;
 
+    /** Creates an instance of TableProperties class. */
+    public TableProperties() {}
+
     /**
      * Get the tableName property: The name of the table to create.
      *

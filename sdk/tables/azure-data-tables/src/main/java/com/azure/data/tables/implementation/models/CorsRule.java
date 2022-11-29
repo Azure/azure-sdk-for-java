@@ -49,6 +49,9 @@ public final class CorsRule {
     @JsonProperty(value = "MaxAgeInSeconds", required = true)
     private int maxAgeInSeconds;
 
+    /** Creates an instance of CorsRule class. */
+    public CorsRule() {}
+
     /**
      * Get the allowedOrigins property: The origin domains that are permitted to make a request against the service via
      * CORS. The origin domain is the domain from which the request originates. Note that the origin must be an exact

@@ -16,6 +16,9 @@ public final class TableResponse extends TableResponseProperties {
     @JsonProperty(value = "odata.metadata")
     private String odataMetadata;
 
+    /** Creates an instance of TableResponse class. */
+    public TableResponse() {}
+
     /**
      * Get the odataMetadata property: The metadata response of the table.
      *

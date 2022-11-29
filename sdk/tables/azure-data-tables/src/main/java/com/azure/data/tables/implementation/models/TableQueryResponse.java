@@ -23,6 +23,9 @@ public final class TableQueryResponse {
     @JsonProperty(value = "value")
     private List<TableResponseProperties> value;
 
+    /** Creates an instance of TableQueryResponse class. */
+    public TableQueryResponse() {}
+
     /**
      * Get the odataMetadata property: The metadata response of the table.
      *

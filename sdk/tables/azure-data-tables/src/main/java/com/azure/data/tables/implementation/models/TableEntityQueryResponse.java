@@ -24,6 +24,9 @@ public final class TableEntityQueryResponse {
     @JsonProperty(value = "value")
     private List<Map<String, Object>> value;
 
+    /** Creates an instance of TableEntityQueryResponse class. */
+    public TableEntityQueryResponse() {}
+
     /**
      * Get the odataMetadata property: The metadata response of the table.
      *

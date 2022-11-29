@@ -34,6 +34,9 @@ public class TableResponseProperties {
     @JsonProperty(value = "odata.editLink")
     private String odataEditLink;
 
+    /** Creates an instance of TableResponseProperties class. */
+    public TableResponseProperties() {}
+
     /**
      * Get the tableName property: The name of the table.
      *
