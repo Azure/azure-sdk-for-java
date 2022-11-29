@@ -238,7 +238,9 @@ public class Configuration {
         ReadThroughputWithMultipleClients,
         CtlWorkload,
         ReadAllItemsOfLogicalPartition,
-        LinkedInCtlWorkload;
+        LinkedInCtlWorkload,
+        ReadManyLatency,
+        ReadManyThroughput;
 
         static Operation fromString(String code) {
 
