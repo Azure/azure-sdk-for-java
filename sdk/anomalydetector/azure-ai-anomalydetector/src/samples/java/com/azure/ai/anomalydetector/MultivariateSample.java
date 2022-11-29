@@ -118,8 +118,8 @@ public class MultivariateSample {
         AnomalyDetectorClient client = getClient(endpoint, key);
 
         // set training request
-        OffsetDateTime startTime = OffsetDateTime.of(2021, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC);
-        OffsetDateTime endTime = OffsetDateTime.of(2021, 1, 2, 5, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime startTime = OffsetDateTime.parse("2021-01-02T00:00:00Z");
+        OffsetDateTime endTime = OffsetDateTime.parse("2021-01-02T05:00:00Z");
         ModelInfo trainRequest = new ModelInfo(datasource, startTime, endTime);
         trainRequest.setSlidingWindow(200)
             .setAlignPolicy(new AlignPolicy()
@@ -152,7 +152,7 @@ public class MultivariateSample {
         }
 
         // Start inference and get the Result ID
-        OffsetDateTime endTimeDetect = OffsetDateTime.of(2021, 1, 2, 12, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime endTimeDetect = OffsetDateTime.parse("2021-01-02T12:00:00Z");
         DetectionRequest detectionRequest = new DetectionRequest(datasource, 10, startTime, endTimeDetect);
         UUID resultId = getResultId(client, detectionRequest, modelId);
         System.out.println("resultId: " + resultId);
