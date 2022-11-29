@@ -8,9 +8,11 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.service.implementation.jaas.Jaas;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
+import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,7 +28,6 @@ import java.util.Map;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.managedIdentityEnabled;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureOAuthBearerTokenTest.FAKE_TOKEN;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -43,7 +44,6 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     private static final List<String> KAFKA_BOOTSTRAP_SERVER = Arrays.asList("namespace.servicebus.windows.net:9093");
     private static final String AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME = "properties";
     private static final String TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME = "tokenCredentialResolver";
-    private static final String JAAS_PROPERTY_FORMAT = SASL_JAAS_CONFIG_OAUTH_PREFIX + " %s=\"%s\";";
     @Test
     void testTokenCredentialShouldConfig() {
         TokenCredential tokenCredential = new TokenCredential() {
@@ -86,8 +86,9 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     void testCreateTokenCredentialByResolver() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
-
-        configs.put(SASL_JAAS_CONFIG, new Password(String.format(JAAS_PROPERTY_FORMAT, managedIdentityEnabled.propertyKey(), "true")));
+        Jaas jaas = new Jaas(OAuthBearerLoginModule.class.getName());
+        jaas.getOptions().put(managedIdentityEnabled.propertyKey(), "true");
+        configs.put(SASL_JAAS_CONFIG, new Password(jaas.toString()));
 
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);

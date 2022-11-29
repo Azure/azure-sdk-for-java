@@ -59,12 +59,12 @@ class BindingServicePropertiesBeanPostProcessorTest {
     void testConfigureBinderSources() {
         Map<String, Object> env = new LinkedHashMap<>();
         Map<String, Object> mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "sources", "test");
-        bpp.configureBinderSources(mainPropertiesMap);
+        bpp.configureSpringMainSources(mainPropertiesMap);
         assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES + ",test", ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
 
         env.clear();
         mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "profiles", "active");
-        bpp.configureBinderSources(mainPropertiesMap);
+        bpp.configureSpringMainSources(mainPropertiesMap);
         assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
@@ -115,7 +115,7 @@ class BindingServicePropertiesBeanPostProcessorTest {
             first.put(secondProperty, second);
             env.put("spring", first);
         }
-        return bpp.readSpringMainPropertiesMap(env);
+        return bpp.getOrCreateSpringMainPropertiesMap(env);
     }
 
 }

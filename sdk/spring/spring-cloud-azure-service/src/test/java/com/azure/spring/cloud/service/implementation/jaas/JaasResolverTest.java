@@ -7,17 +7,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JaasResolverTest {
 
     @Test
-    void testResolveJaasWithInvalidLoginModule() {
+    void testResolveJaasWithInvalidPattern() {
         JaasResolver resolver = new JaasResolver();
         assertThrows(NoSuchElementException.class, () -> resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required").get());
         assertThrows(NoSuchElementException.class, () -> resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModulerequired;").get());
+        assertThrows(NoSuchElementException.class, () -> resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule require;").get());
         assertThrows(NoSuchElementException.class, () -> resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required test;").get());
-        assertThrows(NoSuchElementException.class, () -> resolver.resolve(null).get());
     }
 
     @Test
@@ -25,7 +27,7 @@ class JaasResolverTest {
         JaasResolver resolver = new JaasResolver();
         Jaas jaas = resolver.resolve("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;").get();
         assertEquals("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule", jaas.getLoginModule());
-        assertEquals("required", jaas.getControlFlag());
+        assertEquals(Jaas.ControlFlag.REQUIRED, jaas.getControlFlag());
         assertTrue(jaas.getOptions().isEmpty());
     }
 
@@ -37,7 +39,7 @@ class JaasResolverTest {
         assertEquals(3, jaas.getOptions().size());
         assertEquals("true", jaas.getOptions().get("azure.credential.managed-identity-enabled"));
         assertEquals("test", jaas.getOptions().get("azure.credential.client-id"));
-        assertEquals("required", jaas.getControlFlag());
+        assertEquals(Jaas.ControlFlag.REQUIRED, jaas.getControlFlag());
         assertEquals(OAuthBearerLoginModule.class.getName(), jaas.getLoginModule());
     }
 }

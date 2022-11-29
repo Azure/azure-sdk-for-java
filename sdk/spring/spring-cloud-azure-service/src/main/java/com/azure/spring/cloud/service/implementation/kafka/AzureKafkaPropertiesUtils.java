@@ -23,9 +23,6 @@ import java.util.stream.Stream;
  * Store the constants for customized Azure properties with Kafka.
  */
 public final class AzureKafkaPropertiesUtils {
-    public static final String SASL_JAAS_CONFIG_OAUTH_PREFIX = OAuthBearerLoginModule.class.getName() + " required";
-    public static final String JAAS_OPTIONS_PATTERN = " %s=\"%s\"";
-
     private AzureKafkaPropertiesUtils() {
     }
 

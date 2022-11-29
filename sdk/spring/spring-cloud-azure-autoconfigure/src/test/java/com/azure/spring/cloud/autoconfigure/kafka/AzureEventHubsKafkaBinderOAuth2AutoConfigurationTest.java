@@ -156,7 +156,7 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
     private void testBinderSources(BindingServiceProperties bindingServiceProperties, String binderName, String binderSources) {
         assertFalse(bindingServiceProperties.getBinders().isEmpty());
         assertNotNull(bindingServiceProperties.getBinders().get(binderName));
-        assertEquals(binderSources, bpp.readSpringMainPropertiesMap(bindingServiceProperties.getBinders().get(binderName).getEnvironment()).get("sources"));
+        assertEquals(binderSources, bpp.getOrCreateSpringMainPropertiesMap(bindingServiceProperties.getBinders().get(binderName).getEnvironment()).get("sources"));
     }
 
 

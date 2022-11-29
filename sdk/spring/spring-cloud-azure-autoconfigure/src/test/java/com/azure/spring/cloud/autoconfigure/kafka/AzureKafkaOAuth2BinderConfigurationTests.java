@@ -38,9 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SuppressWarnings("unchecked")
 class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests<KafkaBinderConfigurationProperties, KafkaBinderConfigurationPropertiesBeanPostProcessor> {
 
-    private static final String SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.configuration.";
-    private static final String SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.consumer-properties.";
-
     AzureKafkaOAuth2BinderConfigurationTests() {
         super(new KafkaBinderConfigurationPropertiesBeanPostProcessor(new AzureGlobalProperties()));
     }
@@ -79,16 +76,15 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     void testNotBindBinderKafkaProperties() {
         getContextRunnerWithoutEventHubsURL()
             .withPropertyValues(
-                SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + MANAGED_IDENTITY_ENABLED + "=true"
+                    "spring.cloud.stream.kafka.binder.configuration.azure.credential.managed-identity-enabled=true"
             )
             .run(context -> {
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaBinderConfigurationProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                Map<String, Object> consumerProperties = getConsumerProperties(kafkaSpringProperties);
-                assertFalse(consumerProperties.containsKey(MANAGED_IDENTITY_ENABLED));
-                String adminJaasProperties = getAdminJaasProperties(kafkaSpringProperties);
-                assertNull(adminJaasProperties);
+                Map<String, Object> consumerProperties = processor.getMergedConsumerProperties(kafkaSpringProperties);
+                assertPropertyRemoved(consumerProperties, "azure.credential.managed-identity-enabled");
+                assertNull(processor.getMergedAdminProperties(kafkaSpringProperties).get(SASL_JAAS_CONFIG));
             });
     }
 
@@ -96,16 +92,27 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     void testBindSpringBootKafkaProperties() {
         getContextRunnerWithEventHubsURL()
             .withPropertyValues(
-                SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + MANAGED_IDENTITY_ENABLED + "=true",
+                    "spring.kafka.properties.azure.credential.managed-identity-enabled=true",
                 "spring.kafka.bootstrap-servers=myehnamespace.servicebus.windows.net:9093"
             )
             .run(context -> {
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaBinderConfigurationProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
-                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
-                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
+                Map<String, Object> mergedConsumerProperties = processor.getMergedConsumerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedConsumerProperties);
+                assertPropertyRemoved(mergedConsumerProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedConsumerProperties, "azure.credential.managed-identity-enabled", "true");
+
+                Map<String, Object> mergedProducerProperties = processor.getMergedProducerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedProducerProperties);
+                assertPropertyRemoved(mergedProducerProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedProducerProperties, "azure.credential.managed-identity-enabled", "true");
+
+                Map<String, Object> mergedAdminProperties = processor.getMergedAdminProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedAdminProperties);
+                assertPropertyRemoved(mergedAdminProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedAdminProperties, "azure.credential.managed-identity-enabled", "true");
             });
     }
 
@@ -113,18 +120,29 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     void testBindKafkaBinderProperties() {
         getContextRunnerWithEventHubsURL()
                 .withPropertyValues(
-                        SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
-                        SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id",
-                        SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-client-id",
-                        SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-producer-client-id",
+                        "spring.cloud.stream.kafka.binder.configuration.azure.credential.client-id=cloud-client-id",
+                        "spring.cloud.stream.kafka.binder.consumer-properties.azure.credential.client-id=cloud-consumer-client-id",
+                        "spring.kafka.properties.azure.credential.client-id=kafka-client-id",
+                        "spring.kafka.producer.properties.azure.credential.client-id=kafka-producer-client-id",
                         "spring.cloud.azure.credential.client-id=azure-client-id",
                         "spring.kafka.bootstrap-servers=myehnamespace.servicebus.windows.net:9093"
                 )
                 .run(context -> {
                     KafkaBinderConfigurationProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                    assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "cloud-consumer-client-id");
-                    assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "cloud-client-id");
-                    assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, "cloud-client-id");
+                    Map<String, Object> mergedConsumerProperties = processor.getMergedConsumerProperties(kafkaSpringProperties);
+                    assertOAuthPropertiesConfigure(mergedConsumerProperties);
+                    assertPropertyRemoved(mergedConsumerProperties, "azure.credential.client-id");
+                    assertJaasPropertiesConfigured(mergedConsumerProperties, "azure.credential.client-id", "cloud-consumer-client-id");
+
+                    Map<String, Object> mergedProducerProperties = processor.getMergedProducerProperties(kafkaSpringProperties);
+                    assertOAuthPropertiesConfigure(mergedProducerProperties);
+                    assertPropertyRemoved(mergedProducerProperties, "azure.credential.client-id");
+                    assertJaasPropertiesConfigured(mergedProducerProperties, "azure.credential.client-id", "cloud-client-id");
+
+                    Map<String, Object> mergedAdminProperties = processor.getMergedAdminProperties(kafkaSpringProperties);
+                    assertOAuthPropertiesConfigure(mergedAdminProperties);
+                    assertPropertyRemoved(mergedAdminProperties, "azure.credential.client-id");
+                    assertJaasPropertiesConfigured(mergedAdminProperties, "azure.credential.client-id", "cloud-client-id");
                 });
     }
 
@@ -132,19 +150,19 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     void testNotBindBinderPropertiesOnBoot() {
         getContextRunnerWithEventHubsURL()
             .withPropertyValues(
-                SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
-                SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id",
+                "spring.cloud.stream.kafka.binder.configuration.azure.credential.client-id=cloud-client-id",
+                "spring.cloud.stream.kafka.binder.consumer-properties.azure.credential.client-id=cloud-consumer-client-id",
                 "spring.kafka.bootstrap-servers=myehnamespace.servicebus.windows.net:9093"
             )
             .run(context -> {
                 KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                assertFalse(kafkaProperties.getProperties().containsKey(CLIENT_ID));
-                assertFalse(kafkaProperties.buildConsumerProperties().containsKey(CLIENT_ID));
-                assertFalse(kafkaProperties.getProducer().getProperties().get(SASL_JAAS_CONFIG).contains(CLIENT_ID));
-                assertFalse(kafkaProperties.buildProducerProperties().containsKey(CLIENT_ID));
-                assertFalse(kafkaProperties.getConsumer().getProperties().get(SASL_JAAS_CONFIG).contains(CLIENT_ID));
-                assertFalse(kafkaProperties.buildAdminProperties().containsKey(CLIENT_ID));
-                assertFalse(kafkaProperties.getAdmin().getProperties().get(SASL_JAAS_CONFIG).contains(CLIENT_ID));
+                assertFalse(kafkaProperties.getProperties().containsKey("azure.credential.client-id"));
+                assertFalse(kafkaProperties.buildConsumerProperties().containsKey("azure.credential.client-id"));
+                assertFalse(kafkaProperties.getProducer().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
+                assertFalse(kafkaProperties.buildProducerProperties().containsKey("azure.credential.client-id"));
+                assertFalse(kafkaProperties.getConsumer().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
+                assertFalse(kafkaProperties.buildAdminProperties().containsKey("azure.credential.client-id"));
+                assertFalse(kafkaProperties.getAdmin().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
             });
     }
 
@@ -152,11 +170,11 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     void testOAuth2ConfiguredToCallbackHandlerWithKafkaBinderProperties() {
         getContextRunnerWithEventHubsURL()
             .withPropertyValues(
-                SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + MANAGED_IDENTITY_ENABLED + "=true"
+                "spring.cloud.stream.kafka.binder.consumer-properties.azure.credential.managed-identity-enabled=true"
             )
             .run(context -> {
                 KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
-                HashMap<String, Object> modifiedConfigs = new HashMap<>(getConsumerProperties(kafkaProperties));
+                HashMap<String, Object> modifiedConfigs = new HashMap<>(processor.getMergedConsumerProperties(kafkaProperties));
                 modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("myehnamespace.servicebus.windows.net:9093"));
                 modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
@@ -169,7 +187,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof ManagedIdentityCredential);
 
                 modifiedConfigs.clear();
-                modifiedConfigs.putAll(getProducerProperties(kafkaProperties));
+                modifiedConfigs.putAll(processor.getMergedProducerProperties(kafkaProperties));
                 modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("myehnamespace.servicebus.windows.net:9093"));
                 modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 callbackHandler.configure(modifiedConfigs, null, null);

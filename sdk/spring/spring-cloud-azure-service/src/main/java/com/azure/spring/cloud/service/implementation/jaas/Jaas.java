@@ -4,29 +4,33 @@ package com.azure.spring.cloud.service.implementation.jaas;
 
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Jaas {
 
-    public static final String JAAS_PREFIX_FORMAT = "%s %s";
-    public static final String JAAS_OPTIONS_FORMAT = " %s=\"%s\"";
+    public static final String DELIMITER = " ";
     public static final String TERMINATOR = ";";
 
     public Jaas(String loginModule) {
-        this(loginModule, "required");
+        this(loginModule, ControlFlag.REQUIRED);
     }
 
-    public Jaas(String loginModule, String controlFlag) {
+    public Jaas(String loginModule, ControlFlag controlFlag) {
         this(loginModule, controlFlag, new HashMap<>());
     }
 
-    public Jaas(String loginModule, String controlFlag, Map<String, String> options) {
-        Assert.hasText(loginModule, "The login module of JAAS should not be null");
-        Assert.hasText(controlFlag, "The control flag of JAAS should not be null");
+    public Jaas(String loginModule, ControlFlag controlFlag, Map<String, String> options) {
+        Assert.hasText(loginModule, "The login module of JAAS should not be null or empty");
+        Assert.notNull(controlFlag, "The control flag of JAAS should not be null");
         this.loginModule = loginModule;
         this.controlFlag = controlFlag;
-        this.options = options;
+        this.options = options == null ? new HashMap<>() : options;
     }
 
     /**
@@ -37,7 +41,7 @@ public class Jaas {
     /**
      * Control flag for login configuration.
      */
-    private String controlFlag;
+    private ControlFlag controlFlag;
 
     /**
      * Additional JAAS options.
@@ -52,11 +56,11 @@ public class Jaas {
         this.loginModule = loginModule;
     }
 
-    public String getControlFlag() {
+    public ControlFlag getControlFlag() {
         return this.controlFlag;
     }
 
-    public void setControlFlag(String controlFlag) {
+    public void setControlFlag(ControlFlag controlFlag) {
         this.controlFlag = controlFlag;
     }
 
@@ -76,10 +80,31 @@ public class Jaas {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(String.format(JAAS_PREFIX_FORMAT,
-            loginModule, controlFlag));
-        options.forEach((k, v) -> builder.append(String.format(JAAS_OPTIONS_FORMAT, k, v)));
-        builder.append(TERMINATOR);
-        return builder.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append(loginModule).append(DELIMITER).append(controlFlag.name().toLowerCase(Locale.ROOT));
+        for (Map.Entry<String, String> entry : options.entrySet()) {
+            builder.append(DELIMITER).append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
+        }
+        return builder.append(TERMINATOR).toString();
+    }
+
+    public enum ControlFlag {
+        REQUIRED,
+        REQUISITE,
+        SUFFICIENT,
+        OPTIONAL;
+
+        private static final Map<String, ControlFlag> CONTROL_FLAG_MAP = initMap();
+
+        private static Map<String, ControlFlag> initMap() {
+            return Collections.unmodifiableMap(Arrays.stream(ControlFlag.values())
+                .collect(Collectors.toMap(f -> f.name(), Function.identity())));
+        }
+
+        public static ControlFlag fromString(String value) {
+            return CONTROL_FLAG_MAP.get(value.toUpperCase(Locale.ROOT));
+        }
+
+
     }
 }

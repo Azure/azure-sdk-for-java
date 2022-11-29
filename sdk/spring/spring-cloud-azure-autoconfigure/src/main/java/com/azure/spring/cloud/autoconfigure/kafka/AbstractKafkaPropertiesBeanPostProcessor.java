@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Collections;
+import java.util.concurrent.atomic.*;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.jaas.Jaas;
@@ -27,12 +28,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
 
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.VERSION;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.JAAS_OPTIONS_PATTERN;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -48,8 +46,8 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_KEY = "azure.configured";
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_VALUE = "true";
-    static final String AZURE_CONFIGURED_JAAS_OPTIONS = String.format(JAAS_OPTIONS_PATTERN,
-        AZURE_CONFIGURED_JAAS_OPTIONS_KEY, AZURE_CONFIGURED_JAAS_OPTIONS_VALUE);
+    static final String AZURE_CONFIGURED_JAAS_OPTIONS =
+        AZURE_CONFIGURED_JAAS_OPTIONS_KEY + "=\"" + AZURE_CONFIGURED_JAAS_OPTIONS_VALUE + "\"";
     static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
         KafkaOAuth2AuthenticateCallbackHandler.class.getName();
     protected static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
@@ -172,7 +170,7 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     private Optional<Jaas> resolveJaasForAzure(Map<String, Object> mergedProperties) {
         if (needConfigureSaslOAuth(mergedProperties)) {
             JaasResolver resolver = new JaasResolver();
-            Jaas jaas = resolver.resolve(getSaslJaasFromKafkaOrDefault(mergedProperties))
+            Jaas jaas = resolver.resolve((String) mergedProperties.get(SASL_JAAS_CONFIG))
                 .orElse(new Jaas(OAuthBearerLoginModule.class.getName()));
             setAzurePropertiesToJaasOptionsIfAbsent(azureGlobalProperties, jaas);
             setKafkaPropertiesToJaasOptions(mergedProperties, jaas);
@@ -181,11 +179,6 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         } else {
             return Optional.empty();
         }
-    }
-
-    private String getSaslJaasFromKafkaOrDefault(Map<String, Object> mergedProperties) {
-        String jaas = (String) mergedProperties.get(SASL_JAAS_CONFIG);
-        return StringUtils.hasText(jaas) ? jaas : SASL_JAAS_CONFIG_OAUTH_PREFIX + ";";
     }
 
     private void configJaasToKafkaRawProperties(Jaas jaas, Map<String, String> rawPropertiesMap) {
@@ -274,7 +267,17 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         return saslMechanism == null || SASL_MECHANISM_OAUTH.equalsIgnoreCase(saslMechanism);
     }
     private boolean meetJaasConditions(String jaasConfig) {
-        return jaasConfig == null || jaasConfig.contains(AZURE_CONFIGURED_JAAS_OPTIONS);
+        if (jaasConfig == null) {
+            return true;
+        }
+        AtomicBoolean flag = new AtomicBoolean(false);
+        JaasResolver resolver = new JaasResolver();
+        resolver.resolve(jaasConfig).ifPresent(jaas -> {
+            if (AZURE_CONFIGURED_JAAS_OPTIONS_VALUE.equals(jaas.getOptions().get(jaas.getOptions()))) {
+             flag.set(true);
+            }
+        });
+        return flag.get();
     }
 
     private boolean meetAzureBootstrapServerConditions(Map<String, Object> sourceProperties) {

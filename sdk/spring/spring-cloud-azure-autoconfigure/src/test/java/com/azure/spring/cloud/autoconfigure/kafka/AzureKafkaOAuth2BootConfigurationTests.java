@@ -86,16 +86,27 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
     void testBindSpringBootKafkaProperties() {
         getContextRunnerWithEventHubsURL()
             .withPropertyValues(
-                SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + MANAGED_IDENTITY_ENABLED + "=true",
-                SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + MANAGED_IDENTITY_ENABLED + "=false"
+                "spring.kafka.properties.azure.credential.managed-identity-enabled=true",
+                "spring.kafka.producer.properties.azure.credential.managed-identity-enabled=false"
             )
             .run(context -> {
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
-                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "false");
-                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
+                Map<String, Object> mergedConsumerProperties = processor.getMergedConsumerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedConsumerProperties);
+                assertPropertyRemoved(mergedConsumerProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedConsumerProperties, "azure.credential.managed-identity-enabled", "true");
+
+                Map<String, Object> mergedProducerProperties = processor.getMergedProducerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedProducerProperties);
+                assertPropertyRemoved(mergedProducerProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedProducerProperties, "azure.credential.managed-identity-enabled", "false");
+
+                Map<String, Object> mergedAdminProperties = processor.getMergedAdminProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedAdminProperties);
+                assertPropertyRemoved(mergedAdminProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedAdminProperties, "azure.credential.managed-identity-enabled", "true");
             });
     }
 
@@ -103,16 +114,28 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
     void testSpringBootCommonKafkaShouldOverrideAzureGlobal() {
         getContextRunnerWithEventHubsURL()
             .withPropertyValues(
-                "spring.cloud.azure." + CLIENT_ID + "=global",
-                SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=common"
+                "spring.cloud.azure.azure.credential.client-id=global",
+                "spring.kafka.properties.azure.credential.client-id=common"
             )
             .run(context -> {
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "common");
-                assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "common");
-                assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, "common");
+
+                Map<String, Object> mergedConsumerProperties = processor.getMergedConsumerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedConsumerProperties);
+                assertPropertyRemoved(mergedConsumerProperties, "azure.credential.client-id");
+                assertJaasPropertiesConfigured(mergedConsumerProperties, "azure.credential.client-id", "common");
+
+                Map<String, Object> mergedProducerProperties = processor.getMergedProducerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedProducerProperties);
+                assertPropertyRemoved(mergedProducerProperties, "azure.credential.client-id");
+                assertJaasPropertiesConfigured(mergedProducerProperties, "azure.credential.client-id", "common");
+
+                Map<String, Object> mergedAdminProperties = processor.getMergedAdminProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedAdminProperties);
+                assertPropertyRemoved(mergedAdminProperties, "azure.credential.client-id");
+                assertJaasPropertiesConfigured(mergedAdminProperties, "azure.credential.client-id", "common");
             });
     }
 
@@ -120,16 +143,27 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
     void testSpringBootClientKafkaShouldOverrideAzureGlobal() {
         getContextRunnerWithEventHubsURL()
             .withPropertyValues(
-                "spring.cloud." + CLIENT_ID + "=global",
-                SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=client"
+                "spring.cloud.azure.credential.client-id=global",
+                "spring.kafka.producer.properties.azure.credential.client-id=client"
             )
             .run(context -> {
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 KafkaProperties kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "global");
-                assertProducerPropsConfigured(kafkaSpringProperties, CLIENT_ID, "client");
-                assertAdminPropsConfigured(kafkaSpringProperties, CLIENT_ID, "global");
+                Map<String, Object> mergedConsumerProperties = processor.getMergedConsumerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedConsumerProperties);
+                assertPropertyRemoved(mergedConsumerProperties, "azure.credential.client-id");
+                assertJaasPropertiesConfigured(mergedConsumerProperties, "azure.credential.client-id", "global");
+
+                Map<String, Object> mergedProducerProperties = processor.getMergedProducerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedProducerProperties);
+                assertPropertyRemoved(mergedProducerProperties, "azure.credential.client-id");
+                assertJaasPropertiesConfigured(mergedProducerProperties, "azure.credential.client-id", "client");
+
+                Map<String, Object> mergedAdminProperties = processor.getMergedAdminProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedAdminProperties);
+                assertPropertyRemoved(mergedAdminProperties, "azure.credential.client-id");
+                assertJaasPropertiesConfigured(mergedAdminProperties, "azure.credential.client-id", "global");
             });
     }
 
@@ -137,10 +171,10 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
     void testOAuthConfiguredToCallbackHandler() {
         getContextRunnerWithEventHubsURL()
             .withPropertyValues(
-                SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + MANAGED_IDENTITY_ENABLED + "=true"
+                "spring.kafka.producer.properties.azure.credential.managed-identity-enabled=true"
             )
             .run(context -> {
-                HashMap<String, Object> modifiedConfigs = new HashMap<>(getProducerProperties(getKafkaSpringProperties(context)));
+                HashMap<String, Object> modifiedConfigs = new HashMap<>(processor.getMergedProducerProperties(getKafkaSpringProperties(context)));
                 modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
                 callbackHandler.configure(modifiedConfigs, null, null);
@@ -152,7 +186,7 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 assertNotNull(azureTokenCredentialResolver);
                 assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof ManagedIdentityCredential);
 
-                Map<String, Object> consumerProperties = getConsumerProperties(getKafkaSpringProperties(context));
+                Map<String, Object> consumerProperties = processor.getMergedConsumerProperties(getKafkaSpringProperties(context));
                 modifiedConfigs.clear();
                 modifiedConfigs.putAll(consumerProperties);
                 modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
@@ -172,7 +206,7 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 "spring.cloud.azure.credential.managed-identity-enabled=true"
             )
             .run(context -> {
-                HashMap<String, Object> modifiedConfigs = new HashMap<>(getProducerProperties(getKafkaSpringProperties(context)));
+                HashMap<String, Object> modifiedConfigs = new HashMap<>(processor.getMergedProducerProperties(getKafkaSpringProperties(context)));
                 modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
                 callbackHandler.configure(modifiedConfigs, null, null);

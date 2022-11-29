@@ -3,20 +3,18 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.kafka.AbstractKafkaPropertiesBeanPostProcessor.AZURE_CONFIGURED_JAAS_OPTIONS;
+import static com.azure.spring.cloud.autoconfigure.kafka.AbstractKafkaPropertiesBeanPostProcessor.AZURE_CONFIGURED_JAAS_OPTIONS_KEY;
+import static com.azure.spring.cloud.autoconfigure.kafka.AbstractKafkaPropertiesBeanPostProcessor.AZURE_CONFIGURED_JAAS_OPTIONS_VALUE;
 import static com.azure.spring.cloud.autoconfigure.kafka.AbstractKafkaPropertiesBeanPostProcessor.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.kafka.AbstractKafkaPropertiesBeanPostProcessor.SASL_MECHANISM_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.kafka.AbstractKafkaPropertiesBeanPostProcessor.SECURITY_PROTOCOL_CONFIG_SASL;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
@@ -26,11 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B> {
-    protected static final String SPRING_BOOT_KAFKA_PROPERTIES_PREFIX = "spring.kafka.properties.";
-    protected static final String SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX = "spring.kafka.producer.properties.";
-    protected static final String CLIENT_ID = "azure.credential.client-id";
-    protected static final String MANAGED_IDENTITY_ENABLED = "azure.credential.managed-identity-enabled";
+abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B extends AbstractKafkaPropertiesBeanPostProcessor> {
 
     protected abstract ApplicationContextRunner getContextRunnerWithEventHubsURL();
     protected abstract ApplicationContextRunner getContextRunnerWithoutEventHubsURL();
@@ -52,9 +46,20 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B> {
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertTrue(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 P kafkaSpringProperties = getKafkaSpringProperties(context);
-                assertConsumerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
-                assertProducerPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
-                assertAdminPropsConfigured(kafkaSpringProperties, MANAGED_IDENTITY_ENABLED, "true");
+                Map<String, Object> mergedConsumerProperties = processor.getMergedConsumerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedConsumerProperties);
+                assertPropertyRemoved(mergedConsumerProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedConsumerProperties, "azure.credential.managed-identity-enabled", "true");
+
+                Map<String, Object> mergedProducerProperties = processor.getMergedProducerProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedProducerProperties);
+                assertPropertyRemoved(mergedProducerProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedProducerProperties, "azure.credential.managed-identity-enabled", "true");
+
+                Map<String, Object> mergedAdminProperties = processor.getMergedAdminProperties(kafkaSpringProperties);
+                assertOAuthPropertiesConfigure(mergedAdminProperties);
+                assertPropertyRemoved(mergedAdminProperties, "azure.credential.managed-identity-enabled");
+                assertJaasPropertiesConfigured(mergedAdminProperties, "azure.credential.managed-identity-enabled", "true");
             });
     }
 
@@ -63,74 +68,33 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B> {
     void testNotBindSpringBootKafkaProperties() {
         getContextRunnerWithoutEventHubsURL()
             .withPropertyValues(
-                SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + MANAGED_IDENTITY_ENABLED + "=true"
+                    "spring.kafka.properties.azure.credential.managed-identity-enabled=true"
             )
             .run(context -> {
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                 assertFalse(azureGlobalProperties.getCredential().isManagedIdentityEnabled());
                 P kafkaSpringProperties = getKafkaSpringProperties(context);
-                Map<String, Object> consumerProperties = getConsumerProperties(kafkaSpringProperties);
-                assertFalse(consumerProperties.containsKey(MANAGED_IDENTITY_ENABLED));
-                String adminJaasProperties = getAdminJaasProperties(kafkaSpringProperties);
-                assertNull(adminJaasProperties);
+                Map<String, Object> consumerProperties = processor.getMergedConsumerProperties(kafkaSpringProperties);
+                assertPropertyRemoved(consumerProperties, "azure.credential.managed-identity-enabled");
+                assertNull(processor.getMergedAdminProperties(kafkaSpringProperties).get(SASL_JAAS_CONFIG));
             });
     }
 
-    protected Map<String, Object> getProducerProperties(P properties) {
-        return ReflectionTestUtils.invokeMethod(processor,
-            "getMergedProducerProperties", properties);
+    protected void assertOAuthPropertiesConfigure(Map<String, Object> configs) {
+        assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, configs.get(SECURITY_PROTOCOL_CONFIG));
+        assertEquals(SASL_MECHANISM_OAUTH, configs.get(SASL_MECHANISM));
+        assertTrue(((String) configs.get(SASL_JAAS_CONFIG)).startsWith("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required"));
+        assertTrue(((String) configs.get(SASL_JAAS_CONFIG)).contains(AZURE_CONFIGURED_JAAS_OPTIONS_KEY + "=\"" + AZURE_CONFIGURED_JAAS_OPTIONS_VALUE + "\""));
+        assertEquals(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH, configs.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
     }
 
-    protected Map<String, Object> getConsumerProperties(P properties) {
-        return ReflectionTestUtils.invokeMethod(processor,
-            "getMergedConsumerProperties", properties);
-    }
-
-    protected Map<String, Object> getAdminProperties(P properties) {
-        return ReflectionTestUtils.invokeMethod(processor,
-            "getMergedAdminProperties", properties);
-    }
-
-    protected String getProducerJaasProperties(P properties) {
-        return (String) getProducerProperties(properties).get(SASL_JAAS_CONFIG);
-    }
-
-    protected String getConsumerJaasProperties(P properties) {
-        return (String) getConsumerProperties(properties).get(SASL_JAAS_CONFIG);
-    }
-
-    protected String getAdminJaasProperties(P properties) {
-        return (String) getAdminProperties(properties).get(SASL_JAAS_CONFIG);
-    }
-
-    protected void shouldConfigureOAuthProperties(Map<String, Object> configurationProperties) {
-        assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, configurationProperties.get(SECURITY_PROTOCOL_CONFIG));
-        assertEquals(SASL_MECHANISM_OAUTH, configurationProperties.get(SASL_MECHANISM));
-        assertTrue(((String) configurationProperties.get(SASL_JAAS_CONFIG)).startsWith(SASL_JAAS_CONFIG_OAUTH_PREFIX));
-        assertTrue(((String) configurationProperties.get(SASL_JAAS_CONFIG)).contains(AZURE_CONFIGURED_JAAS_OPTIONS));
-        assertEquals(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH,
-                configurationProperties.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
-    }
-
-    protected void assertConsumerPropsConfigured(P properties, String key, String value) {
-        assertPropertiesConfigured(getConsumerProperties(properties), getConsumerJaasProperties(properties),
-            key, value);
-    }
-
-    protected void assertProducerPropsConfigured(P properties, String key, String value) {
-        assertPropertiesConfigured(getProducerProperties(properties), getProducerJaasProperties(properties),
-            key, value);
-    }
-
-    protected void assertAdminPropsConfigured(P properties, String key, String value) {
-        assertPropertiesConfigured(getAdminProperties(properties), getAdminJaasProperties(properties),
-            key, value);
-    }
-
-    protected void assertPropertiesConfigured(Map<String, Object> configs, String jaas, String key, String value) {
-        shouldConfigureOAuthProperties(configs);
+    protected void assertPropertyRemoved(Map<String, Object> configs, String key) {
         assertFalse(configs.containsKey(key));
-        assertTrue(jaas.contains(String.format(AzureKafkaPropertiesUtils.JAAS_OPTIONS_PATTERN, key, value)));
+    }
+
+    protected void assertJaasPropertiesConfigured(Map<String, Object> configs, String key, String value) {
+        String jaas = (String) configs.get(SASL_JAAS_CONFIG);
+        assertTrue(jaas.contains(key.concat("=\"").concat(value).concat("\"")));
     }
 
 }
