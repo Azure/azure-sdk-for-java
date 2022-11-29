@@ -18,7 +18,7 @@ import java.util.Map;
 /** Samples for ProjectEnvironmentTypes Update. */
 public final class ProjectEnvironmentTypesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/ProjectEnvironmentTypes_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Patch.json
      */
     /**
      * Sample code: ProjectEnvironmentTypes_Update.
@@ -27,10 +27,7 @@ public final class ProjectEnvironmentTypesUpdateSamples {
      */
     public static void projectEnvironmentTypesUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         ProjectEnvironmentType resource =
-            manager
-                .projectEnvironmentTypes()
-                .getWithResponse("rg1", "ContosoProj", "{environmentTypeName}", Context.NONE)
-                .getValue();
+            manager.projectEnvironmentTypes().getWithResponse("rg1", "ContosoProj", "DevTest", Context.NONE).getValue();
         resource
             .update()
             .withTags(mapOf("CostCenter", "RnD"))

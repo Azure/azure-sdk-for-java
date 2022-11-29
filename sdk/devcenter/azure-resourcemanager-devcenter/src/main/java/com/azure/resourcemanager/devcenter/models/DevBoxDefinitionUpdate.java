@@ -117,6 +117,33 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     }
 
     /**
+     * Get the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
+     * hibernation. Not all images are capable of supporting hibernation. To find out more see
+     * https://aka.ms/devbox/hibernate.
+     *
+     * @return the hibernateSupport value.
+     */
+    public HibernateSupport hibernateSupport() {
+        return this.innerProperties() == null ? null : this.innerProperties().hibernateSupport();
+    }
+
+    /**
+     * Set the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
+     * hibernation. Not all images are capable of supporting hibernation. To find out more see
+     * https://aka.ms/devbox/hibernate.
+     *
+     * @param hibernateSupport the hibernateSupport value to set.
+     * @return the DevBoxDefinitionUpdate object itself.
+     */
+    public DevBoxDefinitionUpdate withHibernateSupport(HibernateSupport hibernateSupport) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DevBoxDefinitionUpdateProperties();
+        }
+        this.innerProperties().withHibernateSupport(hibernateSupport);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

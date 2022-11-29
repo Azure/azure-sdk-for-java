@@ -2,6 +2,16 @@
 
 ## 2.21.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.21.0 (2022-11-24)
+
 ### Breaking Changes
 
 - Property `uri` removed from class `GalleryArtifactVersionSource`. This property was non-functional.

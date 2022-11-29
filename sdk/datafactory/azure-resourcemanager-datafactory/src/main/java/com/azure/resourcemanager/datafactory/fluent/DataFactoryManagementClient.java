@@ -164,6 +164,13 @@ public interface DataFactoryManagementClient {
     ManagedPrivateEndpointsClient getManagedPrivateEndpoints();
 
     /**
+     * Gets the CredentialOperationsClient object to access its operations.
+     *
+     * @return the CredentialOperationsClient object.
+     */
+    CredentialOperationsClient getCredentialOperations();
+
+    /**
      * Gets the PrivateEndPointConnectionsClient object to access its operations.
      *
      * @return the PrivateEndPointConnectionsClient object.
