@@ -62,8 +62,8 @@ public class BlockBlobItem {
      * @param versionId The version identifier of the block blob.
      */
     public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-    final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
-    final String versionId) {
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
