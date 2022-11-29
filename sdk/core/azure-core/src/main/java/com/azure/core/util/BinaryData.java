@@ -472,6 +472,7 @@ public final class BinaryData {
         });
     }
 
+    // TODO (jaschrep): do not merge to main, temporary implementation
     /**
      * Wraps a flux in a binary data without any asynchronous consumption. Flux is considered not replayable.
      *
