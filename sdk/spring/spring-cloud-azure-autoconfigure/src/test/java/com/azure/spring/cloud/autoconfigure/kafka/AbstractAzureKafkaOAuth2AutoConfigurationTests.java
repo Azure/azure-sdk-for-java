@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B extends AbstractKafkaPropertiesBeanPostProcessor> {
+abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests<P, B extends AbstractKafkaPropertiesBeanPostProcessor<P>> {
 
     protected abstract ApplicationContextRunner getContextRunnerWithEventHubsURL();
     protected abstract ApplicationContextRunner getContextRunnerWithoutEventHubsURL();

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Collections;
-import java.util.concurrent.atomic.*;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.jaas.Jaas;
@@ -46,8 +45,6 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_KEY = "azure.configured";
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_VALUE = "true";
-    static final String AZURE_CONFIGURED_JAAS_OPTIONS =
-        AZURE_CONFIGURED_JAAS_OPTIONS_KEY + "=\"" + AZURE_CONFIGURED_JAAS_OPTIONS_VALUE + "\"";
     static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
         KafkaOAuth2AuthenticateCallbackHandler.class.getName();
     protected static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
@@ -270,14 +267,11 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         if (jaasConfig == null) {
             return true;
         }
-        AtomicBoolean flag = new AtomicBoolean(false);
         JaasResolver resolver = new JaasResolver();
-        resolver.resolve(jaasConfig).ifPresent(jaas -> {
-            if (AZURE_CONFIGURED_JAAS_OPTIONS_VALUE.equals(jaas.getOptions().get(jaas.getOptions()))) {
-             flag.set(true);
-            }
-        });
-        return flag.get();
+        return resolver.resolve(jaasConfig)
+                .map(jaas -> AZURE_CONFIGURED_JAAS_OPTIONS_VALUE.equals(
+                        jaas.getOptions().get(AZURE_CONFIGURED_JAAS_OPTIONS_KEY)))
+                .orElse(false);
     }
 
     private boolean meetAzureBootstrapServerConditions(Map<String, Object> sourceProperties) {

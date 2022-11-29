@@ -105,6 +105,5 @@ public class Jaas {
             return CONTROL_FLAG_MAP.get(value.toUpperCase(Locale.ROOT));
         }
 
-
     }
 }
