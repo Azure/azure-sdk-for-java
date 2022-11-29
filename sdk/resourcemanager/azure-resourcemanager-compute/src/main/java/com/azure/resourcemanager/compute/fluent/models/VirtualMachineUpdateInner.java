@@ -57,6 +57,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of VirtualMachineUpdateInner class. */
+    public VirtualMachineUpdateInner() {
+    }
+
     /**
      * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
      * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable

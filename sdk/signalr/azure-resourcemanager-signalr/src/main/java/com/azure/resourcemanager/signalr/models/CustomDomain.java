@@ -60,6 +60,13 @@ public interface CustomDomain {
     ResourceReference customCertificate();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.signalr.fluent.models.CustomDomainInner object.
      *
      * @return the inner object.

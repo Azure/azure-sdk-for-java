@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The cluster definition. */
 @Fluent
 public final class ClusterDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterDefinition.class);
-
     /*
      * The link to the blueprint.
      */
@@ -40,6 +36,10 @@ public final class ClusterDefinition {
      */
     @JsonProperty(value = "configurations")
     private Object configurations;
+
+    /** Creates an instance of ClusterDefinition class. */
+    public ClusterDefinition() {
+    }
 
     /**
      * Get the blueprint property: The link to the blueprint.

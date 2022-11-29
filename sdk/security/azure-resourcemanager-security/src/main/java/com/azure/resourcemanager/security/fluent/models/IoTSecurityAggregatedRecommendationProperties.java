@@ -71,6 +71,10 @@ public final class IoTSecurityAggregatedRecommendationProperties {
     @JsonProperty(value = "logAnalyticsQuery", access = JsonProperty.Access.WRITE_ONLY)
     private String logAnalyticsQuery;
 
+    /** Creates an instance of IoTSecurityAggregatedRecommendationProperties class. */
+    public IoTSecurityAggregatedRecommendationProperties() {
+    }
+
     /**
      * Get the recommendationName property: Name of the recommendation.
      *

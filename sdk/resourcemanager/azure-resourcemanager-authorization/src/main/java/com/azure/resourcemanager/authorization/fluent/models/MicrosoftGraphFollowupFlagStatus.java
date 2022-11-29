@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphFollowupFlagStatus. */
+/** followupFlagStatus. */
 public final class MicrosoftGraphFollowupFlagStatus extends ExpandableStringEnum<MicrosoftGraphFollowupFlagStatus> {
     /** Static value notFlagged for MicrosoftGraphFollowupFlagStatus. */
     public static final MicrosoftGraphFollowupFlagStatus NOT_FLAGGED = fromString("notFlagged");
@@ -30,7 +30,11 @@ public final class MicrosoftGraphFollowupFlagStatus extends ExpandableStringEnum
         return fromString(name, MicrosoftGraphFollowupFlagStatus.class);
     }
 
-    /** @return known MicrosoftGraphFollowupFlagStatus values. */
+    /**
+     * Gets known MicrosoftGraphFollowupFlagStatus values.
+     *
+     * @return known MicrosoftGraphFollowupFlagStatus values.
+     */
     public static Collection<MicrosoftGraphFollowupFlagStatus> values() {
         return values(MicrosoftGraphFollowupFlagStatus.class);
     }

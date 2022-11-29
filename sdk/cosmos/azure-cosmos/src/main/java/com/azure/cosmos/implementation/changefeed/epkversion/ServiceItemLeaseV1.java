@@ -6,12 +6,11 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -150,17 +149,11 @@ public class ServiceItemLeaseV1 implements Lease {
 
         //  Lease token are stored in Base64 encoded json - and contains the complete ChangeFeedState
         ChangeFeedState changeFeedState = ChangeFeedStateV1.fromString(this.continuationToken);
-        //  Calculating this token from epk based lease format
-        //  This token is then used to pass as lsn in form of etag.
-        String token = changeFeedState.getContinuation().getCurrentContinuationToken().getToken();
-        //  This token has extra quotes
-        token = token.replace("\"", "");
-
         return new ChangeFeedStateV1(
             containerRid,
             this.feedRangeInternal,
             changeFeedMode,
-            ChangeFeedStartFromInternal.createFromETagAndFeedRange(token, this.feedRangeInternal),
+            changeFeedState.getStartFromSettings(),
             changeFeedState.getContinuation());
     }
 

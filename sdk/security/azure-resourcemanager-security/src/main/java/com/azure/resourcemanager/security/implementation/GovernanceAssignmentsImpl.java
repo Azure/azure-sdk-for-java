@@ -37,15 +37,6 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
         return Utils.mapPage(inner, inner1 -> new GovernanceAssignmentImpl(inner1, this.manager()));
     }
 
-    public GovernanceAssignment get(String scope, String assessmentName, String assignmentKey) {
-        GovernanceAssignmentInner inner = this.serviceClient().get(scope, assessmentName, assignmentKey);
-        if (inner != null) {
-            return new GovernanceAssignmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<GovernanceAssignment> getWithResponse(
         String scope, String assessmentName, String assignmentKey, Context context) {
         Response<GovernanceAssignmentInner> inner =
@@ -61,13 +52,22 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
         }
     }
 
-    public void delete(String scope, String assessmentName, String assignmentKey) {
-        this.serviceClient().delete(scope, assessmentName, assignmentKey);
+    public GovernanceAssignment get(String scope, String assessmentName, String assignmentKey) {
+        GovernanceAssignmentInner inner = this.serviceClient().get(scope, assessmentName, assignmentKey);
+        if (inner != null) {
+            return new GovernanceAssignmentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String scope, String assessmentName, String assignmentKey, Context context) {
         return this.serviceClient().deleteWithResponse(scope, assessmentName, assignmentKey, context);
+    }
+
+    public void delete(String scope, String assessmentName, String assignmentKey) {
+        this.serviceClient().delete(scope, assessmentName, assignmentKey);
     }
 
     public GovernanceAssignment getById(String id) {

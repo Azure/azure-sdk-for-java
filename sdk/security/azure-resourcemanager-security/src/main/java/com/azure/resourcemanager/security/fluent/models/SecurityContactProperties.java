@@ -38,6 +38,10 @@ public final class SecurityContactProperties {
     @JsonProperty(value = "notificationsByRole")
     private SecurityContactPropertiesNotificationsByRole notificationsByRole;
 
+    /** Creates an instance of SecurityContactProperties class. */
+    public SecurityContactProperties() {
+    }
+
     /**
      * Get the emails property: List of email addresses which will get notifications from Microsoft Defender for Cloud
      * by the configurations defined in this security contact.

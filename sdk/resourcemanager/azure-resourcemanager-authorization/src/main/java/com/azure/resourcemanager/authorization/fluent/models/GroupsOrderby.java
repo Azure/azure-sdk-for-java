@@ -33,7 +33,11 @@ public final class GroupsOrderby extends ExpandableStringEnum<GroupsOrderby> {
         return fromString(name, GroupsOrderby.class);
     }
 
-    /** @return known GroupsOrderby values. */
+    /**
+     * Gets known GroupsOrderby values.
+     *
+     * @return known GroupsOrderby values.
+     */
     public static Collection<GroupsOrderby> values() {
         return values(GroupsOrderby.class);
     }

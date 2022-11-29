@@ -43,6 +43,10 @@ public final class SecureScoreControlDefinitionItemProperties {
     @JsonProperty(value = "assessmentDefinitions", access = JsonProperty.Access.WRITE_ONLY)
     private List<AzureResourceLink> assessmentDefinitions;
 
+    /** Creates an instance of SecureScoreControlDefinitionItemProperties class. */
+    public SecureScoreControlDefinitionItemProperties() {
+    }
+
     /**
      * Get the displayName property: User friendly display name of the control.
      *

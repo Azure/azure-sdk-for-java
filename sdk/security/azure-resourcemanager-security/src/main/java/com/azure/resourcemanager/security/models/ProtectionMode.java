@@ -36,6 +36,10 @@ public final class ProtectionMode {
     @JsonProperty(value = "executable")
     private EnforcementMode executable;
 
+    /** Creates an instance of ProtectionMode class. */
+    public ProtectionMode() {
+    }
+
     /**
      * Get the exe property: The application control policy enforcement/protection mode of the machine group.
      *

@@ -28,6 +28,10 @@ public final class ConnectedResource {
     @JsonProperty(value = "udpPorts", access = JsonProperty.Access.WRITE_ONLY)
     private String udpPorts;
 
+    /** Creates an instance of ConnectedResource class. */
+    public ConnectedResource() {
+    }
+
     /**
      * Get the connectedResourceId property: The Azure resource id of the connected resource.
      *

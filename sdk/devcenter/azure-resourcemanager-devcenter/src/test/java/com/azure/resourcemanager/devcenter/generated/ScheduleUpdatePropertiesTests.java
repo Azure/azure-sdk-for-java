@@ -18,13 +18,13 @@ public final class ScheduleUpdatePropertiesTests {
         ScheduleUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"zxltjcvn\",\"timeZone\":\"tiugcxnav\",\"state\":\"Enabled\"}")
+                    "{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jxqugjhky\",\"timeZone\":\"beddgssofw\",\"state\":\"Disabled\"}")
                 .toObject(ScheduleUpdateProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("zxltjcvn", model.time());
-        Assertions.assertEquals("tiugcxnav", model.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("jxqugjhky", model.time());
+        Assertions.assertEquals("beddgssofw", model.timeZone());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.state());
     }
 
     @Test
@@ -33,14 +33,14 @@ public final class ScheduleUpdatePropertiesTests {
             new ScheduleUpdateProperties()
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("zxltjcvn")
-                .withTimeZone("tiugcxnav")
-                .withState(EnableStatus.ENABLED);
+                .withTime("jxqugjhky")
+                .withTimeZone("beddgssofw")
+                .withState(EnableStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleUpdateProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("zxltjcvn", model.time());
-        Assertions.assertEquals("tiugcxnav", model.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("jxqugjhky", model.time());
+        Assertions.assertEquals("beddgssofw", model.timeZone());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.state());
     }
 }

@@ -86,6 +86,22 @@ public final class SharedGalleryImageProperties {
     @JsonProperty(value = "architecture")
     private Architecture architecture;
 
+    /*
+     * Privacy statement uri for the current community gallery image.
+     */
+    @JsonProperty(value = "privacyStatementUri")
+    private String privacyStatementUri;
+
+    /*
+     * End-user license agreement for the current community gallery image.
+     */
+    @JsonProperty(value = "eula")
+    private String eula;
+
+    /** Creates an instance of SharedGalleryImageProperties class. */
+    public SharedGalleryImageProperties() {
+    }
+
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
      * creating a VM from a managed image. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
@@ -295,6 +311,46 @@ public final class SharedGalleryImageProperties {
      */
     public SharedGalleryImageProperties withArchitecture(Architecture architecture) {
         this.architecture = architecture;
+        return this;
+    }
+
+    /**
+     * Get the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @return the privacyStatementUri value.
+     */
+    public String privacyStatementUri() {
+        return this.privacyStatementUri;
+    }
+
+    /**
+     * Set the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @param privacyStatementUri the privacyStatementUri value to set.
+     * @return the SharedGalleryImageProperties object itself.
+     */
+    public SharedGalleryImageProperties withPrivacyStatementUri(String privacyStatementUri) {
+        this.privacyStatementUri = privacyStatementUri;
+        return this;
+    }
+
+    /**
+     * Get the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @return the eula value.
+     */
+    public String eula() {
+        return this.eula;
+    }
+
+    /**
+     * Set the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @param eula the eula value to set.
+     * @return the SharedGalleryImageProperties object itself.
+     */
+    public SharedGalleryImageProperties withEula(String eula) {
+        this.eula = eula;
         return this;
     }
 

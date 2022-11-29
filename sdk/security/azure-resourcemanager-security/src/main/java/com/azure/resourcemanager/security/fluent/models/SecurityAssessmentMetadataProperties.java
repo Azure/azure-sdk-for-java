@@ -92,6 +92,10 @@ public class SecurityAssessmentMetadataProperties {
     @JsonProperty(value = "partnerData")
     private SecurityAssessmentMetadataPartnerData partnerData;
 
+    /** Creates an instance of SecurityAssessmentMetadataProperties class. */
+    public SecurityAssessmentMetadataProperties() {
+    }
+
     /**
      * Get the displayName property: User friendly display name of the assessment.
      *

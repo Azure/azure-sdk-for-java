@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The version capability. */
 @Fluent
 public final class VersionsCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VersionsCapability.class);
-
     /*
      * The list of version capabilities.
      */
     @JsonProperty(value = "available")
     private List<VersionSpec> available;
+
+    /** Creates an instance of VersionsCapability class. */
+    public VersionsCapability() {
+    }
 
     /**
      * Get the available property: The list of version capabilities.

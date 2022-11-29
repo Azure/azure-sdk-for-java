@@ -6,6 +6,7 @@ package com.azure.core.http.vertx;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -19,12 +20,10 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.security.SecureRandom;
-import java.util.Collection;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DeadlockTests {
@@ -62,20 +61,20 @@ public class DeadlockTests {
         String endpoint = server.baseUrl() + GET_ENDPOINT;
 
         Mono<Tuple2<byte[], Integer>> request = httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
-            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())
+            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), 1024 * 1024)
                 .map(bytes -> Tuples.of(bytes, response.getStatusCode())));
 
-        Collection<Tuple2<byte[], Integer>> results = Flux.range(0, 100)
+        List<Tuple2<byte[], Integer>> results = Flux.range(0, 100)
             .parallel()
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> request)
-            .collect(() -> new ConcurrentLinkedQueue<Tuple2<byte[], Integer>>(), Collection::add)
             .sequential()
-            .blockLast();
+            .collectList()
+            .block();
 
         for (Tuple2<byte[], Integer> result : results) {
             assertEquals(200, result.getT2());
-            assertArrayEquals(expectedGetBytes, result.getT1());
+            TestUtils.assertArraysEqual(expectedGetBytes, result.getT1());
         }
     }
 }

@@ -26,6 +26,10 @@ public final class MicrosoftGraphWorkbookChartLineFormat extends MicrosoftGraphE
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartLineFormat class. */
+    public MicrosoftGraphWorkbookChartLineFormat() {
+    }
+
     /**
      * Get the color property: HTML color code representing the color of lines in the chart.
      *

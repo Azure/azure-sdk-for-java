@@ -41,18 +41,6 @@ public interface ConnectorsClient {
      * Details of a specific cloud account connector.
      *
      * @param connectorName Name of the cloud account connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectorSettingInner get(String connectorName);
-
-    /**
-     * Details of a specific cloud account connector.
-     *
-     * @param connectorName Name of the cloud account connector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,18 +51,16 @@ public interface ConnectorsClient {
     Response<ConnectorSettingInner> getWithResponse(String connectorName, Context context);
 
     /**
-     * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
-     * account credentials or role-based authentication. For GCP, use account organization credentials.
+     * Details of a specific cloud account connector.
      *
      * @param connectorName Name of the cloud account connector.
-     * @param connectorSetting Settings for the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the connector setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectorSettingInner createOrUpdate(String connectorName, ConnectorSettingInner connectorSetting);
+    ConnectorSettingInner get(String connectorName);
 
     /**
      * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
@@ -93,15 +79,18 @@ public interface ConnectorsClient {
         String connectorName, ConnectorSettingInner connectorSetting, Context context);
 
     /**
-     * Delete a cloud account connector from a subscription.
+     * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
+     * account credentials or role-based authentication. For GCP, use account organization credentials.
      *
      * @param connectorName Name of the cloud account connector.
+     * @param connectorSetting Settings for the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connector setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String connectorName);
+    ConnectorSettingInner createOrUpdate(String connectorName, ConnectorSettingInner connectorSetting);
 
     /**
      * Delete a cloud account connector from a subscription.
@@ -115,4 +104,15 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String connectorName, Context context);
+
+    /**
+     * Delete a cloud account connector from a subscription.
+     *
+     * @param connectorName Name of the cloud account connector.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String connectorName);
 }

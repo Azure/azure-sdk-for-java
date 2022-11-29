@@ -39,6 +39,10 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphBaseItemVersion class. */
+    public MicrosoftGraphBaseItemVersion() {
+    }
+
     /**
      * Get the lastModifiedBy property: identitySet.
      *

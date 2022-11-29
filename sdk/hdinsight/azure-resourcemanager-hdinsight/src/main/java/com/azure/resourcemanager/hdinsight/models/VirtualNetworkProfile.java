@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The virtual network properties. */
 @Fluent
 public final class VirtualNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkProfile.class);
-
     /*
      * The ID of the virtual network.
      */
@@ -25,6 +21,10 @@ public final class VirtualNetworkProfile {
      */
     @JsonProperty(value = "subnet")
     private String subnet;
+
+    /** Creates an instance of VirtualNetworkProfile class. */
+    public VirtualNetworkProfile() {
+    }
 
     /**
      * Get the id property: The ID of the virtual network.

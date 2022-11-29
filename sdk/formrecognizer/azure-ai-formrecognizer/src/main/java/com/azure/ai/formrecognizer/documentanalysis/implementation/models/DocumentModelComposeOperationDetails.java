@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Get Operation response object. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -19,6 +21,9 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
      */
     @JsonProperty(value = "result")
     private DocumentModelDetails result;
+
+    /** Creates an instance of DocumentModelComposeOperationDetails class. */
+    public DocumentModelComposeOperationDetails() {}
 
     /**
      * Get the result property: Operation result upon success.
@@ -37,6 +42,69 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
      */
     public DocumentModelComposeOperationDetails setResult(DocumentModelDetails result) {
         this.result = result;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setOperationId(String operationId) {
+        super.setOperationId(operationId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setStatus(OperationStatus status) {
+        super.setStatus(status);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setPercentCompleted(Integer percentCompleted) {
+        super.setPercentCompleted(percentCompleted);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setCreatedDateTime(OffsetDateTime createdDateTime) {
+        super.setCreatedDateTime(createdDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
+        super.setLastUpdatedDateTime(lastUpdatedDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setResourceLocation(String resourceLocation) {
+        super.setResourceLocation(resourceLocation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setApiVersion(String apiVersion) {
+        super.setApiVersion(apiVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setTags(Map<String, String> tags) {
+        super.setTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelComposeOperationDetails setError(Error error) {
+        super.setError(error);
         return this;
     }
 }

@@ -22,6 +22,10 @@ public final class GalleryExtendedLocation {
     @JsonProperty(value = "type")
     private GalleryExtendedLocationType type;
 
+    /** Creates an instance of GalleryExtendedLocation class. */
+    public GalleryExtendedLocation() {
+    }
+
     /**
      * Get the name property: The name property.
      *
