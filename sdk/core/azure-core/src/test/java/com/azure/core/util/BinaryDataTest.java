@@ -71,6 +71,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -293,31 +294,28 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void wrapFluxLazy() {
+    public void wrapFluxLazyKnownLength() {
+        final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
+        final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
+        final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
+        final long expectedLength = expected.length;
+
+        // Act & Assert
+        BinaryData actual = BinaryData.wrapFlux(dataFlux, expectedLength);
+        assertEquals(expectedLength, actual.getLength());
+        assertArrayEquals(expected, actual.toBytes());
+    }
+
+    @Test
+    public void wrapFluxLazyUnknownLength() {
         final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
         final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
 
         // Act & Assert
-        Arrays.asList((long) expected.length, null).forEach(
-            providedLength -> {
-                BinaryData actual = BinaryData.wrapFlux(dataFlux, providedLength);
-                assertArrayEquals(expected, actual.toBytes());
-                // toBytes buffers and reveals length
-                assertEquals(expected.length, actual.getLength());
-
-                actual = BinaryData.wrapFlux(dataFlux, providedLength);
-                // Assert that length isn't computed eagerly.
-                assertEquals(providedLength, actual.getLength());
-
-                // Verify that data isn't buffered
-                StepVerifier.create(BinaryData.wrapFlux(dataFlux, providedLength, false)
-                        .toFluxByteBuffer()
-                        .count())
-                    .assertNext(actualCount -> assertEquals(2, actualCount))
-                    .verifyComplete();
-            }
-        );
+        BinaryData actual = BinaryData.wrapFlux(dataFlux, null);
+        assertNull(actual.getLength());
+        assertArrayEquals(expected, actual.toBytes());
     }
 
     @ParameterizedTest
