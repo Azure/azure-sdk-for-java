@@ -42,6 +42,10 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
      */
     private String database;
     /**
+     * Max Degree of Parallelism for the Cosmos DB. Setting the value to -1 will lead to the SDK deciding the optimal value.
+     */
+    private Integer maxDegreeOfParallelism;
+    /**
      * Resource token to authenticate for accessing the Cosmos DB.
      */
     private String resourceToken;
@@ -116,6 +120,10 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
         return endpoint;
     }
 
+    public Integer getMaxDegreeOfParallelism() {
+        return maxDegreeOfParallelism;
+    }
+
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
@@ -131,6 +139,10 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
 
     public String getResourceToken() {
         return resourceToken;
+    }
+
+    public void setMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
+        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
     }
 
     public void setResourceToken(String resourceToken) {
