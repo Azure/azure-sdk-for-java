@@ -9,14 +9,7 @@ import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
 import com.azure.ai.anomalydetector.models.TimeGranularity;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Configuration;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,23 +33,14 @@ public class DetectChangePoints {
      * @throws IOException Exception thrown when there is an error in reading all the lines from the csv file.
      */
     public static void main(final String[] args) throws IOException {
-        String endpoint = "<anomaly-detector-resource-endpoint>";
-        String key = "<anomaly-detector-resource-key>";
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
+        String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
-        HttpHeaders headers = new HttpHeaders()
-            .put("Accept", ContentType.APPLICATION_JSON);
-
-        HttpPipelinePolicy authPolicy = new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key",
-            new AzureKeyCredential(key));
-        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
-            .policies(authPolicy, addHeadersPolicy).build();
-        // Instantiate a client that will be used to call the service.
-        AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
-            .pipeline(httpPipeline)
-            .endpoint(endpoint)
-            .buildClient();
+        AnomalyDetectorClient anomalyDetectorClient =
+            new AnomalyDetectorClientBuilder()
+                .credential(new AzureKeyCredential(key))
+                .endpoint(endpoint)
+                .buildClient();
 
         // Read the time series from csv file and organize the time series into list of TimeSeriesPoint.
         // The sample csv file has no header, and it contains 2 columns, namely timestamp and value.

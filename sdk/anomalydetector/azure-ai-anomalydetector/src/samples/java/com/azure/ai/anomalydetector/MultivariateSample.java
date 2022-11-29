@@ -19,19 +19,10 @@ import com.azure.ai.anomalydetector.models.AlignMode;
 import com.azure.ai.anomalydetector.models.FillNAMethod;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -70,24 +61,11 @@ public class MultivariateSample {
     }
 
     private static AnomalyDetectorClient getClient(String endpoint, String key) {
-        HttpHeaders headers = new HttpHeaders()
-            .put("Accept", ContentType.APPLICATION_JSON);
-
-        HttpPipelinePolicy authPolicy = new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key",
-            new AzureKeyCredential(key));
-        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
-            .policies(authPolicy, addHeadersPolicy).build();
-        // Instantiate a client that will be used to call the service.
-        HttpLogOptions httpLogOptions = new HttpLogOptions();
-        httpLogOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
-
-        AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
-            .pipeline(httpPipeline)
-            .endpoint(endpoint)
-            .httpLogOptions(httpLogOptions)
-            .buildClient();
+        AnomalyDetectorClient anomalyDetectorClient =
+            new AnomalyDetectorClientBuilder()
+                .credential(new AzureKeyCredential(key))
+                .endpoint(endpoint)
+                .buildClient();
         return anomalyDetectorClient;
     }
 
@@ -133,8 +111,8 @@ public class MultivariateSample {
     }
 
     public static void run(String datasource, DataSchema dataSchema) throws Exception {
-        String endpoint = "<anomaly-detector-resource-endpoint>";
-        String key = "<anomaly-detector-resource-key>";
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
+        String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
         // Get multivariate client
         AnomalyDetectorClient client = getClient(endpoint, key);
