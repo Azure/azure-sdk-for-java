@@ -67,6 +67,7 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
     /**
      * Custom a JWT granted authority converter.
      * @param jwtGrantedAuthorityConverter the custom converter
+     * @return the AadResourceServerHttpSecurityConfigurer for further customizations
      */
     public AadResourceServerHttpSecurityConfigurer jwtGrantedAuthorityConverter(
         Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter) {

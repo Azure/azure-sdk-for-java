@@ -3,6 +3,12 @@
 ## 6.0.0-beta.4 (Unreleased)
 Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Enhance the Azure AD Resource Server configurer to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665)
+
 ## 6.0.0-beta.3 (2022-11-04)
 Upgrade Spring Boot dependencies version to 3.0.0-RC1 and Spring Cloud dependencies version to 2022.0.0-RC1.
 
