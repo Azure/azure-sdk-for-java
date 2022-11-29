@@ -146,7 +146,6 @@ public class MultivariateSample {
                     System.out.println(errorResponse.getCode() + errorResponse.getMessage());
                     errorStr += ";" + errorResponse.getCode() + errorResponse.getMessage();
                 }
-                throw new Exception(errorStr);
             }
             System.out.println("TRAINING");
             TimeUnit.SECONDS.sleep(5);
