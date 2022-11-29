@@ -32,13 +32,9 @@ public class AnomalyDetectorClientTestBase extends TestBase {
 
     AnomalyDetectorClientBuilder getClientBuilder() {
         String endpoint = getEndpoint();
-        HttpHeaders headers = new HttpHeaders()
-            .put("Accept", ContentType.APPLICATION_JSON);
 
         HttpPipelinePolicy authPolicy = new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY,
             new AzureKeyCredential(getKey()));
-
-        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
 
         HttpClient httpClient;
         if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
@@ -49,7 +45,8 @@ public class AnomalyDetectorClientTestBase extends TestBase {
 
         HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(authPolicy, addHeadersPolicy, interceptorManager.getRecordPolicy()).build();
+            .policies(authPolicy, interceptorManager.getRecordPolicy()).build();
+
 
         return new AnomalyDetectorClientBuilder()
             .pipeline(httpPipeline)
