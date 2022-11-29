@@ -139,8 +139,6 @@ public class ChangeFeedProcessorBuilder {
     /**
      * Sets a consumer function which will be called to process changes for LatestVersion change feed mode.
      *
-     * This is a replacement for {@code handleChanges} which will eventually be deprecated.
-     *
      * <!-- src_embed com.azure.cosmos.latestVersionChanges.handleChanges -->
      * <pre>
      * .handleLatestVersionChanges&#40;changeFeedProcessorItems -&gt; &#123;
@@ -155,7 +153,7 @@ public class ChangeFeedProcessorBuilder {
      * @return current Builder.
      */
     @Beta(value = Beta.SinceVersion.V4_40_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ChangeFeedProcessorBuilder handleLatestVersionChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
+    ChangeFeedProcessorBuilder handleLatestVersionChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         checkNotNull(consumer, "Argument 'consumer' can not be null");
         checkArgument(
             this.incrementalModeLeaseConsumerPkRangeIdVersion == null,

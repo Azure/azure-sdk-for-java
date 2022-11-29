@@ -63,6 +63,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
+    // TODO: Reenable the tests when enable the handleLatestVersionChanges public API change
+    /*
     private final static Logger logger = LoggerFactory.getLogger(IncrementalChangeFeedProcessorTest.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
@@ -1082,7 +1084,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             }
         }
         receivedDocuments.put(item.getCurrent().get("id").asText(), item.getCurrent());
-    }
+    }*/
 
     class LeaseStateMonitor {
         public Map<String, JsonNode> receivedLeases = new ConcurrentHashMap<>();
