@@ -10,7 +10,7 @@ import com.azure.resourcemanager.devcenter.models.NetworkConnection;
 /** Samples for NetworkConnections Update. */
 public final class NetworkConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/NetworkConnections_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/NetworkConnections_Patch.json
      */
     /**
      * Sample code: NetworkConnections_Update.

@@ -35,9 +35,8 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     private String email;
 
     /*
-     * Indicates whether the channel should automatically be marked 'favorite'
-     * for all members of the team. Can only be set programmatically with
-     * Create team. Default: false.
+     * Indicates whether the channel should automatically be marked 'favorite' for all members of the team. Can only be
+     * set programmatically with Create team. Default: false.
      */
     @JsonProperty(value = "isFavoriteByDefault")
     private Boolean isFavoriteByDefault;
@@ -49,10 +48,9 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     private MicrosoftGraphChannelMembershipType membershipType;
 
     /*
-     * A hyperlink that will go to the channel in Microsoft Teams. This is the
-     * URL that you get when you right-click a channel in Microsoft Teams and
-     * select Get link to channel. This URL should be treated as an opaque
-     * blob, and not parsed. Read-only.
+     * A hyperlink that will go to the channel in Microsoft Teams. This is the URL that you get when you right-click a
+     * channel in Microsoft Teams and select Get link to channel. This URL should be treated as an opaque blob, and not
+     * parsed. Read-only.
      */
     @JsonProperty(value = "webUrl")
     private String webUrl;
@@ -70,8 +68,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     private List<MicrosoftGraphConversationMember> members;
 
     /*
-     * A collection of all the messages in the channel. A navigation property.
-     * Nullable.
+     * A collection of all the messages in the channel. A navigation property. Nullable.
      */
     @JsonProperty(value = "messages")
     private List<MicrosoftGraphChatMessage> messages;
@@ -86,6 +83,10 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
      * channel
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphChannel class. */
+    public MicrosoftGraphChannel() {
+    }
 
     /**
      * Get the description property: Optional textual description for the channel.

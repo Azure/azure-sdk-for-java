@@ -77,7 +77,7 @@ public interface Image {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.ImageInner object.

@@ -39,6 +39,10 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTimeOff class. */
+    public MicrosoftGraphTimeOff() {
+    }
+
     /**
      * Get the draftTimeOff property: timeOffItem.
      *

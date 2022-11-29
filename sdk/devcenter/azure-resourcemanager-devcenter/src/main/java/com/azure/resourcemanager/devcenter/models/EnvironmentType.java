@@ -51,7 +51,7 @@ public interface EnvironmentType {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the name of the resource group.

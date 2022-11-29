@@ -39,6 +39,10 @@ public class ManagedIdentity {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
+    /** Creates an instance of ManagedIdentity class. */
+    public ManagedIdentity() {
+    }
+
     /**
      * Get the type property: Represents the identity type: systemAssigned, userAssigned, None.
      *

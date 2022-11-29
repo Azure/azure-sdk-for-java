@@ -35,7 +35,7 @@ public final class PoolsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devBoxDefinitionName\":\"cwyhahno\",\"networkConnectionName\":\"rkywuhpsvfuu\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"location\":\"xxwla\",\"tags\":{\"gepqtybbwwpg\":\"exzsrz\",\"xkjibnxmy\":\"akchzyvlixqnrk\",\"ijpstte\":\"uxswqrntvl\"},\"id\":\"oqq\",\"name\":\"wcyyufmhruncu\",\"type\":\"mqspkcdqzhlctdd\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devBoxDefinitionName\":\"bbjjidjksyxk\",\"networkConnectionName\":\"vxevblb\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"},\"location\":\"lageuaulxun\",\"tags\":{\"ppxynenls\":\"bn\",\"klnsrmffey\":\"xeizzg\"},\"id\":\"xcktpiymerteeamm\",\"name\":\"qiekkkzddrt\",\"type\":\"g\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,22 +66,31 @@ public final class PoolsCreateOrUpdateMockTests {
         Pool response =
             manager
                 .pools()
-                .define("cxjmonfdgnwncyp")
-                .withRegion("dasvfl")
-                .withExistingProject("lpmjerb", "kelvidizozsdb")
-                .withTags(mapOf("oldforobw", "xcudchxgsr", "hfovvacqpbtu", "lvizb"))
-                .withDevBoxDefinitionName("v")
-                .withNetworkConnectionName("jctzenkei")
+                .define("vmm")
+                .withRegion("zyqdrfegcealzx")
+                .withExistingProject("yefrpmpdnqqska", "ao")
+                .withTags(
+                    mapOf(
+                        "yqhlwigdivbkbx",
+                        "ansym",
+                        "wasqvdaeyyg",
+                        "omfaj",
+                        "zkgimsid",
+                        "xakjsqzhzb",
+                        "ddyvvjskgfmo",
+                        "asi"))
+                .withDevBoxDefinitionName("rtql")
+                .withNetworkConnectionName("megni")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
                 .withLocalAdministrator(LocalAdminStatus.DISABLED)
                 .create();
 
-        Assertions.assertEquals("xxwla", response.location());
-        Assertions.assertEquals("exzsrz", response.tags().get("gepqtybbwwpg"));
-        Assertions.assertEquals("cwyhahno", response.devBoxDefinitionName());
-        Assertions.assertEquals("rkywuhpsvfuu", response.networkConnectionName());
+        Assertions.assertEquals("lageuaulxun", response.location());
+        Assertions.assertEquals("bn", response.tags().get("ppxynenls"));
+        Assertions.assertEquals("bbjjidjksyxk", response.devBoxDefinitionName());
+        Assertions.assertEquals("vxevblb", response.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, response.licenseType());
-        Assertions.assertEquals(LocalAdminStatus.DISABLED, response.localAdministrator());
+        Assertions.assertEquals(LocalAdminStatus.ENABLED, response.localAdministrator());
     }
 
     @SuppressWarnings("unchecked")

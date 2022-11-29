@@ -29,6 +29,10 @@ public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
     @JsonProperty(value = "duration")
     private String duration;
 
+    /** Creates an instance of RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration class. */
+    public RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration() {
+    }
+
     /**
      * Get the type property: Type of the role assignment schedule expiration.
      *

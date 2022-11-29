@@ -36,7 +36,7 @@ public final class SchedulesListByPoolMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"umvq\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"raiouaubrjtl\",\"timeZone\":\"xfuojrn\",\"state\":\"Enabled\"},\"id\":\"rzpasccbiuimzdly\",\"name\":\"dfqwmkyoq\",\"type\":\"fdvruz\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"sawddjibabxvi\",\"timeZone\":\"tvtzeexavoxtfg\",\"state\":\"Enabled\"},\"id\":\"m\",\"name\":\"qbw\",\"type\":\"ypq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,12 +65,12 @@ public final class SchedulesListByPoolMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Schedule> response =
-            manager.schedules().listByPool("nqndyfpchrqbn", "jrcg", "gydcw", 64469059, Context.NONE);
+            manager.schedules().listByPool("ojbmxv", "vrefdeesv", "cuijpxt", 214563643, Context.NONE);
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.iterator().next().typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.iterator().next().frequency());
-        Assertions.assertEquals("raiouaubrjtl", response.iterator().next().time());
-        Assertions.assertEquals("xfuojrn", response.iterator().next().timeZone());
+        Assertions.assertEquals("sawddjibabxvi", response.iterator().next().time());
+        Assertions.assertEquals("tvtzeexavoxtfg", response.iterator().next().timeZone());
         Assertions.assertEquals(EnableStatus.ENABLED, response.iterator().next().state());
     }
 }

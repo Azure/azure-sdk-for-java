@@ -20,37 +20,28 @@ public final class DevCenterInnerTests {
         DevCenterInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"hxqh\"},\"identity\":{\"principalId\":\"fb4e1087-9bcb-47e1-8d5d-b873dd807403\",\"tenantId\":\"7f67176e-0a3d-47d8-8774-ad0896b2486f\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"czbysc\":{\"principalId\":\"76c49856-0337-4ab0-ae4c-c558b557f244\",\"clientId\":\"9af16236-acc5-47d5-9c6a-4c7ac9bac7a4\"},\"x\":{\"principalId\":\"fa66a68d-070c-43b3-8013-c3aa03e4e08f\",\"clientId\":\"46b281ae-bf33-4220-b6e9-8cf0afb7c39c\"},\"vyq\":{\"principalId\":\"6113c325-6f91-4f95-91d5-5c2f9c248d99\",\"clientId\":\"6235d5b1-e36a-470c-9938-f2ded07499ca\"},\"b\":{\"principalId\":\"93a596a3-a417-4c74-bca2-d27a00d765a0\",\"clientId\":\"29074bfa-b08e-4767-b00a-dbb78c9e4a88\"}}},\"location\":\"rkxvdum\",\"tags\":{\"snhsjcnyejhkryh\":\"tfwvukxgaudc\"},\"id\":\"napczwlokjy\",\"name\":\"mkkvnip\",\"type\":\"oxzjnchgejspod\"}")
+                    "{\"properties\":{\"provisioningState\":\"MovingResources\",\"devCenterUri\":\"pzvgnwzsymglzufc\"},\"identity\":{\"principalId\":\"3198e8cd-958c-4a35-824c-10bb7c932ddd\",\"tenantId\":\"614ac35e-6862-4675-a406-842c8163db35\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"anufhfcbjysag\":{\"principalId\":\"ecaf0ce5-f5d4-465c-a52f-e56df92b6e65\",\"clientId\":\"5441a2e3-e3d4-4652-9f0b-7dbd0cd692c1\"},\"xqhabi\":{\"principalId\":\"1d861053-93f8-4042-9089-513f85ea841a\",\"clientId\":\"c1e5cc6e-d197-4ab0-97da-392ac5c345d5\"}}},\"location\":\"ikxwc\",\"tags\":{\"n\":\"scnpqxuhivy\",\"rkxvdum\":\"wby\"},\"id\":\"grtfwvu\",\"name\":\"xgaudccs\",\"type\":\"h\"}")
                 .toObject(DevCenterInner.class);
-        Assertions.assertEquals("rkxvdum", model.location());
-        Assertions.assertEquals("tfwvukxgaudc", model.tags().get("snhsjcnyejhkryh"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ikxwc", model.location());
+        Assertions.assertEquals("scnpqxuhivy", model.tags().get("n"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @Test
     public void testSerialize() {
         DevCenterInner model =
             new DevCenterInner()
-                .withLocation("rkxvdum")
-                .withTags(mapOf("snhsjcnyejhkryh", "tfwvukxgaudc"))
+                .withLocation("ikxwc")
+                .withTags(mapOf("n", "scnpqxuhivy", "rkxvdum", "wby"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                         .withUserAssignedIdentities(
-                            mapOf(
-                                "czbysc",
-                                new UserAssignedIdentity(),
-                                "x",
-                                new UserAssignedIdentity(),
-                                "vyq",
-                                new UserAssignedIdentity(),
-                                "b",
-                                new UserAssignedIdentity())));
+                            mapOf("anufhfcbjysag", new UserAssignedIdentity(), "xqhabi", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(DevCenterInner.class);
-        Assertions.assertEquals("rkxvdum", model.location());
-        Assertions.assertEquals("tfwvukxgaudc", model.tags().get("snhsjcnyejhkryh"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ikxwc", model.location());
+        Assertions.assertEquals("scnpqxuhivy", model.tags().get("n"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @SuppressWarnings("unchecked")

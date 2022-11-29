@@ -10,6 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.authorization.fluent.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.ClassicAdministratorsClient;
+import com.azure.resourcemanager.authorization.fluent.DenyAssignmentsClient;
 import com.azure.resourcemanager.authorization.fluent.EligibleChildResourcesClient;
 import com.azure.resourcemanager.authorization.fluent.GlobalAdministratorsClient;
 import com.azure.resourcemanager.authorization.fluent.PermissionsClient;
@@ -91,6 +92,66 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient
         return this.defaultPollInterval;
     }
 
+    /** The ClassicAdministratorsClient object to access its operations. */
+    private final ClassicAdministratorsClient classicAdministrators;
+
+    /**
+     * Gets the ClassicAdministratorsClient object to access its operations.
+     *
+     * @return the ClassicAdministratorsClient object.
+     */
+    public ClassicAdministratorsClient getClassicAdministrators() {
+        return this.classicAdministrators;
+    }
+
+    /** The GlobalAdministratorsClient object to access its operations. */
+    private final GlobalAdministratorsClient globalAdministrators;
+
+    /**
+     * Gets the GlobalAdministratorsClient object to access its operations.
+     *
+     * @return the GlobalAdministratorsClient object.
+     */
+    public GlobalAdministratorsClient getGlobalAdministrators() {
+        return this.globalAdministrators;
+    }
+
+    /** The DenyAssignmentsClient object to access its operations. */
+    private final DenyAssignmentsClient denyAssignments;
+
+    /**
+     * Gets the DenyAssignmentsClient object to access its operations.
+     *
+     * @return the DenyAssignmentsClient object.
+     */
+    public DenyAssignmentsClient getDenyAssignments() {
+        return this.denyAssignments;
+    }
+
+    /** The ProviderOperationsMetadatasClient object to access its operations. */
+    private final ProviderOperationsMetadatasClient providerOperationsMetadatas;
+
+    /**
+     * Gets the ProviderOperationsMetadatasClient object to access its operations.
+     *
+     * @return the ProviderOperationsMetadatasClient object.
+     */
+    public ProviderOperationsMetadatasClient getProviderOperationsMetadatas() {
+        return this.providerOperationsMetadatas;
+    }
+
+    /** The RoleAssignmentsClient object to access its operations. */
+    private final RoleAssignmentsClient roleAssignments;
+
+    /**
+     * Gets the RoleAssignmentsClient object to access its operations.
+     *
+     * @return the RoleAssignmentsClient object.
+     */
+    public RoleAssignmentsClient getRoleAssignments() {
+        return this.roleAssignments;
+    }
+
     /** The PermissionsClient object to access its operations. */
     private final PermissionsClient permissions;
 
@@ -113,54 +174,6 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient
      */
     public RoleDefinitionsClient getRoleDefinitions() {
         return this.roleDefinitions;
-    }
-
-    /** The ProviderOperationsMetadatasClient object to access its operations. */
-    private final ProviderOperationsMetadatasClient providerOperationsMetadatas;
-
-    /**
-     * Gets the ProviderOperationsMetadatasClient object to access its operations.
-     *
-     * @return the ProviderOperationsMetadatasClient object.
-     */
-    public ProviderOperationsMetadatasClient getProviderOperationsMetadatas() {
-        return this.providerOperationsMetadatas;
-    }
-
-    /** The GlobalAdministratorsClient object to access its operations. */
-    private final GlobalAdministratorsClient globalAdministrators;
-
-    /**
-     * Gets the GlobalAdministratorsClient object to access its operations.
-     *
-     * @return the GlobalAdministratorsClient object.
-     */
-    public GlobalAdministratorsClient getGlobalAdministrators() {
-        return this.globalAdministrators;
-    }
-
-    /** The RoleAssignmentsClient object to access its operations. */
-    private final RoleAssignmentsClient roleAssignments;
-
-    /**
-     * Gets the RoleAssignmentsClient object to access its operations.
-     *
-     * @return the RoleAssignmentsClient object.
-     */
-    public RoleAssignmentsClient getRoleAssignments() {
-        return this.roleAssignments;
-    }
-
-    /** The ClassicAdministratorsClient object to access its operations. */
-    private final ClassicAdministratorsClient classicAdministrators;
-
-    /**
-     * Gets the ClassicAdministratorsClient object to access its operations.
-     *
-     * @return the ClassicAdministratorsClient object.
-     */
-    public ClassicAdministratorsClient getClassicAdministrators() {
-        return this.classicAdministrators;
     }
 
     /** The EligibleChildResourcesClient object to access its operations. */
@@ -294,12 +307,13 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.classicAdministrators = new ClassicAdministratorsClientImpl(this);
+        this.globalAdministrators = new GlobalAdministratorsClientImpl(this);
+        this.denyAssignments = new DenyAssignmentsClientImpl(this);
+        this.providerOperationsMetadatas = new ProviderOperationsMetadatasClientImpl(this);
+        this.roleAssignments = new RoleAssignmentsClientImpl(this);
         this.permissions = new PermissionsClientImpl(this);
         this.roleDefinitions = new RoleDefinitionsClientImpl(this);
-        this.providerOperationsMetadatas = new ProviderOperationsMetadatasClientImpl(this);
-        this.globalAdministrators = new GlobalAdministratorsClientImpl(this);
-        this.roleAssignments = new RoleAssignmentsClientImpl(this);
-        this.classicAdministrators = new ClassicAdministratorsClientImpl(this);
         this.eligibleChildResources = new EligibleChildResourcesClientImpl(this);
         this.roleAssignmentSchedules = new RoleAssignmentSchedulesClientImpl(this);
         this.roleAssignmentScheduleInstances = new RoleAssignmentScheduleInstancesClientImpl(this);

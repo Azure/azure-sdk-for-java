@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +30,13 @@ public class DevBoxDefinitionUpdateProperties {
      */
     @JsonProperty(value = "osStorageType")
     private String osStorageType;
+
+    /*
+     * Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable
+     * of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate
+     */
+    @JsonProperty(value = "hibernateSupport")
+    private HibernateSupport hibernateSupport;
 
     /** Creates an instance of DevBoxDefinitionUpdateProperties class. */
     public DevBoxDefinitionUpdateProperties() {
@@ -93,6 +101,30 @@ public class DevBoxDefinitionUpdateProperties {
      */
     public DevBoxDefinitionUpdateProperties withOsStorageType(String osStorageType) {
         this.osStorageType = osStorageType;
+        return this;
+    }
+
+    /**
+     * Get the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
+     * hibernation. Not all images are capable of supporting hibernation. To find out more see
+     * https://aka.ms/devbox/hibernate.
+     *
+     * @return the hibernateSupport value.
+     */
+    public HibernateSupport hibernateSupport() {
+        return this.hibernateSupport;
+    }
+
+    /**
+     * Set the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
+     * hibernation. Not all images are capable of supporting hibernation. To find out more see
+     * https://aka.ms/devbox/hibernate.
+     *
+     * @param hibernateSupport the hibernateSupport value to set.
+     * @return the DevBoxDefinitionUpdateProperties object itself.
+     */
+    public DevBoxDefinitionUpdateProperties withHibernateSupport(HibernateSupport hibernateSupport) {
+        this.hibernateSupport = hibernateSupport;
         return this;
     }
 
