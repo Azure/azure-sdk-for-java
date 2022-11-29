@@ -7,9 +7,9 @@ stages:
           Clouds: 'Public'
           TestResourceDirectories:
           Artifacts:
-              - name: azure-identity-providers-jdbc-mysql
-                groupId: com.azure
-                safeName: azureidentityprovidersjdbcmysql
+            - name: azure-identity-providers
+              groupId: com.azure
+              safeName: azureidentityproviders
           TimeoutInMinutes: 240
           ServiceDirectory: jdbc
           TestName: JdbcIntegrationTests

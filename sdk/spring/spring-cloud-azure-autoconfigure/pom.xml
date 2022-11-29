@@ -275,15 +275,8 @@
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-mysql;dependency} -->
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-postgresql;dependency} -->
+      <artifactId>azure-identity-providers</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers;dependency} -->
       <optional>true</optional>
     </dependency>
 
