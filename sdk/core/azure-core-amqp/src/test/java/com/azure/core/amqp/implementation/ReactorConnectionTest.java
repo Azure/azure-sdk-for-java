@@ -176,6 +176,8 @@ class ReactorConnectionTest {
 
     @AfterEach
     void teardown() throws Exception {
+        System.err.println("Clean-up");
+
         connectionHandler.close();
         sessionHandler.close();
 
@@ -338,6 +340,7 @@ class ReactorConnectionTest {
         // Assert that the second time, a new session is obtained.
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .then(() -> {
+                System.out.println("Pushing new session open downstream.");
                 sessionHandler2.onSessionRemoteOpen(sessionEvent2);
             })
             .assertNext(s -> {
