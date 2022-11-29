@@ -75,6 +75,15 @@ public class AadJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
     }
 
     /**
+     * Using the custom JwtGrantedAuthoritiesConverter.
+     *
+     * @param jwtGrantedAuthoritiesConverter the custom granted authority converter
+     */
+    public AadJwtBearerTokenAuthenticationConverter(Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
+        this(AadJwtClaimNames.SUB, jwtGrantedAuthoritiesConverter);
+    }
+
+    /**
      * Using the principal claim name and the custom JwtGrantedAuthoritiesConverter.
      *
      * @param principalClaimName the claim name for the principal

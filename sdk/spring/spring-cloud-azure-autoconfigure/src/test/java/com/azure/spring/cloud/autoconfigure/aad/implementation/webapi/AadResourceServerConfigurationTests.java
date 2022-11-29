@@ -2,23 +2,32 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapi;
 
+import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 class AadResourceServerConfigurationTests {
 
@@ -78,5 +87,42 @@ class AadResourceServerConfigurationTests {
                     .getBean(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter.class);
                 assertThat(webSecurityConfigurerAdapter).isNotNull();
             });
+    }
+    @Test
+    void useCustomJwtGrantedAuthoritiesConverter() {
+        resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+            .withUserConfiguration(TestDefaultAadResourceServerConfiguration.class)
+            .run(context -> {
+                WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
+                    .getBean(TestDefaultAadResourceServerConfiguration.class);
+                @SuppressWarnings("unchecked")
+                Converter<Jwt, Collection<GrantedAuthority>> converter =
+                    (Converter) ReflectionTestUtils.getField(webSecurityConfigurerAdapter, "jwtGrantedAuthorityConverter");
+                assertThat(converter).isNotNull();
+                assertThat(converter).isInstanceOfAny(TestJwtGrantedAuthoritiesConverter.class);
+                assertThat(webSecurityConfigurerAdapter).isNotNull();
+            });
+    }
+    @EnableWebSecurity
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    public static class TestDefaultAadResourceServerConfiguration extends
+        AadResourceServerWebSecurityConfigurerAdapter {
+
+        public TestDefaultAadResourceServerConfiguration() {
+            super(null, mock(TestJwtGrantedAuthoritiesConverter.class));
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            super.configure(http);
+        }
+    }
+
+    class TestJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+        @Override
+        public Collection<GrantedAuthority> convert(Jwt source) {
+            return null;
+        }
     }
 }

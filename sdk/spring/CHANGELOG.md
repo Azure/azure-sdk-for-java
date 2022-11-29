@@ -6,6 +6,9 @@ Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Features Added
+- Enhance the token authentication converter and Azure AD Resource Server configurer adapter to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665)
+
 #### Dependency Updates
 - Upgrade spring-security to 5.7.5 to address [CVE-2022-31690](https://tanzu.vmware.com/security/cve-2022-31690) [#32145](https://github.com/Azure/azure-sdk-for-java/pull/32145).
 
