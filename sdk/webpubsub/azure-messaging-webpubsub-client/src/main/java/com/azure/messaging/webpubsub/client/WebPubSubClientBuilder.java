@@ -1,0 +1,21 @@
+package com.azure.messaging.webpubsub.client;
+
+import com.azure.core.annotation.ServiceClientBuilder;
+
+@ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class})
+public class WebPubSubClientBuilder {
+
+    private WebPubSubClientCredential credential;
+
+    public WebPubSubClientBuilder() {
+    }
+
+    public WebPubSubClientBuilder credential(WebPubSubClientCredential credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    public WebPubSubAsyncClient buildAsyncClient() {
+        return new WebPubSubAsyncClient(credential.getClientAccessUriAsync());
+    }
+}

@@ -4,10 +4,10 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.webpubsub.client.message.WebPubSubMessage;
+import jakarta.websocket.DecodeException;
+import jakarta.websocket.Decoder;
 import org.glassfish.tyrus.core.coder.CoderAdapter;
 
-import javax.websocket.DecodeException;
-import javax.websocket.Decoder;
 import java.io.IOException;
 
 public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubSubMessage> {

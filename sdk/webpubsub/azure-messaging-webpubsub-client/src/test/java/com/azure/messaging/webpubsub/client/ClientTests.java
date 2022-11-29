@@ -2,6 +2,7 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.message.JoinGroupMessage;
@@ -9,6 +10,8 @@ import com.azure.messaging.webpubsub.client.message.LeaveGroupMessage;
 import com.azure.messaging.webpubsub.client.message.SendToGroupMessage;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Map;
 
@@ -20,14 +23,15 @@ public class ClientTests {
             .hub("test_hub")
             .buildClient();
 
-        WebPubSubClientAccessToken accessToken = client.getClientAccessToken(new GetClientAccessTokenOptions()
+        Mono<WebPubSubClientAccessToken> accessToken = Mono.just(client.getClientAccessToken(new GetClientAccessTokenOptions()
             .setUserId("weidxu")
             .addRole("webpubsub.joinLeaveGroup")
-            .addRole("webpubsub.sendToGroup"));
+            .addRole("webpubsub.sendToGroup"))).subscribeOn(Schedulers.boundedElastic());
 
-        String url = accessToken.getUrl();
-
-        WebPubSubAsyncClient asyncClient = new WebPubSubAsyncClient(url);
+        WebPubSubAsyncClient asyncClient = new WebPubSubClientBuilder()
+            .credential(new WebPubSubClientCredential(accessToken
+                .map(WebPubSubClientAccessToken::getUrl)))
+            .buildAsyncClient();
 
         asyncClient.start().block();
 

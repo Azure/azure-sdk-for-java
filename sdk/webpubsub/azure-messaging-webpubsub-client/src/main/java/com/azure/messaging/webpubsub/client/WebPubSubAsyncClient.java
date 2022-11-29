@@ -1,19 +1,18 @@
 package com.azure.messaging.webpubsub.client;
 
-import javax.websocket.ClientEndpointConfig;
-import javax.websocket.CloseReason;
-import javax.websocket.DeploymentException;
-import javax.websocket.Endpoint;
-import javax.websocket.EndpointConfig;
-import javax.websocket.MessageHandler;
-import javax.websocket.Session;
-
+import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
 import com.azure.messaging.webpubsub.client.message.JoinGroupMessage;
 import com.azure.messaging.webpubsub.client.message.LeaveGroupMessage;
 import com.azure.messaging.webpubsub.client.message.SendToGroupMessage;
 import com.azure.messaging.webpubsub.client.message.WebPubSubMessage;
+import jakarta.websocket.ClientEndpointConfig;
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.Endpoint;
+import jakarta.websocket.EndpointConfig;
+import jakarta.websocket.MessageHandler;
+import jakarta.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 import org.glassfish.tyrus.core.CloseReasons;
 import reactor.core.publisher.Flux;
@@ -21,15 +20,13 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.concurrent.Future;
 
+@ServiceClient(builder = WebPubSubClientBuilder.class)
 public class WebPubSubAsyncClient {
 
-    private final String url;
+    private final Mono<String> clientAccessUriProvider;
 
     private final ClientManager clientManager;
 
@@ -39,27 +36,27 @@ public class WebPubSubAsyncClient {
 
     private Sinks.Many<WebPubSubMessage> messageSink = Sinks.many().multicast().onBackpressureBuffer();
 
-    public WebPubSubAsyncClient(String url) {
-        this.url = url;
+    WebPubSubAsyncClient(Mono<String> clientAccessUriProvider) {
+        this.clientAccessUriProvider = clientAccessUriProvider;
+
         this.clientManager = ClientManager.createClient();
     }
 
-    public Mono<Void> start() throws URISyntaxException, DeploymentException {
+    public Mono<Void> start() {
+        this.endpoint = new ClientEndpoint();
         ClientEndpointConfig config = ClientEndpointConfig.Builder.create()
             .preferredSubprotocols(Collections.singletonList("json.webpubsub.azure.v1"))
             .encoders(Collections.singletonList(MessageEncoder.class))
             .decoders(Collections.singletonList(MessageDecoder.class))
             .build();
-        endpoint = new ClientEndpoint();
-        Future<Session> sessionFuture = clientManager.asyncConnectToServer(endpoint, config, new URI(url));
 
-        return Mono.fromCallable(() -> {
-            this.session = sessionFuture.get();
-            return session;
-        }).subscribeOn(Schedulers.boundedElastic()).then();
+        return clientAccessUriProvider.flatMap(uri -> Mono.fromCallable(() -> {
+            this.session = clientManager.connectToServer(endpoint, config, new URI(uri));
+            return (Void) null;
+        }).subscribeOn(Schedulers.boundedElastic()));
     }
 
-    public Mono<Void> close() throws IOException {
+    public Mono<Void> close() {
         return Mono.fromCallable(() -> {
             if (session != null && session.isOpen()) {
                 session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
@@ -71,19 +68,22 @@ public class WebPubSubAsyncClient {
 
     public Mono<Void> joinGroup(JoinGroupMessage message) {
         return Mono.fromCallable(() -> {
-            return session.getAsyncRemote().sendObject(message).get();
+            session.getBasicRemote().sendObject(message);
+            return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic()).then();
     }
 
     public Mono<Void> leaveGroup(LeaveGroupMessage message) {
         return Mono.fromCallable(() -> {
-            return session.getAsyncRemote().sendObject(message).get();
+            session.getBasicRemote().sendObject(message);
+            return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic()).then();
     }
 
     public Mono<Void> sendMessageToGroup(SendToGroupMessage message) {
         return Mono.fromCallable(() -> {
-            return session.getAsyncRemote().sendObject(message).get();
+            session.getBasicRemote().sendObject(message);
+            return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic()).then();
     }
 
