@@ -9,9 +9,12 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import java.util.ArrayList;
-
+import java.util.List;
+import java.util.Random;
 
 class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
+
+    private final Random r;
 
     static class LatencySubscriber<T> extends BaseSubscriber<T> {
 
@@ -43,17 +46,23 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
 
     AsyncReadManyBenchmark(Configuration cfg) {
         super(cfg);
+        r = new Random();
     }
 
     @Override
     protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws Exception {
-        int index = (int) (i % configuration.getNumberOfPreCreatedDocuments());
-        PojoizedJson doc = docsToRead.get(index);
-        String partitionKeyValue = (String) doc.getProperty(partitionKey);
-        PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
-        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        int tupleSize = configuration.getTupleSize();
+        int randomIdx = r.nextInt(configuration.getNumberOfPreCreatedDocuments());
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
 
-        cosmosItemIdentities.add(new CosmosItemIdentity(partitionKey, doc.getId()));
+        for (int idx = randomIdx; idx < randomIdx + tupleSize; idx++) {
+            int index = idx % configuration.getNumberOfPreCreatedDocuments();
+            PojoizedJson doc = docsToRead.get(index);
+            String partitionKeyValue = (String) doc.getProperty(partitionKey);
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+
+            cosmosItemIdentities.add(new CosmosItemIdentity(partitionKey, doc.getId()));
+        }
 
         Mono<FeedResponse<PojoizedJson>> obs = cosmosAsyncContainer.readMany(cosmosItemIdentities, PojoizedJson.class);
 
