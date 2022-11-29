@@ -121,14 +121,13 @@ public class MultivariateSample {
         OffsetDateTime startTime = OffsetDateTime.of(2021, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime endTime = OffsetDateTime.of(2021, 1, 2, 5, 0, 0, 0, ZoneOffset.UTC);
         ModelInfo trainRequest = new ModelInfo(datasource, startTime, endTime);
-        trainRequest.setSlidingWindow(200);
-        AlignPolicy alignPolicy = new AlignPolicy();
-        alignPolicy.setAlignMode(AlignMode.OUTER);
-        alignPolicy.setFillNAMethod(FillNAMethod.LINEAR);
-        alignPolicy.setPaddingValue(0.0);
-        trainRequest.setAlignPolicy(alignPolicy);
-        trainRequest.setDataSchema(dataSchema);
-        trainRequest.setDisplayName("SampleRequest");
+        trainRequest.setSlidingWindow(200)
+            .setAlignPolicy(new AlignPolicy()
+                .setAlignMode(AlignMode.OUTER)
+                .setFillNAMethod(FillNAMethod.LINEAR)
+                .setPaddingValue(0.0))
+            .setDataSchema(dataSchema)
+            .setDisplayName("SampleRequest");
 
         // Start training and get Model ID
         UUID modelId = createModel(client, trainRequest);
