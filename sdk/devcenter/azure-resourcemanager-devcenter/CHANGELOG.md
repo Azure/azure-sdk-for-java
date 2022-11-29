@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,141 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2022-11-24)
+
+- Azure Resource Manager DevCenter client library for Java. This package contains Microsoft Azure SDK for DevCenter Management SDK. DevCenter Management API. Package tag package-preview-2022-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ErrorAdditionalInfo` was removed
+
+* `models.ErrorDetail` was removed
+
+#### `models.DevBoxDefinition` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.DevCenter` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.EnvironmentType` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.Image` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.Catalog` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.ImageVersion` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.Schedule` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.OperationStatusResult` was modified
+
+* `models.ErrorDetail error()` -> `com.azure.core.management.exception.ManagementError error()`
+* `withError(models.ErrorDetail)` was removed
+
+#### `models.Project` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.OperationStatus` was modified
+
+* `models.ErrorDetail error()` -> `com.azure.core.management.exception.ManagementError error()`
+
+#### `models.AttachedNetworkConnection` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.NetworkConnection` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+* `runHealthChecksWithResponse(com.azure.core.util.Context)` was removed
+
+#### `models.Pool` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.Gallery` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.AllowedEnvironmentType` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.NetworkConnections` was modified
+
+* `runHealthChecksWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ProjectEnvironmentType` was modified
+
+* `java.lang.String provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+### Features Added
+
+* `models.ProvisioningState` was added
+
+* `models.CheckNameAvailabilityReason` was added
+
+* `models.CheckNameAvailabilityRequest` was added
+
+* `models.HibernateSupport` was added
+
+* `models.CheckNameAvailabilityResponse` was added
+
+* `models.CheckNameAvailabilities` was added
+
+#### `models.DevBoxDefinition` was modified
+
+* `hibernateSupport()` was added
+
+#### `models.DevCenter` was modified
+
+* `devCenterUri()` was added
+
+#### `models.DevBoxDefinitionUpdate` was modified
+
+* `withHibernateSupport(models.HibernateSupport)` was added
+* `hibernateSupport()` was added
+
+#### `models.DevBoxDefinition$Update` was modified
+
+* `withHibernateSupport(models.HibernateSupport)` was added
+
+#### `models.DevBoxDefinition$Definition` was modified
+
+* `withHibernateSupport(models.HibernateSupport)` was added
+
+#### `models.OperationStatusResult` was modified
+
+* `withError(com.azure.core.management.exception.ManagementError)` was added
+
+#### `models.Project` was modified
+
+* `devCenterUri()` was added
+
+#### `models.NetworkConnection` was modified
+
+* `runHealthChecks(com.azure.core.util.Context)` was added
+
+#### `DevCenterManager` was modified
+
+* `checkNameAvailabilities()` was added
+
+#### `models.NetworkConnections` was modified
+
+* `runHealthChecks(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.3 (2022-11-18)
 

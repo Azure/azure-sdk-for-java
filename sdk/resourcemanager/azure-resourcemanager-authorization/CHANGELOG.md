@@ -2,6 +2,16 @@
 
 ## 2.21.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.21.0 (2022-11-24)
+
 ### Breaking Changes
 
 - `filter` parameters in list API from `RoleAssignmentsClient` is required to be encoded by user.

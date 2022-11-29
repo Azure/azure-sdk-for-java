@@ -73,17 +73,20 @@ public enum SerializerEncoding {
         int contentTypeTypeSplit = contentType.indexOf('/');
         if (contentTypeTypeSplit == -1) {
             LOGGER.warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
-                + "Returning default: {}",contentType, DEFAULT_ENCODING);
+                + "Returning default: {}", contentType, DEFAULT_ENCODING);
             return DEFAULT_ENCODING;
         }
 
         // Check the suffix if it does not match the full types.
+        // Suffixes are defined by the Structured Syntax Suffix Registry
+        // https://www.rfc-editor.org/rfc/rfc6839
         final String subtype = contentType.substring(contentTypeTypeSplit + 1);
         final int lastIndex = subtype.lastIndexOf('+');
         if (lastIndex == -1) {
             return DEFAULT_ENCODING;
         }
 
+        // Only XML and JSON are supported suffixes, there is no suffix for TEXT.
         final String mimeTypeSuffix = subtype.substring(lastIndex + 1);
         if ("xml".equalsIgnoreCase(mimeTypeSuffix)) {
             return XML;

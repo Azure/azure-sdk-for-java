@@ -59,7 +59,7 @@ public interface Pool {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.

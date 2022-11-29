@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AttachedNetworks GetByDevCenter. */
 public final class AttachedNetworksGetByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/AttachedNetworks_GetByDevCenter.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/AttachedNetworks_GetByDevCenter.json
      */
     /**
      * Sample code: AttachedNetworks_GetByDevCenter.

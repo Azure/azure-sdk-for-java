@@ -7,16 +7,25 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PrivateEndpointConnectionProvisioningState. */
+/** The provisioning state of the private endpoint connection. */
 public enum PrivateEndpointConnectionProvisioningState {
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded"),
+    /** Enum value Creating. */
+    CREATING("Creating"),
 
     /** Enum value Updating. */
     UPDATING("Updating"),
 
+    /** Enum value Deleting. */
+    DELETING("Deleting"),
+
+    /** Enum value Succeeded. */
+    SUCCEEDED("Succeeded"),
+
     /** Enum value Failed. */
-    FAILED("Failed");
+    FAILED("Failed"),
+
+    /** Enum value Cancelled. */
+    CANCELLED("Cancelled");
 
     /** The actual serialized value for a PrivateEndpointConnectionProvisioningState instance. */
     private final String value;
@@ -33,6 +42,9 @@ public enum PrivateEndpointConnectionProvisioningState {
      */
     @JsonCreator
     public static PrivateEndpointConnectionProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PrivateEndpointConnectionProvisioningState[] items = PrivateEndpointConnectionProvisioningState.values();
         for (PrivateEndpointConnectionProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +54,7 @@ public enum PrivateEndpointConnectionProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

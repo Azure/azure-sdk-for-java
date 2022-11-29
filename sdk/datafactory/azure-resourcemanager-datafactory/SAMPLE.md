@@ -5,6 +5,13 @@
 
 - [QueryByPipelineRun](#activityruns_querybypipelinerun)
 
+## CredentialOperations
+
+- [CreateOrUpdate](#credentialoperations_createorupdate)
+- [Delete](#credentialoperations_delete)
+- [Get](#credentialoperations_get)
+- [ListByFactory](#credentialoperations_listbyfactory)
+
 ## DataFlowDebugSession
 
 - [AddDataFlow](#dataflowdebugsession_adddataflow)
@@ -187,6 +194,102 @@ public final class ActivityRunsQueryByPipelineRunSamples {
 }
 ```
 
+### CredentialOperations_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredential;
+
+/** Samples for CredentialOperations CreateOrUpdate. */
+public final class CredentialOperationsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
+     */
+    /**
+     * Sample code: Credentials_Create.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void credentialsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
+            .credentialOperations()
+            .define("exampleCredential")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withProperties(
+                new ManagedIdentityCredential()
+                    .withResourceId(
+                        "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"))
+            .create();
+    }
+}
+```
+
+### CredentialOperations_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for CredentialOperations Delete. */
+public final class CredentialOperationsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.json
+     */
+    /**
+     * Sample code: Credentials_Delete.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void credentialsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
+            .credentialOperations()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleCredential", Context.NONE);
+    }
+}
+```
+
+### CredentialOperations_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for CredentialOperations Get. */
+public final class CredentialOperationsGetSamples {
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
+     */
+    /**
+     * Sample code: Credentials_Get.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void credentialsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
+            .credentialOperations()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleCredential", null, Context.NONE);
+    }
+}
+```
+
+### CredentialOperations_ListByFactory
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for CredentialOperations ListByFactory. */
+public final class CredentialOperationsListByFactorySamples {
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_ListByFactory.json
+     */
+    /**
+     * Sample code: Credentials_ListByFactory.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void credentialsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.credentialOperations().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+    }
+}
+```
+
 ### DataFlowDebugSession_AddDataFlow
 
 ```java
@@ -286,7 +389,7 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                             .withAnnotations(Arrays.asList())
                                             .withConnectionString(
                                                 "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;")
-                                            .withEncryptedCredential("<credential>"))))
+                                            .withEncryptedCredential("fakeTokenPlaceholder"))))
                     .withDebugSettings(
                         new DataFlowDebugPackageDebugSettings()
                             .withSourceSettings(
@@ -1136,9 +1239,9 @@ public final class FactoriesGetGitHubAccessTokenSamples {
                 "exampleResourceGroup",
                 "exampleFactoryName",
                 new GitHubAccessTokenRequest()
-                    .withGitHubAccessCode("some")
+                    .withGitHubAccessCode("fakeTokenPlaceholder")
                     .withGitHubClientId("some")
-                    .withGitHubAccessTokenBaseUrl("some"),
+                    .withGitHubAccessTokenBaseUrl("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }

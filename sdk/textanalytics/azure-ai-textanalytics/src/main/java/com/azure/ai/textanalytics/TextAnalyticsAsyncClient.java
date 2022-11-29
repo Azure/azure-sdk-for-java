@@ -588,7 +588,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>.
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>. This method will use the
      * default language that is set using {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is
      * specified, service will use 'en' as the language.
@@ -632,7 +632,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document
      * with provided language code.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>.
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
      *
      * <p><strong>Code sample</strong></p>
@@ -675,7 +675,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document
      * with provided language code.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>.
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
      *
      * <p><strong>Code sample</strong></p>

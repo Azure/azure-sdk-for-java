@@ -17,6 +17,7 @@ import com.azure.resourcemanager.batch.models.InterNodeCommunicationState;
 import com.azure.resourcemanager.batch.models.MetadataItem;
 import com.azure.resourcemanager.batch.models.MountConfiguration;
 import com.azure.resourcemanager.batch.models.NetworkConfiguration;
+import com.azure.resourcemanager.batch.models.NodeCommunicationMode;
 import com.azure.resourcemanager.batch.models.Pool;
 import com.azure.resourcemanager.batch.models.PoolProvisioningState;
 import com.azure.resourcemanager.batch.models.ResizeOperationStatus;
@@ -183,6 +184,18 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         }
     }
 
+    public NodeCommunicationMode targetNodeCommunicationMode() {
+        return this.innerModel().targetNodeCommunicationMode();
+    }
+
+    public NodeCommunicationMode currentNodeCommunicationMode() {
+        return this.innerModel().currentNodeCommunicationMode();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PoolInner innerModel() {
         return this.innerObject;
     }
@@ -305,20 +318,20 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this;
     }
 
-    public Pool disableAutoScale() {
-        return serviceManager.pools().disableAutoScale(resourceGroupName, accountName, poolName);
-    }
-
     public Response<Pool> disableAutoScaleWithResponse(Context context) {
         return serviceManager.pools().disableAutoScaleWithResponse(resourceGroupName, accountName, poolName, context);
     }
 
-    public Pool stopResize() {
-        return serviceManager.pools().stopResize(resourceGroupName, accountName, poolName);
+    public Pool disableAutoScale() {
+        return serviceManager.pools().disableAutoScale(resourceGroupName, accountName, poolName);
     }
 
     public Response<Pool> stopResizeWithResponse(Context context) {
         return serviceManager.pools().stopResizeWithResponse(resourceGroupName, accountName, poolName, context);
+    }
+
+    public Pool stopResize() {
+        return serviceManager.pools().stopResize(resourceGroupName, accountName, poolName);
     }
 
     public PoolImpl withIdentity(BatchPoolIdentity identity) {
@@ -398,6 +411,11 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public PoolImpl withMountConfiguration(List<MountConfiguration> mountConfiguration) {
         this.innerModel().withMountConfiguration(mountConfiguration);
+        return this;
+    }
+
+    public PoolImpl withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
+        this.innerModel().withTargetNodeCommunicationMode(targetNodeCommunicationMode);
         return this;
     }
 
