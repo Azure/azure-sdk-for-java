@@ -215,11 +215,20 @@ public class Context {
         if (key == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
         }
+
         for (Context c = this; c != null; c = c.parent) {
             if (key.equals(c.key)) {
                 return Optional.ofNullable(c.value);
             }
+
+            // If the contextCount is 1 that means the next parent Context is the NONE Context.
+            // Return Optional.empty now to prevent a meaningless check.
+            if (c.contextCount == 1) {
+                return Optional.empty();
+            }
         }
+
+        // This should never be reached but is required by the compiler.
         return Optional.empty();
     }
 
@@ -256,15 +265,21 @@ public class Context {
      * @return A map containing all values of the context linked-list.
      */
     public Map<Object, Object> getValues() {
-        return getValuesHelper(new HashMap<>());
-    }
+        Map<Object, Object> map = new HashMap<>((int) Math.ceil(contextCount / 0.75F));
 
-    private Map<Object, Object> getValuesHelper(Map<Object, Object> values) {
-        if (key != null) {
-            values.putIfAbsent(key, value);
+        for (Context pointer = this; pointer != null; pointer = pointer.parent) {
+            if (pointer.key != null) {
+                map.putIfAbsent(pointer.key, pointer.value);
+            }
+
+            // If the contextCount is 1 that means the next parent Context is the NONE Context.
+            // Break out of the loop to prevent a meaningless check.
+            if (pointer.contextCount == 1) {
+                break;
+            }
         }
 
-        return (parent == null) ? values : parent.getValuesHelper(values);
+        return map;
     }
 
     /**
@@ -275,11 +290,16 @@ public class Context {
     Context[] getContextChain() {
         Context[] chain = new Context[contextCount];
 
-        Context pointer = this;
         int chainPosition = contextCount - 1;
-        while (pointer != null && chainPosition >= 0) {
+
+        for (Context pointer = this; pointer != null; pointer = pointer.parent) {
             chain[chainPosition--] = pointer;
-            pointer = pointer.parent;
+
+            // If the contextCount is 1 that means the next parent Context is the NONE Context.
+            // Break out of the loop to prevent a meaningless check.
+            if (pointer.contextCount == 1) {
+                break;
+            }
         }
 
         return chain;
