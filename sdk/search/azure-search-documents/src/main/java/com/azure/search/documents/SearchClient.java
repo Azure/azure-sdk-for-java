@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -15,19 +14,32 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
-import com.azure.search.documents.implementation.models.*;
-import com.azure.search.documents.implementation.util.DocumentResponseConversions;
-import com.azure.search.documents.implementation.util.MappingUtils;
+import com.azure.search.documents.implementation.models.AutocompleteRequest;
+import com.azure.search.documents.implementation.models.SearchDocumentsResult;
+import com.azure.search.documents.implementation.models.SearchRequest;
+import com.azure.search.documents.implementation.models.SearchContinuationToken;
+import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
+import com.azure.search.documents.implementation.models.SuggestRequest;
+import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
-import com.azure.search.documents.models.*;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.IndexBatchException;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.util.*;
-import reactor.core.publisher.Mono;
+import com.azure.search.documents.util.AutocompletePagedIterable;
+import com.azure.search.documents.util.AutocompletePagedResponse;
+import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.util.SearchPagedResponse;
+import com.azure.search.documents.util.SuggestPagedIterable;
+import com.azure.search.documents.util.SuggestPagedResponse;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,7 +48,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.serializer.TypeReference.createInstance;
 import static com.azure.search.documents.SearchAsyncClient.buildIndexBatch;
 import static com.azure.search.documents.SearchAsyncClient.createSearchRequest;
@@ -55,9 +66,7 @@ import static com.azure.search.documents.SearchAsyncClient.createAutoCompleteReq
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchAsyncClient.class);
-
-    private final SearchAsyncClient asyncClient;
+    private static final ClientLogger LOGGER = new ClientLogger(SearchClient.class);
 
     /**
      * Search REST API Version
@@ -90,14 +99,13 @@ public final class SearchClient {
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-                      HttpPipeline httpPipeline, JsonSerializer serializer, SearchIndexClientImpl restClient, SearchAsyncClient asyncClient) {
+                      HttpPipeline httpPipeline, JsonSerializer serializer, SearchIndexClientImpl restClient) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.restClient = restClient;
-        this.asyncClient = asyncClient;
     }
 
     /**
@@ -613,7 +621,7 @@ public final class SearchClient {
     public <T> Response<T> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<Object> response = restClient.getDocuments().getWithResponse(key, selectedFields, null, context);
+            Response<Object> response = restClient.getDocuments().getWithResponse(key, selectedFields, null, Utility.enableSyncRestProxy(context));
             if (serializer == null) {
                 try {
                     return new SimpleResponse<>(response, Utility.convertValue(response.getValue(), modelClass));
@@ -672,7 +680,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Long> getDocumentCountWithResponse(Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDocuments()
-            .countWithResponse(null, context));
+            .countWithResponse(null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -773,7 +781,7 @@ public final class SearchClient {
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SearchDocumentsResult> response = restClient.getDocuments().searchPostWithResponse(requestToUse, null, context);
+            Response<SearchDocumentsResult> response = restClient.getDocuments().searchPostWithResponse(requestToUse, null, Utility.enableSyncRestProxy(context));
             SearchDocumentsResult result = response.getValue();
             SearchPagedResponse page = new SearchPagedResponse(
                 new SimpleResponse<>(response, getSearchResults(result, serializer)),
@@ -856,7 +864,7 @@ public final class SearchClient {
 
     private SuggestPagedResponse suggest(SuggestRequest suggestRequest, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SuggestDocumentsResult> response = restClient.getDocuments().suggestPostWithResponse(suggestRequest, null, context);
+            Response<SuggestDocumentsResult> response = restClient.getDocuments().suggestPostWithResponse(suggestRequest, null, Utility.enableSyncRestProxy(context));
             SuggestDocumentsResult result = response.getValue();
             return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result)), result.getCoverage());
         });
@@ -921,7 +929,7 @@ public final class SearchClient {
 
     private AutocompletePagedResponse autocomplete(AutocompleteRequest request, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<AutocompleteResult> response = restClient.getDocuments().autocompletePostWithResponse(request, null, context);
+            Response<AutocompleteResult> response = restClient.getDocuments().autocompletePostWithResponse(request, null, Utility.enableSyncRestProxy(context));
             return new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue()));
         });
     }

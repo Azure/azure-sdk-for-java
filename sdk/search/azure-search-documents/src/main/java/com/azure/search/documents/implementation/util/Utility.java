@@ -33,7 +33,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
@@ -44,7 +43,6 @@ import com.azure.search.documents.models.IndexDocumentsResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -62,6 +60,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     // Type reference that used across many places. Have one copy here to minimize the memory.
     public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
@@ -189,7 +188,7 @@ public final class Utility {
                                                                                        Context context, ClientLogger logger) {
         return executeRestCallWithExceptionHandling(() -> {
             Response<com.azure.search.documents.implementation.models.IndexDocumentsResult> response =
-                restClient.getDocuments().indexWithResponse(new IndexBatch(actions), null, context);
+                restClient.getDocuments().indexWithResponse(new IndexBatch(actions), null, enableSyncRestProxy(context));
             if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
                 throw new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue()));
             }
@@ -224,6 +223,10 @@ public final class Utility {
         }  catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
+    }
+
+    public static Context enableSyncRestProxy(Context context) {
+        return context != null ? context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true) : null;
     }
 
     private Utility() {

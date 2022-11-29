@@ -58,14 +58,14 @@ public class SearchAliasTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        indexClient = getSearchIndexClientBuilder().buildClient();
+        indexClient = getSearchIndexClientBuilder(true).buildClient();
         searchClient = setupSearchClient(this::createHotelIndex);
     }
 
     private SearchClient setupSearchClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
 
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, true).buildClient();
     }
 
     @Override

@@ -87,7 +87,7 @@ public class SearchSyncTests extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
@@ -109,7 +109,7 @@ public class SearchSyncTests extends SearchTestBase {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, true).buildClient();
     }
 
     @Test
@@ -133,7 +133,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     private void search(String searchText, SearchOptions searchOptions) {
-        getSearchClientBuilder(INDEX_NAME).buildClient().search(searchText, searchOptions, Context.NONE)
+        getSearchClientBuilder(INDEX_NAME, true).buildClient().search(searchText, searchOptions, Context.NONE)
             .iterableByPage()
             .iterator()
             .next();
@@ -304,7 +304,7 @@ public class SearchSyncTests extends SearchTestBase {
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
     @Test
     public void canSearchWithDateInStaticModel() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         OffsetDateTime expected = OffsetDateTime.parse("2010-06-27T00:00:00Z");
 
@@ -322,7 +322,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithSelectedFields() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         // Ask JUST for the following two fields
         SearchOptions sp = new SearchOptions();
@@ -365,7 +365,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canUseTopAndSkipForClientSidePaging() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SearchOptions parameters = new SearchOptions().setTop(3).setSkip(0).setOrderBy("HotelId");
 
@@ -379,7 +379,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void searchWithoutOrderBySortsByScore() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         Iterator<SearchResult> results = client
             .search("*", new SearchOptions().setFilter("Rating lt 4"), Context.NONE).iterator();
@@ -390,7 +390,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void orderByProgressivelyBreaksTies() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         String[] expectedResults = new String[]{"1", "9", "3", "4", "5", "10", "2", "6", "7", "8"};
 
@@ -403,7 +403,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canFilter() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
@@ -419,7 +419,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithRangeFacets() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
 
@@ -440,7 +440,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithValueFacets() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
 
@@ -505,7 +505,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithLuceneSyntax() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("HotelName", "Roach Motel");
@@ -548,7 +548,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithSearchModeAll() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         List<Map<String, Object>> response = getSearchResults(client
             .search("Cheapest hotel", new SearchOptions().setQueryType(QueryType.SIMPLE).setSearchMode(SearchMode.ALL),
@@ -559,7 +559,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void defaultSearchModeIsAny() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel",
             new SearchOptions().setOrderBy("HotelId"), Context.NONE));
@@ -571,7 +571,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canGetResultCountInSearch() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
 
         SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalCount(true),
@@ -587,7 +587,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithRegex() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL)
@@ -609,7 +609,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithEscapedSpecialCharsInRegex() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions().setQueryType(QueryType.FULL);
 
@@ -640,7 +640,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void searchWithScoringProfileEscaper() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("text")
@@ -657,7 +657,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void searchWithScoringParametersEmpty() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("text")
@@ -674,7 +674,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithMinimumCoverage() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SearchPagedIterable results = client.search("*", new SearchOptions().setMinimumCoverage(50.0),
             Context.NONE);
@@ -685,7 +685,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canUseHitHighlighting() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         //arrange
         String description = "Description";
@@ -736,7 +736,7 @@ public class SearchSyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         String fieldName = "HotelName";
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
 
         // Create a new SynonymMap
         synonymMapToDelete = searchIndexClient.createSynonymMap(new SynonymMap(

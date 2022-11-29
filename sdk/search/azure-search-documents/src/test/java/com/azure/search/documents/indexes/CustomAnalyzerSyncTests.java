@@ -113,7 +113,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        searchIndexClient = getSearchIndexClientBuilder().buildClient();
+        searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
     }
 
     @Override

@@ -117,7 +117,21 @@ public class SearchIndexerClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SearchIndexerClient buildClient() {
-        return new SearchIndexerClient(buildAsyncClient());
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+
+        SearchServiceVersion buildVersion = (serviceVersion == null)
+            ? SearchServiceVersion.getLatest()
+            : serviceVersion;
+
+        if (httpPipeline != null) {
+            return new SearchIndexerClient(endpoint, buildVersion, httpPipeline);
+        }
+
+        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration,
+            retryPolicy, retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies,
+            httpClient, LOGGER);
+
+        return new SearchIndexerClient(endpoint, buildVersion, pipeline);
     }
 
     /**

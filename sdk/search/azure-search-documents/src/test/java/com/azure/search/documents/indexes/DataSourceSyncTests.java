@@ -47,7 +47,7 @@ public class DataSourceSyncTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchIndexerClientBuilder().buildClient();
+        client = getSearchIndexerClientBuilder(true).buildClient();
     }
 
     @Override
@@ -361,7 +361,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
         Response<SearchIndexerDataSourceConnection> response = client
-            .createDataSourceConnectionWithResponse(expectedDataSource, null);
+            .createDataSourceConnectionWithResponse(expectedDataSource, Context.NONE);
         assertNotNull(response);
         assertNotNull(response.getValue());
         assertEquals(expectedDataSource.getName(), response.getValue().getName());

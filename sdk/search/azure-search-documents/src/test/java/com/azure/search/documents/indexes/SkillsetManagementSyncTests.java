@@ -67,7 +67,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchIndexerClientBuilder().buildClient();
+        client = getSearchIndexerClientBuilder(true).buildClient();
     }
 
     @Override

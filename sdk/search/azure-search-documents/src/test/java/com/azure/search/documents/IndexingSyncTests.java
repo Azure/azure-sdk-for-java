@@ -65,7 +65,7 @@ public class IndexingSyncTests extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
@@ -75,7 +75,7 @@ public class IndexingSyncTests extends SearchTestBase {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, true).buildClient();
     }
 
     @Test
@@ -332,11 +332,11 @@ public class IndexingSyncTests extends SearchTestBase {
         SearchIndex indexWithReservedName = new SearchIndex(indexName)
             .setFields(new SearchField("ID", SearchFieldDataType.STRING).setKey(Boolean.TRUE));
 
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createOrUpdateIndex(indexWithReservedName);
         indexesToDelete.add(indexWithReservedName.getName());
 
-        client = getSearchClientBuilder(indexName).buildClient();
+        client = getSearchClientBuilder(indexName, true).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
         Map<String, Object> doc = new HashMap<>();

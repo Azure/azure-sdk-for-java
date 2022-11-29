@@ -156,11 +156,9 @@ public final class SearchClientBuilder implements
             : serviceVersion;
 
         HttpPipeline pipeline = getHttpPipeline();
-        SearchAsyncClient asyncClient = new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
-            Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
 
         return new SearchClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
-            Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline, getDefaultSerializerAdapter()), asyncClient);
+            Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
     }
 
     /**

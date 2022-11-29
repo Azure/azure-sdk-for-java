@@ -46,7 +46,7 @@ public class AutocompleteSyncTests extends SearchTestBase {
 
     @Override
     protected void beforeTest() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
     }
 
     @AfterAll

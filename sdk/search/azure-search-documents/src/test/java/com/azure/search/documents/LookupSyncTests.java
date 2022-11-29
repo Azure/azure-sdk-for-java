@@ -44,7 +44,7 @@ public class LookupSyncTests extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
@@ -54,7 +54,7 @@ public class LookupSyncTests extends SearchTestBase {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, true).buildClient();
     }
 
     @Test

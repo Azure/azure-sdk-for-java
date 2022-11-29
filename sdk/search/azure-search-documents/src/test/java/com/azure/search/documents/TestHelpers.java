@@ -7,11 +7,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.util.Utility;
@@ -43,7 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
@@ -352,7 +349,6 @@ public final class TestHelpers {
     }
 
     public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        //skip paging and polling requests until their sync stack support lands in azure-core.
         return new AssertingHttpClientBuilder(httpClient)
             .skipRequest((httpRequest, context) -> false)
             .assertSync()
@@ -360,7 +356,6 @@ public final class TestHelpers {
     }
 
     public static HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        //skip paging and polling requests until their sync stack support lands in azure-core.
         return new AssertingHttpClientBuilder(httpClient)
             .skipRequest((httpRequest, context) -> false)
             .assertAsync()

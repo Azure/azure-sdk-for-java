@@ -63,7 +63,7 @@ public class SuggestSyncTests extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
@@ -80,12 +80,12 @@ public class SuggestSyncTests extends SearchTestBase {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, true).buildClient();
     }
 
     @Test
     public void canSuggestDynamicDocuments() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy("HotelId");
@@ -101,7 +101,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void searchFieldsExcludesFieldsFromSuggest() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSearchFields("HotelName");
@@ -117,7 +117,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void canUseSuggestHitHighlighting() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setHighlightPreTag("<b>")
@@ -136,7 +136,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void canGetFuzzySuggestions() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
@@ -152,7 +152,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void canSuggestStaticallyTypedDocuments() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
         //arrange
@@ -199,7 +199,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void fuzzyIsOffByDefault() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hitel",
             "sg", null, Context.NONE)
@@ -217,7 +217,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void suggestThrowsWhenGivenBadSuggesterName() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator = client.suggest("Hotel",
             "Suggester does not exist", new SuggestOptions(), Context.NONE);
@@ -230,7 +230,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void suggestThrowsWhenRequestIsMalformed() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("This is not a valid orderby.");
 
@@ -245,7 +245,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void testCanSuggestWithMinimumCoverage() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -265,7 +265,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void testTopTrimsResults() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -284,7 +284,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void testCanFilter() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
@@ -305,7 +305,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void testOrderByProgressivelyBreaksTies() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(
@@ -326,7 +326,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
     @Test
     public void testCanSuggestWithSelectedFields() {
-        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");

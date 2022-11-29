@@ -16,14 +16,14 @@ public class SearchServiceSyncTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsCorrectDefinition() {
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         validateServiceStatistics(serviceClient.getServiceStatistics());
     }
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         SearchServiceStatistics searchServiceStatistics = serviceClient.getServiceStatisticsWithResponse(Context.NONE)
             .getValue();
@@ -32,7 +32,7 @@ public class SearchServiceSyncTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsRequestId() {
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(Context.NONE);
 

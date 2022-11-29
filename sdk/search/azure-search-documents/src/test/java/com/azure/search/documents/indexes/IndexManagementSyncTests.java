@@ -53,7 +53,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchIndexClientBuilder().buildClient();
+        client = getSearchIndexClientBuilder(true).buildClient();
     }
 
     @Override

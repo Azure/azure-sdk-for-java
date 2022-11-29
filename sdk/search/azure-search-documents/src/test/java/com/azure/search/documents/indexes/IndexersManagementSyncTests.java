@@ -110,8 +110,8 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        searchIndexerClient = getSearchIndexerClientBuilder().buildClient();
-        searchIndexClient = getSearchIndexClientBuilder().buildClient();
+        searchIndexerClient = getSearchIndexerClientBuilder(true).buildClient();
+        searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
     }
 
     @Override
@@ -261,7 +261,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
         // returning a well-known mock response
-        SearchIndexerClient mockStatusClient = getSearchIndexerClientBuilder(MOCK_STATUS_PIPELINE_POLICY).buildClient();
+        SearchIndexerClient mockStatusClient = getSearchIndexerClientBuilder(true, MOCK_STATUS_PIPELINE_POLICY).buildClient();
 
         mockStatusClient.createIndexer(indexer);
         indexersToDelete.add(indexer.getName());

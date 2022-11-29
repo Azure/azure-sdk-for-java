@@ -95,12 +95,39 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected String setupIndex(SearchIndex index) {
-        getSearchIndexClientBuilder().buildClient().createOrUpdateIndex(index);
+        getSearchIndexClientBuilder(true).buildClient().createOrUpdateIndex(index);
 
         return index.getName();
     }
 
-    protected SearchIndexClientBuilder getSearchIndexClientBuilder() {
+    protected SearchIndexClientBuilder getSearchIndexClientBuilder(boolean isSync) {
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
+            .endpoint(ENDPOINT);
+        builder.credential(new AzureKeyCredential(API_KEY));
+        if (interceptorManager.isPlaybackMode()) {
+            if (isSync) {
+                builder.httpClient(TestHelpers.buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+
+            } else {
+                builder.httpClient(TestHelpers.buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
+            }
+            addPolicies(builder);
+            return builder;
+        }
+
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
+
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+
+    }
+
+    protected SearchIndexClientBuilder getSearchIndexClientBuilderWithoutAssertingClient() {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT);
         builder.credential(new AzureKeyCredential(API_KEY));
@@ -122,12 +149,16 @@ public abstract class SearchTestBase extends TestBase {
 
     }
 
-    protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(HttpPipelinePolicy... policies) {
+    protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(boolean isSync, HttpPipelinePolicy... policies) {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT);
         builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
+            if (isSync) {
+                builder.httpClient(TestHelpers.buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+            } else {
+                builder.httpClient(TestHelpers.buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
+            }
             addPolicies(builder, policies);
             return builder;
         }
@@ -163,7 +194,30 @@ public abstract class SearchTestBase extends TestBase {
         }
     }
 
-    protected SearchClientBuilder getSearchClientBuilder(String indexName) {
+    protected SearchClientBuilder getSearchClientBuilder(String indexName, boolean isSync) {
+        SearchClientBuilder builder = new SearchClientBuilder()
+            .endpoint(ENDPOINT)
+            .indexName(indexName);
+
+        builder.credential(new AzureKeyCredential(API_KEY));
+        if (interceptorManager.isPlaybackMode()) {
+            if (isSync) {
+                return builder.httpClient(TestHelpers.buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+            } else {
+                return builder.httpClient(TestHelpers.buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
+            }
+        }
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
+
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
+    protected SearchClientBuilder getSearchClientBuilderWithoutAssertingClient(String indexName) {
         SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(indexName);
