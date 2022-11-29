@@ -93,16 +93,13 @@ public class MultivariateSample {
 
     private static void getModelList(AnomalyDetectorClient client, Integer skip, Integer top) {
         PagedIterable<Model> response = client.listMultivariateModels(skip, top);
-        Iterator<PagedResponse<Model>> ite = response.iterableByPage().iterator();
-        int i = 1;
-        while (ite.hasNext()) {
-            PagedResponse<Model> items = ite.next();
-            System.out.println("The result in the page " + i);
-            i++;
-            for (Model item : items.getValue()) {
+
+        System.out.println("ModelList: ");
+        response.streamByPage().forEach(models -> {
+            for (Model item : models.getValue()){
                 System.out.println("\t" + item.getModelId());
             }
-        }
+        });
     }
 
     private static LastDetectionResult getLastDetectResult(AnomalyDetectorClient client, LastDetectionRequest body, UUID modelId) {
@@ -165,7 +162,6 @@ public class MultivariateSample {
             } else if (detectionStatus == DetectionStatus.FAILED) {
                 System.out.println("FAILED");
                 throw new RuntimeException("Inference Failed.");
-
             }
             System.out.println("INFERRING");
             TimeUnit.SECONDS.sleep(5);
