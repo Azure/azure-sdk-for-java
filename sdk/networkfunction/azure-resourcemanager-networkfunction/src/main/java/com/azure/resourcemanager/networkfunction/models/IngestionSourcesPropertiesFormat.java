@@ -22,6 +22,10 @@ public final class IngestionSourcesPropertiesFormat {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
+    /** Creates an instance of IngestionSourcesPropertiesFormat class. */
+    public IngestionSourcesPropertiesFormat() {
+    }
+
     /**
      * Get the sourceType property: Ingestion source type.
      *

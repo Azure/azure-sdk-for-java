@@ -24,6 +24,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.devcenter.fluent.AttachedNetworksClient;
 import com.azure.resourcemanager.devcenter.fluent.CatalogsClient;
+import com.azure.resourcemanager.devcenter.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.devcenter.fluent.DevBoxDefinitionsClient;
 import com.azure.resourcemanager.devcenter.fluent.DevCenterManagementClient;
 import com.azure.resourcemanager.devcenter.fluent.DevCentersClient;
@@ -293,6 +294,18 @@ public final class DevCenterManagementClientImpl implements DevCenterManagementC
         return this.usages;
     }
 
+    /** The CheckNameAvailabilitiesClient object to access its operations. */
+    private final CheckNameAvailabilitiesClient checkNameAvailabilities;
+
+    /**
+     * Gets the CheckNameAvailabilitiesClient object to access its operations.
+     *
+     * @return the CheckNameAvailabilitiesClient object.
+     */
+    public CheckNameAvailabilitiesClient getCheckNameAvailabilities() {
+        return this.checkNameAvailabilities;
+    }
+
     /** The SkusClient object to access its operations. */
     private final SkusClient skus;
 
@@ -363,7 +376,7 @@ public final class DevCenterManagementClientImpl implements DevCenterManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-10-12-preview";
+        this.apiVersion = "2022-11-11-preview";
         this.devCenters = new DevCentersClientImpl(this);
         this.projects = new ProjectsClientImpl(this);
         this.attachedNetworks = new AttachedNetworksClientImpl(this);
@@ -378,6 +391,7 @@ public final class DevCenterManagementClientImpl implements DevCenterManagementC
         this.operations = new OperationsClientImpl(this);
         this.operationStatuses = new OperationStatusesClientImpl(this);
         this.usages = new UsagesClientImpl(this);
+        this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.pools = new PoolsClientImpl(this);
         this.schedules = new SchedulesClientImpl(this);

@@ -14,7 +14,7 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"jnkaljutiiswacff\",\"isDataAction\":false,\"display\":{\"provider\":\"ewkfvhqcrai\",\"resource\":\"pnppfuf\",\"operation\":\"wdmhdlxyjrxs\",\"description\":\"afcnih\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"edgfbcvkcvq\",\"isDataAction\":true,\"display\":{\"provider\":\"dcvd\",\"resource\":\"vo\",\"operation\":\"sotbob\",\"description\":\"opcjwvnhd\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"cxrslpmutwuoe\"}")
+                    "{\"value\":[{\"name\":\"qbuaceopzfqr\",\"isDataAction\":true,\"display\":{\"provider\":\"pppcqeqxo\",\"resource\":\"dahzxctobg\",\"operation\":\"dmoizpostmg\",\"description\":\"fbunrmfqjhhk\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"mjh\",\"isDataAction\":false,\"display\":{\"provider\":\"gudivkrtswbxqz\",\"resource\":\"zjf\",\"operation\":\"vjfdx\",\"description\":\"vetvt\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"oqmcbxvwvxyslq\",\"isDataAction\":false,\"display\":{\"provider\":\"obl\",\"resource\":\"k\",\"operation\":\"mpew\",\"description\":\"fbkrvrnsvs\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"crsbfovasr\"}")
                 .toObject(OperationListResult.class);
     }
 

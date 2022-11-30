@@ -14,7 +14,7 @@ public final class EnvironmentTypeListResultTests {
         EnvironmentTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"whonowk\"},\"tags\":{\"jeputtmrywn\":\"wankixzbi\",\"lwh\":\"zoqftiyqzrnkcqvy\",\"ryavwhheunmmqh\":\"lsicohoqqnwv\",\"noc\":\"yxzk\"},\"id\":\"oklyaxuconuq\",\"name\":\"zf\",\"type\":\"beypewrmjmw\"},{\"properties\":{\"provisioningState\":\"ektcxsen\"},\"tags\":{\"ylihkaetckt\":\"rsffrzpwvlqdqgbi\"},\"id\":\"civfsnkymuctq\",\"name\":\"jf\",\"type\":\"ebrjcxe\"},{\"properties\":{\"provisioningState\":\"wutttxfvjrbi\"},\"tags\":{\"jky\":\"xepcyvahfn\",\"ljyoxgvcltb\":\"xjvuujqgidokg\",\"bijhtxfvgxbf\":\"sncghkjeszz\",\"ec\":\"mxnehmp\"},\"id\":\"odebfqkkrbmpu\",\"name\":\"gr\",\"type\":\"wflzlfbxzpuzy\"}],\"nextLink\":\"spnqzahmgkb\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\"},\"tags\":{\"onpc\":\"xc\"},\"id\":\"ocohslkevleg\",\"name\":\"zfbuhf\",\"type\":\"vfaxkffeiith\"}],\"nextLink\":\"m\"}")
                 .toObject(EnvironmentTypeListResult.class);
     }
 

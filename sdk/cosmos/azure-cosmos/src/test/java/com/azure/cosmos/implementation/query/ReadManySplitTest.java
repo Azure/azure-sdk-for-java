@@ -104,19 +104,32 @@ public class ReadManySplitTest {
         }
 
         @Override
-        protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,
-                                                             String initialContinuationToken, int initialPageSize,
+        protected DocumentProducer<T> createDocumentProducer(String collectionRid,
+                                                             String initialContinuationToken,
+                                                             int initialPageSize,
                                                              CosmosQueryRequestOptions cosmosQueryRequestOptions,
                                                              SqlQuerySpec querySpecForInit,
                                                              Map<String, String> commonRequestHeaders,
-                                                             TriFunction<FeedRangeEpkImpl, String, Integer,
-                                                                 RxDocumentServiceRequest> createRequestFunc,
+                                                             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
                                                              Function<RxDocumentServiceRequest,
-                                                                 Mono<FeedResponse<T>>> executeFunc,
-                                                             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
-            return new DocumentProducer<T>(client, collectionRid, cosmosQueryRequestOptions, createRequestFunc,
-                executeFunc, targetRange, "testCollectionLink", createRetryPolicyFunc, resourceType,
-                correlatedActivityId, -1, initialContinuationToken, -1, feedRange, () -> "n/a");
+                                                             Mono<FeedResponse<T>>> executeFunc,
+                                                             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+                                                             FeedRangeEpkImpl feedRange) {
+            return new DocumentProducer<T>(
+                client,
+                collectionRid,
+                cosmosQueryRequestOptions,
+                createRequestFunc,
+                executeFunc,
+                "testCollectionLink",
+                createRetryPolicyFunc,
+                resourceType,
+                correlatedActivityId,
+                -1,
+                initialContinuationToken,
+                -1,
+                feedRange,
+                () -> "n/a");
         }
 
         @Override

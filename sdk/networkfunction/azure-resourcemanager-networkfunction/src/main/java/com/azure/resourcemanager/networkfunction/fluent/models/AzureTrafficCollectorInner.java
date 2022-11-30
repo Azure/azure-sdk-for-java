@@ -34,6 +34,10 @@ public final class AzureTrafficCollectorInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of AzureTrafficCollectorInner class. */
+    public AzureTrafficCollectorInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Azure Traffic Collector.
      *
@@ -80,22 +84,8 @@ public final class AzureTrafficCollectorInner extends Resource {
      *
      * @return the collectorPolicies value.
      */
-    public List<CollectorPolicyInner> collectorPolicies() {
+    public List<ResourceReference> collectorPolicies() {
         return this.innerProperties() == null ? null : this.innerProperties().collectorPolicies();
-    }
-
-    /**
-     * Set the collectorPolicies property: Collector Policies for Azure Traffic Collector.
-     *
-     * @param collectorPolicies the collectorPolicies value to set.
-     * @return the AzureTrafficCollectorInner object itself.
-     */
-    public AzureTrafficCollectorInner withCollectorPolicies(List<CollectorPolicyInner> collectorPolicies) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureTrafficCollectorPropertiesFormat();
-        }
-        this.innerProperties().withCollectorPolicies(collectorPolicies);
-        return this;
     }
 
     /**

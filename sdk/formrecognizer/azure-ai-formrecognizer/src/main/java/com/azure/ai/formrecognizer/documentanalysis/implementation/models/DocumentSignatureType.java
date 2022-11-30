@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DocumentSignatureType. */
+/** Presence of signature. */
 public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSignatureType> {
     /** Static value signed for DocumentSignatureType. */
     public static final DocumentSignatureType SIGNED = fromString("signed");
