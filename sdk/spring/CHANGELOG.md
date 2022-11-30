@@ -27,6 +27,9 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix Bug: NoClassDefFoundError for JSONArray. [31716](https://github.com/Azure/azure-sdk-for-java/issues/31716)
 - Fix bug: `spring.main.sources` configuration from Spring Cloud Stream Kafka binder cannot take effect. [#31715](https://github.com/Azure/azure-sdk-for-java/pull/31715)
 
+#### Features Added
+- Remove warning logs of Kafka passwordless autoconfiguration. [#31182](https://github.com/Azure/azure-sdk-for-java/issues/31182)
+
 ## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
 Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies version to 2021.0.3.
