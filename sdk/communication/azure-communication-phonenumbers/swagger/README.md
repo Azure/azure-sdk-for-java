@@ -23,8 +23,8 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-phonenumber-2022-11-30
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c24836060a7ac3aa6e6d4eb64d4c69ef801bb9cb/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-phonenumber-2022-12-01
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/edf1d7365a436f0b124c0cecbefd63499e049af0/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountries,PhoneNumberCountry,PhoneNumberLocalities,PhoneNumberLocality,PhoneNumberOffering,PhoneNumberOfferings,AreaCodeResult,AreaCodes
 custom-types-subpackage: models
@@ -94,7 +94,7 @@ directive:
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.AreaCodeResult
+    where: $.definitions.PhoneNumberAreaCode
     transform: >
       $["properties"]["areaCode"].readOnly = true;
 ```
@@ -103,7 +103,7 @@ directive:
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.AreaCodes
+    where: $.definitions.PhoneNumberAreaCodes
     transform: >
       $["properties"]["areaCodes"].readOnly = true;
       $["properties"]["nextLink"].readOnly = true;
@@ -115,7 +115,7 @@ directive:
   - from: swagger-document
     where: $.definitions.PhoneNumberAdministrativeDivision
     transform: >
-      $["properties"]["abbreivatedName"].readOnly = true;
+      $["properties"]["abbreviatedName"].readOnly = true;
       $["properties"]["localizedName"].readOnly = true;
 ```
 
@@ -125,7 +125,7 @@ directive:
   - from: swagger-document
     where: $.definitions.PhoneNumberAdministrativeDivision
     transform: >
-      $["properties"]["abbreivatedName"].readOnly = true;
+      $["properties"]["abbreviatedName"].readOnly = true;
       $["properties"]["localizedName"].readOnly = true;
 ```
 
@@ -135,8 +135,8 @@ directive:
   - from: swagger-document
     where: $.definitions.PhoneNumberCountries
     transform: >
-      $["properties"]["countryCode"].readOnly = true;
-      $["properties"]["localizedName"].readOnly = true;
+      $["properties"]["countries"].readOnly = true;
+      $["properties"]["nextLink"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberLocality properties
@@ -176,8 +176,18 @@ directive:
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.PhoneNumberOfferings
+    where: $.definitions.OfferingsResponse
     transform: >
       $["properties"]["nextLink"].readOnly = true;
       $["properties"]["phoneNumberOfferings"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberCountry properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCountry
+    transform: >
+      $["properties"]["localizedName"].readOnly = true;
+      $["properties"]["countryCode"].readOnly = true;
 ```

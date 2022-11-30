@@ -4,23 +4,23 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PhoneNumberOfferings model. */
-@Fluent
+@Immutable
 public final class PhoneNumberOfferings {
     /*
      * Represents the underlying list of offerings.
      */
-    @JsonProperty(value = "phoneNumberOfferings")
+    @JsonProperty(value = "phoneNumberOfferings", access = JsonProperty.Access.WRITE_ONLY)
     private List<PhoneNumberOffering> phoneNumberOfferings;
 
     /*
      * Represents the URL link to the next page.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -33,33 +33,11 @@ public final class PhoneNumberOfferings {
     }
 
     /**
-     * Set the phoneNumberOfferings property: Represents the underlying list of offerings.
-     *
-     * @param phoneNumberOfferings the phoneNumberOfferings value to set.
-     * @return the PhoneNumberOfferings object itself.
-     */
-    public PhoneNumberOfferings setPhoneNumberOfferings(List<PhoneNumberOffering> phoneNumberOfferings) {
-        this.phoneNumberOfferings = phoneNumberOfferings;
-        return this;
-    }
-
-    /**
      * Get the nextLink property: Represents the URL link to the next page.
      *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Represents the URL link to the next page.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the PhoneNumberOfferings object itself.
-     */
-    public PhoneNumberOfferings setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 }

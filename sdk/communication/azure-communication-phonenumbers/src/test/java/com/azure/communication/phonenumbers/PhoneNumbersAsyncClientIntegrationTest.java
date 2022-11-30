@@ -2,10 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
+import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
+import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
+import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
@@ -22,6 +26,7 @@ import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
 import reactor.test.StepVerifier;
 import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -215,6 +220,165 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .beginUpdatePhoneNumberCapabilities(null, new PhoneNumberCapabilities())
             )
             .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes").listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next()
+            )
+            .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                assertNotNull(areaCodes.getAreaCode());
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities").listAvailableLocalities("US", null).blockFirst();
+        StepVerifier.create(
+            this.getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes").listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName()).next()
+            )
+            .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                assertNotNull(areaCodes);
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getCountriesWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithManagedIdentity(httpClient, "listAvailableCountries").listAvailableCountries().next()
+            )
+            .assertNext((PhoneNumberCountry country) -> {
+                assertNotNull(country);
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities").listAvailableLocalities("US", null).next()
+            )
+            .assertNext((PhoneNumberLocality locality) -> {
+                assertNotNull(locality);
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesAdministrativeDivisionWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities").listAvailableLocalities("US", "WA").next()
+            )
+            .assertNext((PhoneNumberLocality locality) -> {
+                assertNotNull(locality);
+                assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), "WA");
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getOfferingsWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithManagedIdentity(httpClient, "listAvailableOfferings").listAvailableOfferings("US", null, null).next()
+            )
+            .assertNext((PhoneNumberOffering offering) -> {
+                assertNotNull(offering);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodes(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes").listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next()
+            )
+            .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                assertNotNull(areaCodes.getAreaCode());
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodes(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities").listAvailableLocalities("US", null).blockFirst();
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes").listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName()).next()
+            )
+            .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                assertNotNull(areaCodes);
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getCountries(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries().next()
+            )
+            .assertNext((PhoneNumberCountry country) -> {
+                assertNotNull(country);
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalities(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "listAvailableLocalities").listAvailableLocalities("US", null).next()
+            )
+            .assertNext((PhoneNumberLocality locality) -> {
+                assertNotNull(locality);
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesAdministrativeDivision(HttpClient httpClient) {
+        String localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities").listAvailableLocalities("US", null).blockFirst().getAdministrativeDivision().getAbbreviatedName();
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "listAvailableLocalities").listAvailableLocalities("US", localityAdministraiveDivision).next()
+            )
+            .assertNext((PhoneNumberLocality locality) -> {
+                assertNotNull(locality);
+                assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityAdministraiveDivision);
+            })
+            .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getOfferings(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "listAvailableOfferings").listAvailableOfferings("US", null, null).next()
+            )
+            .assertNext((PhoneNumberOffering offering) -> {
+                assertNotNull(offering);
+            })
+            .verifyComplete();
     }
 
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName, boolean withOptions) {

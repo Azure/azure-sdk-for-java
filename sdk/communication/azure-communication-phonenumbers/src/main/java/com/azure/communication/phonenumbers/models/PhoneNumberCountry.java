@@ -4,26 +4,26 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberCountry model. */
-@Fluent
+@Immutable
 public final class PhoneNumberCountry {
     /*
-     * Represents the name of the country/region.
+     * Represents the name of the country.
      */
-    @JsonProperty(value = "localizedName", required = true)
+    @JsonProperty(value = "localizedName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String localizedName;
 
     /*
-     * Represents the abbreviated name of the country/region.
+     * Represents the abbreviated name of the country.
      */
-    @JsonProperty(value = "countryCode", required = true)
+    @JsonProperty(value = "countryCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String countryCode;
 
     /**
-     * Get the localizedName property: Represents the name of the country/region.
+     * Get the localizedName property: Represents the name of the country.
      *
      * @return the localizedName value.
      */
@@ -32,33 +32,11 @@ public final class PhoneNumberCountry {
     }
 
     /**
-     * Set the localizedName property: Represents the name of the country/region.
-     *
-     * @param localizedName the localizedName value to set.
-     * @return the PhoneNumberCountry object itself.
-     */
-    public PhoneNumberCountry setLocalizedName(String localizedName) {
-        this.localizedName = localizedName;
-        return this;
-    }
-
-    /**
-     * Get the countryCode property: Represents the abbreviated name of the country/region.
+     * Get the countryCode property: Represents the abbreviated name of the country.
      *
      * @return the countryCode value.
      */
     public String getCountryCode() {
         return this.countryCode;
-    }
-
-    /**
-     * Set the countryCode property: Represents the abbreviated name of the country/region.
-     *
-     * @param countryCode the countryCode value to set.
-     * @return the PhoneNumberCountry object itself.
-     */
-    public PhoneNumberCountry setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-        return this;
     }
 }

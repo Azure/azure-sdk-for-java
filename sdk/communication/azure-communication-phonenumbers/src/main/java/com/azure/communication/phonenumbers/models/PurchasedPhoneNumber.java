@@ -24,13 +24,13 @@ public final class PurchasedPhoneNumber {
     private String phoneNumber;
 
     /*
-     * The ISO 3166-2 code of the phone number's country/region, e.g. US.
+     * The ISO 3166-2 code of the phone number's country, e.g. US.
      */
     @JsonProperty(value = "countryCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String countryCode;
 
     /*
-     * The phone number's type, e.g. Geographic, TollFree.
+     * The phone number's type, e.g. geographic, tollFree.
      */
     @JsonProperty(value = "phoneNumberType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
@@ -79,7 +79,7 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Get the countryCode property: The ISO 3166-2 code of the phone number's country/region, e.g. US.
+     * Get the countryCode property: The ISO 3166-2 code of the phone number's country, e.g. US.
      *
      * @return the countryCode value.
      */
@@ -88,7 +88,7 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Get the phoneNumberType property: The phone number's type, e.g. Geographic, TollFree.
+     * Get the phoneNumberType property: The phone number's type, e.g. geographic, tollFree.
      *
      * @return the phoneNumberType value.
      */
