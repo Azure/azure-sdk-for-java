@@ -732,6 +732,7 @@ public class StoreReader {
             long globalCommittedLSN = -1;
             int numberOfReadRegions = -1;
             Double backendLatencyInMs = null;
+            Double retryAfterInMs = null;
             long itemLSN = -1;
 
             if (replicaStatusList != null) {
@@ -786,6 +787,10 @@ public class StoreReader {
                 backendLatencyInMs = Double.parseDouble(headerValue);
             }
 
+            if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS)) != null) {
+                retryAfterInMs = Double.parseDouble(headerValue);
+            }
+
             long lsn = -1;
             if (useLocalLSNBasedHeaders) {
                 if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN)) != null) {
@@ -819,7 +824,8 @@ public class StoreReader {
                     /* numberOfReadRegions: */ numberOfReadRegions,
                     /* itemLSN: */ itemLSN,
                     /* getSessionToken: */ sessionToken,
-                    /* backendLatencyInMs */ backendLatencyInMs);
+                    /* backendLatencyInMs */ backendLatencyInMs,
+                    /* retryAfterInMs */ retryAfterInMs);
         } else {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
             CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
@@ -832,6 +838,7 @@ public class StoreReader {
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
                 Double backendLatencyInMs = null;
+                Double retryAfterInMs = null;
 
                 if (replicaStatusList != null) {
                     ImplementationBridgeHelpers
@@ -889,6 +896,10 @@ public class StoreReader {
                     backendLatencyInMs = Double.parseDouble(headerValue);
                 }
 
+                if ((headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS)) != null) {
+                    retryAfterInMs = Double.parseDouble(headerValue);
+                }
+
                 long lsn = -1;
                 if (useLocalLSNBasedHeaders) {
                     headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.LOCAL_LSN);
@@ -928,7 +939,8 @@ public class StoreReader {
                         /* numberOfReadRegions: */ numberOfReadRegions,
                         /* itemLSN: */ -1,
                         /* getSessionToken: */ sessionToken,
-                        /* backendLatencyInMs */ backendLatencyInMs);
+                        /* backendLatencyInMs */ backendLatencyInMs,
+                        /* retryAfterInMs */ retryAfterInMs);
             } else {
                 logger.error("Unexpected exception {} received while reading from store.", responseException.getMessage(), responseException);
                 return new StoreResult(
@@ -948,7 +960,8 @@ public class StoreReader {
                         /* numberOfReadRegions: */ 0,
                         /* itemLSN: */ -1,
                         /* getSessionToken: */ null,
-                        /* backendLatencyInMs */ null);
+                        /* backendLatencyInMs */ null,
+                        /* retryAfterInMs*/ null);
             }
         }
     }

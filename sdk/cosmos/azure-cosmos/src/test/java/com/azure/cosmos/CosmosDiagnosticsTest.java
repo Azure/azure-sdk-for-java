@@ -308,6 +308,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+            assertThat(diagnostics).contains("\"retryAfterInMs\"");
             // TODO: Add this check back when enable the channelAcquisitionContext again
             // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotEmpty();
@@ -323,6 +324,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             } catch (CosmosException e) {
                 diagnostics = e.getDiagnostics().toString();
                 assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+                assertThat(diagnostics).contains("\"retryAfterInMs\"");
                 assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
                 assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
                 assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
@@ -786,6 +788,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getDiagnostics().getContactedRegionNames()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+            assertThat(diagnostics).contains("\"retryAfterInMs\"");
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource Not Found.");
             assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
