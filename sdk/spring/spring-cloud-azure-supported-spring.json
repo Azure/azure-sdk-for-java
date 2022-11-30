@@ -8,7 +8,7 @@
     "spring-cloud-version" : "2022.0.0-RC2"
   },
   {
-    "current" : false,
+    "current" : true,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
     "supportStatus" : "TODO",
@@ -72,7 +72,7 @@
     "spring-cloud-version" : "2021.0.5"
   },
   {
-    "current" : true,
+    "current" : false,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
