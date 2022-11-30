@@ -15,7 +15,8 @@
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
 
 ### Bugs Fixed
-- Fix CVEs.
+- Fix [CVE2022-40152](https://nvd.nist.gov/vuln/detail/CVE-2022-40152).
+- Fix [CVE2022-40153](https://nvd.nist.gov/vuln/detail/CVE-2022-40153).
 - Fixed an issue where Feature Flags didn't NormalizeNull on refresh checks, causing `(No Label)`/empty label feature flags to not cause refreshes when their value changed.
 
 ## 2.9.0 (2022-09-22)
