@@ -5,7 +5,6 @@ package com.azure.identity.extensions.implementation.token;
 
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
-import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

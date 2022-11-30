@@ -3,7 +3,6 @@
 
 package com.azure.identity.extensions.implementation.enums;
 
-import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import org.junit.jupiter.api.Test;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 

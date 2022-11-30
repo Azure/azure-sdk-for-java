@@ -4,9 +4,6 @@
 package com.azure.identity.extensions.implementation.credential.provider;
 
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProviders;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
