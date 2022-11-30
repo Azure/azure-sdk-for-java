@@ -55,8 +55,7 @@ public final class MSIToken extends AccessToken {
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
         @JsonProperty(value = "expires_in") String expiresIn) {
-        super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn
-            : expiresOn)));
+        super(token, getExpiryTime(expiresOn, expiresIn));
         this.accessToken = token;
         this.expiresOn =  expiresOn;
         this.expiresIn = expiresIn;
@@ -65,6 +64,11 @@ public final class MSIToken extends AccessToken {
     @Override
     public String getToken() {
         return accessToken;
+    }
+
+    private static OffsetDateTime getExpiryTime(String expiresOn, String expiresIn) {
+        return CoreUtils.isNullOrEmpty(expiresOn) ? parseExpiresInTime(expiresIn)
+            : EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn));
     }
 
     private static Long parseDateToEpochSeconds(String dateTime) {
@@ -87,6 +91,10 @@ public final class MSIToken extends AccessToken {
         }
 
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));
+    }
+
+    private static OffsetDateTime parseExpiresInTime(String expiresIn) {
+        return OffsetDateTime.now().plusSeconds(Integer.valueOf(expiresIn));
     }
 
 }
