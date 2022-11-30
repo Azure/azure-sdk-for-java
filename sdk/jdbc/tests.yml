@@ -7,9 +7,9 @@ stages:
           Clouds: 'Public'
           TestResourceDirectories:
           Artifacts:
-            - name: azure-identity-providers
+            - name: azure-identity-extensions
               groupId: com.azure
-              safeName: azureidentityproviders
+              safeName: azureidentityextensions
           TimeoutInMinutes: 240
           ServiceDirectory: jdbc
           TestName: JdbcIntegrationTests
