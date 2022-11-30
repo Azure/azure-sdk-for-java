@@ -69,7 +69,7 @@ class AadJwtBearerTokenAuthenticationConverterTests {
         AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
+        assertThat(principal.getAttributes()).hasSize(3);
         assertThat(principal.getAuthorities()).hasSize(4);
     }
 
@@ -81,7 +81,7 @@ class AadJwtBearerTokenAuthenticationConverterTests {
         AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
+        assertThat(principal.getAttributes()).hasSize(3);
         assertThat(principal.getAuthorities()).hasSize(4);
     }
 
@@ -93,7 +93,7 @@ class AadJwtBearerTokenAuthenticationConverterTests {
         AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
+        assertThat(principal.getAttributes()).hasSize(3);
         assertThat(principal.getAuthorities()).hasSize(2);
     }
 
@@ -106,7 +106,7 @@ class AadJwtBearerTokenAuthenticationConverterTests {
         AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
+        assertThat(principal.getAttributes()).hasSize(3);
         assertThat(principal.getAuthorities()).hasSize(2);
     }
 
@@ -120,7 +120,7 @@ class AadJwtBearerTokenAuthenticationConverterTests {
         AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
+        assertThat(principal.getAttributes()).hasSize(3);
         assertThat(principal.getAuthorities()).hasSize(2);
         Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
         Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));

@@ -106,10 +106,10 @@ class AadResourceServerConfigurationTests {
     }
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public static class TestDefaultAadResourceServerConfiguration extends
+    static class TestDefaultAadResourceServerConfiguration extends
         AadResourceServerWebSecurityConfigurerAdapter {
 
-        public TestDefaultAadResourceServerConfiguration() {
+        TestDefaultAadResourceServerConfiguration() {
             super(null, mock(TestJwtGrantedAuthoritiesConverter.class));
         }
 
