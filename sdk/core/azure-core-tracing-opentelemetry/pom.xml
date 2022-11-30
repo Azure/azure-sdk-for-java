@@ -125,8 +125,8 @@
 
       <plugin>
         <groupId>com.azure.tools</groupId>
-        <artifactId>codesnippet-maven-plugin</artifactId> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
-        <version>1.0.0-beta.8</version>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <codesnippetRootDirectory>../azure-core-tracing-opentelemetry-samples/src/samples/java</codesnippetRootDirectory>
         </configuration>
