@@ -257,7 +257,7 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://monitor.azure.com//.default"));
         }
         policies.addAll(
                 this.pipelinePolicies.stream()
