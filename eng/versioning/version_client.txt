@@ -177,6 +177,7 @@ com.azure:azure-developer-loadtesting;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-identity-providers-core;1.0.0-beta.1;1.0.0
 com.azure:azure-identity-providers-jdbc-mysql;1.0.0-beta.1;1.0.0
 com.azure:azure-identity-providers-jdbc-postgresql;1.0.0-beta.1;1.0.0
+com.azure:azure-confidentialledgerbugbash;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config-web;2.10.0;2.11.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config;2.10.0;2.11.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;2.9.0;2.10.0-beta.1
