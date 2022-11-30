@@ -4,7 +4,7 @@
 
 # Release History
 
-## 1.0.0 (2022-11-11)
+## 1.0.0 (Unreleased)
 
 This is the 1.0.0 GA version of Azure identity JDBC MySQL plugin library for Java.
 
