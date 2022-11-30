@@ -8,7 +8,7 @@ Microsoft Azure Cognitive Services Anomaly Detector API enables you to monitor a
 
 ### Prerequisites
 
-- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+- A [Java Development Kit (JDK)][jdk_link], version 11 or later.
 - [Azure Subscription][azure_subscription]
 - An existing Cognitive Services or Anomaly Detector resource.
 
@@ -21,7 +21,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-anomalydetector</artifactId>
-  <version>3.0.0-beta.1</version>
+  <version>3.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
