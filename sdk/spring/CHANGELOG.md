@@ -3,6 +3,9 @@
 ## 6.0.0-beta.4 (Unreleased)
 Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
 
+#### Features Added
+- Remove warning logs of Kafka passwordless autoconfiguration. [#31182](https://github.com/Azure/azure-sdk-for-java/issues/31182)
+
 ## 6.0.0-beta.3 (2022-11-04)
 Upgrade Spring Boot dependencies version to 3.0.0-RC1 and Spring Cloud dependencies version to 2022.0.0-RC1.
 
