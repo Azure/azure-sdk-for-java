@@ -4,7 +4,9 @@ Represents stress tests for Service Bus client.
 
 ## Getting started
 
-The stress tests for service bus client is developed from [azure-sdk-chaos][azure_sdk_chaos]. 
+The stress tests for service bus client is developed from [azure-sdk-chaos][azure_sdk_chaos].
+
+To know how to develop a stress test project, you should first go through the [Azure SDK Stress Test Wiki][azure_sdk_stress_test].
 
 ### Prerequisites
 
@@ -73,19 +75,30 @@ Stop and remove deployed package:
 helm uninstall <stress test name> -n <stress test namespace>
 ```
 
+### Monitoring
+
+After the stress test is deployed on the cluster, we can monitor the telemetry data on the application insights which is 
+inside the stress test resource group.
+
+The SDK metrics can also be monitored on application insights as we have imported 
+[Azure OpenTelemetry Metrics plugin][azure_core_metrics_opentelemetry] as project dependency.
+
+There are several dashboards within the stress test resource group that we can use to monitor the AKS pod and stress test status.
+
+If you want do the local test and enable application insights, you can follow the [steps][enable_application_insights] to set the java agent.
+Make sure you have added the JVM parameters when you start the test.
+
+
+### Logging
+
+We use [logback.xml][logback_xml] to configure the logging. By default, the stress test run on cluster will output 
+`INFO` level log to the file share. The container console only save the `WARN` and `ERROR` level log.
+
+Follow the steps in [Stress Test File Share][stress_test_file_share] to find the file share logs.
+
 ### Configure Faults
 
 See [Config Faults][config_faults] section for details.
-
-### Configure Monitor
-
-We have configured Application Insights on cluster. The telemetry data can be monitored on the Application Insights provided by cluster.
-
-For local test, you can follow the [steps][enable_application_insights] to enable application insights. Make sure you have added below JVM parameters when you start the test.
-
-```yaml
-java -javaagent:<path to the downloaded jar>/applicationinsights-agent-3.4.1.jar 
-```
 
 ## Key concepts
 
@@ -102,7 +115,6 @@ Below is the current structure of project:
 ├── scenarios-matrix.yaml          # A YAML file containing configuration and custom values for stress test(s)
 ├── Dockerfile                     # A Dockerfile for building the stress test image
 ├── stress-test-resources.bicep    # An Azure Bicep for deploying stress test azure resources
-├── values.yaml                    # Any default helm template values for this chart, e.g. a `scenarios` list
 ├── pom.xml
 └── README.md
 ```
@@ -178,6 +190,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- links -->
 [azure_sdk_chaos]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md
+[azure_sdk_stress_test]: https://aka.ms/azsdk/stress
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [docker]: https://docs.docker.com/get-docker/
@@ -186,6 +199,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
 [powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
 [enable_application_insights]: https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent#enable-azure-monitor-application-insights
+[azure_core_metrics_opentelemetry]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-metrics-opentelemetry
+[logback_xml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus-stress/src/main/resources/logback.xml
+[stress_test_file_share]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#stress-test-file-share
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [config_faults]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#configuring-faults
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
