@@ -93,7 +93,7 @@ try (Scope s = span.makeCurrent()) {
 
 When using async clients without Application Insights Java agent or OpenTelemetry agent, please do context propagation manually:
 
-```java  readme-sample-context-manual-propagation
+```java readme-sample-context-manual-propagation
 SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
     .vaultUrl(VAULT_URL)
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -206,10 +206,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [OpenTelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java/blob/main/QUICKSTART.md
 [OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java#opentelemetry-for-java
-[sample_app_config]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/java/com/azure/core/tracing/opentelemetry/CreateConfigurationSettingLoggingExporterSample.java
-[sample_async_key_vault]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/java/com/azure/core/tracing/opentelemetry/ListKeyVaultSecretsAutoConfigurationSample.java
-[sample_key_vault]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/java/com/azure/core/tracing/opentelemetry/ListKeyVaultSecretsJaegerExporterSample.java
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src/samples/
+[sample_app_config]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry-samples/src/samples/java/com/azure/core/tracing/opentelemetry/sampes/CreateConfigurationSettingLoggingExporterSample.java
+[sample_async_key_vault]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry-samples/src/samples/java/com/azure/core/tracing/opentelemetry/samples/ListKeyVaultSecretsAutoConfigurationSample.java
+[sample_key_vault]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry-samples/src/samples/java/com/azure/core/tracing/opentelemetry/samples/ListKeyVaultSecretsJaegerExporterSample.java
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry-samples/src/samples/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry/src
 [event_hubs_samples](https://github.com/Azure/azure-sdk-for-java/blob/10a18ccc2f20cad6004ae90d64f22009d65e9ef7/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsTracingWithCustomContextSample.java)
 
