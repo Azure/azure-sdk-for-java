@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LiveOutputs Delete. */
 public final class LiveOutputsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveoutput-delete.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-delete.json
      */
     /**
      * Sample code: Delete a LiveOutput.

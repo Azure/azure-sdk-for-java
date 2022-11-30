@@ -17,7 +17,7 @@ import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 /** An instance of this class provides access to all the operations defined in SimPoliciesClient. */
 public interface SimPoliciesClient {
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -32,7 +32,7 @@ public interface SimPoliciesClient {
         String resourceGroupName, String mobileNetworkName, String simPolicyName);
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -48,7 +48,7 @@ public interface SimPoliciesClient {
         String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -61,7 +61,7 @@ public interface SimPoliciesClient {
     void delete(String resourceGroupName, String mobileNetworkName, String simPolicyName);
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -75,7 +75,7 @@ public interface SimPoliciesClient {
     void delete(String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -83,13 +83,13 @@ public interface SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy.
+     * @return information about the specified SIM policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SimPolicyInner get(String resourceGroupName, String mobileNetworkName, String simPolicyName);
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -98,40 +98,40 @@ public interface SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy along with {@link Response}.
+     * @return information about the specified SIM policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SimPolicyInner> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sim policy resource.
+     * @return the {@link SyncPoller} for polling of sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, SimPolicyInner parameters);
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sim policy resource.
+     * @return the {@link SyncPoller} for polling of sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(
@@ -142,33 +142,33 @@ public interface SimPoliciesClient {
         Context context);
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource.
+     * @return sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SimPolicyInner createOrUpdate(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, SimPolicyInner parameters);
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource.
+     * @return sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SimPolicyInner createOrUpdate(
@@ -179,33 +179,33 @@ public interface SimPoliciesClient {
         Context context);
 
     /**
-     * Update sim policy tags.
+     * Updates SIM policy tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to update Sim Policy tags.
+     * @param parameters Parameters supplied to update SIM policy tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource.
+     * @return sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SimPolicyInner updateTags(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, TagsObject parameters);
 
     /**
-     * Update sim policy tags.
+     * Updates SIM policy tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to update Sim Policy tags.
+     * @param parameters Parameters supplied to update SIM policy tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource along with {@link Response}.
+     * @return sIM policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SimPolicyInner> updateTagsWithResponse(
@@ -216,20 +216,20 @@ public interface SimPoliciesClient {
         Context context);
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network as paginated response with {@link PagedIterable}.
+     * @return all the SIM policies in a mobile network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SimPolicyInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName);
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -237,7 +237,7 @@ public interface SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network as paginated response with {@link PagedIterable}.
+     * @return all the SIM policies in a mobile network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SimPolicyInner> listByMobileNetwork(

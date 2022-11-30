@@ -7,18 +7,14 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.SecretParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Friendly Secret name mapping to the any Secret or secret related information. */
 @Fluent
 public final class SecretInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretInner.class);
-
     /*
      * The JSON object that contains the properties of the Secret to create.
      */

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for OperationsResultsLocation Get. */
 public final class OperationsResultsLocationGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoOperationResultsOperationResultResponseTypeGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoOperationResultsOperationResultResponseTypeGet.json
      */
     /**
      * Sample code: KustoOperationsResultsLocationGet.

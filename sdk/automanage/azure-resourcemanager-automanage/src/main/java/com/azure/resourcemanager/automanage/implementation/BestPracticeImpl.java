@@ -7,8 +7,6 @@ package com.azure.resourcemanager.automanage.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.automanage.fluent.models.BestPracticeInner;
 import com.azure.resourcemanager.automanage.models.BestPractice;
-import java.util.Collections;
-import java.util.List;
 
 public final class BestPracticeImpl implements BestPractice {
     private BestPracticeInner innerObject;
@@ -39,15 +37,6 @@ public final class BestPracticeImpl implements BestPractice {
 
     public Object configuration() {
         return this.innerModel().configuration();
-    }
-
-    public List<Object> overrides() {
-        List<Object> inner = this.innerModel().overrides();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public BestPracticeInner innerModel() {

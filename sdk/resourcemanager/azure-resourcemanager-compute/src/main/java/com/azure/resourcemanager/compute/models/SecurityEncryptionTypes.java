@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityEncryptionTypes. */
+/**
+ * Specifies the EncryptionType of the managed disk. &lt;br&gt; It is set to DiskWithVMGuestState for encryption of the
+ * managed disk along with VMGuestState blob, and VMGuestStateOnly for encryption of just the VMGuestState blob.
+ * &lt;br&gt;&lt;br&gt; NOTE: It can be set for only Confidential VMs.
+ */
 public final class SecurityEncryptionTypes extends ExpandableStringEnum<SecurityEncryptionTypes> {
     /** Static value VMGuestStateOnly for SecurityEncryptionTypes. */
     public static final SecurityEncryptionTypes VMGUEST_STATE_ONLY = fromString("VMGuestStateOnly");

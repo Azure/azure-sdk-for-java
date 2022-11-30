@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the Managed identity. */
 @Fluent
 public class ManagedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentity.class);
-
     /*
      * The user assigned identity.
      */

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Bookmarks Get. */
 public final class BookmarksGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/bookmarks/GetBookmarkById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/GetBookmarkById.json
      */
     /**
      * Sample code: Get a bookmark.

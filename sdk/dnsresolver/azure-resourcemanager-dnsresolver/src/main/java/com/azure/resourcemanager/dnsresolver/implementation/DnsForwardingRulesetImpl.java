@@ -80,6 +80,10 @@ public final class DnsForwardingRulesetImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DnsForwardingRulesetInner innerModel() {
         return this.innerObject;
     }
@@ -206,6 +210,16 @@ public final class DnsForwardingRulesetImpl
         return this;
     }
 
+    public DnsForwardingRulesetImpl withDnsResolverOutboundEndpoints(List<SubResource> dnsResolverOutboundEndpoints) {
+        if (isInCreateMode()) {
+            this.innerModel().withDnsResolverOutboundEndpoints(dnsResolverOutboundEndpoints);
+            return this;
+        } else {
+            this.updateParameters.withDnsResolverOutboundEndpoints(dnsResolverOutboundEndpoints);
+            return this;
+        }
+    }
+
     public DnsForwardingRulesetImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -214,11 +228,6 @@ public final class DnsForwardingRulesetImpl
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public DnsForwardingRulesetImpl withDnsResolverOutboundEndpoints(List<SubResource> dnsResolverOutboundEndpoints) {
-        this.innerModel().withDnsResolverOutboundEndpoints(dnsResolverOutboundEndpoints);
-        return this;
     }
 
     public DnsForwardingRulesetImpl withIfMatch(String ifMatch) {

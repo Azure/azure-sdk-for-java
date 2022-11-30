@@ -28,14 +28,16 @@ import java.util.Map;
 @Fluent
 public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
     /*
-     * Extended Info that provides data directory details. Will be populated in
-     * two cases:
+     * Extended Info that provides data directory details. Will be populated in two cases:
      * When a specific recovery point is accessed using GetRecoveryPoint
-     * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo
-     * query filter
+     * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
      */
     @JsonProperty(value = "extendedInfo")
     private AzureWorkloadSqlRecoveryPointExtendedInfo extendedInfo;
+
+    /** Creates an instance of AzureWorkloadSqlRecoveryPoint class. */
+    public AzureWorkloadSqlRecoveryPoint() {
+    }
 
     /**
      * Get the extendedInfo property: Extended Info that provides data directory details. Will be populated in two

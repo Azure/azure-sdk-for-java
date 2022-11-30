@@ -18,20 +18,25 @@ public final class NfsMountConfiguration {
     private String source;
 
     /*
-     * The relative path on the compute node where the file system will be
-     * mounted All file systems are mounted relative to the Batch mounts
-     * directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment
-     * variable.
+     * The relative path on the compute node where the file system will be mounted
+     *
+     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
+     * environment variable.
      */
     @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
 
     /*
-     * Additional command line options to pass to the mount command. These are
-     * 'net use' options in Windows and 'mount' options in Linux.
+     * Additional command line options to pass to the mount command.
+     *
+     * These are 'net use' options in Windows and 'mount' options in Linux.
      */
     @JsonProperty(value = "mountOptions")
     private String mountOptions;
+
+    /** Creates an instance of NfsMountConfiguration class. */
+    public NfsMountConfiguration() {
+    }
 
     /**
      * Get the source property: The URI of the file system to mount.
@@ -55,8 +60,9 @@ public final class NfsMountConfiguration {
 
     /**
      * Get the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
-     * environment variable.
+     *
+     * <p>All file systems are mounted relative to the Batch mounts directory, accessible via the
+     * AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      *
      * @return the relativeMountPath value.
      */
@@ -66,8 +72,9 @@ public final class NfsMountConfiguration {
 
     /**
      * Set the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
-     * environment variable.
+     *
+     * <p>All file systems are mounted relative to the Batch mounts directory, accessible via the
+     * AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      *
      * @param relativeMountPath the relativeMountPath value to set.
      * @return the NfsMountConfiguration object itself.
@@ -78,8 +85,9 @@ public final class NfsMountConfiguration {
     }
 
     /**
-     * Get the mountOptions property: Additional command line options to pass to the mount command. These are 'net use'
-     * options in Windows and 'mount' options in Linux.
+     * Get the mountOptions property: Additional command line options to pass to the mount command.
+     *
+     * <p>These are 'net use' options in Windows and 'mount' options in Linux.
      *
      * @return the mountOptions value.
      */
@@ -88,8 +96,9 @@ public final class NfsMountConfiguration {
     }
 
     /**
-     * Set the mountOptions property: Additional command line options to pass to the mount command. These are 'net use'
-     * options in Windows and 'mount' options in Linux.
+     * Set the mountOptions property: Additional command line options to pass to the mount command.
+     *
+     * <p>These are 'net use' options in Windows and 'mount' options in Linux.
      *
      * @param mountOptions the mountOptions value to set.
      * @return the NfsMountConfiguration object itself.

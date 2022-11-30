@@ -12,15 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CustomDomain {
     /*
-     * Gets or sets the custom domain name assigned to the storage account.
-     * Name is the CNAME source.
+     * Gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Indicates whether indirect CName validation is enabled. Default value is
-     * false. This should only be set on updates.
+     * Indicates whether indirect CName validation is enabled. Default value is false. This should only be set on
+     * updates.
      */
     @JsonProperty(value = "useSubDomainName")
     private Boolean useSubDomainName;

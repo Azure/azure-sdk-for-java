@@ -266,33 +266,6 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @param fabricName Fabric name associated with the backed up item.
      * @param containerName Container name associated with the backed up item.
      * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param filter OData filter options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectedItemResourceInner> getAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter) {
-        return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backed up item.
-     * @param containerName Container name associated with the backed up item.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -304,27 +277,6 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         final String filter = null;
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backed up item.
-     * @param containerName Container name associated with the backed up item.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectedItemResourceInner get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
-        final String filter = null;
-        return getAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter).block();
     }
 
     /**
@@ -355,6 +307,29 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         return getWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, context)
             .block();
+    }
+
+    /**
+     * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
+     * operation, call the GetItemOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backed up item.
+     * @param containerName Container name associated with the backed up item.
+     * @param protectedItemName Backed up item name whose details are to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for backup items.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectedItemResourceInner get(
+        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+        final String filter = null;
+        return getWithResponse(
+                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -548,34 +523,6 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @param containerName Container name associated with the backup item.
      * @param protectedItemName Item name to be backed up.
      * @param parameters resource backed up item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectedItemResourceInner createOrUpdate(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ProtectedItemResourceInner parameters) {
-        return createOrUpdateAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters)
-            .block();
-    }
-
-    /**
-     * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
-     * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backup item.
-     * @param containerName Container name associated with the backup item.
-     * @param protectedItemName Item name to be backed up.
-     * @param parameters resource backed up item.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -594,6 +541,34 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         return createOrUpdateWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context)
             .block();
+    }
+
+    /**
+     * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
+     * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backup item.
+     * @param containerName Container name associated with the backup item.
+     * @param protectedItemName Item name to be backed up.
+     * @param parameters resource backed up item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for backup items.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectedItemResourceInner createOrUpdate(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        ProtectedItemResourceInner parameters) {
+        return createOrUpdateWithResponse(
+                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -759,25 +734,6 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @param fabricName Fabric name associated with the backed up item.
      * @param containerName Container name associated with the backed up item.
      * @param protectedItemName Backed up item to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
-        deleteAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName).block();
-    }
-
-    /**
-     * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the request, call the GetItemOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backed up item.
-     * @param containerName Container name associated with the backed up item.
-     * @param protectedItemName Backed up item to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -795,5 +751,24 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         return deleteWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, context)
             .block();
+    }
+
+    /**
+     * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
+     * the request, call the GetItemOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backed up item.
+     * @param containerName Container name associated with the backed up item.
+     * @param protectedItemName Backed up item to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+        deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, Context.NONE);
     }
 }

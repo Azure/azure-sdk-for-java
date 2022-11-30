@@ -14,7 +14,7 @@ public final class AmqpClientProperties extends ClientProperties implements Clie
     /**
      * Transport type for AMQP-based client.
      */
-    private AmqpTransportType transportType = AmqpTransportType.AMQP;
+    private AmqpTransportType transportType;
 
     /**
      * Get the transport type.

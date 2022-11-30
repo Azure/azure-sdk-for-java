@@ -14,19 +14,17 @@ import java.util.List;
 @Fluent
 public final class BlobEventsTriggerTypeProperties {
     /*
-     * The blob path must begin with the pattern provided for trigger to fire.
-     * For example, '/records/blobs/december/' will only fire the trigger for
-     * blobs in the december folder under the records container. At least one
-     * of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/'
+     * will only fire the trigger for blobs in the december folder under the records container. At least one of these
+     * must be provided: blobPathBeginsWith, blobPathEndsWith.
      */
     @JsonProperty(value = "blobPathBeginsWith")
     private String blobPathBeginsWith;
 
     /*
-     * The blob path must end with the pattern provided for trigger to fire.
-     * For example, 'december/boxes.csv' will only fire the trigger for blobs
-     * named boxes in a december folder. At least one of these must be
-     * provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must end with the pattern provided for trigger to fire. For example, 'december/boxes.csv' will
+     * only fire the trigger for blobs named boxes in a december folder. At least one of these must be provided:
+     * blobPathBeginsWith, blobPathEndsWith.
      */
     @JsonProperty(value = "blobPathEndsWith")
     private String blobPathEndsWith;
@@ -48,6 +46,10 @@ public final class BlobEventsTriggerTypeProperties {
      */
     @JsonProperty(value = "scope", required = true)
     private String scope;
+
+    /** Creates an instance of BlobEventsTriggerTypeProperties class. */
+    public BlobEventsTriggerTypeProperties() {
+    }
 
     /**
      * Get the blobPathBeginsWith property: The blob path must begin with the pattern provided for trigger to fire. For

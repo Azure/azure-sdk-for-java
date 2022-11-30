@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicNetworkAccess. */
+/**
+ * PublicNetworkAccess of the managedCluster
+ *
+ * <p>Allow or deny public network access for AKS.
+ */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /** Static value Enabled for PublicNetworkAccess. */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");

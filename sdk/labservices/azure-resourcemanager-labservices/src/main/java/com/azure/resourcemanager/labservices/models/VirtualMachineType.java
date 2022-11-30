@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for VirtualMachineType. */
+/** The type of the lab virtual machine. */
 public enum VirtualMachineType {
     /** Enum value User. */
     USER("User"),
@@ -30,6 +30,9 @@ public enum VirtualMachineType {
      */
     @JsonCreator
     public static VirtualMachineType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         VirtualMachineType[] items = VirtualMachineType.values();
         for (VirtualMachineType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum VirtualMachineType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -105,7 +105,7 @@ public final class NotebookOperationResultsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getAsync(String operationId) {
-        return getWithResponseAsync(operationId).flatMap((Response<Void> res) -> Mono.empty());
+        return getWithResponseAsync(operationId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -120,7 +120,7 @@ public final class NotebookOperationResultsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getAsync(String operationId, Context context) {
-        return getWithResponseAsync(operationId, context).flatMap((Response<Void> res) -> Mono.empty());
+        return getWithResponseAsync(operationId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**

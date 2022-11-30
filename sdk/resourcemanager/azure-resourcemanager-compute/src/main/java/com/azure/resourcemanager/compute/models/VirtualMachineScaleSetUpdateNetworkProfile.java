@@ -12,9 +12,8 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineScaleSetUpdateNetworkProfile {
     /*
-     * A reference to a load balancer probe used to determine the health of an
-     * instance in the virtual machine scale set. The reference will be in the
-     * form:
+     * A reference to a load balancer probe used to determine the health of an instance in the virtual machine scale
+     * set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
      */
     @JsonProperty(value = "healthProbe")
@@ -27,12 +26,15 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile {
     private List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations;
 
     /*
-     * specifies the Microsoft.Network API version used when creating
-     * networking resources in the Network Interface Configurations for Virtual
-     * Machine Scale Set with orchestration mode 'Flexible'
+     * specifies the Microsoft.Network API version used when creating networking resources in the Network Interface
+     * Configurations for Virtual Machine Scale Set with orchestration mode 'Flexible'
      */
     @JsonProperty(value = "networkApiVersion")
     private NetworkApiVersion networkApiVersion;
+
+    /** Creates an instance of VirtualMachineScaleSetUpdateNetworkProfile class. */
+    public VirtualMachineScaleSetUpdateNetworkProfile() {
+    }
 
     /**
      * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in

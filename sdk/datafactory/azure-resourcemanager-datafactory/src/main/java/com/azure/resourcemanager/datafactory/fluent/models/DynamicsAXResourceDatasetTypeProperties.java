@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DynamicsAXResourceDatasetTypeProperties {
     /*
-     * The path of the Dynamics AX OData entity. Type: string (or Expression
-     * with resultType string).
+     * The path of the Dynamics AX OData entity. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path", required = true)
     private Object path;
+
+    /** Creates an instance of DynamicsAXResourceDatasetTypeProperties class. */
+    public DynamicsAXResourceDatasetTypeProperties() {
+    }
 
     /**
      * Get the path property: The path of the Dynamics AX OData entity. Type: string (or Expression with resultType

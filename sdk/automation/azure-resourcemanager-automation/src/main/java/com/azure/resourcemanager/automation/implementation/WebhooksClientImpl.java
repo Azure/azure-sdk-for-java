@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.WebhooksClient;
 import com.azure.resourcemanager.automation.fluent.models.WebhookInner;
 import com.azure.resourcemanager.automation.models.WebhookCreateOrUpdateParameters;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WebhooksClient. */
 public final class WebhooksClientImpl implements WebhooksClient {
-    private final ClientLogger logger = new ClientLogger(WebhooksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WebhooksService service;
 
@@ -181,7 +178,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<String>> generateUriWithResponseAsync(
@@ -232,7 +229,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<String>> generateUriWithResponseAsync(
@@ -279,19 +276,12 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<String> generateUriAsync(String resourceGroupName, String automationAccountName) {
         return generateUriWithResponseAsync(resourceGroupName, automationAccountName)
-            .flatMap(
-                (Response<String> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -318,7 +308,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> generateUriWithResponse(
@@ -335,7 +325,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -391,7 +381,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -443,12 +433,12 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String automationAccountName, String webhookName) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, webhookName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -476,7 +466,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -493,7 +483,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebhookInner>> getWithResponseAsync(
@@ -549,7 +539,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebhookInner>> getWithResponseAsync(
@@ -601,19 +591,12 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WebhookInner> getAsync(String resourceGroupName, String automationAccountName, String webhookName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, webhookName)
-            .flatMap(
-                (Response<WebhookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -642,7 +625,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebhookInner> getWithResponse(
@@ -660,7 +643,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebhookInner>> createOrUpdateWithResponseAsync(
@@ -726,7 +709,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebhookInner>> createOrUpdateWithResponseAsync(
@@ -789,7 +772,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WebhookInner> createOrUpdateAsync(
@@ -798,14 +781,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         String webhookName,
         WebhookCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, webhookName, parameters)
-            .flatMap(
-                (Response<WebhookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -840,7 +816,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebhookInner> createOrUpdateWithResponse(
@@ -864,7 +840,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebhookInner>> updateWithResponseAsync(
@@ -930,7 +906,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebhookInner>> updateWithResponseAsync(
@@ -993,7 +969,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WebhookInner> updateAsync(
@@ -1002,14 +978,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         String webhookName,
         WebhookUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, webhookName, parameters)
-            .flatMap(
-                (Response<WebhookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1044,7 +1013,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebhookInner> updateWithResponse(
@@ -1066,7 +1035,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebhookInner>> listByAutomationAccountSinglePageAsync(
@@ -1128,7 +1098,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebhookInner>> listByAutomationAccountSinglePageAsync(
@@ -1186,7 +1157,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebhookInner> listByAutomationAccountAsync(
@@ -1204,7 +1175,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebhookInner> listByAutomationAccountAsync(
@@ -1225,7 +1196,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebhookInner> listByAutomationAccountAsync(
@@ -1243,7 +1214,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebhookInner> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
@@ -1261,7 +1232,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebhookInner> listByAutomationAccount(
@@ -1273,11 +1244,13 @@ public final class WebhooksClientImpl implements WebhooksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebhookInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1309,12 +1282,14 @@ public final class WebhooksClientImpl implements WebhooksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebhookInner>> listByAutomationAccountNextSinglePageAsync(

@@ -15,15 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class DocumentDbCollectionSink extends CopySink {
     /*
-     * Nested properties separator. Default is . (dot). Type: string (or
-     * Expression with resultType string).
+     * Nested properties separator. Default is . (dot). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "nestingSeparator")
     private Object nestingSeparator;
 
     /*
-     * Describes how to write data to Azure Cosmos DB. Type: string (or
-     * Expression with resultType string). Allowed values: insert and upsert.
+     * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed
+     * values: insert and upsert.
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;

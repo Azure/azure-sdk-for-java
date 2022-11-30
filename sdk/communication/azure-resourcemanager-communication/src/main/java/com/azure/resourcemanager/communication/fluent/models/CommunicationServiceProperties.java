@@ -38,8 +38,7 @@ public final class CommunicationServiceProperties {
     private String notificationHubId;
 
     /*
-     * Version of the CommunicationService resource. Probably you need the same
-     * or higher version of client SDKs.
+     * Version of the CommunicationService resource. Probably you need the same or higher version of client SDKs.
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;

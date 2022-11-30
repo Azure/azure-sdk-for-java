@@ -15,15 +15,14 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class EncryptionScopeProperties {
     /*
-     * The provider for the encryption scope. Possible values
-     * (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
+     * The provider for the encryption scope. Possible values (case-insensitive):  Microsoft.Storage,
+     * Microsoft.KeyVault.
      */
     @JsonProperty(value = "source")
     private EncryptionScopeSource source;
 
     /*
-     * The state of the encryption scope. Possible values (case-insensitive):
-     * Enabled, Disabled.
+     * The state of the encryption scope. Possible values (case-insensitive):  Enabled, Disabled.
      */
     @JsonProperty(value = "state")
     private EncryptionScopeState state;
@@ -41,16 +40,15 @@ public final class EncryptionScopeProperties {
     private OffsetDateTime lastModifiedTime;
 
     /*
-     * The key vault properties for the encryption scope. This is a required
-     * field if encryption scope 'source' attribute is set to
-     * 'Microsoft.KeyVault'.
+     * The key vault properties for the encryption scope. This is a required field if encryption scope 'source'
+     * attribute is set to 'Microsoft.KeyVault'.
      */
     @JsonProperty(value = "keyVaultProperties")
     private EncryptionScopeKeyVaultProperties keyVaultProperties;
 
     /*
-     * A boolean indicating whether or not the service applies a secondary
-     * layer of encryption with platform managed keys for data at rest.
+     * A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed
+     * keys for data at rest.
      */
     @JsonProperty(value = "requireInfrastructureEncryption")
     private Boolean requireInfrastructureEncryption;

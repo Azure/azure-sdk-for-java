@@ -35,16 +35,14 @@ public final class FileShareProperties {
     private Map<String, String> metadata;
 
     /*
-     * The maximum size of the share, in gigabytes. Must be greater than 0, and
-     * less than or equal to 5TB (5120). For Large File Shares, the maximum
-     * size is 102400.
+     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For
+     * Large File Shares, the maximum size is 102400.
      */
     @JsonProperty(value = "shareQuota")
     private Integer shareQuota;
 
     /*
-     * The authentication protocol that is used for the file share. Can only be
-     * specified when creating a share.
+     * The authentication protocol that is used for the file share. Can only be specified when creating a share.
      */
     @JsonProperty(value = "enabledProtocols")
     private EnabledProtocols enabledProtocols;
@@ -80,9 +78,8 @@ public final class FileShareProperties {
     private Integer remainingRetentionDays;
 
     /*
-     * Access tier for specific share. GpV2 account can choose between
-     * TransactionOptimized (default), Hot, and Cool. FileStorage account can
-     * choose Premium.
+     * Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool.
+     * FileStorage account can choose Premium.
      */
     @JsonProperty(value = "accessTier")
     private ShareAccessTier accessTier;
@@ -100,8 +97,8 @@ public final class FileShareProperties {
     private String accessTierStatus;
 
     /*
-     * The approximate size of the data stored on the share. Note that this
-     * value may not include all recently created or recently resized files.
+     * The approximate size of the data stored on the share. Note that this value may not include all recently created
+     * or recently resized files.
      */
     @JsonProperty(value = "shareUsageBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long shareUsageBytes;
@@ -119,8 +116,7 @@ public final class FileShareProperties {
     private LeaseState leaseState;
 
     /*
-     * Specifies whether the lease on a share is of infinite or fixed duration,
-     * only when the share is leased.
+     * Specifies whether the lease on a share is of infinite or fixed duration, only when the share is leased.
      */
     @JsonProperty(value = "leaseDuration", access = JsonProperty.Access.WRITE_ONLY)
     private LeaseDuration leaseDuration;
@@ -132,8 +128,7 @@ public final class FileShareProperties {
     private List<SignedIdentifier> signedIdentifiers;
 
     /*
-     * Creation time of share snapshot returned in the response of list shares
-     * with expand param "snapshots".
+     * Creation time of share snapshot returned in the response of list shares with expand param "snapshots".
      */
     @JsonProperty(value = "snapshotTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime snapshotTime;

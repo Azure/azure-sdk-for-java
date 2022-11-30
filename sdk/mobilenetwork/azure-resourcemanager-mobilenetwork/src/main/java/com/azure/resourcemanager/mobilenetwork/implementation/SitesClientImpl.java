@@ -533,14 +533,7 @@ public final class SitesClientImpl implements SitesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SiteInner> getAsync(String resourceGroupName, String mobileNetworkName, String siteName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, siteName)
-            .flatMap(
-                (Response<SiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -862,7 +855,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Updates a site update tags.
+     * Updates site tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -923,7 +916,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Updates a site update tags.
+     * Updates site tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -982,7 +975,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Updates a site update tags.
+     * Updates site tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -997,18 +990,11 @@ public final class SitesClientImpl implements SitesClient {
     private Mono<SiteInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters)
-            .flatMap(
-                (Response<SiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates a site update tags.
+     * Updates site tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1026,7 +1012,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Updates a site update tags.
+     * Updates site tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.

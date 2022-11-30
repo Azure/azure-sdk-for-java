@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionMonitorSourceStatus. */
+/** Status of connection monitor source. */
 public final class ConnectionMonitorSourceStatus extends ExpandableStringEnum<ConnectionMonitorSourceStatus> {
     /** Static value Unknown for ConnectionMonitorSourceStatus. */
     public static final ConnectionMonitorSourceStatus UNKNOWN = fromString("Unknown");

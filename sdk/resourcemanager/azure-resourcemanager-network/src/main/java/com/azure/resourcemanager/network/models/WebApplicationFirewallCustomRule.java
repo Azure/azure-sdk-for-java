@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class WebApplicationFirewallCustomRule {
     /*
-     * The name of the resource that is unique within a policy. This name can
-     * be used to access the resource.
+     * The name of the resource that is unique within a policy. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -26,8 +25,7 @@ public final class WebApplicationFirewallCustomRule {
     private String etag;
 
     /*
-     * Priority of the rule. Rules with a lower value will be evaluated before
-     * rules with a higher value.
+     * Priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
      */
     @JsonProperty(value = "priority", required = true)
     private int priority;
@@ -49,6 +47,10 @@ public final class WebApplicationFirewallCustomRule {
      */
     @JsonProperty(value = "action", required = true)
     private WebApplicationFirewallAction action;
+
+    /** Creates an instance of WebApplicationFirewallCustomRule class. */
+    public WebApplicationFirewallCustomRule() {
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a policy. This name can be used to access

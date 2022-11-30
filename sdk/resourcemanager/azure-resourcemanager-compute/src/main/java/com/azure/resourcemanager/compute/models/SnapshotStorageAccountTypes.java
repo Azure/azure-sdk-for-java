@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SnapshotStorageAccountTypes. */
+/** The sku name. */
 public final class SnapshotStorageAccountTypes extends ExpandableStringEnum<SnapshotStorageAccountTypes> {
     /** Static value Standard_LRS for SnapshotStorageAccountTypes. */
     public static final SnapshotStorageAccountTypes STANDARD_LRS = fromString("Standard_LRS");

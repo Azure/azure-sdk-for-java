@@ -1,0 +1,36 @@
+{
+    "summary": {
+        "queryTime": 5,
+        "numResults": 1
+    },
+    "addresses": [
+        {
+            "address": {
+                "buildingNumber": "21",
+                "streetNumber": "21",
+                "routeNumbers": [],
+                "street": "North 2nd Street",
+                "streetName": "North 2nd Street",
+                "streetNameAndNumber": "21 North 2nd Street",
+                "countryCode": "US",
+                "countrySubdivision": "CA",
+                "countrySecondarySubdivision": "Santa Clara",
+                "municipality": "San Jose",
+                "postalCode": "95113",
+                "municipalitySubdivision": "Downtown San Jose",
+                "country": "United States",
+                "countryCodeISO3": "USA",
+                "freeformAddress": "21 North 2nd Street, San Jose, CA 95113",
+                "boundingBox": {
+                    "northEast": "37.337507,-121.889512",
+                    "southWest": "37.336664,-121.890130",
+                    "entity": "position"
+                },
+                "extendedPostalCode": "95113-1205",
+                "countrySubdivisionName": "California",
+                "localName": "San Jose"
+            },
+            "position": "37.337040,-121.889786"
+        }
+    ]
+}

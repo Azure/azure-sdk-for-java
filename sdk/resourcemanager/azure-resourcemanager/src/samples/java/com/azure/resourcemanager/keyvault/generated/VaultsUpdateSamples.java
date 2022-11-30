@@ -21,7 +21,7 @@ import java.util.UUID;
 /** Samples for Vaults Update. */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/updateVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/updateVault.json
      */
     /**
      * Sample code: Update an existing vault.
@@ -99,7 +99,8 @@ public final class VaultsUpdateSamples {
                                                                 CertificatePermissions.PURGE)))))
                             .withEnabledForDeployment(true)
                             .withEnabledForDiskEncryption(true)
-                            .withEnabledForTemplateDeployment(true)),
+                            .withEnabledForTemplateDeployment(true)
+                            .withPublicNetworkAccess("Enabled")),
                 Context.NONE);
     }
 }

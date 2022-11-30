@@ -9,7 +9,11 @@ import com.azure.resourcemanager.network.models.ExpressRoutePortAuthorizationUse
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRoute Port Authorization Properties Properties of ExpressRoutePort Authorization. */
+/**
+ * ExpressRoute Port Authorization Properties
+ *
+ * <p>Properties of ExpressRoutePort Authorization.
+ */
 @Immutable
 public final class ExpressRoutePortAuthorizationPropertiesFormat {
     /*
@@ -25,8 +29,7 @@ public final class ExpressRoutePortAuthorizationPropertiesFormat {
     private ExpressRoutePortAuthorizationUseStatus authorizationUseStatus;
 
     /*
-     * The reference to the ExpressRoute circuit resource using the
-     * authorization.
+     * The reference to the ExpressRoute circuit resource using the authorization.
      */
     @JsonProperty(value = "circuitResourceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String circuitResourceUri;
@@ -36,6 +39,10 @@ public final class ExpressRoutePortAuthorizationPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ExpressRoutePortAuthorizationPropertiesFormat class. */
+    public ExpressRoutePortAuthorizationPropertiesFormat() {
+    }
 
     /**
      * Get the authorizationKey property: The authorization key.

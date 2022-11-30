@@ -11,12 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UpgradePolicy {
     /*
-     * Specifies the mode of an upgrade to virtual machines in the scale
-     * set.<br /><br /> Possible values are:<br /><br /> **Manual** - You
-     * control the application of updates to virtual machines in the scale set.
-     * You do this by using the manualUpgrade action.<br /><br /> **Automatic**
-     * - All virtual machines in the scale set are  automatically updated at
-     * the same time.
+     * Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br
+     * /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by
+     * using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are
+     * automatically updated at the same time.
      */
     @JsonProperty(value = "mode")
     private UpgradeMode mode;
@@ -32,6 +30,10 @@ public final class UpgradePolicy {
      */
     @JsonProperty(value = "automaticOSUpgradePolicy")
     private AutomaticOSUpgradePolicy automaticOSUpgradePolicy;
+
+    /** Creates an instance of UpgradePolicy class. */
+    public UpgradePolicy() {
+    }
 
     /**
      * Get the mode property: Specifies the mode of an upgrade to virtual machines in the scale set.&lt;br /&gt;&lt;br

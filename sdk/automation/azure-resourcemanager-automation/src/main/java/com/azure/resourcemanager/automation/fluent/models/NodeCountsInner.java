@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.NodeCount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Gets the count of nodes by count type. */
 @Fluent
 public final class NodeCountsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeCountsInner.class);
-
     /*
      * Gets an array of counts
      */

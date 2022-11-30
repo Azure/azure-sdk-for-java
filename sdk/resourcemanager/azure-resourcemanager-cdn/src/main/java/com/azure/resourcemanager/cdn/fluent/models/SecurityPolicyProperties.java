@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdStateProperties;
 import com.azure.resourcemanager.cdn.models.SecurityPolicyPropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The json object that contains properties required to create a security policy. */
 @Fluent
 public final class SecurityPolicyProperties extends AfdStateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPolicyProperties.class);
-
     /*
      * The name of the profile which holds the security policy.
      */

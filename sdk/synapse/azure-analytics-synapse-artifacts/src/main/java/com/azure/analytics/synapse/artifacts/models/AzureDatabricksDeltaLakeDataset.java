@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class AzureDatabricksDeltaLakeDataset extends Dataset {
     /*
-     * The name of delta table. Type: string (or Expression with resultType
-     * string).
+     * The name of delta table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
-     * The database name of delta table. Type: string (or Expression with
-     * resultType string).
+     * The database name of delta table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database")
     private Object database;

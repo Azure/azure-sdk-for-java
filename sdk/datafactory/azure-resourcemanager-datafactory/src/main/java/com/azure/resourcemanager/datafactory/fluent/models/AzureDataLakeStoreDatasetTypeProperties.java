@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDataLakeStoreDatasetTypeProperties {
     /*
-     * Path to the folder in the Azure Data Lake Store. Type: string (or
-     * Expression with resultType string).
+     * Path to the folder in the Azure Data Lake Store. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
-     * The name of the file in the Azure Data Lake Store. Type: string (or
-     * Expression with resultType string).
+     * The name of the file in the Azure Data Lake Store. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileName")
     private Object fileName;
@@ -33,11 +31,14 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
     private DatasetStorageFormat format;
 
     /*
-     * The data compression method used for the item(s) in the Azure Data Lake
-     * Store.
+     * The data compression method used for the item(s) in the Azure Data Lake Store.
      */
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of AzureDataLakeStoreDatasetTypeProperties class. */
+    public AzureDataLakeStoreDatasetTypeProperties() {
+    }
 
     /**
      * Get the folderPath property: Path to the folder in the Azure Data Lake Store. Type: string (or Expression with

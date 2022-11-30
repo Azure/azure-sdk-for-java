@@ -27,15 +27,6 @@ public final class ValidateOperationResultsImpl implements ValidateOperationResu
         this.serviceManager = serviceManager;
     }
 
-    public ValidateOperationsResponse get(String vaultName, String resourceGroupName, String operationId) {
-        ValidateOperationsResponseInner inner = this.serviceClient().get(vaultName, resourceGroupName, operationId);
-        if (inner != null) {
-            return new ValidateOperationsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ValidateOperationsResponse> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         Response<ValidateOperationsResponseInner> inner =
@@ -46,6 +37,15 @@ public final class ValidateOperationResultsImpl implements ValidateOperationResu
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ValidateOperationsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateOperationsResponse get(String vaultName, String resourceGroupName, String operationId) {
+        ValidateOperationsResponseInner inner = this.serviceClient().get(vaultName, resourceGroupName, operationId);
+        if (inner != null) {
+            return new ValidateOperationsResponseImpl(inner, this.manager());
         } else {
             return null;
         }

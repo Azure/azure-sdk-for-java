@@ -169,7 +169,7 @@ public interface SitesClient {
         String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context);
 
     /**
-     * Updates a site update tags.
+     * Updates site tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -184,7 +184,7 @@ public interface SitesClient {
     SiteInner updateTags(String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters);
 
     /**
-     * Updates a site update tags.
+     * Updates site tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.

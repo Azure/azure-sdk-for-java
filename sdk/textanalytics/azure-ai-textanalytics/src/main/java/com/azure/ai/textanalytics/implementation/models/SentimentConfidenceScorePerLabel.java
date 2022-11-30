@@ -11,25 +11,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SentimentConfidenceScorePerLabel {
     /*
-     * The positive property.
+     * Confidence score for positive sentiment
      */
     @JsonProperty(value = "positive", required = true)
     private double positive;
 
     /*
-     * The neutral property.
+     * Confidence score for neutral sentiment
      */
     @JsonProperty(value = "neutral", required = true)
     private double neutral;
 
     /*
-     * The negative property.
+     * Confidence score for negative sentiment
      */
     @JsonProperty(value = "negative", required = true)
     private double negative;
 
     /**
-     * Get the positive property: The positive property.
+     * Get the positive property: Confidence score for positive sentiment.
      *
      * @return the positive value.
      */
@@ -38,7 +38,7 @@ public final class SentimentConfidenceScorePerLabel {
     }
 
     /**
-     * Set the positive property: The positive property.
+     * Set the positive property: Confidence score for positive sentiment.
      *
      * @param positive the positive value to set.
      * @return the SentimentConfidenceScorePerLabel object itself.
@@ -49,7 +49,7 @@ public final class SentimentConfidenceScorePerLabel {
     }
 
     /**
-     * Get the neutral property: The neutral property.
+     * Get the neutral property: Confidence score for neutral sentiment.
      *
      * @return the neutral value.
      */
@@ -58,7 +58,7 @@ public final class SentimentConfidenceScorePerLabel {
     }
 
     /**
-     * Set the neutral property: The neutral property.
+     * Set the neutral property: Confidence score for neutral sentiment.
      *
      * @param neutral the neutral value to set.
      * @return the SentimentConfidenceScorePerLabel object itself.
@@ -69,7 +69,7 @@ public final class SentimentConfidenceScorePerLabel {
     }
 
     /**
-     * Get the negative property: The negative property.
+     * Get the negative property: Confidence score for negative sentiment.
      *
      * @return the negative value.
      */
@@ -78,7 +78,7 @@ public final class SentimentConfidenceScorePerLabel {
     }
 
     /**
-     * Set the negative property: The negative property.
+     * Set the negative property: Confidence score for negative sentiment.
      *
      * @param negative the negative value to set.
      * @return the SentimentConfidenceScorePerLabel object itself.

@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.OperationResultsClient;
 import com.azure.resourcemanager.labservices.fluent.models.OperationResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationResultsClient. */
 public final class OperationResultsClientImpl implements OperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(OperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationResultsService service;
 
@@ -68,7 +65,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +109,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @param context The context to associate with this operation.
@@ -150,7 +151,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,19 +163,13 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultInner> getAsync(String operationResultId) {
-        return getWithResponseAsync(operationResultId)
-            .flatMap(
-                (Response<OperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(operationResultId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,7 +183,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @param context The context to associate with this operation.

@@ -62,4 +62,25 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
         this.entities = entities;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntitiesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

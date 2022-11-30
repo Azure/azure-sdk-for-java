@@ -106,6 +106,10 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
         return this.innerModel().enabledState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ImageInner innerModel() {
         return this.innerObject;
     }

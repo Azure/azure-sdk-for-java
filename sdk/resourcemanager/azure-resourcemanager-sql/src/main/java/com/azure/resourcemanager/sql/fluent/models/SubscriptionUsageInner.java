@@ -4,42 +4,27 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Usage Metric of a Subscription in a Location. */
-@JsonFlatten
-@Immutable
-public class SubscriptionUsageInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionUsageInner.class);
-
+@Fluent
+public final class SubscriptionUsageInner extends ProxyResource {
     /*
-     * User-readable name of the metric.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private SubscriptionUsageProperties innerProperties;
 
-    /*
-     * Current value of the metric.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.currentValue", access = JsonProperty.Access.WRITE_ONLY)
-    private Double currentValue;
-
-    /*
-     * Boundary value of the metric.
-     */
-    @JsonProperty(value = "properties.limit", access = JsonProperty.Access.WRITE_ONLY)
-    private Double limit;
-
-    /*
-     * Unit of the metric.
-     */
-    @JsonProperty(value = "properties.unit", access = JsonProperty.Access.WRITE_ONLY)
-    private String unit;
+    private SubscriptionUsageProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: User-readable name of the metric.
@@ -47,7 +32,7 @@ public class SubscriptionUsageInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -56,7 +41,7 @@ public class SubscriptionUsageInner extends ProxyResource {
      * @return the currentValue value.
      */
     public Double currentValue() {
-        return this.currentValue;
+        return this.innerProperties() == null ? null : this.innerProperties().currentValue();
     }
 
     /**
@@ -65,7 +50,7 @@ public class SubscriptionUsageInner extends ProxyResource {
      * @return the limit value.
      */
     public Double limit() {
-        return this.limit;
+        return this.innerProperties() == null ? null : this.innerProperties().limit();
     }
 
     /**
@@ -74,7 +59,7 @@ public class SubscriptionUsageInner extends ProxyResource {
      * @return the unit value.
      */
     public String unit() {
-        return this.unit;
+        return this.innerProperties() == null ? null : this.innerProperties().unit();
     }
 
     /**
@@ -83,5 +68,8 @@ public class SubscriptionUsageInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

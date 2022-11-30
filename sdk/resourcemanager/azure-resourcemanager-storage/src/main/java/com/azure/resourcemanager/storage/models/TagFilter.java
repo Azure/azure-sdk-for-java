@@ -18,15 +18,14 @@ public final class TagFilter {
     private String name;
 
     /*
-     * This is the comparison operator which is used for object comparison and
-     * filtering. Only == (equality operator) is currently supported
+     * This is the comparison operator which is used for object comparison and filtering. Only == (equality operator)
+     * is currently supported
      */
     @JsonProperty(value = "op", required = true)
     private String op;
 
     /*
-     * This is the filter tag value field used for tag based filtering, it can
-     * have 0 - 256 characters
+     * This is the filter tag value field used for tag based filtering, it can have 0 - 256 characters
      */
     @JsonProperty(value = "value", required = true)
     private String value;

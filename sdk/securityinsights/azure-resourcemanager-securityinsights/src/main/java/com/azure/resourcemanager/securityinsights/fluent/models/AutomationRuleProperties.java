@@ -17,37 +17,37 @@ import java.util.List;
 @Fluent
 public final class AutomationRuleProperties {
     /*
-     * The display name of the automation rule
+     * The display name of the automation rule.
      */
     @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
-     * The order of execution of the automation rule
+     * The order of execution of the automation rule.
      */
     @JsonProperty(value = "order", required = true)
     private int order;
 
     /*
-     * Describes automation rule triggering logic
+     * Describes automation rule triggering logic.
      */
     @JsonProperty(value = "triggeringLogic", required = true)
     private AutomationRuleTriggeringLogic triggeringLogic;
 
     /*
-     * The actions to execute when the automation rule is triggered
+     * The actions to execute when the automation rule is triggered.
      */
     @JsonProperty(value = "actions", required = true)
     private List<AutomationRuleAction> actions;
 
     /*
-     * The last time the automation rule was updated
+     * The last time the automation rule was updated.
      */
     @JsonProperty(value = "lastModifiedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTimeUtc;
 
     /*
-     * The time the automation rule was created
+     * The time the automation rule was created.
      */
     @JsonProperty(value = "createdTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTimeUtc;

@@ -20,11 +20,15 @@ public final class CommunityGalleryImageList {
     private List<CommunityGalleryImageInner> value;
 
     /*
-     * The uri to fetch the next page of community gallery images. Call
-     * ListNext() with this to fetch the next page of community gallery images.
+     * The uri to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of
+     * community gallery images.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of CommunityGalleryImageList class. */
+    public CommunityGalleryImageList() {
+    }
 
     /**
      * Get the value property: A list of community gallery images.

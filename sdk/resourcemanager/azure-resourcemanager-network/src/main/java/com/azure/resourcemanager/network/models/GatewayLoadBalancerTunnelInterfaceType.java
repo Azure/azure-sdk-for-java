@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GatewayLoadBalancerTunnelInterfaceType. */
+/** Traffic type of gateway load balancer tunnel interface. */
 public final class GatewayLoadBalancerTunnelInterfaceType
     extends ExpandableStringEnum<GatewayLoadBalancerTunnelInterfaceType> {
     /** Static value None for GatewayLoadBalancerTunnelInterfaceType. */

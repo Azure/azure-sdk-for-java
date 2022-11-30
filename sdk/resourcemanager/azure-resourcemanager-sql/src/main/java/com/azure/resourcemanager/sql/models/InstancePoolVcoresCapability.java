@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The managed instance virtual cores capability. */
 @Fluent
 public final class InstancePoolVcoresCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolVcoresCapability.class);
-
     /*
      * The virtual cores identifier.
      */

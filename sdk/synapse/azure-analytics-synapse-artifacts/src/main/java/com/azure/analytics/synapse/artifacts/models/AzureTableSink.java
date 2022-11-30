@@ -15,29 +15,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureTableSink extends CopySink {
     /*
-     * Azure Table default partition key value. Type: string (or Expression
-     * with resultType string).
+     * Azure Table default partition key value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableDefaultPartitionKeyValue")
     private Object azureTableDefaultPartitionKeyValue;
 
     /*
-     * Azure Table partition key name. Type: string (or Expression with
-     * resultType string).
+     * Azure Table partition key name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTablePartitionKeyName")
     private Object azureTablePartitionKeyName;
 
     /*
-     * Azure Table row key name. Type: string (or Expression with resultType
-     * string).
+     * Azure Table row key name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableRowKeyName")
     private Object azureTableRowKeyName;
 
     /*
-     * Azure Table insert type. Type: string (or Expression with resultType
-     * string).
+     * Azure Table insert type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableInsertType")
     private Object azureTableInsertType;

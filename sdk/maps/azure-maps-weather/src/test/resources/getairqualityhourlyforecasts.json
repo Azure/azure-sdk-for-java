@@ -1,0 +1,928 @@
+{
+    "results": [
+        {
+            "dateTime": "2022-03-23T23:00:00Z",
+            "index": 21.0,
+            "globalIndex": 21.3,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.2,
+                    "globalIndex": 4.2,
+                    "concentration": {
+                        "value": 8.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 21.0,
+                    "globalIndex": 21.3,
+                    "concentration": {
+                        "value": 52.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.2,
+                    "globalIndex": 9.9,
+                    "concentration": {
+                        "value": 9.9,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 17.2,
+                    "globalIndex": 8.3,
+                    "concentration": {
+                        "value": 4.1,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 138.3,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 0.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T00:00:00Z",
+            "index": 22.3,
+            "globalIndex": 23.1,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 3.8,
+                    "globalIndex": 3.8,
+                    "concentration": {
+                        "value": 7.5,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 22.3,
+                    "globalIndex": 23.1,
+                    "concentration": {
+                        "value": 55.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.3,
+                    "globalIndex": 10.1,
+                    "concentration": {
+                        "value": 10.1,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 16.8,
+                    "globalIndex": 8.1,
+                    "concentration": {
+                        "value": 4.0,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 138.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 0.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T01:00:00Z",
+            "index": 23.5,
+            "globalIndex": 24.9,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 3.3,
+                    "globalIndex": 3.3,
+                    "concentration": {
+                        "value": 6.6,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 23.5,
+                    "globalIndex": 24.9,
+                    "concentration": {
+                        "value": 58.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.5,
+                    "globalIndex": 10.2,
+                    "concentration": {
+                        "value": 10.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 16.4,
+                    "globalIndex": 7.9,
+                    "concentration": {
+                        "value": 3.9,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 138.5,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 0.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T02:00:00Z",
+            "index": 22.9,
+            "globalIndex": 24.1,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 3.9,
+                    "globalIndex": 3.9,
+                    "concentration": {
+                        "value": 7.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 22.9,
+                    "globalIndex": 24.1,
+                    "concentration": {
+                        "value": 56.8,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.8,
+                    "globalIndex": 10.6,
+                    "concentration": {
+                        "value": 10.6,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 17.8,
+                    "globalIndex": 8.5,
+                    "concentration": {
+                        "value": 4.3,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.5,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 146.5,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 0.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T03:00:00Z",
+            "index": 22.3,
+            "globalIndex": 23.2,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.4,
+                    "globalIndex": 4.4,
+                    "concentration": {
+                        "value": 8.8,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 22.3,
+                    "globalIndex": 23.2,
+                    "concentration": {
+                        "value": 55.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 10.1,
+                    "globalIndex": 10.9,
+                    "concentration": {
+                        "value": 10.9,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 19.2,
+                    "globalIndex": 9.2,
+                    "concentration": {
+                        "value": 4.6,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.5,
+                    "globalIndex": 0.8,
+                    "concentration": {
+                        "value": 154.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 0.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T04:00:00Z",
+            "index": 21.7,
+            "globalIndex": 22.4,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.9,
+                    "globalIndex": 4.9,
+                    "concentration": {
+                        "value": 9.8,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 21.7,
+                    "globalIndex": 22.4,
+                    "concentration": {
+                        "value": 53.9,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 10.4,
+                    "globalIndex": 11.2,
+                    "concentration": {
+                        "value": 11.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 20.5,
+                    "globalIndex": 9.9,
+                    "concentration": {
+                        "value": 4.9,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.6,
+                    "globalIndex": 0.8,
+                    "concentration": {
+                        "value": 162.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 0.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T05:00:00Z",
+            "index": 21.7,
+            "globalIndex": 22.2,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.8,
+                    "globalIndex": 4.8,
+                    "concentration": {
+                        "value": 9.6,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 21.7,
+                    "globalIndex": 22.2,
+                    "concentration": {
+                        "value": 53.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 10.1,
+                    "globalIndex": 11.0,
+                    "concentration": {
+                        "value": 11.0,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 19.5,
+                    "globalIndex": 9.3,
+                    "concentration": {
+                        "value": 4.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.7,
+                    "globalIndex": 0.8,
+                    "concentration": {
+                        "value": 167.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.4,
+                    "globalIndex": 0.8,
+                    "concentration": {
+                        "value": 0.8,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T06:00:00Z",
+            "index": 21.6,
+            "globalIndex": 22.1,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.7,
+                    "globalIndex": 4.7,
+                    "concentration": {
+                        "value": 9.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 21.6,
+                    "globalIndex": 22.1,
+                    "concentration": {
+                        "value": 53.5,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.9,
+                    "globalIndex": 10.7,
+                    "concentration": {
+                        "value": 10.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 18.4,
+                    "globalIndex": 8.8,
+                    "concentration": {
+                        "value": 4.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.7,
+                    "globalIndex": 0.9,
+                    "concentration": {
+                        "value": 172.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.5,
+                    "globalIndex": 0.8,
+                    "concentration": {
+                        "value": 0.8,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T07:00:00Z",
+            "index": 21.5,
+            "globalIndex": 22.0,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.6,
+                    "globalIndex": 4.6,
+                    "concentration": {
+                        "value": 9.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 21.5,
+                    "globalIndex": 22.0,
+                    "concentration": {
+                        "value": 53.3,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.6,
+                    "globalIndex": 10.4,
+                    "concentration": {
+                        "value": 10.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 17.4,
+                    "globalIndex": 8.3,
+                    "concentration": {
+                        "value": 4.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.8,
+                    "globalIndex": 0.9,
+                    "concentration": {
+                        "value": 177.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.5,
+                    "globalIndex": 0.9,
+                    "concentration": {
+                        "value": 0.9,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T08:00:00Z",
+            "index": 21.2,
+            "globalIndex": 21.5,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.6,
+                    "globalIndex": 4.6,
+                    "concentration": {
+                        "value": 9.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 21.2,
+                    "globalIndex": 21.5,
+                    "concentration": {
+                        "value": 52.5,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.5,
+                    "globalIndex": 10.2,
+                    "concentration": {
+                        "value": 10.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 17.4,
+                    "globalIndex": 8.3,
+                    "concentration": {
+                        "value": 4.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.7,
+                    "globalIndex": 0.9,
+                    "concentration": {
+                        "value": 172.4,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.5,
+                    "globalIndex": 1.0,
+                    "concentration": {
+                        "value": 1.0,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T09:00:00Z",
+            "index": 20.9,
+            "globalIndex": 21.1,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.5,
+                    "globalIndex": 4.5,
+                    "concentration": {
+                        "value": 9.1,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 20.9,
+                    "globalIndex": 21.1,
+                    "concentration": {
+                        "value": 51.8,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.3,
+                    "globalIndex": 10.0,
+                    "concentration": {
+                        "value": 10.0,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 17.4,
+                    "globalIndex": 8.4,
+                    "concentration": {
+                        "value": 4.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.7,
+                    "globalIndex": 0.8,
+                    "concentration": {
+                        "value": 167.3,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.6,
+                    "globalIndex": 1.0,
+                    "concentration": {
+                        "value": 1.0,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        },
+        {
+            "dateTime": "2022-03-24T10:00:00Z",
+            "index": 20.6,
+            "globalIndex": 20.7,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.5,
+                    "globalIndex": 4.5,
+                    "concentration": {
+                        "value": 9.0,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 20.6,
+                    "globalIndex": 20.7,
+                    "concentration": {
+                        "value": 51.1,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.1,
+                    "globalIndex": 9.8,
+                    "concentration": {
+                        "value": 9.8,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 17.5,
+                    "globalIndex": 8.4,
+                    "concentration": {
+                        "value": 4.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.6,
+                    "globalIndex": 0.8,
+                    "concentration": {
+                        "value": 162.3,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.6,
+                    "globalIndex": 1.1,
+                    "concentration": {
+                        "value": 1.1,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        }
+    ]
+}

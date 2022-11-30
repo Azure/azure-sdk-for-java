@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.ConnectionTypesClient;
 import com.azure.resourcemanager.automation.fluent.models.ConnectionTypeInner;
 import com.azure.resourcemanager.automation.models.ConnectionType;
 import com.azure.resourcemanager.automation.models.ConnectionTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConnectionTypesImpl implements ConnectionTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionTypesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionTypesImpl.class);
 
     private final ConnectionTypesClient innerClient;
 
@@ -81,7 +80,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
     public ConnectionType getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,7 +88,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -98,7 +97,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
         String connectionTypeName = Utils.getValueFromIdByName(id, "connectionTypes");
         if (connectionTypeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,7 +111,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
     public Response<ConnectionType> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,7 +119,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +128,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
         String connectionTypeName = Utils.getValueFromIdByName(id, "connectionTypes");
         if (connectionTypeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,19 +157,19 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
         String connectionTypeName = Utils.getValueFromIdByName(id, "connectionTypes");
         if (connectionTypeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +177,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
         String connectionTypeName = Utils.getValueFromIdByName(id, "connectionTypes");
         if (connectionTypeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -7,11 +7,11 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Network Address and Port Translation settings to use for the attached data network. */
+/** The network address and port translation settings to use for the attached data network. */
 @Fluent
 public final class NaptConfiguration {
     /*
-     * Whether NAPT is enabled for connections to this attachedDataNetwork.
+     * Whether NAPT is enabled for connections to this attached data network.
      */
     @JsonProperty(value = "enabled")
     private NaptEnabled enabled;
@@ -20,8 +20,10 @@ public final class NaptConfiguration {
      * Range of port numbers to use as translated ports on each translated
      * address.
      * If not specified and NAPT is enabled, this range defaults to 1,024 -
-     * 65,535. (Ports under 1,024 should not be used because these are special
-     * purpose ports reserved by IANA.)
+     * 49,999.
+     * (Ports under 1,024 should not be used because these are special purpose
+     * ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT
+     * use.)
      */
     @JsonProperty(value = "portRange")
     private PortRange portRange;
@@ -36,7 +38,8 @@ public final class NaptConfiguration {
 
     /*
      * Maximum number of UDP and TCP pinholes that can be open simultaneously
-     * on the core interface.
+     * on the core interface. For 5G networks, this is the N6 interface. For 4G
+     * networks, this is the SGi interface.
      */
     @JsonProperty(value = "pinholeLimits")
     private Integer pinholeLimits;
@@ -49,7 +52,7 @@ public final class NaptConfiguration {
     private PinholeTimeouts pinholeTimeouts;
 
     /**
-     * Get the enabled property: Whether NAPT is enabled for connections to this attachedDataNetwork.
+     * Get the enabled property: Whether NAPT is enabled for connections to this attached data network.
      *
      * @return the enabled value.
      */
@@ -58,7 +61,7 @@ public final class NaptConfiguration {
     }
 
     /**
-     * Set the enabled property: Whether NAPT is enabled for connections to this attachedDataNetwork.
+     * Set the enabled property: Whether NAPT is enabled for connections to this attached data network.
      *
      * @param enabled the enabled value to set.
      * @return the NaptConfiguration object itself.
@@ -70,8 +73,8 @@ public final class NaptConfiguration {
 
     /**
      * Get the portRange property: Range of port numbers to use as translated ports on each translated address. If not
-     * specified and NAPT is enabled, this range defaults to 1,024 - 65,535. (Ports under 1,024 should not be used
-     * because these are special purpose ports reserved by IANA.).
+     * specified and NAPT is enabled, this range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used
+     * because these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.).
      *
      * @return the portRange value.
      */
@@ -81,8 +84,8 @@ public final class NaptConfiguration {
 
     /**
      * Set the portRange property: Range of port numbers to use as translated ports on each translated address. If not
-     * specified and NAPT is enabled, this range defaults to 1,024 - 65,535. (Ports under 1,024 should not be used
-     * because these are special purpose ports reserved by IANA.).
+     * specified and NAPT is enabled, this range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used
+     * because these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.).
      *
      * @param portRange the portRange value to set.
      * @return the NaptConfiguration object itself.
@@ -116,7 +119,7 @@ public final class NaptConfiguration {
 
     /**
      * Get the pinholeLimits property: Maximum number of UDP and TCP pinholes that can be open simultaneously on the
-     * core interface.
+     * core interface. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface.
      *
      * @return the pinholeLimits value.
      */
@@ -126,7 +129,7 @@ public final class NaptConfiguration {
 
     /**
      * Set the pinholeLimits property: Maximum number of UDP and TCP pinholes that can be open simultaneously on the
-     * core interface.
+     * core interface. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface.
      *
      * @param pinholeLimits the pinholeLimits value to set.
      * @return the NaptConfiguration object itself.

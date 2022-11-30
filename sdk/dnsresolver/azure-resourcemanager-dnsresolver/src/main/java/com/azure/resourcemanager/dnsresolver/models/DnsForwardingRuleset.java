@@ -101,6 +101,13 @@ public interface DnsForwardingRuleset {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.dnsresolver.fluent.models.DnsForwardingRulesetInner object.
      *
      * @return the inner object.
@@ -112,6 +119,7 @@ public interface DnsForwardingRuleset {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithDnsResolverOutboundEndpoints,
             DefinitionStages.WithCreate {
     }
     /** The DnsForwardingRuleset definition stages. */
@@ -145,17 +153,27 @@ public interface DnsForwardingRuleset {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithDnsResolverOutboundEndpoints withExistingResourceGroup(String resourceGroupName);
+        }
+        /** The stage of the DnsForwardingRuleset definition allowing to specify dnsResolverOutboundEndpoints. */
+        interface WithDnsResolverOutboundEndpoints {
+            /**
+             * Specifies the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints
+             * that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS
+             * servers..
+             *
+             * @param dnsResolverOutboundEndpoints The reference to the DNS resolver outbound endpoints that are used to
+             *     route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
+             * @return the next definition stage.
+             */
+            WithCreate withDnsResolverOutboundEndpoints(List<SubResource> dnsResolverOutboundEndpoints);
         }
         /**
          * The stage of the DnsForwardingRuleset definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDnsResolverOutboundEndpoints,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              *
@@ -180,19 +198,6 @@ public interface DnsForwardingRuleset {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the DnsForwardingRuleset definition allowing to specify dnsResolverOutboundEndpoints. */
-        interface WithDnsResolverOutboundEndpoints {
-            /**
-             * Specifies the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints
-             * that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS
-             * servers..
-             *
-             * @param dnsResolverOutboundEndpoints The reference to the DNS resolver outbound endpoints that are used to
-             *     route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
-             * @return the next definition stage.
-             */
-            WithCreate withDnsResolverOutboundEndpoints(List<SubResource> dnsResolverOutboundEndpoints);
         }
         /** The stage of the DnsForwardingRuleset definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -227,7 +232,8 @@ public interface DnsForwardingRuleset {
     DnsForwardingRuleset.Update update();
 
     /** The template for DnsForwardingRuleset update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIfMatch {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithDnsResolverOutboundEndpoints, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -254,6 +260,19 @@ public interface DnsForwardingRuleset {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the DnsForwardingRuleset update allowing to specify dnsResolverOutboundEndpoints. */
+        interface WithDnsResolverOutboundEndpoints {
+            /**
+             * Specifies the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints
+             * that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS
+             * servers..
+             *
+             * @param dnsResolverOutboundEndpoints The reference to the DNS resolver outbound endpoints that are used to
+             *     route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
+             * @return the next definition stage.
+             */
+            Update withDnsResolverOutboundEndpoints(List<SubResource> dnsResolverOutboundEndpoints);
         }
         /** The stage of the DnsForwardingRuleset update allowing to specify ifMatch. */
         interface WithIfMatch {

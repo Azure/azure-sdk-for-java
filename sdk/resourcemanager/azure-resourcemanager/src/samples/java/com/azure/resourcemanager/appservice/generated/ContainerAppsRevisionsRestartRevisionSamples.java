@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerAppsRevisions RestartRevision. */
 public final class ContainerAppsRevisionsRestartRevisionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/RestartRevision.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/RestartRevision.json
      */
     /**
      * Sample code: Restart Container App's revision.

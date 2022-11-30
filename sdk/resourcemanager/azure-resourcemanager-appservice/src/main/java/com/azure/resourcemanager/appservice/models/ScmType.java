@@ -63,7 +63,11 @@ public final class ScmType extends ExpandableStringEnum<ScmType> {
         return fromString(name, ScmType.class);
     }
 
-    /** @return known ScmType values. */
+    /**
+     * Gets known ScmType values.
+     *
+     * @return known ScmType values.
+     */
     public static Collection<ScmType> values() {
         return values(ScmType.class);
     }

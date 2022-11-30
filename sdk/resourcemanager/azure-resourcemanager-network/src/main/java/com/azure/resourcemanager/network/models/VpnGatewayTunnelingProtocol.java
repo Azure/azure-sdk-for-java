@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VpnGatewayTunnelingProtocol. */
+/** VPN protocol enabled for the VpnServerConfiguration. */
 public final class VpnGatewayTunnelingProtocol extends ExpandableStringEnum<VpnGatewayTunnelingProtocol> {
     /** Static value IkeV2 for VpnGatewayTunnelingProtocol. */
     public static final VpnGatewayTunnelingProtocol IKE_V2 = fromString("IkeV2");

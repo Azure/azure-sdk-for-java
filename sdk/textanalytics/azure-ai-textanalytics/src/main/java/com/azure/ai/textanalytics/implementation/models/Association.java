@@ -30,6 +30,9 @@ public enum Association {
      */
     @JsonCreator
     public static Association fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Association[] items = Association.values();
         for (Association item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

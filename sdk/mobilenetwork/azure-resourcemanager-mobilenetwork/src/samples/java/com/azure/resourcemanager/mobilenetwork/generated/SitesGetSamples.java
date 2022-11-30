@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Sites Get. */
 public final class SitesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SiteGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SiteGet.json
      */
     /**
      * Sample code: Get mobile network site.

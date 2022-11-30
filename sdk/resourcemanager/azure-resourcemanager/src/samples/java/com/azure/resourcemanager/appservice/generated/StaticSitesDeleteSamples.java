@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites Delete. */
 public final class StaticSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteStaticSite.json
      */
     /**
      * Sample code: Delete a static site.

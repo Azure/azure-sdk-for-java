@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.models.CertificateInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response model for the list certificate operation. */
 @Fluent
 public final class CertificateListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateListResult.class);
-
     /*
      * Gets or sets a list of certificates.
      */

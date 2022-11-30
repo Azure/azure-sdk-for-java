@@ -106,6 +106,10 @@ public final class DscConfigurationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DscConfigurationInner innerModel() {
         return this.innerObject;
     }

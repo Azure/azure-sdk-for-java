@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerAppsRevisions ActivateRevision. */
 public final class ContainerAppsRevisionsActivateRevisionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ActivateRevision.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ActivateRevision.json
      */
     /**
      * Sample code: Activate Container App's revision.

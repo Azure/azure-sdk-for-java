@@ -19,64 +19,56 @@ public final class VirtualMachineScaleSetOSDisk {
     private String name;
 
     /*
-     * Specifies the caching requirements. <br><br> Possible values are:
-     * <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br>
-     * Default: **None for Standard storage. ReadOnly for Premium storage**
+     * Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly**
+     * <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**
      */
     @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
-     * Specifies whether writeAccelerator should be enabled or disabled on the
-     * disk.
+     * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
     @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
 
     /*
-     * Specifies how the virtual machines in the scale set should be
-     * created.<br><br> The only allowed value is: **FromImage** \u2013 This
-     * value is used when you are using an image to create the virtual machine.
-     * If you are using a platform image, you also use the imageReference
-     * element described above. If you are using a marketplace image, you  also
-     * use the plan element previously described.
+     * Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is:
+     * **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are
+     * using a platform image, you also use the imageReference element described above. If you are using a marketplace
+     * image, you  also use the plan element previously described.
      */
     @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /*
-     * Specifies the ephemeral disk Settings for the operating system disk used
-     * by the virtual machine scale set.
+     * Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
      */
     @JsonProperty(value = "diffDiskSettings")
     private DiffDiskSettings diffDiskSettings;
 
     /*
-     * Specifies the size of the operating system disk in gigabytes. This
-     * element can be used to overwrite the size of the disk in a virtual
-     * machine image. <br><br> This value cannot be larger than 1023 GB
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
+     * disk in a virtual machine image. <br><br> diskSizeGB is the number of bytes x 1024^3 for the disk and the value
+     * cannot be larger than 1023
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
-     * This property allows you to specify the type of the OS that is included
-     * in the disk if creating a VM from user-image or a specialized VHD.
-     * <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**
+     * This property allows you to specify the type of the OS that is included in the disk if creating a VM from
+     * user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**
      */
     @JsonProperty(value = "osType")
     private OperatingSystemTypes osType;
 
     /*
-     * Specifies information about the unmanaged user image to base the scale
-     * set on.
+     * Specifies information about the unmanaged user image to base the scale set on.
      */
     @JsonProperty(value = "image")
     private VirtualHardDisk image;
 
     /*
-     * Specifies the container urls that are used to store operating system
-     * disks for the scale set.
+     * Specifies the container urls that are used to store operating system disks for the scale set.
      */
     @JsonProperty(value = "vhdContainers")
     private List<String> vhdContainers;
@@ -88,17 +80,18 @@ public final class VirtualMachineScaleSetOSDisk {
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /*
-     * Specifies whether OS Disk should be deleted or detached upon VMSS Flex
-     * deletion (This feature is available for VMSS with Flexible
-     * OrchestrationMode only). <br><br> Possible values: <br><br> **Delete**
-     * If this value is used, the OS disk is deleted when VMSS Flex VM is
-     * deleted.<br><br> **Detach** If this value is used, the OS disk is
-     * retained after VMSS Flex VM is deleted. <br><br> The default value is
-     * set to **Delete**. For an Ephemeral OS Disk, the default value is set to
-     * **Delete**. User cannot change the delete option for Ephemeral OS Disk.
+     * Specifies whether OS Disk should be deleted or detached upon VMSS Flex deletion (This feature is available for
+     * VMSS with Flexible OrchestrationMode only). <br><br> Possible values: <br><br> **Delete** If this value is used,
+     * the OS disk is deleted when VMSS Flex VM is deleted.<br><br> **Detach** If this value is used, the OS disk is
+     * retained after VMSS Flex VM is deleted. <br><br> The default value is set to **Delete**. For an Ephemeral OS
+     * Disk, the default value is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
      */
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
+
+    /** Creates an instance of VirtualMachineScaleSetOSDisk class. */
+    public VirtualMachineScaleSetOSDisk() {
+    }
 
     /**
      * Get the name property: The disk name.
@@ -217,9 +210,9 @@ public final class VirtualMachineScaleSetOSDisk {
     }
 
     /**
-     * Get the diskSizeGB property: Specifies the size of the operating system disk in gigabytes. This element can be
-     * used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
-     * larger than 1023 GB.
+     * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
+     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
+     * x 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @return the diskSizeGB value.
      */
@@ -228,9 +221,9 @@ public final class VirtualMachineScaleSetOSDisk {
     }
 
     /**
-     * Set the diskSizeGB property: Specifies the size of the operating system disk in gigabytes. This element can be
-     * used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
-     * larger than 1023 GB.
+     * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
+     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
+     * x 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.

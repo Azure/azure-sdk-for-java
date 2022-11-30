@@ -11,17 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachineScaleSetHardwareProfile {
     /*
-     * Specifies the properties for customizing the size of the virtual
-     * machine. Minimum api-version: 2022-03-01. <br><br> Please follow the
-     * instructions in [VM Customization](https://aka.ms/vmcustomization) for
-     * more details.
+     * Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2021-11-01.
+     * <br><br> Please follow the instructions in [VM Customization](https://aka.ms/vmcustomization) for more details.
      */
     @JsonProperty(value = "vmSizeProperties")
     private VMSizeProperties vmSizeProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetHardwareProfile class. */
+    public VirtualMachineScaleSetHardwareProfile() {
+    }
+
     /**
      * Get the vmSizeProperties property: Specifies the properties for customizing the size of the virtual machine.
-     * Minimum api-version: 2022-03-01. &lt;br&gt;&lt;br&gt; Please follow the instructions in [VM
+     * Minimum api-version: 2021-11-01. &lt;br&gt;&lt;br&gt; Please follow the instructions in [VM
      * Customization](https://aka.ms/vmcustomization) for more details.
      *
      * @return the vmSizeProperties value.
@@ -32,7 +34,7 @@ public final class VirtualMachineScaleSetHardwareProfile {
 
     /**
      * Set the vmSizeProperties property: Specifies the properties for customizing the size of the virtual machine.
-     * Minimum api-version: 2022-03-01. &lt;br&gt;&lt;br&gt; Please follow the instructions in [VM
+     * Minimum api-version: 2021-11-01. &lt;br&gt;&lt;br&gt; Please follow the instructions in [VM
      * Customization](https://aka.ms/vmcustomization) for more details.
      *
      * @param vmSizeProperties the vmSizeProperties value to set.

@@ -23,7 +23,7 @@ public interface UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<UsageInner> listByInstancePoolAsync(
@@ -38,10 +38,24 @@ public interface UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<UsageInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName);
+
+    /**
+     * Gets all instance pool usage metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UsageInner> listByInstancePool(String resourceGroupName, String instancePoolName);
 
     /**
      * Gets all instance pool usage metrics.
@@ -54,23 +68,9 @@ public interface UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UsageInner> listByInstancePool(
         String resourceGroupName, String instancePoolName, Boolean expandChildren, Context context);
-
-    /**
-     * Gets all instance pool usage metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UsageInner> listByInstancePool(String resourceGroupName, String instancePoolName);
 }

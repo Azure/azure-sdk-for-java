@@ -15,11 +15,16 @@ import java.util.List;
 @Fluent
 public final class HealthcareRelation {
     /*
-     * Type of relation. Examples include: `DosageOfMedication` or
-     * 'FrequencyOfMedication', etc.
+     * Type of relation. Examples include: `DosageOfMedication` or 'FrequencyOfMedication', etc.
      */
     @JsonProperty(value = "relationType", required = true)
     private RelationType relationType;
+
+    /*
+     * Confidence score between 0 and 1 of the extracted relation.
+     */
+    @JsonProperty(value = "confidenceScore")
+    private Double confidenceScore;
 
     /*
      * The entities in the relation.
@@ -46,6 +51,26 @@ public final class HealthcareRelation {
      */
     public HealthcareRelation setRelationType(RelationType relationType) {
         this.relationType = relationType;
+        return this;
+    }
+
+    /**
+     * Get the confidenceScore property: Confidence score between 0 and 1 of the extracted relation.
+     *
+     * @return the confidenceScore value.
+     */
+    public Double getConfidenceScore() {
+        return this.confidenceScore;
+    }
+
+    /**
+     * Set the confidenceScore property: Confidence score between 0 and 1 of the extracted relation.
+     *
+     * @param confidenceScore the confidenceScore value to set.
+     * @return the HealthcareRelation object itself.
+     */
+    public HealthcareRelation setConfidenceScore(Double confidenceScore) {
+        this.confidenceScore = confidenceScore;
         return this;
     }
 

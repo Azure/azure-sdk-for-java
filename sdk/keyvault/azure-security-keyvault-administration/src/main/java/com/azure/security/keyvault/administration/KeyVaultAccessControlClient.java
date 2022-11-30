@@ -8,8 +8,20 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl;
+import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
+import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
+import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
@@ -17,7 +29,17 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.SetRoleDefinitionOptions;
 import reactor.core.publisher.Mono;
 
+import java.net.URL;
+import java.util.Objects;
 import java.util.UUID;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.enableSyncRestProxy;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.swallowExceptionForStatusCodeSync;
 
 /**
  * The {@link KeyVaultAccessControlClient} provides synchronous methods to view and manage Role Based Access for the
@@ -31,7 +53,7 @@ import java.util.UUID;
  * <!-- src_embed com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation -->
  * <pre>
  * KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myaccount.managedhsm.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -41,15 +63,52 @@ import java.util.UUID;
  */
 @ServiceClient(builder = KeyVaultAccessControlClientBuilder.class)
 public final class KeyVaultAccessControlClient {
-    private final KeyVaultAccessControlAsyncClient asyncClient;
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
     /**
-     * Creates an {@link KeyVaultAccessControlClient} that uses a {@link HttpPipeline pipeline} to service requests.
-     *
-     * @param asyncClient The {@link KeyVaultAccessControlAsyncClient} that this client routes its request through.
+     * The logger to be used.
      */
-    KeyVaultAccessControlClient(KeyVaultAccessControlAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    private final ClientLogger logger = new ClientLogger(KeyVaultAccessControlClient.class);
+
+    /**
+     * The underlying AutoRest client used to interact with the Key Vault service.
+     */
+    private final KeyVaultAccessControlClientImpl clientImpl;
+
+    /**
+     * The Key Vault URL this client is associated to.
+     */
+    private final String vaultUrl;
+
+    /**
+     * The Key Vault Administration Service version to use with this client.
+     */
+    private final String serviceVersion;
+
+    /**
+     * The {@link HttpPipeline} powering this client.
+     */
+    private final HttpPipeline pipeline;
+
+
+    /**
+     * Package private constructor to be used by {@link KeyVaultAccessControlClientBuilder}.
+     */
+    KeyVaultAccessControlClient(URL vaultUrl, HttpPipeline httpPipeline,
+                                     KeyVaultAdministrationServiceVersion serviceVersion) {
+        Objects.requireNonNull(vaultUrl,
+            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+
+        this.vaultUrl = vaultUrl.toString();
+        this.serviceVersion = serviceVersion.getVersion();
+        this.pipeline = httpPipeline;
+
+        clientImpl = new KeyVaultAccessControlClientImplBuilder()
+            .pipeline(httpPipeline)
+            .apiVersion(this.serviceVersion)
+            .buildClient();
     }
 
     /**
@@ -58,7 +117,7 @@ public final class KeyVaultAccessControlClient {
      * @return The Key Vault URL.
      */
     public String getVaultUrl() {
-        return asyncClient.getVaultUrl();
+        return this.vaultUrl;
     }
 
     /**
@@ -88,7 +147,7 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope) {
-        return new PagedIterable<>(asyncClient.listRoleDefinitions(roleScope, Context.NONE));
+        return listRoleDefinitions(roleScope, Context.NONE);
     }
 
     /**
@@ -119,7 +178,69 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope, Context context) {
-        return new PagedIterable<>(asyncClient.listRoleDefinitions(roleScope, context));
+        final Context contextToUse = enableSyncRestProxy(context);
+        return new PagedIterable<>(
+            () -> listRoleDefinitionsFirstPage(vaultUrl, roleScope, contextToUse),
+            continuationToken -> listRoleDefinitionsNextPage(continuationToken, contextToUse));
+    }
+
+    /**
+     * Lists all {@link KeyVaultRoleDefinition role definitions} in the first page that are applicable at the given
+     * {@link KeyVaultRoleScope role scope} and above.
+     *
+     * @param vaultUrl The URL for the Key Vault this client is associated with.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleDefinition role definitions}
+     * for the given {@link KeyVaultRoleScope role scope} from the first page of results.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code vaultUrl} or {@code roleScope} are invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
+     */
+    PagedResponse<KeyVaultRoleDefinition> listRoleDefinitionsFirstPage(String vaultUrl,
+                                                                             KeyVaultRoleScope roleScope,
+                                                                             Context context) {
+        Objects.requireNonNull(roleScope,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'roleScope'"));
+        try {
+            PagedResponse<RoleDefinition> roleDefinitionPagedResponse = clientImpl.getRoleDefinitions()
+                .listSyncSinglePage(vaultUrl, roleScope.toString(), null,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return KeyVaultAdministrationUtil.transformRoleDefinitionsPagedResponse(roleDefinitionPagedResponse);
+        } catch (KeyVaultErrorException e) {
+            throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
+    }
+
+    /**
+     * Lists all {@link KeyVaultRoleDefinition role definitions} given by the {@code nextPageLink} that was retrieved
+     * from a call to
+     * {@link KeyVaultAccessControlAsyncClient#listRoleDefinitionsFirstPage(String, KeyVaultRoleScope, Context)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken() continuationToken} from a previous,
+     * successful call to one of the {@code listKeyVaultRoleDefinitions} operations.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleDefinition role definitions}
+     * for the given {@link KeyVaultRoleScope role scope} from the next page of results.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code continuationToken} is invalid.
+     */
+    PagedResponse<KeyVaultRoleDefinition> listRoleDefinitionsNextPage(String continuationToken, Context context) {
+        try {
+            PagedResponse<RoleDefinition> roleDefinitionPagedResponse = clientImpl.getRoleDefinitions()
+                .listNextSyncSinglePage(continuationToken, vaultUrl, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                    KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return KeyVaultAdministrationUtil.transformRoleDefinitionsPagedResponse(roleDefinitionPagedResponse);
+        } catch (KeyVaultErrorException e) {
+            throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -147,7 +268,7 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleDefinition setRoleDefinition(KeyVaultRoleScope roleScope) {
-        return asyncClient.setRoleDefinition(roleScope).block();
+        return setRoleDefinition(roleScope, UUID.randomUUID().toString());
     }
 
     /**
@@ -181,7 +302,8 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleDefinition setRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        return asyncClient.setRoleDefinition(roleScope, roleDefinitionName).block();
+        return setRoleDefinitionWithResponse(new SetRoleDefinitionOptions(roleScope, roleDefinitionName), Context.NONE)
+            .getValue();
     }
 
     /**
@@ -239,7 +361,19 @@ public final class KeyVaultAccessControlClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleDefinition> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options,
                                                                           Context context) {
-        return asyncClient.setRoleDefinitionWithResponse(options, context).block();
+        context = enableSyncRestProxy(context);
+        RoleDefinitionCreateParameters parameters = validateAndGetRoleDefinitionCreateParameters(options);
+        try {
+            Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
+                .createOrUpdateSyncWithResponse(vaultUrl, options.getRoleScope().toString(),
+                    options.getRoleDefinitionName(), parameters,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return KeyVaultAdministrationUtil.transformRoleDefinitionResponse(roleDefinitionResponse);
+        } catch (KeyVaultErrorException e) {
+            throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -271,7 +405,7 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleDefinition getRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        return asyncClient.getRoleDefinition(roleScope, roleDefinitionName).block();
+        return getRoleDefinitionWithResponse(roleScope, roleDefinitionName, Context.NONE).getValue();
     }
 
     /**
@@ -308,7 +442,18 @@ public final class KeyVaultAccessControlClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleDefinition> getRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
                                                                           String roleDefinitionName, Context context) {
-        return asyncClient.getRoleDefinitionWithResponse(roleScope, roleDefinitionName, context).block();
+        validateRoleDefinitionParameters(roleScope, roleDefinitionName);
+        try {
+            context = enableSyncRestProxy(context);
+            Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
+                .getSyncWithResponse(vaultUrl, roleScope.toString(), roleDefinitionName,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return KeyVaultAdministrationUtil.transformRoleDefinitionResponse(roleDefinitionResponse);
+        } catch (KeyVaultErrorException e) {
+            throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -336,7 +481,7 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        asyncClient.deleteRoleDefinition(roleScope, roleDefinitionName).block();
+        deleteRoleDefinitionWithResponse(roleScope, roleDefinitionName, Context.NONE);
     }
 
     /**
@@ -371,7 +516,21 @@ public final class KeyVaultAccessControlClient {
     public Response<Void> deleteRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
                                                            String roleDefinitionName,
                                                            Context context) {
-        return asyncClient.deleteRoleDefinitionWithResponse(roleScope, roleDefinitionName, context).block();
+        validateRoleDefinitionParameters(roleScope, roleDefinitionName);
+        try {
+            context = enableSyncRestProxy(context);
+            Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
+                .deleteSyncWithResponse(vaultUrl, roleScope.toString(), roleDefinitionName,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return new SimpleResponse<>(roleDefinitionResponse, null);
+
+        } catch (KeyVaultErrorException e) {
+            KeyVaultAdministrationException mappedException = KeyVaultAdministrationUtils
+                .toKeyVaultAdministrationException(e);
+            return swallowExceptionForStatusCodeSync(404, mappedException, logger);
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -401,7 +560,7 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope) {
-        return new PagedIterable<>(asyncClient.listRoleAssignments(roleScope, Context.NONE));
+        return listRoleAssignments(roleScope, Context.NONE);
     }
 
     /**
@@ -432,7 +591,68 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope, Context context) {
-        return new PagedIterable<>(asyncClient.listRoleAssignments(roleScope, context));
+        final Context contextToUse = enableSyncRestProxy(context);
+        return new PagedIterable<>(
+            () -> listRoleAssignmentsFirstPage(vaultUrl, roleScope, contextToUse),
+            continuationToken -> listRoleAssignmentsNextPage(continuationToken, context));
+    }
+
+    /**
+     * Lists all {@link KeyVaultRoleAssignment role assignments} in the first page that are applicable at the given
+     * {@link KeyVaultRoleScope role scope} and above.
+     *
+     * @param vaultUrl The URL for the Key Vault this client is associated with.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleAssignment role assignments}
+     * in the given {@link KeyVaultRoleScope role scope} from the first page of results.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code vaultUrl} or {@code roleScope} are invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
+     */
+    PagedResponse<KeyVaultRoleAssignment> listRoleAssignmentsFirstPage(String vaultUrl,
+                                                                       KeyVaultRoleScope roleScope,
+                                                                       Context context) {
+        Objects.requireNonNull(roleScope,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'roleScope'"));
+        try {
+            PagedResponse<RoleAssignment> roleAssignmentPagedResponse = clientImpl.getRoleAssignments()
+                .listForScopeSyncSinglePage(vaultUrl, roleScope.toString(), null,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return KeyVaultAdministrationUtil.transformRoleAssignmentsPagedResponse(roleAssignmentPagedResponse);
+        } catch (KeyVaultErrorException e) {
+            throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
+    }
+
+    /**
+     * Lists all {@link KeyVaultRoleAssignment role assignments} given by the {@code nextPageLink} that was
+     * retrieved from a call to {@link KeyVaultAccessControlAsyncClient#listRoleAssignments(KeyVaultRoleScope)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken() continuationToken} from a previous,
+     * successful call to one of the {@code listKeyVaultRoleAssignments} operations.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleAssignment role assignments}
+     * for the given {@link KeyVaultRoleScope role scope} from the first page of results.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code continuationToken} is invalid.
+     */
+    PagedResponse<KeyVaultRoleAssignment> listRoleAssignmentsNextPage(String continuationToken, Context context) {
+        try {
+            PagedResponse<RoleAssignment> roleAssignmentPagedResponse = clientImpl.getRoleAssignments()
+                .listForScopeNextSyncSinglePage(continuationToken, vaultUrl,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return KeyVaultAdministrationUtil.transformRoleAssignmentsPagedResponse(roleAssignmentPagedResponse);
+        } catch (KeyVaultErrorException e) {
+            throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -560,8 +780,18 @@ public final class KeyVaultAccessControlClient {
                                                                              String principalId,
                                                                              String roleAssignmentName,
                                                                              Context context) {
-        return asyncClient.createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId,
-            roleAssignmentName, context).block();
+        RoleAssignmentCreateParameters parameters = validateAndGetRoleAssignmentCreateParameters(roleScope, roleDefinitionId, principalId, roleAssignmentName);
+        context = enableSyncRestProxy(context);
+        try {
+            Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
+                .createSyncWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName, parameters,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return KeyVaultAdministrationUtil.transformRoleAssignmentResponse(roleAssignmentResponse);
+        } catch (KeyVaultErrorException e) {
+            throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -627,7 +857,18 @@ public final class KeyVaultAccessControlClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> getRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
                                                                           String roleAssignmentName, Context context) {
-        return asyncClient.getRoleAssignmentWithResponse(roleScope, roleAssignmentName, context).block();
+        validateRoleAssignmentParameters(roleScope, roleAssignmentName);
+        try {
+            context = enableSyncRestProxy(context);
+            Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
+                .getSyncWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return KeyVaultAdministrationUtil.transformRoleAssignmentResponse(roleAssignmentResponse);
+        } catch (KeyVaultErrorException e) {
+            throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -654,7 +895,7 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName) {
-        asyncClient.deleteRoleAssignment(roleScope, roleAssignmentName).block();
+        deleteRoleAssignmentWithResponse(roleScope, roleAssignmentName, Context.NONE);
     }
 
     /**
@@ -688,6 +929,18 @@ public final class KeyVaultAccessControlClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRoleAssignmentWithResponse(KeyVaultRoleScope roleScope, String roleAssignmentName,
                                                            Context context) {
-        return asyncClient.deleteRoleAssignmentWithResponse(roleScope, roleAssignmentName, context).block();
+        validateRoleAssignmentParameters(roleScope, roleAssignmentName);
+        try {
+            context = enableSyncRestProxy(context);
+            Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
+                .deleteSyncWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            return new SimpleResponse<>(roleAssignmentResponse, null);
+        } catch (KeyVaultErrorException e) {
+            KeyVaultAdministrationException mappedException = KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+            return swallowExceptionForStatusCodeSync(404, mappedException, logger);
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 }

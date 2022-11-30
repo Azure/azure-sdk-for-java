@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SettingKind. */
+/** The kind of the setting. */
 public final class SettingKind extends ExpandableStringEnum<SettingKind> {
     /** Static value Anomalies for SettingKind. */
     public static final SettingKind ANOMALIES = fromString("Anomalies");

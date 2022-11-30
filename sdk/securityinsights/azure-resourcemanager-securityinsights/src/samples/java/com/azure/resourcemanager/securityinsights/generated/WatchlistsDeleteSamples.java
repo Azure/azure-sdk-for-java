@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Watchlists Delete. */
 public final class WatchlistsDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/watchlists/DeleteWatchlist.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/watchlists/DeleteWatchlist.json
      */
     /**
      * Sample code: Delete a watchlist.

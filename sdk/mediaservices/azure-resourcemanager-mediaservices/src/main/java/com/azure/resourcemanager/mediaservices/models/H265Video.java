@@ -17,19 +17,17 @@ import java.util.List;
 @Fluent
 public final class H265Video extends Video {
     /*
-     * Specifies whether or not the encoder should insert key frames at scene
-     * changes. If not specified, the default is false. This flag should be set
-     * to true only when the encoder is being configured to produce a single
-     * output video.
+     * Specifies whether or not the encoder should insert key frames at scene changes. If not specified, the default is
+     * false. This flag should be set to true only when the encoder is being configured to produce a single output
+     * video.
      */
     @JsonProperty(value = "sceneChangeDetection")
     private Boolean sceneChangeDetection;
 
     /*
-     * Tells the encoder how to choose its encoding settings.  Quality will
-     * provide for a higher compression ratio but at a higher cost and longer
-     * compute time.  Speed will produce a relatively larger file but is faster
-     * and more economical. The default value is Balanced.
+     * Tells the encoder how to choose its encoding settings.  Quality will provide for a higher compression ratio but
+     * at a higher cost and longer compute time.  Speed will produce a relatively larger file but is faster and more
+     * economical. The default value is Balanced.
      */
     @JsonProperty(value = "complexity")
     private H265Complexity complexity;

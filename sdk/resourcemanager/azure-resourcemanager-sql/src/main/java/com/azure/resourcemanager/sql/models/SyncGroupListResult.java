@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.SyncGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of sync groups. */
 @Immutable
 public final class SyncGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupListResult.class);
-
     /*
      * Array of results.
      */

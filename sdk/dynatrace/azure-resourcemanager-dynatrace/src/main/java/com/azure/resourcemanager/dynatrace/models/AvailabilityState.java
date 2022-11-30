@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AvailabilityState. */
+/** The availability state of OneAgent. */
 public final class AvailabilityState extends ExpandableStringEnum<AvailabilityState> {
     /** Static value CRASHED for AvailabilityState. */
     public static final AvailabilityState CRASHED = fromString("CRASHED");

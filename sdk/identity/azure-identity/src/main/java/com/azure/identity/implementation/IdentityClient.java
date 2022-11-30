@@ -6,24 +6,11 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
-import com.azure.identity.TokenCachePersistenceOptions;
-import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
@@ -38,11 +25,8 @@ import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
-import com.microsoft.aad.msal4j.OnBehalfOfParameters;
-import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -52,15 +36,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.DataOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -72,71 +50,30 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.GeneralSecurityException;
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.Set;
+
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
  * from various configurations.
  */
-public class IdentityClient {
-    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
-    private static final Random RANDOM = new Random();
-    private static final String WINDOWS_STARTER = "cmd.exe";
-    private static final String LINUX_MAC_STARTER = "/bin/sh";
-    private static final String WINDOWS_SWITCHER = "/c";
-    private static final String LINUX_MAC_SWITCHER = "-c";
-    private static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
-    private static final Pattern LINUX_MAC_PROCESS_ERROR_MESSAGE = Pattern.compile("(.*)az:(.*)not found");
-    private static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
-    private static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
-    private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
-    private static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
-    private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
-    private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
-    private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
-    private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
-    private static final String ADFS_TENANT = "adfs";
-    private static final String HTTP_LOCALHOST = "http://localhost";
-    private static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
-    private static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
-    private static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
-    private static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
+public class IdentityClient extends IdentityClientBase {
 
-    private final IdentityClientOptions options;
-    private final String tenantId;
-    private final String clientId;
-    private final String resourceId;
-    private final String clientSecret;
-    private final String clientAssertionFilePath;
-    private final InputStream certificate;
-    private final String certificatePath;
-    private final Supplier<String> clientAssertionSupplier;
-    private final String certificatePassword;
-    private HttpPipelineAdapter httpPipelineAdapter;
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessor;
+    private final SynchronizedAccessor<ConfidentialClientApplication> managedIdentityConfidentialClientApplicationAccessor;
     private final SynchronizedAccessor<String> clientAssertionAccessor;
 
 
@@ -159,28 +96,17 @@ public class IdentityClient {
         String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
         InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
         Duration clientAssertionTimeout, IdentityClientOptions options) {
-        if (tenantId == null) {
-            tenantId = "organizations";
-        }
-        if (options == null) {
-            options = new IdentityClientOptions();
-        }
-        this.tenantId = tenantId;
-        this.clientId = clientId;
-        this.resourceId = resourceId;
-        this.clientSecret = clientSecret;
-        this.clientAssertionFilePath = clientAssertionFilePath;
-        this.certificatePath = certificatePath;
-        this.certificate = certificate;
-        this.certificatePassword = certificatePassword;
-        this.clientAssertionSupplier = clientAssertionSupplier;
-        this.options = options;
+        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, clientAssertionSupplier,
+            certificate, certificatePassword, isSharedTokenCacheCredential, clientAssertionTimeout, options);
 
         this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential));
 
         this.confidentialClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getConfidentialClientApplication());
+
+        this.managedIdentityConfidentialClientApplicationAccessor = new SynchronizedAccessor<>(() ->
+            getManagedIdentityConfidentialClientApplication());
 
         this.clientAssertionAccessor = clientAssertionTimeout == null
             ? new SynchronizedAccessor<>(() -> parseClientAssertion(), Duration.ofMinutes(5))
@@ -189,92 +115,46 @@ public class IdentityClient {
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
         return Mono.defer(() -> {
-            if (clientId == null) {
-                return Mono.error(LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "A non-null value for client ID must be provided for user authentication.")));
-            }
-            String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/"
-                + tenantId;
-            IClientCredential credential;
-            if (clientSecret != null) {
-                credential = ClientCredentialFactory.createFromSecret(clientSecret);
-            } else if (certificate != null || certificatePath != null) {
-                try {
-                    if (certificatePassword == null) {
-                        byte[] pemCertificateBytes = getCertificateBytes();
-
-                        List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
-                        PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
-                        if (x509CertificateList.size() == 1) {
-                            credential = ClientCredentialFactory.createFromCertificate(
-                                privateKey, x509CertificateList.get(0));
-                        } else {
-                            credential = ClientCredentialFactory.createFromCertificateChain(
-                                privateKey, x509CertificateList);
-                        }
-                    } else {
-                        try (InputStream pfxCertificateStream = getCertificateInputStream()) {
-                            credential = ClientCredentialFactory.createFromCertificate(pfxCertificateStream,
-                                certificatePassword);
-                        }
-                    }
-                } catch (IOException | GeneralSecurityException e) {
-                    return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(
-                        "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
-                }
-            } else if (clientAssertionSupplier != null) {
-                credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
-            } else {
-                return Mono.error(LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Must provide client secret or client certificate path."
-                        +  " To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                        + "https://aka.ms/azsdk/java/identity/serviceprincipalauthentication/troubleshoot")));
-            }
-
-            ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId, credential);
             try {
-                applicationBuilder = applicationBuilder.authority(authorityUrl);
-            } catch (MalformedURLException e) {
-                return Mono.error(LOGGER.logExceptionAsWarning(new IllegalStateException(e)));
+                return Mono.just(this.getConfidentialClient());
+            } catch (RuntimeException e) {
+                return Mono.error(e);
             }
-
-            applicationBuilder.sendX5c(options.isIncludeX5c());
-
-            initializeHttpPipelineAdapter();
-            if (httpPipelineAdapter != null) {
-                applicationBuilder.httpClient(httpPipelineAdapter);
-            } else {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-
-            if (options.getExecutorService() != null) {
-                applicationBuilder.executorService(options.getExecutorService());
-            }
-            TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
-            PersistentTokenCacheImpl tokenCache = null;
-            if (tokenCachePersistenceOptions != null) {
-                try {
-                    tokenCache = new PersistentTokenCacheImpl()
-                        .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
-                        .setName(tokenCachePersistenceOptions.getName());
-                    applicationBuilder.setTokenCacheAccessAspect(tokenCache);
-                } catch (Throwable t) {
-                    return  Mono.error(LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                        "Shared token cache is unavailable in this environment.", null, t)));
-                }
-            }
-            if (options.getRegionalAuthority() != null) {
-                if (options.getRegionalAuthority() == RegionalAuthority.AUTO_DISCOVER_REGION) {
-                    applicationBuilder.autoDetectRegion(true);
-                } else {
-                    applicationBuilder.azureRegion(options.getRegionalAuthority().toString());
-                }
-            }
-            ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
-            return tokenCache != null ? tokenCache.registerCache()
-                .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
         });
+    }
+
+    private Mono<ConfidentialClientApplication> getManagedIdentityConfidentialClientApplication() {
+        return Mono.defer(() -> {
+            try {
+                return Mono.just(super.getManagedIdentityConfidentialClient());
+            } catch (RuntimeException e) {
+                return Mono.error(e);
+            }
+        });
+    }
+
+    @Override
+    Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext) {
+        ManagedIdentityParameters parameters = options.getManagedIdentityParameters();
+        ManagedIdentityType managedIdentityType = options.getManagedIdentityType();
+        switch (managedIdentityType) {
+            case APP_SERVICE:
+                return authenticateToManagedIdentityEndpoint(parameters.getIdentityEndpoint(),
+                    parameters.getIdentityHeader(), parameters.getMsiEndpoint(), parameters.getMsiSecret(),
+                    tokenRequestContext);
+            case SERVICE_FABRIC:
+                return authenticateToServiceFabricManagedIdentityEndpoint(parameters.getIdentityEndpoint(),
+                    parameters.getIdentityHeader(), parameters.getIdentityServerThumbprint(), tokenRequestContext);
+            case ARC:
+                return authenticateToArcManagedIdentityEndpoint(parameters.getIdentityEndpoint(), tokenRequestContext);
+            case AKS:
+                return authenticateWithExchangeToken(tokenRequestContext);
+            case VM:
+                return authenticateToIMDSEndpoint(tokenRequestContext);
+            default:
+                return Mono.error(LOGGER.logExceptionAsError(
+                    new CredentialUnavailableException("Unknown Managed Identity type, authentication not available.")));
+        }
     }
 
     private Mono<String> parseClientAssertion() {
@@ -288,65 +168,38 @@ public class IdentityClient {
                         + " It should be provided to authenticate with client assertion."
                 ));
             }
-
         });
     }
 
     private Mono<PublicClientApplication> getPublicClientApplication(boolean sharedTokenCacheCredential) {
         return Mono.defer(() -> {
-            if (clientId == null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "A non-null value for client ID must be provided for user authentication."));
-            }
-            String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/"
-                + tenantId;
-            PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
-                publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
+                return Mono.just(this.getPublicClient(sharedTokenCacheCredential));
+            } catch (RuntimeException e) {
+                return Mono.error(e);
             }
-
-            initializeHttpPipelineAdapter();
-            if (httpPipelineAdapter != null) {
-                publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
-            } else {
-                publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-
-            if (options.getExecutorService() != null) {
-                publicClientApplicationBuilder.executorService(options.getExecutorService());
-            }
-
-            if (!options.isCp1Disabled()) {
-                Set<String> set = new HashSet<>(1);
-                set.add("CP1");
-                publicClientApplicationBuilder.clientCapabilities(set);
-            }
-            return Mono.just(publicClientApplicationBuilder);
-        }).flatMap(builder -> {
-            TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
-            PersistentTokenCacheImpl tokenCache = null;
-            if (tokenCachePersistenceOptions != null) {
-                try {
-                    tokenCache = new PersistentTokenCacheImpl()
-                        .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
-                        .setName(tokenCachePersistenceOptions.getName());
-                    builder.setTokenCacheAccessAspect(tokenCache);
-                } catch (Throwable t) {
-                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                        "Shared token cache is unavailable in this environment.", null, t));
-                }
-            }
-            PublicClientApplication publicClientApplication = builder.build();
-            return tokenCache != null ? tokenCache.registerCache()
-                .map(ignored -> publicClientApplication) : Mono.just(publicClientApplication);
         });
     }
 
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
             IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
+            // Look for cached credential in msal cache first.
+            String cachedRefreshToken = cacheAccessor.getIntelliJCredentialsFromIdentityMsalCache();
+            if (!CoreUtils.isNullOrEmpty(cachedRefreshToken)) {
+                RefreshTokenParameters.RefreshTokenParametersBuilder refreshTokenParametersBuilder =
+                    RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), cachedRefreshToken);
+
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+                    refreshTokenParametersBuilder.claims(customClaimRequest);
+                }
+
+                return publicClientApplicationAccessor.getValue()
+                    .flatMap(pc -> Mono.fromFuture(pc.acquireToken(refreshTokenParametersBuilder.build()))
+                        .map(MsalToken::new));
+            }
+
             IntelliJAuthMethodDetails authDetails;
             try {
                 authDetails = cacheAccessor.getAuthDetailsIfAvailable();
@@ -452,102 +305,25 @@ public class IdentityClient {
 
         azCommand.append(scopes);
 
-        String tenant = IdentityUtil.resolveTenantId(null, request, options);
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
-            azCommand.append("--tenant ").append(tenant);
+        try {
+            String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+            if (!CoreUtils.isNullOrEmpty(tenant)) {
+                azCommand.append(" --tenant ").append(tenant);
+            }
+        } catch (ClientAuthenticationException e) {
+            return Mono.error(e);
         }
 
-        AccessToken token;
         try {
-            String starter;
-            String switcher;
-            if (isWindowsPlatform()) {
-                starter = WINDOWS_STARTER;
-                switcher = WINDOWS_SWITCHER;
-            } else {
-                starter = LINUX_MAC_STARTER;
-                switcher = LINUX_MAC_SWITCHER;
-            }
-
-            ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
-
-            String workingDirectory = getSafeWorkingDirectory();
-            if (workingDirectory != null) {
-                builder.directory(new File(workingDirectory));
-            } else {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("A Safe Working directory could not be"
-                    + " found to execute CLI command from. To mitigate this issue, please refer to the troubleshooting "
-                    + " guidelines here at https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
-            }
-            builder.redirectErrorStream(true);
-            Process process = builder.start();
-
-            StringBuilder output = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
-                StandardCharsets.UTF_8.name()))) {
-                String line;
-                while (true) {
-                    line = reader.readLine();
-                    if (line == null) {
-                        break;
-                    }
-
-                    if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE)
-                        || LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()) {
-                        throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(
-                                "AzureCliCredential authentication unavailable. Azure CLI not installed."
-                                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                                    + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
-                    }
-                    output.append(line);
-                }
-            }
-            String processOutput = output.toString();
-
-            process.waitFor(10, TimeUnit.SECONDS);
-
-            if (process.exitValue() != 0) {
-                if (processOutput.length() > 0) {
-                    String redactedOutput = redactInfo(processOutput);
-                    if (redactedOutput.contains("az login") || redactedOutput.contains("az account set")) {
-                        throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(
-                                "AzureCliCredential authentication unavailable."
-                                    + " Please run 'az login' to set up account. To further mitigate this"
-                                    + " issue, please refer to the troubleshooting guidelines here at "
-                                    + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
-                    }
-                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
-                } else {
-                    throw LOGGER.logExceptionAsError(
-                        new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
-                }
-            }
-
-            LOGGER.verbose("Azure CLI Authentication => A token response was received from Azure CLI, deserializing the"
-                + " response into an Access Token.");
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
-                        SerializerEncoding.JSON);
-            String accessToken = objectMap.get("accessToken");
-            String time = objectMap.get("expiresOn");
-            String timeToSecond = time.substring(0, time.indexOf("."));
-            String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                                           .atZone(ZoneId.systemDefault())
-                                           .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-            token = new AccessToken(accessToken, expiresOn);
-        } catch (IOException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            AccessToken token = getTokenFromAzureCLIAuthentication(azCommand);
+            return Mono.just(token);
         } catch (RuntimeException e) {
             return Mono.error(e instanceof CredentialUnavailableException
                 ? LoggingUtil.logCredentialUnavailableException(LOGGER, options, (CredentialUnavailableException) e)
                 : LOGGER.logExceptionAsError(e));
         }
 
-        return Mono.just(token);
     }
-
 
     /**
      * Asynchronously acquire a token from Active Directory with Azure Power Shell.
@@ -609,13 +385,9 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateWithOBO(TokenRequestContext request) {
 
         return confidentialClientApplicationAccessor.getValue()
-            .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
-                    .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
-                    .tenant(IdentityUtil.resolveTenantId(tenantId, request, options))
-                    .build()))
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(buildOBOFlowParameters(request)))
                 .map(MsalToken::new));
     }
-
 
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
                                                            PowershellManager powershellManager) {
@@ -689,15 +461,17 @@ public class IdentityClient {
         )).map(MsalToken::new);
     }
 
-    private HttpPipeline setupPipeline(HttpClient httpClient) {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        HttpLogOptions httpLogOptions = new HttpLogOptions();
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RetryPolicy());
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new HttpPipelineBuilder().httpClient(httpClient)
-                   .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+    public Mono<AccessToken> authenticateWithManagedIdentityConfidentialClient(TokenRequestContext request) {
+        return managedIdentityConfidentialClientApplicationAccessor.getValue()
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> {
+                    ClientCredentialParameters.ClientCredentialParametersBuilder builder =
+                        ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                            .tenant(IdentityUtil
+                                .resolveTenantId(tenantId, request, options));
+                    return confidentialClient.acquireToken(builder.build());
+                }
+            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
+            .map(MsalToken::new);
     }
 
     /**
@@ -712,18 +486,8 @@ public class IdentityClient {
                                                             String username, String password) {
         return publicClientApplicationAccessor.getValue()
                .flatMap(pc -> Mono.fromFuture(() -> {
-                   UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder =
-                       UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()),
-                            username, password.toCharArray());
-
-                   if (request.getClaims() != null) {
-                       ClaimsRequest customClaimRequest = CustomClaimRequest
-                                                               .formatAsClaimsRequest(request.getClaims());
-                       userNamePasswordParametersBuilder.claims(customClaimRequest);
-                   }
-                   userNamePasswordParametersBuilder.tenant(
-                       IdentityUtil.resolveTenantId(tenantId, request, options));
-                   return pc.acquireToken(userNamePasswordParametersBuilder.build());
+                       UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder = buildUsernamePasswordFlowParameters(request, username, password);
+                       return pc.acquireToken(userNamePasswordParametersBuilder.build());
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
                 + "password. To mitigate this issue, please refer to the troubleshooting guidelines "
@@ -822,20 +586,9 @@ public class IdentityClient {
                                                       Consumer<DeviceCodeInfo> deviceCodeConsumer) {
         return publicClientApplicationAccessor.getValue().flatMap(pc ->
             Mono.fromFuture(() -> {
-                DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder =
-                    DeviceCodeFlowParameters.builder(
-                        new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
-                            new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())))
-                    .tenant(IdentityUtil
-                        .resolveTenantId(tenantId, request, options));
-
-                if (request.getClaims() != null) {
-                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-                    parametersBuilder.claims(customClaimRequest);
-                }
+                DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder = buildDeviceCodeFlowParameters(request, deviceCodeConsumer);
                 return pc.acquireToken(parametersBuilder.build());
-            }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
+            }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code.", null, t))
                 .map(MsalToken::new));
     }
 
@@ -949,21 +702,7 @@ public class IdentityClient {
         } catch (URISyntaxException e) {
             return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(e)));
         }
-        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
-            InteractiveRequestParameters.builder(redirectUri)
-                .scopes(new HashSet<>(request.getScopes()))
-                .prompt(Prompt.SELECT_ACCOUNT)
-                .tenant(IdentityUtil
-                    .resolveTenantId(tenantId, request, options));
-
-        if (request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
-        }
-
-        if (loginHint != null) {
-            builder.loginHint(loginHint);
-        }
+        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder = buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
         Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
                                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())));
@@ -1031,7 +770,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
+    private Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
                                                                       TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
@@ -1050,6 +789,7 @@ public class IdentityClient {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Metadata", "true");
+                connection.setRequestProperty("User-Agent", userAgent);
                 connection.connect();
 
                 new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
@@ -1126,7 +866,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
+    private Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
 
         return clientAssertionAccessor.getValue()
             .flatMap(assertionToken -> Mono.fromCallable(() -> {
@@ -1159,6 +899,7 @@ public class IdentityClient {
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                    connection.setRequestProperty("User-Agent", userAgent);
                     connection.setDoOutput(true);
                     try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
                         outputStream.write(postData);
@@ -1185,7 +926,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToServiceFabricManagedIdentityEndpoint(String identityEndpoint,
+    private Mono<AccessToken> authenticateToServiceFabricManagedIdentityEndpoint(String identityEndpoint,
                                                                                 String identityHeader,
                                                                                 String thumbprint,
                                                                                 TokenRequestContext request) {
@@ -1225,6 +966,7 @@ public class IdentityClient {
                     connection.setRequestProperty("Secret", headerValue);
                 }
                 connection.setRequestProperty("Metadata", "true");
+                connection.setRequestProperty("User-Agent", userAgent);
 
                 connection.connect();
 
@@ -1316,6 +1058,7 @@ public class IdentityClient {
                     }
                 }
                 connection.setRequestProperty("Metadata", "true");
+                connection.setRequestProperty("User-Agent", userAgent);
 
                 connection.connect();
 
@@ -1377,6 +1120,7 @@ public class IdentityClient {
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setRequestProperty("Metadata", "true");
+                    connection.setRequestProperty("User-Agent", userAgent);
                     connection.connect();
 
                     Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
@@ -1492,24 +1236,7 @@ public class IdentityClient {
         }
     }
 
-    private String getSafeWorkingDirectory() {
-        if (isWindowsPlatform()) {
-            if (CoreUtils.isNullOrEmpty(DEFAULT_WINDOWS_SYSTEM_ROOT)) {
-                return null;
-            }
-            return DEFAULT_WINDOWS_SYSTEM_ROOT + "\\system32";
-        } else {
-            return DEFAULT_MAC_LINUX_PATH;
-        }
-    }
 
-    private boolean isWindowsPlatform() {
-        return System.getProperty("os.name").contains("Windows");
-    }
-
-    private String redactInfo(String input) {
-        return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
-    }
 
     void openUrl(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
@@ -1530,24 +1257,6 @@ public class IdentityClient {
         CompletableFuture<IAuthenticationResult> completableFuture = new CompletableFuture<>();
         completableFuture.completeExceptionally(e);
         return completableFuture;
-    }
-
-    private void initializeHttpPipelineAdapter() {
-        // If user supplies the pipeline, then it should override all other properties
-        // as they should directly be set on the pipeline.
-        HttpPipeline httpPipeline = options.getHttpPipeline();
-        if (httpPipeline != null) {
-            httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline, options);
-        } else {
-            // If http client is set on the credential, then it should override the proxy options if any configured.
-            HttpClient httpClient = options.getHttpClient();
-            if (httpClient != null) {
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient), options);
-            } else if (options.getProxyOptions() == null) {
-                //Http Client is null, proxy options are not set, use the default client and build the pipeline.
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()), options);
-            }
-        }
     }
 
     /**
@@ -1579,30 +1288,5 @@ public class IdentityClient {
 
     private boolean isADFSTenant() {
         return this.tenantId.equals(ADFS_TENANT);
-    }
-
-    private byte[] getCertificateBytes() throws IOException {
-        if (certificatePath != null) {
-            return Files.readAllBytes(Paths.get(certificatePath));
-        } else if (certificate != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int read = certificate.read(buffer, 0, buffer.length);
-            while (read != -1) {
-                outputStream.write(buffer, 0, read);
-                read = certificate.read(buffer, 0, buffer.length);
-            }
-            return outputStream.toByteArray();
-        } else {
-            return new byte[0];
-        }
-    }
-
-    private InputStream getCertificateInputStream() throws IOException {
-        if (certificatePath != null) {
-            return new BufferedInputStream(new FileInputStream(certificatePath));
-        } else {
-            return certificate;
-        }
     }
 }

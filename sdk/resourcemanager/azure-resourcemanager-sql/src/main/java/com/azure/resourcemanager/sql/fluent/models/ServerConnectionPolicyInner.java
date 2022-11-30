@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.ServerConnectionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A server secure connection policy. */
-@JsonFlatten
 @Fluent
-public class ServerConnectionPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerConnectionPolicyInner.class);
-
+public final class ServerConnectionPolicyInner extends ProxyResource {
     /*
      * Metadata used for the Azure portal experience.
      */
@@ -31,10 +25,10 @@ public class ServerConnectionPolicyInner extends ProxyResource {
     private String location;
 
     /*
-     * The server connection type.
+     * The properties of the server secure connection policy.
      */
-    @JsonProperty(value = "properties.connectionType")
-    private ServerConnectionType connectionType;
+    @JsonProperty(value = "properties")
+    private ServerConnectionPolicyProperties innerProperties;
 
     /**
      * Get the kind property: Metadata used for the Azure portal experience.
@@ -55,12 +49,21 @@ public class ServerConnectionPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties of the server secure connection policy.
+     *
+     * @return the innerProperties value.
+     */
+    private ServerConnectionPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the connectionType property: The server connection type.
      *
      * @return the connectionType value.
      */
     public ServerConnectionType connectionType() {
-        return this.connectionType;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionType();
     }
 
     /**
@@ -70,7 +73,10 @@ public class ServerConnectionPolicyInner extends ProxyResource {
      * @return the ServerConnectionPolicyInner object itself.
      */
     public ServerConnectionPolicyInner withConnectionType(ServerConnectionType connectionType) {
-        this.connectionType = connectionType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerConnectionPolicyProperties();
+        }
+        this.innerProperties().withConnectionType(connectionType);
         return this;
     }
 
@@ -80,5 +86,8 @@ public class ServerConnectionPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NextHopParameters {
     /*
-     * The resource identifier of the target resource against which the action
-     * is to be performed.
+     * The resource identifier of the target resource against which the action is to be performed.
      */
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
@@ -31,11 +30,15 @@ public final class NextHopParameters {
     private String destinationIpAddress;
 
     /*
-     * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-     * of the nics, then this parameter must be specified. Otherwise optional).
+     * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of the nics, then this parameter must
+     * be specified. Otherwise optional).
      */
     @JsonProperty(value = "targetNicResourceId")
     private String targetNicResourceId;
+
+    /** Creates an instance of NextHopParameters class. */
+    public NextHopParameters() {
+    }
 
     /**
      * Get the targetResourceId property: The resource identifier of the target resource against which the action is to

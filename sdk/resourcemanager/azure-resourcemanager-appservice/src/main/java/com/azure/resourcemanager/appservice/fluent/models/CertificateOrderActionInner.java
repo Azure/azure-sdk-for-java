@@ -4,36 +4,25 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.appservice.models.CertificateOrderActionType;
-import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Certificate order action. */
-@Fluent
-public final class CertificateOrderActionInner extends ProxyOnlyResource {
+@Immutable
+public final class CertificateOrderActionInner {
     /*
-     * CertificateOrderAction resource specific properties
+     * Action type.
      */
-    @JsonProperty(value = "properties")
-    private CertificateOrderActionProperties innerProperties;
+    @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
+    private CertificateOrderActionType actionType;
 
-    /**
-     * Get the innerProperties property: CertificateOrderAction resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * Time at which the certificate action was performed.
      */
-    private CertificateOrderActionProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CertificateOrderActionInner withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createdAt;
 
     /**
      * Get the actionType property: Action type.
@@ -41,7 +30,7 @@ public final class CertificateOrderActionInner extends ProxyOnlyResource {
      * @return the actionType value.
      */
     public CertificateOrderActionType actionType() {
-        return this.innerProperties() == null ? null : this.innerProperties().actionType();
+        return this.actionType;
     }
 
     /**
@@ -50,7 +39,7 @@ public final class CertificateOrderActionInner extends ProxyOnlyResource {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
+        return this.createdAt;
     }
 
     /**
@@ -58,11 +47,6 @@ public final class CertificateOrderActionInner extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 }

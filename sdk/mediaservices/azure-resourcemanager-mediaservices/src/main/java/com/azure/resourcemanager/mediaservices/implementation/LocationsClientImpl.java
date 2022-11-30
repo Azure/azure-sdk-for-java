@@ -69,7 +69,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.
@@ -102,6 +104,7 @@ public final class LocationsClientImpl implements LocationsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -111,7 +114,7 @@ public final class LocationsClientImpl implements LocationsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             locationName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -119,7 +122,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.
@@ -153,6 +158,7 @@ public final class LocationsClientImpl implements LocationsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -160,14 +166,16 @@ public final class LocationsClientImpl implements LocationsClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 locationName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.
@@ -184,7 +192,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.
@@ -200,7 +210,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.

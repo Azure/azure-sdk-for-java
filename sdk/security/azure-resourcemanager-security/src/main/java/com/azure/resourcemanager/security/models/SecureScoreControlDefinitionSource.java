@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The type of the security control (For example, BuiltIn). */
 @Fluent
 public final class SecureScoreControlDefinitionSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoreControlDefinitionSource.class);
-
     /*
      * The type of security control (for example, BuiltIn)
      */
     @JsonProperty(value = "sourceType")
     private ControlType sourceType;
+
+    /** Creates an instance of SecureScoreControlDefinitionSource class. */
+    public SecureScoreControlDefinitionSource() {
+    }
 
     /**
      * Get the sourceType property: The type of security control (for example, BuiltIn).

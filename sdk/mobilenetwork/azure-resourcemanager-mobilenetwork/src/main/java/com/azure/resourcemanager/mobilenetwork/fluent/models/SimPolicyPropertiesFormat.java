@@ -13,11 +13,11 @@ import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SimPolicy properties. */
+/** SIM policy properties. */
 @Fluent
 public final class SimPolicyPropertiesFormat {
     /*
-     * The provisioning state of the sim policy resource.
+     * The provisioning state of the SIM policy resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -31,14 +31,14 @@ public final class SimPolicyPropertiesFormat {
     private Ambr ueAmbr;
 
     /*
-     * The default slice to use if the UE does not explicitly specify it.  This
+     * The default slice to use if the UE does not explicitly specify it. This
      * slice must exist in the `sliceConfigurations` map.
      */
     @JsonProperty(value = "defaultSlice", required = true)
     private SliceResourceId defaultSlice;
 
     /*
-     * RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413.  This
+     * RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This
      * is an optional setting and by default is unspecified.
      */
     @JsonProperty(value = "rfspIndex")
@@ -58,7 +58,7 @@ public final class SimPolicyPropertiesFormat {
     private List<SliceConfiguration> sliceConfigurations;
 
     /**
-     * Get the provisioningState property: The provisioning state of the sim policy resource.
+     * Get the provisioningState property: The provisioning state of the SIM policy resource.
      *
      * @return the provisioningState value.
      */

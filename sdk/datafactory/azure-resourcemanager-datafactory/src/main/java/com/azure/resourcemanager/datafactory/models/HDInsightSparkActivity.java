@@ -24,6 +24,10 @@ public final class HDInsightSparkActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightSparkActivityTypeProperties innerTypeProperties = new HDInsightSparkActivityTypeProperties();
 
+    /** Creates an instance of HDInsightSparkActivity class. */
+    public HDInsightSparkActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight spark activity properties.
      *

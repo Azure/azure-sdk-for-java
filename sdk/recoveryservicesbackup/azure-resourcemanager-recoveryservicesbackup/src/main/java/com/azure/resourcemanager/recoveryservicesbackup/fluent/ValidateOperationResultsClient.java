@@ -18,20 +18,6 @@ public interface ValidateOperationResultsClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateOperationsResponseInner get(String vaultName, String resourceGroupName, String operationId);
-
-    /**
-     * Fetches the result of a triggered validate operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param operationId OperationID which represents the operation whose result needs to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,4 +27,18 @@ public interface ValidateOperationResultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ValidateOperationsResponseInner> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context);
+
+    /**
+     * Fetches the result of a triggered validate operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param operationId OperationID which represents the operation whose result needs to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateOperationsResponseInner get(String vaultName, String resourceGroupName, String operationId);
 }

@@ -30,6 +30,9 @@ public enum TargetRelationType {
      */
     @JsonCreator
     public static TargetRelationType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TargetRelationType[] items = TargetRelationType.values();
         for (TargetRelationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

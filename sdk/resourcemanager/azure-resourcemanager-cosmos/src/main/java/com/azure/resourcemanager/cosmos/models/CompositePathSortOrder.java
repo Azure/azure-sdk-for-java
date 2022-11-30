@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CompositePathSortOrder. */
+/** Sort order for composite paths. */
 public final class CompositePathSortOrder extends ExpandableStringEnum<CompositePathSortOrder> {
     /** Static value ascending for CompositePathSortOrder. */
     public static final CompositePathSortOrder ASCENDING = fromString("ascending");

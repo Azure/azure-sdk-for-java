@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VpnGatewayGeneration. */
+/** The generation for this VirtualNetworkGateway. Must be None if gatewayType is not VPN. */
 public final class VpnGatewayGeneration extends ExpandableStringEnum<VpnGatewayGeneration> {
     /** Static value None for VpnGatewayGeneration. */
     public static final VpnGatewayGeneration NONE = fromString("None");

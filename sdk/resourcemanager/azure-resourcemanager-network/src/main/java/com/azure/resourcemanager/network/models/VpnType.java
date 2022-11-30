@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VpnType. */
+/** The type of this virtual network gateway. */
 public final class VpnType extends ExpandableStringEnum<VpnType> {
     /** Static value PolicyBased for VpnType. */
     public static final VpnType POLICY_BASED = fromString("PolicyBased");

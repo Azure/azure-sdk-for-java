@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RestorableSqlResources List. */
 public final class RestorableSqlResourcesListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBRestorableSqlResourceList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestorableSqlResourceList.json
      */
     /**
      * Sample code: CosmosDBRestorableSqlResourceList.

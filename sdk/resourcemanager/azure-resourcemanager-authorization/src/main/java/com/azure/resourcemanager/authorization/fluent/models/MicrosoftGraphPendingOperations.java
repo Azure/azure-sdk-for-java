@@ -26,6 +26,10 @@ public final class MicrosoftGraphPendingOperations {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPendingOperations class. */
+    public MicrosoftGraphPendingOperations() {
+    }
+
     /**
      * Get the pendingContentUpdate property: pendingContentUpdate.
      *

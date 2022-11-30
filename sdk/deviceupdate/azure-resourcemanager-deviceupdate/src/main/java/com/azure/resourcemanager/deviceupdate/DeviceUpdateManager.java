@@ -227,7 +227,7 @@ public final class DeviceUpdateManager {
                 .append("-")
                 .append("com.azure.resourcemanager.deviceupdate")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

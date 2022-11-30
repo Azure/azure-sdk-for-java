@@ -28,18 +28,24 @@ public final class LiveOutputProperties {
     private String assetName;
 
     /*
-     * ISO 8601 time between 1 minute to 25 hours to indicate the maximum
-     * content length that can be archived in the asset for this live output.
-     * This also sets the maximum content length for the rewind window. For
-     * example, use PT1H30M to indicate 1 hour and 30 minutes of archive
-     * window.
+     * ISO 8601 time between 1 minute to 25 hours to indicate the maximum content length that can be archived in the
+     * asset for this live output. This also sets the maximum content length for the rewind window. For example, use
+     * PT1H30M to indicate 1 hour and 30 minutes of archive window.
      */
     @JsonProperty(value = "archiveWindowLength", required = true)
     private Duration archiveWindowLength;
 
     /*
-     * The manifest file name. If not provided, the service will generate one
-     * automatically.
+     * ISO 8601 time between 1 minute to the duration of archiveWindowLength to control seek-able window length during
+     * Live. The service won't use this property once LiveOutput stops. The archived VOD will have full content with
+     * original ArchiveWindowLength. For example, use PT1H30M to indicate 1 hour and 30 minutes of rewind window
+     * length. Service will use implicit default value 30m only if Live Event enables LL.
+     */
+    @JsonProperty(value = "rewindWindowLength")
+    private Duration rewindWindowLength;
+
+    /*
+     * The manifest file name. If not provided, the service will generate one automatically.
      */
     @JsonProperty(value = "manifestName")
     private String manifestName;
@@ -51,8 +57,7 @@ public final class LiveOutputProperties {
     private Hls hls;
 
     /*
-     * The initial timestamp that the live output will start at, any content
-     * before this value will not be archived.
+     * The initial timestamp that the live output will start at, any content before this value will not be archived.
      */
     @JsonProperty(value = "outputSnapTime")
     private Long outputSnapTime;
@@ -142,6 +147,34 @@ public final class LiveOutputProperties {
      */
     public LiveOutputProperties withArchiveWindowLength(Duration archiveWindowLength) {
         this.archiveWindowLength = archiveWindowLength;
+        return this;
+    }
+
+    /**
+     * Get the rewindWindowLength property: ISO 8601 time between 1 minute to the duration of archiveWindowLength to
+     * control seek-able window length during Live. The service won't use this property once LiveOutput stops. The
+     * archived VOD will have full content with original ArchiveWindowLength. For example, use PT1H30M to indicate 1
+     * hour and 30 minutes of rewind window length. Service will use implicit default value 30m only if Live Event
+     * enables LL.
+     *
+     * @return the rewindWindowLength value.
+     */
+    public Duration rewindWindowLength() {
+        return this.rewindWindowLength;
+    }
+
+    /**
+     * Set the rewindWindowLength property: ISO 8601 time between 1 minute to the duration of archiveWindowLength to
+     * control seek-able window length during Live. The service won't use this property once LiveOutput stops. The
+     * archived VOD will have full content with original ArchiveWindowLength. For example, use PT1H30M to indicate 1
+     * hour and 30 minutes of rewind window length. Service will use implicit default value 30m only if Live Event
+     * enables LL.
+     *
+     * @param rewindWindowLength the rewindWindowLength value to set.
+     * @return the LiveOutputProperties object itself.
+     */
+    public LiveOutputProperties withRewindWindowLength(Duration rewindWindowLength) {
+        this.rewindWindowLength = rewindWindowLength;
         return this;
     }
 

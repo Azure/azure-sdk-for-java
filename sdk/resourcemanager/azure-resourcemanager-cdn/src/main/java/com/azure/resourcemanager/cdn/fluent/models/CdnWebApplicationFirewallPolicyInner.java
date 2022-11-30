@@ -16,7 +16,6 @@ import com.azure.resourcemanager.cdn.models.PolicySettings;
 import com.azure.resourcemanager.cdn.models.ProvisioningState;
 import com.azure.resourcemanager.cdn.models.RateLimitRuleList;
 import com.azure.resourcemanager.cdn.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +23,6 @@ import java.util.Map;
 /** Defines web application firewall policy for Azure CDN. */
 @Fluent
 public final class CdnWebApplicationFirewallPolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnWebApplicationFirewallPolicyInner.class);
-
     /*
      * Properties of the web application firewall policy.
      */
@@ -33,15 +30,13 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     private CdnWebApplicationFirewallPolicyProperties innerProperties;
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * Gets a unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag")
     private String etag;
 
     /*
-     * The pricing tier (defines a CDN provider, feature list and rate) of the
-     * CdnWebApplicationFirewallPolicy.
+     * The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
@@ -256,7 +251,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sku in model CdnWebApplicationFirewallPolicyInner"));
@@ -264,4 +259,6 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CdnWebApplicationFirewallPolicyInner.class);
 }

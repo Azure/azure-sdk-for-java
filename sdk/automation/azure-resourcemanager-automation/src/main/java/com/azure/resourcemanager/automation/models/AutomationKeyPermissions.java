@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationKeyPermissions. */
+/** Automation key permissions. */
 public final class AutomationKeyPermissions extends ExpandableStringEnum<AutomationKeyPermissions> {
     /** Static value Read for AutomationKeyPermissions. */
     public static final AutomationKeyPermissions READ = fromString("Read");
@@ -27,7 +27,11 @@ public final class AutomationKeyPermissions extends ExpandableStringEnum<Automat
         return fromString(name, AutomationKeyPermissions.class);
     }
 
-    /** @return known AutomationKeyPermissions values. */
+    /**
+     * Gets known AutomationKeyPermissions values.
+     *
+     * @return known AutomationKeyPermissions values.
+     */
     public static Collection<AutomationKeyPermissions> values() {
         return values(AutomationKeyPermissions.class);
     }

@@ -27,7 +27,7 @@ class ApiManager {
      * @param authenticator the authenticator class used for Redis API calls.
      * @param retryOptions the retry options used for Redis API calls.
      */
-    public ApiManager(Authenticator authenticator, RetryOptions retryOptions) {
+    ApiManager(Authenticator authenticator, RetryOptions retryOptions) {
         this.authenticator = authenticator;
         this.retryStrategy = getRetryStrategy(retryOptions);
     }
@@ -80,7 +80,7 @@ class ApiManager {
 
     private String getMethodName(int level) {
         StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-        StackTraceElement e = stacktrace[level];//maybe this number needs to be corrected
+        StackTraceElement e = stacktrace[level];
         return e.getMethodName();
     }
 }

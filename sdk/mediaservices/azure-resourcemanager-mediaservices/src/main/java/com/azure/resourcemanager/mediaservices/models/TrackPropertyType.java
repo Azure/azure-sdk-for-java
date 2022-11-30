@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrackPropertyType. */
+/** Track property type. */
 public final class TrackPropertyType extends ExpandableStringEnum<TrackPropertyType> {
     /** Static value Unknown for TrackPropertyType. */
     public static final TrackPropertyType UNKNOWN = fromString("Unknown");

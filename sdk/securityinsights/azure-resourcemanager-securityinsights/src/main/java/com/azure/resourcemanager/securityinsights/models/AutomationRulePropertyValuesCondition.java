@@ -12,7 +12,7 @@ import java.util.List;
 @Fluent
 public final class AutomationRulePropertyValuesCondition {
     /*
-     * The property to evaluate in an automation rule property condition
+     * The property to evaluate in an automation rule property condition.
      */
     @JsonProperty(value = "propertyName")
     private AutomationRulePropertyConditionSupportedProperty propertyName;

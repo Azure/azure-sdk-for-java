@@ -12,18 +12,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapOdpResourceDatasetTypeProperties {
     /*
-     * The context of the SAP ODP Object. Type: string (or Expression with
-     * resultType string).
+     * The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "context", required = true)
     private Object context;
 
     /*
-     * The name of the SAP ODP Object. Type: string (or Expression with
-     * resultType string).
+     * The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "objectName", required = true)
     private Object objectName;
+
+    /** Creates an instance of SapOdpResourceDatasetTypeProperties class. */
+    public SapOdpResourceDatasetTypeProperties() {
+    }
 
     /**
      * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).

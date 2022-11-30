@@ -17,8 +17,7 @@ public final class StorageAccountSkuConversionStatus {
     private SkuConversionStatus skuConversionStatus;
 
     /*
-     * This property represents the target sku name to which the account sku is
-     * being converted asynchronously.
+     * This property represents the target sku name to which the account sku is being converted asynchronously.
      */
     @JsonProperty(value = "targetSkuName")
     private SkuName targetSkuName;

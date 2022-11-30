@@ -5,42 +5,28 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.JobScheduleCreateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create job schedule operation. */
-@JsonFlatten
 @Fluent
-public class JobScheduleCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobScheduleCreateParameters.class);
-
+public final class JobScheduleCreateParameters {
     /*
-     * Gets or sets the schedule.
+     * Gets or sets the list of job schedule properties.
      */
-    @JsonProperty(value = "properties.schedule", required = true)
-    private ScheduleAssociationProperty schedule;
+    @JsonProperty(value = "properties", required = true)
+    private JobScheduleCreateProperties innerProperties = new JobScheduleCreateProperties();
 
-    /*
-     * Gets or sets the runbook.
+    /**
+     * Get the innerProperties property: Gets or sets the list of job schedule properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.runbook", required = true)
-    private RunbookAssociationProperty runbook;
-
-    /*
-     * Gets or sets the hybrid worker group that the scheduled job should run
-     * on.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
-
-    /*
-     * Gets or sets a list of job properties.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
+    private JobScheduleCreateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the schedule property: Gets or sets the schedule.
@@ -48,7 +34,7 @@ public class JobScheduleCreateParameters {
      * @return the schedule value.
      */
     public ScheduleAssociationProperty schedule() {
-        return this.schedule;
+        return this.innerProperties() == null ? null : this.innerProperties().schedule();
     }
 
     /**
@@ -58,7 +44,10 @@ public class JobScheduleCreateParameters {
      * @return the JobScheduleCreateParameters object itself.
      */
     public JobScheduleCreateParameters withSchedule(ScheduleAssociationProperty schedule) {
-        this.schedule = schedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleCreateProperties();
+        }
+        this.innerProperties().withSchedule(schedule);
         return this;
     }
 
@@ -68,7 +57,7 @@ public class JobScheduleCreateParameters {
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
-        return this.runbook;
+        return this.innerProperties() == null ? null : this.innerProperties().runbook();
     }
 
     /**
@@ -78,7 +67,10 @@ public class JobScheduleCreateParameters {
      * @return the JobScheduleCreateParameters object itself.
      */
     public JobScheduleCreateParameters withRunbook(RunbookAssociationProperty runbook) {
-        this.runbook = runbook;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleCreateProperties();
+        }
+        this.innerProperties().withRunbook(runbook);
         return this;
     }
 
@@ -88,7 +80,7 @@ public class JobScheduleCreateParameters {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -98,7 +90,10 @@ public class JobScheduleCreateParameters {
      * @return the JobScheduleCreateParameters object itself.
      */
     public JobScheduleCreateParameters withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleCreateProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -108,7 +103,7 @@ public class JobScheduleCreateParameters {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -118,7 +113,10 @@ public class JobScheduleCreateParameters {
      * @return the JobScheduleCreateParameters object itself.
      */
     public JobScheduleCreateParameters withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleCreateProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -128,21 +126,15 @@ public class JobScheduleCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (schedule() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property schedule in model JobScheduleCreateParameters"));
+                        "Missing required property innerProperties in model JobScheduleCreateParameters"));
         } else {
-            schedule().validate();
-        }
-        if (runbook() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property runbook in model JobScheduleCreateParameters"));
-        } else {
-            runbook().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobScheduleCreateParameters.class);
 }

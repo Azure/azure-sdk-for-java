@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -28,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseSensitivityLabelsClient;
 import com.azure.resourcemanager.sql.fluent.models.SensitivityLabelInner;
 import com.azure.resourcemanager.sql.models.SensitivityLabelListResult;
@@ -39,8 +39,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ManagedDatabaseSensitivityLabelsClient.
  */
 public final class ManagedDatabaseSensitivityLabelsClientImpl implements ManagedDatabaseSensitivityLabelsClient {
-    private final ClientLogger logger = new ClientLogger(ManagedDatabaseSensitivityLabelsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagedDatabaseSensitivityLabelsService service;
 
@@ -69,7 +67,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
     private interface ManagedDatabaseSensitivityLabelsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables"
@@ -87,9 +85,10 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @PathParam("sensitivityLabelSource") SensitivityLabelSource sensitivityLabelSource,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables"
@@ -108,6 +107,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SensitivityLabelInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -170,7 +170,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/currentSensitivityLabels")
@@ -184,9 +184,10 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
@@ -202,21 +203,28 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SensitivityLabelListResult>> listCurrentByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SensitivityLabelListResult>> listRecommendedByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -233,7 +241,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SensitivityLabelInner>> getWithResponseAsync(
@@ -282,6 +291,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -297,8 +307,9 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             sensitivityLabelSource,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -316,7 +327,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SensitivityLabelInner>> getWithResponseAsync(
@@ -366,6 +378,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -379,6 +392,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 sensitivityLabelSource,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -396,7 +410,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SensitivityLabelInner> getAsync(
@@ -415,14 +429,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 tableName,
                 columnName,
                 sensitivityLabelSource)
-            .flatMap(
-                (Response<SensitivityLabelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -476,7 +483,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SensitivityLabelInner> getWithResponse(
@@ -510,11 +517,11 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(
@@ -564,6 +571,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         }
         final String sensitivityLabelSource = "current";
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -580,8 +588,9 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -594,12 +603,12 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(
@@ -650,6 +659,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         }
         final String sensitivityLabelSource = "current";
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -664,6 +674,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -677,11 +688,11 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SensitivityLabelInner> createOrUpdateAsync(
@@ -694,14 +705,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         SensitivityLabelInner parameters) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, parameters)
-            .flatMap(
-                (Response<SensitivityLabelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -714,7 +718,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -744,12 +748,12 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SensitivityLabelInner> createOrUpdateWithResponse(
@@ -786,7 +790,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -846,7 +850,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -863,7 +867,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -937,7 +941,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -949,7 +953,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String columnName) {
         return deleteWithResponseAsync(
                 resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -991,7 +995,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1020,7 +1024,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationWithResponseAsync(
@@ -1080,7 +1084,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1097,7 +1101,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableRecommendationWithResponseAsync(
@@ -1171,7 +1175,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableRecommendationAsync(
@@ -1183,7 +1187,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String columnName) {
         return disableRecommendationWithResponseAsync(
                 resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1227,7 +1231,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationWithResponse(
@@ -1256,7 +1260,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableRecommendationWithResponseAsync(
@@ -1316,7 +1320,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1333,7 +1337,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableRecommendationWithResponseAsync(
@@ -1407,7 +1411,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableRecommendationAsync(
@@ -1419,7 +1423,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String columnName) {
         return enableRecommendationWithResponseAsync(
                 resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1463,7 +1467,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableRecommendationWithResponse(
@@ -1490,7 +1494,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseSinglePageAsync(
@@ -1519,6 +1524,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1531,6 +1537,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             filter,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<SensitivityLabelInner>>map(
                 res ->
@@ -1541,7 +1548,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1556,7 +1563,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseSinglePageAsync(
@@ -1585,6 +1593,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCurrentByDatabase(
@@ -1595,6 +1604,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 filter,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1618,7 +1628,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
@@ -1638,7 +1648,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
@@ -1661,7 +1671,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
@@ -1680,31 +1690,10 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName, String filter, Context context) {
-        return new PagedIterable<>(
-            listCurrentByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter, context));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(
@@ -1721,13 +1710,35 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName, String filter, Context context) {
+        return new PagedIterable<>(
+            listCurrentByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter, context));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken The skipToken parameter.
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseSinglePageAsync(
@@ -1761,6 +1772,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1775,6 +1787,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             filter,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<SensitivityLabelInner>>map(
                 res ->
@@ -1785,7 +1798,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1802,7 +1815,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseSinglePageAsync(
@@ -1837,6 +1851,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listRecommendedByDatabase(
@@ -1849,6 +1864,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 filter,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1874,7 +1890,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
@@ -1906,7 +1922,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
@@ -1940,7 +1956,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
@@ -1971,6 +1987,34 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
+        final Boolean includeDisabledRecommendations = null;
+        final String skipToken = null;
+        final String filter = null;
+        return new PagedIterable<>(
+            listRecommendedByDatabaseAsync(
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                includeDisabledRecommendations,
+                skipToken,
+                filter));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken The skipToken parameter.
      * @param filter An OData filter expression that filters elements in the collection.
@@ -1978,7 +2022,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(
@@ -2001,49 +2045,29 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
     }
 
     /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName) {
-        final Boolean includeDisabledRecommendations = null;
-        final String skipToken = null;
-        final String filter = null;
-        return new PagedIterable<>(
-            listRecommendedByDatabaseAsync(
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                includeDisabledRecommendations,
-                skipToken,
-                filter));
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCurrentByDatabaseNext(nextLink, context))
+            .withContext(
+                context -> service.listCurrentByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SensitivityLabelInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2053,7 +2077,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2064,7 +2088,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseNextSinglePageAsync(
@@ -2072,9 +2096,16 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCurrentByDatabaseNext(nextLink, context)
+            .listCurrentByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2093,15 +2124,23 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRecommendedByDatabaseNext(nextLink, context))
+            .withContext(
+                context -> service.listRecommendedByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SensitivityLabelInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2111,7 +2150,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2122,7 +2161,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseNextSinglePageAsync(
@@ -2130,9 +2169,16 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRecommendedByDatabaseNext(nextLink, context)
+            .listRecommendedByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

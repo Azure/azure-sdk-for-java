@@ -30,7 +30,11 @@ public final class SdfDirection extends ExpandableStringEnum<SdfDirection> {
         return fromString(name, SdfDirection.class);
     }
 
-    /** @return known SdfDirection values. */
+    /**
+     * Gets known SdfDirection values.
+     *
+     * @return known SdfDirection values.
+     */
     public static Collection<SdfDirection> values() {
         return values(SdfDirection.class);
     }

@@ -19,22 +19,19 @@ import java.util.Map;
 @Fluent
 public class AzureSqlDWTableDataset extends Dataset {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The schema name of the Azure SQL Data Warehouse. Type: string (or
-     * Expression with resultType string).
+     * The schema name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /*
-     * The table name of the Azure SQL Data Warehouse. Type: string (or
-     * Expression with resultType string).
+     * The table name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;

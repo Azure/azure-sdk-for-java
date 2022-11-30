@@ -18,25 +18,33 @@ public final class TargetRegion {
     private String name;
 
     /*
-     * The number of replicas of the Image Version to be created per region.
-     * This property is updatable.
+     * The number of replicas of the Image Version to be created per region. This property is updatable.
      */
     @JsonProperty(value = "regionalReplicaCount")
     private Integer regionalReplicaCount;
 
     /*
-     * Specifies the storage account type to be used to store the image. This
-     * property is not updatable.
+     * Specifies the storage account type to be used to store the image. This property is not updatable.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
     /*
-     * Optional. Allows users to provide customer managed keys for encrypting
-     * the OS and data disks in the gallery artifact.
+     * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
+     * artifact.
      */
     @JsonProperty(value = "encryption")
     private EncryptionImages encryption;
+
+    /*
+     * Contains the flag setting to hide an image when users specify version='latest'
+     */
+    @JsonProperty(value = "excludeFromLatest")
+    private Boolean excludeFromLatest;
+
+    /** Creates an instance of TargetRegion class. */
+    public TargetRegion() {
+    }
 
     /**
      * Get the name property: The name of the region.
@@ -121,6 +129,28 @@ public final class TargetRegion {
      */
     public TargetRegion withEncryption(EncryptionImages encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the excludeFromLatest property: Contains the flag setting to hide an image when users specify
+     * version='latest'.
+     *
+     * @return the excludeFromLatest value.
+     */
+    public Boolean excludeFromLatest() {
+        return this.excludeFromLatest;
+    }
+
+    /**
+     * Set the excludeFromLatest property: Contains the flag setting to hide an image when users specify
+     * version='latest'.
+     *
+     * @param excludeFromLatest the excludeFromLatest value to set.
+     * @return the TargetRegion object itself.
+     */
+    public TargetRegion withExcludeFromLatest(Boolean excludeFromLatest) {
+        this.excludeFromLatest = excludeFromLatest;
         return this;
     }
 

@@ -676,14 +676,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         String attachedDataNetworkName) {
         return getWithResponseAsync(
                 resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName)
-            .flatMap(
-                (Response<AttachedDataNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1152,7 +1145,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Updates an attached data network update tags.
+     * Updates an attached data network tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1228,7 +1221,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Updates an attached data network update tags.
+     * Updates an attached data network tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1303,7 +1296,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Updates an attached data network update tags.
+     * Updates an attached data network tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1328,18 +1321,11 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 packetCoreDataPlaneName,
                 attachedDataNetworkName,
                 parameters)
-            .flatMap(
-                (Response<AttachedDataNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates an attached data network update tags.
+     * Updates an attached data network tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1368,7 +1354,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Updates an attached data network update tags.
+     * Updates an attached data network tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1400,7 +1386,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1408,8 +1394,8 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return all the attached data networks associated with a packet core data plane along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttachedDataNetworkInner>> listByPacketCoreDataPlaneSinglePageAsync(
@@ -1468,7 +1454,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1477,8 +1463,8 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return all the attached data networks associated with a packet core data plane along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttachedDataNetworkInner>> listByPacketCoreDataPlaneSinglePageAsync(
@@ -1534,7 +1520,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1542,7 +1528,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane as paginated response with {@link
+     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1556,7 +1542,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1565,7 +1551,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane as paginated response with {@link
+     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1579,7 +1565,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1587,7 +1573,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane as paginated response with {@link
+     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1598,7 +1584,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     }
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1607,7 +1593,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane as paginated response with {@link
+     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

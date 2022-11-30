@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class SapTableResourceDataset extends Dataset {
     /*
-     * The name of the SAP Table. Type: string (or Expression with resultType
-     * string).
+     * The name of the SAP Table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName", required = true)
     private Object tableName;

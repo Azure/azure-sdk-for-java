@@ -27,8 +27,7 @@ public final class CassandraClusterPublicStatusInner {
     private ManagedCassandraReaperStatus reaperStatus;
 
     /*
-     * List relevant information about any connection errors to the
-     * Datacenters.
+     * List relevant information about any connection errors to the Datacenters.
      */
     @JsonProperty(value = "connectionErrors")
     private List<ConnectionError> connectionErrors;

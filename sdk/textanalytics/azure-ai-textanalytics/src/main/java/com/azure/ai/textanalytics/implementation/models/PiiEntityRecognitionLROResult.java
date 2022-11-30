@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The PiiEntityRecognitionLROResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -37,6 +38,27 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
      */
     public PiiEntityRecognitionLROResult setResults(PiiResult results) {
         this.results = results;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntityRecognitionLROResult setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntityRecognitionLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntityRecognitionLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

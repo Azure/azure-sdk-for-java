@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Format. */
+/** This is a required field, it specifies the format for the inventory files. */
 public final class Format extends ExpandableStringEnum<Format> {
     /** Static value Csv for Format. */
     public static final Format CSV = fromString("Csv");

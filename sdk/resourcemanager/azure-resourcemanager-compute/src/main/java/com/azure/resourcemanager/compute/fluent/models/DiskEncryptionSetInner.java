@@ -19,8 +19,8 @@ import java.util.Map;
 @Fluent
 public final class DiskEncryptionSetInner extends Resource {
     /*
-     * The managed identity for the disk encryption set. It should be given
-     * permission on the key vault before it can be used to encrypt disks.
+     * The managed identity for the disk encryption set. It should be given permission on the key vault before it can
+     * be used to encrypt disks.
      */
     @JsonProperty(value = "identity")
     private EncryptionSetIdentity identity;
@@ -30,6 +30,10 @@ public final class DiskEncryptionSetInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private EncryptionSetProperties innerProperties;
+
+    /** Creates an instance of DiskEncryptionSetInner class. */
+    public DiskEncryptionSetInner() {
+    }
 
     /**
      * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the

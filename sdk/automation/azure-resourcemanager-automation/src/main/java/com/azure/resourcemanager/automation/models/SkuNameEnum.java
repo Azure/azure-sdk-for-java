@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuNameEnum. */
+/** Gets or sets the SKU name of the account. */
 public final class SkuNameEnum extends ExpandableStringEnum<SkuNameEnum> {
     /** Static value Free for SkuNameEnum. */
     public static final SkuNameEnum FREE = fromString("Free");
@@ -27,7 +27,11 @@ public final class SkuNameEnum extends ExpandableStringEnum<SkuNameEnum> {
         return fromString(name, SkuNameEnum.class);
     }
 
-    /** @return known SkuNameEnum values. */
+    /**
+     * Gets known SkuNameEnum values.
+     *
+     * @return known SkuNameEnum values.
+     */
     public static Collection<SkuNameEnum> values() {
         return values(SkuNameEnum.class);
     }

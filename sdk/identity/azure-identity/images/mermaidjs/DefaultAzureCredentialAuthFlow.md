@@ -5,14 +5,14 @@
 %% 2. Run command: mmdc -i DefaultAzureCredentialAuthFlow.md -o DefaultAzureCredentialAuthFlow.svg
 
 flowchart LR;
-    A(Environment):::deployed ==> B(Managed Identity):::deployed ==> C(IntelliJ):::developer ==> D(VS Code):::developer ==> E(Azure CLI):::developer ==> F(Azure PowerShell):::developer;
+    A(Environment):::deployed ==> B(Managed Identity):::deployed ==> C(IntelliJ):::developer ==> D(Azure CLI):::developer ==> E(Azure PowerShell):::developer;
 
     subgraph CREDENTIAL TYPES;
         direction LR;
         Deployed(Deployed service):::deployed ==> Developer(Developer):::developer;
 
         %% Hide links between boxes in the legend by setting width to 0. The integers after "linkStyle" represent link indices.
-        linkStyle 5 stroke-width:0px;
+        linkStyle 4 stroke-width:0px;
     end;
 
     %% Define styles for credential type boxes
@@ -23,7 +23,6 @@ flowchart LR;
     click A "https://docs.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable" _blank;
     click B "https://docs.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable" _blank;
     click C "https://docs.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable" _blank;
-    click D "https://docs.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable" _blank;
     click E "https://docs.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable" _blank;
     click F "https://docs.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable" _blank;
 ```

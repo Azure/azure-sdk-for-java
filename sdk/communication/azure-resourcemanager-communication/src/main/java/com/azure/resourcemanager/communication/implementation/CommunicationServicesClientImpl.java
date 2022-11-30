@@ -208,7 +208,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
                 + "/communicationServices/{communicationServiceName}/regenerateKey")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> regenerateKey(
             @HostParam("$host") String endpoint,
@@ -242,7 +242,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Checks that the CommunicationService name is valid and is not already in use.
+     * Check Name Availability
+     *
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +291,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Checks that the CommunicationService name is valid and is not already in use.
+     * Check Name Availability
+     *
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -334,7 +338,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Checks that the CommunicationService name is valid and is not already in use.
+     * Check Name Availability
+     *
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,7 +356,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Checks that the CommunicationService name is valid and is not already in use.
+     * Check Name Availability
+     *
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,7 +373,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Checks that the CommunicationService name is valid and is not already in use.
+     * Check Name Availability
+     *
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -381,7 +391,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -439,7 +451,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -496,7 +510,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -518,7 +534,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -538,7 +556,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -555,7 +575,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -578,7 +600,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -623,7 +647,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -667,7 +693,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -681,7 +709,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -697,7 +727,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -710,7 +742,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -725,7 +759,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -778,7 +814,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -829,7 +867,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,7 +886,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -865,7 +907,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -880,7 +924,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -897,7 +943,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -955,7 +1003,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1014,7 +1064,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1041,7 +1093,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1073,7 +1127,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1090,7 +1146,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1111,7 +1169,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1130,7 +1190,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1153,7 +1215,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1170,7 +1234,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1191,7 +1257,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the CommunicationService and its properties.
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1242,7 +1310,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the CommunicationService and its properties.
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1291,7 +1361,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the CommunicationService and its properties.
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1308,7 +1380,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the CommunicationService and its properties.
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1324,7 +1398,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the CommunicationService and its properties.
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1341,7 +1417,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1399,7 +1477,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1458,7 +1538,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1485,7 +1567,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1517,7 +1601,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1535,7 +1621,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1558,7 +1646,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1577,7 +1667,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1600,7 +1692,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1617,7 +1711,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1638,7 +1734,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1688,7 +1786,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1736,7 +1836,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1756,7 +1858,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1778,7 +1882,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1793,7 +1899,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1810,7 +1918,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1827,7 +1937,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1845,7 +1957,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1859,7 +1973,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1874,7 +1990,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1925,7 +2043,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1974,7 +2094,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -1991,7 +2113,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2006,7 +2130,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2023,7 +2149,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2081,7 +2210,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2140,7 +2272,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2167,7 +2302,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2199,7 +2337,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2216,7 +2357,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2238,7 +2382,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2257,7 +2404,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2280,7 +2430,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2297,7 +2450,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     }
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -2320,7 +2476,8 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2358,7 +2515,8 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2396,7 +2554,8 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2434,7 +2593,8 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

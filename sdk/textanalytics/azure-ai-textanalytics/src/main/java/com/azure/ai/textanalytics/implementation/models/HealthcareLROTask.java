@@ -39,4 +39,11 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
         this.parameters = parameters;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
 }

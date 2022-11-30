@@ -12,15 +12,14 @@ import java.util.Map;
 /** Samples for Slices UpdateTags. */
 public final class SlicesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SliceUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SliceUpdateTags.json
      */
     /**
-     * Sample code: Update mobile network slice tags.
+     * Sample code: Update network slice tags.
      *
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void updateMobileNetworkSliceTags(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void updateNetworkSliceTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         Slice resource =
             manager.slices().getWithResponse("rg1", "testMobileNetwork", "testSlice", Context.NONE).getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();

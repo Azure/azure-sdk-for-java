@@ -10,7 +10,7 @@ import com.azure.resourcemanager.securityinsights.models.TeamProperties;
 /** Samples for Incidents CreateTeam. */
 public final class IncidentsCreateTeamSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/incidents/CreateTeam.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/CreateTeam.json
      */
     /**
      * Sample code: Creates incident teams group.

@@ -19,15 +19,15 @@ import java.util.Map;
 @Fluent
 public class WebTableDataset extends Dataset {
     /*
-     * The zero-based index of the table in the web page. Type: integer (or
-     * Expression with resultType integer), minimum: 0.
+     * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer),
+     * minimum: 0.
      */
     @JsonProperty(value = "typeProperties.index", required = true)
     private Object index;
 
     /*
-     * The relative URL to the web page from the linked service URL. Type:
-     * string (or Expression with resultType string).
+     * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.path")
     private Object path;

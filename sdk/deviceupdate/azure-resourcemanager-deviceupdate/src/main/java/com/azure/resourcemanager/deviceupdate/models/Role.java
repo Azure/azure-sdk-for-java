@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Role. */
+/** Whether the location is primary or failover. */
 public final class Role extends ExpandableStringEnum<Role> {
     /** Static value Primary for Role. */
     public static final Role PRIMARY = fromString("Primary");

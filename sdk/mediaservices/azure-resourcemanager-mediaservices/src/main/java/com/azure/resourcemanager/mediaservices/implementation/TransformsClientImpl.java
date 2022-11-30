@@ -155,7 +155,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -189,6 +191,7 @@ public final class TransformsClientImpl implements TransformsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -199,7 +202,7 @@ public final class TransformsClientImpl implements TransformsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             filter,
                             orderby,
                             accept,
@@ -217,7 +220,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -252,6 +257,7 @@ public final class TransformsClientImpl implements TransformsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -260,7 +266,7 @@ public final class TransformsClientImpl implements TransformsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 filter,
                 orderby,
                 accept,
@@ -277,7 +283,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -297,7 +305,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -316,7 +326,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -337,7 +349,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -354,7 +368,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -373,7 +389,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Gets a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -408,6 +426,7 @@ public final class TransformsClientImpl implements TransformsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -419,14 +438,16 @@ public final class TransformsClientImpl implements TransformsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -462,6 +483,7 @@ public final class TransformsClientImpl implements TransformsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -471,13 +493,15 @@ public final class TransformsClientImpl implements TransformsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Gets a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -494,7 +518,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Gets a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -510,7 +536,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Gets a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -528,7 +556,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Creates or updates a new Transform.
+     * Create or Update Transform
+     *
+     * <p>Creates or updates a new Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -571,6 +601,7 @@ public final class TransformsClientImpl implements TransformsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -582,7 +613,7 @@ public final class TransformsClientImpl implements TransformsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -590,7 +621,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Creates or updates a new Transform.
+     * Create or Update Transform
+     *
+     * <p>Creates or updates a new Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -638,6 +671,7 @@ public final class TransformsClientImpl implements TransformsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -647,14 +681,16 @@ public final class TransformsClientImpl implements TransformsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Creates or updates a new Transform.
+     * Create or Update Transform
+     *
+     * <p>Creates or updates a new Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -674,7 +710,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Creates or updates a new Transform.
+     * Create or Update Transform
+     *
+     * <p>Creates or updates a new Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -693,7 +731,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Creates or updates a new Transform.
+     * Create or Update Transform
+     *
+     * <p>Creates or updates a new Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -718,7 +758,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -753,6 +795,7 @@ public final class TransformsClientImpl implements TransformsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -764,14 +807,16 @@ public final class TransformsClientImpl implements TransformsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -807,6 +852,7 @@ public final class TransformsClientImpl implements TransformsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -816,13 +862,15 @@ public final class TransformsClientImpl implements TransformsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -838,7 +886,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -853,7 +903,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -871,7 +923,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Updates a Transform.
+     * Update Transform
+     *
+     * <p>Updates a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -914,6 +968,7 @@ public final class TransformsClientImpl implements TransformsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -925,7 +980,7 @@ public final class TransformsClientImpl implements TransformsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -933,7 +988,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Updates a Transform.
+     * Update Transform
+     *
+     * <p>Updates a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -981,6 +1038,7 @@ public final class TransformsClientImpl implements TransformsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -990,14 +1048,16 @@ public final class TransformsClientImpl implements TransformsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Updates a Transform.
+     * Update Transform
+     *
+     * <p>Updates a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1017,7 +1077,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Updates a Transform.
+     * Update Transform
+     *
+     * <p>Updates a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1036,7 +1098,9 @@ public final class TransformsClientImpl implements TransformsClient {
     }
 
     /**
-     * Updates a Transform.
+     * Update Transform
+     *
+     * <p>Updates a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1062,7 +1126,8 @@ public final class TransformsClientImpl implements TransformsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1098,7 +1163,8 @@ public final class TransformsClientImpl implements TransformsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationProfiles GetByResourceGroup. */
 public final class ConfigurationProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/getConfigurationProfile.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getConfigurationProfile.json
      */
     /**
      * Sample code: Get a configuration profile.

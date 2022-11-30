@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Certificates. */
 public interface Certificates {
     /**
-     * Returns the list of certificates.
+     * Get the certificate list.
+     *
+     * <p>Returns the list of certificates.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -23,7 +25,9 @@ public interface Certificates {
     CertificateListDescription listByIotHub(String resourceGroupName, String resourceName);
 
     /**
-     * Returns the list of certificates.
+     * Get the certificate list.
+     *
+     * <p>Returns the list of certificates.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -38,7 +42,9 @@ public interface Certificates {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -52,7 +58,9 @@ public interface Certificates {
     CertificateDescription get(String resourceGroupName, String resourceName, String certificateName);
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -68,7 +76,9 @@ public interface Certificates {
         String resourceGroupName, String resourceName, String certificateName, Context context);
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -82,7 +92,9 @@ public interface Certificates {
     void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch);
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -99,8 +111,10 @@ public interface Certificates {
         String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
-     * certificate.
+     * Generate verification code for proof of possession flow.
+     *
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -116,8 +130,10 @@ public interface Certificates {
         String resourceGroupName, String resourceName, String certificateName, String ifMatch);
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
-     * certificate.
+     * Generate verification code for proof of possession flow.
+     *
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -134,8 +150,10 @@ public interface Certificates {
         String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -156,8 +174,10 @@ public interface Certificates {
         CertificateVerificationDescription certificateVerificationBody);
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -180,7 +200,9 @@ public interface Certificates {
         Context context);
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +214,9 @@ public interface Certificates {
     CertificateDescription getById(String id);
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -205,7 +229,9 @@ public interface Certificates {
     Response<CertificateDescription> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,7 +242,9 @@ public interface Certificates {
     void deleteById(String id);
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param id the resource ID.
      * @param ifMatch ETag of the Certificate.

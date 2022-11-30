@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TeradataTableDatasetTypeProperties {
     /*
-     * The database name of Teradata. Type: string (or Expression with
-     * resultType string).
+     * The database name of Teradata. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "database")
     private Object database;
 
     /*
-     * The table name of Teradata. Type: string (or Expression with resultType
-     * string).
+     * The table name of Teradata. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of TeradataTableDatasetTypeProperties class. */
+    public TeradataTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the database property: The database name of Teradata. Type: string (or Expression with resultType string).

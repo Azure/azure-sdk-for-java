@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseRouting. */
+/**
+ * Indication for database routing information from the data connection, by default only database routing information is
+ * allowed.
+ */
 public final class DatabaseRouting extends ExpandableStringEnum<DatabaseRouting> {
     /** Static value Single for DatabaseRouting. */
     public static final DatabaseRouting SINGLE = fromString("Single");
@@ -27,7 +30,11 @@ public final class DatabaseRouting extends ExpandableStringEnum<DatabaseRouting>
         return fromString(name, DatabaseRouting.class);
     }
 
-    /** @return known DatabaseRouting values. */
+    /**
+     * Gets known DatabaseRouting values.
+     *
+     * @return known DatabaseRouting values.
+     */
     public static Collection<DatabaseRouting> values() {
         return values(DatabaseRouting.class);
     }

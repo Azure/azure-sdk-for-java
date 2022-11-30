@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DatabaseAccountOfferType. */
+/** The offer type for the Cosmos DB database account. */
 public enum DatabaseAccountOfferType {
     /** Enum value Standard. */
     STANDARD("Standard");
@@ -27,6 +27,9 @@ public enum DatabaseAccountOfferType {
      */
     @JsonCreator
     public static DatabaseAccountOfferType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DatabaseAccountOfferType[] items = DatabaseAccountOfferType.values();
         for (DatabaseAccountOfferType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum DatabaseAccountOfferType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

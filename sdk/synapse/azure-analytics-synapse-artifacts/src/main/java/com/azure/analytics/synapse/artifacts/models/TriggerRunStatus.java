@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerRunStatus. */
+/** Trigger run status. */
 public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatus> {
     /** Static value Succeeded for TriggerRunStatus. */
     public static final TriggerRunStatus SUCCEEDED = fromString("Succeeded");
@@ -30,7 +30,11 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
         return fromString(name, TriggerRunStatus.class);
     }
 
-    /** @return known TriggerRunStatus values. */
+    /**
+     * Gets known TriggerRunStatus values.
+     *
+     * @return known TriggerRunStatus values.
+     */
     public static Collection<TriggerRunStatus> values() {
         return values(TriggerRunStatus.class);
     }

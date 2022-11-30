@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for Sites CreateOrUpdate. */
 public final class SitesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SiteCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SiteCreate.json
      */
     /**
      * Sample code: Create mobile network site.

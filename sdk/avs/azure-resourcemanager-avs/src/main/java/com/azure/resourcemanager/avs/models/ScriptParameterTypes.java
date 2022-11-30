@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptParameterTypes. */
+/** The type of parameter the script is expecting. psCredential is a PSCredentialObject. */
 public final class ScriptParameterTypes extends ExpandableStringEnum<ScriptParameterTypes> {
     /** Static value String for ScriptParameterTypes. */
     public static final ScriptParameterTypes STRING = fromString("String");
@@ -39,7 +39,11 @@ public final class ScriptParameterTypes extends ExpandableStringEnum<ScriptParam
         return fromString(name, ScriptParameterTypes.class);
     }
 
-    /** @return known ScriptParameterTypes values. */
+    /**
+     * Gets known ScriptParameterTypes values.
+     *
+     * @return known ScriptParameterTypes values.
+     */
     public static Collection<ScriptParameterTypes> values() {
         return values(ScriptParameterTypes.class);
     }

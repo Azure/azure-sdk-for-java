@@ -28,8 +28,7 @@ public final class OutboundRulePropertiesFormat {
     private List<SubResource> frontendIpConfigurations;
 
     /*
-     * A reference to a pool of DIPs. Outbound traffic is randomly load
-     * balanced across IPs in the backend IPs.
+     * A reference to a pool of DIPs. Outbound traffic is randomly load balanced across IPs in the backend IPs.
      */
     @JsonProperty(value = "backendAddressPool", required = true)
     private SubResource backendAddressPool;
@@ -47,9 +46,8 @@ public final class OutboundRulePropertiesFormat {
     private LoadBalancerOutboundRuleProtocol protocol;
 
     /*
-     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
-     * connection termination. This element is only used when the protocol is
-     * set to TCP.
+     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is
+     * only used when the protocol is set to TCP.
      */
     @JsonProperty(value = "enableTcpReset")
     private Boolean enableTcpReset;
@@ -59,6 +57,10 @@ public final class OutboundRulePropertiesFormat {
      */
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
+
+    /** Creates an instance of OutboundRulePropertiesFormat class. */
+    public OutboundRulePropertiesFormat() {
+    }
 
     /**
      * Get the allocatedOutboundPorts property: The number of outbound ports to be used for NAT.

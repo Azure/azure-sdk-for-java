@@ -93,7 +93,7 @@ public class ReferencePointerParseTest {
         List<SentimentResponseDocumentsItem> documentSentiments = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             final SentimentResponseDocumentsItem documentsItem =
-                (SentimentResponseDocumentsItem) new SentimentResponseDocumentsItem().setId(Integer.toString(i));
+                new SentimentResponseDocumentsItem().setId(Integer.toString(i));
             documentsItem.setSentences(getSentenceSentiments());
             documentSentiments.add(documentsItem);
         }

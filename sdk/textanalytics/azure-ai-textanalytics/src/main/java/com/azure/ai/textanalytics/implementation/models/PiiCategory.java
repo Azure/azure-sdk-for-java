@@ -547,7 +547,11 @@ public final class PiiCategory extends ExpandableStringEnum<PiiCategory> {
         return fromString(name, PiiCategory.class);
     }
 
-    /** @return known PiiCategory values. */
+    /**
+     * Gets known PiiCategory values.
+     *
+     * @return known PiiCategory values.
+     */
     public static Collection<PiiCategory> values() {
         return values(PiiCategory.class);
     }

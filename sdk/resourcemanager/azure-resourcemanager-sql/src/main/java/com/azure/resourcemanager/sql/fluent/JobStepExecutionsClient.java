@@ -36,7 +36,7 @@ public interface JobStepExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobExecutionInner> listByJobExecutionAsync(
@@ -65,10 +65,28 @@ public interface JobStepExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobExecutionInner> listByJobExecutionAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
+
+    /**
+     * Lists the step executions of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<JobExecutionInner> listByJobExecution(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
 
     /**
@@ -91,7 +109,7 @@ public interface JobStepExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobExecutionInner> listByJobExecution(
@@ -110,24 +128,6 @@ public interface JobStepExecutionsClient {
         Context context);
 
     /**
-     * Lists the step executions of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobExecutionInner> listByJobExecution(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
-
-    /**
      * Gets a step execution of a job execution.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -140,7 +140,7 @@ public interface JobStepExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a step execution of a job execution.
+     * @return a step execution of a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<JobExecutionInner>> getWithResponseAsync(
@@ -164,7 +164,7 @@ public interface JobStepExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a step execution of a job execution.
+     * @return a step execution of a job execution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobExecutionInner> getAsync(
@@ -213,7 +213,7 @@ public interface JobStepExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a step execution of a job execution.
+     * @return a step execution of a job execution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobExecutionInner> getWithResponse(

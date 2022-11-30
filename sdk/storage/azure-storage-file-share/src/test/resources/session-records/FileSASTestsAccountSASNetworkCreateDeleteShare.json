@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/b05e8148b05e814866f324032060c79f1cd34b5b8d?restype=share&sv=2021-08-06&ss=f&srt=sco&se=2021-05-15T21%3A18%3A14Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://REDACTED.file.core.windows.net/b05e8148b05e814866f324032060c79f1cd34b5b8d?restype=share&sv=2021-10-04&ss=f&srt=sco&se=2021-05-15T21%3A18%3A14Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-10-02",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.file.core.windows.net/b05e8148b05e814866f324032060c79f1cd34b5b8d?restype=share&sv=2021-08-06&ss=f&srt=sco&se=2021-05-15T21%3A18%3A14Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://REDACTED.file.core.windows.net/b05e8148b05e814866f324032060c79f1cd34b5b8d?restype=share&sv=2021-10-04&ss=f&srt=sco&se=2021-05-15T21%3A18%3A14Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-10-02",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",

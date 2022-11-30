@@ -99,6 +99,16 @@ public final class NetAppAccountPatch extends Resource {
     }
 
     /**
+     * Get the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
+     * null equals false.
+     *
+     * @return the disableShowmount value.
+     */
+    public Boolean disableShowmount() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableShowmount();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

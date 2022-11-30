@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VpnNatRuleType. */
+/** The type of NAT rule for VPN NAT. */
 public final class VpnNatRuleType extends ExpandableStringEnum<VpnNatRuleType> {
     /** Static value Static for VpnNatRuleType. */
     public static final VpnNatRuleType STATIC = fromString("Static");

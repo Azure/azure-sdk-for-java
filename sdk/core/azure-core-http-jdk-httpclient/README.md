@@ -35,13 +35,13 @@ The following sections provide several code snippets covering some of the most c
 Create a HttpClient.
 
 ```java readme-sample-createBasicClient
-HttpClient client = new JdkAsyncHttpClientBuilder().build();
+HttpClient client = new JdkHttpClientBuilder().build();
 ```
 
 Create a HttpClient using a connection timeout of 60 seconds.
 
 ```java readme-sample-createClientWithConnectionTimeout
-HttpClient client = new JdkAsyncHttpClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
+HttpClient client = new JdkHttpClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
 ```
 
 ### Create a Client with Proxy
@@ -49,7 +49,7 @@ HttpClient client = new JdkAsyncHttpClientBuilder().connectionTimeout(Duration.o
 Create a HttpClient that is using a proxy.
 
 ```java readme-sample-createProxyClient
-HttpClient client = new JdkAsyncHttpClientBuilder()
+HttpClient client = new JdkHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
 ```

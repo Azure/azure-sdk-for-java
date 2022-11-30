@@ -28,7 +28,11 @@ public final class ExtractiveSummarizationSortingCriteria
         return fromString(name, ExtractiveSummarizationSortingCriteria.class);
     }
 
-    /** @return known ExtractiveSummarizationSortingCriteria values. */
+    /**
+     * Gets known ExtractiveSummarizationSortingCriteria values.
+     *
+     * @return known ExtractiveSummarizationSortingCriteria values.
+     */
     public static Collection<ExtractiveSummarizationSortingCriteria> values() {
         return values(ExtractiveSummarizationSortingCriteria.class);
     }

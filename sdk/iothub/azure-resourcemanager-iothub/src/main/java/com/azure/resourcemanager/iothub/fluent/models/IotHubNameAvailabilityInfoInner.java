@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.IotHubNameUnavailabilityReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties indicating whether a given IoT hub name is available. */
 @Fluent
 public final class IotHubNameAvailabilityInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubNameAvailabilityInfoInner.class);
-
     /*
      * The value which indicates whether the provided name is available.
      */

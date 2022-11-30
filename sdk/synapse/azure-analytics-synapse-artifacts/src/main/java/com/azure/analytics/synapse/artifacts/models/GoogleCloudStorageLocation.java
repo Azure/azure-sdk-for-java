@@ -15,15 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class GoogleCloudStorageLocation extends DatasetLocation {
     /*
-     * Specify the bucketName of Google Cloud Storage. Type: string (or
-     * Expression with resultType string)
+     * Specify the bucketName of Google Cloud Storage. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "bucketName")
     private Object bucketName;
 
     /*
-     * Specify the version of Google Cloud Storage. Type: string (or Expression
-     * with resultType string).
+     * Specify the version of Google Cloud Storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "version")
     private Object version;

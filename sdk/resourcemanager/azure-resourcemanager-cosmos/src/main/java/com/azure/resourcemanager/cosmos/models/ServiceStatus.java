@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceStatus. */
+/** Describes the status of a service. */
 public final class ServiceStatus extends ExpandableStringEnum<ServiceStatus> {
     /** Static value Creating for ServiceStatus. */
     public static final ServiceStatus CREATING = fromString("Creating");

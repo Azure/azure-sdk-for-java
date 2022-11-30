@@ -705,8 +705,8 @@ public final class BlobServiceSasSignatureValues {
         // Container: "/blob/account/containername"
         // Blob:      "/blob/account/containername/blobname"
         return CoreUtils.isNullOrEmpty(blobName)
-            ? String.format("/blob/%s/%s", account, containerName)
-            : String.format("/blob/%s/%s/%s", account, containerName, blobName.replace("\\", "/"));
+            ? "/blob/" + account + "/" + containerName
+            : "/blob/" + account + "/" + containerName + "/" + blobName.replace('\\', '/');
     }
 
     private String stringToSign(String canonicalName) {

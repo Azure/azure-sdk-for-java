@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CriterionType. */
+/** Specifies the type of threshold criteria. */
 public final class CriterionType extends ExpandableStringEnum<CriterionType> {
     /** Static value StaticThresholdCriterion for CriterionType. */
     public static final CriterionType STATIC_THRESHOLD_CRITERION = fromString("StaticThresholdCriterion");
@@ -27,7 +27,11 @@ public final class CriterionType extends ExpandableStringEnum<CriterionType> {
         return fromString(name, CriterionType.class);
     }
 
-    /** @return known CriterionType values. */
+    /**
+     * Gets known CriterionType values.
+     *
+     * @return known CriterionType values.
+     */
     public static Collection<CriterionType> values() {
         return values(CriterionType.class);
     }

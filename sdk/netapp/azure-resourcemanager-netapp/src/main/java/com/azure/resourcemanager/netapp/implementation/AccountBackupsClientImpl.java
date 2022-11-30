@@ -110,7 +110,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -161,7 +163,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -211,7 +215,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -226,7 +232,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -242,7 +250,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -257,7 +267,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -273,7 +285,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -327,7 +341,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -379,7 +395,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -396,7 +414,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -412,7 +432,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -430,7 +452,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -481,7 +505,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -530,7 +556,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -551,7 +579,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -574,7 +604,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -591,7 +623,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -609,7 +643,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -627,7 +663,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -646,7 +684,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -661,7 +701,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

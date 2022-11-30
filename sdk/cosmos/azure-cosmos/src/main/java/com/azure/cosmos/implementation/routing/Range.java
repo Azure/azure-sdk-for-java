@@ -7,12 +7,14 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-@JsonIgnoreProperties({ "empty", "singleValue", "hashMap" })
+@JsonIgnoreProperties({ "empty", "singleValue", "map", "propertyBag" })
+@JsonPropertyOrder({ "min", "max", "isMinInclusive", "isMaxInclusive" })
 public final class Range<T extends Comparable<T>> extends JsonSerializable {
     private static final String MIN_PROPERTY = "min";
     private static final String MAX_PROPERTY = "max";

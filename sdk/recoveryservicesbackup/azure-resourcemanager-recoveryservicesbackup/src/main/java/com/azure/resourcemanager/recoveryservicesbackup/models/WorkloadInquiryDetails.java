@@ -28,6 +28,10 @@ public final class WorkloadInquiryDetails {
     @JsonProperty(value = "inquiryValidation")
     private InquiryValidation inquiryValidation;
 
+    /** Creates an instance of WorkloadInquiryDetails class. */
+    public WorkloadInquiryDetails() {
+    }
+
     /**
      * Get the type property: Type of the Workload such as SQL, Oracle etc.
      *

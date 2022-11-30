@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class AzureDataExplorerTableDataset extends Dataset {
     /*
-     * The table name of the Azure Data Explorer database. Type: string (or
-     * Expression with resultType string).
+     * The table name of the Azure Data Explorer database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;

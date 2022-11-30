@@ -14,7 +14,12 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
@@ -29,12 +34,10 @@ public class CteTestHelper {
             .get("COMMUNICATION_M365_AAD_TENANT", "Sanitized");
     private static final String COMMUNICATION_M365_REDIRECT_URI = Configuration.getGlobalConfiguration()
             .get("COMMUNICATION_M365_REDIRECT_URI", "Sanitized");
-    private static final String COMMUNICATION_M365_SCOPE = Configuration.getGlobalConfiguration()
-            .get("COMMUNICATION_M365_SCOPE", "Sanitized");
     private static final String COMMUNICATION_MSAL_USERNAME = Configuration.getGlobalConfiguration()
-            .get("COMMUNICATION_MSAL_USERNAME", "Sanitized");
+            .get("COMMUNICATION_MSAL_USERNAME", "fakeUsernamePlaceholder");
     private static final String COMMUNICATION_MSAL_PASSWORD = Configuration.getGlobalConfiguration()
-            .get("COMMUNICATION_MSAL_PASSWORD", "Sanitized");
+            .get("COMMUNICATION_MSAL_PASSWORD", "fakePasswordPlaceholder");
     private static final String COMMUNICATION_EXPIRED_TEAMS_TOKEN = Configuration.getGlobalConfiguration()
             .get("COMMUNICATION_EXPIRED_TEAMS_TOKEN", "Sanitized");
     private static final String COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST = Configuration.getGlobalConfiguration()
@@ -73,7 +76,10 @@ public class CteTestHelper {
                 IPublicClientApplication publicClientApplication = PublicClientApplication.builder(COMMUNICATION_M365_APP_ID)
                         .authority(COMMUNICATION_M365_AAD_AUTHORITY + "/" + COMMUNICATION_M365_AAD_TENANT)
                         .build();
-                Set<String> scopes = Collections.singleton(COMMUNICATION_M365_SCOPE);
+                Set<String> scopes = new HashSet<String>(Arrays.asList(
+                        "https://auth.msft.communication.azure.com/Teams.ManageCalls",
+                        "https://auth.msft.communication.azure.com/Teams.ManageChats"
+                ));
                 char[] password = COMMUNICATION_MSAL_PASSWORD.toCharArray();
                 UserNamePasswordParameters userNamePasswordParameters = UserNamePasswordParameters.builder(scopes, COMMUNICATION_MSAL_USERNAME, password)
                         .build();

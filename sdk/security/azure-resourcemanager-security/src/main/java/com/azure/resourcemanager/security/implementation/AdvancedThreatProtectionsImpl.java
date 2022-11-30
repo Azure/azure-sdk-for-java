@@ -12,10 +12,9 @@ import com.azure.resourcemanager.security.fluent.AdvancedThreatProtectionsClient
 import com.azure.resourcemanager.security.fluent.models.AdvancedThreatProtectionSettingInner;
 import com.azure.resourcemanager.security.models.AdvancedThreatProtectionSetting;
 import com.azure.resourcemanager.security.models.AdvancedThreatProtections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvancedThreatProtectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AdvancedThreatProtectionsImpl.class);
 
     private final AdvancedThreatProtectionsClient innerClient;
 
@@ -26,15 +25,6 @@ public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtec
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public AdvancedThreatProtectionSetting get(String resourceId) {
-        AdvancedThreatProtectionSettingInner inner = this.serviceClient().get(resourceId);
-        if (inner != null) {
-            return new AdvancedThreatProtectionSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AdvancedThreatProtectionSetting> getWithResponse(String resourceId, Context context) {
@@ -51,6 +41,15 @@ public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtec
         }
     }
 
+    public AdvancedThreatProtectionSetting get(String resourceId) {
+        AdvancedThreatProtectionSettingInner inner = this.serviceClient().get(resourceId);
+        if (inner != null) {
+            return new AdvancedThreatProtectionSettingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public AdvancedThreatProtectionSetting getById(String id) {
         String resourceId =
             Utils
@@ -59,7 +58,7 @@ public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtec
                     "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}",
                     "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -75,7 +74,7 @@ public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtec
                     "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}",
                     "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));

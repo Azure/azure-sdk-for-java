@@ -8,17 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a Mobile Network resource. */
+/** Reference to a mobile network resource. */
 @Fluent
 public final class MobileNetworkResourceId {
     /*
-     * Mobile Network resource ID.
+     * Mobile network resource ID.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
-     * Get the id property: Mobile Network resource ID.
+     * Get the id property: Mobile network resource ID.
      *
      * @return the id value.
      */
@@ -27,7 +27,7 @@ public final class MobileNetworkResourceId {
     }
 
     /**
-     * Set the id property: Mobile Network resource ID.
+     * Set the id property: Mobile network resource ID.
      *
      * @param id the id value to set.
      * @return the MobileNetworkResourceId object itself.

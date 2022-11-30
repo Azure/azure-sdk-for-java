@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpAllocationMethod. */
+/** Specify the public IP allocation type. */
 public final class PublicIpAllocationMethod extends ExpandableStringEnum<PublicIpAllocationMethod> {
     /** Static value Dynamic for PublicIpAllocationMethod. */
     public static final PublicIpAllocationMethod DYNAMIC = fromString("Dynamic");

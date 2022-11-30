@@ -32,6 +32,10 @@ public final class MicrosoftGraphImage {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphImage class. */
+    public MicrosoftGraphImage() {
+    }
+
     /**
      * Get the height property: Optional. Height of the image, in pixels. Read-only.
      *

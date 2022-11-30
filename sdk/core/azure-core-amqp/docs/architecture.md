@@ -55,7 +55,7 @@ The diagram below illustrates how it happens. Things to note:
 [ReceiveFlowDiagram]: ./receive-flow.jpeg
 [PartitionPumpManager]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/main/java/com/azure/messaging/eventhubs/PartitionPumpManager.java#L228
 [Reactor]: https://github.com/apache/qpid-proton-j/blob/main/proton-j/src/main/java/org/apache/qpid/proton/reactor/Reactor.java
-[SelectableChannel]: https://qpid.apache.org/releases/qpid-proton-j-0.33.5/api/org/apache/qpid/proton/reactor/Selectable.html#setChannel-java.nio.channels.SelectableChannel-
+[SelectableChannel]: https://qpid.apache.org/releases/qpid-proton-j-0.34.0/api/org/apache/qpid/proton/reactor/Selectable.html#setChannel-java.nio.channels.SelectableChannel-
 [ReceiveLinkHandler]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/implementation/handler/ReceiveLinkHandler.java#L97
 [ReactorConnection]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/implementation/ReactorConnection.java
 [ReactorDispatcher]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/implementation/ReactorDispatcher.java

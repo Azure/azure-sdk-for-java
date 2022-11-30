@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HttpVersionOperator. */
+/** Describes operator to be matched. */
 public final class HttpVersionOperator extends ExpandableStringEnum<HttpVersionOperator> {
     /** Static value Equal for HttpVersionOperator. */
     public static final HttpVersionOperator EQUAL = fromString("Equal");
@@ -24,7 +24,11 @@ public final class HttpVersionOperator extends ExpandableStringEnum<HttpVersionO
         return fromString(name, HttpVersionOperator.class);
     }
 
-    /** @return known HttpVersionOperator values. */
+    /**
+     * Gets known HttpVersionOperator values.
+     *
+     * @return known HttpVersionOperator values.
+     */
     public static Collection<HttpVersionOperator> values() {
         return values(HttpVersionOperator.class);
     }

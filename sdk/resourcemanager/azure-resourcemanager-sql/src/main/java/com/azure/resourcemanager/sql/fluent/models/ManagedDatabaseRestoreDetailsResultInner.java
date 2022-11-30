@@ -4,80 +4,29 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** A managed database restore details. */
-@JsonFlatten
-@Immutable
-public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDatabaseRestoreDetailsResultInner.class);
-
+@Fluent
+public final class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
     /*
-     * Restore status.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
+    @JsonProperty(value = "properties")
+    private ManagedDatabaseRestoreDetailsProperties innerProperties;
 
-    /*
-     * Current restoring file name.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.currentRestoringFileName", access = JsonProperty.Access.WRITE_ONLY)
-    private String currentRestoringFileName;
-
-    /*
-     * Last restored file name.
-     */
-    @JsonProperty(value = "properties.lastRestoredFileName", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastRestoredFileName;
-
-    /*
-     * Last restored file time.
-     */
-    @JsonProperty(value = "properties.lastRestoredFileTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastRestoredFileTime;
-
-    /*
-     * Percent completed.
-     */
-    @JsonProperty(value = "properties.percentCompleted", access = JsonProperty.Access.WRITE_ONLY)
-    private Double percentCompleted;
-
-    /*
-     * List of unrestorable files.
-     */
-    @JsonProperty(value = "properties.unrestorableFiles", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> unrestorableFiles;
-
-    /*
-     * Number of files detected.
-     */
-    @JsonProperty(value = "properties.numberOfFilesDetected", access = JsonProperty.Access.WRITE_ONLY)
-    private Long numberOfFilesDetected;
-
-    /*
-     * Last uploaded file name.
-     */
-    @JsonProperty(value = "properties.lastUploadedFileName", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastUploadedFileName;
-
-    /*
-     * Last uploaded file time.
-     */
-    @JsonProperty(value = "properties.lastUploadedFileTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastUploadedFileTime;
-
-    /*
-     * The reason why restore is in Blocked state.
-     */
-    @JsonProperty(value = "properties.blockReason", access = JsonProperty.Access.WRITE_ONLY)
-    private String blockReason;
+    private ManagedDatabaseRestoreDetailsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the status property: Restore status.
@@ -85,7 +34,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -94,7 +43,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the currentRestoringFileName value.
      */
     public String currentRestoringFileName() {
-        return this.currentRestoringFileName;
+        return this.innerProperties() == null ? null : this.innerProperties().currentRestoringFileName();
     }
 
     /**
@@ -103,7 +52,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the lastRestoredFileName value.
      */
     public String lastRestoredFileName() {
-        return this.lastRestoredFileName;
+        return this.innerProperties() == null ? null : this.innerProperties().lastRestoredFileName();
     }
 
     /**
@@ -112,7 +61,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the lastRestoredFileTime value.
      */
     public OffsetDateTime lastRestoredFileTime() {
-        return this.lastRestoredFileTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastRestoredFileTime();
     }
 
     /**
@@ -121,7 +70,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the percentCompleted value.
      */
     public Double percentCompleted() {
-        return this.percentCompleted;
+        return this.innerProperties() == null ? null : this.innerProperties().percentCompleted();
     }
 
     /**
@@ -130,7 +79,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the unrestorableFiles value.
      */
     public List<String> unrestorableFiles() {
-        return this.unrestorableFiles;
+        return this.innerProperties() == null ? null : this.innerProperties().unrestorableFiles();
     }
 
     /**
@@ -139,7 +88,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the numberOfFilesDetected value.
      */
     public Long numberOfFilesDetected() {
-        return this.numberOfFilesDetected;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfFilesDetected();
     }
 
     /**
@@ -148,7 +97,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the lastUploadedFileName value.
      */
     public String lastUploadedFileName() {
-        return this.lastUploadedFileName;
+        return this.innerProperties() == null ? null : this.innerProperties().lastUploadedFileName();
     }
 
     /**
@@ -157,7 +106,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the lastUploadedFileTime value.
      */
     public OffsetDateTime lastUploadedFileTime() {
-        return this.lastUploadedFileTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastUploadedFileTime();
     }
 
     /**
@@ -166,7 +115,7 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @return the blockReason value.
      */
     public String blockReason() {
-        return this.blockReason;
+        return this.innerProperties() == null ? null : this.innerProperties().blockReason();
     }
 
     /**
@@ -175,5 +124,8 @@ public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

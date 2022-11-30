@@ -19,13 +19,16 @@ public final class VirtualMachineScaleSetExtensionProfile {
     private List<VirtualMachineScaleSetExtensionInner> extensions;
 
     /*
-     * Specifies the time alloted for all extensions to start. The time
-     * duration should be between 15 minutes and 120 minutes (inclusive) and
-     * should be specified in ISO 8601 format. The default value is 90 minutes
-     * (PT1H30M). <br><br> Minimum api-version: 2020-06-01
+     * Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120
+     * minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M).
+     * <br><br> Minimum api-version: 2020-06-01
      */
     @JsonProperty(value = "extensionsTimeBudget")
     private String extensionsTimeBudget;
+
+    /** Creates an instance of VirtualMachineScaleSetExtensionProfile class. */
+    public VirtualMachineScaleSetExtensionProfile() {
+    }
 
     /**
      * Get the extensions property: The virtual machine scale set child extension resources.

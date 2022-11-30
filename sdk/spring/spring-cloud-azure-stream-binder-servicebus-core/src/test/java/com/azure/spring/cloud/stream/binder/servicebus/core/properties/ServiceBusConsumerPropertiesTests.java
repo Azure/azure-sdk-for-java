@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
+import static com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerPropertiesTests.CONNECTION_STRING_PATTERN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -101,5 +102,56 @@ class ServiceBusConsumerPropertiesTests {
         Duration duration = Duration.ofMinutes(6);
         consumerProperties.setMaxAutoLockRenewDuration(duration);
         assertEquals(duration, consumerProperties.getMaxAutoLockRenewDuration());
+    }
+
+    @Test
+    void domainNameDefaultsToNull() {
+        assertNull(consumerProperties.getDomainName());
+    }
+
+    @Test
+    void customDomainNameShouldSet() {
+        consumerProperties.setDomainName("new.servicebus.windows.net");
+        assertEquals("new.servicebus.windows.net", consumerProperties.getDomainName());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceIsNullButConnectionStringIsNot() {
+        consumerProperties.setConnectionString(String.format(CONNECTION_STRING_PATTERN, "test"));
+        assertEquals("test.servicebus.windows.net", consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceAndDomainNameAreNotNull() {
+        consumerProperties.setNamespace("dev-namespace");
+        consumerProperties.setDomainName("servicebus.windows.net");
+        assertEquals("dev-namespace.servicebus.windows.net", consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceAndDomainAreNull() {
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceIsNullButDomainNameIsNot() {
+        consumerProperties.setDomainName("servicebus.windows.net");
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenDomainNameIsNullButNamespaceIsNot() {
+        consumerProperties.setNamespace("test");
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnReturnNullWhenNamespaceAndConnectionStringAreNull() {
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void amqpTransportTypeDefaultIsNull() {
+        assertNull(consumerProperties.getClient().getTransportType());
     }
 }

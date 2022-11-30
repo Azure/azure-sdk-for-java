@@ -48,10 +48,10 @@ public final class SecurityPoliciesCreateSamples {
                                                     .asList(
                                                         new ActivatedResourceReference()
                                                             .withId(
-                                                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afddomains/testdomain1"),
+                                                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
                                                         new ActivatedResourceReference()
                                                             .withId(
-                                                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afddomains/testdomain2")))
+                                                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2")))
                                             .withPatternsToMatch(Arrays.asList("/*"))))),
                 Context.NONE);
     }

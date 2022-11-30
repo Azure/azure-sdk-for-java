@@ -6,7 +6,9 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
+import com.azure.resourcemanager.network.models.PacketCaptureMachineScope;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
+import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -37,6 +39,10 @@ public final class PacketCaptureResultInner {
      */
     @JsonProperty(value = "properties")
     private PacketCaptureResultProperties innerProperties;
+
+    /** Creates an instance of PacketCaptureResultInner class. */
+    public PacketCaptureResultInner() {
+    }
 
     /**
      * Get the name property: Name of the packet capture session.
@@ -84,7 +90,8 @@ public final class PacketCaptureResultInner {
     }
 
     /**
-     * Get the target property: The ID of the targeted resource, only VM is currently supported.
+     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      *
      * @return the target value.
      */
@@ -93,7 +100,8 @@ public final class PacketCaptureResultInner {
     }
 
     /**
-     * Set the target property: The ID of the targeted resource, only VM is currently supported.
+     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      *
      * @param target the target value to set.
      * @return the PacketCaptureResultInner object itself.
@@ -103,6 +111,54 @@ public final class PacketCaptureResultInner {
             this.innerProperties = new PacketCaptureResultProperties();
         }
         this.innerProperties().withTarget(target);
+        return this;
+    }
+
+    /**
+     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     *
+     * @return the scope value.
+     */
+    public PacketCaptureMachineScope scope() {
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
+    }
+
+    /**
+     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     *
+     * @param scope the scope value to set.
+     * @return the PacketCaptureResultInner object itself.
+     */
+    public PacketCaptureResultInner withScope(PacketCaptureMachineScope scope) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withScope(scope);
+        return this;
+    }
+
+    /**
+     * Get the targetType property: Target type of the resource provided.
+     *
+     * @return the targetType value.
+     */
+    public PacketCaptureTargetType targetType() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetType();
+    }
+
+    /**
+     * Set the targetType property: Target type of the resource provided.
+     *
+     * @param targetType the targetType value to set.
+     * @return the PacketCaptureResultInner object itself.
+     */
+    public PacketCaptureResultInner withTargetType(PacketCaptureTargetType targetType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withTargetType(targetType);
         return this;
     }
 

@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Software update configuration Run Navigation model. */
 @Immutable
 public final class UpdateConfigurationNavigation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateConfigurationNavigation.class);
-
     /*
-     * Name of the software update configuration triggered the software update
-     * configuration run
+     * Name of the software update configuration triggered the software update configuration run
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;

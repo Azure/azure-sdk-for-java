@@ -286,6 +286,11 @@ class ResponseConstructorsCacheBenchMarkTestData {
                 public boolean isExpectedResponseStatusCode(int statusCode) {
                     return false;
                 }
+
+                @Override
+                public boolean isHeadersEagerlyConverted() {
+                    return false;
+                }
             }).block();
             this.bodyAsObject = bodyAsObject;
         }

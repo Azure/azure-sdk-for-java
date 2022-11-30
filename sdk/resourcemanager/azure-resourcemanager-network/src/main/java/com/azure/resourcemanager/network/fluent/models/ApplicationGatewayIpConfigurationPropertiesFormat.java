@@ -13,18 +13,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApplicationGatewayIpConfigurationPropertiesFormat {
     /*
-     * Reference to the subnet resource. A subnet from where application
-     * gateway gets its private address.
+     * Reference to the subnet resource. A subnet from where application gateway gets its private address.
      */
     @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
-     * The provisioning state of the application gateway IP configuration
-     * resource.
+     * The provisioning state of the application gateway IP configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayIpConfigurationPropertiesFormat class. */
+    public ApplicationGatewayIpConfigurationPropertiesFormat() {
+    }
 
     /**
      * Get the subnet property: Reference to the subnet resource. A subnet from where application gateway gets its

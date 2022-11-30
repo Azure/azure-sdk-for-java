@@ -36,4 +36,25 @@ public class MultiClassificationDocumentResult extends DocumentResult {
         this.classProperty = classProperty;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public MultiClassificationDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MultiClassificationDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MultiClassificationDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

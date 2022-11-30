@@ -13,7 +13,7 @@ import java.util.List;
 @Fluent
 public final class DataNetworkListResult {
     /*
-     * A list of data networks in a resource group.
+     * A list of data networks.
      */
     @JsonProperty(value = "value")
     private List<DataNetworkInner> value;
@@ -25,7 +25,7 @@ public final class DataNetworkListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of data networks in a resource group.
+     * Get the value property: A list of data networks.
      *
      * @return the value value.
      */
@@ -34,7 +34,7 @@ public final class DataNetworkListResult {
     }
 
     /**
-     * Set the value property: A list of data networks in a resource group.
+     * Set the value property: A list of data networks.
      *
      * @param value the value value to set.
      * @return the DataNetworkListResult object itself.

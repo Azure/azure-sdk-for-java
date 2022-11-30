@@ -5,56 +5,27 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SensitivityLabelRank;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A sensitivity label. */
-@JsonFlatten
 @Fluent
-public class SensitivityLabelInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SensitivityLabelInner.class);
-
+public final class SensitivityLabelInner extends ProxyResource {
     /*
-     * The label name.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.labelName")
-    private String labelName;
+    @JsonProperty(value = "properties")
+    private SensitivityLabelProperties innerProperties;
 
-    /*
-     * The label ID.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.labelId")
-    private String labelId;
-
-    /*
-     * The information type.
-     */
-    @JsonProperty(value = "properties.informationType")
-    private String informationType;
-
-    /*
-     * The information type ID.
-     */
-    @JsonProperty(value = "properties.informationTypeId")
-    private String informationTypeId;
-
-    /*
-     * Is sensitivity recommendation disabled. Applicable for recommended
-     * sensitivity label only. Specifies whether the sensitivity recommendation
-     * on this column is disabled (dismissed) or not.
-     */
-    @JsonProperty(value = "properties.isDisabled", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isDisabled;
-
-    /*
-     * The rank property.
-     */
-    @JsonProperty(value = "properties.rank")
-    private SensitivityLabelRank rank;
+    private SensitivityLabelProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the labelName property: The label name.
@@ -62,7 +33,7 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the labelName value.
      */
     public String labelName() {
-        return this.labelName;
+        return this.innerProperties() == null ? null : this.innerProperties().labelName();
     }
 
     /**
@@ -72,7 +43,10 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the SensitivityLabelInner object itself.
      */
     public SensitivityLabelInner withLabelName(String labelName) {
-        this.labelName = labelName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelProperties();
+        }
+        this.innerProperties().withLabelName(labelName);
         return this;
     }
 
@@ -82,7 +56,7 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the labelId value.
      */
     public String labelId() {
-        return this.labelId;
+        return this.innerProperties() == null ? null : this.innerProperties().labelId();
     }
 
     /**
@@ -92,7 +66,10 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the SensitivityLabelInner object itself.
      */
     public SensitivityLabelInner withLabelId(String labelId) {
-        this.labelId = labelId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelProperties();
+        }
+        this.innerProperties().withLabelId(labelId);
         return this;
     }
 
@@ -102,7 +79,7 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the informationType value.
      */
     public String informationType() {
-        return this.informationType;
+        return this.innerProperties() == null ? null : this.innerProperties().informationType();
     }
 
     /**
@@ -112,7 +89,10 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the SensitivityLabelInner object itself.
      */
     public SensitivityLabelInner withInformationType(String informationType) {
-        this.informationType = informationType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelProperties();
+        }
+        this.innerProperties().withInformationType(informationType);
         return this;
     }
 
@@ -122,7 +102,7 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the informationTypeId value.
      */
     public String informationTypeId() {
-        return this.informationTypeId;
+        return this.innerProperties() == null ? null : this.innerProperties().informationTypeId();
     }
 
     /**
@@ -132,7 +112,10 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the SensitivityLabelInner object itself.
      */
     public SensitivityLabelInner withInformationTypeId(String informationTypeId) {
-        this.informationTypeId = informationTypeId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelProperties();
+        }
+        this.innerProperties().withInformationTypeId(informationTypeId);
         return this;
     }
 
@@ -143,7 +126,7 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the isDisabled value.
      */
     public Boolean isDisabled() {
-        return this.isDisabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isDisabled();
     }
 
     /**
@@ -152,7 +135,7 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the rank value.
      */
     public SensitivityLabelRank rank() {
-        return this.rank;
+        return this.innerProperties() == null ? null : this.innerProperties().rank();
     }
 
     /**
@@ -162,7 +145,10 @@ public class SensitivityLabelInner extends ProxyResource {
      * @return the SensitivityLabelInner object itself.
      */
     public SensitivityLabelInner withRank(SensitivityLabelRank rank) {
-        this.rank = rank;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelProperties();
+        }
+        this.innerProperties().withRank(rank);
         return this;
     }
 
@@ -172,5 +158,8 @@ public class SensitivityLabelInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -21,8 +21,7 @@ import java.util.List;
 @Fluent
 public final class VpnServerConfigurationProperties {
     /*
-     * The name of the VpnServerConfiguration that is unique within a resource
-     * group.
+     * The name of the VpnServerConfiguration that is unique within a resource group.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -70,15 +69,13 @@ public final class VpnServerConfigurationProperties {
     private List<IpsecPolicy> vpnClientIpsecPolicies;
 
     /*
-     * The radius server address property of the VpnServerConfiguration
-     * resource for point to site client connection.
+     * The radius server address property of the VpnServerConfiguration resource for point to site client connection.
      */
     @JsonProperty(value = "radiusServerAddress")
     private String radiusServerAddress;
 
     /*
-     * The radius secret property of the VpnServerConfiguration resource for
-     * point to site client connection.
+     * The radius secret property of the VpnServerConfiguration resource for point to site client connection.
      */
     @JsonProperty(value = "radiusServerSecret")
     private String radiusServerSecret;
@@ -96,8 +93,8 @@ public final class VpnServerConfigurationProperties {
     private AadAuthenticationParameters aadAuthenticationParameters;
 
     /*
-     * The provisioning state of the VpnServerConfiguration resource. Possible
-     * values are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the VpnServerConfiguration resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -119,6 +116,10 @@ public final class VpnServerConfigurationProperties {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of VpnServerConfigurationProperties class. */
+    public VpnServerConfigurationProperties() {
+    }
 
     /**
      * Get the name property: The name of the VpnServerConfiguration that is unique within a resource group.

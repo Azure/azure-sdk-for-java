@@ -19,8 +19,7 @@ public final class CommunicationServiceResourceList {
     private List<CommunicationServiceResourceInner> value;
 
     /*
-     * The URL the client should use to fetch the next page (per server side
-     * paging).
+     * The URL the client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
     @JsonProperty(value = "nextLink")

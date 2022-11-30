@@ -15,55 +15,54 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * contract Represents an Azure Active Directory object. The directoryObject type is the base type for many other
- * directory entity types.
+ * contract
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphContract extends MicrosoftGraphDirectoryObjectInner {
     /*
-     * Type of contract.Possible values are: SyndicationPartner - Partner that
-     * exclusively resells and manages O365 and Intune for this customer. They
-     * resell and support their customers. BreadthPartner - Partner has the
-     * ability to provide administrative support for this customer. However,
-     * the partner is not allowed to resell to the customer.ResellerPartner -
-     * Partner that is similar to a syndication partner, except that the
-     * partner doesn’t have exclusive access to a tenant. In the syndication
-     * case, the customer cannot buy additional direct subscriptions from
-     * Microsoft or from other partners.
+     * Type of contract.Possible values are: SyndicationPartner - Partner that exclusively resells and manages O365 and
+     * Intune for this customer. They resell and support their customers. BreadthPartner - Partner has the ability to
+     * provide administrative support for this customer. However, the partner is not allowed to resell to the
+     * customer.ResellerPartner - Partner that is similar to a syndication partner, except that the partner doesn’t
+     * have exclusive access to a tenant. In the syndication case, the customer cannot buy additional direct
+     * subscriptions from Microsoft or from other partners.
      */
     @JsonProperty(value = "contractType")
     private String contractType;
 
     /*
-     * The unique identifier for the customer tenant referenced by this
-     * partnership. Corresponds to the id property of the customer tenant's
-     * organization resource.
+     * The unique identifier for the customer tenant referenced by this partnership. Corresponds to the id property of
+     * the customer tenant's organization resource.
      */
     @JsonProperty(value = "customerId")
     private UUID customerId;
 
     /*
-     * A copy of the customer tenant's default domain name. The copy is made
-     * when the partnership with the customer is established. It is not
-     * automatically updated if the customer tenant's default domain name
-     * changes.
+     * A copy of the customer tenant's default domain name. The copy is made when the partnership with the customer is
+     * established. It is not automatically updated if the customer tenant's default domain name changes.
      */
     @JsonProperty(value = "defaultDomainName")
     private String defaultDomainName;
 
     /*
-     * A copy of the customer tenant's display name. The copy is made when the
-     * partnership with the customer is established. It is not automatically
-     * updated if the customer tenant's display name changes.
+     * A copy of the customer tenant's display name. The copy is made when the partnership with the customer is
+     * established. It is not automatically updated if the customer tenant's display name changes.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphContract class. */
+    public MicrosoftGraphContract() {
+    }
 
     /**
      * Get the contractType property: Type of contract.Possible values are: SyndicationPartner - Partner that

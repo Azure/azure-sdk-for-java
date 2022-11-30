@@ -303,14 +303,14 @@ public class LocationCache {
 
                 if (Utils.tryGetValue(this.locationUnavailabilityInfoByEndpoint, unavailableEndpoint, unavailabilityInfoHolder)
                         &&
-                        durationPassed(Instant.now(), unavailabilityInfoHolder.v.LastUnavailabilityCheckTimeStamp,
+                        durationPassed(Instant.now(), unavailabilityInfoHolder.v.lastUnavailabilityCheckTimeStamp,
                                 this.unavailableLocationsExpirationTime)
 
                         && Utils.tryRemove(this.locationUnavailabilityInfoByEndpoint, unavailableEndpoint, removedHolder)) {
                     logger.debug(
                             "Removed endpoint [{}] unavailable for operations [{}] from unavailableEndpoints",
                             unavailableEndpoint,
-                            unavailabilityInfoHolder.v.UnavailableOperations);
+                            unavailabilityInfoHolder.v.unavailableOperations);
                 }
             }
         }
@@ -321,16 +321,16 @@ public class LocationCache {
 
         if (expectedAvailableOperations == OperationType.None
                 || !Utils.tryGetValue(this.locationUnavailabilityInfoByEndpoint, endpoint, unavailabilityInfoHolder)
-                || !unavailabilityInfoHolder.v.UnavailableOperations.supports(expectedAvailableOperations)) {
+                || !unavailabilityInfoHolder.v.unavailableOperations.supports(expectedAvailableOperations)) {
             return false;
         } else {
-            if (durationPassed(Instant.now(), unavailabilityInfoHolder.v.LastUnavailabilityCheckTimeStamp, this.unavailableLocationsExpirationTime)) {
+            if (durationPassed(Instant.now(), unavailabilityInfoHolder.v.lastUnavailabilityCheckTimeStamp, this.unavailableLocationsExpirationTime)) {
                 return false;
             } else {
                 logger.debug(
                         "Endpoint [{}] unavailable for operations [{}] present in unavailableEndpoints",
                         endpoint,
-                        unavailabilityInfoHolder.v.UnavailableOperations);
+                        unavailabilityInfoHolder.v.unavailableOperations);
                 // Unexpired entry present. Endpoint is unavailable
                 return true;
             }
@@ -363,8 +363,8 @@ public class LocationCache {
                             return new LocationUnavailabilityInfo(currentTime, unavailableOperationType);
                         } else {
                             // already present, update
-                            info.LastUnavailabilityCheckTimeStamp = currentTime;
-                            info.UnavailableOperations = OperationType.combine(info.UnavailableOperations, unavailableOperationType);
+                            info.lastUnavailabilityCheckTimeStamp = currentTime;
+                            info.unavailableOperations = OperationType.combine(info.unavailableOperations, unavailableOperationType);
                             return info;
                         }
 
@@ -377,7 +377,7 @@ public class LocationCache {
                 "Endpoint [{}] unavailable for [{}] added/updated to unavailableEndpoints with timestamp [{}]",
                 unavailableEndpoint,
                 unavailableOperationType,
-                updatedInfo.LastUnavailabilityCheckTimeStamp);
+                updatedInfo.lastUnavailabilityCheckTimeStamp);
     }
 
     private void updateLocationCache(){
@@ -523,12 +523,12 @@ public class LocationCache {
 
     private static class LocationUnavailabilityInfo {
         LocationUnavailabilityInfo(Instant instant, OperationType type) {
-            this.LastUnavailabilityCheckTimeStamp = instant;
-            this.UnavailableOperations = type;
+            this.lastUnavailabilityCheckTimeStamp = instant;
+            this.unavailableOperations = type;
         }
 
-        public Instant LastUnavailabilityCheckTimeStamp;
-        public OperationType UnavailableOperations;
+        public Instant lastUnavailabilityCheckTimeStamp;
+        public OperationType unavailableOperations;
     }
 
     private enum OperationType {

@@ -44,6 +44,10 @@ public final class MicrosoftGraphTeamsTabConfiguration {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamsTabConfiguration class. */
+    public MicrosoftGraphTeamsTabConfiguration() {
+    }
+
     /**
      * Get the contentUrl property: Url used for rendering tab contents in Teams. Required.
      *

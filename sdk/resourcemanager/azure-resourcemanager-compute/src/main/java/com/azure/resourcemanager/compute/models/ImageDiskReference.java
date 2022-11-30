@@ -11,33 +11,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImageDiskReference {
     /*
-     * A relative uri containing either a Platform Image Repository, user
-     * image, or Azure Compute Gallery image reference.
+     * A relative uri containing either a Platform Image Repository, user image, or Azure Compute Gallery image
+     * reference.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /*
-     * A relative uri containing a direct shared Azure Compute Gallery image
-     * reference.
+     * A relative uri containing a direct shared Azure Compute Gallery image reference.
      */
     @JsonProperty(value = "sharedGalleryImageId")
     private String sharedGalleryImageId;
 
     /*
-     * A relative uri containing a community Azure Compute Gallery image
-     * reference.
+     * A relative uri containing a community Azure Compute Gallery image reference.
      */
     @JsonProperty(value = "communityGalleryImageId")
     private String communityGalleryImageId;
 
     /*
-     * If the disk is created from an image's data disk, this is an index that
-     * indicates which of the data disks in the image to use. For OS disks,
-     * this field is null.
+     * If the disk is created from an image's data disk, this is an index that indicates which of the data disks in the
+     * image to use. For OS disks, this field is null.
      */
     @JsonProperty(value = "lun")
     private Integer lun;
+
+    /** Creates an instance of ImageDiskReference class. */
+    public ImageDiskReference() {
+    }
 
     /**
      * Get the id property: A relative uri containing either a Platform Image Repository, user image, or Azure Compute

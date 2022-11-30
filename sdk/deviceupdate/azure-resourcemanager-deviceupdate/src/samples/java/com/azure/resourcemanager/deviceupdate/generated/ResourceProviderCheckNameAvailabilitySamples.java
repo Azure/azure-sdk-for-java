@@ -10,7 +10,7 @@ import com.azure.resourcemanager.deviceupdate.models.CheckNameAvailabilityReques
 /** Samples for ResourceProvider CheckNameAvailability. */
 public final class ResourceProviderCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/CheckNameAvailability_AlreadyExists.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/CheckNameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: CheckNameAvailability_AlreadyExists.
@@ -27,7 +27,7 @@ public final class ResourceProviderCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/CheckNameAvailability_Available.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/CheckNameAvailability_Available.json
      */
     /**
      * Sample code: CheckNameAvailability_Available.

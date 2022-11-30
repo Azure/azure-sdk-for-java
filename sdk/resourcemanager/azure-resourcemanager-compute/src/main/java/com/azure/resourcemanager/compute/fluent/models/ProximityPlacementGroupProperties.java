@@ -16,30 +16,26 @@ import java.util.List;
 @Fluent
 public final class ProximityPlacementGroupProperties {
     /*
-     * Specifies the type of the proximity placement group. <br><br> Possible
-     * values are: <br><br> **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. <br><br> **Ultra** : For future use.
+     * Specifies the type of the proximity placement group. <br><br> Possible values are: <br><br> **Standard** :
+     * Co-locate resources within an Azure region or Availability Zone. <br><br> **Ultra** : For future use.
      */
     @JsonProperty(value = "proximityPlacementGroupType")
     private ProximityPlacementGroupType proximityPlacementGroupType;
 
     /*
-     * A list of references to all virtual machines in the proximity placement
-     * group.
+     * A list of references to all virtual machines in the proximity placement group.
      */
     @JsonProperty(value = "virtualMachines", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> virtualMachines;
 
     /*
-     * A list of references to all virtual machine scale sets in the proximity
-     * placement group.
+     * A list of references to all virtual machine scale sets in the proximity placement group.
      */
     @JsonProperty(value = "virtualMachineScaleSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> virtualMachineScaleSets;
 
     /*
-     * A list of references to all availability sets in the proximity placement
-     * group.
+     * A list of references to all availability sets in the proximity placement group.
      */
     @JsonProperty(value = "availabilitySets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> availabilitySets;
@@ -55,6 +51,10 @@ public final class ProximityPlacementGroupProperties {
      */
     @JsonProperty(value = "intent")
     private ProximityPlacementGroupPropertiesIntent intent;
+
+    /** Creates an instance of ProximityPlacementGroupProperties class. */
+    public ProximityPlacementGroupProperties() {
+    }
 
     /**
      * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group.

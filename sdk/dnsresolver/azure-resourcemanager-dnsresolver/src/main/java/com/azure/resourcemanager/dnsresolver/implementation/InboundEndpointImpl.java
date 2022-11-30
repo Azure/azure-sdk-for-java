@@ -79,6 +79,10 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public InboundEndpointInner innerModel() {
         return this.innerObject;
     }
@@ -217,6 +221,11 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
         return this;
     }
 
+    public InboundEndpointImpl withIpConfigurations(List<IpConfiguration> ipConfigurations) {
+        this.innerModel().withIpConfigurations(ipConfigurations);
+        return this;
+    }
+
     public InboundEndpointImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -225,11 +234,6 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public InboundEndpointImpl withIpConfigurations(List<IpConfiguration> ipConfigurations) {
-        this.innerModel().withIpConfigurations(ipConfigurations);
-        return this;
     }
 
     public InboundEndpointImpl withIfMatch(String ifMatch) {

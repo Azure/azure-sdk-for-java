@@ -4,8 +4,11 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -75,6 +78,33 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     @SuppressWarnings("unchecked")
     public T executorService(ExecutorService executorService) {
         this.identityClientOptions.setExecutorService(executorService);
+        return (T) this;
+    }
+
+    /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants.
+     * @return An updated instance of this builder with the additional tenants configured.
+     */
+    @SuppressWarnings("unchecked")
+    public T additionallyAllowedTenants(String... additionallyAllowedTenants) {
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        return (T) this;
+    }
+
+    /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants.
+     * @return An updated instance of this builder with the additional tenants configured.
+     */
+    @SuppressWarnings("unchecked")
+    public T additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return (T) this;
     }
 }

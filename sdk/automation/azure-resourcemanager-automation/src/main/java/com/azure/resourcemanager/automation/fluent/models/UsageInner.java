@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.UsageCounterName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of Usage. */
 @Fluent
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * Gets or sets the id of the resource.
      */

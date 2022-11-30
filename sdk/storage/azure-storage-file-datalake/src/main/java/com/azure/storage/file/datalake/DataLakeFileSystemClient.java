@@ -512,6 +512,45 @@ public class DataLakeFileSystemClient {
     }
 
     /**
+     * Determines if the file system exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.exists -->
+     * <pre>
+     * System.out.printf&#40;&quot;Exists? %b%n&quot;, client.exists&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.exists -->
+     *
+     * @return true if the path exists, false if it doesn't
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean exists() {
+        return existsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines if the file system exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.existsWithResponse#Duration-Context -->
+     * <pre>
+     * System.out.printf&#40;&quot;Exists? %b%n&quot;, client.existsWithResponse&#40;timeout, new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;&#41;.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.existsWithResponse#Duration-Context -->
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return true if the path exists, false if it doesn't
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.existsWithResponse(timeout, context), LOGGER);
+    }
+
+    /**
      * Sets the file system's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
      *
@@ -1577,46 +1616,19 @@ public class DataLakeFileSystemClient {
                 timeout, context), LOGGER);
     }
 
-//    /**
-//     * Renames an existing file system.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String -->
-//     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String -->
-//     *
-//     * @param destinationFileSystemName The new name of the file system.
-//     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public DataLakeFileSystemClient rename(String destinationFileSystemName) {
+//    DataLakeFileSystemClient rename(String destinationFileSystemName) {
 //        return this.renameWithResponse(new FileSystemRenameOptions(destinationFileSystemName), null, Context.NONE).getValue();
 //    }
-//
-//    /**
-//     * Renames an existing file system.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context -->
-//     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context -->
-//     *
-//     * @param options {@link FileSystemRenameOptions}
-//     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-//     * @param context Additional context that is passed through the Http pipeline during the service call.
-//     * @return A {@link Response} whose {@link Response#getValue() value} contains a
-//     * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DataLakeFileSystemClient> renameWithResponse(FileSystemRenameOptions options,
+
+//    Response<DataLakeFileSystemClient> renameWithResponse(FileSystemRenameOptions options,
 //        Duration timeout, Context context) {
 //        return DataLakeImplUtils.returnOrConvertException(() -> {
 //            Response<com.azure.storage.blob.BlobContainerClient> response = blobContainerClient
 //                .renameWithResponse(Transforms.toBlobContainerRenameOptions(options), timeout, context);
 //            return new SimpleResponse<>(response, getFileSystemClient(options.getDestinationFileSystemName()));
-//        }, logger);
+//        }, LOGGER);
 //    }
-//
+
 //    private DataLakeFileSystemClient getFileSystemClient(String destinationFileSystem) {
 //        return new DataLakeFileSystemClient(
 //            dataLakeFileSystemAsyncClient.getFileSystemAsyncClient(destinationFileSystem),

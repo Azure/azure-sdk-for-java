@@ -20,11 +20,15 @@ public final class DiskRestorePointList {
     private List<DiskRestorePointInner> value;
 
     /*
-     * The uri to fetch the next page of disk restore points. Call ListNext()
-     * with this to fetch the next page of disk restore points.
+     * The uri to fetch the next page of disk restore points. Call ListNext() with this to fetch the next page of disk
+     * restore points.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of DiskRestorePointList class. */
+    public DiskRestorePointList() {
+    }
 
     /**
      * Get the value property: A list of disk restore points.

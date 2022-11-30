@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.dnsresolver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleState;
 import com.azure.resourcemanager.dnsresolver.models.TargetDnsServer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** Represents the updatable properties of a forwarding rule within a DNS forwarding ruleset. */
 @Fluent
 public final class ForwardingRulePatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForwardingRulePatchProperties.class);
-
     /*
      * DNS servers to forward the DNS query to.
      */

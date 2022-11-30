@@ -9,17 +9,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestOperations;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
  * GraphClient is used to access graph server. Mainly used to get groups information of a user.
@@ -28,14 +30,17 @@ public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
 
     private final AadAuthenticationProperties properties;
+    private final RestOperations operations;
 
     /**
      * Creates a new instance of {@link GraphClient}.
      *
      * @param properties the AAD authentication properties
+     * @param restTemplateBuilder the restTemplateBuilder
      */
-    public GraphClient(AadAuthenticationProperties properties) {
+    public GraphClient(AadAuthenticationProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
+        this.operations = createRestTemplate(restTemplateBuilder);
     }
 
     /**
@@ -71,34 +76,18 @@ public class GraphClient {
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
-        URL url = new URL(urlString);
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(HttpMethod.GET.toString());
-        connection.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
-        connection.setRequestProperty(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        connection.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        final String responseInJson = getResponseString(connection);
-        final int responseCode = connection.getResponseCode();
-        if (responseCode == HTTPResponse.SC_OK) {
-            return responseInJson;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
+        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = operations.exchange(urlString, HttpMethod.GET, entity, String.class);
+        String responseInJson = response.getBody();
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody();
         } else {
             throw new IllegalStateException(
                 "Response is not " + HTTPResponse.SC_OK + ", response json: " + responseInJson);
-        }
-    }
-
-    private String getResponseString(HttpURLConnection connection) throws IOException {
-        try (BufferedReader reader =
-                 new BufferedReader(
-                     new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)
-                 )
-        ) {
-            final StringBuilder stringBuffer = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuffer.append(line);
-            }
-            return stringBuffer.toString();
         }
     }
 

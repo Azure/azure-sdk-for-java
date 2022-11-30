@@ -21,12 +21,15 @@ public final class RelationalSource extends CopySource {
     private Object query;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of RelationalSource class. */
+    public RelationalSource() {
+    }
 
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).

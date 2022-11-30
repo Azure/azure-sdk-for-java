@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkGatewayConnectionType. */
+/** Gateway connection type. */
 public final class VirtualNetworkGatewayConnectionType
     extends ExpandableStringEnum<VirtualNetworkGatewayConnectionType> {
     /** Static value IPsec for VirtualNetworkGatewayConnectionType. */

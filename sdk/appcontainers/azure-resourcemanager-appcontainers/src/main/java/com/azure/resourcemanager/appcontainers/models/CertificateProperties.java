@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Certificate resource specific properties. */
 @Fluent
@@ -29,6 +30,12 @@ public final class CertificateProperties {
      */
     @JsonProperty(value = "subjectName", access = JsonProperty.Access.WRITE_ONLY)
     private String subjectName;
+
+    /*
+     * Subject alternative names the certificate applies to.
+     */
+    @JsonProperty(value = "subjectAlternativeNames", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> subjectAlternativeNames;
 
     /*
      * PFX or PEM blob
@@ -72,6 +79,10 @@ public final class CertificateProperties {
     @JsonProperty(value = "publicKeyHash", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKeyHash;
 
+    /** Creates an instance of CertificateProperties class. */
+    public CertificateProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the certificate.
      *
@@ -108,6 +119,15 @@ public final class CertificateProperties {
      */
     public String subjectName() {
         return this.subjectName;
+    }
+
+    /**
+     * Get the subjectAlternativeNames property: Subject alternative names the certificate applies to.
+     *
+     * @return the subjectAlternativeNames value.
+     */
+    public List<String> subjectAlternativeNames() {
+        return this.subjectAlternativeNames;
     }
 
     /**

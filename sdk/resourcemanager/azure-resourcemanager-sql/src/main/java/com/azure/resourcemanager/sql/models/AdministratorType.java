@@ -24,7 +24,11 @@ public final class AdministratorType extends ExpandableStringEnum<AdministratorT
         return fromString(name, AdministratorType.class);
     }
 
-    /** @return known AdministratorType values. */
+    /**
+     * Gets known AdministratorType values.
+     *
+     * @return known AdministratorType values.
+     */
     public static Collection<AdministratorType> values() {
         return values(AdministratorType.class);
     }

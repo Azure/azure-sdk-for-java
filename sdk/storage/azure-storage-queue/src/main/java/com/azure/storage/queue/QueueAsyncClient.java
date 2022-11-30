@@ -121,7 +121,7 @@ public final class QueueAsyncClient {
      * @return the URL of the storage queue
      */
     public String getQueueUrl() {
-        return String.format("%s/%s", client.getUrl(), queueName);
+        return client.getUrl() + "/" + queueName;
     }
 
     /**

@@ -3,20 +3,19 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.share.implementation.util.ModelHelper
 import com.azure.storage.file.share.models.NtfsFileAttributes
-import com.azure.storage.file.share.models.ShareProtocols
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
+import com.azure.storage.file.share.models.ShareProtocols
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareRootSquash
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareCreateOptions
-import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import reactor.test.StepVerifier
@@ -115,7 +114,7 @@ class ShareAsyncAPITests extends APISpec {
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(environment.primaryAccount.connectionString)
-                .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
+                .snapshot(it.getValue().getSnapshot()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
         }.verifyComplete()
@@ -141,7 +140,7 @@ class ShareAsyncAPITests extends APISpec {
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(environment.primaryAccount.connectionString)
-                .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
+                .snapshot(it.getValue().getSnapshot()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
         }.verifyComplete()

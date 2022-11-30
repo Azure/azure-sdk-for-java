@@ -58,13 +58,16 @@ public final class SchemaGroupsOperationsImpl {
     }
 
     /**
-     * Gets the list of schema groups user is authorized to access.
+     * Get list of schema groups.
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of schema groups user is authorized to access.
+     * @return the list of schema groups user is authorized to access along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaGroups>> listWithResponseAsync(Context context) {

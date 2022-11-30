@@ -3,7 +3,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.util.Beta;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -352,7 +351,6 @@ public final class ChangeFeedProcessorOptions {
      *
      * @return a {@link Scheduler} that hosts a pool of ExecutorService-based workers..
      */
-    @Beta(value = Beta.SinceVersion.V4_26_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Scheduler getScheduler() {
         return this.scheduler;
     }
@@ -364,7 +362,6 @@ public final class ChangeFeedProcessorOptions {
      * {@link ChangeFeedProcessor} instance.
      * @return the current ChangeFeedProcessorOptions instance.
      */
-    @Beta(value = Beta.SinceVersion.V4_26_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorOptions setScheduler(Scheduler scheduler) {
         if (scheduler == null) {
             throw new IllegalArgumentException("scheduler");

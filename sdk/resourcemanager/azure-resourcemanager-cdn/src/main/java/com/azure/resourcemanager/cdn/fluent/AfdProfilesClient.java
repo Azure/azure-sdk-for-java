@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in AfdProfilesClient. */
 public interface AfdProfilesClient {
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -32,7 +32,7 @@ public interface AfdProfilesClient {
     PagedFlux<UsageInner> listResourceUsageAsync(String resourceGroupName, String profileName);
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -46,7 +46,7 @@ public interface AfdProfilesClient {
     PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName);
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -61,7 +61,7 @@ public interface AfdProfilesClient {
     PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName, Context context);
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -78,7 +78,7 @@ public interface AfdProfilesClient {
         String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput);
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -94,7 +94,7 @@ public interface AfdProfilesClient {
         String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput);
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -110,7 +110,7 @@ public interface AfdProfilesClient {
         String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput);
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is

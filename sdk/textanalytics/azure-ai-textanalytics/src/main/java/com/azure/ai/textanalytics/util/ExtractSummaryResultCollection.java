@@ -26,7 +26,7 @@ public final class ExtractSummaryResultCollection extends IterableStream<Extract
      * @param statistics The batch statistics of response.
      */
     public ExtractSummaryResultCollection(Iterable<ExtractSummaryResult> documentResults,
-        String modelVersion, TextDocumentBatchStatistics statistics) {
+                                          String modelVersion, TextDocumentBatchStatistics statistics) {
         super(documentResults);
         this.modelVersion = modelVersion;
         this.statistics = statistics;

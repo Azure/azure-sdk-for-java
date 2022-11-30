@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class AzureBatchLinkedService extends LinkedService {
     /*
-     * The Azure Batch account name. Type: string (or Expression with
-     * resultType string).
+     * The Azure Batch account name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.accountName", required = true)
     private Object accountName;
@@ -32,15 +31,13 @@ public class AzureBatchLinkedService extends LinkedService {
     private SecretBase accessKey;
 
     /*
-     * The Azure Batch URI. Type: string (or Expression with resultType
-     * string).
+     * The Azure Batch URI. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.batchUri", required = true)
     private Object batchUri;
 
     /*
-     * The Azure Batch pool name. Type: string (or Expression with resultType
-     * string).
+     * The Azure Batch pool name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.poolName", required = true)
     private Object poolName;
@@ -52,9 +49,8 @@ public class AzureBatchLinkedService extends LinkedService {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

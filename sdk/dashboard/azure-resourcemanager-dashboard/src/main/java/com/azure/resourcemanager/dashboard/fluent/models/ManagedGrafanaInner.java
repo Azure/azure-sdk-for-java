@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafanaProperties;
-import com.azure.resourcemanager.dashboard.models.ManagedIdentity;
+import com.azure.resourcemanager.dashboard.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.dashboard.models.ResourceSku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -32,7 +32,7 @@ public final class ManagedGrafanaInner extends Resource {
      * The managed identity of the grafana resource.
      */
     @JsonProperty(value = "identity")
-    private ManagedIdentity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * The system meta data relating to this grafana resource.
@@ -85,7 +85,7 @@ public final class ManagedGrafanaInner extends Resource {
      *
      * @return the identity value.
      */
-    public ManagedIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -95,7 +95,7 @@ public final class ManagedGrafanaInner extends Resource {
      * @param identity the identity value to set.
      * @return the ManagedGrafanaInner object itself.
      */
-    public ManagedGrafanaInner withIdentity(ManagedIdentity identity) {
+    public ManagedGrafanaInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }

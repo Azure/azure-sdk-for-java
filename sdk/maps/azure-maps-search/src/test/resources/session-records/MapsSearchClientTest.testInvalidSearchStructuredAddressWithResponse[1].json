@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/search/address/structured/json?api-version=1.0&countryCode=",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Sat, 04 Jun 2022 07:06:35 GMT",
+      "content-length" : "79",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: 384D6E5169754BBEAACFBB4FCA6A77AA Ref B: SIN30EDGE0409 Ref C: 2022-06-04T07:06:35Z",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"countryCode is missing or empty\"}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

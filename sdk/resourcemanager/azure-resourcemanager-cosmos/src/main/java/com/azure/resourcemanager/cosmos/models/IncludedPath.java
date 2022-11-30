@@ -12,8 +12,8 @@ import java.util.List;
 @Fluent
 public final class IncludedPath {
     /*
-     * The path for which the indexing behavior applies to. Index paths
-     * typically start with root and end with wildcard (/path/*)
+     * The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard
+     * (/path/*)
      */
     @JsonProperty(value = "path")
     private String path;

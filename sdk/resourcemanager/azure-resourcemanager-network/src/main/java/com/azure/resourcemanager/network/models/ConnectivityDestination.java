@@ -17,8 +17,7 @@ public final class ConnectivityDestination {
     private String resourceId;
 
     /*
-     * The IP address or URI the resource to which a connection attempt will be
-     * made.
+     * The IP address or URI the resource to which a connection attempt will be made.
      */
     @JsonProperty(value = "address")
     private String address;
@@ -28,6 +27,10 @@ public final class ConnectivityDestination {
      */
     @JsonProperty(value = "port")
     private Integer port;
+
+    /** Creates an instance of ConnectivityDestination class. */
+    public ConnectivityDestination() {
+    }
 
     /**
      * Get the resourceId property: The ID of the resource to which a connection attempt will be made.

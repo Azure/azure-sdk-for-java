@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of VolumeQuotaRules. */
 public interface VolumeQuotaRules {
     /**
-     * List all quota rules associated with the volume.
+     * Get all quota rules for a volume
+     *
+     * <p>List all quota rules associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -26,7 +28,9 @@ public interface VolumeQuotaRules {
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * List all quota rules associated with the volume.
+     * Get all quota rules for a volume
+     *
+     * <p>List all quota rules associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -42,7 +46,9 @@ public interface VolumeQuotaRules {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Get details of the specified quota rule.
+     * Describe a quota rule
+     *
+     * <p>Get details of the specified quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -58,7 +64,9 @@ public interface VolumeQuotaRules {
         String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName);
 
     /**
-     * Get details of the specified quota rule.
+     * Describe a quota rule
+     *
+     * <p>Get details of the specified quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -80,7 +88,9 @@ public interface VolumeQuotaRules {
         Context context);
 
     /**
-     * Delete quota rule.
+     * Delete a quota rule
+     *
+     * <p>Delete quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -95,7 +105,9 @@ public interface VolumeQuotaRules {
         String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName);
 
     /**
-     * Delete quota rule.
+     * Delete a quota rule
+     *
+     * <p>Delete quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -116,7 +128,9 @@ public interface VolumeQuotaRules {
         Context context);
 
     /**
-     * Get details of the specified quota rule.
+     * Describe a quota rule
+     *
+     * <p>Get details of the specified quota rule.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +141,9 @@ public interface VolumeQuotaRules {
     VolumeQuotaRule getById(String id);
 
     /**
-     * Get details of the specified quota rule.
+     * Describe a quota rule
+     *
+     * <p>Get details of the specified quota rule.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -139,7 +155,9 @@ public interface VolumeQuotaRules {
     Response<VolumeQuotaRule> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete quota rule.
+     * Delete a quota rule
+     *
+     * <p>Delete quota rule.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +167,9 @@ public interface VolumeQuotaRules {
     void deleteById(String id);
 
     /**
-     * Delete quota rule.
+     * Delete a quota rule
+     *
+     * <p>Delete quota rule.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

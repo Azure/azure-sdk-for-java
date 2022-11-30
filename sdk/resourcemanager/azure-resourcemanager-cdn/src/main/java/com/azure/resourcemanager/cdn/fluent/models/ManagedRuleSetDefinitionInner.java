@@ -7,18 +7,14 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.ManagedRuleGroupDefinition;
 import com.azure.resourcemanager.cdn.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a managed rule set definition. */
 @Fluent
 public final class ManagedRuleSetDefinitionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleSetDefinitionInner.class);
-
     /*
      * Describes managed rule set definition properties.
      */
@@ -26,8 +22,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
     private ManagedRuleSetDefinitionProperties innerProperties;
 
     /*
-     * The pricing tier (defines a CDN provider, feature list and rate) of the
-     * CdnWebApplicationFirewallPolicy.
+     * The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
      */
     @JsonProperty(value = "sku")
     private Sku sku;

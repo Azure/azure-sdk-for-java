@@ -45,7 +45,7 @@ public interface SourceControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
+     * @return definition of the source control along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SourceControlInner> createOrUpdateWithResponse(
@@ -85,7 +85,7 @@ public interface SourceControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
+     * @return definition of the source control along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SourceControlInner> updateWithResponse(
@@ -118,7 +118,7 @@ public interface SourceControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -148,7 +148,7 @@ public interface SourceControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
+     * @return definition of the source control along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SourceControlInner> getWithResponse(
@@ -162,7 +162,8 @@ public interface SourceControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source controls operation.
+     * @return the response model for the list source controls operation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SourceControlInner> listByAutomationAccount(String resourceGroupName, String automationAccountName);
@@ -177,7 +178,8 @@ public interface SourceControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source controls operation.
+     * @return the response model for the list source controls operation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SourceControlInner> listByAutomationAccount(

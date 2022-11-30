@@ -67,7 +67,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Microsoft.NetApp Rest API operations.
+     * Describes the Resource Provider
+     *
+     * <p>Lists all of the available Microsoft.NetApp Rest API operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,7 +96,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Microsoft.NetApp Rest API operations.
+     * Describes the Resource Provider
+     *
+     * <p>Lists all of the available Microsoft.NetApp Rest API operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +126,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Microsoft.NetApp Rest API operations.
+     * Describes the Resource Provider
+     *
+     * <p>Lists all of the available Microsoft.NetApp Rest API operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -134,7 +140,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Microsoft.NetApp Rest API operations.
+     * Describes the Resource Provider
+     *
+     * <p>Lists all of the available Microsoft.NetApp Rest API operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +156,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Microsoft.NetApp Rest API operations.
+     * Describes the Resource Provider
+     *
+     * <p>Lists all of the available Microsoft.NetApp Rest API operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -160,7 +170,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Microsoft.NetApp Rest API operations.
+     * Describes the Resource Provider
+     *
+     * <p>Lists all of the available Microsoft.NetApp Rest API operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

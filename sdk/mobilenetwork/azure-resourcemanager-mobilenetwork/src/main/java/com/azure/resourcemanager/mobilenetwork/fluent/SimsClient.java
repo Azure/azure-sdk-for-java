@@ -12,14 +12,14 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
 /** An instance of this class provides access to all the operations defined in SimsClient. */
 public interface SimsClient {
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,12 +27,13 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String simName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String simGroupName, String simName);
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,24 +42,27 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String simName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String simGroupName, String simName, Context context);
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String simName);
+    void delete(String resourceGroupName, String simGroupName, String simName);
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,169 +70,126 @@ public interface SimsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String simName, Context context);
+    void delete(String resourceGroupName, String simGroupName, String simName, Context context);
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim.
+     * @return information about the specified SIM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SimInner getByResourceGroup(String resourceGroupName, String simName);
+    SimInner get(String resourceGroupName, String simGroupName, String simName);
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim along with {@link Response}.
+     * @return information about the specified SIM along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SimInner> getByResourceGroupWithResponse(String resourceGroupName, String simName, Context context);
+    Response<SimInner> getWithResponse(String resourceGroupName, String simGroupName, String simName, Context context);
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sim resource.
+     * @return the {@link SyncPoller} for polling of sIM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SimInner>, SimInner> beginCreateOrUpdate(
-        String resourceGroupName, String simName, SimInner parameters);
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters);
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sim resource.
+     * @return the {@link SyncPoller} for polling of sIM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SimInner>, SimInner> beginCreateOrUpdate(
-        String resourceGroupName, String simName, SimInner parameters, Context context);
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context);
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource.
+     * @return sIM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SimInner createOrUpdate(String resourceGroupName, String simName, SimInner parameters);
+    SimInner createOrUpdate(String resourceGroupName, String simGroupName, String simName, SimInner parameters);
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource.
+     * @return sIM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SimInner createOrUpdate(String resourceGroupName, String simName, SimInner parameters, Context context);
+    SimInner createOrUpdate(
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context);
 
     /**
-     * Updates a sim update tags.
+     * Gets all the SIMs in a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to update sim tags.
+     * @param simGroupName The name of the SIM Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource.
+     * @return all the SIMs in a SIM group as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SimInner updateTags(String resourceGroupName, String simName, TagsObject parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SimInner> listBySimGroup(String resourceGroupName, String simGroupName);
 
     /**
-     * Updates a sim update tags.
+     * Gets all the SIMs in a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to update sim tags.
+     * @param simGroupName The name of the SIM Group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SimInner> updateTagsWithResponse(
-        String resourceGroupName, String simName, TagsObject parameters, Context context);
-
-    /**
-     * Gets all the sims in a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription as paginated response with {@link PagedIterable}.
+     * @return all the SIMs in a SIM group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SimInner> list();
-
-    /**
-     * Gets all the sims in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SimInner> list(Context context);
-
-    /**
-     * Gets all the Sims in a subscription.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SimInner> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * Gets all the Sims in a subscription.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SimInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<SimInner> listBySimGroup(String resourceGroupName, String simGroupName, Context context);
 }

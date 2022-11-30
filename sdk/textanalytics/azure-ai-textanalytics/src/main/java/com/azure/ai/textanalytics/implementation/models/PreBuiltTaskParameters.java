@@ -35,4 +35,11 @@ public class PreBuiltTaskParameters extends TaskParameters {
         this.modelVersion = modelVersion;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public PreBuiltTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
+        return this;
+    }
 }

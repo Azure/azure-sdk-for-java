@@ -4,33 +4,44 @@
 
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** An object that represents a replication for a container registry. */
-@JsonFlatten
-@Immutable
-public class ReplicationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationInner.class);
-
+@Fluent
+public final class ReplicationInner extends Resource {
     /*
-     * The provisioning state of the replication at the time the operation was
-     * called.
+     * The properties of the replication.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private ReplicationProperties innerProperties;
 
-    /*
-     * The status of the replication at the time the operation was called.
+    /**
+     * Get the innerProperties property: The properties of the replication.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private Status status;
+    private ReplicationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ReplicationInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ReplicationInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the replication at the time the operation was
@@ -39,7 +50,7 @@ public class ReplicationInner extends Resource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -48,7 +59,7 @@ public class ReplicationInner extends Resource {
      * @return the status value.
      */
     public Status status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -57,8 +68,8 @@ public class ReplicationInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (status() != null) {
-            status().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -19,31 +19,29 @@ import java.util.Map;
 @Fluent
 public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /*
-     * <REGION>.azuredatabricks.net, domain name of your Databricks deployment.
-     * Type: string (or Expression with resultType string).
+     * <REGION>.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.domain", required = true)
     private Object domain;
 
     /*
-     * Access token for databricks REST API. Refer to
-     * https://docs.azuredatabricks.net/api/latest/authentication.html. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
+     * Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html.
+     * Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.accessToken", required = true)
     private SecretBase accessToken;
 
     /*
-     * The id of an existing interactive cluster that will be used for all runs
-     * of this job. Type: string (or Expression with resultType string).
+     * The id of an existing interactive cluster that will be used for all runs of this job. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clusterId")
     private Object clusterId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlurType. */
+/** Blur type. */
 public final class BlurType extends ExpandableStringEnum<BlurType> {
     /** Static value Box for BlurType. */
     public static final BlurType BOX = fromString("Box");

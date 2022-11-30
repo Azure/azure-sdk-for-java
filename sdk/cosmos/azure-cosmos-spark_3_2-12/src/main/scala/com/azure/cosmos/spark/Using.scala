@@ -11,7 +11,7 @@
 
 /**
  * The `Loan`s apply method implements Java's try-with-resources. You can loan
- * out a resource to a function `f` and the resource will be closed when `f`
+ * out a resource list to a function `f` and all the resources will be closed when `f`
  * returns regardless of the way `f` returns.
  *
  * See https://docs.oracle.com/javase/specs/jls/se8/html/jls-14.html#jls-14.20.3
@@ -36,32 +36,40 @@ package com.azure.cosmos.spark
 
 // scalastyle:off null
 private[spark] object Loan {
-  class Loan[A <: AutoCloseable](resource: A) {
-    def to[B](block: A => B): B = {
-      var t: Throwable = null
-      try {
-        block(resource)
-      } catch {
-        case x: Throwable =>
-          t = x
-          throw x
-      } finally {
-        if (resource != null) {
-          if (t != null) {
-            try {
-              resource.close()
-            } catch {
-              case y: Throwable =>
-                t.addSuppressed(y)
-            }
-          } else {
-            resource.close()
-          }
+ class Loan[A <: AutoCloseable](resourceList: List[Option[A]]) {
+  def to[B](block: List[Option[A]] => B): B = {
+   var t: Throwable = null
+   try {
+    block(resourceList)
+   } catch {
+    case x: Throwable =>
+     t = x
+     throw x
+   } finally {
+    if (resourceList != null) {
+     if (t != null) {
+      resourceList.foreach(resourceOpt => {
+       try {
+        if (resourceOpt.isDefined) {
+         resourceOpt.get.close()
         }
-      }
+       } catch {
+        case y: Throwable =>
+         t.addSuppressed(y)
+       }
+      })
+     } else {
+      resourceList.foreach(resourceOpt => {
+       if (resourceOpt.isDefined) {
+        resourceOpt.get.close()
+       }
+      })
+     }
     }
+   }
   }
-  // scalastyle:on null
+ }
+ // scalastyle:on null
 
-  def apply[A <: AutoCloseable](resource: A): Loan[A] = new Loan(resource)
+ def apply[A <: AutoCloseable](resourceList: List[Option[A]]): Loan[A] = new Loan(resourceList)
 }

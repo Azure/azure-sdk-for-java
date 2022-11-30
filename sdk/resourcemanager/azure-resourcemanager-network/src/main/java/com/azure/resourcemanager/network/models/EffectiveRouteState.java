@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EffectiveRouteState. */
+/** The value of effective route. */
 public final class EffectiveRouteState extends ExpandableStringEnum<EffectiveRouteState> {
     /** Static value Active for EffectiveRouteState. */
     public static final EffectiveRouteState ACTIVE = fromString("Active");

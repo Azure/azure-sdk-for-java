@@ -5,169 +5,61 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /** Description of queue Resource. */
-@JsonFlatten
 @Fluent
-public class SBQueueInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBQueueInner.class);
+public final class SBQueueInner extends Resource {
+    /*
+     * Queue Properties
+     */
+    @JsonProperty(value = "properties")
+    private SBQueueProperties innerProperties;
 
     /*
-     * Message Count Details.
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.countDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private MessageCountDetails countDetails;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * The exact time the message was created.
+     * The geo-location where the resource lives
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
 
-    /*
-     * The exact time the message was updated.
+    /**
+     * Get the innerProperties property: Queue Properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
+    private SBQueueProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Last time a message was sent, or the last time there was a receive
-     * request to this queue.
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.accessedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime accessedAt;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
-    /*
-     * The size of the queue, in bytes.
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
      */
-    @JsonProperty(value = "properties.sizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private Long sizeInBytes;
-
-    /*
-     * The number of messages in the queue.
-     */
-    @JsonProperty(value = "properties.messageCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Long messageCount;
-
-    /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time
-     * that the message is locked for other receivers. The maximum value for
-     * LockDuration is 5 minutes; the default value is 1 minute.
-     */
-    @JsonProperty(value = "properties.lockDuration")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration lockDuration;
-
-    /*
-     * The maximum size of the queue in megabytes, which is the size of memory
-     * allocated for the queue. Default is 1024.
-     */
-    @JsonProperty(value = "properties.maxSizeInMegabytes")
-    private Integer maxSizeInMegabytes;
-
-    /*
-     * A value indicating if this queue requires duplicate detection.
-     */
-    @JsonProperty(value = "properties.requiresDuplicateDetection")
-    private Boolean requiresDuplicateDetection;
-
-    /*
-     * A value that indicates whether the queue supports the concept of
-     * sessions.
-     */
-    @JsonProperty(value = "properties.requiresSession")
-    private Boolean requiresSession;
-
-    /*
-     * ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent
-     * to Service Bus. This is the default value used when TimeToLive is not
-     * set on a message itself.
-     */
-    @JsonProperty(value = "properties.defaultMessageTimeToLive")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration defaultMessageTimeToLive;
-
-    /*
-     * A value that indicates whether this queue has dead letter support when a
-     * message expires.
-     */
-    @JsonProperty(value = "properties.deadLetteringOnMessageExpiration")
-    private Boolean deadLetteringOnMessageExpiration;
-
-    /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate
-     * detection history. The default value is 10 minutes.
-     */
-    @JsonProperty(value = "properties.duplicateDetectionHistoryTimeWindow")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration duplicateDetectionHistoryTimeWindow;
-
-    /*
-     * The maximum delivery count. A message is automatically deadlettered
-     * after this number of deliveries. default value is 10.
-     */
-    @JsonProperty(value = "properties.maxDeliveryCount")
-    private Integer maxDeliveryCount;
-
-    /*
-     * Enumerates the possible values for the status of a messaging entity.
-     */
-    @JsonProperty(value = "properties.status")
-    private EntityStatus status;
-
-    /*
-     * Value that indicates whether server-side batched operations are enabled.
-     */
-    @JsonProperty(value = "properties.enableBatchedOperations")
-    private Boolean enableBatchedOperations;
-
-    /*
-     * ISO 8061 timeSpan idle interval after which the queue is automatically
-     * deleted. The minimum duration is 5 minutes.
-     */
-    @JsonProperty(value = "properties.autoDeleteOnIdle")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration autoDeleteOnIdle;
-
-    /*
-     * A value that indicates whether the queue is to be partitioned across
-     * multiple message brokers.
-     */
-    @JsonProperty(value = "properties.enablePartitioning")
-    private Boolean enablePartitioning;
-
-    /*
-     * A value that indicates whether Express Entities are enabled. An express
-     * queue holds a message in memory temporarily before writing it to
-     * persistent storage.
-     */
-    @JsonProperty(value = "properties.enableExpress")
-    private Boolean enableExpress;
-
-    /*
-     * Queue/Topic name to forward the messages
-     */
-    @JsonProperty(value = "properties.forwardTo")
-    private String forwardTo;
-
-    /*
-     * Queue/Topic name to forward the Dead Letter message
-     */
-    @JsonProperty(value = "properties.forwardDeadLetteredMessagesTo")
-    private String forwardDeadLetteredMessagesTo;
+    public String location() {
+        return this.location;
+    }
 
     /**
      * Get the countDetails property: Message Count Details.
@@ -175,7 +67,7 @@ public class SBQueueInner extends Resource {
      * @return the countDetails value.
      */
     public MessageCountDetails countDetails() {
-        return this.countDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().countDetails();
     }
 
     /**
@@ -184,7 +76,7 @@ public class SBQueueInner extends Resource {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
@@ -193,7 +85,7 @@ public class SBQueueInner extends Resource {
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
@@ -203,7 +95,7 @@ public class SBQueueInner extends Resource {
      * @return the accessedAt value.
      */
     public OffsetDateTime accessedAt() {
-        return this.accessedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().accessedAt();
     }
 
     /**
@@ -212,7 +104,7 @@ public class SBQueueInner extends Resource {
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
-        return this.sizeInBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().sizeInBytes();
     }
 
     /**
@@ -221,7 +113,7 @@ public class SBQueueInner extends Resource {
      * @return the messageCount value.
      */
     public Long messageCount() {
-        return this.messageCount;
+        return this.innerProperties() == null ? null : this.innerProperties().messageCount();
     }
 
     /**
@@ -232,7 +124,7 @@ public class SBQueueInner extends Resource {
      * @return the lockDuration value.
      */
     public Duration lockDuration() {
-        return this.lockDuration;
+        return this.innerProperties() == null ? null : this.innerProperties().lockDuration();
     }
 
     /**
@@ -244,7 +136,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withLockDuration(Duration lockDuration) {
-        this.lockDuration = lockDuration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withLockDuration(lockDuration);
         return this;
     }
 
@@ -255,7 +150,7 @@ public class SBQueueInner extends Resource {
      * @return the maxSizeInMegabytes value.
      */
     public Integer maxSizeInMegabytes() {
-        return this.maxSizeInMegabytes;
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeInMegabytes();
     }
 
     /**
@@ -266,7 +161,35 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withMaxSizeInMegabytes(Integer maxSizeInMegabytes) {
-        this.maxSizeInMegabytes = maxSizeInMegabytes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withMaxSizeInMegabytes(maxSizeInMegabytes);
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
+     * the queue. This property is only used in Premium today and default is 1024.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public Long maxMessageSizeInKilobytes() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxMessageSizeInKilobytes();
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
+     * the queue. This property is only used in Premium today and default is 1024.
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     * @return the SBQueueInner object itself.
+     */
+    public SBQueueInner withMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withMaxMessageSizeInKilobytes(maxMessageSizeInKilobytes);
         return this;
     }
 
@@ -276,7 +199,7 @@ public class SBQueueInner extends Resource {
      * @return the requiresDuplicateDetection value.
      */
     public Boolean requiresDuplicateDetection() {
-        return this.requiresDuplicateDetection;
+        return this.innerProperties() == null ? null : this.innerProperties().requiresDuplicateDetection();
     }
 
     /**
@@ -286,7 +209,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
-        this.requiresDuplicateDetection = requiresDuplicateDetection;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withRequiresDuplicateDetection(requiresDuplicateDetection);
         return this;
     }
 
@@ -296,7 +222,7 @@ public class SBQueueInner extends Resource {
      * @return the requiresSession value.
      */
     public Boolean requiresSession() {
-        return this.requiresSession;
+        return this.innerProperties() == null ? null : this.innerProperties().requiresSession();
     }
 
     /**
@@ -306,7 +232,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withRequiresSession(Boolean requiresSession) {
-        this.requiresSession = requiresSession;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withRequiresSession(requiresSession);
         return this;
     }
 
@@ -318,7 +247,7 @@ public class SBQueueInner extends Resource {
      * @return the defaultMessageTimeToLive value.
      */
     public Duration defaultMessageTimeToLive() {
-        return this.defaultMessageTimeToLive;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultMessageTimeToLive();
     }
 
     /**
@@ -330,7 +259,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withDefaultMessageTimeToLive(defaultMessageTimeToLive);
         return this;
     }
 
@@ -341,7 +273,7 @@ public class SBQueueInner extends Resource {
      * @return the deadLetteringOnMessageExpiration value.
      */
     public Boolean deadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
+        return this.innerProperties() == null ? null : this.innerProperties().deadLetteringOnMessageExpiration();
     }
 
     /**
@@ -352,7 +284,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpiration);
         return this;
     }
 
@@ -363,7 +298,7 @@ public class SBQueueInner extends Resource {
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration duplicateDetectionHistoryTimeWindow() {
-        return this.duplicateDetectionHistoryTimeWindow;
+        return this.innerProperties() == null ? null : this.innerProperties().duplicateDetectionHistoryTimeWindow();
     }
 
     /**
@@ -374,7 +309,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withDuplicateDetectionHistoryTimeWindow(Duration duplicateDetectionHistoryTimeWindow) {
-        this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryTimeWindow);
         return this;
     }
 
@@ -385,7 +323,7 @@ public class SBQueueInner extends Resource {
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
-        return this.maxDeliveryCount;
+        return this.innerProperties() == null ? null : this.innerProperties().maxDeliveryCount();
     }
 
     /**
@@ -396,7 +334,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withMaxDeliveryCount(Integer maxDeliveryCount) {
-        this.maxDeliveryCount = maxDeliveryCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withMaxDeliveryCount(maxDeliveryCount);
         return this;
     }
 
@@ -406,7 +347,7 @@ public class SBQueueInner extends Resource {
      * @return the status value.
      */
     public EntityStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -416,7 +357,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withStatus(EntityStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -427,7 +371,7 @@ public class SBQueueInner extends Resource {
      * @return the enableBatchedOperations value.
      */
     public Boolean enableBatchedOperations() {
-        return this.enableBatchedOperations;
+        return this.innerProperties() == null ? null : this.innerProperties().enableBatchedOperations();
     }
 
     /**
@@ -438,7 +382,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withEnableBatchedOperations(Boolean enableBatchedOperations) {
-        this.enableBatchedOperations = enableBatchedOperations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withEnableBatchedOperations(enableBatchedOperations);
         return this;
     }
 
@@ -449,7 +396,7 @@ public class SBQueueInner extends Resource {
      * @return the autoDeleteOnIdle value.
      */
     public Duration autoDeleteOnIdle() {
-        return this.autoDeleteOnIdle;
+        return this.innerProperties() == null ? null : this.innerProperties().autoDeleteOnIdle();
     }
 
     /**
@@ -460,7 +407,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        this.autoDeleteOnIdle = autoDeleteOnIdle;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
 
@@ -471,7 +421,7 @@ public class SBQueueInner extends Resource {
      * @return the enablePartitioning value.
      */
     public Boolean enablePartitioning() {
-        return this.enablePartitioning;
+        return this.innerProperties() == null ? null : this.innerProperties().enablePartitioning();
     }
 
     /**
@@ -482,7 +432,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withEnablePartitioning(Boolean enablePartitioning) {
-        this.enablePartitioning = enablePartitioning;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withEnablePartitioning(enablePartitioning);
         return this;
     }
 
@@ -493,7 +446,7 @@ public class SBQueueInner extends Resource {
      * @return the enableExpress value.
      */
     public Boolean enableExpress() {
-        return this.enableExpress;
+        return this.innerProperties() == null ? null : this.innerProperties().enableExpress();
     }
 
     /**
@@ -504,7 +457,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withEnableExpress(Boolean enableExpress) {
-        this.enableExpress = enableExpress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withEnableExpress(enableExpress);
         return this;
     }
 
@@ -514,7 +470,7 @@ public class SBQueueInner extends Resource {
      * @return the forwardTo value.
      */
     public String forwardTo() {
-        return this.forwardTo;
+        return this.innerProperties() == null ? null : this.innerProperties().forwardTo();
     }
 
     /**
@@ -524,7 +480,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withForwardTo(String forwardTo) {
-        this.forwardTo = forwardTo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withForwardTo(forwardTo);
         return this;
     }
 
@@ -534,7 +493,7 @@ public class SBQueueInner extends Resource {
      * @return the forwardDeadLetteredMessagesTo value.
      */
     public String forwardDeadLetteredMessagesTo() {
-        return this.forwardDeadLetteredMessagesTo;
+        return this.innerProperties() == null ? null : this.innerProperties().forwardDeadLetteredMessagesTo();
     }
 
     /**
@@ -544,7 +503,10 @@ public class SBQueueInner extends Resource {
      * @return the SBQueueInner object itself.
      */
     public SBQueueInner withForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
-        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBQueueProperties();
+        }
+        this.innerProperties().withForwardDeadLetteredMessagesTo(forwardDeadLetteredMessagesTo);
         return this;
     }
 
@@ -554,8 +516,8 @@ public class SBQueueInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (countDetails() != null) {
-            countDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

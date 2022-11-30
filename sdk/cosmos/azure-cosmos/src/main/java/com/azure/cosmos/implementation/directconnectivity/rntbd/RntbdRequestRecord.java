@@ -67,6 +67,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     private volatile Instant timeReceived;
     private volatile boolean sendingRequestHasStarted;
     private volatile RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+    private volatile RntbdClientChannelHealthChecker.Timestamps timestamps;
 
     protected RntbdRequestRecord(final RntbdRequestArgs args) {
 
@@ -253,14 +254,23 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:
             // 1. RequestOnly request
             // 2. Write request but not sent yet
-            error = new GoneException(this.toString(), null, this.args.physicalAddress());
+            error = new GoneException(this.toString(), null, this.args.physicalAddressUri().getURI());
         } else {
             // For sent write request, converting to requestTimeout, will not be retried.
-            error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
+            error = new RequestTimeoutException(this.toString(), this.args.physicalAddressUri().getURI());
         }
 
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+
+        if (this.timestamps != null) {
+            this.timestamps.transitTimeout();
+        }
+
         return this.completeExceptionally(error);
+    }
+
+    public void setTimestamps(RntbdClientChannelHealthChecker.Timestamps timestamps) {
+        this.timestamps = timestamps;
     }
 
     public abstract Timeout newTimeout(final TimerTask task);

@@ -27,16 +27,16 @@ public final class SimsImpl implements Sims {
         this.serviceManager = serviceManager;
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String simName) {
-        this.serviceClient().delete(resourceGroupName, simName);
+    public void delete(String resourceGroupName, String simGroupName, String simName) {
+        this.serviceClient().delete(resourceGroupName, simGroupName, simName);
     }
 
-    public void delete(String resourceGroupName, String simName, Context context) {
-        this.serviceClient().delete(resourceGroupName, simName, context);
+    public void delete(String resourceGroupName, String simGroupName, String simName, Context context) {
+        this.serviceClient().delete(resourceGroupName, simGroupName, simName, context);
     }
 
-    public Sim getByResourceGroup(String resourceGroupName, String simName) {
-        SimInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, simName);
+    public Sim get(String resourceGroupName, String simGroupName, String simName) {
+        SimInner inner = this.serviceClient().get(resourceGroupName, simGroupName, simName);
         if (inner != null) {
             return new SimImpl(inner, this.manager());
         } else {
@@ -44,9 +44,10 @@ public final class SimsImpl implements Sims {
         }
     }
 
-    public Response<Sim> getByResourceGroupWithResponse(String resourceGroupName, String simName, Context context) {
+    public Response<Sim> getWithResponse(
+        String resourceGroupName, String simGroupName, String simName, Context context) {
         Response<SimInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, simName, context);
+            this.serviceClient().getWithResponse(resourceGroupName, simGroupName, simName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -58,23 +59,13 @@ public final class SimsImpl implements Sims {
         }
     }
 
-    public PagedIterable<Sim> list() {
-        PagedIterable<SimInner> inner = this.serviceClient().list();
+    public PagedIterable<Sim> listBySimGroup(String resourceGroupName, String simGroupName) {
+        PagedIterable<SimInner> inner = this.serviceClient().listBySimGroup(resourceGroupName, simGroupName);
         return Utils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Sim> list(Context context) {
-        PagedIterable<SimInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Sim> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SimInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Sim> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<SimInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<Sim> listBySimGroup(String resourceGroupName, String simGroupName, Context context) {
+        PagedIterable<SimInner> inner = this.serviceClient().listBySimGroup(resourceGroupName, simGroupName, context);
         return Utils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
     }
 
@@ -87,6 +78,13 @@ public final class SimsImpl implements Sims {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
+        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        if (simGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+        }
         String simName = Utils.getValueFromIdByName(id, "sims");
         if (simName == null) {
             throw LOGGER
@@ -94,7 +92,7 @@ public final class SimsImpl implements Sims {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, simName, Context.NONE).getValue();
+        return this.getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE).getValue();
     }
 
     public Response<Sim> getByIdWithResponse(String id, Context context) {
@@ -106,6 +104,13 @@ public final class SimsImpl implements Sims {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
+        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        if (simGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+        }
         String simName = Utils.getValueFromIdByName(id, "sims");
         if (simName == null) {
             throw LOGGER
@@ -113,7 +118,7 @@ public final class SimsImpl implements Sims {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, simName, context);
+        return this.getWithResponse(resourceGroupName, simGroupName, simName, context);
     }
 
     public void deleteById(String id) {
@@ -125,6 +130,13 @@ public final class SimsImpl implements Sims {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
+        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        if (simGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+        }
         String simName = Utils.getValueFromIdByName(id, "sims");
         if (simName == null) {
             throw LOGGER
@@ -132,7 +144,7 @@ public final class SimsImpl implements Sims {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
         }
-        this.delete(resourceGroupName, simName, Context.NONE);
+        this.delete(resourceGroupName, simGroupName, simName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
@@ -144,6 +156,13 @@ public final class SimsImpl implements Sims {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
+        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        if (simGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+        }
         String simName = Utils.getValueFromIdByName(id, "sims");
         if (simName == null) {
             throw LOGGER
@@ -151,7 +170,7 @@ public final class SimsImpl implements Sims {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
         }
-        this.delete(resourceGroupName, simName, context);
+        this.delete(resourceGroupName, simGroupName, simName, context);
     }
 
     private SimsClient serviceClient() {

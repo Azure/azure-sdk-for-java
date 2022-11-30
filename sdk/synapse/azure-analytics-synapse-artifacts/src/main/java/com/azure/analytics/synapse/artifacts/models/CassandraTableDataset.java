@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class CassandraTableDataset extends Dataset {
     /*
-     * The table name of the Cassandra database. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Cassandra database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The keyspace of the Cassandra database. Type: string (or Expression with
-     * resultType string).
+     * The keyspace of the Cassandra database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.keyspace")
     private Object keyspace;

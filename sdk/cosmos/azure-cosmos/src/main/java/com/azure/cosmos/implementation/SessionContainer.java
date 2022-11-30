@@ -209,7 +209,8 @@ public final class SessionContainer implements ISessionContainer {
 
         this.readLock.lock();
         try {
-            isKnownCollection = this.collectionNameToCollectionResourceId.containsKey(collectionName) &&
+            isKnownCollection = collectionName != null &&
+                    this.collectionNameToCollectionResourceId.containsKey(collectionName) &&
                     this.collectionResourceIdToCollectionName.containsKey(resourceId.getUniqueDocumentCollectionId()) &&
                     this.collectionNameToCollectionResourceId.get(collectionName) == resourceId.getUniqueDocumentCollectionId() &&
                     this.collectionResourceIdToCollectionName.get(resourceId.getUniqueDocumentCollectionId()).equals(collectionName);
@@ -223,7 +224,7 @@ public final class SessionContainer implements ISessionContainer {
         if (!isKnownCollection) {
             this.writeLock.lock();
             try {
-                if (collectionName != null && resourceId.getUniqueDocumentCollectionId() != 0) {
+                if (resourceId.getUniqueDocumentCollectionId() != 0) {
                     this.collectionNameToCollectionResourceId.compute(collectionName, (k, v) -> resourceId.getUniqueDocumentCollectionId());
                     this.collectionResourceIdToCollectionName.compute(resourceId.getUniqueDocumentCollectionId(), (k, v) -> collectionName);
                 }
@@ -310,9 +311,8 @@ public final class SessionContainer implements ISessionContainer {
         if (!Strings.isNullOrEmpty(resourceIdString)) {
             resourceId.v = ResourceId.parse(resourceIdString);
 
-            if (resourceId.v.getDocumentCollection() != 0 &&
-                    collectionName != null &&
-                    !ReplicatedResourceClientUtils.isReadingFromMaster(request.getResourceType(), request.getOperationType())) {
+            if (resourceId.v.getDocumentCollection() != 0
+                && !ReplicatedResourceClientUtils.isReadingFromMaster(request.getResourceType(), request.getOperationType())) {
                 return true;
             }
         }

@@ -32,6 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
@@ -109,7 +110,7 @@ public final class Utility {
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
         Configuration configuration, RetryPolicy retryPolicy, RetryOptions retryOptions,
-        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential,
+        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential, SearchAudience audience,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient,
         ClientLogger logger) {
         Configuration buildConfiguration = (configuration == null)
@@ -140,8 +141,8 @@ public final class Utility {
         } else if (azureKeyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy("api-key", azureKeyCredential));
         } else if (tokenCredential != null) {
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                "https://search.azure.com/.default"));
+            String audienceUrl = audience == null ? SearchAudience.AZURE_PUBLIC_CLOUD.toString() : audience.toString();
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audienceUrl + "/.default"));
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("Builder doesn't have a credential "
                 + "configured. Supply either an AzureKeyCredential or TokenCredential."));

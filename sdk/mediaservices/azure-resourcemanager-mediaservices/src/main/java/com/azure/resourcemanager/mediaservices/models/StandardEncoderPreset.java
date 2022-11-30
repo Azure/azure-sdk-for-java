@@ -17,8 +17,7 @@ import java.util.List;
 @Fluent
 public final class StandardEncoderPreset extends Preset {
     /*
-     * One or more filtering operations that are applied to the input media
-     * before encoding.
+     * One or more filtering operations that are applied to the input media before encoding.
      */
     @JsonProperty(value = "filters")
     private Filters filters;

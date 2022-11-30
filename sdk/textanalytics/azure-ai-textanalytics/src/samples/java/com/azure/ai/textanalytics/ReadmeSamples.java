@@ -7,6 +7,10 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
@@ -15,12 +19,16 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
+import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -31,6 +39,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -257,9 +266,130 @@ public class ReadmeSamples {
                             System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
                                 entity.getText(), entity.getCategory(), role.getName());
                         });
+                        System.out.printf("\tRelation confidence score: %f.%n", entityRelation.getConfidenceScore());
                     });
                 }));
         // END: readme-sample-recognizeHealthcareEntities
+    }
+
+    /**
+     * Code snippet for recognizing custom entities in documents.
+     */
+    public void recognizeCustomEntities() {
+        // BEGIN: readme-sample-custom-entities-recognition
+        List<String> documents = new ArrayList<>();
+        documents.add(
+            "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                + "responsibilities.");
+        documents.add(
+            "David Schmidt, senior vice president--Food Safety, International Food"
+                + " Information Council (IFIC), Washington, D.C., discussed the physical activity component."
+        );
+
+        // See the service documentation for regional support and how to train a model to recognize the custom entities,
+        // see https://aka.ms/azsdk/textanalytics/customentityrecognition
+        SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable> syncPoller =
+            textAnalyticsClient.beginRecognizeCustomEntities(documents, "{project_name}", "{deployment_name}");
+        syncPoller.waitForCompletion();
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (RecognizeEntitiesResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                if (!documentResult.isError()) {
+                    for (CategorizedEntity entity : documentResult.getEntities()) {
+                        System.out.printf(
+                            "\tText: %s, category: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getConfidenceScore());
+                    }
+                } else {
+                    System.out.printf("\tCannot recognize custom entities. Error: %s%n",
+                        documentResult.getError().getMessage());
+                }
+            }
+        });
+        // END: readme-sample-custom-entities-recognition
+    }
+
+    /**
+     * Code snippet for executing single-label classification in documents.
+     */
+    public void singleLabelClassification() {
+        // BEGIN: readme-sample-single-label-classification
+        List<String> documents = new ArrayList<>();
+        documents.add(
+            "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                + "responsibilities.");
+        documents.add(
+            "David Schmidt, senior vice president--Food Safety, International Food"
+                + " Information Council (IFIC), Washington, D.C., discussed the physical activity component."
+        );
+        documents.add(
+            "I need a reservation for an indoor restaurant in China. Please don't stop the music. Play music "
+                + "and add it to my playlist"
+        );
+
+        // See the service documentation for regional support and how to train a model to classify your documents,
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
+        SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+            textAnalyticsClient.beginSingleLabelClassify(documents, "{project_name}", "{deployment_name}");
+        syncPoller.waitForCompletion();
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (ClassifyDocumentResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                if (!documentResult.isError()) {
+                    for (ClassificationCategory classification : documentResult.getClassifications()) {
+                        System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                            classification.getCategory(), classification.getConfidenceScore());
+                    }
+                } else {
+                    System.out.printf("\tCannot classify category of document. Error: %s%n",
+                        documentResult.getError().getMessage());
+                }
+            }
+        });
+        // END: readme-sample-single-label-classification
+    }
+
+    /**
+     * Code snippet for executing multi-label classification in documents.
+     */
+    public void multiLabelClassification() {
+        // BEGIN: readme-sample-multi-label-classification
+        List<String> documents = new ArrayList<>();
+        documents.add(
+            "I need a reservation for an indoor restaurant in China. Please don't stop the music."
+                + " Play music and add it to my playlist"
+        );
+
+        // See the service documentation for regional support and how to train a model to classify your documents,
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
+        SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+            textAnalyticsClient.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}");
+        syncPoller.waitForCompletion();
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (ClassifyDocumentResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                if (!documentResult.isError()) {
+                    for (ClassificationCategory classification : documentResult.getClassifications()) {
+                        System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                            classification.getCategory(), classification.getConfidenceScore());
+                    }
+                } else {
+                    System.out.printf("\tCannot classify category of document. Error: %s%n",
+                        documentResult.getError().getMessage());
+                }
+            }
+        });
+        // END: readme-sample-multi-label-classification
     }
 
     /**

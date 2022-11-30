@@ -24,7 +24,11 @@ public final class SecurityAlertPolicyName extends ExpandableStringEnum<Security
         return fromString(name, SecurityAlertPolicyName.class);
     }
 
-    /** @return known SecurityAlertPolicyName values. */
+    /**
+     * Gets known SecurityAlertPolicyName values.
+     *
+     * @return known SecurityAlertPolicyName values.
+     */
     public static Collection<SecurityAlertPolicyName> values() {
         return values(SecurityAlertPolicyName.class);
     }

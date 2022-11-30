@@ -20,11 +20,14 @@ public final class ApplicationGatewayConnectionDraining {
     private boolean enabled;
 
     /*
-     * The number of seconds connection draining is active. Acceptable values
-     * are from 1 second to 3600 seconds.
+     * The number of seconds connection draining is active. Acceptable values are from 1 second to 3600 seconds.
      */
     @JsonProperty(value = "drainTimeoutInSec", required = true)
     private int drainTimeoutInSec;
+
+    /** Creates an instance of ApplicationGatewayConnectionDraining class. */
+    public ApplicationGatewayConnectionDraining() {
+    }
 
     /**
      * Get the enabled property: Whether connection draining is enabled or not.

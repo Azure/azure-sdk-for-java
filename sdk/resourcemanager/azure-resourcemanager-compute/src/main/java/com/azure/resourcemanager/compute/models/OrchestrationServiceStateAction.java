@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrchestrationServiceStateAction. */
+/** The action to be performed. */
 public final class OrchestrationServiceStateAction extends ExpandableStringEnum<OrchestrationServiceStateAction> {
     /** Static value Resume for OrchestrationServiceStateAction. */
     public static final OrchestrationServiceStateAction RESUME = fromString("Resume");

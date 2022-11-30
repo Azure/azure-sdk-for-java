@@ -1,6 +1,6 @@
 # Azure Communication CallingServer Service client library for Java
 
-This package contains a Java SDK for Azure Communication CallingServer Service.
+This package contains a Java SDK for Azure Communication CallingServer Service. Server Test
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
@@ -21,158 +21,27 @@ This package contains a Java SDK for Azure Communication CallingServer Service.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callingserver</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
+This is the restart of CallingServer Service. It is renamed to Call Automation service and being more intuitive to use.
 
-At a high level the Azure Communication CallingServer API will support two kinds of scenarios:
+`CallAutomationClient` provides the functionality to make call, answer/reject incoming call and redirect a call.
 
-- In-call app: Contoso server app is a participant in the call.  
+`CallConnection` provides the functionality to perform actions in an established call connection such as adding participants and terminate the call.
 
-- Out-call app: Contoso server app is not a participant in the call - Server app can subscribe to events for calls between specific users or even all users belonging to the ACS azure resource.  
+`CallMedia` introduces media related functionalities into the call.
 
-Based on if the Contoso app join a call or not, APIs can be divided into two categories:   
+`CallRecording` provides the functionality of recording the call.
 
-- In-call APIs: Contoso app is one of the participant in a call. It can be applicable for app to person (A2P) or person to app (P2A) case, or multi-party/group calls that server apps joined as a participant to provide audio/prompt.  
-
-- Out-of-call APIs: Contoso app can invoke these set of APIs without joining a call. It is applicable for actions on P2P calls, A2P calls, P2A calls and group calls.  
+`EventHandler` provides the functionality to handle events from the ACS resource.
 
 ## Examples
 
-### Authenticate the client
-
-
-You can provide the connection string using the connectionString() function of `CallingServerClientBuilder`. Once you initialized a `CallingServerClient` class, you can do the different server calling operations.
-
-```java readme-sample-createCallingServerClient
-// Your connectionString retrieved from your Azure Communication Service
-String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
-
-// Initialize the calling server client
-final CallingServerClientBuilder builder = new CallingServerClientBuilder();
-builder.connectionString(connectionString);
-CallingServerClient callingServerClient = builder.buildClient();
-```
-
-Alternatively, calling clients can also be authenticated using a valid token credential. With this option,
-`AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables need to be set up for authentication. 
-
-```java readme-sample-createCallingServerClientWithTokenCredential
-// Your endpoint retrieved from your Azure Communication Service
-String endpoint = "https://<resource-name>.communication.azure.com";
-
-// Token credential used for managed identity authentication. Depends on `AZURE_CLIENT_SECRET`,
-// `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment variables to be set up.
-TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-// Initialize the calling server client
-CallingServerClient callingServerClient  = new CallingServerClientBuilder()
-    .endpoint(endpoint)
-    .credential(tokenCredential)
-    .buildClient();
-```
-
-### Create call, Add participant and Hangup a call
-
-#### Create a Call: 
-
-```java readme-sample-createCallConnection
-CommunicationIdentifier source = new CommunicationUserIdentifier("<acs-user-identity>");
-CommunicationIdentifier firstCallee = new CommunicationUserIdentifier("<acs-user-identity-1>");
-CommunicationIdentifier secondCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
-
-List<CommunicationIdentifier> targets = Arrays.asList(firstCallee, secondCallee);
-
-String callbackUri = "<callback-uri-for-notification>";
-
-List<MediaType> requestedMediaTypes = Arrays.asList(MediaType.AUDIO, MediaType.VIDEO);
-
-List<EventSubscriptionType> requestedCallEvents = Arrays.asList(
-    EventSubscriptionType.DTMF_RECEIVED,
-    EventSubscriptionType.PARTICIPANTS_UPDATED);
-
-CreateCallOptions createCallOptions = new CreateCallOptions(
-    callbackUri,
-    requestedMediaTypes,
-    requestedCallEvents);
-
-CallConnection callConnection = callingServerClient.createCallConnection(source, targets, createCallOptions);
-```
-
-#### Add a participant to a Call:
-
-```java readme-sample-addParticipant
-CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
-callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
-```
-
-#### Hangup a Call:
-
-```java readme-sample-hangupCallConnection
-callConnection.hangup();
-```
-
-### Start, Pause, Resume, Stop and Get a recording
-
-#### Start a Recording: 
-
-```java readme-sample-startRecording
-String serverCallId = "<serverCallId received from starting call>";
-String recordingStateCallbackUri = "<webhook endpoint to which calling service can report status>";
-ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
-StartCallRecordingResult result = serverCall.startRecording(recordingStateCallbackUri);
-String recordingId = result.getRecordingId();
-```
-
-#### Pause a Recording: 
-
-```java readme-sample-pauseRecording
-serverCall.pauseRecording(recordingId);
-```
-
-#### Resume a Recording: 
-
-```java readme-sample-resumeRecording
-serverCall.resumeRecording(recordingId);
-```
-
-#### Stop a Recording: 
-
-```java readme-sample-stopRecording
-serverCall.stopRecording(recordingId);
-```
-
-#### Get the Recording State: 
-
-```java readme-sample-getRecordingState
-CallRecordingState callRecordingState = callRecordingStateResult.getRecordingState();
-```
-
-#### Download a Recording into a file:
-
-```java readme-sample-getRecordingStream
-callingServerClient.downloadTo(
-    recordingUrl,
-    Paths.get(filePath),
-    null,
-    true
-);
-```
-### Play Audio in Call
-
-#### Play Audio: 
-
-```java readme-sample-playAudio
-String audioFileUri = "<uri of the file to play>";
-String audioFileId = "<a name to use for caching the audio file>";
-String callbackUri = "<webhook endpoint to which calling service can report status>";
-String context = "<Identifier for correlating responses>";
-ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
-PlayAudioResult playAudioResult = serverCall.playAudio(audioFileUri, audioFileId, callbackUri, context);
-```
+To be determined.
 
 ## Troubleshooting
 
@@ -202,7 +71,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
-[package]: https://search.maven.org/artifact/com.azure/azure-communication-callingserver
+[package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
 [api_documentation]: https://aka.ms/java-docs
 [call_automation_apis_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
 [call_recording_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording

@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class BatchTestBase extends TestSuiteBase {
 
+    private String partitionKey;
     private Random random = new Random();
     String partitionKey1 = "TBD1";
 
@@ -55,7 +56,8 @@ public abstract class BatchTestBase extends TestSuiteBase {
         this.TestDocPk1ExistingD =  this.createJsonTestDoc(container, this.partitionKey1);
     }
 
-    TestDoc populateTestDoc(String partitionKey) {
+    public TestDoc populateTestDoc(String partitionKey) {
+        this.partitionKey = partitionKey;
         return populateTestDoc(partitionKey, 20);
     }
 

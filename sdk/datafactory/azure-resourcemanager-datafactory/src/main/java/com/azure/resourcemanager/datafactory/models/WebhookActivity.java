@@ -23,6 +23,10 @@ public final class WebhookActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private WebhookActivityTypeProperties innerTypeProperties = new WebhookActivityTypeProperties();
 
+    /** Creates an instance of WebhookActivity class. */
+    public WebhookActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: WebHook activity properties.
      *

@@ -799,7 +799,7 @@ public final class AttestationAdministrationAsyncClient {
      * <pre>
      * Mono&lt;AttestationResponse&lt;PolicyCertificatesModificationResult&gt;&gt; addResponseMono = client
      *     .addPolicyManagementCertificateWithResponse&#40;new PolicyManagementCertificateOptions&#40;certificateToAdd,
-     *         new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;, Context.NONE&#41;;
+     *         new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
      * addResponseMono.subscribe&#40;addResponse -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;,
      *     addResponse.getValue&#40;&#41;.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
      * </pre>
@@ -936,7 +936,7 @@ public final class AttestationAdministrationAsyncClient {
      * <pre>
      * Mono&lt;AttestationResponse&lt;PolicyCertificatesModificationResult&gt;&gt; removeResponseMono = client
      *     .addPolicyManagementCertificateWithResponse&#40;new PolicyManagementCertificateOptions&#40;certificateToAdd,
-     *         new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;, Context.NONE&#41;;
+     *         new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
      * removeResponseMono.subscribe&#40;removeResponse -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;,
      *     removeResponse.getValue&#40;&#41;.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
      * </pre>

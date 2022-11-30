@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityRuleProtocol. */
+/** Network protocol this rule applies to. */
 public final class SecurityRuleProtocol extends ExpandableStringEnum<SecurityRuleProtocol> {
     /** Static value Tcp for SecurityRuleProtocol. */
     public static final SecurityRuleProtocol TCP = fromString("Tcp");

@@ -27,7 +27,11 @@ public final class DatasetCompressionLevel extends ExpandableStringEnum<DatasetC
         return fromString(name, DatasetCompressionLevel.class);
     }
 
-    /** @return known DatasetCompressionLevel values. */
+    /**
+     * Gets known DatasetCompressionLevel values.
+     *
+     * @return known DatasetCompressionLevel values.
+     */
     public static Collection<DatasetCompressionLevel> values() {
         return values(DatasetCompressionLevel.class);
     }

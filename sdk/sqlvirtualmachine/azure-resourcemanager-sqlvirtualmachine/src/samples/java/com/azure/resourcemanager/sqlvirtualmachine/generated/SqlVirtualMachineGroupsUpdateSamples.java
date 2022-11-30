@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for SqlVirtualMachineGroups Update. */
 public final class SqlVirtualMachineGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/UpdateSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/UpdateSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Updates a SQL virtual machine group tags.

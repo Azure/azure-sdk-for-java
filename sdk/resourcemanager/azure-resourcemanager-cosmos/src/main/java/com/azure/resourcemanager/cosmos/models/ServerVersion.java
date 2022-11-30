@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerVersion. */
+/** Describes the ServerVersion of an a MongoDB account. */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
     /** Static value 3.2 for ServerVersion. */
     public static final ServerVersion THREE_TWO = fromString("3.2");

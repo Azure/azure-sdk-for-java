@@ -22,7 +22,7 @@ public final class DynatraceSingleSignOnResourceListResult {
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", required = true)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -78,12 +78,6 @@ public final class DynatraceSingleSignOnResourceListResult {
                         "Missing required property value in model DynatraceSingleSignOnResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
-        }
-        if (nextLink() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nextLink in model DynatraceSingleSignOnResourceListResult"));
         }
     }
 

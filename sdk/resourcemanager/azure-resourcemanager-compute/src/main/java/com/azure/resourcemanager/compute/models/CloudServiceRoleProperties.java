@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CloudServiceRoleProperties model. */
+/** The cloud service role properties. */
 @Immutable
 public final class CloudServiceRoleProperties {
     /*
@@ -15,6 +15,10 @@ public final class CloudServiceRoleProperties {
      */
     @JsonProperty(value = "uniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueId;
+
+    /** Creates an instance of CloudServiceRoleProperties class. */
+    public CloudServiceRoleProperties() {
+    }
 
     /**
      * Get the uniqueId property: Specifies the ID which uniquely identifies a cloud service role.

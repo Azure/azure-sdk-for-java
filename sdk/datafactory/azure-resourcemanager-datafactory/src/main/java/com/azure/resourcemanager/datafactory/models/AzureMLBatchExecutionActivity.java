@@ -25,6 +25,10 @@ public final class AzureMLBatchExecutionActivity extends ExecutionActivity {
     private AzureMLBatchExecutionActivityTypeProperties innerTypeProperties =
         new AzureMLBatchExecutionActivityTypeProperties();
 
+    /** Creates an instance of AzureMLBatchExecutionActivity class. */
+    public AzureMLBatchExecutionActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure ML Batch Execution activity properties.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewaySslPolicyName. */
+/** Ssl predefined policy name enums. */
 public final class ApplicationGatewaySslPolicyName extends ExpandableStringEnum<ApplicationGatewaySslPolicyName> {
     /** Static value AppGwSslPolicy20150501 for ApplicationGatewaySslPolicyName. */
     public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20150501 =
@@ -21,6 +21,14 @@ public final class ApplicationGatewaySslPolicyName extends ExpandableStringEnum<
     /** Static value AppGwSslPolicy20170401S for ApplicationGatewaySslPolicyName. */
     public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20170401S =
         fromString("AppGwSslPolicy20170401S");
+
+    /** Static value AppGwSslPolicy20220101 for ApplicationGatewaySslPolicyName. */
+    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20220101 =
+        fromString("AppGwSslPolicy20220101");
+
+    /** Static value AppGwSslPolicy20220101S for ApplicationGatewaySslPolicyName. */
+    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20220101S =
+        fromString("AppGwSslPolicy20220101S");
 
     /**
      * Creates or finds a ApplicationGatewaySslPolicyName from its string representation.

@@ -24,11 +24,15 @@ public final class PurchasePlan {
     private String name;
 
     /*
-     * Specifies the product of the image from the marketplace. This is the
-     * same value as Offer under the imageReference element.
+     * Specifies the product of the image from the marketplace. This is the same value as Offer under the
+     * imageReference element.
      */
     @JsonProperty(value = "product", required = true)
     private String product;
+
+    /** Creates an instance of PurchasePlan class. */
+    public PurchasePlan() {
+    }
 
     /**
      * Get the publisher property: The publisher ID.

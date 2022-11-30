@@ -25,8 +25,7 @@ public final class RouteTablePropertiesFormat {
     private List<SubnetInner> subnets;
 
     /*
-     * Whether to disable the routes learned by BGP on that route table. True
-     * means disable.
+     * Whether to disable the routes learned by BGP on that route table. True means disable.
      */
     @JsonProperty(value = "disableBgpRoutePropagation")
     private Boolean disableBgpRoutePropagation;
@@ -42,6 +41,10 @@ public final class RouteTablePropertiesFormat {
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
+
+    /** Creates an instance of RouteTablePropertiesFormat class. */
+    public RouteTablePropertiesFormat() {
+    }
 
     /**
      * Get the routes property: Collection of routes contained within a route table.

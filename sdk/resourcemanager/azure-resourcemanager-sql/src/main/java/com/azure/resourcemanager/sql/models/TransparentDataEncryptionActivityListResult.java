@@ -7,15 +7,12 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionActivityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the response to a list database transparent data encryption activity request. */
 @Fluent
 public final class TransparentDataEncryptionActivityListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransparentDataEncryptionActivityListResult.class);
-
     /*
      * The list of database transparent data encryption activities.
      */
@@ -49,7 +46,7 @@ public final class TransparentDataEncryptionActivityListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model TransparentDataEncryptionActivityListResult"));
@@ -57,4 +54,6 @@ public final class TransparentDataEncryptionActivityListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TransparentDataEncryptionActivityListResult.class);
 }

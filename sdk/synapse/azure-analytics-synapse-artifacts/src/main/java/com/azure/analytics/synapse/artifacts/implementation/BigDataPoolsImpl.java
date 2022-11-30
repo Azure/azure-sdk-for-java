@@ -109,15 +109,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfoListResult> listAsync() {
-        return listWithResponseAsync()
-                .flatMap(
-                        (Response<BigDataPoolResourceInfoListResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -131,15 +123,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfoListResult> listAsync(Context context) {
-        return listWithResponseAsync(context)
-                .flatMap(
-                        (Response<BigDataPoolResourceInfoListResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return listWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -213,15 +197,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfo> getAsync(String bigDataPoolName) {
-        return getWithResponseAsync(bigDataPoolName)
-                .flatMap(
-                        (Response<BigDataPoolResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(bigDataPoolName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -236,15 +212,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfo> getAsync(String bigDataPoolName, Context context) {
-        return getWithResponseAsync(bigDataPoolName, context)
-                .flatMap(
-                        (Response<BigDataPoolResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(bigDataPoolName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

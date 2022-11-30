@@ -62,8 +62,8 @@ public interface Slice {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the snssai property: The S-NSSAI (single network slice selection assistance information). Unique at the
-     * scope of a MobileNetwork.
+     * Gets the snssai property: Single-network slice selection assistance information (S-NSSAI). Unique at the scope of
+     * a mobile network.
      *
      * @return the snssai value.
      */
@@ -89,6 +89,13 @@ public interface Slice {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.SliceInner object.
@@ -142,11 +149,11 @@ public interface Slice {
         /** The stage of the Slice definition allowing to specify snssai. */
         interface WithSnssai {
             /**
-             * Specifies the snssai property: The S-NSSAI (single network slice selection assistance information).
-             * Unique at the scope of a MobileNetwork..
+             * Specifies the snssai property: Single-network slice selection assistance information (S-NSSAI). Unique at
+             * the scope of a mobile network..
              *
-             * @param snssai The S-NSSAI (single network slice selection assistance information). Unique at the scope of
-             *     a MobileNetwork.
+             * @param snssai Single-network slice selection assistance information (S-NSSAI). Unique at the scope of a
+             *     mobile network.
              * @return the next definition stage.
              */
             WithCreate withSnssai(Snssai snssai);

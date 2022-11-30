@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -25,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.DatabaseOperationsClient;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseOperationInner;
 import com.azure.resourcemanager.sql.models.DatabaseOperationListResult;
@@ -34,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabaseOperationsClient. */
 public final class DatabaseOperationsClientImpl implements DatabaseOperationsClient {
-    private final ClientLogger logger = new ClientLogger(DatabaseOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DatabaseOperationsService service;
 
@@ -76,7 +74,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/operations")
@@ -89,14 +87,18 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
             @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseOperationListResult>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -110,7 +112,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(
@@ -154,7 +156,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -169,7 +171,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> cancelWithResponseAsync(
@@ -224,12 +226,12 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String databaseName, UUID operationId) {
         return cancelWithResponseAsync(resourceGroupName, serverName, databaseName, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -261,7 +263,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(
@@ -279,7 +281,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the database.
+     * @return a list of operations performed on the database along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseOperationInner>> listByDatabaseSinglePageAsync(
@@ -307,6 +310,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -318,6 +322,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
                             databaseName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<DatabaseOperationInner>>map(
                 res ->
@@ -328,7 +333,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -342,7 +347,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the database.
+     * @return a list of operations performed on the database along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseOperationInner>> listByDatabaseSinglePageAsync(
@@ -370,6 +376,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(
@@ -379,6 +386,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
                 databaseName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -401,7 +409,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the database.
+     * @return a list of operations performed on the database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseOperationInner> listByDatabaseAsync(
@@ -422,7 +430,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the database.
+     * @return a list of operations performed on the database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseOperationInner> listByDatabaseAsync(
@@ -442,7 +450,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the database.
+     * @return a list of operations performed on the database as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseOperationInner> listByDatabase(
@@ -461,7 +469,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the database.
+     * @return a list of operations performed on the database as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseOperationInner> listByDatabase(
@@ -476,15 +484,23 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database operations request.
+     * @return the response to a list database operations request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseOperationInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByDatabaseNext(nextLink, context))
+            .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<DatabaseOperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -494,7 +510,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -505,7 +521,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database operations request.
+     * @return the response to a list database operations request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseOperationInner>> listByDatabaseNextSinglePageAsync(
@@ -513,9 +530,16 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDatabaseNext(nextLink, context)
+            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

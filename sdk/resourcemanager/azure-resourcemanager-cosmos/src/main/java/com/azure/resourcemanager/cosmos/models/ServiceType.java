@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceType. */
+/** ServiceType for the service. */
 public final class ServiceType extends ExpandableStringEnum<ServiceType> {
     /** Static value SqlDedicatedGateway for ServiceType. */
     public static final ServiceType SQL_DEDICATED_GATEWAY = fromString("SqlDedicatedGateway");

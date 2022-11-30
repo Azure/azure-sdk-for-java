@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "http://REDACTED.file.core.windows.net/4ad6e18d4ad6e18dc31841328834f4416d8642309e?restype=share",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.13; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8c8267f8-d11b-4961-b07d-4bb0df6a8fc6"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "eTag" : "0x8DA249C5EBD46D0",
       "Last-Modified" : "Fri, 22 Apr 2022 20:12:04 GMT",
@@ -24,13 +24,13 @@
     "Method" : "PUT",
     "Uri" : "http://REDACTED.file.core.windows.net/4ad6e18d4ad6e18dc31841328834f4416d8642309e/4ad6e18d4ad6e18dc3186055cf6d1941744343e2b3?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.13; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6644a1e7-45b6-4732-9d7c-6a47657eea0e"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "x-ms-file-permission-key" : "13502495874993983044*15256408171089631693",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
@@ -53,13 +53,13 @@
     "Method" : "GET",
     "Uri" : "http://REDACTED.file.core.windows.net/4ad6e18d4ad6e18dc31841328834f4416d8642309e/4ad6e18d4ad6e18dc3186055cf6d1941744343e2b3?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.13; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5100502e-5fe2-4acc-badb-575299d54a18"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "x-ms-file-permission-key" : "13502495874993983044*15256408171089631693",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",

@@ -14,9 +14,10 @@ import java.util.List;
 @Fluent
 public final class MaintenanceConfigurationProperties {
     /*
-     * Time slots during the week when planned maintenance is allowed to
-     * proceed. If two array entries specify the same day of the week, the
-     * applied configuration is the union of times in both entries.
+     * Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      */
     @JsonProperty(value = "timeInWeek")
     private List<TimeInWeek> timeInWeek;
@@ -27,9 +28,15 @@ public final class MaintenanceConfigurationProperties {
     @JsonProperty(value = "notAllowedTime")
     private List<TimeSpan> notAllowedTime;
 
+    /** Creates an instance of MaintenanceConfigurationProperties class. */
+    public MaintenanceConfigurationProperties() {
+    }
+
     /**
-     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @return the timeInWeek value.
      */
@@ -38,8 +45,10 @@ public final class MaintenanceConfigurationProperties {
     }
 
     /**
-     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationProperties object itself.

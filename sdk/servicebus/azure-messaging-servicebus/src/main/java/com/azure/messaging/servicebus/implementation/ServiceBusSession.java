@@ -29,11 +29,12 @@ public interface ServiceBusSession extends AmqpSession {
      * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retryPolicy The retry policy to use when consuming messages.
      * @param receiveMode The {@link ServiceBusReceiveMode} for the messages to be received.
+     * @param clientIdentifier The identifier of the client.
      *
      * @return A newly created AMQP link.
      */
     Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
-        Duration timeout, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode);
+        Duration timeout, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode, String clientIdentifier);
 
     /**
      * Creates a new AMQP link that consumes events from the message broker.
@@ -43,13 +44,15 @@ public interface ServiceBusSession extends AmqpSession {
      * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retryPolicy The retry policy to use when consuming messages.
      * @param receiveMode The {@link ServiceBusReceiveMode} for the messages to be received.
+     * @param clientIdentifier The identifier of the client.
      * @param sessionId The sessionId for the messages to be received. If {@code null}, then the next, unnamed session
      *     is retrieved.
      *
      * @return A newly created AMQP link.
      */
     Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
-        Duration timeout, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode, String sessionId);
+        Duration timeout, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode, String clientIdentifier,
+        String sessionId);
 
     /**
      * Creates a new {@link AmqpLink} that can send events to the message broker.
@@ -60,9 +63,10 @@ public interface ServiceBusSession extends AmqpSession {
      * @param retryPolicy The retry policy to use when sending events.
      * @param transferEntityPath The entity path this link connects to, so that it may transfer events to
      *     the message broker via this entity.
+     * @param clientIdentifier The identifier of the client.
      *
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retryPolicy, String transferEntityPath);
+    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy,
+        String transferEntityPath, String clientIdentifier);
 }

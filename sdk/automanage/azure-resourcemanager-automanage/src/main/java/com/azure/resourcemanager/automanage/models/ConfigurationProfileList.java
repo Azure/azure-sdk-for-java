@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the list configuration profile operation. */
 @Fluent
 public final class ConfigurationProfileList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProfileList.class);
-
     /*
      * Result of the list ConfigurationProfile operation.
      */

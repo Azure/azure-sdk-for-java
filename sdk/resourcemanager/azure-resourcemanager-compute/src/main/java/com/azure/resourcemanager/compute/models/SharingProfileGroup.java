@@ -12,8 +12,8 @@ import java.util.List;
 @Fluent
 public final class SharingProfileGroup {
     /*
-     * This property allows you to specify the type of sharing group. <br><br>
-     * Possible values are: <br><br> **Subscriptions** <br><br> **AADTenants**
+     * This property allows you to specify the type of sharing group. <br><br> Possible values are: <br><br>
+     * **Subscriptions** <br><br> **AADTenants**
      */
     @JsonProperty(value = "type")
     private SharingProfileGroupTypes type;
@@ -23,6 +23,10 @@ public final class SharingProfileGroup {
      */
     @JsonProperty(value = "ids")
     private List<String> ids;
+
+    /** Creates an instance of SharingProfileGroup class. */
+    public SharingProfileGroup() {
+    }
 
     /**
      * Get the type property: This property allows you to specify the type of sharing group. &lt;br&gt;&lt;br&gt;

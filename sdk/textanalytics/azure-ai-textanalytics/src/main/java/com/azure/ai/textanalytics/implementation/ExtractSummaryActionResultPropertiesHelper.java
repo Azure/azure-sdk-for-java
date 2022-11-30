@@ -20,7 +20,7 @@ public final class ExtractSummaryActionResultPropertiesHelper {
      */
     public interface ExtractSummaryActionResultAccessor {
         void setDocumentsResults(ExtractSummaryActionResult actionResult,
-            ExtractSummaryResultCollection documentsResults);
+                                 ExtractSummaryResultCollection documentsResults);
     }
 
     /**
@@ -33,7 +33,7 @@ public final class ExtractSummaryActionResultPropertiesHelper {
     }
 
     public static void setDocumentsResults(ExtractSummaryActionResult actionResult,
-        ExtractSummaryResultCollection documentsResults) {
+                                           ExtractSummaryResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

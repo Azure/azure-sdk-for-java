@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
@@ -63,6 +64,18 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     ServiceBusClientBuilderTest() {
         super(new ClientLogger(ServiceBusClientBuilderTest.class));
+    }
+
+    @Test
+    void ensureIdentifierString() {
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
+        final ServiceBusSenderAsyncClient client = builder
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .queueName(QUEUE_NAME)
+            .buildAsyncClient();
+
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(client.getIdentifier()));
     }
 
     @Test
@@ -221,26 +234,20 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
-    public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
+    public void testProxyOptionsConfiguration(String proxyConfiguration) {
         Configuration configuration = TestUtils.getGlobalConfiguration().clone();
         configuration
             .put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
             .put(JAVA_NET_USER_SYSTEM_PROXIES, "true");
-        boolean clientCreated = false;
-        try {
-            ServiceBusReceiverClient syncClient = new ServiceBusClientBuilder()
-                .connectionString(NAMESPACE_CONNECTION_STRING)
-                .configuration(configuration)
-                .receiver()
-                .topicName("baz").subscriptionName("bar")
-                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                .buildClient();
 
-            clientCreated = true;
-        } catch (Exception ex) {
-        }
-
-        Assertions.assertEquals(expectedClientCreation, clientCreated);
+        // Client creation should not fail with incorrect proxy configuration
+        ServiceBusReceiverClient syncClient = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .configuration(configuration)
+            .receiver()
+            .topicName("baz").subscriptionName("bar")
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+            .buildClient();
     }
 
     @Test
@@ -373,16 +380,16 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     private static Stream<Arguments> getProxyConfigurations() {
         return Stream.of(
-            Arguments.of("http://localhost:8080", true),
-            Arguments.of("localhost:8080", true),
-            Arguments.of("localhost_8080", false),
-            Arguments.of("http://example.com:8080", true),
-            Arguments.of("http://sub.example.com:8080", true),
-            Arguments.of(":8080", false),
-            Arguments.of("http://localhost", true),
-            Arguments.of("sub.example.com:8080", true),
-            Arguments.of("https://username:password@sub.example.com:8080", true),
-            Arguments.of("https://username:password@sub.example.com", true)
+            Arguments.of("http://localhost:8080"),
+            Arguments.of("localhost:8080"),
+            Arguments.of("localhost_8080"),
+            Arguments.of("http://example.com:8080"),
+            Arguments.of("http://sub.example.com:8080"),
+            Arguments.of(":8080"),
+            Arguments.of("http://localhost"),
+            Arguments.of("sub.example.com:8080"),
+            Arguments.of("https://username:password@sub.example.com:8080"),
+            Arguments.of("https://username:password@sub.example.com")
         );
 
     }

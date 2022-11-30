@@ -29,10 +29,6 @@ public final class VaultImpl implements Vault {
         return this.innerModel().type();
     }
 
-    public String location() {
-        return this.innerModel().location();
-    }
-
     public String vaultName() {
         return this.innerModel().vaultName();
     }

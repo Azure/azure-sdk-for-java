@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoutingSource. */
+/** The source that the routing rule is to be applied to, such as DeviceMessages. */
 public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
     /** Static value Invalid for RoutingSource. */
     public static final RoutingSource INVALID = fromString("Invalid");
@@ -25,8 +25,14 @@ public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
     /** Static value DeviceJobLifecycleEvents for RoutingSource. */
     public static final RoutingSource DEVICE_JOB_LIFECYCLE_EVENTS = fromString("DeviceJobLifecycleEvents");
 
+    /** Static value DigitalTwinChangeEvents for RoutingSource. */
+    public static final RoutingSource DIGITAL_TWIN_CHANGE_EVENTS = fromString("DigitalTwinChangeEvents");
+
     /** Static value DeviceConnectionStateEvents for RoutingSource. */
     public static final RoutingSource DEVICE_CONNECTION_STATE_EVENTS = fromString("DeviceConnectionStateEvents");
+
+    /** Static value MqttBrokerMessages for RoutingSource. */
+    public static final RoutingSource MQTT_BROKER_MESSAGES = fromString("MqttBrokerMessages");
 
     /**
      * Creates or finds a RoutingSource from its string representation.
@@ -39,7 +45,11 @@ public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
         return fromString(name, RoutingSource.class);
     }
 
-    /** @return known RoutingSource values. */
+    /**
+     * Gets known RoutingSource values.
+     *
+     * @return known RoutingSource values.
+     */
     public static Collection<RoutingSource> values() {
         return values(RoutingSource.class);
     }

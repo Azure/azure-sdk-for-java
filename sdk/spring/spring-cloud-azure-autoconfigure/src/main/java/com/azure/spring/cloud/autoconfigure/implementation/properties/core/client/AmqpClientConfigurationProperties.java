@@ -15,7 +15,7 @@ public class AmqpClientConfigurationProperties extends ClientConfigurationProper
     /**
      * Transport type for AMQP-based client.
      */
-    private AmqpTransportType transportType = AmqpTransportType.AMQP;
+    private AmqpTransportType transportType;
 
     @Override
     public AmqpTransportType getTransportType() {

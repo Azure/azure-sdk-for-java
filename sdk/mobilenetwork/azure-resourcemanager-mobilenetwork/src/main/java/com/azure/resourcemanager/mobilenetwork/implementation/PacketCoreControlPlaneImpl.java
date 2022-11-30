@@ -8,11 +8,14 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner;
+import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
-import com.azure.resourcemanager.mobilenetwork.models.CustomLocationResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
+import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlane;
+import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
@@ -49,6 +52,10 @@ public final class PacketCoreControlPlaneImpl
         }
     }
 
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -61,8 +68,8 @@ public final class PacketCoreControlPlaneImpl
         return this.innerModel().mobileNetwork();
     }
 
-    public CustomLocationResourceId customLocation() {
-        return this.innerModel().customLocation();
+    public PlatformConfiguration platform() {
+        return this.innerModel().platform();
     }
 
     public CoreNetworkType coreNetworkTechnology() {
@@ -77,12 +84,28 @@ public final class PacketCoreControlPlaneImpl
         return this.innerModel().controlPlaneAccessInterface();
     }
 
+    public BillingSku sku() {
+        return this.innerModel().sku();
+    }
+
+    public LocalDiagnosticsAccessConfiguration localDiagnosticsAccess() {
+        return this.innerModel().localDiagnosticsAccess();
+    }
+
+    public Object interopSettings() {
+        return this.innerModel().interopSettings();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public PacketCoreControlPlaneInner innerModel() {
@@ -203,6 +226,11 @@ public final class PacketCoreControlPlaneImpl
         return this;
     }
 
+    public PacketCoreControlPlaneImpl withSku(BillingSku sku) {
+        this.innerModel().withSku(sku);
+        return this;
+    }
+
     public PacketCoreControlPlaneImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -213,8 +241,13 @@ public final class PacketCoreControlPlaneImpl
         }
     }
 
-    public PacketCoreControlPlaneImpl withCustomLocation(CustomLocationResourceId customLocation) {
-        this.innerModel().withCustomLocation(customLocation);
+    public PacketCoreControlPlaneImpl withIdentity(ManagedServiceIdentity identity) {
+        this.innerModel().withIdentity(identity);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withPlatform(PlatformConfiguration platform) {
+        this.innerModel().withPlatform(platform);
         return this;
     }
 
@@ -225,6 +258,17 @@ public final class PacketCoreControlPlaneImpl
 
     public PacketCoreControlPlaneImpl withVersion(String version) {
         this.innerModel().withVersion(version);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withLocalDiagnosticsAccess(
+        LocalDiagnosticsAccessConfiguration localDiagnosticsAccess) {
+        this.innerModel().withLocalDiagnosticsAccess(localDiagnosticsAccess);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withInteropSettings(Object interopSettings) {
+        this.innerModel().withInteropSettings(interopSettings);
         return this;
     }
 

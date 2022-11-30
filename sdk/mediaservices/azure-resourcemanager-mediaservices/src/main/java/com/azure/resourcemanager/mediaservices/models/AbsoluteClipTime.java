@@ -20,8 +20,8 @@ import java.time.Duration;
 @Fluent
 public final class AbsoluteClipTime extends ClipTime {
     /*
-     * The time position on the timeline of the input media. It is usually
-     * specified as an ISO8601 period. e.g PT30S for 30 seconds.
+     * The time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S
+     * for 30 seconds.
      */
     @JsonProperty(value = "time", required = true)
     private Duration time;

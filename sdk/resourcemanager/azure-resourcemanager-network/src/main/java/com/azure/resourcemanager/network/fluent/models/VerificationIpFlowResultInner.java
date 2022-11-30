@@ -18,11 +18,14 @@ public final class VerificationIpFlowResultInner {
     private Access access;
 
     /*
-     * Name of the rule. If input is not matched against any security rule, it
-     * is not displayed.
+     * Name of the rule. If input is not matched against any security rule, it is not displayed.
      */
     @JsonProperty(value = "ruleName")
     private String ruleName;
+
+    /** Creates an instance of VerificationIpFlowResultInner class. */
+    public VerificationIpFlowResultInner() {
+    }
 
     /**
      * Get the access property: Indicates whether the traffic is allowed or denied.

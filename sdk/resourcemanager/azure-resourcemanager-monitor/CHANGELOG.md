@@ -1,6 +1,6 @@
 # Release History
 
-## 2.17.0-beta.1 (Unreleased)
+## 2.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,50 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.20.0 (2022-10-26)
+
+### Bugs Fixed
+
+- Fixed a bug that `DiagnosticSettings.get()` throws NPE when it has no metrics or logs configured.
+- Fixed a bug that `ActivityLogAlerts.list()` throws NPE when there are `ActivityLogAlert`s with condition of null `field` and `equals`.
+
+## 2.19.0 (2022-09-23)
+
+### Breaking Changes
+
+- Removed unused classes.
+- `enableReceiver` in `ActionGroups` will throw an exception if the receiver is already enabled.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `composite-v1`.
+
+## 2.18.0 (2022-08-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.17.0 (2022-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.16.0 (2022-06-24)
 

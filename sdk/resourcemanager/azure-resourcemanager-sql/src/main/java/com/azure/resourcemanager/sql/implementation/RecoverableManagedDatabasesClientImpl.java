@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.RecoverableManagedDatabasesClient;
 import com.azure.resourcemanager.sql.fluent.models.RecoverableManagedDatabaseInner;
 import com.azure.resourcemanager.sql.models.RecoverableManagedDatabaseListResult;
@@ -32,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RecoverableManagedDatabasesClient. */
 public final class RecoverableManagedDatabasesClientImpl implements RecoverableManagedDatabasesClient {
-    private final ClientLogger logger = new ClientLogger(RecoverableManagedDatabasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RecoverableManagedDatabasesService service;
 
@@ -60,7 +58,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
     private interface RecoverableManagedDatabasesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/recoverableDatabases")
@@ -72,9 +70,10 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/recoverableDatabases/{recoverableDatabaseName}")
@@ -87,14 +86,18 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
             @PathParam("recoverableDatabaseName") String recoverableDatabaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableManagedDatabaseListResult>> listByInstanceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -106,7 +109,8 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases.
+     * @return a list of recoverable managed databases along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceSinglePageAsync(
@@ -132,6 +136,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -142,6 +147,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                             managedInstanceName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<RecoverableManagedDatabaseInner>>map(
                 res ->
@@ -152,7 +158,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -165,7 +171,8 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases.
+     * @return a list of recoverable managed databases along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceSinglePageAsync(
@@ -191,6 +198,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByInstance(
@@ -199,6 +207,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 managedInstanceName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -220,7 +229,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases.
+     * @return a list of recoverable managed databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(
@@ -240,7 +249,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases.
+     * @return a list of recoverable managed databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(
@@ -259,7 +268,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases.
+     * @return a list of recoverable managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableManagedDatabaseInner> listByInstance(
@@ -277,7 +286,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases.
+     * @return a list of recoverable managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableManagedDatabaseInner> listByInstance(
@@ -295,7 +304,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database.
+     * @return a recoverable managed database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(
@@ -326,6 +335,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -337,8 +347,9 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                             recoverableDatabaseName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -352,7 +363,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database.
+     * @return a recoverable managed database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(
@@ -383,6 +394,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -392,6 +404,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 recoverableDatabaseName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -405,20 +418,13 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database.
+     * @return a recoverable managed database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecoverableManagedDatabaseInner> getAsync(
         String resourceGroupName, String managedInstanceName, String recoverableDatabaseName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, recoverableDatabaseName)
-            .flatMap(
-                (Response<RecoverableManagedDatabaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -450,7 +456,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database.
+     * @return a recoverable managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoverableManagedDatabaseInner> getWithResponse(
@@ -465,15 +471,23 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases.
+     * @return a list of recoverable managed databases along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByInstanceNext(nextLink, context))
+            .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RecoverableManagedDatabaseInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -483,7 +497,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -494,7 +508,8 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases.
+     * @return a list of recoverable managed databases along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceNextSinglePageAsync(
@@ -502,9 +517,16 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByInstanceNext(nextLink, context)
+            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

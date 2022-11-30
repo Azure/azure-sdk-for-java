@@ -23,12 +23,10 @@ public final class JpgImage extends Image {
     private List<JpgLayer> layers;
 
     /*
-     * Sets the number of columns used in thumbnail sprite image.  The number
-     * of rows are automatically calculated and a VTT file is generated with
-     * the coordinate mappings for each thumbnail in the sprite. Note: this
-     * value should be a positive integer and a proper value is recommended so
-     * that the output image resolution will not go beyond JPEG maximum pixel
-     * resolution limit 65535x65535.
+     * Sets the number of columns used in thumbnail sprite image.  The number of rows are automatically calculated and
+     * a VTT file is generated with the coordinate mappings for each thumbnail in the sprite. Note: this value should
+     * be a positive integer and a proper value is recommended so that the output image resolution will not go beyond
+     * JPEG maximum pixel resolution limit 65535x65535.
      */
     @JsonProperty(value = "spriteColumn")
     private Integer spriteColumn;

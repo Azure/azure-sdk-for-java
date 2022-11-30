@@ -12,6 +12,7 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoPatchingSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.KeyVaultCredentialSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.LeastPrivilegeMode;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ResourceIdentity;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ServerConfigurationsManagementSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlImageSku;
@@ -83,6 +84,10 @@ public final class SqlVirtualMachineImpl
         return this.innerModel().sqlManagement();
     }
 
+    public LeastPrivilegeMode leastPrivilegeMode() {
+        return this.innerModel().leastPrivilegeMode();
+    }
+
     public SqlImageSku sqlImageSku() {
         return this.innerModel().sqlImageSku();
     }
@@ -93,6 +98,10 @@ public final class SqlVirtualMachineImpl
 
     public WsfcDomainCredentials wsfcDomainCredentials() {
         return this.innerModel().wsfcDomainCredentials();
+    }
+
+    public String wsfcStaticIp() {
+        return this.innerModel().wsfcStaticIp();
     }
 
     public AutoPatchingSettings autoPatchingSettings() {
@@ -119,12 +128,20 @@ public final class SqlVirtualMachineImpl
         return this.innerModel().assessmentSettings();
     }
 
+    public Boolean enableAutomaticUpgrade() {
+        return this.innerModel().enableAutomaticUpgrade();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public SqlVirtualMachineInner innerModel() {
@@ -225,20 +242,20 @@ public final class SqlVirtualMachineImpl
         return this;
     }
 
-    public void redeploy() {
-        serviceManager.sqlVirtualMachines().redeploy(resourceGroupName, sqlVirtualMachineName);
-    }
-
-    public void redeploy(Context context) {
-        serviceManager.sqlVirtualMachines().redeploy(resourceGroupName, sqlVirtualMachineName, context);
-    }
-
     public void startAssessment() {
         serviceManager.sqlVirtualMachines().startAssessment(resourceGroupName, sqlVirtualMachineName);
     }
 
     public void startAssessment(Context context) {
         serviceManager.sqlVirtualMachines().startAssessment(resourceGroupName, sqlVirtualMachineName, context);
+    }
+
+    public void redeploy() {
+        serviceManager.sqlVirtualMachines().redeploy(resourceGroupName, sqlVirtualMachineName);
+    }
+
+    public void redeploy(Context context) {
+        serviceManager.sqlVirtualMachines().redeploy(resourceGroupName, sqlVirtualMachineName, context);
     }
 
     public SqlVirtualMachineImpl withRegion(Region location) {
@@ -286,6 +303,11 @@ public final class SqlVirtualMachineImpl
         return this;
     }
 
+    public SqlVirtualMachineImpl withLeastPrivilegeMode(LeastPrivilegeMode leastPrivilegeMode) {
+        this.innerModel().withLeastPrivilegeMode(leastPrivilegeMode);
+        return this;
+    }
+
     public SqlVirtualMachineImpl withSqlImageSku(SqlImageSku sqlImageSku) {
         this.innerModel().withSqlImageSku(sqlImageSku);
         return this;
@@ -293,6 +315,11 @@ public final class SqlVirtualMachineImpl
 
     public SqlVirtualMachineImpl withWsfcDomainCredentials(WsfcDomainCredentials wsfcDomainCredentials) {
         this.innerModel().withWsfcDomainCredentials(wsfcDomainCredentials);
+        return this;
+    }
+
+    public SqlVirtualMachineImpl withWsfcStaticIp(String wsfcStaticIp) {
+        this.innerModel().withWsfcStaticIp(wsfcStaticIp);
         return this;
     }
 
@@ -325,6 +352,11 @@ public final class SqlVirtualMachineImpl
 
     public SqlVirtualMachineImpl withAssessmentSettings(AssessmentSettings assessmentSettings) {
         this.innerModel().withAssessmentSettings(assessmentSettings);
+        return this;
+    }
+
+    public SqlVirtualMachineImpl withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.innerModel().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
         return this;
     }
 

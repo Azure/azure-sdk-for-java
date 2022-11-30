@@ -29,22 +29,17 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
 import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBQueueInner;
-import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.servicebus.models.SBAuthorizationRuleListResult;
 import com.azure.resourcemanager.servicebus.models.SBQueueListResult;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QueuesClient. */
 public final class QueuesClientImpl implements QueuesClient {
-    private final ClientLogger logger = new ClientLogger(QueuesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QueuesService service;
 
@@ -268,7 +263,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
+     * @return all authorization rules for a queue along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesSinglePageAsync(
@@ -331,7 +327,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
+     * @return all authorization rules for a queue along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesSinglePageAsync(
@@ -390,7 +387,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
+     * @return all authorization rules for a queue as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(
@@ -410,7 +407,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
+     * @return all authorization rules for a queue as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(
@@ -429,7 +426,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
+     * @return all authorization rules for a queue as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
@@ -447,7 +444,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
+     * @return all authorization rules for a queue as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
@@ -462,11 +459,12 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param rights The rights associated with the rule.
+     * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return description of a namespace authorization rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
@@ -474,7 +472,7 @@ public final class QueuesClientImpl implements QueuesClient {
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        List<AccessRights> rights) {
+        SBAuthorizationRuleInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -501,9 +499,12 @@ public final class QueuesClientImpl implements QueuesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
-        SBAuthorizationRuleInner parameters = new SBAuthorizationRuleInner();
-        parameters.withRights(rights);
         return FluxUtil
             .withContext(
                 context ->
@@ -529,12 +530,13 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param rights The rights associated with the rule.
+     * @param parameters The shared access authorization rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return description of a namespace authorization rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SBAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
@@ -542,7 +544,7 @@ public final class QueuesClientImpl implements QueuesClient {
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        List<AccessRights> rights,
+        SBAuthorizationRuleInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -570,9 +572,12 @@ public final class QueuesClientImpl implements QueuesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
-        SBAuthorizationRuleInner parameters = new SBAuthorizationRuleInner();
-        parameters.withRights(rights);
         context = this.client.mergeContext(context);
         return service
             .createOrUpdateAuthorizationRule(
@@ -595,11 +600,11 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param rights The rights associated with the rule.
+     * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return description of a namespace authorization rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
@@ -607,17 +612,10 @@ public final class QueuesClientImpl implements QueuesClient {
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        List<AccessRights> rights) {
+        SBAuthorizationRuleInner parameters) {
         return createOrUpdateAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, rights)
-            .flatMap(
-                (Response<SBAuthorizationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -627,34 +625,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        final List<AccessRights> rights = null;
-        return createOrUpdateAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, rights)
-            .flatMap(
-                (Response<SBAuthorizationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates an authorization rule for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
+     * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -662,10 +633,13 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBAuthorizationRuleInner createOrUpdateAuthorizationRule(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        final List<AccessRights> rights = null;
+        String resourceGroupName,
+        String namespaceName,
+        String queueName,
+        String authorizationRuleName,
+        SBAuthorizationRuleInner parameters) {
         return createOrUpdateAuthorizationRuleAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, rights)
+                resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters)
             .block();
     }
 
@@ -676,12 +650,12 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param rights The rights associated with the rule.
+     * @param parameters The shared access authorization rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return description of a namespace authorization rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(
@@ -689,10 +663,10 @@ public final class QueuesClientImpl implements QueuesClient {
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        List<AccessRights> rights,
+        SBAuthorizationRuleInner parameters,
         Context context) {
         return createOrUpdateAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, rights, context)
+                resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters, context)
             .block();
     }
 
@@ -706,7 +680,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(
@@ -766,7 +740,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(
@@ -826,14 +800,14 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAuthorizationRuleAsync(
         String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
         return deleteAuthorizationRuleWithResponseAsync(
                 resourceGroupName, namespaceName, queueName, authorizationRuleName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -864,7 +838,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAuthorizationRuleWithResponse(
@@ -888,7 +862,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
+     * @return an authorization rule for a queue by rule name along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
@@ -948,7 +923,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
+     * @return an authorization rule for a queue by rule name along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
@@ -1008,20 +984,13 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
+     * @return an authorization rule for a queue by rule name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(
         String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
         return getAuthorizationRuleWithResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName)
-            .flatMap(
-                (Response<SBAuthorizationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1053,7 +1022,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
+     * @return an authorization rule for a queue by rule name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(
@@ -1077,7 +1046,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
+     * @return namespace/ServiceBus Connection String along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
@@ -1137,7 +1107,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
+     * @return namespace/ServiceBus Connection String along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
@@ -1197,20 +1168,13 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
+     * @return namespace/ServiceBus Connection String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessKeysInner> listKeysAsync(
         String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName)
-            .flatMap(
-                (Response<AccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1242,7 +1206,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
+     * @return namespace/ServiceBus Connection String along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> listKeysWithResponse(
@@ -1266,7 +1230,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
+     * @return namespace/ServiceBus Connection String along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
@@ -1337,7 +1302,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
+     * @return namespace/ServiceBus Connection String along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
@@ -1405,7 +1371,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
+     * @return namespace/ServiceBus Connection String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessKeysInner> regenerateKeysAsync(
@@ -1416,14 +1382,7 @@ public final class QueuesClientImpl implements QueuesClient {
         RegenerateAccessKeyParameters parameters) {
         return regenerateKeysWithResponseAsync(
                 resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters)
-            .flatMap(
-                (Response<AccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1462,7 +1421,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
+     * @return namespace/ServiceBus Connection String along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> regenerateKeysWithResponse(
@@ -1489,7 +1448,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
+     * @return the queues within a namespace along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBQueueInner>> listByNamespaceSinglePageAsync(
@@ -1553,7 +1512,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
+     * @return the queues within a namespace along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBQueueInner>> listByNamespaceSinglePageAsync(
@@ -1613,7 +1572,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
+     * @return the queues within a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBQueueInner> listByNamespaceAsync(
@@ -1631,7 +1590,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
+     * @return the queues within a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBQueueInner> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
@@ -1655,7 +1614,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
+     * @return the queues within a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SBQueueInner> listByNamespaceAsync(
@@ -1673,7 +1632,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
+     * @return the queues within a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBQueueInner> listByNamespace(String resourceGroupName, String namespaceName) {
@@ -1695,7 +1654,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
+     * @return the queues within a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBQueueInner> listByNamespace(
@@ -1713,7 +1672,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
+     * @return description of queue Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBQueueInner>> createOrUpdateWithResponseAsync(
@@ -1774,7 +1733,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
+     * @return description of queue Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SBQueueInner>> createOrUpdateWithResponseAsync(
@@ -1831,20 +1790,13 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
+     * @return description of queue Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBQueueInner> createOrUpdateAsync(
         String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, queueName, parameters)
-            .flatMap(
-                (Response<SBQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1876,7 +1828,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
+     * @return description of queue Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBQueueInner> createOrUpdateWithResponse(
@@ -1894,7 +1846,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -1948,7 +1900,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1998,12 +1950,11 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName) {
-        return deleteWithResponseAsync(resourceGroupName, namespaceName, queueName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, namespaceName, queueName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2031,7 +1982,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -2048,7 +1999,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
+     * @return description of queue Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBQueueInner>> getWithResponseAsync(
@@ -2102,7 +2053,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
+     * @return description of queue Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SBQueueInner>> getWithResponseAsync(
@@ -2152,19 +2103,12 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
+     * @return description of queue Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBQueueInner> getAsync(String resourceGroupName, String namespaceName, String queueName) {
         return getWithResponseAsync(resourceGroupName, namespaceName, queueName)
-            .flatMap(
-                (Response<SBQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2193,7 +2137,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
+     * @return description of queue Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBQueueInner> getWithResponse(
@@ -2204,11 +2148,13 @@ public final class QueuesClientImpl implements QueuesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Namespace operation.
+     * @return the response to the List Namespace operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesNextSinglePageAsync(String nextLink) {
@@ -2240,12 +2186,14 @@ public final class QueuesClientImpl implements QueuesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Namespace operation.
+     * @return the response to the List Namespace operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesNextSinglePageAsync(
@@ -2277,11 +2225,13 @@ public final class QueuesClientImpl implements QueuesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Queues operation.
+     * @return the response to the List Queues operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBQueueInner>> listByNamespaceNextSinglePageAsync(String nextLink) {
@@ -2312,12 +2262,14 @@ public final class QueuesClientImpl implements QueuesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Queues operation.
+     * @return the response to the List Queues operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBQueueInner>> listByNamespaceNextSinglePageAsync(String nextLink, Context context) {

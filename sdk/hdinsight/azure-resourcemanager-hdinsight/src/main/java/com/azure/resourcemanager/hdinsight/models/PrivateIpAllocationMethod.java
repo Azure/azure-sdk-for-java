@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateIpAllocationMethod. */
+/** The method that private IP address is allocated. */
 public final class PrivateIpAllocationMethod extends ExpandableStringEnum<PrivateIpAllocationMethod> {
     /** Static value dynamic for PrivateIpAllocationMethod. */
     public static final PrivateIpAllocationMethod DYNAMIC = fromString("dynamic");
@@ -27,7 +27,11 @@ public final class PrivateIpAllocationMethod extends ExpandableStringEnum<Privat
         return fromString(name, PrivateIpAllocationMethod.class);
     }
 
-    /** @return known PrivateIpAllocationMethod values. */
+    /**
+     * Gets known PrivateIpAllocationMethod values.
+     *
+     * @return known PrivateIpAllocationMethod values.
+     */
     public static Collection<PrivateIpAllocationMethod> values() {
         return values(PrivateIpAllocationMethod.class);
     }

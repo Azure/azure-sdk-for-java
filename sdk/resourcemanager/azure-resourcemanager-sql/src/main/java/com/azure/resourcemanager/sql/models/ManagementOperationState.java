@@ -39,7 +39,11 @@ public final class ManagementOperationState extends ExpandableStringEnum<Managem
         return fromString(name, ManagementOperationState.class);
     }
 
-    /** @return known ManagementOperationState values. */
+    /**
+     * Gets known ManagementOperationState values.
+     *
+     * @return known ManagementOperationState values.
+     */
     public static Collection<ManagementOperationState> values() {
         return values(ManagementOperationState.class);
     }

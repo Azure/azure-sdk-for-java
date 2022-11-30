@@ -27,11 +27,7 @@ public final class SelectionMarkState extends ExpandableStringEnum<SelectionMark
         return fromString(name, SelectionMarkState.class);
     }
 
-    /**
-     * Gets known SelectionMarkState values.
-     *
-     * @return known SelectionMarkState values.
-     */
+    /** @return known SelectionMarkState values. */
     public static Collection<SelectionMarkState> values() {
         return values(SelectionMarkState.class);
     }

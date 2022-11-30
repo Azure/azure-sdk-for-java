@@ -11,10 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AutomaticOSUpgradePolicy {
     /*
-     * Indicates whether OS upgrades should automatically be applied to scale
-     * set instances in a rolling fashion when a newer version of the OS image
-     * becomes available. Default value is false. <br><br> If this is set to
-     * true for Windows based scale sets,
+     * Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a
+     * newer version of the OS image becomes available. Default value is false. <br><br> If this is set to true for
+     * Windows based scale sets,
      * [enableAutomaticUpdates](https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet)
      * is automatically set to false and cannot be set to true.
      */
@@ -22,19 +21,21 @@ public final class AutomaticOSUpgradePolicy {
     private Boolean enableAutomaticOSUpgrade;
 
     /*
-     * Whether OS image rollback feature should be disabled. Default value is
-     * false.
+     * Whether OS image rollback feature should be disabled. Default value is false.
      */
     @JsonProperty(value = "disableAutomaticRollback")
     private Boolean disableAutomaticRollback;
 
     /*
-     * Indicates whether rolling upgrade policy should be used during Auto OS
-     * Upgrade. Default value is false. Auto OS Upgrade will fallback to the
-     * default policy if no policy is defined on the VMSS.
+     * Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Default value is false. Auto OS
+     * Upgrade will fallback to the default policy if no policy is defined on the VMSS.
      */
     @JsonProperty(value = "useRollingUpgradePolicy")
     private Boolean useRollingUpgradePolicy;
+
+    /** Creates an instance of AutomaticOSUpgradePolicy class. */
+    public AutomaticOSUpgradePolicy() {
+    }
 
     /**
      * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale

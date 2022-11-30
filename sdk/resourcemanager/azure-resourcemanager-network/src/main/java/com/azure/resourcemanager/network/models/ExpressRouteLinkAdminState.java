@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteLinkAdminState. */
+/** Administrative state of the physical port. */
 public final class ExpressRouteLinkAdminState extends ExpandableStringEnum<ExpressRouteLinkAdminState> {
     /** Static value Enabled for ExpressRouteLinkAdminState. */
     public static final ExpressRouteLinkAdminState ENABLED = fromString("Enabled");

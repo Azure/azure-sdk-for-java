@@ -134,6 +134,7 @@ public class JedisRedisCheckpointStoreTests {
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.hmget(KEY, JedisRedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList(null));
+        when(jedis.time()).thenReturn(Collections.singletonList("10000000"));
 
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
             .assertNext(partitionOwnershipTest -> {
@@ -155,6 +156,7 @@ public class JedisRedisCheckpointStoreTests {
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.hmget(KEY, JedisRedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList("oldOwnershipRecord".getBytes(StandardCharsets.UTF_8)));
         when(jedis.multi()).thenReturn(transaction);
+        when(jedis.time()).thenReturn(Collections.singletonList("10000000"));
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
 
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))

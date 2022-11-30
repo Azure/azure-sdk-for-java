@@ -12,6 +12,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+. "${PSScriptRoot}/../common/scripts/common.ps1"
 . $PSScriptRoot\MavenPackaging.ps1
 
 # The Resolve-Path will normalize the path separators and throw if they don't exist.
@@ -206,6 +207,24 @@ foreach ($packageDetail in $packageDetails) {
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
   }
   else {
+
+    $resultsTime = [diagnostics.stopwatch]::StartNew()
+    # IsMavenPackageVersionPublished is a very quick check to see if the pom is on maven which takes about 1-2 seconds
+    # to complete. If the POM if there, Test-ReleasedPackage will look at all of the package artifacts (pom, jars, .md)
+    # and compare their hashes. The reason we need the quick check first, is that Test-ReleasedPackage, when called
+    # on something that hasn't been released, takes 90 seconds if none of the artifacts have been released and about
+    # 25 seconds, if they have. The first time an artifact is being released we use IsMavenPackageVersionPublished so
+    # we don't add 90 seconds on to every Maven release.
+    if (IsMavenPackageVersionPublished -pkgId $packageDetail.ArtifactID -pkgVersion $packageDetail.Version -groupId $packageDetail.GroupId) {
+      if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
+        Write-Information "Package $($packageDetail.FullyQualifiedName) has already been deployed."
+        continue
+      }
+    } else {
+      Write-Information "$($packageDetail.FullyQualifiedName) has not yet deployed."
+    }
+    Write-Information "Time to test released package=$($resultstime.Elapsed.ToString('dd\.hh\:mm\:ss'))"
+
     # Maven Central Staging + optional Release
     $repositoryDirectoryOption = "-DrepositoryDirectory=$localRepositoryDirectory"
     Write-Information "Repository Directory Option is: $repositoryDirectoryOption"
@@ -216,9 +235,18 @@ foreach ($packageDetail in $packageDetails) {
     $stagingDescriptionOption = "-DstagingDescription=$($packageDetail.FullyQualifiedName)"
     Write-Information "Staging Description Option is: $stagingDescriptionOption"
 
+    $nexusPluginVersion = . $PSScriptRoot\Get-ExternalDependencyVersion.ps1 -GroupId 'org.sonatype.plugins' -ArtifactId 'nexus-staging-maven-plugin'
+    if ($LASTEXITCODE) {
+      Write-Information "##vso[task.logissue type=error]Unable to resolve version of external dependency 'org.sonatype.plugins:nexus-staging-maven-plugin'"
+      exit $LASTEXITCODE
+    }
+
+    $stagingGoal = "org.sonatype.plugins:nexus-staging-maven-plugin:$nexusPluginVersion`:deploy-staged-repository"
+    $releaseGoal = "org.sonatype.plugins:nexus-staging-maven-plugin:$nexusPluginVersion`:rc-release"
+
     Write-Information "Staging package to Maven Central"
-    Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:deploy-staged-repository `"--batch-mode`" `"-DnexusUrl=https://oss.sonatype.org`" `"$repositoryDirectoryOption`" `"$stagingProfileIdOption`" `"$stagingDescriptionOption`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"[redacted]`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-    mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:deploy-staged-repository "--batch-mode" "-DnexusUrl=https://oss.sonatype.org" "$repositoryDirectoryOption" "$stagingProfileIdOption" "$stagingDescriptionOption" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+    Write-Information "mvn $stagingGoal `"--batch-mode`" `"-DnexusUrl=https://oss.sonatype.org`" `"$repositoryDirectoryOption`" `"$stagingProfileIdOption`" `"$stagingDescriptionOption`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"[redacted]`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+    mvn $stagingGoal "--batch-mode" "-DnexusUrl=https://oss.sonatype.org" "$repositoryDirectoryOption" "$stagingProfileIdOption" "$stagingDescriptionOption" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
     if ($LASTEXITCODE) {
       Write-Information '##vso[task.logissue type=error]Staging to Maven Central failed. For troubleshooting, see https://aka.ms/azsdk/maven-central-tsg'
@@ -244,8 +272,8 @@ foreach ($packageDetail in $packageDetails) {
 
     while ($attempt++ -lt 3) {
       Write-Information "Releasing staging repostiory $stagedRepositoryId, attempt $attempt"
-      Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:rc-release `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"[redacted]`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-      mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+      Write-Information "mvn $releaseGoal `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"[redacted]`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+      mvn $releaseGoal "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
       if ($LASTEXITCODE -eq 0) {
         Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"

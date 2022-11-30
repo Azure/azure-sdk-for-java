@@ -348,7 +348,7 @@ public final class AttestationAsyncClient {
      * <pre>
      * Mono&lt;AttestationResponse&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;
      *     new AttestationOptions&#40;openEnclaveReport&#41;
-     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;&#41;;
      *
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse -->
@@ -457,7 +457,7 @@ public final class AttestationAsyncClient {
      * <pre>
      * Mono&lt;AttestationResponse&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;
      *     new AttestationOptions&#40;sgxQuote&#41;
-     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse -->
      *
@@ -549,7 +549,7 @@ public final class AttestationAsyncClient {
      * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
      *
      * String attestInitialPayload = &quot;&#123;&#92;&quot;payload&#92;&quot;: &#123; &#92;&quot;type&#92;&quot;: &#92;&quot;aikcert&#92;&quot; &#125; &#125;&quot;;
-     * Mono&lt;Response&lt;String&gt;&gt; responseMono = client.attestTpmWithResponse&#40;attestInitialPayload, Context.NONE&#41;;
+     * Mono&lt;Response&lt;String&gt;&gt; responseMono = client.attestTpmWithResponse&#40;attestInitialPayload&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestTpmWithResponse -->
      *

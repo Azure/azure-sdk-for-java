@@ -6,18 +6,14 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Rules defining user's geo access within a CDN endpoint. */
 @Fluent
 public final class GeoFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoFilter.class);
-
     /*
-     * Relative path applicable to geo filter. (e.g. '/mypictures',
-     * '/mypicture/kitty.jpg', and etc.)
+     * Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
      */
     @JsonProperty(value = "relativePath", required = true)
     private String relativePath;
@@ -29,8 +25,7 @@ public final class GeoFilter {
     private GeoFilterActions action;
 
     /*
-     * Two letter country or region codes defining user country or region
-     * access in a geo filter, e.g. AU, MX, US.
+     * Two letter country or region codes defining user country or region access in a geo filter, e.g. AU, MX, US.
      */
     @JsonProperty(value = "countryCodes", required = true)
     private List<String> countryCodes;
@@ -106,19 +101,21 @@ public final class GeoFilter {
      */
     public void validate() {
         if (relativePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property relativePath in model GeoFilter"));
         }
         if (action() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property action in model GeoFilter"));
         }
         if (countryCodes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property countryCodes in model GeoFilter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GeoFilter.class);
 }

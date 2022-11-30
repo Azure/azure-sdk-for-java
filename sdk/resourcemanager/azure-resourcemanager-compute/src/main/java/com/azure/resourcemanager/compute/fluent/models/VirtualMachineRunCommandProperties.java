@@ -33,8 +33,8 @@ public final class VirtualMachineRunCommandProperties {
     private List<RunCommandInputParameter> protectedParameters;
 
     /*
-     * Optional. If set to true, provisioning will complete as soon as the
-     * script starts and will not wait for script to complete.
+     * Optional. If set to true, provisioning will complete as soon as the script starts and will not wait for script
+     * to complete.
      */
     @JsonProperty(value = "asyncExecution")
     private Boolean asyncExecution;
@@ -46,8 +46,7 @@ public final class VirtualMachineRunCommandProperties {
     private String runAsUser;
 
     /*
-     * Specifies the user account password on the VM when executing the run
-     * command.
+     * Specifies the user account password on the VM when executing the run command.
      */
     @JsonProperty(value = "runAsPassword")
     private String runAsPassword;
@@ -59,15 +58,13 @@ public final class VirtualMachineRunCommandProperties {
     private Integer timeoutInSeconds;
 
     /*
-     * Specifies the Azure storage blob where script output stream will be
-     * uploaded.
+     * Specifies the Azure storage blob where script output stream will be uploaded.
      */
     @JsonProperty(value = "outputBlobUri")
     private String outputBlobUri;
 
     /*
-     * Specifies the Azure storage blob where script error stream will be
-     * uploaded.
+     * Specifies the Azure storage blob where script error stream will be uploaded.
      */
     @JsonProperty(value = "errorBlobUri")
     private String errorBlobUri;
@@ -83,6 +80,10 @@ public final class VirtualMachineRunCommandProperties {
      */
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineRunCommandInstanceView instanceView;
+
+    /** Creates an instance of VirtualMachineRunCommandProperties class. */
+    public VirtualMachineRunCommandProperties() {
+    }
 
     /**
      * Get the source property: The source of the run command script.

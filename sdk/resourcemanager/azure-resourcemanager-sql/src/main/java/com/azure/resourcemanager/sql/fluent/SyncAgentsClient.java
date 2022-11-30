@@ -32,7 +32,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync agent.
+     * @return a sync agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SyncAgentInner>> getWithResponseAsync(
@@ -48,7 +48,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync agent.
+     * @return a sync agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SyncAgentInner> getAsync(String resourceGroupName, String serverName, String syncAgentName);
@@ -79,7 +79,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync agent.
+     * @return a sync agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SyncAgentInner> getWithResponse(
@@ -92,15 +92,15 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @param syncDatabaseId ARM resource id of the sync database in the sync agent.
+     * @param parameters The requested sync agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
+     * @return an Azure SQL Database sync agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName, String syncDatabaseId);
+        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters);
 
     /**
      * Creates or updates a sync agent.
@@ -109,15 +109,15 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @param syncDatabaseId ARM resource id of the sync database in the sync agent.
+     * @param parameters The requested sync agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
+     * @return the {@link PollerFlux} for polling of an Azure SQL Database sync agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String syncAgentName, String syncDatabaseId);
+        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters);
 
     /**
      * Creates or updates a sync agent.
@@ -126,15 +126,15 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @param syncDatabaseId ARM resource id of the sync database in the sync agent.
+     * @param parameters The requested sync agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database sync agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String syncAgentName, String syncDatabaseId);
+        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters);
 
     /**
      * Creates or updates a sync agent.
@@ -143,16 +143,16 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @param syncDatabaseId ARM resource id of the sync database in the sync agent.
+     * @param parameters The requested sync agent resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database sync agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String syncAgentName, String syncDatabaseId, Context context);
+        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters, Context context);
 
     /**
      * Creates or updates a sync agent.
@@ -161,15 +161,15 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @param syncDatabaseId ARM resource id of the sync database in the sync agent.
+     * @param parameters The requested sync agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
+     * @return an Azure SQL Database sync agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SyncAgentInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String syncAgentName, String syncDatabaseId);
+        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters);
 
     /**
      * Creates or updates a sync agent.
@@ -178,22 +178,7 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SyncAgentInner> createOrUpdateAsync(String resourceGroupName, String serverName, String syncAgentName);
-
-    /**
-     * Creates or updates a sync agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server on which the sync agent is hosted.
-     * @param syncAgentName The name of the sync agent.
-     * @param syncDatabaseId ARM resource id of the sync database in the sync agent.
+     * @param parameters The requested sync agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -201,7 +186,7 @@ public interface SyncAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncAgentInner createOrUpdate(
-        String resourceGroupName, String serverName, String syncAgentName, String syncDatabaseId);
+        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters);
 
     /**
      * Creates or updates a sync agent.
@@ -210,7 +195,7 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @param syncDatabaseId ARM resource id of the sync database in the sync agent.
+     * @param parameters The requested sync agent resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -219,22 +204,7 @@ public interface SyncAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncAgentInner createOrUpdate(
-        String resourceGroupName, String serverName, String syncAgentName, String syncDatabaseId, Context context);
-
-    /**
-     * Creates or updates a sync agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server on which the sync agent is hosted.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncAgentInner createOrUpdate(String resourceGroupName, String serverName, String syncAgentName);
+        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters, Context context);
 
     /**
      * Deletes a sync agent.
@@ -246,7 +216,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -262,9 +232,9 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String syncAgentName);
 
@@ -278,9 +248,9 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String syncAgentName);
 
     /**
@@ -294,9 +264,9 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String syncAgentName, Context context);
 
@@ -310,7 +280,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String syncAgentName);
@@ -353,7 +323,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agents.
+     * @return a list of sync agents as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SyncAgentInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -367,7 +337,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agents.
+     * @return a list of sync agents as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SyncAgentInner> listByServer(String resourceGroupName, String serverName);
@@ -382,7 +352,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agents.
+     * @return a list of sync agents as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SyncAgentInner> listByServer(String resourceGroupName, String serverName, Context context);
@@ -397,7 +367,8 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an Azure SQL Database sync agent key.
+     * @return properties of an Azure SQL Database sync agent key along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SyncAgentKeyPropertiesInner>> generateKeyWithResponseAsync(
@@ -413,7 +384,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an Azure SQL Database sync agent key.
+     * @return properties of an Azure SQL Database sync agent key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SyncAgentKeyPropertiesInner> generateKeyAsync(
@@ -445,7 +416,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an Azure SQL Database sync agent key.
+     * @return properties of an Azure SQL Database sync agent key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SyncAgentKeyPropertiesInner> generateKeyWithResponse(
@@ -461,7 +432,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agent linked databases.
+     * @return a list of sync agent linked databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SyncAgentLinkedDatabaseInner> listLinkedDatabasesAsync(
@@ -477,7 +448,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agent linked databases.
+     * @return a list of sync agent linked databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SyncAgentLinkedDatabaseInner> listLinkedDatabases(
@@ -494,7 +465,7 @@ public interface SyncAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agent linked databases.
+     * @return a list of sync agent linked databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SyncAgentLinkedDatabaseInner> listLinkedDatabases(

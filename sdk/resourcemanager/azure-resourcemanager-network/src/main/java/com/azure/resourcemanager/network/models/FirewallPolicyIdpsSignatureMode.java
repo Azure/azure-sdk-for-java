@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FirewallPolicyIdpsSignatureMode. */
+/** The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny. */
 public enum FirewallPolicyIdpsSignatureMode {
     /** Enum value 0. */
     ZERO(0),

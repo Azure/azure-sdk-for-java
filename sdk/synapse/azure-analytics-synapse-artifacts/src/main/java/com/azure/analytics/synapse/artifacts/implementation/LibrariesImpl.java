@@ -29,6 +29,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import java.nio.ByteBuffer;
@@ -130,6 +131,20 @@ public final class LibrariesImpl {
                 @PathParam("libraryName") String libraryName,
                 @HeaderParam("x-ms-blob-condition-appendpos") Long blobConditionAppendPosition,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> content,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/libraries/{libraryName}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<Void>> append(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("comp") String comp,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("libraryName") String libraryName,
+                @HeaderParam("x-ms-blob-condition-appendpos") Long blobConditionAppendPosition,
+                @BodyParam("application/octet-stream") BinaryData content,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -293,15 +308,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> flushAsync(String libraryName) {
-        return flushWithResponseAsync(libraryName)
-                .flatMap(
-                        (Response<LibraryResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return flushWithResponseAsync(libraryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -317,15 +324,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> flushAsync(String libraryName, Context context) {
-        return flushWithResponseAsync(libraryName, context)
-                .flatMap(
-                        (Response<LibraryResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return flushWithResponseAsync(libraryName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -406,15 +405,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getOperationResultAsync(String operationId) {
-        return getOperationResultWithResponseAsync(operationId)
-                .flatMap(
-                        (Response<LibraryResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getOperationResultWithResponseAsync(operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -430,14 +421,7 @@ public final class LibrariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getOperationResultAsync(String operationId, Context context) {
         return getOperationResultWithResponseAsync(operationId, context)
-                .flatMap(
-                        (Response<LibraryResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -517,15 +501,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> deleteAsync(String libraryName) {
-        return deleteWithResponseAsync(libraryName)
-                .flatMap(
-                        (Response<LibraryResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return deleteWithResponseAsync(libraryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -541,15 +517,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> deleteAsync(String libraryName, Context context) {
-        return deleteWithResponseAsync(libraryName, context)
-                .flatMap(
-                        (Response<LibraryResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return deleteWithResponseAsync(libraryName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -631,15 +599,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getAsync(String libraryName) {
-        return getWithResponseAsync(libraryName)
-                .flatMap(
-                        (Response<LibraryResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(libraryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -655,15 +615,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getAsync(String libraryName, Context context) {
-        return getWithResponseAsync(libraryName, context)
-                .flatMap(
-                        (Response<LibraryResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(libraryName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -745,15 +697,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> createAsync(String libraryName) {
-        return createWithResponseAsync(libraryName)
-                .flatMap(
-                        (Response<LibraryResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return createWithResponseAsync(libraryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -769,15 +713,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> createAsync(String libraryName, Context context) {
-        return createWithResponseAsync(libraryName, context)
-                .flatMap(
-                        (Response<LibraryResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return createWithResponseAsync(libraryName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -818,7 +754,7 @@ public final class LibrariesImpl {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
      *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
      *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
@@ -854,7 +790,7 @@ public final class LibrariesImpl {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
      *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
      *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
@@ -893,7 +829,7 @@ public final class LibrariesImpl {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
      *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
      *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
@@ -906,7 +842,7 @@ public final class LibrariesImpl {
     public Mono<Void> appendAsync(
             String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -916,7 +852,7 @@ public final class LibrariesImpl {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -926,7 +862,7 @@ public final class LibrariesImpl {
     public Mono<Void> appendAsync(String libraryName, Flux<ByteBuffer> content, long contentLength) {
         final Long blobConditionAppendPosition = null;
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -936,7 +872,7 @@ public final class LibrariesImpl {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
      *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
      *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
@@ -954,7 +890,7 @@ public final class LibrariesImpl {
             Long blobConditionAppendPosition,
             Context context) {
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -964,7 +900,7 @@ public final class LibrariesImpl {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
      *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
      *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
@@ -985,7 +921,7 @@ public final class LibrariesImpl {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1003,7 +939,7 @@ public final class LibrariesImpl {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
      *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
      *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
@@ -1025,9 +961,222 @@ public final class LibrariesImpl {
     }
 
     /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> appendWithResponseAsync(
+            String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
+        final String comp = "appendblock";
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.append(
+                                this.client.getEndpoint(),
+                                comp,
+                                apiVersion,
+                                libraryName,
+                                blobConditionAppendPosition,
+                                content,
+                                contentLength,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> appendWithResponseAsync(
+            String libraryName,
+            BinaryData content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
+        final String comp = "appendblock";
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
+        return service.append(
+                this.client.getEndpoint(),
+                comp,
+                apiVersion,
+                libraryName,
+                blobConditionAppendPosition,
+                content,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> appendAsync(
+            String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
+        return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> appendAsync(String libraryName, BinaryData content, long contentLength) {
+        final Long blobConditionAppendPosition = null;
+        return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> appendAsync(
+            String libraryName,
+            BinaryData content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
+        return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void append(String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
+        appendAsync(libraryName, content, contentLength, blobConditionAppendPosition).block();
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void append(String libraryName, BinaryData content, long contentLength) {
+        final Long blobConditionAppendPosition = null;
+        appendAsync(libraryName, content, contentLength, blobConditionAppendPosition).block();
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> appendWithResponse(
+            String libraryName,
+            BinaryData content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
+        return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition, context)
+                .block();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1051,7 +1200,8 @@ public final class LibrariesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

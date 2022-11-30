@@ -14,25 +14,26 @@ import java.util.List;
 @Fluent
 public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     /*
-     * A list of ip configurations of the container network interface
-     * configuration.
+     * A list of ip configurations of the container network interface configuration.
      */
     @JsonProperty(value = "ipConfigurations")
     private List<IpConfigurationProfileInner> ipConfigurations;
 
     /*
-     * A list of container network interfaces created from this container
-     * network interface configuration.
+     * A list of container network interfaces created from this container network interface configuration.
      */
     @JsonProperty(value = "containerNetworkInterfaces")
     private List<SubResource> containerNetworkInterfaces;
 
     /*
-     * The provisioning state of the container network interface configuration
-     * resource.
+     * The provisioning state of the container network interface configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ContainerNetworkInterfaceConfigurationPropertiesFormat class. */
+    public ContainerNetworkInterfaceConfigurationPropertiesFormat() {
+    }
 
     /**
      * Get the ipConfigurations property: A list of ip configurations of the container network interface configuration.

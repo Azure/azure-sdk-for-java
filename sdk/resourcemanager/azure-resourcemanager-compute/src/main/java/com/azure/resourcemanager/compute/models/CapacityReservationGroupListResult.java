@@ -20,12 +20,15 @@ public final class CapacityReservationGroupListResult {
     private List<CapacityReservationGroupInner> value;
 
     /*
-     * The URI to fetch the next page of capacity reservation groups. Call
-     * ListNext() with this URI to fetch the next page of capacity reservation
-     * groups.
+     * The URI to fetch the next page of capacity reservation groups. Call ListNext() with this URI to fetch the next
+     * page of capacity reservation groups.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of CapacityReservationGroupListResult class. */
+    public CapacityReservationGroupListResult() {
+    }
 
     /**
      * Get the value property: The list of capacity reservation groups.

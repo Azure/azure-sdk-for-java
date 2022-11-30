@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 /**
- * This class represents an HTTP ETag. A ETag value could be strong or weak ETag.
- * More information, check https://en.wikipedia.org/wiki/HTTP_ETag
+ * This class represents an HTTP ETag. An ETag value could be strong or weak ETag.
+ * For more information, check out <a href="https://en.wikipedia.org/wiki/HTTP_ETag">Wikipedia's HTTP Etag</a>.
  */
 public final class ETag {
     private static final ClientLogger LOGGER = new ClientLogger(ETag.class);

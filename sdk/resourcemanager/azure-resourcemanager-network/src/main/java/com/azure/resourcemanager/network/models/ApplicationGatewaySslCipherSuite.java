@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewaySslCipherSuite. */
+/** Ssl cipher suites enums. */
 public final class ApplicationGatewaySslCipherSuite extends ExpandableStringEnum<ApplicationGatewaySslCipherSuite> {
     /** Static value TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 for ApplicationGatewaySslCipherSuite. */
     public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 =

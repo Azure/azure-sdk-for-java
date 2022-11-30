@@ -6,15 +6,12 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network Rule Set Properties of IotHub. */
 @Fluent
 public final class NetworkRuleSetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetProperties.class);
-
     /*
      * Default Action for Network Rule Set
      */
@@ -22,8 +19,7 @@ public final class NetworkRuleSetProperties {
     private DefaultAction defaultAction;
 
     /*
-     * If True, then Network Rule Set is also applied to BuiltIn EventHub
-     * EndPoint of IotHub
+     * If True, then Network Rule Set is also applied to BuiltIn EventHub EndPoint of IotHub
      */
     @JsonProperty(value = "applyToBuiltInEventHubEndpoint", required = true)
     private boolean applyToBuiltInEventHubEndpoint;
@@ -103,7 +99,7 @@ public final class NetworkRuleSetProperties {
      */
     public void validate() {
         if (ipRules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ipRules in model NetworkRuleSetProperties"));
@@ -111,4 +107,6 @@ public final class NetworkRuleSetProperties {
             ipRules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkRuleSetProperties.class);
 }

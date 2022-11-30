@@ -27,7 +27,11 @@ public final class DatabaseLicenseType extends ExpandableStringEnum<DatabaseLice
         return fromString(name, DatabaseLicenseType.class);
     }
 
-    /** @return known DatabaseLicenseType values. */
+    /**
+     * Gets known DatabaseLicenseType values.
+     *
+     * @return known DatabaseLicenseType values.
+     */
     public static Collection<DatabaseLicenseType> values() {
         return values(DatabaseLicenseType.class);
     }

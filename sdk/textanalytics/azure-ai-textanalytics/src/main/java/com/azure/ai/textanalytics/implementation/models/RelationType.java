@@ -84,7 +84,11 @@ public final class RelationType extends ExpandableStringEnum<RelationType> {
         return fromString(name, RelationType.class);
     }
 
-    /** @return known RelationType values. */
+    /**
+     * Gets known RelationType values.
+     *
+     * @return known RelationType values.
+     */
     public static Collection<RelationType> values() {
         return values(RelationType.class);
     }

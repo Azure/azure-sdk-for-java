@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 /** Samples for Assets ListContainerSas. */
 public final class AssetsListContainerSasSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-list-sas-urls.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-sas-urls.json
      */
     /**
      * Sample code: List Asset SAS URLs.

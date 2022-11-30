@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.ActivityOutputType;
 import com.azure.resourcemanager.automation.models.ActivityParameterSet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Definition of the activity. */
-@JsonFlatten
 @Fluent
-public class ActivityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityInner.class);
-
+public final class ActivityInner {
     /*
      * Gets or sets the id of the resource.
      */
@@ -33,40 +27,10 @@ public class ActivityInner {
     private String name;
 
     /*
-     * Gets or sets the user name of the activity.
+     * Gets or sets the properties of the activity.
      */
-    @JsonProperty(value = "properties.definition")
-    private String definition;
-
-    /*
-     * Gets or sets the parameter sets of the activity.
-     */
-    @JsonProperty(value = "properties.parameterSets")
-    private List<ActivityParameterSet> parameterSets;
-
-    /*
-     * Gets or sets the output types of the activity.
-     */
-    @JsonProperty(value = "properties.outputTypes")
-    private List<ActivityOutputType> outputTypes;
-
-    /*
-     * Gets or sets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime")
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private ActivityProperties innerProperties;
 
     /**
      * Get the id property: Gets or sets the id of the resource.
@@ -98,12 +62,21 @@ public class ActivityInner {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the activity.
+     *
+     * @return the innerProperties value.
+     */
+    private ActivityProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the definition property: Gets or sets the user name of the activity.
      *
      * @return the definition value.
      */
     public String definition() {
-        return this.definition;
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
     }
 
     /**
@@ -113,7 +86,10 @@ public class ActivityInner {
      * @return the ActivityInner object itself.
      */
     public ActivityInner withDefinition(String definition) {
-        this.definition = definition;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ActivityProperties();
+        }
+        this.innerProperties().withDefinition(definition);
         return this;
     }
 
@@ -123,7 +99,7 @@ public class ActivityInner {
      * @return the parameterSets value.
      */
     public List<ActivityParameterSet> parameterSets() {
-        return this.parameterSets;
+        return this.innerProperties() == null ? null : this.innerProperties().parameterSets();
     }
 
     /**
@@ -133,7 +109,10 @@ public class ActivityInner {
      * @return the ActivityInner object itself.
      */
     public ActivityInner withParameterSets(List<ActivityParameterSet> parameterSets) {
-        this.parameterSets = parameterSets;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ActivityProperties();
+        }
+        this.innerProperties().withParameterSets(parameterSets);
         return this;
     }
 
@@ -143,7 +122,7 @@ public class ActivityInner {
      * @return the outputTypes value.
      */
     public List<ActivityOutputType> outputTypes() {
-        return this.outputTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().outputTypes();
     }
 
     /**
@@ -153,7 +132,10 @@ public class ActivityInner {
      * @return the ActivityInner object itself.
      */
     public ActivityInner withOutputTypes(List<ActivityOutputType> outputTypes) {
-        this.outputTypes = outputTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ActivityProperties();
+        }
+        this.innerProperties().withOutputTypes(outputTypes);
         return this;
     }
 
@@ -163,7 +145,7 @@ public class ActivityInner {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -173,7 +155,10 @@ public class ActivityInner {
      * @return the ActivityInner object itself.
      */
     public ActivityInner withCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ActivityProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
         return this;
     }
 
@@ -183,7 +168,7 @@ public class ActivityInner {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -193,7 +178,10 @@ public class ActivityInner {
      * @return the ActivityInner object itself.
      */
     public ActivityInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ActivityProperties();
+        }
+        this.innerProperties().withLastModifiedTime(lastModifiedTime);
         return this;
     }
 
@@ -203,7 +191,7 @@ public class ActivityInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -213,7 +201,10 @@ public class ActivityInner {
      * @return the ActivityInner object itself.
      */
     public ActivityInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ActivityProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -223,11 +214,8 @@ public class ActivityInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameterSets() != null) {
-            parameterSets().forEach(e -> e.validate());
-        }
-        if (outputTypes() != null) {
-            outputTypes().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

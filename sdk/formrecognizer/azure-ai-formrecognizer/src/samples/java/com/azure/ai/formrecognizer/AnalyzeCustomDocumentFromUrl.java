@@ -3,18 +3,22 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
-import com.azure.ai.formrecognizer.models.DocumentTable;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
+import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Sample to analyze a custom document with a custom-built model. To learn how to build your own models,
- * look at BuildModelAsync.java and BuildModel.java.
+ * look at BuildDocumentModelAsync.java and BuildDocumentModel.java.
  */
 public class AnalyzeCustomDocumentFromUrl {
 
@@ -32,7 +36,7 @@ public class AnalyzeCustomDocumentFromUrl {
 
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
             client.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -52,9 +56,9 @@ public class AnalyzeCustomDocumentFromUrl {
 
             // lines
             documentPage.getLines().forEach(documentLine ->
-                System.out.printf("Line '%s' is within a bounding box %s.%n",
+                System.out.printf("Line '%s' is within a bounding polygon %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingPolygon().toString()));
+                    getBoundingCoordinates(documentLine.getBoundingPolygon())));
 
             // words
             documentPage.getWords().forEach(documentWord ->
@@ -76,5 +80,13 @@ public class AnalyzeCustomDocumentFromUrl {
             });
             System.out.println();
         }
+    }
+
+    /**
+     * Utility function to get the bounding polygon coordinates.
+     */
+    private static String getBoundingCoordinates(List<Point> boundingPolygon) {
+        return boundingPolygon.stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
+            point.getY())).collect(Collectors.joining(", "));
     }
 }

@@ -9,14 +9,16 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.test.utils.metrics.TestMeasurement;
+import com.azure.core.test.utils.metrics.TestMeter;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -42,8 +44,10 @@ import reactor.test.publisher.TestPublisher;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -100,7 +104,7 @@ public class ReactorSessionTest {
     public void setup() throws IOException {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60));
+        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60), AmqpMetricsProvider.noop());
         this.cbsNodeSupplier = Mono.just(cbsNode);
 
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -118,7 +122,6 @@ public class ReactorSessionTest {
         }).when(reactorDispatcher).invoke(any());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(connectionShutdown.flux());
-
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
         this.reactorSession = new ReactorSession(amqpConnection, session, handler, NAME, reactorProvider,
             reactorHandlerProvider, cbsNodeSupplier, tokenManagerProvider, serializer, options);
@@ -180,7 +183,7 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         when(session.sender(linkName)).thenReturn(sender);
         when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
@@ -223,7 +226,7 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         final Event closeSendEvent = mock(Event.class);
         when(closeSendEvent.getLink()).thenReturn(sender);
@@ -265,7 +268,7 @@ public class ReactorSessionTest {
         final String entityPath = transactionLinkName;
 
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         when(session.sender(linkName)).thenReturn(sender);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
@@ -301,5 +304,49 @@ public class ReactorSessionTest {
         final String linkName = "test-link-name";
         final String entityPath = "test-entity-path";
         final AmqpRetryPolicy amqpRetryPolicy = mock(AmqpRetryPolicy.class);
+    }
+
+    /**
+     * Verifies that an error is reported as metric if there is an error condition on close.
+     */
+    @Test
+    void onSessionRemoteCloseWithErrorReportsMetrics() {
+        // Arrange
+        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED.getErrorCondition()), "");
+
+        when(session.getRemoteCondition()).thenReturn(errorCondition);
+        when(session.getLocalState()).thenReturn(EndpointState.CLOSED);
+
+        TestMeter meter = new TestMeter();
+        SessionHandler handlerWithMetrics = new SessionHandler(ID, HOST, ENTITY_PATH,  reactorDispatcher, Duration.ofSeconds(60), new AmqpMetricsProvider(meter, HOST, ENTITY_PATH));
+        handlerWithMetrics.onSessionRemoteClose(event);
+
+        // Assert
+        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
+        assertEquals(1, errors.size());
+        assertEquals(1, errors.get(0).getValue());
+        assertEquals("amqp:resource-limit-exceeded", errors.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
+        assertEquals(HOST, errors.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
+        assertEquals(ENTITY_PATH, errors.get(0).getAttributes().get(ClientConstants.ENTITY_NAME_KEY));
+    }
+
+    /**
+     * Verifies that no metric is reported if there is an no error condition on close.
+     */
+    @Test
+    void onSessionRemoteCloseNoErrorNoMetrics() {
+        // Arrange
+        final ErrorCondition errorCondition = new ErrorCondition(null, "");
+
+        when(session.getRemoteCondition()).thenReturn(errorCondition);
+        when(session.getLocalState()).thenReturn(EndpointState.CLOSED);
+
+        TestMeter meter = new TestMeter();
+        SessionHandler handlerWithMetrics = new SessionHandler(ID, HOST, ENTITY_PATH,  reactorDispatcher, Duration.ofSeconds(60), new AmqpMetricsProvider(meter, HOST, null));
+        handlerWithMetrics.onSessionRemoteClose(event);
+
+        // Assert
+        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
+        assertEquals(0, errors.size());
     }
 }

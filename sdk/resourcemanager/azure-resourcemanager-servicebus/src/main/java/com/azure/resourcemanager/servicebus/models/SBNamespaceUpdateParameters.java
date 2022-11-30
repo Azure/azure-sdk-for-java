@@ -5,57 +5,36 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.servicebus.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Description of a namespace resource. */
-@JsonFlatten
 @Fluent
-public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBNamespaceUpdateParameters.class);
-
+public final class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
     /*
-     * Properties of Sku
+     * Properties of SKU
      */
     @JsonProperty(value = "sku")
     private SBSku sku;
 
     /*
-     * Provisioning state of the namespace.
+     * Properties of the namespace.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties")
+    private SBNamespaceUpdateProperties innerProperties;
 
     /*
-     * The time the namespace was created.
+     * Properties of BYOK Identity description
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
-
-    /*
-     * The time the namespace was updated.
-     */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * Endpoint you can use to perform Service Bus operations.
-     */
-    @JsonProperty(value = "properties.serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceBusEndpoint;
-
-    /*
-     * Identifier for Azure Insights metrics
-     */
-    @JsonProperty(value = "properties.metricId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricId;
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /**
-     * Get the sku property: Properties of Sku.
+     * Get the sku property: Properties of SKU.
      *
      * @return the sku value.
      */
@@ -64,7 +43,7 @@ public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
     }
 
     /**
-     * Set the sku property: Properties of Sku.
+     * Set the sku property: Properties of SKU.
      *
      * @param sku the sku value to set.
      * @return the SBNamespaceUpdateParameters object itself.
@@ -75,48 +54,32 @@ public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the namespace.
+     * Get the innerProperties property: Properties of the namespace.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
+    private SBNamespaceUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the createdAt property: The time the namespace was created.
+     * Get the identity property: Properties of BYOK Identity description.
      *
-     * @return the createdAt value.
+     * @return the identity value.
      */
-    public OffsetDateTime createdAt() {
-        return this.createdAt;
+    public Identity identity() {
+        return this.identity;
     }
 
     /**
-     * Get the updatedAt property: The time the namespace was updated.
+     * Set the identity property: Properties of BYOK Identity description.
      *
-     * @return the updatedAt value.
+     * @param identity the identity value to set.
+     * @return the SBNamespaceUpdateParameters object itself.
      */
-    public OffsetDateTime updatedAt() {
-        return this.updatedAt;
-    }
-
-    /**
-     * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
-     *
-     * @return the serviceBusEndpoint value.
-     */
-    public String serviceBusEndpoint() {
-        return this.serviceBusEndpoint;
-    }
-
-    /**
-     * Get the metricId property: Identifier for Azure Insights metrics.
-     *
-     * @return the metricId value.
-     */
-    public String metricId() {
-        return this.metricId;
+    public SBNamespaceUpdateParameters withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -134,6 +97,153 @@ public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the namespace.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the status property: Status of the namespace.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the createdAt property: The time the namespace was created.
+     *
+     * @return the createdAt value.
+     */
+    public OffsetDateTime createdAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
+    }
+
+    /**
+     * Get the updatedAt property: The time the namespace was updated.
+     *
+     * @return the updatedAt value.
+     */
+    public OffsetDateTime updatedAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
+    }
+
+    /**
+     * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
+     *
+     * @return the serviceBusEndpoint value.
+     */
+    public String serviceBusEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusEndpoint();
+    }
+
+    /**
+     * Get the metricId property: Identifier for Azure Insights metrics.
+     *
+     * @return the metricId value.
+     */
+    public String metricId() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricId();
+    }
+
+    /**
+     * Get the encryption property: Properties of BYOK Encryption description.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Properties of BYOK Encryption description.
+     *
+     * @param encryption the encryption value to set.
+     * @return the SBNamespaceUpdateParameters object itself.
+     */
+    public SBNamespaceUpdateParameters withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceUpdateProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Set the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the SBNamespaceUpdateParameters object itself.
+     */
+    public SBNamespaceUpdateParameters withPrivateEndpointConnections(
+        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceUpdateProperties();
+        }
+        this.innerProperties().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: This property disables SAS authentication for the Service Bus namespace.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: This property disables SAS authentication for the Service Bus namespace.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the SBNamespaceUpdateParameters object itself.
+     */
+    public SBNamespaceUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceUpdateProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the alternateName property: Alternate name for namespace.
+     *
+     * @return the alternateName value.
+     */
+    public String alternateName() {
+        return this.innerProperties() == null ? null : this.innerProperties().alternateName();
+    }
+
+    /**
+     * Set the alternateName property: Alternate name for namespace.
+     *
+     * @param alternateName the alternateName value to set.
+     * @return the SBNamespaceUpdateParameters object itself.
+     */
+    public SBNamespaceUpdateParameters withAlternateName(String alternateName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceUpdateProperties();
+        }
+        this.innerProperties().withAlternateName(alternateName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,6 +253,12 @@ public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
         super.validate();
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

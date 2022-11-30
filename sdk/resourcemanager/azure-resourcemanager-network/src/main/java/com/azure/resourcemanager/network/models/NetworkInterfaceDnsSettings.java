@@ -12,44 +12,42 @@ import java.util.List;
 @Fluent
 public final class NetworkInterfaceDnsSettings {
     /*
-     * List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to
-     * azure provided DNS resolution. 'AzureProvidedDNS' value cannot be
-     * combined with other IPs, it must be the only value in dnsServers
-     * collection.
+     * List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided DNS resolution.
+     * 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in dnsServers collection.
      */
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
-     * If the VM that uses this NIC is part of an Availability Set, then this
-     * list will have the union of all DNS servers from all NICs that are part
-     * of the Availability Set. This property is what is configured on each of
+     * If the VM that uses this NIC is part of an Availability Set, then this list will have the union of all DNS
+     * servers from all NICs that are part of the Availability Set. This property is what is configured on each of
      * those VMs.
      */
     @JsonProperty(value = "appliedDnsServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> appliedDnsServers;
 
     /*
-     * Relative DNS name for this NIC used for internal communications between
-     * VMs in the same virtual network.
+     * Relative DNS name for this NIC used for internal communications between VMs in the same virtual network.
      */
     @JsonProperty(value = "internalDnsNameLabel")
     private String internalDnsNameLabel;
 
     /*
-     * Fully qualified DNS name supporting internal communications between VMs
-     * in the same virtual network.
+     * Fully qualified DNS name supporting internal communications between VMs in the same virtual network.
      */
     @JsonProperty(value = "internalFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String internalFqdn;
 
     /*
-     * Even if internalDnsNameLabel is not specified, a DNS entry is created
-     * for the primary NIC of the VM. This DNS name can be constructed by
-     * concatenating the VM name with the value of internalDomainNameSuffix.
+     * Even if internalDnsNameLabel is not specified, a DNS entry is created for the primary NIC of the VM. This DNS
+     * name can be constructed by concatenating the VM name with the value of internalDomainNameSuffix.
      */
     @JsonProperty(value = "internalDomainNameSuffix", access = JsonProperty.Access.WRITE_ONLY)
     private String internalDomainNameSuffix;
+
+    /** Creates an instance of NetworkInterfaceDnsSettings class. */
+    public NetworkInterfaceDnsSettings() {
+    }
 
     /**
      * Get the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided

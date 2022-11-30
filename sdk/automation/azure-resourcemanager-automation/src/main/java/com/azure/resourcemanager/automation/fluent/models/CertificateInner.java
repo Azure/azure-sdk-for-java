@@ -5,54 +5,27 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Definition of the certificate. */
-@JsonFlatten
 @Fluent
-public class CertificateInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateInner.class);
-
+public final class CertificateInner extends ProxyResource {
     /*
-     * Gets the thumbprint of the certificate.
+     * Gets or sets the properties of the certificate.
      */
-    @JsonProperty(value = "properties.thumbprint", access = JsonProperty.Access.WRITE_ONLY)
-    private String thumbprint;
+    @JsonProperty(value = "properties")
+    private CertificateProperties innerProperties;
 
-    /*
-     * Gets the expiry time of the certificate.
+    /**
+     * Get the innerProperties property: Gets or sets the properties of the certificate.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.expiryTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expiryTime;
-
-    /*
-     * Gets the is exportable flag of the certificate.
-     */
-    @JsonProperty(value = "properties.isExportable", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isExportable;
-
-    /*
-     * Gets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private CertificateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the thumbprint property: Gets the thumbprint of the certificate.
@@ -60,7 +33,7 @@ public class CertificateInner extends ProxyResource {
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -69,7 +42,7 @@ public class CertificateInner extends ProxyResource {
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
-        return this.expiryTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryTime();
     }
 
     /**
@@ -78,7 +51,7 @@ public class CertificateInner extends ProxyResource {
      * @return the isExportable value.
      */
     public Boolean isExportable() {
-        return this.isExportable;
+        return this.innerProperties() == null ? null : this.innerProperties().isExportable();
     }
 
     /**
@@ -87,7 +60,7 @@ public class CertificateInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -96,7 +69,7 @@ public class CertificateInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -105,7 +78,7 @@ public class CertificateInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -115,7 +88,10 @@ public class CertificateInner extends ProxyResource {
      * @return the CertificateInner object itself.
      */
     public CertificateInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -125,5 +101,8 @@ public class CertificateInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

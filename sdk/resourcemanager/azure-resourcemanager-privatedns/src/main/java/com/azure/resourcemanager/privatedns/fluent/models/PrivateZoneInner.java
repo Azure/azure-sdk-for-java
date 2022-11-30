@@ -6,17 +6,13 @@ package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a Private DNS zone. */
 @Fluent
 public final class PrivateZoneInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateZoneInner.class);
-
     /*
      * The ETag of the zone.
      */
@@ -146,6 +142,15 @@ public final class PrivateZoneInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the internalId property: Private zone internal Id.
+     *
+     * @return the internalId value.
+     */
+    public String internalId() {
+        return this.innerProperties() == null ? null : this.innerProperties().internalId();
     }
 
     /**

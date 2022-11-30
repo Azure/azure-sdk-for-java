@@ -19,8 +19,8 @@ import java.util.Map;
 @Fluent
 public class AzureTableStorageLinkedService extends LinkedService {
     /*
-     * The connection string. It is mutually exclusive with sasUri property.
-     * Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
@@ -32,9 +32,8 @@ public class AzureTableStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure Storage resource. It is mutually exclusive with
-     * connectionString property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.sasUri")
     private Object sasUri;
@@ -46,9 +45,8 @@ public class AzureTableStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;

@@ -298,14 +298,7 @@ public final class SqlScriptsImpl {
     public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch) {
         return createOrUpdateSqlScriptWithResponseAsync(sqlScriptName, sqlScript, ifMatch)
-                .flatMap(
-                        (Response<SqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -322,14 +315,7 @@ public final class SqlScriptsImpl {
     public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(String sqlScriptName, SqlScriptResource sqlScript) {
         final String ifMatch = null;
         return createOrUpdateSqlScriptWithResponseAsync(sqlScriptName, sqlScript, ifMatch)
-                .flatMap(
-                        (Response<SqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -349,14 +335,7 @@ public final class SqlScriptsImpl {
     public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
         return createOrUpdateSqlScriptWithResponseAsync(sqlScriptName, sqlScript, ifMatch, context)
-                .flatMap(
-                        (Response<SqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -467,14 +446,7 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName, String ifNoneMatch) {
         return getSqlScriptWithResponseAsync(sqlScriptName, ifNoneMatch)
-                .flatMap(
-                        (Response<SqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -490,14 +462,7 @@ public final class SqlScriptsImpl {
     public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName) {
         final String ifNoneMatch = null;
         return getSqlScriptWithResponseAsync(sqlScriptName, ifNoneMatch)
-                .flatMap(
-                        (Response<SqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -515,14 +480,7 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName, String ifNoneMatch, Context context) {
         return getSqlScriptWithResponseAsync(sqlScriptName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<SqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -620,7 +578,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlScriptAsync(String sqlScriptName) {
-        return deleteSqlScriptWithResponseAsync(sqlScriptName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteSqlScriptWithResponseAsync(sqlScriptName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -635,7 +593,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlScriptAsync(String sqlScriptName, Context context) {
-        return deleteSqlScriptWithResponseAsync(sqlScriptName, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteSqlScriptWithResponseAsync(sqlScriptName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -717,7 +675,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSqlScriptAsync(String sqlScriptName, ArtifactRenameRequest request) {
-        return renameSqlScriptWithResponseAsync(sqlScriptName, request).flatMap((Response<Void> res) -> Mono.empty());
+        return renameSqlScriptWithResponseAsync(sqlScriptName, request).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -733,8 +691,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSqlScriptAsync(String sqlScriptName, ArtifactRenameRequest request, Context context) {
-        return renameSqlScriptWithResponseAsync(sqlScriptName, request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return renameSqlScriptWithResponseAsync(sqlScriptName, request, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -771,7 +728,8 @@ public final class SqlScriptsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -799,7 +757,8 @@ public final class SqlScriptsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

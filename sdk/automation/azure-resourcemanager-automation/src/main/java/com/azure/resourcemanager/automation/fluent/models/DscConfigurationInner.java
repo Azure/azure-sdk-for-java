@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.ContentSource;
 import com.azure.resourcemanager.automation.models.DscConfigurationParameter;
 import com.azure.resourcemanager.automation.models.DscConfigurationProvisioningState;
 import com.azure.resourcemanager.automation.models.DscConfigurationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Definition of the configuration type. */
-@JsonFlatten
 @Fluent
-public class DscConfigurationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscConfigurationInner.class);
+public final class DscConfigurationInner extends Resource {
+    /*
+     * Gets or sets the configuration properties.
+     */
+    @JsonProperty(value = "properties")
+    private DscConfigurationProperties innerProperties;
 
     /*
      * Gets or sets the etag of the resource.
@@ -29,65 +29,14 @@ public class DscConfigurationInner extends Resource {
     @JsonProperty(value = "etag")
     private String etag;
 
-    /*
-     * Gets or sets the provisioning state of the configuration.
+    /**
+     * Get the innerProperties property: Gets or sets the configuration properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private DscConfigurationProvisioningState provisioningState;
-
-    /*
-     * Gets or sets the job count of the configuration.
-     */
-    @JsonProperty(value = "properties.jobCount")
-    private Integer jobCount;
-
-    /*
-     * Gets or sets the configuration parameters.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, DscConfigurationParameter> parameters;
-
-    /*
-     * Gets or sets the source.
-     */
-    @JsonProperty(value = "properties.source")
-    private ContentSource source;
-
-    /*
-     * Gets or sets the state of the configuration.
-     */
-    @JsonProperty(value = "properties.state")
-    private DscConfigurationState state;
-
-    /*
-     * Gets or sets verbose log option.
-     */
-    @JsonProperty(value = "properties.logVerbose")
-    private Boolean logVerbose;
-
-    /*
-     * Gets or sets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime")
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets the number of compiled node configurations.
-     */
-    @JsonProperty(value = "properties.nodeConfigurationCount")
-    private Integer nodeConfigurationCount;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private DscConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: Gets or sets the etag of the resource.
@@ -109,206 +58,6 @@ public class DscConfigurationInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the provisioningState property: Gets or sets the provisioning state of the configuration.
-     *
-     * @return the provisioningState value.
-     */
-    public DscConfigurationProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Gets or sets the provisioning state of the configuration.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withProvisioningState(DscConfigurationProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
-     * Get the jobCount property: Gets or sets the job count of the configuration.
-     *
-     * @return the jobCount value.
-     */
-    public Integer jobCount() {
-        return this.jobCount;
-    }
-
-    /**
-     * Set the jobCount property: Gets or sets the job count of the configuration.
-     *
-     * @param jobCount the jobCount value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withJobCount(Integer jobCount) {
-        this.jobCount = jobCount;
-        return this;
-    }
-
-    /**
-     * Get the parameters property: Gets or sets the configuration parameters.
-     *
-     * @return the parameters value.
-     */
-    public Map<String, DscConfigurationParameter> parameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Gets or sets the configuration parameters.
-     *
-     * @param parameters the parameters value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withParameters(Map<String, DscConfigurationParameter> parameters) {
-        this.parameters = parameters;
-        return this;
-    }
-
-    /**
-     * Get the source property: Gets or sets the source.
-     *
-     * @return the source value.
-     */
-    public ContentSource source() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: Gets or sets the source.
-     *
-     * @param source the source value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withSource(ContentSource source) {
-        this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the state property: Gets or sets the state of the configuration.
-     *
-     * @return the state value.
-     */
-    public DscConfigurationState state() {
-        return this.state;
-    }
-
-    /**
-     * Set the state property: Gets or sets the state of the configuration.
-     *
-     * @param state the state value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withState(DscConfigurationState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
-     * Get the logVerbose property: Gets or sets verbose log option.
-     *
-     * @return the logVerbose value.
-     */
-    public Boolean logVerbose() {
-        return this.logVerbose;
-    }
-
-    /**
-     * Set the logVerbose property: Gets or sets verbose log option.
-     *
-     * @param logVerbose the logVerbose value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withLogVerbose(Boolean logVerbose) {
-        this.logVerbose = logVerbose;
-        return this;
-    }
-
-    /**
-     * Get the creationTime property: Gets or sets the creation time.
-     *
-     * @return the creationTime value.
-     */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
-    }
-
-    /**
-     * Set the creationTime property: Gets or sets the creation time.
-     *
-     * @param creationTime the creationTime value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
-        return this;
-    }
-
-    /**
-     * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
-     * @return the lastModifiedTime value.
-     */
-    public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
-    }
-
-    /**
-     * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
-     * @param lastModifiedTime the lastModifiedTime value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
-        return this;
-    }
-
-    /**
-     * Get the nodeConfigurationCount property: Gets the number of compiled node configurations.
-     *
-     * @return the nodeConfigurationCount value.
-     */
-    public Integer nodeConfigurationCount() {
-        return this.nodeConfigurationCount;
-    }
-
-    /**
-     * Set the nodeConfigurationCount property: Gets the number of compiled node configurations.
-     *
-     * @param nodeConfigurationCount the nodeConfigurationCount value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withNodeConfigurationCount(Integer nodeConfigurationCount) {
-        this.nodeConfigurationCount = nodeConfigurationCount;
-        return this;
-    }
-
-    /**
-     * Get the description property: Gets or sets the description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Gets or sets the description.
-     *
-     * @param description the description value to set.
-     * @return the DscConfigurationInner object itself.
-     */
-    public DscConfigurationInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public DscConfigurationInner withLocation(String location) {
@@ -324,23 +73,243 @@ public class DscConfigurationInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Gets or sets the provisioning state of the configuration.
+     *
+     * @return the provisioningState value.
+     */
+    public DscConfigurationProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Gets or sets the provisioning state of the configuration.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withProvisioningState(DscConfigurationProvisioningState provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
+     * Get the jobCount property: Gets or sets the job count of the configuration.
+     *
+     * @return the jobCount value.
+     */
+    public Integer jobCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().jobCount();
+    }
+
+    /**
+     * Set the jobCount property: Gets or sets the job count of the configuration.
+     *
+     * @param jobCount the jobCount value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withJobCount(Integer jobCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withJobCount(jobCount);
+        return this;
+    }
+
+    /**
+     * Get the parameters property: Gets or sets the configuration parameters.
+     *
+     * @return the parameters value.
+     */
+    public Map<String, DscConfigurationParameter> parameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
+    }
+
+    /**
+     * Set the parameters property: Gets or sets the configuration parameters.
+     *
+     * @param parameters the parameters value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withParameters(Map<String, DscConfigurationParameter> parameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the source property: Gets or sets the source.
+     *
+     * @return the source value.
+     */
+    public ContentSource source() {
+        return this.innerProperties() == null ? null : this.innerProperties().source();
+    }
+
+    /**
+     * Set the source property: Gets or sets the source.
+     *
+     * @param source the source value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withSource(ContentSource source) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withSource(source);
+        return this;
+    }
+
+    /**
+     * Get the state property: Gets or sets the state of the configuration.
+     *
+     * @return the state value.
+     */
+    public DscConfigurationState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Set the state property: Gets or sets the state of the configuration.
+     *
+     * @param state the state value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withState(DscConfigurationState state) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withState(state);
+        return this;
+    }
+
+    /**
+     * Get the logVerbose property: Gets or sets verbose log option.
+     *
+     * @return the logVerbose value.
+     */
+    public Boolean logVerbose() {
+        return this.innerProperties() == null ? null : this.innerProperties().logVerbose();
+    }
+
+    /**
+     * Set the logVerbose property: Gets or sets verbose log option.
+     *
+     * @param logVerbose the logVerbose value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withLogVerbose(Boolean logVerbose) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withLogVerbose(logVerbose);
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: Gets or sets the creation time.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
+     * Set the creationTime property: Gets or sets the creation time.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withCreationTime(OffsetDateTime creationTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
+        return this;
+    }
+
+    /**
+     * Get the lastModifiedTime property: Gets or sets the last modified time.
+     *
+     * @return the lastModifiedTime value.
+     */
+    public OffsetDateTime lastModifiedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
+    }
+
+    /**
+     * Set the lastModifiedTime property: Gets or sets the last modified time.
+     *
+     * @param lastModifiedTime the lastModifiedTime value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withLastModifiedTime(lastModifiedTime);
+        return this;
+    }
+
+    /**
+     * Get the nodeConfigurationCount property: Gets the number of compiled node configurations.
+     *
+     * @return the nodeConfigurationCount value.
+     */
+    public Integer nodeConfigurationCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodeConfigurationCount();
+    }
+
+    /**
+     * Set the nodeConfigurationCount property: Gets the number of compiled node configurations.
+     *
+     * @param nodeConfigurationCount the nodeConfigurationCount value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withNodeConfigurationCount(Integer nodeConfigurationCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withNodeConfigurationCount(nodeConfigurationCount);
+        return this;
+    }
+
+    /**
+     * Get the description property: Gets or sets the description.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Gets or sets the description.
+     *
+     * @param description the description value to set.
+     * @return the DscConfigurationInner object itself.
+     */
+    public DscConfigurationInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscConfigurationProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (source() != null) {
-            source().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

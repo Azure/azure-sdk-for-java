@@ -88,7 +88,11 @@ public class ParallelDocumentQueryExecutionContext<T>
                 queryInfo.getRewrittenQuery(),
                 initParams.getCorrelatedActivityId(),
                 queryInfo.hasSelectValue() &&
-                    !(queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy() || queryInfo.hasDCount()));
+                    !(queryInfo.hasOrderBy()
+                        || queryInfo.hasAggregates()
+                        || queryInfo.hasGroupBy()
+                        || queryInfo.hasDCount()
+                        || queryInfo.hasDistinct()));
         context.setTop(initParams.getTop());
 
         try {
@@ -454,7 +458,6 @@ public class ParallelDocumentQueryExecutionContext<T>
 
     protected DocumentProducer<T> createDocumentProducer(
             String collectionRid,
-            PartitionKeyRange targetRange,
             String initialContinuationToken,
             int initialPageSize,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
@@ -468,7 +471,6 @@ public class ParallelDocumentQueryExecutionContext<T>
                 cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeFunc,
-                targetRange,
                 collectionRid,
                 createRetryPolicyFunc,
                 resourceType,

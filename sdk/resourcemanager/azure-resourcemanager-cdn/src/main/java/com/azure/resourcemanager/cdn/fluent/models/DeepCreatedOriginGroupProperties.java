@@ -9,40 +9,34 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the origin group created on the CDN endpoint. */
 @Fluent
 public final class DeepCreatedOriginGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeepCreatedOriginGroupProperties.class);
-
     /*
-     * Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Health probe settings to the origin that is used to determine the health of the origin.
      */
     @JsonProperty(value = "healthProbeSettings")
     private HealthProbeParameters healthProbeSettings;
 
     /*
-     * The source of the content being delivered via CDN within given origin
-     * group.
+     * The source of the content being delivered via CDN within given origin group.
      */
     @JsonProperty(value = "origins", required = true)
     private List<ResourceReference> origins;
 
     /*
-     * Time in minutes to shift the traffic to the endpoint gradually when an
-     * unhealthy endpoint comes healthy or a new endpoint is added. Default is
-     * 10 mins. This property is currently not supported.
+     * Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new
+     * endpoint is added. Default is 10 mins. This property is currently not supported.
      */
     @JsonProperty(value = "trafficRestorationTimeToHealedOrNewEndpointsInMinutes")
     private Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
 
     /*
-     * The JSON object that contains the properties to determine origin health
-     * using real requests/responses.This property is currently not supported.
+     * The JSON object that contains the properties to determine origin health using real requests/responses.This
+     * property is currently not supported.
      */
     @JsonProperty(value = "responseBasedOriginErrorDetectionSettings")
     private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;
@@ -149,7 +143,7 @@ public final class DeepCreatedOriginGroupProperties {
             healthProbeSettings().validate();
         }
         if (origins() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property origins in model DeepCreatedOriginGroupProperties"));
@@ -160,4 +154,6 @@ public final class DeepCreatedOriginGroupProperties {
             responseBasedOriginErrorDetectionSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeepCreatedOriginGroupProperties.class);
 }

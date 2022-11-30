@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PatchAssessmentState. */
+/** Describes the availability of a given patch. */
 public final class PatchAssessmentState extends ExpandableStringEnum<PatchAssessmentState> {
     /** Static value Unknown for PatchAssessmentState. */
     public static final PatchAssessmentState UNKNOWN = fromString("Unknown");

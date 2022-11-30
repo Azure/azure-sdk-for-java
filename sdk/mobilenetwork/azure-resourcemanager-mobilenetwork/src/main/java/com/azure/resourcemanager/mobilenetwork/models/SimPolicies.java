@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of SimPolicies. */
 public interface SimPolicies {
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -23,7 +23,7 @@ public interface SimPolicies {
     void delete(String resourceGroupName, String mobileNetworkName, String simPolicyName);
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -36,7 +36,7 @@ public interface SimPolicies {
     void delete(String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -44,12 +44,12 @@ public interface SimPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy.
+     * @return information about the specified SIM policy.
      */
     SimPolicy get(String resourceGroupName, String mobileNetworkName, String simPolicyName);
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -58,25 +58,25 @@ public interface SimPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy along with {@link Response}.
+     * @return information about the specified SIM policy along with {@link Response}.
      */
     Response<SimPolicy> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network as paginated response with {@link PagedIterable}.
+     * @return all the SIM policies in a mobile network as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SimPolicy> listByMobileNetwork(String resourceGroupName, String mobileNetworkName);
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -84,35 +84,35 @@ public interface SimPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network as paginated response with {@link PagedIterable}.
+     * @return all the SIM policies in a mobile network as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SimPolicy> listByMobileNetwork(String resourceGroupName, String mobileNetworkName, Context context);
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy along with {@link Response}.
+     * @return information about the specified SIM policy along with {@link Response}.
      */
     SimPolicy getById(String id);
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy along with {@link Response}.
+     * @return information about the specified SIM policy along with {@link Response}.
      */
     Response<SimPolicy> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +122,7 @@ public interface SimPolicies {
     void deleteById(String id);
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

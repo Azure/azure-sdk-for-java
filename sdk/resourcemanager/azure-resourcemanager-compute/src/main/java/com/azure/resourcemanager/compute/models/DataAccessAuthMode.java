@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataAccessAuthMode. */
+/** Additional authentication requirements when exporting or uploading to a disk or snapshot. */
 public final class DataAccessAuthMode extends ExpandableStringEnum<DataAccessAuthMode> {
     /** Static value AzureActiveDirectory for DataAccessAuthMode. */
     public static final DataAccessAuthMode AZURE_ACTIVE_DIRECTORY = fromString("AzureActiveDirectory");

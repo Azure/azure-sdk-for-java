@@ -27,8 +27,12 @@ import com.azure.resourcemanager.dashboard.fluent.DashboardManagementClient;
 import com.azure.resourcemanager.dashboard.implementation.DashboardManagementClientBuilder;
 import com.azure.resourcemanager.dashboard.implementation.GrafanasImpl;
 import com.azure.resourcemanager.dashboard.implementation.OperationsImpl;
+import com.azure.resourcemanager.dashboard.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.dashboard.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.dashboard.models.Grafanas;
 import com.azure.resourcemanager.dashboard.models.Operations;
+import com.azure.resourcemanager.dashboard.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.dashboard.models.PrivateLinkResources;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -41,6 +45,10 @@ public final class DashboardManager {
     private Operations operations;
 
     private Grafanas grafanas;
+
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private PrivateLinkResources privateLinkResources;
 
     private final DashboardManagementClient clientObject;
 
@@ -207,7 +215,7 @@ public final class DashboardManager {
                 .append("-")
                 .append("com.azure.resourcemanager.dashboard")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -264,7 +272,11 @@ public final class DashboardManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -272,12 +284,41 @@ public final class DashboardManager {
         return operations;
     }
 
-    /** @return Resource collection API of Grafanas. */
+    /**
+     * Gets the resource collection API of Grafanas. It manages ManagedGrafana.
+     *
+     * @return Resource collection API of Grafanas.
+     */
     public Grafanas grafanas() {
         if (this.grafanas == null) {
             this.grafanas = new GrafanasImpl(clientObject.getGrafanas(), this);
         }
         return grafanas;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
     }
 
     /**

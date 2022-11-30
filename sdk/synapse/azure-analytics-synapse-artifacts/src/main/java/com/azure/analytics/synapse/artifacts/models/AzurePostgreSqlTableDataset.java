@@ -19,22 +19,20 @@ import java.util.Map;
 @Fluent
 public class AzurePostgreSqlTableDataset extends Dataset {
     /*
-     * The table name of the Azure PostgreSQL database which includes both
-     * schema and table. Type: string (or Expression with resultType string).
+     * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The table name of the Azure PostgreSQL database. Type: string (or
-     * Expression with resultType string).
+     * The table name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
-     * The schema name of the Azure PostgreSQL database. Type: string (or
-     * Expression with resultType string).
+     * The schema name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;

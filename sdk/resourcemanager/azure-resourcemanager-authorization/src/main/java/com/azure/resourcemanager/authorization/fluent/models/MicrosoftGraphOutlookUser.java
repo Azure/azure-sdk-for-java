@@ -27,6 +27,10 @@ public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOutlookUser class. */
+    public MicrosoftGraphOutlookUser() {
+    }
+
     /**
      * Get the masterCategories property: A list of categories defined for the user.
      *

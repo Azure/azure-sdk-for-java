@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.StreamType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Definition of the source control sync job stream by id. */
-@JsonFlatten
 @Fluent
-public class SourceControlSyncJobStreamByIdInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlSyncJobStreamByIdInner.class);
-
+public final class SourceControlSyncJobStreamByIdInner {
     /*
      * Resource id.
      */
@@ -26,40 +20,10 @@ public class SourceControlSyncJobStreamByIdInner {
     private String id;
 
     /*
-     * The sync job stream id.
+     * The properties of the source control sync job stream.
      */
-    @JsonProperty(value = "properties.sourceControlSyncJobStreamId")
-    private String sourceControlSyncJobStreamId;
-
-    /*
-     * The summary of the sync job stream.
-     */
-    @JsonProperty(value = "properties.summary")
-    private String summary;
-
-    /*
-     * The time of the sync job stream.
-     */
-    @JsonProperty(value = "properties.time", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime time;
-
-    /*
-     * The type of the sync job stream.
-     */
-    @JsonProperty(value = "properties.streamType")
-    private StreamType streamType;
-
-    /*
-     * The text of the sync job stream.
-     */
-    @JsonProperty(value = "properties.streamText")
-    private String streamText;
-
-    /*
-     * The values of the job stream.
-     */
-    @JsonProperty(value = "properties.value")
-    private Map<String, Object> value;
+    @JsonProperty(value = "properties")
+    private SourceControlSyncJobStreamByIdProperties innerProperties;
 
     /**
      * Get the id property: Resource id.
@@ -71,12 +35,21 @@ public class SourceControlSyncJobStreamByIdInner {
     }
 
     /**
+     * Get the innerProperties property: The properties of the source control sync job stream.
+     *
+     * @return the innerProperties value.
+     */
+    private SourceControlSyncJobStreamByIdProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sourceControlSyncJobStreamId property: The sync job stream id.
      *
      * @return the sourceControlSyncJobStreamId value.
      */
     public String sourceControlSyncJobStreamId() {
-        return this.sourceControlSyncJobStreamId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceControlSyncJobStreamId();
     }
 
     /**
@@ -86,7 +59,10 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the SourceControlSyncJobStreamByIdInner object itself.
      */
     public SourceControlSyncJobStreamByIdInner withSourceControlSyncJobStreamId(String sourceControlSyncJobStreamId) {
-        this.sourceControlSyncJobStreamId = sourceControlSyncJobStreamId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobStreamByIdProperties();
+        }
+        this.innerProperties().withSourceControlSyncJobStreamId(sourceControlSyncJobStreamId);
         return this;
     }
 
@@ -96,7 +72,7 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the summary value.
      */
     public String summary() {
-        return this.summary;
+        return this.innerProperties() == null ? null : this.innerProperties().summary();
     }
 
     /**
@@ -106,7 +82,10 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the SourceControlSyncJobStreamByIdInner object itself.
      */
     public SourceControlSyncJobStreamByIdInner withSummary(String summary) {
-        this.summary = summary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobStreamByIdProperties();
+        }
+        this.innerProperties().withSummary(summary);
         return this;
     }
 
@@ -116,7 +95,7 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the time value.
      */
     public OffsetDateTime time() {
-        return this.time;
+        return this.innerProperties() == null ? null : this.innerProperties().time();
     }
 
     /**
@@ -125,7 +104,7 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the streamType value.
      */
     public StreamType streamType() {
-        return this.streamType;
+        return this.innerProperties() == null ? null : this.innerProperties().streamType();
     }
 
     /**
@@ -135,7 +114,10 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the SourceControlSyncJobStreamByIdInner object itself.
      */
     public SourceControlSyncJobStreamByIdInner withStreamType(StreamType streamType) {
-        this.streamType = streamType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobStreamByIdProperties();
+        }
+        this.innerProperties().withStreamType(streamType);
         return this;
     }
 
@@ -145,7 +127,7 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the streamText value.
      */
     public String streamText() {
-        return this.streamText;
+        return this.innerProperties() == null ? null : this.innerProperties().streamText();
     }
 
     /**
@@ -155,7 +137,10 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the SourceControlSyncJobStreamByIdInner object itself.
      */
     public SourceControlSyncJobStreamByIdInner withStreamText(String streamText) {
-        this.streamText = streamText;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobStreamByIdProperties();
+        }
+        this.innerProperties().withStreamText(streamText);
         return this;
     }
 
@@ -165,7 +150,7 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the value value.
      */
     public Map<String, Object> value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -175,7 +160,10 @@ public class SourceControlSyncJobStreamByIdInner {
      * @return the SourceControlSyncJobStreamByIdInner object itself.
      */
     public SourceControlSyncJobStreamByIdInner withValue(Map<String, Object> value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobStreamByIdProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -185,5 +173,8 @@ public class SourceControlSyncJobStreamByIdInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

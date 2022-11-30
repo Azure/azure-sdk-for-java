@@ -3,165 +3,273 @@
 
 package com.azure.communication.callingserver;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.AbstractMap.SimpleEntry;
-
-import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.callingserver.models.MediaType;
-import com.azure.communication.callingserver.models.OperationStatus;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.callingserver.implementation.models.RemoveParticipantsResponseInternal;
+import com.azure.communication.callingserver.implementation.models.TransferCallResponseInternal;
+import com.azure.communication.callingserver.models.AddParticipantsOptions;
+import com.azure.communication.callingserver.models.AddParticipantsResult;
+import com.azure.communication.callingserver.models.CallConnectionProperties;
+import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.ListParticipantsResult;
+import com.azure.communication.callingserver.models.RemoveParticipantsResult;
+import com.azure.communication.callingserver.models.TransferCallResult;
+import com.azure.communication.callingserver.models.TransferToParticipantCallOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
 import org.junit.jupiter.api.Test;
 
-public class CallConnectionUnitTests {
+import java.util.ArrayList;
+import java.util.Arrays;
 
-    static final String CALL_CONNECTION_ID = "callConnectionId";
-    static final String OPERATION_ID = "operationId";    
-    static final String NEW_PARTICIPANT_ID = "newParticipantId"; 
+import java.util.AbstractMap.SimpleEntry;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     @Test
-    public void createConnectionWithResponse() {
-        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void getCallProperties() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateCreateCallResult(CallingServerResponseMocker.CALL_CONNECTION_ID), 201)
-            )));
-        
-        CommunicationUserIdentifier sourceUser = new CommunicationUserIdentifier("id");
-        List<CommunicationIdentifier> targetUsers = new ArrayList<CommunicationIdentifier>();
-        targetUsers.add(new CommunicationUserIdentifier("id2"));
+                new SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 200)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
 
-        CreateCallOptions options = new CreateCallOptions(
-            "serverCallId",
-            Collections.singletonList(MediaType.AUDIO),
-            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+        CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
 
-        Response<CallConnection> callConnectionAsyncResponse = callingServerClient.createCallConnectionWithResponse(sourceUser, targetUsers, options, Context.NONE);
-        assertEquals(201, callConnectionAsyncResponse.getStatusCode());
-        assertNotNull(callConnectionAsyncResponse.getValue());
-    } 
-
-    @Test
-    public void getCallConnectionCallingServerClient() {
-        CallingServerClient callingServerAsyncClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList()));
-        
-        CallConnection callConnection = callingServerAsyncClient.getCallConnection(CallingServerResponseMocker.CALL_CONNECTION_ID);
-        assertNotNull(callConnection);
+        assertNotNull(callConnectionProperties);
     }
 
     @Test
-    public void playAudioWithResponse() {
-        CallConnection callConnection = getCallConnection();
-
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri("callbackUri");
-        Response<PlayAudioResult> playAudioResultResponse = callConnection.playAudioWithResponse("audioFileUri", playAudioOptions, Context.NONE);
-        assertEquals(202, playAudioResultResponse.getStatusCode());
-        PlayAudioResult playAudioResult = playAudioResultResponse.getValue();
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
-    }
-
-    @Test
-    public void playAudio() {
-        CallConnection callConnection = getCallConnection();
-
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri("callbackUri");
-        PlayAudioResult playAudioResult = callConnection.playAudio("audioFileUri", playAudioOptions);
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
-    }
-
-    @Test
-    public void playAudioWithoutPlayAudioOptions() {
-        CallConnection callConnection = getCallConnection();
-
-        PlayAudioResult playAudioResult = callConnection.playAudio("audioFileUri", false, "audioFieldId", "callbackUri", "operationContext");
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
-    }
-    
-    @Test
-    public void appParticipantWithResponse() {
-        CallConnection callConnection = getAddParticipantCallConnection();
-
-        CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        Response<AddParticipantResult> addParticipantResultResponse = callConnection.addParticipantWithResponse(user, "alternateCallerId", "operationContext", Context.NONE);
-        assertEquals(202, addParticipantResultResponse.getStatusCode());
-        AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
-        assertEquals(user.getId(), addParticipantResult.getParticipantId());
-    }
-
-    @Test
-    public void appParticipant() {
-        CallConnection callConnection = getAddParticipantCallConnection();
-
-        CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        AddParticipantResult addParticipantResult = callConnection.addParticipant(user, "alternateCallerId", "operationContext");
-        assertEquals(user.getId(), addParticipantResult.getParticipantId());
-    }
-
-    @Test
-    public void joinCall() {
-        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void getCallPropertiesWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateJoinCallResult(NEW_PARTICIPANT_ID), 202)
-            )));
+                new SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 200)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
 
-        CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        JoinCallOptions options = new JoinCallOptions(
-            CallingServerResponseMocker.URI_CALLBACK,
-            Collections.singletonList(MediaType.VIDEO),
-            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
-        CallConnection callConnection = callingServerClient.joinCall(CallingServerResponseMocker.SERVER_CALL_ID, (CommunicationIdentifier) user, options);
-        assertNotNull(callConnection);
-    }    
+        Response<CallConnectionProperties> callConnectionProperties = callConnection.getCallPropertiesWithResponse(Context.NONE);
 
-    @Test
-    public void joinCallWithResponse() {
-        CallingServerClient callingServerAsyncClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateJoinCallResult(NEW_PARTICIPANT_ID), 202)
-            )));
-
-        CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        JoinCallOptions options = new JoinCallOptions(
-            CallingServerResponseMocker.URI_CALLBACK,
-            Collections.singletonList(MediaType.VIDEO),
-            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
-        Response<CallConnection> callConnectionResponse = callingServerAsyncClient.joinCallWithResponse(CallingServerResponseMocker.SERVER_CALL_ID, (CommunicationIdentifier) user, options, Context.NONE);
-        assertEquals(202, callConnectionResponse.getStatusCode());
-        assertNotNull(callConnectionResponse.getValue());
-    }   
-
-    private CallConnection getCallConnection() {
-        return CallingServerResponseMocker.getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generatePlayAudioResult(
-                    OPERATION_ID, 
-                    OperationStatus.COMPLETED, 
-                    new ResultInfoInternal().setCode(202).setSubcode(0).setMessage("message")),
-                    202)
-            )));
+        assertNotNull(callConnectionProperties);
+        assertEquals(200, callConnectionProperties.getStatusCode());
+        assertNotNull(callConnectionProperties.getValue());
     }
 
-    private CallConnection getAddParticipantCallConnection() {
-        return CallingServerResponseMocker.getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
+    @Test
+    public void hangUp() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateAddParticipantResult(NEW_PARTICIPANT_ID), 202)
-            )));
-    }     
+                new SimpleEntry<String, Integer>("", 204)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        callConnection.hangUp(false);
+    }
+
+    @Test
+    public void hangUpWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>("", 204)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        Response<Void> hangUpResponse = callConnection.hangUpWithResponse(false, Context.NONE);
+
+        assertNotNull(hangUpResponse);
+        assertEquals(204, hangUpResponse.getStatusCode());
+    }
+
+    @Test
+    public void hangUpWithResponseForEveryone() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>("", 204)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        Response<Void> hangUpResponse = callConnection.hangUpWithResponse(true, Context.NONE);
+
+        assertNotNull(hangUpResponse);
+        assertEquals(204, hangUpResponse.getStatusCode());
+    }
+
+    @Test
+    public void getParticipant() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateGetParticipantResponse(CALL_CALLER_ID, false), 200)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        CallParticipant callParticipant = callConnection.getParticipant(CALL_CALLER_ID);
+
+        assertNotNull(callParticipant);
+        assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) callParticipant.getIdentifier()).getId());
+    }
+
+    @Test
+    public void getParticipantWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateGetParticipantResponse(CALL_CALLER_ID, false), 200)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        Response<CallParticipant> callParticipantResponse = callConnection.getParticipantWithResponse(CALL_CALLER_ID, Context.NONE);
+
+        assertNotNull(callParticipantResponse);
+        assertEquals(200, callParticipantResponse.getStatusCode());
+        assertNotNull(callParticipantResponse.getValue());
+        assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) callParticipantResponse.getValue().getIdentifier()).getId());
+    }
+
+    @Test
+    public void listParticipants() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateListParticipantsResponse(), 200)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        ListParticipantsResult listParticipants = callConnection.listParticipants();
+
+        assertNotNull(listParticipants);
+        assertNotNull(listParticipants.getValues());
+        assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) listParticipants.getValues().get(0).getIdentifier()).getId());
+    }
+
+    @Test
+    public void listParticipantsWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateListParticipantsResponse(), 200)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        Response<ListParticipantsResult> listParticipantsResultResponse = callConnection.listParticipantsWithResponse(Context.NONE);
+
+        assertNotNull(listParticipantsResultResponse);
+        assertEquals(200, listParticipantsResultResponse.getStatusCode());
+        assertNotNull(listParticipantsResultResponse.getValue());
+        assertEquals(CALL_TARGET_ID, ((CommunicationUserIdentifier) listParticipantsResultResponse
+            .getValue()
+            .getValues()
+            .get(1)
+            .getIdentifier())
+            .getId());
+    }
+
+    @Test
+    public void transferToParticipantCall() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new TransferCallResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        TransferCallResult transferCallResult = callConnection.transferToParticipantCall(
+            new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+                .setOperationContext(CALL_OPERATION_CONTEXT)
+        );
+
+        assertNotNull(transferCallResult);
+        assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
+    }
+
+    @Test
+    public void transferToParticipantCallWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new TransferCallResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        Response<TransferCallResult> transferCallResultResponse = callConnection.transferToParticipantCallWithResponse(
+            new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+                .setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
+
+        assertNotNull(transferCallResultResponse);
+        assertEquals(202, transferCallResultResponse.getStatusCode());
+        assertNotNull(transferCallResultResponse.getValue());
+    }
+
+    @Test
+    public void addParticipants() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateAddParticipantsResponse(), 202)
+            )
+        )).getCallConnection(CALL_CONNECTION_ID);
+
+        AddParticipantsResult addParticipantsResult = callConnection.addParticipants(
+            new AddParticipantsOptions(new ArrayList<>(Arrays.asList(
+                new CommunicationUserIdentifier(CALL_TARGET_ID))))
+                .setOperationContext(CALL_OPERATION_CONTEXT)
+        );
+
+        assertNotNull(addParticipantsResult);
+        assertEquals(CALL_TARGET_ID, ((CommunicationUserIdentifier) addParticipantsResult
+            .getParticipants()
+            .get(0)
+            .getIdentifier())
+            .getId());
+    }
+
+    @Test
+    public void addParticipantsWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateAddParticipantsResponse(), 202)
+            )
+        )).getCallConnection(CALL_CONNECTION_ID);
+
+        Response<AddParticipantsResult> addParticipantsResultResponse = callConnection.addParticipantsWithResponse(
+            new AddParticipantsOptions(new ArrayList<>(Arrays.asList(
+                new CommunicationUserIdentifier(CALL_TARGET_ID))))
+                .setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
+
+        assertNotNull(addParticipantsResultResponse);
+        assertEquals(202, addParticipantsResultResponse.getStatusCode());
+        assertNotNull(addParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void removeParticipants() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        RemoveParticipantsResult removeParticipantsResult = callConnection.removeParticipants(
+            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID))), CALL_OPERATION_CONTEXT);
+
+        assertNotNull(removeParticipantsResult);
+        assertEquals(CALL_OPERATION_CONTEXT, removeParticipantsResult.getOperationContext());
+    }
+
+    @Test
+    public void removeParticipantsWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        Response<RemoveParticipantsResult> removeParticipantsResultResponse = callConnection.removeParticipantsWithResponse(
+            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID))),
+            CALL_OPERATION_CONTEXT, Context.NONE);
+
+
+        assertNotNull(removeParticipantsResultResponse);
+        assertEquals(202, removeParticipantsResultResponse.getStatusCode());
+        assertNotNull(removeParticipantsResultResponse.getValue());
+    }
 }

@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -17,6 +18,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -24,6 +26,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -70,7 +73,9 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             .withConsistencyLevel(ConsistencyLevel.SESSION)
             .withContentResponseOnWriteEnabled(true)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig());
+            .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
     }
 
     @Factory(dataProvider = "directClientBuilder")
@@ -262,6 +267,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
      * Tests document creation through direct mode
      */
     @Test(groups = { "direct" }, timeOut = TIMEOUT * 10)
+    @Ignore("TODO 32129 - reenable after fixing flakiness.")
     public void createRecoversFrom410GoneClientGeneratedOnPartitionSplitDuringIdleTime() throws Exception {
         executeCreateRecoversFrom410GoneOnPartitionSplitDuringIdleTime(false);
     }

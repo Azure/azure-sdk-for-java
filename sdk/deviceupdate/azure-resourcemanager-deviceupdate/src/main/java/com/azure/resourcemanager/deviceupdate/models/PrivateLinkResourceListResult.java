@@ -19,8 +19,7 @@ public final class PrivateLinkResourceListResult {
     private List<GroupInformationInner> value;
 
     /*
-     * The URI that can be used to request the next list of private link
-     * resources.
+     * The URI that can be used to request the next list of private link resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

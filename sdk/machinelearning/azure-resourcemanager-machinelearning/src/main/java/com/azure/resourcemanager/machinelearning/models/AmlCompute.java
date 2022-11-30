@@ -20,6 +20,10 @@ public final class AmlCompute extends Compute {
     @JsonProperty(value = "properties")
     private AmlComputeProperties properties;
 
+    /** Creates an instance of AmlCompute class. */
+    public AmlCompute() {
+    }
+
     /**
      * Get the properties property: Properties of AmlCompute.
      *
@@ -37,6 +41,13 @@ public final class AmlCompute extends Compute {
      */
     public AmlCompute withProperties(AmlComputeProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmlCompute withComputeLocation(String computeLocation) {
+        super.withComputeLocation(computeLocation);
         return this;
     }
 

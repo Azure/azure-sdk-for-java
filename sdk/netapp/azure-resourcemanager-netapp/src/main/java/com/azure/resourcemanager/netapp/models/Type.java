@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Type. */
+/**
+ * quotaType
+ *
+ * <p>Type of quota.
+ */
 public final class Type extends ExpandableStringEnum<Type> {
     /** Static value DefaultUserQuota for Type. */
     public static final Type DEFAULT_USER_QUOTA = fromString("DefaultUserQuota");

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiffDiskOptions. */
+/** Specifies the ephemeral disk option for operating system disk. */
 public final class DiffDiskOptions extends ExpandableStringEnum<DiffDiskOptions> {
     /** Static value Local for DiffDiskOptions. */
     public static final DiffDiskOptions LOCAL = fromString("Local");

@@ -12,7 +12,7 @@ import java.util.UUID;
 /** Samples for StreamingLocators Create. */
 public final class StreamingLocatorsCreateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-create-clear.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-create-clear.json
      */
     /**
      * Sample code: Creates a Streaming Locator with clear streaming.
@@ -31,7 +31,7 @@ public final class StreamingLocatorsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-create-secure.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-create-secure.json
      */
     /**
      * Sample code: Creates a Streaming Locator with secure streaming.
@@ -52,7 +52,7 @@ public final class StreamingLocatorsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-create-secure-userDefinedContentKeys.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-create-secure-userDefinedContentKeys.json
      */
     /**
      * Sample code: Creates a Streaming Locator with user defined content keys.

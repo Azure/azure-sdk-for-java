@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
-import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the origin group. */
 @Fluent
 public class AfdOriginGroupUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginGroupUpdatePropertiesParameters.class);
-
     /*
      * The name of the profile which holds the origin group.
      */
@@ -31,30 +26,20 @@ public class AfdOriginGroupUpdatePropertiesParameters {
     private LoadBalancingSettingsParameters loadBalancingSettings;
 
     /*
-     * Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Health probe settings to the origin that is used to determine the health of the origin.
      */
     @JsonProperty(value = "healthProbeSettings")
     private HealthProbeParameters healthProbeSettings;
 
     /*
-     * Time in minutes to shift the traffic to the endpoint gradually when an
-     * unhealthy endpoint comes healthy or a new endpoint is added. Default is
-     * 10 mins. This property is currently not supported.
+     * Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new
+     * endpoint is added. Default is 10 mins. This property is currently not supported.
      */
     @JsonProperty(value = "trafficRestorationTimeToHealedOrNewEndpointsInMinutes")
     private Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
 
     /*
-     * The JSON object that contains the properties to determine origin health
-     * using real requests/responses. This property is currently not supported.
-     */
-    @JsonProperty(value = "responseBasedAfdOriginErrorDetectionSettings")
-    private ResponseBasedOriginErrorDetectionParameters responseBasedAfdOriginErrorDetectionSettings;
-
-    /*
-     * Whether to allow session affinity on this host. Valid options are
-     * 'Enabled' or 'Disabled'
+     * Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "sessionAffinityState")
     private EnabledState sessionAffinityState;
@@ -139,30 +124,6 @@ public class AfdOriginGroupUpdatePropertiesParameters {
     }
 
     /**
-     * Get the responseBasedAfdOriginErrorDetectionSettings property: The JSON object that contains the properties to
-     * determine origin health using real requests/responses. This property is currently not supported.
-     *
-     * @return the responseBasedAfdOriginErrorDetectionSettings value.
-     */
-    public ResponseBasedOriginErrorDetectionParameters responseBasedAfdOriginErrorDetectionSettings() {
-        return this.responseBasedAfdOriginErrorDetectionSettings;
-    }
-
-    /**
-     * Set the responseBasedAfdOriginErrorDetectionSettings property: The JSON object that contains the properties to
-     * determine origin health using real requests/responses. This property is currently not supported.
-     *
-     * @param responseBasedAfdOriginErrorDetectionSettings the responseBasedAfdOriginErrorDetectionSettings value to
-     *     set.
-     * @return the AfdOriginGroupUpdatePropertiesParameters object itself.
-     */
-    public AfdOriginGroupUpdatePropertiesParameters withResponseBasedAfdOriginErrorDetectionSettings(
-        ResponseBasedOriginErrorDetectionParameters responseBasedAfdOriginErrorDetectionSettings) {
-        this.responseBasedAfdOriginErrorDetectionSettings = responseBasedAfdOriginErrorDetectionSettings;
-        return this;
-    }
-
-    /**
      * Get the sessionAffinityState property: Whether to allow session affinity on this host. Valid options are
      * 'Enabled' or 'Disabled'.
      *
@@ -195,9 +156,6 @@ public class AfdOriginGroupUpdatePropertiesParameters {
         }
         if (healthProbeSettings() != null) {
             healthProbeSettings().validate();
-        }
-        if (responseBasedAfdOriginErrorDetectionSettings() != null) {
-            responseBasedAfdOriginErrorDetectionSettings().validate();
         }
     }
 }

@@ -22,6 +22,11 @@ parameters:
     default: true
   - name: UseEsrpRelease
     type: boolean
+    # A different environment will be passed in for service directories that have
+    # live tests enabled for release and ReleaseDependsOnLiveTests is false
+  - name: Environment
+    type: string
+    default: 'maven'
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -88,9 +93,9 @@ stages:
                   - '!sdk/**/session-records'
 
             - task: UsePythonVersion@0
-              displayName: 'Use Python 3.6'
+              displayName: 'Use Python $(PythonVersion)'
               inputs:
-                versionSpec: '3.6'
+                versionSpec: $(PythonVersion)
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
@@ -98,7 +103,7 @@ stages:
                 ServiceDirectory: "template"
                 TestPipeline: ${{ parameters.TestPipeline }}
 
-            # Do all the verifications for all the artifacts after the sparce-checkout
+            # Do all the verifications for all the artifacts after the sparse-checkout
             - pwsh: |
                 $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
@@ -114,7 +119,6 @@ stages:
             - pwsh: |
                 $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                python --version
                 foreach($artifact in $ArtifactsList) {
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 }
@@ -143,7 +147,7 @@ stages:
         - deployment: TagRepository
           displayName: "Create release tag"
           condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: VerifyReleaseVersion
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -173,7 +177,7 @@ stages:
           # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
           # this is here to ensure larger areas (30+) libraries don't time out.
           timeoutInMinutes: 120
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: TagRepository
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -188,7 +192,7 @@ stages:
                     path: azure-sdk-build-tools
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     parameters:
-                      SkipDefaultCheckout: true
+                      SkipCheckoutNone: true
                       Repositories:
                         - Name: Azure/azure-sdk-for-java
                           Commitish: $(Build.SourceVersion)
@@ -246,7 +250,7 @@ stages:
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -268,9 +272,9 @@ stages:
                         - '!sdk/**/session-records'
 
                   - task: UsePythonVersion@0
-                    displayName: 'Use Python 3.6'
+                    displayName: 'Use Python $(PythonVersion)'
                     inputs:
-                      versionSpec: '3.6'
+                      versionSpec: $(PythonVersion)
 
                   # Apply the version increment to each library, which only updates the version_client.txt file,
                   # and then call to update_versions will then apply all of the updates.
@@ -299,7 +303,7 @@ stages:
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
 
           pool:
@@ -317,7 +321,6 @@ stages:
                 steps:
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     parameters:
-                      SkipDefaultCheckout: true
                       Paths:
                         - sdk
                         - common/perf-test-core
@@ -356,7 +359,7 @@ stages:
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -407,7 +410,7 @@ stages:
           path: azure-sdk-build-tools
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
-            SkipDefaultCheckout: true
+            SkipCheckoutNone: true
             Repositories:
               - Name: Azure/azure-sdk-for-java
                 Commitish: $(Build.SourceVersion)
@@ -459,7 +462,6 @@ stages:
         steps:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
-              SkipDefaultCheckout: true
               Paths:
                 - sdk/**/*.md
                 - .github/CODEOWNERS

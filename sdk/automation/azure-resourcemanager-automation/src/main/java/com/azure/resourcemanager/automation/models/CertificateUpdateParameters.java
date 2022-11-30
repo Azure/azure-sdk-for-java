@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.CertificateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the update certificate operation. */
-@JsonFlatten
 @Fluent
-public class CertificateUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateUpdateParameters.class);
-
+public final class CertificateUpdateParameters {
     /*
      * Gets or sets the name of the certificate.
      */
@@ -23,10 +18,10 @@ public class CertificateUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the description of the certificate.
+     * Gets or sets the properties of the certificate.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private CertificateUpdateProperties innerProperties;
 
     /**
      * Get the name property: Gets or sets the name of the certificate.
@@ -49,12 +44,21 @@ public class CertificateUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the certificate.
+     *
+     * @return the innerProperties value.
+     */
+    private CertificateUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the description property: Gets or sets the description of the certificate.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -64,7 +68,10 @@ public class CertificateUpdateParameters {
      * @return the CertificateUpdateParameters object itself.
      */
     public CertificateUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -74,5 +81,8 @@ public class CertificateUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -20,6 +20,10 @@ public final class CustomNCrossValidations extends NCrossValidations {
     @JsonProperty(value = "value", required = true)
     private int value;
 
+    /** Creates an instance of CustomNCrossValidations class. */
+    public CustomNCrossValidations() {
+    }
+
     /**
      * Get the value property: [Required] N-Cross validations value.
      *

@@ -18,6 +18,10 @@ public final class ComputeOperationListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ComputeOperationValueInner> value;
 
+    /** Creates an instance of ComputeOperationListResult class. */
+    public ComputeOperationListResult() {
+    }
+
     /**
      * Get the value property: The list of compute operations.
      *

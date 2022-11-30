@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The tracking states for afd resources. */
 @Immutable
 public class AfdStateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdStateProperties.class);
-
     /*
      * Provisioning status
      */

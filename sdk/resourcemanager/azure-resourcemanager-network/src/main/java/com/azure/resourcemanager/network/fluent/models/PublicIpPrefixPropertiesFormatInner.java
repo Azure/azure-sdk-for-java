@@ -47,8 +47,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
     private List<ReferencedPublicIpAddress> publicIpAddresses;
 
     /*
-     * The reference to load balancer frontend IP configuration associated with
-     * the public IP prefix.
+     * The reference to load balancer frontend IP configuration associated with the public IP prefix.
      */
     @JsonProperty(value = "loadBalancerFrontendIpConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource loadBalancerFrontendIpConfiguration;
@@ -76,6 +75,10 @@ public final class PublicIpPrefixPropertiesFormatInner {
      */
     @JsonProperty(value = "natGateway")
     private NatGatewayInner natGateway;
+
+    /** Creates an instance of PublicIpPrefixPropertiesFormatInner class. */
+    public PublicIpPrefixPropertiesFormatInner() {
+    }
 
     /**
      * Get the publicIpAddressVersion property: The public IP address version.

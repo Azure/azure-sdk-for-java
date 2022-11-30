@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceSize. */
+/** Instance type for the service. */
 public final class ServiceSize extends ExpandableStringEnum<ServiceSize> {
     /** Static value Cosmos.D4s for ServiceSize. */
     public static final ServiceSize COSMOS_D4S = fromString("Cosmos.D4s");

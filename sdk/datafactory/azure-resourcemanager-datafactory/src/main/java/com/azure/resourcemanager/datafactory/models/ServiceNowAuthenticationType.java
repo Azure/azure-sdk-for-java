@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceNowAuthenticationType. */
+/** The authentication type to use. */
 public final class ServiceNowAuthenticationType extends ExpandableStringEnum<ServiceNowAuthenticationType> {
     /** Static value Basic for ServiceNowAuthenticationType. */
     public static final ServiceNowAuthenticationType BASIC = fromString("Basic");

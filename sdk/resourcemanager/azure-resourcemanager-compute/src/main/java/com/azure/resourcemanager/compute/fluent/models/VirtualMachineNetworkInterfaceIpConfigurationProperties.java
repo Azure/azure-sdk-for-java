@@ -21,8 +21,7 @@ public final class VirtualMachineNetworkInterfaceIpConfigurationProperties {
     private SubResource subnet;
 
     /*
-     * Specifies the primary network interface in case the virtual machine has
-     * more than 1 network interface.
+     * Specifies the primary network interface in case the virtual machine has more than 1 network interface.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
@@ -34,9 +33,8 @@ public final class VirtualMachineNetworkInterfaceIpConfigurationProperties {
     private VirtualMachinePublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
-     * Available from Api-Version 2017-03-30 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-     * Possible values are: 'IPv4' and 'IPv6'.
+     * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
+     * IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersions privateIpAddressVersion;
@@ -48,22 +46,24 @@ public final class VirtualMachineNetworkInterfaceIpConfigurationProperties {
     private List<SubResource> applicationSecurityGroups;
 
     /*
-     * Specifies an array of references to backend address pools of application
-     * gateways. A virtual machine can reference backend address pools of
-     * multiple application gateways. Multiple virtual machines cannot use the
-     * same application gateway.
+     * Specifies an array of references to backend address pools of application gateways. A virtual machine can
+     * reference backend address pools of multiple application gateways. Multiple virtual machines cannot use the same
+     * application gateway.
      */
     @JsonProperty(value = "applicationGatewayBackendAddressPools")
     private List<SubResource> applicationGatewayBackendAddressPools;
 
     /*
-     * Specifies an array of references to backend address pools of load
-     * balancers. A virtual machine can reference backend address pools of one
-     * public and one internal load balancer. [Multiple virtual machines cannot
-     * use the same basic sku load balancer].
+     * Specifies an array of references to backend address pools of load balancers. A virtual machine can reference
+     * backend address pools of one public and one internal load balancer. [Multiple virtual machines cannot use the
+     * same basic sku load balancer].
      */
     @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<SubResource> loadBalancerBackendAddressPools;
+
+    /** Creates an instance of VirtualMachineNetworkInterfaceIpConfigurationProperties class. */
+    public VirtualMachineNetworkInterfaceIpConfigurationProperties() {
+    }
 
     /**
      * Get the subnet property: Specifies the identifier of the subnet.

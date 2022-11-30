@@ -25,15 +25,13 @@ public class HBaseLinkedService extends LinkedService {
     private Object host;
 
     /*
-     * The TCP port that the HBase instance uses to listen for client
-     * connections. The default value is 9090.
+     * The TCP port that the HBase instance uses to listen for client connections. The default value is 9090.
      */
     @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
-     * The partial URL corresponding to the HBase server. (i.e.
-     * /gateway/sandbox/hbase/version)
+     * The partial URL corresponding to the HBase server. (i.e. /gateway/sandbox/hbase/version)
      */
     @JsonProperty(value = "typeProperties.httpPath")
     private Object httpPath;
@@ -57,40 +55,35 @@ public class HBaseLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL.
-     * The default value is false.
+     * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
     @JsonProperty(value = "typeProperties.enableSsl")
     private Object enableSsl;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be
-     * set when using SSL on self-hosted IR. The default value is the
-     * cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
     @JsonProperty(value = "typeProperties.trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value
-     * is false.
+     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
+     * connecting over SSL. The default value is false.
      */
     @JsonProperty(value = "typeProperties.allowHostNameCNMismatch")
     private Object allowHostNameCNMismatch;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The
-     * default value is false.
+     * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
     @JsonProperty(value = "typeProperties.allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

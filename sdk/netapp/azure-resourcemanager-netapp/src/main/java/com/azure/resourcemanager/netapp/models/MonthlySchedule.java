@@ -17,8 +17,7 @@ public final class MonthlySchedule {
     private Integer snapshotsToKeep;
 
     /*
-     * Indicates which days of the month snapshot should be taken. A comma
-     * delimited string.
+     * Indicates which days of the month snapshot should be taken. A comma delimited string.
      */
     @JsonProperty(value = "daysOfMonth")
     private String daysOfMonth;

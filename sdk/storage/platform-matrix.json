@@ -3,17 +3,17 @@
     "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json"
   },
   "exclude": [
-    { "OSVmImage": "macOS-10.15" }
+    { "OSVmImage": "macos-11" }
   ],
   "include": [
     {
-      "Agent": { "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" } },
+      "Agent": { "macos-11": { "OSVmImage": "macos-11", "Pool": "Azure Pipelines" } },
       "JavaTestVersion": "1.8",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false
     },
     {
-      "Agent": { "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" } },
+      "Agent": { "macos-11": { "OSVmImage": "macos-11", "Pool": "Azure Pipelines" } },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "okhttp",
       "TestFromSource": false

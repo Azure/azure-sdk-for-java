@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationRunTasks;
 import com.azure.resourcemanager.automation.models.UpdateConfigurationNavigation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Software update configuration Run properties. */
-@JsonFlatten
 @Fluent
-public class SoftwareUpdateConfigurationRunInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationRunInner.class);
-
+public final class SoftwareUpdateConfigurationRunInner {
     /*
      * Name of the software update configuration run.
      */
@@ -32,83 +26,10 @@ public class SoftwareUpdateConfigurationRunInner {
     private String id;
 
     /*
-     * software update configuration triggered this run
+     * Software update configuration Run properties.
      */
-    @JsonProperty(value = "properties.softwareUpdateConfiguration")
-    private UpdateConfigurationNavigation softwareUpdateConfiguration;
-
-    /*
-     * Status of the software update configuration run.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
-
-    /*
-     * Configured duration for the software update configuration run.
-     */
-    @JsonProperty(value = "properties.configuredDuration", access = JsonProperty.Access.WRITE_ONLY)
-    private String configuredDuration;
-
-    /*
-     * Operating system target of the software update configuration triggered
-     * this run
-     */
-    @JsonProperty(value = "properties.osType", access = JsonProperty.Access.WRITE_ONLY)
-    private String osType;
-
-    /*
-     * Start time of the software update configuration run.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * End time of the software update configuration run.
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * Number of computers in the software update configuration run.
-     */
-    @JsonProperty(value = "properties.computerCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer computerCount;
-
-    /*
-     * Number of computers with failed status.
-     */
-    @JsonProperty(value = "properties.failedCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer failedCount;
-
-    /*
-     * Creation time of the resource, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * CreatedBy property, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.createdBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdBy;
-
-    /*
-     * Last time resource was modified, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * LastModifiedBy property, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastModifiedBy;
-
-    /*
-     * Software update configuration tasks triggered in this run
-     */
-    @JsonProperty(value = "properties.tasks")
-    private SoftwareUpdateConfigurationRunTasks tasks;
+    @JsonProperty(value = "properties")
+    private SoftwareUpdateConfigurationRunProperties innerProperties;
 
     /**
      * Get the name property: Name of the software update configuration run.
@@ -129,12 +50,21 @@ public class SoftwareUpdateConfigurationRunInner {
     }
 
     /**
+     * Get the innerProperties property: Software update configuration Run properties.
+     *
+     * @return the innerProperties value.
+     */
+    private SoftwareUpdateConfigurationRunProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the softwareUpdateConfiguration property: software update configuration triggered this run.
      *
      * @return the softwareUpdateConfiguration value.
      */
     public UpdateConfigurationNavigation softwareUpdateConfiguration() {
-        return this.softwareUpdateConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().softwareUpdateConfiguration();
     }
 
     /**
@@ -145,7 +75,10 @@ public class SoftwareUpdateConfigurationRunInner {
      */
     public SoftwareUpdateConfigurationRunInner withSoftwareUpdateConfiguration(
         UpdateConfigurationNavigation softwareUpdateConfiguration) {
-        this.softwareUpdateConfiguration = softwareUpdateConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationRunProperties();
+        }
+        this.innerProperties().withSoftwareUpdateConfiguration(softwareUpdateConfiguration);
         return this;
     }
 
@@ -155,7 +88,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -164,7 +97,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the configuredDuration value.
      */
     public String configuredDuration() {
-        return this.configuredDuration;
+        return this.innerProperties() == null ? null : this.innerProperties().configuredDuration();
     }
 
     /**
@@ -173,7 +106,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the osType value.
      */
     public String osType() {
-        return this.osType;
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -182,7 +115,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -191,7 +124,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -200,7 +133,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the computerCount value.
      */
     public Integer computerCount() {
-        return this.computerCount;
+        return this.innerProperties() == null ? null : this.innerProperties().computerCount();
     }
 
     /**
@@ -209,7 +142,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the failedCount value.
      */
     public Integer failedCount() {
-        return this.failedCount;
+        return this.innerProperties() == null ? null : this.innerProperties().failedCount();
     }
 
     /**
@@ -218,7 +151,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -227,7 +160,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the createdBy value.
      */
     public String createdBy() {
-        return this.createdBy;
+        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
     }
 
     /**
@@ -236,7 +169,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -245,7 +178,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
-        return this.lastModifiedBy;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedBy();
     }
 
     /**
@@ -254,7 +187,7 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationRunTasks tasks() {
-        return this.tasks;
+        return this.innerProperties() == null ? null : this.innerProperties().tasks();
     }
 
     /**
@@ -264,7 +197,10 @@ public class SoftwareUpdateConfigurationRunInner {
      * @return the SoftwareUpdateConfigurationRunInner object itself.
      */
     public SoftwareUpdateConfigurationRunInner withTasks(SoftwareUpdateConfigurationRunTasks tasks) {
-        this.tasks = tasks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationRunProperties();
+        }
+        this.innerProperties().withTasks(tasks);
         return this;
     }
 
@@ -274,11 +210,8 @@ public class SoftwareUpdateConfigurationRunInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (softwareUpdateConfiguration() != null) {
-            softwareUpdateConfiguration().validate();
-        }
-        if (tasks() != null) {
-            tasks().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

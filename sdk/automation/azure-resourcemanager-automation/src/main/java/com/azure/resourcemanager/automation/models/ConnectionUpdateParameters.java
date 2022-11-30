@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.ConnectionUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the update connection operation. */
-@JsonFlatten
 @Fluent
-public class ConnectionUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionUpdateParameters.class);
-
+public final class ConnectionUpdateParameters {
     /*
      * Gets or sets the name of the connection.
      */
@@ -24,16 +19,10 @@ public class ConnectionUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the description of the connection.
+     * Gets or sets the properties of the connection.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Gets or sets the field definition values of the connection.
-     */
-    @JsonProperty(value = "properties.fieldDefinitionValues")
-    private Map<String, String> fieldDefinitionValues;
+    @JsonProperty(value = "properties")
+    private ConnectionUpdateProperties innerProperties;
 
     /**
      * Get the name property: Gets or sets the name of the connection.
@@ -56,12 +45,21 @@ public class ConnectionUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the connection.
+     *
+     * @return the innerProperties value.
+     */
+    private ConnectionUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the description property: Gets or sets the description of the connection.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -71,7 +69,10 @@ public class ConnectionUpdateParameters {
      * @return the ConnectionUpdateParameters object itself.
      */
     public ConnectionUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -81,7 +82,7 @@ public class ConnectionUpdateParameters {
      * @return the fieldDefinitionValues value.
      */
     public Map<String, String> fieldDefinitionValues() {
-        return this.fieldDefinitionValues;
+        return this.innerProperties() == null ? null : this.innerProperties().fieldDefinitionValues();
     }
 
     /**
@@ -91,7 +92,10 @@ public class ConnectionUpdateParameters {
      * @return the ConnectionUpdateParameters object itself.
      */
     public ConnectionUpdateParameters withFieldDefinitionValues(Map<String, String> fieldDefinitionValues) {
-        this.fieldDefinitionValues = fieldDefinitionValues;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionUpdateProperties();
+        }
+        this.innerProperties().withFieldDefinitionValues(fieldDefinitionValues);
         return this;
     }
 
@@ -101,5 +105,8 @@ public class ConnectionUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -49,20 +49,6 @@ public interface BackupEnginesClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param backupEngineName Name of the backup management server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the base backup engine class.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupEngineBaseResourceInner get(String vaultName, String resourceGroupName, String backupEngineName);
-
-    /**
-     * Returns backup management server registered to Recovery Services Vault.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param backupEngineName Name of the backup management server.
      * @param filter OData filter options.
      * @param skipToken skipToken Filter.
      * @param context The context to associate with this operation.
@@ -79,4 +65,18 @@ public interface BackupEnginesClient {
         String filter,
         String skipToken,
         Context context);
+
+    /**
+     * Returns backup management server registered to Recovery Services Vault.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param backupEngineName Name of the backup management server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the base backup engine class.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupEngineBaseResourceInner get(String vaultName, String resourceGroupName, String backupEngineName);
 }

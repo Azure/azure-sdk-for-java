@@ -13,7 +13,7 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -354,6 +354,26 @@ public abstract class HttpClientTests {
     }
 
     /**
+     * Tests that eagerly converting implementation HTTP headers to azure-core HttpHeaders is done.
+     */
+    @SyncAsyncTest
+    public void eagerlyConvertedHeadersAreHttpHeaders() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            requestBody);
+
+        Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Validate getHttpHeaders type is HttpHeaders (not instanceof)
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+    }
+
+    /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
      * @param requestBody The BinaryData that contains random bytes.
      * @param expectedResponseBody The expected bytes in the echo response.
@@ -575,7 +595,7 @@ public abstract class HttpClientTests {
 
     private byte[] getResponseBytesViaWritableChannel(HttpResponse response) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        response.transferBodyTo(Channels.newChannel(byteArrayOutputStream));
+        response.writeBodyTo(Channels.newChannel(byteArrayOutputStream));
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -584,7 +604,7 @@ public abstract class HttpClientTests {
             Path tempFile = Files.createTempFile("httpclienttestsasyncchannel", null);
             try (AsynchronousByteChannel channel = IOUtils.toAsynchronousByteChannel(
                 AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
-                response.transferBodyToAsync(channel).block();
+                response.writeBodyToAsync(channel).block();
             }
             return Files.readAllBytes(tempFile);
         } catch (IOException e) {

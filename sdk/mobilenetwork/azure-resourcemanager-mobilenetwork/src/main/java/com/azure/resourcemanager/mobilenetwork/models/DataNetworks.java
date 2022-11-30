@@ -11,11 +11,11 @@ import com.azure.core.util.Context;
 /** Resource collection API of DataNetworks. */
 public interface DataNetworks {
     /**
-     * Deletes the specified mobile network dataNetwork.
+     * Deletes the specified data network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the mobile network dataNetwork.
+     * @param dataNetworkName The name of the data network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,11 +23,11 @@ public interface DataNetworks {
     void delete(String resourceGroupName, String mobileNetworkName, String dataNetworkName);
 
     /**
-     * Deletes the specified mobile network dataNetwork.
+     * Deletes the specified data network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the mobile network dataNetwork.
+     * @param dataNetworkName The name of the data network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,35 +36,35 @@ public interface DataNetworks {
     void delete(String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context);
 
     /**
-     * Gets information about the specified mobile network dataNetwork.
+     * Gets information about the specified data network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the mobile network dataNetwork.
+     * @param dataNetworkName The name of the data network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network dataNetwork.
+     * @return information about the specified data network.
      */
     DataNetwork get(String resourceGroupName, String mobileNetworkName, String dataNetworkName);
 
     /**
-     * Gets information about the specified mobile network dataNetwork.
+     * Gets information about the specified data network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the mobile network dataNetwork.
+     * @param dataNetworkName The name of the data network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network dataNetwork along with {@link Response}.
+     * @return information about the specified data network along with {@link Response}.
      */
     Response<DataNetwork> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context);
 
     /**
-     * Lists all dataNetworks in the mobile network.
+     * Lists all data networks in the mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -76,7 +76,7 @@ public interface DataNetworks {
     PagedIterable<DataNetwork> listByMobileNetwork(String resourceGroupName, String mobileNetworkName);
 
     /**
-     * Lists all dataNetworks in the mobile network.
+     * Lists all data networks in the mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -89,30 +89,30 @@ public interface DataNetworks {
     PagedIterable<DataNetwork> listByMobileNetwork(String resourceGroupName, String mobileNetworkName, Context context);
 
     /**
-     * Gets information about the specified mobile network dataNetwork.
+     * Gets information about the specified data network.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network dataNetwork along with {@link Response}.
+     * @return information about the specified data network along with {@link Response}.
      */
     DataNetwork getById(String id);
 
     /**
-     * Gets information about the specified mobile network dataNetwork.
+     * Gets information about the specified data network.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network dataNetwork along with {@link Response}.
+     * @return information about the specified data network along with {@link Response}.
      */
     Response<DataNetwork> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the specified mobile network dataNetwork.
+     * Deletes the specified data network.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +122,7 @@ public interface DataNetworks {
     void deleteById(String id);
 
     /**
-     * Deletes the specified mobile network dataNetwork.
+     * Deletes the specified data network.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

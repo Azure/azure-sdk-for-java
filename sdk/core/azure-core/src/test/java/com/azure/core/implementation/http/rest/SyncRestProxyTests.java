@@ -5,11 +5,14 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -18,6 +21,7 @@ import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -53,6 +57,29 @@ public class SyncRestProxyTests {
             @HeaderParam("Content-Length") Long contentLength,
             Context context
         );
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        StreamResponse testDownload(Context context);
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        void testVoidMethod(Context context);
+    }
+
+    @Test
+    public void voidReturningApiClosesResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+
+        Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+        testInterface.testVoidMethod(context);
+
+        assertTrue(client.lastResponseClosed);
     }
 
     @Test
@@ -70,7 +97,24 @@ public class SyncRestProxyTests {
         assertEquals(200, response.getStatusCode());
     }
 
+    @Test
+    public void streamResponseShouldHaveHttpResponseReference() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+        StreamResponse streamResponse = testInterface.testDownload(context);
+        streamResponse.close();
+        // This indirectly tests that StreamResponse has HttpResponse reference
+        assertTrue(client.lastResponseClosed);
+    }
+
     private static final class LocalHttpClient implements HttpClient {
+
+        private volatile boolean lastResponseClosed;
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
@@ -79,18 +123,21 @@ public class SyncRestProxyTests {
 
         @Override
         public HttpResponse sendSync(HttpRequest request, Context context) {
-            boolean success = request.getHeaders()
-                .stream()
-                .filter(header -> header.getName().equals("Content-Type"))
-                .map(header -> header.getValue())
-                .anyMatch(contentType -> contentType.equals("application/json"));
-            int statusCode = success ? 200 : 400;
-            return new MockHttpResponse(request, statusCode);
-        }
-    }
+            boolean success = request.getUrl().getPath().equals("/my/url/path");
+            if (request.getHttpMethod().equals(HttpMethod.POST)) {
+                success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            } else {
+                success &= request.getHttpMethod().equals(HttpMethod.GET);
+            }
 
-    private static byte[] collectRequest(HttpRequest request) {
-        return RestProxyUtils.validateLengthSync(request).toBytes();
+            return new MockHttpResponse(request, success ? 200 : 400) {
+                @Override
+                public void close() {
+                    lastResponseClosed = true;
+                    super.close();
+                }
+            };
+        }
     }
 
     @ParameterizedTest

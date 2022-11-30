@@ -69,7 +69,9 @@ public interface VolumeQuotaRule {
     Long quotaSizeInKiBs();
 
     /**
-     * Gets the quotaType property: quotaType Type of quota.
+     * Gets the quotaType property: quotaType
+     *
+     * <p>Type of quota.
      *
      * @return the quotaType value.
      */
@@ -203,9 +205,12 @@ public interface VolumeQuotaRule {
         /** The stage of the VolumeQuotaRule definition allowing to specify quotaType. */
         interface WithQuotaType {
             /**
-             * Specifies the quotaType property: quotaType Type of quota.
+             * Specifies the quotaType property: quotaType
              *
-             * @param quotaType quotaType Type of quota.
+             * <p>Type of quota.
+             *
+             * @param quotaType quotaType
+             *     <p>Type of quota.
              * @return the next definition stage.
              */
             WithCreate withQuotaType(Type quotaType);

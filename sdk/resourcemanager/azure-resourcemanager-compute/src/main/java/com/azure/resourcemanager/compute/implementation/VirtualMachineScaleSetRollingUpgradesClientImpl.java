@@ -64,7 +64,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineScaleSetRollingUpgradesService {
+    public interface VirtualMachineScaleSetRollingUpgradesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -157,7 +157,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -207,7 +207,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -390,7 +390,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -441,7 +441,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -634,7 +634,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +685,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -880,7 +880,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -931,7 +931,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -967,21 +967,6 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the latest virtual machine scale set rolling upgrade.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RollingUpgradeStatusInfoInner getLatest(String resourceGroupName, String vmScaleSetName) {
-        return getLatestAsync(resourceGroupName, vmScaleSetName).block();
-    }
-
-    /**
-     * Gets the status of the latest virtual machine scale set rolling upgrade.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -992,5 +977,20 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     public Response<RollingUpgradeStatusInfoInner> getLatestWithResponse(
         String resourceGroupName, String vmScaleSetName, Context context) {
         return getLatestWithResponseAsync(resourceGroupName, vmScaleSetName, context).block();
+    }
+
+    /**
+     * Gets the status of the latest virtual machine scale set rolling upgrade.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the latest virtual machine scale set rolling upgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RollingUpgradeStatusInfoInner getLatest(String resourceGroupName, String vmScaleSetName) {
+        return getLatestWithResponse(resourceGroupName, vmScaleSetName, Context.NONE).getValue();
     }
 }

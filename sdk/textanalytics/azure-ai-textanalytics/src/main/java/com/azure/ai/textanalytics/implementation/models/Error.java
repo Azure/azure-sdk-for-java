@@ -35,15 +35,13 @@ public final class Error {
     private String target;
 
     /*
-     * An array of details about specific errors that led to this reported
-     * error.
+     * An array of details about specific errors that led to this reported error.
      */
     @JsonProperty(value = "details")
     private List<Error> details;
 
     /*
-     * An object containing more specific information than the current object
-     * about the error.
+     * An object containing more specific information than the current object about the error.
      */
     @JsonProperty(value = "innererror")
     private InnerErrorModel innererror;

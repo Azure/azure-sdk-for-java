@@ -2042,6 +2042,28 @@ class BlockBlobAPITest extends APISpec {
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
 
+    @Unroll
+    @LiveOnly
+    def "Buffered upload with length"() {
+        setup:
+        def data = Flux.just(getRandomData(dataSize))
+        def binaryData = BinaryData.fromFlux(data, dataSize).block()
+        def parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize))
+
+        when:
+        blobAsyncClient.uploadWithResponse(parallelUploadOptions).block()
+
+        then:
+        blobAsyncClient.getBlockBlobAsyncClient()
+            .listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() == expectedBlockCount
+
+        where:
+        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
+        100                                            | 100              | null      || 0 // Test that singleUploadSize is respected
+        100                                            | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @LiveOnly
@@ -2248,6 +2270,17 @@ class BlockBlobAPITest extends APISpec {
             })
         cleanup:
         smallFile.delete()
+    }
+
+    @LiveOnly
+    def "Buffered upload with specified length"() {
+        setup:
+        def fluxData = Flux.just(getRandomData(data.getDefaultDataSizeLong() as int))
+        def binaryData = BinaryData.fromFlux(fluxData, data.getDefaultDataSizeLong()).block()
+        def parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
+        expect:
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(parallelUploadOptions))
+            .assertNext({ assert it.getValue().getETag() != null }).verifyComplete()
     }
 
     @LiveOnly

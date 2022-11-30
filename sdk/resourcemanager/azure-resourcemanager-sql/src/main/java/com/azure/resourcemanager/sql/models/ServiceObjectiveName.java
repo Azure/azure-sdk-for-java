@@ -216,7 +216,11 @@ public final class ServiceObjectiveName extends ExpandableStringEnum<ServiceObje
         return fromString(name, ServiceObjectiveName.class);
     }
 
-    /** @return known ServiceObjectiveName values. */
+    /**
+     * Gets known ServiceObjectiveName values.
+     *
+     * @return known ServiceObjectiveName values.
+     */
     public static Collection<ServiceObjectiveName> values() {
         return values(ServiceObjectiveName.class);
     }

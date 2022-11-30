@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Interface properties. */
@@ -13,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class InterfaceProperties {
     /*
      * The logical name for this interface. This should match one of the
-     * interfaces configured on your Azure Stack Edge machine.
+     * interfaces configured on your Azure Stack Edge device.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -38,7 +37,7 @@ public final class InterfaceProperties {
 
     /**
      * Get the name property: The logical name for this interface. This should match one of the interfaces configured on
-     * your Azure Stack Edge machine.
+     * your Azure Stack Edge device.
      *
      * @return the name value.
      */
@@ -48,7 +47,7 @@ public final class InterfaceProperties {
 
     /**
      * Set the name property: The logical name for this interface. This should match one of the interfaces configured on
-     * your Azure Stack Edge machine.
+     * your Azure Stack Edge device.
      *
      * @param name the name value to set.
      * @return the InterfaceProperties object itself.
@@ -124,12 +123,5 @@ public final class InterfaceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model InterfaceProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(InterfaceProperties.class);
 }

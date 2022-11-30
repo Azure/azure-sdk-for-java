@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class AzureMySqlTableDataset extends Dataset {
     /*
-     * The Azure MySQL database table name. Type: string (or Expression with
-     * resultType string).
+     * The Azure MySQL database table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The name of Azure MySQL database table. Type: string (or Expression with
-     * resultType string).
+     * The name of Azure MySQL database table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;

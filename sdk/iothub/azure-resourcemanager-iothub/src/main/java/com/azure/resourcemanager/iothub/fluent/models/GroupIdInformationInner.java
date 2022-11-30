@@ -7,14 +7,11 @@ package com.azure.resourcemanager.iothub.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.GroupIdInformationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The group information for creating a private endpoint on an IotHub. */
 @Fluent
 public final class GroupIdInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupIdInformationInner.class);
-
     /*
      * The resource identifier.
      */
@@ -93,7 +90,7 @@ public final class GroupIdInformationInner {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model GroupIdInformationInner"));
@@ -101,4 +98,6 @@ public final class GroupIdInformationInner {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GroupIdInformationInner.class);
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FtpAuthenticationType. */
+/** The authentication type to be used to connect to the FTP server. */
 public final class FtpAuthenticationType extends ExpandableStringEnum<FtpAuthenticationType> {
     /** Static value Basic for FtpAuthenticationType. */
     public static final FtpAuthenticationType BASIC = fromString("Basic");

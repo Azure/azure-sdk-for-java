@@ -29,15 +29,13 @@ public final class IntegrationRuntimeVNetProperties {
     private String subnet;
 
     /*
-     * Resource IDs of the public IP addresses that this integration runtime
-     * will use.
+     * Resource IDs of the public IP addresses that this integration runtime will use.
      */
     @JsonProperty(value = "publicIPs")
     private List<String> publicIPs;
 
     /*
-     * The ID of subnet, to which this Azure-SSIS integration runtime will be
-     * joined.
+     * The ID of subnet, to which this Azure-SSIS integration runtime will be joined.
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;
@@ -46,6 +44,10 @@ public final class IntegrationRuntimeVNetProperties {
      * VNet properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeVNetProperties class. */
+    public IntegrationRuntimeVNetProperties() {
+    }
 
     /**
      * Get the vNetId property: The ID of the VNet that this integration runtime will join.

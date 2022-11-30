@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -22,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "TimeWindowCustomAlertRule", value = TimeWindowCustomAlertRule.class)})
 @Fluent
 public class ThresholdCustomAlertRule extends CustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThresholdCustomAlertRule.class);
-
     /*
      * The minimum threshold.
      */
@@ -35,6 +31,10 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
      */
     @JsonProperty(value = "maxThreshold", required = true)
     private int maxThreshold;
+
+    /** Creates an instance of ThresholdCustomAlertRule class. */
+    public ThresholdCustomAlertRule() {
+    }
 
     /**
      * Get the minThreshold property: The minimum threshold.

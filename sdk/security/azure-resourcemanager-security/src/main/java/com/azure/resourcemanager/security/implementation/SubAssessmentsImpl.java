@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.SubAssessmentsClient;
 import com.azure.resourcemanager.security.fluent.models.SecuritySubAssessmentInner;
 import com.azure.resourcemanager.security.models.SecuritySubAssessment;
 import com.azure.resourcemanager.security.models.SubAssessments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubAssessmentsImpl implements SubAssessments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubAssessmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubAssessmentsImpl.class);
 
     private final SubAssessmentsClient innerClient;
 
@@ -48,15 +47,6 @@ public final class SubAssessmentsImpl implements SubAssessments {
         return Utils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
     }
 
-    public SecuritySubAssessment get(String scope, String assessmentName, String subAssessmentName) {
-        SecuritySubAssessmentInner inner = this.serviceClient().get(scope, assessmentName, subAssessmentName);
-        if (inner != null) {
-            return new SecuritySubAssessmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecuritySubAssessment> getWithResponse(
         String scope, String assessmentName, String subAssessmentName, Context context) {
         Response<SecuritySubAssessmentInner> inner =
@@ -67,6 +57,15 @@ public final class SubAssessmentsImpl implements SubAssessments {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SecuritySubAssessmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SecuritySubAssessment get(String scope, String assessmentName, String subAssessmentName) {
+        SecuritySubAssessmentInner inner = this.serviceClient().get(scope, assessmentName, subAssessmentName);
+        if (inner != null) {
+            return new SecuritySubAssessmentImpl(inner, this.manager());
         } else {
             return null;
         }

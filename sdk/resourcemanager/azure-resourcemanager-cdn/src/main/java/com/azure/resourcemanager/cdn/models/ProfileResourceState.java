@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProfileResourceState. */
+/** Resource status of the profile. */
 public final class ProfileResourceState extends ExpandableStringEnum<ProfileResourceState> {
     /** Static value Creating for ProfileResourceState. */
     public static final ProfileResourceState CREATING = fromString("Creating");
@@ -33,7 +33,11 @@ public final class ProfileResourceState extends ExpandableStringEnum<ProfileReso
         return fromString(name, ProfileResourceState.class);
     }
 
-    /** @return known ProfileResourceState values. */
+    /**
+     * Gets known ProfileResourceState values.
+     *
+     * @return known ProfileResourceState values.
+     */
     public static Collection<ProfileResourceState> values() {
         return values(ProfileResourceState.class);
     }

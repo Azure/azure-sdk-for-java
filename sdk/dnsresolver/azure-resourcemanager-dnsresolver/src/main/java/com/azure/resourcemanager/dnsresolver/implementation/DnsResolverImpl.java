@@ -78,6 +78,10 @@ public final class DnsResolverImpl implements DnsResolver, DnsResolver.Definitio
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DnsResolverInner innerModel() {
         return this.innerObject;
     }
@@ -198,6 +202,11 @@ public final class DnsResolverImpl implements DnsResolver, DnsResolver.Definitio
         return this;
     }
 
+    public DnsResolverImpl withVirtualNetwork(SubResource virtualNetwork) {
+        this.innerModel().withVirtualNetwork(virtualNetwork);
+        return this;
+    }
+
     public DnsResolverImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -206,11 +215,6 @@ public final class DnsResolverImpl implements DnsResolver, DnsResolver.Definitio
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public DnsResolverImpl withVirtualNetwork(SubResource virtualNetwork) {
-        this.innerModel().withVirtualNetwork(virtualNetwork);
-        return this;
     }
 
     public DnsResolverImpl withIfMatch(String ifMatch) {

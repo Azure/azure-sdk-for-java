@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/4ec0c0aa04ec0c0aa1435711528fb4441bfb04df59e2?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.19.0-beta.1 azsdk-java-azure-storage-file-datalake/12.12.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0a062a3c-137a-4bb8-92ac-3ac22f13669f"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA6B6F625BDB79",
+      "Last-Modified" : "Thu, 21 Jul 2022 23:18:56 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3ceb845d-801e-0093-5c58-9d01c8000000",
+      "x-ms-client-request-id" : "0a062a3c-137a-4bb8-92ac-3ac22f13669f",
+      "Date" : "Thu, 21 Jul 2022 23:18:55 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/4ec0c0aa14ec0c0aa1431472647590b6b4fd047df9ac?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.19.0-beta.1 azsdk-java-azure-storage-file-datalake/12.12.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "21cb706a-bc45-4d98-bdfd-404f2bbfc851"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA6B6F6279984E",
+      "Last-Modified" : "Thu, 21 Jul 2022 23:18:56 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3ceb84e5-801e-0093-5a58-9d01c8000000",
+      "x-ms-client-request-id" : "21cb706a-bc45-4d98-bdfd-404f2bbfc851",
+      "Date" : "Thu, 21 Jul 2022 23:18:55 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.19.0-beta.1 azsdk-java-azure-storage-file-datalake/12.12.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3aacfca4-1a0c-4265-9baf-a89feb070628"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "3ceb852f-801e-0093-1c58-9d01c8000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://rababi.blob.core.windows.net/\"><Containers><Container><Name>4ec0c0aa04ec0c0aa1435711528fb4441bfb04df59e2</Name><Properties><Last-Modified>Thu, 21 Jul 2022 23:18:56 GMT</Last-Modified><Etag>\"0x8DA6B6F625BDB79\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>4ec0c0aa14ec0c0aa1431472647590b6b4fd047df9ac</Name><Properties><Last-Modified>Thu, 21 Jul 2022 23:18:56 GMT</Last-Modified><Etag>\"0x8DA6B6F6279984E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>testscope1</DefaultEncryptionScope><DenyEncryptionScopeOverride>true</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "3aacfca4-1a0c-4265-9baf-a89feb070628",
+      "Date" : "Thu, 21 Jul 2022 23:18:55 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "4ec0c0aa04ec0c0aa1435711528fb4441bfb04df59e2", "4ec0c0aa14ec0c0aa1431472647590b6b4fd047df9ac" ]
+}

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobStatus. */
+/** Gets or sets the status of the job. */
 public final class JobStatus extends ExpandableStringEnum<JobStatus> {
     /** Static value New for JobStatus. */
     public static final JobStatus NEW = fromString("New");
@@ -60,7 +60,11 @@ public final class JobStatus extends ExpandableStringEnum<JobStatus> {
         return fromString(name, JobStatus.class);
     }
 
-    /** @return known JobStatus values. */
+    /**
+     * Gets known JobStatus values.
+     *
+     * @return known JobStatus values.
+     */
     public static Collection<JobStatus> values() {
         return values(JobStatus.class);
     }

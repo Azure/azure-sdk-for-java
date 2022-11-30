@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.RecommendedElasticPoolsClient;
 import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolInner;
 import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolMetricInner;
@@ -34,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RecommendedElasticPoolsClient. */
 public final class RecommendedElasticPoolsClientImpl implements RecommendedElasticPoolsClient {
-    private final ClientLogger logger = new ClientLogger(RecommendedElasticPoolsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RecommendedElasticPoolsService service;
 
@@ -61,7 +59,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
     private interface RecommendedElasticPoolsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/recommendedElasticPools/{recommendedElasticPoolName}")
@@ -74,9 +72,10 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("recommendedElasticPoolName") String recommendedElasticPoolName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/recommendedElasticPools")
@@ -88,9 +87,10 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/recommendedElasticPools/{recommendedElasticPoolName}/metrics")
@@ -103,6 +103,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("recommendedElasticPoolName") String recommendedElasticPoolName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -116,7 +117,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommended elastic pool.
+     * @return a recommended elastic pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecommendedElasticPoolInner>> getWithResponseAsync(
@@ -147,6 +148,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                         "Parameter recommendedElasticPoolName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -158,8 +160,9 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                             resourceGroupName,
                             serverName,
                             recommendedElasticPoolName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -173,7 +176,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommended elastic pool.
+     * @return a recommended elastic pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecommendedElasticPoolInner>> getWithResponseAsync(
@@ -204,6 +207,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                         "Parameter recommendedElasticPoolName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -213,6 +217,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                 resourceGroupName,
                 serverName,
                 recommendedElasticPoolName,
+                accept,
                 context);
     }
 
@@ -226,20 +231,13 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommended elastic pool.
+     * @return a recommended elastic pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecommendedElasticPoolInner> getAsync(
         String resourceGroupName, String serverName, String recommendedElasticPoolName) {
         return getWithResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName)
-            .flatMap(
-                (Response<RecommendedElasticPoolInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -271,7 +269,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommended elastic pool.
+     * @return a recommended elastic pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendedElasticPoolInner> getWithResponse(
@@ -288,7 +286,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendedElasticPoolInner>> listByServerSinglePageAsync(
@@ -313,6 +312,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -323,12 +323,13 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
+                            accept,
                             context))
             .<PagedResponse<RecommendedElasticPoolInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -341,7 +342,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendedElasticPoolInner>> listByServerSinglePageAsync(
@@ -366,6 +368,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -374,6 +377,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,
+                accept,
                 context)
             .map(
                 res ->
@@ -390,7 +394,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendedElasticPoolInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -407,7 +412,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecommendedElasticPoolInner> listByServerAsync(
@@ -424,7 +430,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendedElasticPoolInner> listByServer(String resourceGroupName, String serverName) {
@@ -441,7 +448,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendedElasticPoolInner> listByServer(
@@ -459,7 +467,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendedElasticPoolMetricInner>> listMetricsSinglePageAsync(
@@ -490,6 +499,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                         "Parameter recommendedElasticPoolName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -501,12 +511,13 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                             resourceGroupName,
                             serverName,
                             recommendedElasticPoolName,
+                            accept,
                             context))
             .<PagedResponse<RecommendedElasticPoolMetricInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -520,7 +531,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendedElasticPoolMetricInner>> listMetricsSinglePageAsync(
@@ -551,6 +563,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                         "Parameter recommendedElasticPoolName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMetrics(
@@ -560,6 +573,7 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
                 resourceGroupName,
                 serverName,
                 recommendedElasticPoolName,
+                accept,
                 context)
             .map(
                 res ->
@@ -577,7 +591,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendedElasticPoolMetricInner> listMetricsAsync(
@@ -597,7 +612,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecommendedElasticPoolMetricInner> listMetricsAsync(
@@ -616,7 +632,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendedElasticPoolMetricInner> listMetrics(
@@ -635,7 +652,8 @@ public final class RecommendedElasticPoolsClientImpl implements RecommendedElast
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendedElasticPoolMetricInner> listMetrics(

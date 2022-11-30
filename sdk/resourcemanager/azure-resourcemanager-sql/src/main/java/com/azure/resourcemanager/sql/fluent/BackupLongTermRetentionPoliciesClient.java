@@ -30,7 +30,8 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BackupLongTermRetentionPolicyInner>> getWithResponseAsync(
@@ -47,7 +48,7 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BackupLongTermRetentionPolicyInner> getAsync(
@@ -82,7 +83,7 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupLongTermRetentionPolicyInner> getWithResponse(
@@ -100,11 +101,11 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return a long term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -122,13 +123,13 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -145,13 +146,13 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -167,14 +168,14 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -191,11 +192,11 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BackupLongTermRetentionPolicyInner> createOrUpdateAsync(
@@ -213,7 +214,7 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -235,7 +236,7 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -261,7 +262,8 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BackupLongTermRetentionPolicyInner>> listByDatabaseWithResponseAsync(
@@ -277,7 +279,7 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BackupLongTermRetentionPolicyInner> listByDatabaseAsync(
@@ -309,7 +311,7 @@ public interface BackupLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupLongTermRetentionPolicyInner> listByDatabaseWithResponse(

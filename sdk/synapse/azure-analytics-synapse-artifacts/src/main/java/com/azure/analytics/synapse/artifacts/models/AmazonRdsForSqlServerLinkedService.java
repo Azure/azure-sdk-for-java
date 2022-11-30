@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The on-premises Windows authentication user name. Type: string (or
-     * Expression with resultType string).
+     * The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -39,9 +37,8 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

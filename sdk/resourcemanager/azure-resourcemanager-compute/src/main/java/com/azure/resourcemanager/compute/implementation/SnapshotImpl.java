@@ -3,25 +3,29 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.compute.models.AccessLevel;
+import com.azure.resourcemanager.compute.models.CopyCompletionError;
 import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.CreationSource;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
-import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.SnapshotSku;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
-import com.azure.resourcemanager.compute.models.SnapshotStorageAccountTypes;
-import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.Objects;
 
 /** The implementation for Snapshot and its create and update interfaces. */
 class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, SnapshotImpl, ComputeManager>
@@ -68,6 +72,16 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     }
 
     @Override
+    public Float copyCompletionPercent() {
+        return this.innerModel().completionPercent();
+    }
+
+    @Override
+    public CopyCompletionError copyCompletionError() {
+        return this.innerModel().copyCompletionError();
+    }
+
+    @Override
     public String grantAccess(int accessDurationInSeconds) {
         return this.grantAccessAsync(accessDurationInSeconds).block();
     }
@@ -91,6 +105,53 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     @Override
     public Mono<Void> revokeAccessAsync() {
         return this.manager().serviceClient().getSnapshots().revokeAccessAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void awaitCopyStartCompletion() {
+        awaitCopyStartCompletionAsync().block();
+    }
+
+    @Override
+    public Boolean awaitCopyStartCompletion(Duration maxWaitTime) {
+        Objects.requireNonNull(maxWaitTime);
+        if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
+            throw new IllegalArgumentException(String.format("Max wait time is non-positive: %dms", maxWaitTime.toMillis()));
+        }
+        return this.awaitCopyStartCompletionAsync()
+            .then(Mono.just(Boolean.TRUE))
+            .timeout(maxWaitTime, Mono.just(Boolean.FALSE))
+            .block();
+    }
+
+    @Override
+    public Mono<Void> awaitCopyStartCompletionAsync() {
+        if (creationMethod() != DiskCreateOption.COPY_START) {
+            return Mono.error(logger.logThrowableAsError(new IllegalStateException(
+                String.format(
+                    "\"awaitCopyStartCompletionAsync\" cannot be called on snapshot \"%s\" when \"creationMethod\" is not \"CopyStart\"", this.name()))));
+        }
+
+        return Flux.interval(Duration.ZERO, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
+            .flatMap(ignored -> getInnerAsync())
+            .flatMap(inner -> {
+                setInner(inner);
+                Mono<SnapshotInner> result = Mono.just(inner);
+                if (inner.copyCompletionError() != null) { // service error
+                    result = Mono.error(new ManagementException(inner.copyCompletionError().errorMessage(), null));
+                }
+                return result;
+            })
+            .takeUntil(inner -> {
+                if (Float.valueOf(100).equals(inner.completionPercent())) {
+                    return true;
+                } else { // in progress
+                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.",
+                        inner.name(), inner.completionPercent());
+                    return false;
+                }
+            })
+            .then();
     }
 
     @Override
@@ -129,7 +190,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         if (sourceDisk.osType() != null) {
             this.withOSType(sourceDisk.osType());
         }
-        this.withSku(sourceDisk.sku());
         return this;
     }
 
@@ -191,7 +251,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         if (sourceDisk.osType() != null) {
             this.withOSType(sourceDisk.osType());
         }
-        this.withSku(sourceDisk.sku());
         return this;
     }
 
@@ -251,6 +310,14 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     }
 
     @Override
+    public SnapshotImpl withCopyStart() {
+        this.innerModel()
+            .creationData()
+            .withCreateOption(DiskCreateOption.COPY_START);
+        return this;
+    }
+
+    @Override
     public SnapshotImpl withDataFromDisk(String managedDiskId) {
         this
             .innerModel()
@@ -263,7 +330,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withDataFromDisk(Disk managedDisk) {
-        return withDataFromDisk(managedDisk.id()).withOSType(managedDisk.osType()).withSku(managedDisk.sku());
+        return withDataFromDisk(managedDisk.id()).withOSType(managedDisk.osType());
     }
 
     @Override
@@ -281,13 +348,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     @Override
     public SnapshotImpl withOSType(OperatingSystemTypes osType) {
         this.innerModel().withOsType(osType);
-        return this;
-    }
-
-    private SnapshotImpl withSku(DiskSkuTypes sku) {
-        SnapshotSku snapshotSku = new SnapshotSku();
-        snapshotSku.withName(SnapshotStorageAccountTypes.fromString(sku.accountType().toString()));
-        this.innerModel().withSku(snapshotSku);
         return this;
     }
 

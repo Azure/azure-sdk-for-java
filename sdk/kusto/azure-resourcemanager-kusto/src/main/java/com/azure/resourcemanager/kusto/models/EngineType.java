@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EngineType. */
+/** The engine type. */
 public final class EngineType extends ExpandableStringEnum<EngineType> {
     /** Static value V2 for EngineType. */
     public static final EngineType V2 = fromString("V2");
@@ -27,7 +27,11 @@ public final class EngineType extends ExpandableStringEnum<EngineType> {
         return fromString(name, EngineType.class);
     }
 
-    /** @return known EngineType values. */
+    /**
+     * Gets known EngineType values.
+     *
+     * @return known EngineType values.
+     */
     public static Collection<EngineType> values() {
         return values(EngineType.class);
     }

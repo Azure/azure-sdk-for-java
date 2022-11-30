@@ -27,9 +27,8 @@ public final class JsonSource extends CopySource {
     private JsonReadSettings formatSettings;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;

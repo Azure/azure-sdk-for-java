@@ -215,21 +215,6 @@ public final class QuotasClientImpl implements QuotasClient {
      *
      * @param location The location for update quota is queried.
      * @param parameters Quota update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of update workspace quota.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UpdateWorkspaceQuotasResultInner update(String location, QuotaUpdateParameters parameters) {
-        return updateAsync(location, parameters).block();
-    }
-
-    /**
-     * Update quota for each VM family in workspace.
-     *
-     * @param location The location for update quota is queried.
-     * @param parameters Quota update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -240,6 +225,21 @@ public final class QuotasClientImpl implements QuotasClient {
     public Response<UpdateWorkspaceQuotasResultInner> updateWithResponse(
         String location, QuotaUpdateParameters parameters, Context context) {
         return updateWithResponseAsync(location, parameters, context).block();
+    }
+
+    /**
+     * Update quota for each VM family in workspace.
+     *
+     * @param location The location for update quota is queried.
+     * @param parameters Quota update parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of update workspace quota.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UpdateWorkspaceQuotasResultInner update(String location, QuotaUpdateParameters parameters) {
+        return updateWithResponse(location, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -406,7 +406,8 @@ public final class QuotasClientImpl implements QuotasClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -442,7 +443,8 @@ public final class QuotasClientImpl implements QuotasClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

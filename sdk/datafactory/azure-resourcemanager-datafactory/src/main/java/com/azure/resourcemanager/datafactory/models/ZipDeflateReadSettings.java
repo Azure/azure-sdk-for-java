@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class ZipDeflateReadSettings extends CompressionReadSettings {
     /*
-     * Preserve the zip file name as folder path. Type: boolean (or Expression
-     * with resultType boolean).
+     * Preserve the zip file name as folder path. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "preserveZipFileNameAsFolder")
     private Object preserveZipFileNameAsFolder;
+
+    /** Creates an instance of ZipDeflateReadSettings class. */
+    public ZipDeflateReadSettings() {
+    }
 
     /**
      * Get the preserveZipFileNameAsFolder property: Preserve the zip file name as folder path. Type: boolean (or

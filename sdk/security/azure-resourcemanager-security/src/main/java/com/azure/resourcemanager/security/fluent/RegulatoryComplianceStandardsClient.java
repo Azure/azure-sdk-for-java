@@ -18,7 +18,7 @@ public interface RegulatoryComplianceStandardsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RegulatoryComplianceStandardInner> list();
@@ -31,10 +31,24 @@ public interface RegulatoryComplianceStandardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RegulatoryComplianceStandardInner> list(String filter, Context context);
+
+    /**
+     * Supported regulatory compliance details state for selected standard.
+     *
+     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return regulatory compliance standard details and state along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RegulatoryComplianceStandardInner> getWithResponse(
+        String regulatoryComplianceStandardName, Context context);
 
     /**
      * Supported regulatory compliance details state for selected standard.
@@ -47,18 +61,4 @@ public interface RegulatoryComplianceStandardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RegulatoryComplianceStandardInner get(String regulatoryComplianceStandardName);
-
-    /**
-     * Supported regulatory compliance details state for selected standard.
-     *
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegulatoryComplianceStandardInner> getWithResponse(
-        String regulatoryComplianceStandardName, Context context);
 }

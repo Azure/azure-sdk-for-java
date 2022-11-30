@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeEntityReferenceType. */
+/** The type of this referenced entity. */
 public final class IntegrationRuntimeEntityReferenceType
     extends ExpandableStringEnum<IntegrationRuntimeEntityReferenceType> {
     /** Static value IntegrationRuntimeReference for IntegrationRuntimeEntityReferenceType. */

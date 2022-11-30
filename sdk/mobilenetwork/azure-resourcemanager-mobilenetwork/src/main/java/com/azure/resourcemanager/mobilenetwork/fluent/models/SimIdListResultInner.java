@@ -9,11 +9,11 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for list sim ids API service call. */
+/** Response for list SIM IDs API service call. */
 @Fluent
 public final class SimIdListResultInner {
     /*
-     * A list of sim profile ids in a resource group.
+     * A list of SIM IDs.
      */
     @JsonProperty(value = "value")
     private List<SubResource> value;
@@ -25,7 +25,7 @@ public final class SimIdListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: A list of sim profile ids in a resource group.
+     * Get the value property: A list of SIM IDs.
      *
      * @return the value value.
      */
@@ -34,7 +34,7 @@ public final class SimIdListResultInner {
     }
 
     /**
-     * Set the value property: A list of sim profile ids in a resource group.
+     * Set the value property: A list of SIM IDs.
      *
      * @param value the value value to set.
      * @return the SimIdListResultInner object itself.

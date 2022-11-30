@@ -14,7 +14,7 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
     /**
      * The domain name of an Event Hub namespace.
      */
-    private String domainName = "servicebus.windows.net";
+    private String domainName;
     /**
      * The namespace of an event hub, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
      */
@@ -54,7 +54,14 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
     public String getFullyQualifiedNamespace() {
-        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
+        return this.namespace == null ? extractFqdnFromConnectionString() : buildFqdnFromNamespace();
+    }
+
+    private String buildFqdnFromNamespace() {
+        if (namespace == null || domainName == null) {
+            return null;
+        }
+        return this.namespace + "." + domainName;
     }
 
     public String getDomainName() {

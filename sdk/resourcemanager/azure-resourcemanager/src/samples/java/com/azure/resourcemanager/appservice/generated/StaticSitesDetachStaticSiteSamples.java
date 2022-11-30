@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites DetachStaticSite. */
 public final class StaticSitesDetachStaticSiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DetachStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DetachStaticSite.json
      */
     /**
      * Sample code: Detach a static site.

@@ -13,7 +13,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceOperati
 /** An instance of this class provides access to all the operations defined in MediaServicesOperationStatusesClient. */
 public interface MediaServicesOperationStatusesClient {
     /**
-     * Get media service operation status.
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
@@ -26,7 +28,9 @@ public interface MediaServicesOperationStatusesClient {
     MediaServiceOperationStatusInner get(String locationName, String operationId);
 
     /**
-     * Get media service operation status.
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
      *
      * @param locationName Location name.
      * @param operationId Operation ID.

@@ -58,7 +58,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
             diagnosticsClientContext, client, initParams);
 
         return createCommonPipelineComponentFunction(
-            createDistinctPipelineComponentFunction(createBaseComponentFunction, queryInfo),
+            createBaseComponentFunction,
             queryInfo
         );
     }

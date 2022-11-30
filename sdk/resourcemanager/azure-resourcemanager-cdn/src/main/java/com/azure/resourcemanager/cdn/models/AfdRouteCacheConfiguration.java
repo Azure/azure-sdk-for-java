@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object. */
 @Fluent
 public final class AfdRouteCacheConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdRouteCacheConfiguration.class);
-
     /*
-     * Defines how Frontdoor caches requests that include query strings. You
-     * can ignore any query strings when caching, ignore specific query
-     * strings, cache every request with a unique URL, or cache specific query
-     * strings.
+     * Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching,
+     * ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
      */
     @JsonProperty(value = "queryStringCachingBehavior")
     private AfdQueryStringCachingBehavior queryStringCachingBehavior;
@@ -33,7 +27,7 @@ public final class AfdRouteCacheConfiguration {
      * compression settings.
      */
     @JsonProperty(value = "compressionSettings")
-    private Object compressionSettings;
+    private CompressionSettings compressionSettings;
 
     /**
      * Get the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
@@ -85,7 +79,7 @@ public final class AfdRouteCacheConfiguration {
      *
      * @return the compressionSettings value.
      */
-    public Object compressionSettings() {
+    public CompressionSettings compressionSettings() {
         return this.compressionSettings;
     }
 
@@ -95,7 +89,7 @@ public final class AfdRouteCacheConfiguration {
      * @param compressionSettings the compressionSettings value to set.
      * @return the AfdRouteCacheConfiguration object itself.
      */
-    public AfdRouteCacheConfiguration withCompressionSettings(Object compressionSettings) {
+    public AfdRouteCacheConfiguration withCompressionSettings(CompressionSettings compressionSettings) {
         this.compressionSettings = compressionSettings;
         return this;
     }
@@ -106,5 +100,8 @@ public final class AfdRouteCacheConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (compressionSettings() != null) {
+            compressionSettings().validate();
+        }
     }
 }

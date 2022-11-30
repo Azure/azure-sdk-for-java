@@ -22,8 +22,7 @@ public final class PrivateEndpointPropertiesInner {
     private SubnetInner subnet;
 
     /*
-     * An array of references to the network interfaces created for this
-     * private endpoint.
+     * An array of references to the network interfaces created for this private endpoint.
      */
     @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceInner> networkInterfaces;
@@ -41,9 +40,8 @@ public final class PrivateEndpointPropertiesInner {
     private List<PrivateLinkServiceConnection> privateLinkServiceConnections;
 
     /*
-     * A grouping of information about the connection to the remote resource.
-     * Used when the network admin does not have access to approve connections
-     * to the remote resource.
+     * A grouping of information about the connection to the remote resource. Used when the network admin does not have
+     * access to approve connections to the remote resource.
      */
     @JsonProperty(value = "manualPrivateLinkServiceConnections")
     private List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections;
@@ -55,25 +53,27 @@ public final class PrivateEndpointPropertiesInner {
     private List<CustomDnsConfigPropertiesFormat> customDnsConfigs;
 
     /*
-     * Application security groups in which the private endpoint IP
-     * configuration is included.
+     * Application security groups in which the private endpoint IP configuration is included.
      */
     @JsonProperty(value = "applicationSecurityGroups")
     private List<ApplicationSecurityGroupInner> applicationSecurityGroups;
 
     /*
-     * A list of IP configurations of the private endpoint. This will be used
-     * to map to the First Party Service's endpoints.
+     * A list of IP configurations of the private endpoint. This will be used to map to the First Party Service's
+     * endpoints.
      */
     @JsonProperty(value = "ipConfigurations")
     private List<PrivateEndpointIpConfiguration> ipConfigurations;
 
     /*
-     * The custom name of the network interface attached to the private
-     * endpoint.
+     * The custom name of the network interface attached to the private endpoint.
      */
     @JsonProperty(value = "customNetworkInterfaceName")
     private String customNetworkInterfaceName;
+
+    /** Creates an instance of PrivateEndpointPropertiesInner class. */
+    public PrivateEndpointPropertiesInner() {
+    }
 
     /**
      * Get the subnet property: The ID of the subnet from which the private IP will be allocated.

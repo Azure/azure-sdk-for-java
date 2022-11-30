@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AlertRules Get. */
 public final class AlertRulesGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/GetScheduledAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetScheduledAlertRule.json
      */
     /**
      * Sample code: Get a Scheduled alert rule.
@@ -24,7 +24,7 @@ public final class AlertRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/GetNrtAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetNrtAlertRule.json
      */
     /**
      * Sample code: Get an Nrt alert rule.
@@ -38,7 +38,7 @@ public final class AlertRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/GetFusionAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetFusionAlertRule.json
      */
     /**
      * Sample code: Get a Fusion alert rule.
@@ -50,7 +50,7 @@ public final class AlertRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/GetMicrosoftSecurityIncidentCreationAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetMicrosoftSecurityIncidentCreationAlertRule.json
      */
     /**
      * Sample code: Get a MicrosoftSecurityIncidentCreation rule.

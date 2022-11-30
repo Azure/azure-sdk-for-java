@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerType. */
+/** Type of the Trigger. */
 public final class TriggerType extends ExpandableStringEnum<TriggerType> {
     /** Static value Pre for TriggerType. */
     public static final TriggerType PRE = fromString("Pre");

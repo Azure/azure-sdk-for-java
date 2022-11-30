@@ -5,22 +5,16 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.JobNavigation;
 import com.azure.resourcemanager.automation.models.UpdateConfigurationNavigation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** Software update configuration machine run model. */
-@JsonFlatten
 @Fluent
-public class SoftwareUpdateConfigurationMachineRunInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationMachineRunInner.class);
-
+public final class SoftwareUpdateConfigurationMachineRunInner {
     /*
      * Name of the software update configuration machine run
      */
@@ -34,101 +28,10 @@ public class SoftwareUpdateConfigurationMachineRunInner {
     private String id;
 
     /*
-     * name of the updated computer
+     * Software update configuration machine run properties.
      */
-    @JsonProperty(value = "properties.targetComputer", access = JsonProperty.Access.WRITE_ONLY)
-    private String targetComputer;
-
-    /*
-     * type of the updated computer.
-     */
-    @JsonProperty(value = "properties.targetComputerType", access = JsonProperty.Access.WRITE_ONLY)
-    private String targetComputerType;
-
-    /*
-     * software update configuration triggered this run
-     */
-    @JsonProperty(value = "properties.softwareUpdateConfiguration")
-    private UpdateConfigurationNavigation softwareUpdateConfiguration;
-
-    /*
-     * Status of the software update configuration machine run.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
-
-    /*
-     * Operating system target of the software update configuration triggered
-     * this run
-     */
-    @JsonProperty(value = "properties.osType", access = JsonProperty.Access.WRITE_ONLY)
-    private String osType;
-
-    /*
-     * correlation id of the software update configuration machine run
-     */
-    @JsonProperty(value = "properties.correlationId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID correlationId;
-
-    /*
-     * source computer id of the software update configuration machine run
-     */
-    @JsonProperty(value = "properties.sourceComputerId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID sourceComputerId;
-
-    /*
-     * Start time of the software update configuration machine run.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * End time of the software update configuration machine run.
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * configured duration for the software update configuration run.
-     */
-    @JsonProperty(value = "properties.configuredDuration", access = JsonProperty.Access.WRITE_ONLY)
-    private String configuredDuration;
-
-    /*
-     * Job associated with the software update configuration machine run
-     */
-    @JsonProperty(value = "properties.job")
-    private JobNavigation job;
-
-    /*
-     * Creation time of the resource, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * createdBy property, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.createdBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdBy;
-
-    /*
-     * Last time resource was modified, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * lastModifiedBy property, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastModifiedBy;
-
-    /*
-     * Details of provisioning error
-     */
-    @JsonProperty(value = "properties.error")
-    private ManagementError error;
+    @JsonProperty(value = "properties")
+    private UpdateConfigurationMachineRunProperties innerProperties;
 
     /**
      * Get the name property: Name of the software update configuration machine run.
@@ -149,12 +52,21 @@ public class SoftwareUpdateConfigurationMachineRunInner {
     }
 
     /**
+     * Get the innerProperties property: Software update configuration machine run properties.
+     *
+     * @return the innerProperties value.
+     */
+    private UpdateConfigurationMachineRunProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the targetComputer property: name of the updated computer.
      *
      * @return the targetComputer value.
      */
     public String targetComputer() {
-        return this.targetComputer;
+        return this.innerProperties() == null ? null : this.innerProperties().targetComputer();
     }
 
     /**
@@ -163,7 +75,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the targetComputerType value.
      */
     public String targetComputerType() {
-        return this.targetComputerType;
+        return this.innerProperties() == null ? null : this.innerProperties().targetComputerType();
     }
 
     /**
@@ -172,7 +84,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the softwareUpdateConfiguration value.
      */
     public UpdateConfigurationNavigation softwareUpdateConfiguration() {
-        return this.softwareUpdateConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().softwareUpdateConfiguration();
     }
 
     /**
@@ -183,7 +95,10 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      */
     public SoftwareUpdateConfigurationMachineRunInner withSoftwareUpdateConfiguration(
         UpdateConfigurationNavigation softwareUpdateConfiguration) {
-        this.softwareUpdateConfiguration = softwareUpdateConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateConfigurationMachineRunProperties();
+        }
+        this.innerProperties().withSoftwareUpdateConfiguration(softwareUpdateConfiguration);
         return this;
     }
 
@@ -193,7 +108,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -202,7 +117,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the osType value.
      */
     public String osType() {
-        return this.osType;
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -211,7 +126,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the correlationId value.
      */
     public UUID correlationId() {
-        return this.correlationId;
+        return this.innerProperties() == null ? null : this.innerProperties().correlationId();
     }
 
     /**
@@ -220,7 +135,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the sourceComputerId value.
      */
     public UUID sourceComputerId() {
-        return this.sourceComputerId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceComputerId();
     }
 
     /**
@@ -229,7 +144,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -238,7 +153,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -247,7 +162,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the configuredDuration value.
      */
     public String configuredDuration() {
-        return this.configuredDuration;
+        return this.innerProperties() == null ? null : this.innerProperties().configuredDuration();
     }
 
     /**
@@ -256,7 +171,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the job value.
      */
     public JobNavigation job() {
-        return this.job;
+        return this.innerProperties() == null ? null : this.innerProperties().job();
     }
 
     /**
@@ -266,7 +181,10 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the SoftwareUpdateConfigurationMachineRunInner object itself.
      */
     public SoftwareUpdateConfigurationMachineRunInner withJob(JobNavigation job) {
-        this.job = job;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateConfigurationMachineRunProperties();
+        }
+        this.innerProperties().withJob(job);
         return this;
     }
 
@@ -276,7 +194,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -285,7 +203,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the createdBy value.
      */
     public String createdBy() {
-        return this.createdBy;
+        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
     }
 
     /**
@@ -294,7 +212,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -303,7 +221,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
-        return this.lastModifiedBy;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedBy();
     }
 
     /**
@@ -312,7 +230,7 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the error value.
      */
     public ManagementError error() {
-        return this.error;
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -322,7 +240,10 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @return the SoftwareUpdateConfigurationMachineRunInner object itself.
      */
     public SoftwareUpdateConfigurationMachineRunInner withError(ManagementError error) {
-        this.error = error;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateConfigurationMachineRunProperties();
+        }
+        this.innerProperties().withError(error);
         return this;
     }
 
@@ -332,11 +253,8 @@ public class SoftwareUpdateConfigurationMachineRunInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (softwareUpdateConfiguration() != null) {
-            softwareUpdateConfiguration().validate();
-        }
-        if (job() != null) {
-            job().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

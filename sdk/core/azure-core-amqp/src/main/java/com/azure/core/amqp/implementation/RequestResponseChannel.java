@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
@@ -36,8 +37,11 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -47,9 +51,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -59,6 +63,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * link and {@link Receiver} link.
  */
 public class RequestResponseChannel implements AsyncCloseable {
+
+    private static final String MANAGEMENT_OPERATION_KEY = "operation";
     private final ClientLogger logger;
 
     private final Sender sendLink;
@@ -101,6 +107,9 @@ public class RequestResponseChannel implements AsyncCloseable {
     // The provider exposes ReactorDispatcher that can schedule such calls on the ReactorThread.
     private final ReactorProvider provider;
 
+    private final AmqpMetricsProvider metricsProvider;
+    private static final String START_SEND_TIME_CONTEXT_KEY = "send-start-time";
+    private static final String OPERATION_CONTEXT_KEY = "amqpOperation";
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
      * entityPath} in the message broker.
@@ -122,7 +131,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
         AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
         MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode) {
+        ReceiverSettleMode receiverSettleMode, AmqpMetricsProvider metricsProvider) {
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(LINK_NAME_KEY, linkName);
@@ -165,6 +174,8 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
             linkName, entityPath);
         BaseHandler.setHandler(receiveLink, receiveLinkHandler);
+
+        this.metricsProvider = metricsProvider;
 
         // Subscribe to the events from endpoints (Sender, Receiver & Connection) and track the subscriptions.
         //
@@ -317,7 +328,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE));
 
         return RetryUtil.withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
-            .then(Mono.create(sink -> {
+            .then(captureStartTime(message, Mono.create(sink -> {
                 try {
                     logger.atVerbose()
                         .addKeyValue("messageId", message.getCorrelationId())
@@ -353,9 +364,10 @@ public class RequestResponseChannel implements AsyncCloseable {
                         sendLink.advance();
                     });
                 } catch (IOException | RejectedExecutionException e) {
+                    recordDelivery(getSinkContext(sink), null);
                     sink.error(e);
                 }
-            }));
+            })));
     }
 
     /**
@@ -395,6 +407,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             return;
         }
 
+        recordDelivery(getSinkContext(sink), message);
         sink.success(message);
     }
 
@@ -476,12 +489,59 @@ public class RequestResponseChannel implements AsyncCloseable {
         int count = 0;
         while ((next = unconfirmedSends.pollFirstEntry()) != null) {
             // pollFirstEntry: atomic retrieve and remove of each entry.
-            next.getValue().error(error);
+            MonoSink<Message> sink = next.getValue();
+            recordDelivery(getSinkContext(sink), null);
+            sink.error(error);
             count++;
         }
 
         // The below log can also help debug if the external code that error() calls into never return.
         logger.atVerbose()
             .log("completed the termination of {} unconfirmed sends (reason: {}).",  count, error.getMessage());
+    }
+
+    /**
+     * Captures current time in mono context - used to report send metric
+     */
+    private Mono<Message> captureStartTime(Message toSend, Mono<Message> publisher) {
+        if (metricsProvider.isRequestResponseDurationEnabled()) {
+            String operationName = "unknown";
+            if (toSend != null && toSend.getApplicationProperties() != null && toSend.getApplicationProperties().getValue() != null) {
+                Map<String, Object> properties = toSend.getApplicationProperties().getValue();
+                Object operationObj = properties.get(MANAGEMENT_OPERATION_KEY);
+                if (operationObj instanceof String) {
+                    operationName = (String) operationObj;
+                }
+            }
+
+            return publisher.contextWrite(
+                Context.of(START_SEND_TIME_CONTEXT_KEY, Instant.now()).put(OPERATION_CONTEXT_KEY, operationName));
+        }
+
+        return publisher;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static ContextView getSinkContext(MonoSink<?> sink) {
+        // Use currentContext instead of contextView as it's supported back to Reactor 3.4.0 and gives the widest
+        // range of support possible.
+        return sink.currentContext();
+    }
+
+    /**
+     * Records send call duration metric.
+     **/
+    private void recordDelivery(ContextView context, Message response) {
+        if (metricsProvider.isRequestResponseDurationEnabled()) {
+            Object startTimestamp = context.getOrDefault(START_SEND_TIME_CONTEXT_KEY, null);
+            Object operationName = context.getOrDefault(OPERATION_CONTEXT_KEY, null);
+            AmqpResponseCode responseCode = response == null ? null : RequestResponseUtils.getStatusCode(response);
+            if (startTimestamp instanceof Instant && operationName instanceof String) {
+                metricsProvider.recordRequestResponseDuration(
+                    ((Instant) startTimestamp).toEpochMilli(),
+                    (String) operationName,
+                    responseCode);
+            }
+        }
     }
 }

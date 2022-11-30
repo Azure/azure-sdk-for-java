@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Storage Configurations for SQL Data, Log and TempDb. */
 @Fluent
 public final class StorageConfigurationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageConfigurationSettings.class);
-
     /*
      * SQL Server Data Storage Settings.
      */

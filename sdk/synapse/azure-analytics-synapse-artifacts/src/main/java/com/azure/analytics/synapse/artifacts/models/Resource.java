@@ -7,7 +7,11 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource Common fields that are returned in the response for all Azure Resource Manager resources. */
+/**
+ * Resource
+ *
+ * <p>Common fields that are returned in the response for all Azure Resource Manager resources.
+ */
 @Immutable
 public class Resource {
     /*
@@ -24,8 +28,7 @@ public class Resource {
     private String name;
 
     /*
-     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts"
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;

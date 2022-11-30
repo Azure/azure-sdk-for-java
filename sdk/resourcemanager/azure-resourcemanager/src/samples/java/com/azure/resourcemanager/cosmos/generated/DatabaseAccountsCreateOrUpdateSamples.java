@@ -39,7 +39,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts CreateOrUpdate. */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
@@ -97,7 +97,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
@@ -180,7 +180,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.

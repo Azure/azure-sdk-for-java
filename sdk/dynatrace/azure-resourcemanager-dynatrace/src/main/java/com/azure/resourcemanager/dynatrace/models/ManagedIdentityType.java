@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedIdentityType. */
+/** The kind of managed identity assigned to this resource. */
 public final class ManagedIdentityType extends ExpandableStringEnum<ManagedIdentityType> {
     /** Static value SystemAssigned for ManagedIdentityType. */
     public static final ManagedIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CheckNameResourceTypes. */
+/** Resource type used for verification. */
 public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckNameResourceTypes> {
     /** Static value Microsoft.NetApp/netAppAccounts for CheckNameResourceTypes. */
     public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS =

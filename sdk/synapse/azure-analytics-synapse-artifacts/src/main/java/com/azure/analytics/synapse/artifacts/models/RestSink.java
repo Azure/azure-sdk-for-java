@@ -15,23 +15,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class RestSink extends CopySink {
     /*
-     * The HTTP method used to call the RESTful API. The default is POST. Type:
-     * string (or Expression with resultType string).
+     * The HTTP method used to call the RESTful API. The default is POST. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type:
-     * string (or Expression with resultType string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get
-     * a response, not the timeout to read response data. Default value:
-     * 00:01:40. Type: string (or Expression with resultType string), pattern:
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
+     * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
@@ -44,9 +43,8 @@ public final class RestSink extends CopySink {
     private Object requestInterval;
 
     /*
-     * Http Compression Type to Send data in compressed format with Optimal
-     * Compression Level, Default is None. And The Only Supported option is
-     * Gzip.
+     * Http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The
+     * Only Supported option is Gzip.
      */
     @JsonProperty(value = "httpCompressionType")
     private Object httpCompressionType;

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the cache expiration action. */
 @Fluent
 public final class CacheExpirationActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheExpirationActionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -33,8 +30,7 @@ public final class CacheExpirationActionParameters {
     private CacheType cacheType;
 
     /*
-     * The duration for which the content needs to be cached. Allowed format is
-     * [d.]hh:mm:ss
+     * The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
      */
     @JsonProperty(value = "cacheDuration")
     private String cacheDuration;
@@ -133,16 +129,18 @@ public final class CacheExpirationActionParameters {
      */
     public void validate() {
         if (cacheBehavior() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property cacheBehavior in model CacheExpirationActionParameters"));
         }
         if (cacheType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property cacheType in model CacheExpirationActionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CacheExpirationActionParameters.class);
 }

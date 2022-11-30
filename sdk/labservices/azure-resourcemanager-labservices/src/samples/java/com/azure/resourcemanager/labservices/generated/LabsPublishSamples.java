@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Labs Publish. */
 public final class LabsPublishSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/publishLab.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Labs/publishLab.json
      */
     /**
      * Sample code: publishLab.

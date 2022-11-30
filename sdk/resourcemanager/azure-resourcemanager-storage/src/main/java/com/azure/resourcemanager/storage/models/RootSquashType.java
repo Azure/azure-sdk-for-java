@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RootSquashType. */
+/** The property is for NFS share only. The default is NoRootSquash. */
 public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
     /** Static value NoRootSquash for RootSquashType. */
     public static final RootSquashType NO_ROOT_SQUASH = fromString("NoRootSquash");

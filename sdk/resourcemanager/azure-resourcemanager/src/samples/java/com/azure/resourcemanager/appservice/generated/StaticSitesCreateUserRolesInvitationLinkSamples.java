@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteUserInvitationReque
 /** Samples for StaticSites CreateUserRolesInvitationLink. */
 public final class StaticSitesCreateUserRolesInvitationLinkSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateUserRolesInvitationLink.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/CreateUserRolesInvitationLink.json
      */
     /**
      * Sample code: Create an invitation link for a user for a static site.

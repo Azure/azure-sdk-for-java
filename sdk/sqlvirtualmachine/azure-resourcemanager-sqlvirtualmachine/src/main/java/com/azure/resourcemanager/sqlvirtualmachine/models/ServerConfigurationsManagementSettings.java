@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set the connectivity, storage and workload settings. */
 @Fluent
 public final class ServerConfigurationsManagementSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerConfigurationsManagementSettings.class);
-
     /*
      * SQL connectivity type settings.
      */

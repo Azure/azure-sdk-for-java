@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CreateOption. */
+/** Indicates what lab virtual machines are created from. */
 public enum CreateOption {
     /** Enum value Image. */
     IMAGE("Image"),
@@ -30,6 +30,9 @@ public enum CreateOption {
      */
     @JsonCreator
     public static CreateOption fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CreateOption[] items = CreateOption.values();
         for (CreateOption item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum CreateOption {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

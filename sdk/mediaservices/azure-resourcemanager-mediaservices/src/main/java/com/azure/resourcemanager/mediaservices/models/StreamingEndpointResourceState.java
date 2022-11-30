@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StreamingEndpointResourceState. */
+/** The resource state of the streaming endpoint. */
 public final class StreamingEndpointResourceState extends ExpandableStringEnum<StreamingEndpointResourceState> {
     /** Static value Stopped for StreamingEndpointResourceState. */
     public static final StreamingEndpointResourceState STOPPED = fromString("Stopped");

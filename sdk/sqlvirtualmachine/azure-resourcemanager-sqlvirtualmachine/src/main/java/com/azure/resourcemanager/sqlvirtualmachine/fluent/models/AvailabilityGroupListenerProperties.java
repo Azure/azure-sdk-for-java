@@ -5,18 +5,15 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AgConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of an availability group listener. */
 @Fluent
 public final class AvailabilityGroupListenerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityGroupListenerProperties.class);
-
     /*
      * Provisioning state to track the async operation status.
      */
@@ -34,6 +31,12 @@ public final class AvailabilityGroupListenerProperties {
      */
     @JsonProperty(value = "loadBalancerConfigurations")
     private List<LoadBalancerConfiguration> loadBalancerConfigurations;
+
+    /*
+     * List of multi subnet IP configurations for an AG listener.
+     */
+    @JsonProperty(value = "multiSubnetIpConfigurations")
+    private List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations;
 
     /*
      * Create a default availability group if it does not exist.
@@ -102,6 +105,27 @@ public final class AvailabilityGroupListenerProperties {
     public AvailabilityGroupListenerProperties withLoadBalancerConfigurations(
         List<LoadBalancerConfiguration> loadBalancerConfigurations) {
         this.loadBalancerConfigurations = loadBalancerConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the multiSubnetIpConfigurations property: List of multi subnet IP configurations for an AG listener.
+     *
+     * @return the multiSubnetIpConfigurations value.
+     */
+    public List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations() {
+        return this.multiSubnetIpConfigurations;
+    }
+
+    /**
+     * Set the multiSubnetIpConfigurations property: List of multi subnet IP configurations for an AG listener.
+     *
+     * @param multiSubnetIpConfigurations the multiSubnetIpConfigurations value to set.
+     * @return the AvailabilityGroupListenerProperties object itself.
+     */
+    public AvailabilityGroupListenerProperties withMultiSubnetIpConfigurations(
+        List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations) {
+        this.multiSubnetIpConfigurations = multiSubnetIpConfigurations;
         return this;
     }
 
@@ -177,6 +201,9 @@ public final class AvailabilityGroupListenerProperties {
     public void validate() {
         if (loadBalancerConfigurations() != null) {
             loadBalancerConfigurations().forEach(e -> e.validate());
+        }
+        if (multiSubnetIpConfigurations() != null) {
+            multiSubnetIpConfigurations().forEach(e -> e.validate());
         }
         if (availabilityGroupConfiguration() != null) {
             availabilityGroupConfiguration().validate();

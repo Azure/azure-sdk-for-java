@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LiveEventResourceState. */
+/** The resource state of the live event. See https://go.microsoft.com/fwlink/?linkid=2139012 for more information. */
 public final class LiveEventResourceState extends ExpandableStringEnum<LiveEventResourceState> {
     /** Static value Stopped for LiveEventResourceState. */
     public static final LiveEventResourceState STOPPED = fromString("Stopped");

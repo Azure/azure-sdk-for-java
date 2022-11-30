@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualWanSecurityProviderType. */
+/** The virtual wan security provider type. */
 public final class VirtualWanSecurityProviderType extends ExpandableStringEnum<VirtualWanSecurityProviderType> {
     /** Static value External for VirtualWanSecurityProviderType. */
     public static final VirtualWanSecurityProviderType EXTERNAL = fromString("External");

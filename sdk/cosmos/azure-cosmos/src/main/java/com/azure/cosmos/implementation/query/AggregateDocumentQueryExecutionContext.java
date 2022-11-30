@@ -81,14 +81,7 @@ public class AggregateDocumentQueryExecutionContext
                             this.singleGroupAggregator.addValues(rewrittenAggregateProjections.getPayload());
                         }
 
-                        for(String key : BridgeInternal.queryMetricsFromFeedResponse(page).keySet()) {
-                            if (queryMetricsMap.containsKey(key)) {
-                                QueryMetrics qm = BridgeInternal.queryMetricsFromFeedResponse(page).get(key);
-                                queryMetricsMap.get(key).add(qm);
-                            } else {
-                                queryMetricsMap.put(key, BridgeInternal.queryMetricsFromFeedResponse(page).get(key));
-                            }
-                        }
+                        QueryMetrics.mergeQueryMetricsMap(this.queryMetricsMap, BridgeInternal.queryMetricsFromFeedResponse(page));
                     }
 
                     Document aggregateDocument = this.singleGroupAggregator.getResult();

@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class SapHanaLinkedService extends LinkedService {
     /*
-     * SAP HANA ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * SAP HANA ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
 
     /*
-     * Host name of the SAP HANA server. Type: string (or Expression with
-     * resultType string).
+     * Host name of the SAP HANA server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
@@ -39,8 +37,7 @@ public class SapHanaLinkedService extends LinkedService {
     private SapHanaAuthenticationType authenticationType;
 
     /*
-     * Username to access the SAP HANA server. Type: string (or Expression with
-     * resultType string).
+     * Username to access the SAP HANA server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -52,9 +49,8 @@ public class SapHanaLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

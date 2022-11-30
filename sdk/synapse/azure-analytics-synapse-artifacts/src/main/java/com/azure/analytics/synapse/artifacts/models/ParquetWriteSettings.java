@@ -15,17 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class ParquetWriteSettings extends FormatWriteSettings {
     /*
-     * Limit the written file's row count to be smaller than or equal to the
-     * specified count. Type: integer (or Expression with resultType integer).
+     * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or
+     * Expression with resultType integer).
      */
     @JsonProperty(value = "maxRowsPerFile")
     private Object maxRowsPerFile;
 
     /*
-     * Specifies the file name pattern
-     * <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file
-     * based store without partitionOptions. Type: string (or Expression with
-     * resultType string).
+     * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store
+     * without partitionOptions. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;

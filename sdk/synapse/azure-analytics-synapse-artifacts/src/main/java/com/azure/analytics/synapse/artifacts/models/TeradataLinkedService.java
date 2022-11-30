@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class TeradataLinkedService extends LinkedService {
     /*
-     * Teradata ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
 
     /*
-     * Server name for connection. Type: string (or Expression with resultType
-     * string).
+     * Server name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.server")
     private Object server;
@@ -39,8 +37,7 @@ public class TeradataLinkedService extends LinkedService {
     private TeradataAuthenticationType authenticationType;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -52,9 +49,8 @@ public class TeradataLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Metric specification of operation. */
 @Fluent
 public final class MetricSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
-
     /*
      * Name of metric specification.
      */
@@ -34,15 +30,13 @@ public final class MetricSpecification {
     private String displayDescription;
 
     /*
-     * The metric unit. Possible values include: 'Bytes', 'Count',
-     * 'Milliseconds'.
+     * The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
      */
     @JsonProperty(value = "unit")
     private String unit;
 
     /*
-     * The metric aggregation type. Possible values include: 'Average',
-     * 'Count', 'Total'.
+     * The metric aggregation type. Possible values include: 'Average', 'Count', 'Total'.
      */
     @JsonProperty(value = "aggregationType")
     private String aggregationType;

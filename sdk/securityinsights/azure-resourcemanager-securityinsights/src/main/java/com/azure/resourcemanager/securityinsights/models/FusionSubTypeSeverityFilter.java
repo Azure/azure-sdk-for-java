@@ -12,15 +12,13 @@ import java.util.List;
 @Fluent
 public final class FusionSubTypeSeverityFilter {
     /*
-     * Determines whether this source subtype supports severity configuration
-     * or not.
+     * Determines whether this source subtype supports severity configuration or not.
      */
     @JsonProperty(value = "isSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSupported;
 
     /*
-     * Individual Severity configuration settings for a given source subtype
-     * consumed in Fusion detection.
+     * Individual Severity configuration settings for a given source subtype consumed in Fusion detection.
      */
     @JsonProperty(value = "filters")
     private List<FusionSubTypeSeverityFiltersItem> filters;

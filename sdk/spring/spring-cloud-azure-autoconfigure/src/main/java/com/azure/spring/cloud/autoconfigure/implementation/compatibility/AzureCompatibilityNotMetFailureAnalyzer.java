@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
+
 import java.util.List;
 
 /**

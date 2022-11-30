@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.CustomRuleList;
 import com.azure.resourcemanager.cdn.models.EndpointResource;
 import com.azure.resourcemanager.cdn.models.ManagedRuleSetList;
@@ -13,15 +12,12 @@ import com.azure.resourcemanager.cdn.models.PolicyResourceState;
 import com.azure.resourcemanager.cdn.models.PolicySettings;
 import com.azure.resourcemanager.cdn.models.ProvisioningState;
 import com.azure.resourcemanager.cdn.models.RateLimitRuleList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines CDN web application firewall policy properties. */
 @Fluent
 public final class CdnWebApplicationFirewallPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnWebApplicationFirewallPolicyProperties.class);
-
     /*
      * Describes  policySettings for policy
      */
@@ -47,8 +43,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
     private ManagedRuleSetList managedRules;
 
     /*
-     * Describes Azure CDN endpoints associated with this Web Application
-     * Firewall policy.
+     * Describes Azure CDN endpoints associated with this Web Application Firewall policy.
      */
     @JsonProperty(value = "endpointLinks", access = JsonProperty.Access.WRITE_ONLY)
     private List<EndpointResource> endpointLinks;

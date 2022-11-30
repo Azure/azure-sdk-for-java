@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.AddressInformation;
@@ -235,9 +236,9 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     private ConcurrentHashMap<String, ?> getRoutingMap(RxDocumentClientImpl rxDocumentClient) {
         RxPartitionKeyRangeCache partitionKeyRangeCache =
                 ReflectionUtils.getPartitionKeyRangeCache(rxDocumentClient);
-        AsyncCache<String, CollectionRoutingMap> routingMapAsyncCache =
-                ReflectionUtils.getRoutingMapAsyncCache(partitionKeyRangeCache);
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> routingMapAsyncCache =
+                ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(partitionKeyRangeCache);
 
-        return ReflectionUtils.getValueMap(routingMapAsyncCache);
+        return ReflectionUtils.getValueMapNonBlockingCache(routingMapAsyncCache);
     }
 }

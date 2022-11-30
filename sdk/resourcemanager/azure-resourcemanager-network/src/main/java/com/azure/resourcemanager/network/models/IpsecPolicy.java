@@ -12,15 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IpsecPolicy {
     /*
-     * The IPSec Security Association (also called Quick Mode or Phase 2 SA)
-     * lifetime in seconds for a site to site VPN tunnel.
+     * The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site VPN
+     * tunnel.
      */
     @JsonProperty(value = "saLifeTimeSeconds", required = true)
     private int saLifeTimeSeconds;
 
     /*
-     * The IPSec Security Association (also called Quick Mode or Phase 2 SA)
-     * payload size in KB for a site to site VPN tunnel.
+     * The IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for a site to site VPN
+     * tunnel.
      */
     @JsonProperty(value = "saDataSizeKilobytes", required = true)
     private int saDataSizeKilobytes;
@@ -60,6 +60,10 @@ public final class IpsecPolicy {
      */
     @JsonProperty(value = "pfsGroup", required = true)
     private PfsGroup pfsGroup;
+
+    /** Creates an instance of IpsecPolicy class. */
+    public IpsecPolicy() {
+    }
 
     /**
      * Get the saLifeTimeSeconds property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)

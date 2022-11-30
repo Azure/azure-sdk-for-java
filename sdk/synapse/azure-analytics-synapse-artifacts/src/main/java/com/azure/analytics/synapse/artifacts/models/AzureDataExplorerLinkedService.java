@@ -19,16 +19,15 @@ import java.util.Map;
 @Fluent
 public class AzureDataExplorerLinkedService extends LinkedService {
     /*
-     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be
-     * in the format https://<clusterName>.<regionName>.kusto.windows.net.
-     * Type: string (or Expression with resultType string)
+     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "typeProperties.endpoint", required = true)
     private Object endpoint;
 
     /*
-     * The ID of the service principal used to authenticate against Azure Data
-     * Explorer. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
@@ -40,15 +39,14 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * Database name for connection. Type: string (or Expression with
-     * resultType string).
+     * Database name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;

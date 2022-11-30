@@ -25,8 +25,7 @@ public final class VirtualMachineSoftwarePatchProperties {
     private String name;
 
     /*
-     * The version number of the patch. This property applies only to Linux
-     * patches.
+     * The version number of the patch. This property applies only to Linux patches.
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
@@ -50,8 +49,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     private VMGuestPatchRebootBehavior rebootBehavior;
 
     /*
-     * The activity ID of the operation that produced this result. It is used
-     * to correlate across CRP and extension logs.
+     * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
+     * logs.
      */
     @JsonProperty(value = "activityId", access = JsonProperty.Access.WRITE_ONLY)
     private String activityId;
@@ -73,6 +72,10 @@ public final class VirtualMachineSoftwarePatchProperties {
      */
     @JsonProperty(value = "assessmentState", access = JsonProperty.Access.WRITE_ONLY)
     private PatchAssessmentState assessmentState;
+
+    /** Creates an instance of VirtualMachineSoftwarePatchProperties class. */
+    public VirtualMachineSoftwarePatchProperties() {
+    }
 
     /**
      * Get the patchId property: A unique identifier for the patch.

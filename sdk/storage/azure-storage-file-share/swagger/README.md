@@ -15,7 +15,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.0'
+use: '@autorest/java@4.1.6'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-06-08/file.json
 java: true
 output-folder: ../
@@ -24,7 +24,6 @@ enable-xml: true
 generate-client-as-impl: true
 generate-client-interfaces: false
 service-interface-as-public: true
-sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.file.share.models.ShareStorageException

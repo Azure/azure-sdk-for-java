@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class QuickbaseLinkedServiceTypeProperties {
     /*
-     * The url to connect Quickbase source. Type: string (or Expression with
-     * resultType string).
+     * The url to connect Quickbase source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -26,12 +25,15 @@ public final class QuickbaseLinkedServiceTypeProperties {
     private SecretBase userToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of QuickbaseLinkedServiceTypeProperties class. */
+    public QuickbaseLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: The url to connect Quickbase source. Type: string (or Expression with resultType string).

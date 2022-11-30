@@ -6,21 +6,21 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSiteStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An HCX Enterprise Site resource. */
 @Immutable
 public final class HcxEnterpriseSiteInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HcxEnterpriseSiteInner.class);
-
     /*
      * The properties of an HCX Enterprise Site resource
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private HcxEnterpriseSiteProperties innerProperties;
+
+    /** Creates an instance of HcxEnterpriseSiteInner class. */
+    public HcxEnterpriseSiteInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of an HCX Enterprise Site resource.

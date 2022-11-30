@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class QuickbaseLinkedService extends LinkedService {
     /*
-     * The url to connect Quickbase source. Type: string (or Expression with
-     * resultType string).
+     * The url to connect Quickbase source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
@@ -32,9 +31,8 @@ public class QuickbaseLinkedService extends LinkedService {
     private SecretBase userToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

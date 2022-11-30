@@ -4,6 +4,9 @@
 package com.azure.storage.file.share
 
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareFileUploadOptions
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
+import reactor.core.publisher.Flux
 import spock.lang.Unroll
 
 class ModelTests extends APISpec {
@@ -49,5 +52,13 @@ class ModelTests extends APISpec {
         EnumSet.of(NtfsFileAttributes.NOT_CONTENT_INDEXED) | "NotContentIndexed"
         EnumSet.of(NtfsFileAttributes.NO_SCRUB_DATA) | "NoScrubData"
         EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.NO_SCRUB_DATA, NtfsFileAttributes.OFFLINE, NtfsFileAttributes.DIRECTORY) | "ReadOnly|Directory|Offline|NoScrubData"
+    }
+
+    def "Upload zero length fails"() {
+        when:
+        new ShareFileUploadRangeOptions(new ByteArrayInputStream(new byte[0]), 0)
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

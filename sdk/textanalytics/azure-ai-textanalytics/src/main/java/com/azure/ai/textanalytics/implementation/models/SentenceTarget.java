@@ -42,8 +42,7 @@ public final class SentenceTarget {
     private String text;
 
     /*
-     * The array of either assessment or target objects which is related to the
-     * target.
+     * The array of either assessment or target objects which is related to the target.
      */
     @JsonProperty(value = "relations", required = true)
     private List<TargetRelation> relations;

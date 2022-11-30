@@ -40,6 +40,7 @@ public class EnvironmentConfiguration {
         Configuration.PROPERTY_AZURE_CLIENT_SECRET,
         Configuration.PROPERTY_AZURE_TENANT_ID,
         Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
+        Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD,
         Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1,
         Configuration.PROPERTY_AZURE_RESOURCE_GROUP,
         Configuration.PROPERTY_AZURE_CLOUD,

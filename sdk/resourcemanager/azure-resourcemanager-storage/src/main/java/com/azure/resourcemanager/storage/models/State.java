@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for State. */
+/** Gets the state of virtual network rule. */
 public final class State extends ExpandableStringEnum<State> {
     /** Static value Provisioning for State. */
     public static final State PROVISIONING = fromString("Provisioning");

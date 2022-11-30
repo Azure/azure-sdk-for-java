@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Software update configuration machine run job navigation properties. */
 @Immutable
 public final class JobNavigation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobNavigation.class);
-
     /*
      * Id of the job associated with the software update configuration run
      */

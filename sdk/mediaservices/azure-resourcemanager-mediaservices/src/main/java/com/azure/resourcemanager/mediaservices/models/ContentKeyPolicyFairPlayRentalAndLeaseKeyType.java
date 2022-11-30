@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
+/** The rental and lease key type. */
 public final class ContentKeyPolicyFairPlayRentalAndLeaseKeyType
     extends ExpandableStringEnum<ContentKeyPolicyFairPlayRentalAndLeaseKeyType> {
     /** Static value Unknown for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */

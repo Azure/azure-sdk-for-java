@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TumblingWindowFrequency. */
+/** Enumerates possible frequency option for the tumbling window trigger. */
 public final class TumblingWindowFrequency extends ExpandableStringEnum<TumblingWindowFrequency> {
     /** Static value Minute for TumblingWindowFrequency. */
     public static final TumblingWindowFrequency MINUTE = fromString("Minute");

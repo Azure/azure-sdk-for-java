@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicebus.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SkuTier. */
+/** The billing tier of this particular SKU. */
 public enum SkuTier {
     /** Enum value Basic. */
     BASIC("Basic"),
@@ -33,6 +33,9 @@ public enum SkuTier {
      */
     @JsonCreator
     public static SkuTier fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SkuTier[] items = SkuTier.values();
         for (SkuTier item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum SkuTier {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -21,10 +21,9 @@ public final class AmazonRedshiftSource extends TabularSource {
     private Object query;
 
     /*
-     * The Amazon S3 settings needed for the interim Amazon S3 when copying
-     * from Amazon Redshift with unload. With this, data from Amazon Redshift
-     * source will be unloaded into S3 first and then copied into the targeted
-     * sink from the interim S3.
+     * The Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon Redshift with unload. With
+     * this, data from Amazon Redshift source will be unloaded into S3 first and then copied into the targeted sink
+     * from the interim S3.
      */
     @JsonProperty(value = "redshiftUnloadSettings")
     private RedshiftUnloadSettings redshiftUnloadSettings;

@@ -5,12 +5,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-monitor-opentelemetry-exporter-service</artifactId>
+  <artifactId>azure-monitor-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
       <module>azure-monitor-ingestion</module>
+      <module>azure-monitor-ingestion-perf</module>
       <module>azure-monitor-opentelemetry-exporter</module>
       <module>azure-monitor-query</module>
       <module>azure-monitor-query-perf</module>

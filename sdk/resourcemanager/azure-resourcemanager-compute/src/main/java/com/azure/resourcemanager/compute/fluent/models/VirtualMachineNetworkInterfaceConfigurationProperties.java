@@ -17,8 +17,7 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineNetworkInterfaceConfigurationProperties {
     /*
-     * Specifies the primary network interface in case the virtual machine has
-     * more than 1 network interface.
+     * Specifies the primary network interface in case the virtual machine has more than 1 network interface.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
@@ -30,11 +29,16 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
     private DeleteOptions deleteOption;
 
     /*
-     * Specifies whether the network interface is accelerated
-     * networking-enabled.
+     * Specifies whether the network interface is accelerated networking-enabled.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
+
+    /*
+     * Specifies whether the network interface is disabled for tcp state tracking.
+     */
+    @JsonProperty(value = "disableTcpStateTracking")
+    private Boolean disableTcpStateTracking;
 
     /*
      * Specifies whether the network interface is FPGA networking-enabled.
@@ -71,6 +75,10 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
      */
     @JsonProperty(value = "dscpConfiguration")
     private SubResource dscpConfiguration;
+
+    /** Creates an instance of VirtualMachineNetworkInterfaceConfigurationProperties class. */
+    public VirtualMachineNetworkInterfaceConfigurationProperties() {
+    }
 
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
@@ -134,6 +142,29 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
     public VirtualMachineNetworkInterfaceConfigurationProperties withEnableAcceleratedNetworking(
         Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.disableTcpStateTracking;
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineNetworkInterfaceConfigurationProperties object itself.
+     */
+    public VirtualMachineNetworkInterfaceConfigurationProperties withDisableTcpStateTracking(
+        Boolean disableTcpStateTracking) {
+        this.disableTcpStateTracking = disableTcpStateTracking;
         return this;
     }
 

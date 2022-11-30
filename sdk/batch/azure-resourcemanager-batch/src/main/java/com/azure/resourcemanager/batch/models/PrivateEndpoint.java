@@ -17,6 +17,10 @@ public final class PrivateEndpoint {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of PrivateEndpoint class. */
+    public PrivateEndpoint() {
+    }
+
     /**
      * Get the id property: The ARM resource identifier of the private endpoint. This is of the form
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/privateEndpoints/{privateEndpoint}.

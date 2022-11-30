@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ArchitectureTypes. */
+/** Specifies the Architecture Type. */
 public final class ArchitectureTypes extends ExpandableStringEnum<ArchitectureTypes> {
     /** Static value x64 for ArchitectureTypes. */
     public static final ArchitectureTypes X64 = fromString("x64");

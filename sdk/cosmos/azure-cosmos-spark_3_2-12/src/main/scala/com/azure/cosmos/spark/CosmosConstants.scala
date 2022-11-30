@@ -19,9 +19,11 @@ private object CosmosConstants {
   val maxRetryIntervalForTransientFailuresInMs = 5000
   val maxRetryCountForTransientFailures = 100
   val defaultDirectRequestTimeoutInSeconds = 10L
-  val feedRangesCacheIntervalInMinutes = 1
+  val feedRangesCacheIntervalInMinutes = 1L
   val defaultIoThreadCountFactorPerCore = 4
   val smallestPossibleReactorQueueSizeLargerThanOne = math.min(8, Queues.XS_BUFFER_SIZE)
+  val defaultMetricsIntervalInSeconds = 60
+  val defaultSlf4jMetricReporterEnabled = false
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"

@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.int.communication.azure.net/emails:send?api-version=2021-10-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-email/1.0.0-beta.1 (11.0.15; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4702a121-c8bb-45be-9bac-33c2d8876a8d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-azure-ref" : "20220720T183436Z-ye9hfyx5dp3mpb7ffmfzkv97pg00000003m000000000zkma",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "0",
+      "api-supported-versions" : "2021-10-01-preview",
+      "Repeatability-Result" : "accepted",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "ddc01724-c15a-47f1-b285-3769d58f3b3d",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "cd4aec8e-6594-4cb9-8f2b-8f077b90265a",
+      "Operation-Location" : "REDACTED",
+      "Date" : "Wed, 20 Jul 2022 18:34:36 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/emails/cd4aec8e-6594-4cb9-8f2b-8f077b90265a/status?api-version=2021-10-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-email/1.0.0-beta.1 (11.0.15; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "77f3483c-eb68-4602-ae04-b5ee4e2a1711"
+    },
+    "Response" : {
+      "x-azure-ref" : "20220720T183436Z-ewrqt2bkhp7dv27guuzgu7c0v000000003kg00000001rr5v",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "70",
+      "api-supported-versions" : "2021-10-01-preview",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "50251751-02ff-4734-a35c-d3c694b4f31f",
+      "StatusCode" : "200",
+      "Date" : "Wed, 20 Jul 2022 18:34:36 GMT",
+      "Accept-Ranges" : "bytes",
+      "Retry-After" : "0",
+      "Operation-Location" : "REDACTED",
+      "Body" : "{\"messageId\":\"cd4aec8e-6594-4cb9-8f2b-8f077b90265a\",\"status\":\"Queued\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

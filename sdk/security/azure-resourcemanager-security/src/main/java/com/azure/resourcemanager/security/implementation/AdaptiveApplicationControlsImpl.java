@@ -14,10 +14,9 @@ import com.azure.resourcemanager.security.fluent.models.AdaptiveApplicationContr
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlGroup;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlGroups;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControls;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicationControls {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveApplicationControlsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AdaptiveApplicationControlsImpl.class);
 
     private final AdaptiveApplicationControlsClient innerClient;
 
@@ -28,15 +27,6 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public AdaptiveApplicationControlGroups list() {
-        AdaptiveApplicationControlGroupsInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new AdaptiveApplicationControlGroupsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AdaptiveApplicationControlGroups> listWithResponse(
@@ -54,10 +44,10 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
         }
     }
 
-    public AdaptiveApplicationControlGroup get(String ascLocation, String groupName) {
-        AdaptiveApplicationControlGroupInner inner = this.serviceClient().get(ascLocation, groupName);
+    public AdaptiveApplicationControlGroups list() {
+        AdaptiveApplicationControlGroupsInner inner = this.serviceClient().list();
         if (inner != null) {
-            return new AdaptiveApplicationControlGroupImpl(inner, this.manager());
+            return new AdaptiveApplicationControlGroupsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -78,25 +68,34 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
         }
     }
 
-    public void deleteByResourceGroup(String ascLocation, String groupName) {
-        this.serviceClient().delete(ascLocation, groupName);
+    public AdaptiveApplicationControlGroup get(String ascLocation, String groupName) {
+        AdaptiveApplicationControlGroupInner inner = this.serviceClient().get(ascLocation, groupName);
+        if (inner != null) {
+            return new AdaptiveApplicationControlGroupImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String ascLocation, String groupName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String ascLocation, String groupName, Context context) {
         return this.serviceClient().deleteWithResponse(ascLocation, groupName, context);
+    }
+
+    public void deleteByResourceGroup(String ascLocation, String groupName) {
+        this.serviceClient().delete(ascLocation, groupName);
     }
 
     public AdaptiveApplicationControlGroup getById(String id) {
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String groupName = Utils.getValueFromIdByName(id, "applicationWhitelistings");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,14 +109,14 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
     public Response<AdaptiveApplicationControlGroup> getByIdWithResponse(String id, Context context) {
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String groupName = Utils.getValueFromIdByName(id, "applicationWhitelistings");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,14 +130,14 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
     public void deleteById(String id) {
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String groupName = Utils.getValueFromIdByName(id, "applicationWhitelistings");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,20 +145,20 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
                                 "The resource ID '%s' is not valid. Missing path segment 'applicationWhitelistings'.",
                                 id)));
         }
-        this.deleteWithResponse(ascLocation, groupName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(ascLocation, groupName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String groupName = Utils.getValueFromIdByName(id, "applicationWhitelistings");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +166,7 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
                                 "The resource ID '%s' is not valid. Missing path segment 'applicationWhitelistings'.",
                                 id)));
         }
-        return this.deleteWithResponse(ascLocation, groupName, context);
+        return this.deleteByResourceGroupWithResponse(ascLocation, groupName, context);
     }
 
     private AdaptiveApplicationControlsClient serviceClient() {

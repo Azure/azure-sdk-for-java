@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.ActivitiesClient;
 import com.azure.resourcemanager.automation.fluent.models.ActivityInner;
 import com.azure.resourcemanager.automation.models.ActivityListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ActivitiesClient. */
 public final class ActivitiesClientImpl implements ActivitiesClient {
-    private final ClientLogger logger = new ClientLogger(ActivitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ActivitiesService service;
 
@@ -113,7 +110,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the activity.
+     * @return definition of the activity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ActivityInner>> getWithResponseAsync(
@@ -144,7 +141,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -174,7 +171,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the activity.
+     * @return definition of the activity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ActivityInner>> getWithResponseAsync(
@@ -209,7 +206,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -235,20 +232,13 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the activity.
+     * @return definition of the activity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ActivityInner> getAsync(
         String resourceGroupName, String automationAccountName, String moduleName, String activityName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, moduleName, activityName)
-            .flatMap(
-                (Response<ActivityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -280,7 +270,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the activity.
+     * @return definition of the activity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActivityInner> getWithResponse(
@@ -302,7 +292,8 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActivityInner>> listByModuleSinglePageAsync(
@@ -330,7 +321,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -367,7 +358,8 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActivityInner>> listByModuleSinglePageAsync(
@@ -395,7 +387,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -428,7 +420,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ActivityInner> listByModuleAsync(
@@ -448,7 +440,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ActivityInner> listByModuleAsync(
@@ -467,7 +459,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActivityInner> listByModule(
@@ -485,7 +477,7 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActivityInner> listByModule(
@@ -496,11 +488,13 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActivityInner>> listByModuleNextSinglePageAsync(String nextLink) {
@@ -531,12 +525,14 @@ public final class ActivitiesClientImpl implements ActivitiesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActivityInner>> listByModuleNextSinglePageAsync(String nextLink, Context context) {

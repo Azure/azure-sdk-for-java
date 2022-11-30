@@ -43,10 +43,14 @@ public final class CloudServiceRoleInner {
     private CloudServiceRoleSku sku;
 
     /*
-     * The properties property.
+     * The cloud service role properties.
      */
     @JsonProperty(value = "properties")
     private CloudServiceRoleProperties properties;
+
+    /** Creates an instance of CloudServiceRoleInner class. */
+    public CloudServiceRoleInner() {
+    }
 
     /**
      * Get the id property: Resource id.
@@ -105,7 +109,7 @@ public final class CloudServiceRoleInner {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: The cloud service role properties.
      *
      * @return the properties value.
      */
@@ -114,7 +118,7 @@ public final class CloudServiceRoleInner {
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: The cloud service role properties.
      *
      * @param properties the properties value to set.
      * @return the CloudServiceRoleInner object itself.

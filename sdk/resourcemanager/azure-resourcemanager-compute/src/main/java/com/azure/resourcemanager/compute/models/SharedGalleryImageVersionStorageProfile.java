@@ -23,6 +23,10 @@ public final class SharedGalleryImageVersionStorageProfile {
     @JsonProperty(value = "dataDiskImages")
     private List<SharedGalleryDataDiskImage> dataDiskImages;
 
+    /** Creates an instance of SharedGalleryImageVersionStorageProfile class. */
+    public SharedGalleryImageVersionStorageProfile() {
+    }
+
     /**
      * Get the osDiskImage property: This is the OS disk image.
      *

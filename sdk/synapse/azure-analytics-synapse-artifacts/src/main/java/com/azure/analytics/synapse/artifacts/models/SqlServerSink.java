@@ -16,22 +16,19 @@ import java.util.Map;
 @Fluent
 public final class SqlServerSink extends CopySink {
     /*
-     * SQL writer stored procedure name. Type: string (or Expression with
-     * resultType string).
+     * SQL writer stored procedure name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlWriterStoredProcedureName")
     private Object sqlWriterStoredProcedureName;
 
     /*
-     * SQL writer table type. Type: string (or Expression with resultType
-     * string).
+     * SQL writer table type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlWriterTableType")
     private Object sqlWriterTableType;
 
     /*
-     * SQL pre-copy script. Type: string (or Expression with resultType
-     * string).
+     * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
@@ -43,16 +40,14 @@ public final class SqlServerSink extends CopySink {
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
     /*
-     * The stored procedure parameter name of the table type. Type: string (or
-     * Expression with resultType string).
+     * The stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "storedProcedureTableTypeParameterName")
     private Object storedProcedureTableTypeParameterName;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only
-     * 'autoCreate' value is supported. Type: string (or Expression with
-     * resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "tableOption")
     private Object tableOption;

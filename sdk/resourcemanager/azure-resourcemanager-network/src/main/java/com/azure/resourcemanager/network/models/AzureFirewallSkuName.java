@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFirewallSkuName. */
+/** Name of an Azure Firewall SKU. */
 public final class AzureFirewallSkuName extends ExpandableStringEnum<AzureFirewallSkuName> {
     /** Static value AZFW_VNet for AzureFirewallSkuName. */
     public static final AzureFirewallSkuName AZFW_VNET = fromString("AZFW_VNet");

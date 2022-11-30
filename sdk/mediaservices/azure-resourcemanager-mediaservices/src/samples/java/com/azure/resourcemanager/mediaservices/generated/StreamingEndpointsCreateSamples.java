@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for StreamingEndpoints Create. */
 public final class StreamingEndpointsCreateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streamingendpoint-create.json
      */
     /**
      * Sample code: Create a streaming endpoint.

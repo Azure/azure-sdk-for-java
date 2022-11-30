@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskEncryptionSetType. */
+/** The type of key used to encrypt the data of the disk. */
 public final class DiskEncryptionSetType extends ExpandableStringEnum<DiskEncryptionSetType> {
     /** Static value EncryptionAtRestWithCustomerKey for DiskEncryptionSetType. */
     public static final DiskEncryptionSetType ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY =

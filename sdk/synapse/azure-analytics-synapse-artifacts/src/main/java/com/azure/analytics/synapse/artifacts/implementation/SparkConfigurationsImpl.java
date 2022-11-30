@@ -309,14 +309,7 @@ public final class SparkConfigurationsImpl {
     public Mono<SparkConfigurationResource> createOrUpdateSparkConfigurationAsync(
             String sparkConfigurationName, SparkConfigurationResource sparkConfiguration, String ifMatch) {
         return createOrUpdateSparkConfigurationWithResponseAsync(sparkConfigurationName, sparkConfiguration, ifMatch)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -334,14 +327,7 @@ public final class SparkConfigurationsImpl {
             String sparkConfigurationName, SparkConfigurationResource sparkConfiguration) {
         final String ifMatch = null;
         return createOrUpdateSparkConfigurationWithResponseAsync(sparkConfigurationName, sparkConfiguration, ifMatch)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -365,14 +351,7 @@ public final class SparkConfigurationsImpl {
             Context context) {
         return createOrUpdateSparkConfigurationWithResponseAsync(
                         sparkConfigurationName, sparkConfiguration, ifMatch, context)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -497,14 +476,7 @@ public final class SparkConfigurationsImpl {
     public Mono<SparkConfigurationResource> getSparkConfigurationAsync(
             String sparkConfigurationName, String ifNoneMatch) {
         return getSparkConfigurationWithResponseAsync(sparkConfigurationName, ifNoneMatch)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -520,14 +492,7 @@ public final class SparkConfigurationsImpl {
     public Mono<SparkConfigurationResource> getSparkConfigurationAsync(String sparkConfigurationName) {
         final String ifNoneMatch = null;
         return getSparkConfigurationWithResponseAsync(sparkConfigurationName, ifNoneMatch)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -546,14 +511,7 @@ public final class SparkConfigurationsImpl {
     public Mono<SparkConfigurationResource> getSparkConfigurationAsync(
             String sparkConfigurationName, String ifNoneMatch, Context context) {
         return getSparkConfigurationWithResponseAsync(sparkConfigurationName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -654,8 +612,7 @@ public final class SparkConfigurationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSparkConfigurationAsync(String sparkConfigurationName) {
-        return deleteSparkConfigurationWithResponseAsync(sparkConfigurationName)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteSparkConfigurationWithResponseAsync(sparkConfigurationName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -671,7 +628,7 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSparkConfigurationAsync(String sparkConfigurationName, Context context) {
         return deleteSparkConfigurationWithResponseAsync(sparkConfigurationName, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -761,7 +718,7 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSparkConfigurationAsync(String sparkConfigurationName, ArtifactRenameRequest request) {
         return renameSparkConfigurationWithResponseAsync(sparkConfigurationName, request)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -779,7 +736,7 @@ public final class SparkConfigurationsImpl {
     public Mono<Void> renameSparkConfigurationAsync(
             String sparkConfigurationName, ArtifactRenameRequest request, Context context) {
         return renameSparkConfigurationWithResponseAsync(sparkConfigurationName, request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -816,7 +773,8 @@ public final class SparkConfigurationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -845,7 +803,8 @@ public final class SparkConfigurationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

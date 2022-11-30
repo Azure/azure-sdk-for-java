@@ -10,14 +10,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
-import java.util.regex.Pattern;
-
 /**
  * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
  * standardize the value.
  */
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
-    private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
     private static final String ETAG = "eTag";
 
     /**
@@ -44,10 +41,19 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
             return unprocessedResponse;
         }
 
+        String etag = eTagHeader.getValue();
+        boolean startsWithQuote = etag.startsWith("\"");
+        boolean endsWithQuote = etag.endsWith("\"");
+
         // Just mutate the unprocessed response and return it, callers won't have access to the unprocessed response
         // that was internal to the InnerHttpResponse that was previously being used.
-        unprocessedResponse.getHeaders().set(eTagHeader.getName(),
-            QUOTE_PATTERN.matcher(eTagHeader.getValue()).replaceAll(""));
+        if (startsWithQuote && endsWithQuote) {
+            unprocessedResponse.getHeaders().set(eTagHeader.getName(), etag.substring(1, etag.length() - 1));
+        } else if (startsWithQuote) {
+            unprocessedResponse.getHeaders().set(eTagHeader.getName(), etag.substring(1));
+        } else if (endsWithQuote) {
+            unprocessedResponse.getHeaders().set(eTagHeader.getName(), etag.substring(0, etag.length() - 1));
+        }
 
         return unprocessedResponse;
     }

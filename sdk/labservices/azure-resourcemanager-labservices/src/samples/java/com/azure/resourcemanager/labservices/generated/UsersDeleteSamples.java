@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Users Delete. */
 public final class UsersDeleteSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/deleteUser.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/deleteUser.json
      */
     /**
      * Sample code: deleteUser.

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Aggregate Maximum Bit Rate. */
+/** Aggregate maximum bit rate. */
 @Fluent
 public final class Ambr {
     /*

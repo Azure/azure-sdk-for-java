@@ -52,6 +52,16 @@ public abstract class HttpResponse implements Closeable {
     public abstract String getHeaderValue(String name);
 
     /**
+     * Lookup a response header with the provider {@link HttpHeaderName}.
+     *
+     * @param headerName the name of the header to lookup.
+     * @return the value of the header, or null if the header doesn't exist in the response.
+     */
+    public String getHeaderValue(HttpHeaderName headerName) {
+        return getHeaders().getValue(headerName);
+    }
+
+    /**
      * Get all response headers.
      *
      * @return the response headers
@@ -71,7 +81,7 @@ public abstract class HttpResponse implements Closeable {
 
     /**
      * Gets the {@link BinaryData} that represents the body of the response.
-     *
+     * <p>
      * Subclasses should override this method.
      *
      * @return The {@link BinaryData} response body.
@@ -95,7 +105,7 @@ public abstract class HttpResponse implements Closeable {
     /**
      * Gets the response content as a {@link String}.
      * <p>
-     * By default this method will inspect the response body for containing a byte order mark (BOM) to determine the
+     * By default, this method will inspect the response body for containing a byte order mark (BOM) to determine the
      * encoding of the string (UTF-8, UTF-16, etc.). If a BOM isn't found this will default to using UTF-8 as the
      * encoding, if a specific encoding is required use {@link #getBodyAsString(Charset)}.
      *
@@ -144,7 +154,7 @@ public abstract class HttpResponse implements Closeable {
      * @return A {@link Mono} that completes when transfer is completed.
      * @throws NullPointerException When {@code channel} is null.
      */
-    public Mono<Void> transferBodyToAsync(AsynchronousByteChannel channel) {
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         Objects.requireNonNull(channel, "'channel' must not be null");
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
@@ -160,10 +170,12 @@ public abstract class HttpResponse implements Closeable {
      * @throws IOException When I/O operation fails.
      * @throws NullPointerException When {@code channel} is null.
      */
-    public void transferBodyTo(WritableByteChannel channel) throws IOException {
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
-            FluxUtil.writeToWritableByteChannel(body, channel).block();
+            FluxUtil.writeToWritableByteChannel(body, channel)
+                .doFinally(ignored -> close())
+                .block();
         }
     }
 

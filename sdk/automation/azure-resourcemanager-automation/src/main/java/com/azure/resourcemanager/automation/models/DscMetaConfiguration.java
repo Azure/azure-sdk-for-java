@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the DSC Meta Configuration. */
 @Fluent
 public final class DscMetaConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscMetaConfiguration.class);
-
     /*
-     * Gets or sets the ConfigurationModeFrequencyMins value of the meta
-     * configuration.
+     * Gets or sets the ConfigurationModeFrequencyMins value of the meta configuration.
      */
     @JsonProperty(value = "configurationModeFrequencyMins")
     private Integer configurationModeFrequencyMins;

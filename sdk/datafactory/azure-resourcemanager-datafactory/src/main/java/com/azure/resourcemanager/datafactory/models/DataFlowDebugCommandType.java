@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataFlowDebugCommandType. */
+/** The command type. */
 public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlowDebugCommandType> {
     /** Static value executePreviewQuery for DataFlowDebugCommandType. */
     public static final DataFlowDebugCommandType EXECUTE_PREVIEW_QUERY = fromString("executePreviewQuery");

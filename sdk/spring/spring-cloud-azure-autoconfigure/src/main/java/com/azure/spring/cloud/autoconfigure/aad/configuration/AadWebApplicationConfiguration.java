@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2U
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,18 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 @Conditional(WebApplicationCondition.class)
 public class AadWebApplicationConfiguration {
 
+    private final RestTemplateBuilder restTemplateBuilder;
+
+    /**
+     * Creates a new instance of {@link AadWebApplicationConfiguration}.
+     *
+     * @param restTemplateBuilder the RestTemplateBuilder
+     *
+     */
+    public AadWebApplicationConfiguration(RestTemplateBuilder restTemplateBuilder) {
+        this.restTemplateBuilder = restTemplateBuilder;
+    }
+
     /**
      * Declare OAuth2UserService bean.
      *
@@ -36,7 +49,7 @@ public class AadWebApplicationConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AadAuthenticationProperties properties) {
-        return new AadOAuth2UserService(properties);
+        return new AadOAuth2UserService(properties, restTemplateBuilder);
     }
 
     /**

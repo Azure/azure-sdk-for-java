@@ -34,6 +34,15 @@ public final class IoTSecurityAggregatedRecommendationImpl implements IoTSecurit
         return this.innerModel().type();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String recommendationName() {
         return this.innerModel().recommendationName();
     }
@@ -72,15 +81,6 @@ public final class IoTSecurityAggregatedRecommendationImpl implements IoTSecurit
 
     public String logAnalyticsQuery() {
         return this.innerModel().logAnalyticsQuery();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public IoTSecurityAggregatedRecommendationInner innerModel() {

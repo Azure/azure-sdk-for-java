@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RecurrencePattern;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Schedule resource properties. */
 @Fluent
 public final class ScheduleProperties extends ScheduleUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleProperties.class);
-
     /*
      * Current provisioning state of the schedule.
      */

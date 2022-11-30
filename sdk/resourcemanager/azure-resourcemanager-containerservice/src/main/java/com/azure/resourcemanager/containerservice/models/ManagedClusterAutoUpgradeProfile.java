@@ -11,16 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterAutoUpgradeProfile {
     /*
-     * The upgrade channel for auto upgrade. The default is 'none'. For more
-     * information see [setting the AKS cluster auto-upgrade
+     * The upgrade channel for auto upgrade. The default is 'none'.
+     *
+     * For more information see [setting the AKS cluster auto-upgrade
      * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      */
     @JsonProperty(value = "upgradeChannel")
     private UpgradeChannel upgradeChannel;
 
+    /** Creates an instance of ManagedClusterAutoUpgradeProfile class. */
+    public ManagedClusterAutoUpgradeProfile() {
+    }
+
     /**
-     * Get the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'. For more
-     * information see [setting the AKS cluster auto-upgrade
+     * Get the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'.
+     *
+     * <p>For more information see [setting the AKS cluster auto-upgrade
      * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      *
      * @return the upgradeChannel value.
@@ -30,8 +36,9 @@ public final class ManagedClusterAutoUpgradeProfile {
     }
 
     /**
-     * Set the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'. For more
-     * information see [setting the AKS cluster auto-upgrade
+     * Set the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'.
+     *
+     * <p>For more information see [setting the AKS cluster auto-upgrade
      * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      *
      * @param upgradeChannel the upgradeChannel value to set.

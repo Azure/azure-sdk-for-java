@@ -32,6 +32,10 @@ public class MicrosoftGraphTeamsAppInstallation extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamsAppInstallation class. */
+    public MicrosoftGraphTeamsAppInstallation() {
+    }
+
     /**
      * Get the teamsApp property: teamsApp.
      *

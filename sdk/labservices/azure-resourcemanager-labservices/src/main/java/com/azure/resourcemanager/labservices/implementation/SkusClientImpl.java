@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.SkusClient;
 import com.azure.resourcemanager.labservices.fluent.models.LabServicesSkuInner;
 import com.azure.resourcemanager.labservices.models.PagedLabServicesSkus;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SkusClient. */
 public final class SkusClientImpl implements SkusClient {
-    private final ClientLogger logger = new ClientLogger(SkusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SkusService service;
 
@@ -82,7 +79,9 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * Returns a list of all the Azure Lab Services resource SKUs.
+     * Gets the Azure Lab Services resource SKUs.
+     *
+     * <p>Returns a list of Azure Lab Services resource SKUs.
      *
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,7 +129,9 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * Returns a list of all the Azure Lab Services resource SKUs.
+     * Gets the Azure Lab Services resource SKUs.
+     *
+     * <p>Returns a list of Azure Lab Services resource SKUs.
      *
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
@@ -176,13 +177,15 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * Returns a list of all the Azure Lab Services resource SKUs.
+     * Gets the Azure Lab Services resource SKUs.
+     *
+     * <p>Returns a list of Azure Lab Services resource SKUs.
      *
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab services skus.
+     * @return paged list of lab services skus as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LabServicesSkuInner> listAsync(String filter) {
@@ -190,11 +193,13 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * Returns a list of all the Azure Lab Services resource SKUs.
+     * Gets the Azure Lab Services resource SKUs.
+     *
+     * <p>Returns a list of Azure Lab Services resource SKUs.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab services skus.
+     * @return paged list of lab services skus as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LabServicesSkuInner> listAsync() {
@@ -203,14 +208,16 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * Returns a list of all the Azure Lab Services resource SKUs.
+     * Gets the Azure Lab Services resource SKUs.
+     *
+     * <p>Returns a list of Azure Lab Services resource SKUs.
      *
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab services skus.
+     * @return paged list of lab services skus as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LabServicesSkuInner> listAsync(String filter, Context context) {
@@ -219,11 +226,13 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * Returns a list of all the Azure Lab Services resource SKUs.
+     * Gets the Azure Lab Services resource SKUs.
+     *
+     * <p>Returns a list of Azure Lab Services resource SKUs.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab services skus.
+     * @return paged list of lab services skus as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabServicesSkuInner> list() {
@@ -232,14 +241,16 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * Returns a list of all the Azure Lab Services resource SKUs.
+     * Gets the Azure Lab Services resource SKUs.
+     *
+     * <p>Returns a list of Azure Lab Services resource SKUs.
      *
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab services skus.
+     * @return paged list of lab services skus as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabServicesSkuInner> list(String filter, Context context) {
@@ -249,7 +260,8 @@ public final class SkusClientImpl implements SkusClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -285,7 +297,8 @@ public final class SkusClientImpl implements SkusClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

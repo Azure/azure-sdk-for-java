@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/timezone/windowsToIana/json?api-version=1.0&query=pacific%20standard%20time",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaTimezoneSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "204",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 98DB1163DF5541428B53C41BEAB84BA0 Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:55Z",
+      "Body" : "[{\"Id\":\"America/Vancouver\",\"IsAlias\":false,\"HasZone1970Location\":true},{\"Id\":\"America/Los_Angeles\",\"IsAlias\":false,\"HasZone1970Location\":true},{\"Id\":\"PST8PDT\",\"IsAlias\":false,\"HasZone1970Location\":false}]",
+      "Date" : "Thu, 29 Sep 2022 21:00:55 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

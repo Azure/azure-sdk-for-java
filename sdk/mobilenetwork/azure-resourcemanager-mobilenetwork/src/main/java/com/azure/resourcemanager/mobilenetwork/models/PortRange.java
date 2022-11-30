@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Range of port numbers to use as translated ports on each translated address. If not specified and NAPT is enabled,
- * this range defaults to 1,024 - 65,535. (Ports under 1,024 should not be used because these are special purpose ports
- * reserved by IANA.).
+ * this range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used because these are special purpose ports
+ * reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.).
  */
 @Fluent
 public final class PortRange {

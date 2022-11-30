@@ -53,7 +53,7 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
                 this.resourceGroupName(),
                 this.namespaceName(),
                 this.name(),
-                this.innerModel().rights())
+                this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return self;

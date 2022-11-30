@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TeradataPartitionOption. */
+/** The partition mechanism that will be used for teradata read in parallel. */
 public final class TeradataPartitionOption extends ExpandableStringEnum<TeradataPartitionOption> {
     /** Static value None for TeradataPartitionOption. */
     public static final TeradataPartitionOption NONE = fromString("None");
@@ -30,7 +30,11 @@ public final class TeradataPartitionOption extends ExpandableStringEnum<Teradata
         return fromString(name, TeradataPartitionOption.class);
     }
 
-    /** @return known TeradataPartitionOption values. */
+    /**
+     * Gets known TeradataPartitionOption values.
+     *
+     * @return known TeradataPartitionOption values.
+     */
     public static Collection<TeradataPartitionOption> values() {
         return values(TeradataPartitionOption.class);
     }

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
@@ -21,13 +22,12 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.StorageManager;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -218,7 +218,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8);
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
@@ -228,7 +228,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions
             .assertTrue(
                 Arrays
-                    .asList(functionApp1.innerModel().kind().split(","))
+                    .asList(functionApp1.innerModel().kind().split(Pattern.quote(",")))
                     .containsAll(Arrays.asList("linux", "functionapp")));
 
         PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
@@ -247,7 +247,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp2);
-        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
+        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8);
 
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(functionApp2.appServicePlanId());
         Assertions.assertNotNull(plan2);
@@ -266,7 +266,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp3);
-        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
+        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8);
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -310,8 +310,7 @@ public class FunctionAppsTests extends AppServiceTest {
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"), plan1.pricingTier());
-        Assertions.assertTrue(plan1.innerModel().reserved());
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8);
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -352,36 +351,81 @@ public class FunctionAppsTests extends AppServiceTest {
     public void canCRUDLinuxFunctionAppJava11() throws Exception {
         rgName2 = null;
 
+        String runtimeVersion = "~4";
+
         // function app with consumption plan
         FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName1)
             .withNewLinuxConsumptionPlan()
             .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
+            .withRuntimeVersion(runtimeVersion)
             .withHttpsOnly(true)
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
             .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersion());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11, runtimeVersion);
+
+        assertRunning(functionApp1);
     }
 
-    private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, String linuxFxVersion) {
-        Assertions.assertEquals(linuxFxVersion, functionApp.linuxFxVersion());
+    @Test
+    public void canCRUDLinuxFunctionAppJava17() throws Exception {
+        rgName2 = null;
+
+        // function app with consumption plan
+        FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName1)
+            .withNewLinuxConsumptionPlan()
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_17)
+            .withHttpsOnly(true)
+            .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+            .create();
+        Assertions.assertNotNull(functionApp1);
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_17);
+
+        assertRunning(functionApp1);
+    }
+
+    private void assertRunning(FunctionApp functionApp) {
+        if (!isPlaybackMode()) {
+            // wait
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+            String name = "linux_function_app";
+            Response<String> response = curl("https://" + functionApp.defaultHostname()
+                + "/api/HttpTrigger-Java?name=" + name);
+            Assertions.assertEquals(200, response.getStatusCode());
+            String body = response.getValue();
+            Assertions.assertNotNull(body);
+            Assertions.assertTrue(body.contains("Hello, " + name));
+        }
+    }
+
+    private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, FunctionRuntimeStack stack) {
+        return assertLinuxJava(functionApp, stack, null);
+    }
+
+    private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, FunctionRuntimeStack stack,
+                                                           String runtimeVersion) {
+        Assertions.assertEquals(stack.getLinuxFxVersion(), functionApp.linuxFxVersion());
         Assertions
             .assertTrue(
                 Arrays
-                    .asList(functionApp.innerModel().kind().split(","))
+                    .asList(functionApp.innerModel().kind().split(Pattern.quote(",")))
                     .containsAll(Arrays.asList("linux", "functionapp")));
         Assertions.assertTrue(functionApp.innerModel().reserved());
 
         Map<String, AppSetting> appSettings = functionApp.getAppSettings();
         Assertions.assertNotNull(appSettings);
         Assertions.assertNotNull(appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE));
-        Assertions
-            .assertEquals(FunctionRuntimeStack.JAVA_8.runtime(), appSettings.get(KEY_FUNCTIONS_WORKER_RUNTIME).value());
-        Assertions
-            .assertEquals(
-                FunctionRuntimeStack.JAVA_8.version(), appSettings.get(KEY_FUNCTIONS_EXTENSION_VERSION).value());
+        Assertions.assertEquals(
+            stack.runtime(),
+            appSettings.get(KEY_FUNCTIONS_WORKER_RUNTIME).value());
+        Assertions.assertEquals(
+            runtimeVersion == null ? stack.version() : runtimeVersion,
+            appSettings.get(KEY_FUNCTIONS_EXTENSION_VERSION).value());
 
         return appSettings;
     }
@@ -428,17 +472,5 @@ public class FunctionAppsTests extends AppServiceTest {
         }
 
         return resource;
-    }
-
-    private static String readLine(InputStream in) throws IOException {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        int c;
-        for (c = in.read(); c != '\n' && c >= 0; c = in.read()) {
-            stream.write(c);
-        }
-        if (c == -1 && stream.size() == 0) {
-            return null;
-        }
-        return stream.toString("UTF-8");
     }
 }

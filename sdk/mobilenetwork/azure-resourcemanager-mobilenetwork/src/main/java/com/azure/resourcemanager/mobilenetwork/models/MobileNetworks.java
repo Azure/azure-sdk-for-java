@@ -103,19 +103,19 @@ public interface MobileNetworks {
     PagedIterable<MobileNetwork> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List sim ids under a mobile network.
+     * Lists the IDs of all provisioned SIMs in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list sim ids API service call.
+     * @return response for list SIM IDs API service call.
      */
     SimIdListResult listSimIds(String resourceGroupName, String mobileNetworkName);
 
     /**
-     * List sim ids under a mobile network.
+     * Lists the IDs of all provisioned SIMs in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -123,7 +123,7 @@ public interface MobileNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list sim ids API service call.
+     * @return response for list SIM IDs API service call.
      */
     SimIdListResult listSimIds(String resourceGroupName, String mobileNetworkName, Context context);
 

@@ -31,7 +31,7 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload group.
+     * @return a workload group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<WorkloadGroupInner>> getWithResponseAsync(
@@ -48,7 +48,7 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload group.
+     * @return a workload group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WorkloadGroupInner> getAsync(
@@ -82,7 +82,7 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload group.
+     * @return a workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkloadGroupInner> getWithResponse(
@@ -96,11 +96,12 @@ public interface WorkloadGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
-     * @param parameters Workload group operations for a data warehouse.
+     * @param parameters The requested workload group state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse.
+     * @return workload group operations for a data warehouse along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -118,13 +119,13 @@ public interface WorkloadGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
-     * @param parameters Workload group operations for a data warehouse.
+     * @param parameters The requested workload group state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse.
+     * @return the {@link PollerFlux} for polling of workload group operations for a data warehouse.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -140,13 +141,13 @@ public interface WorkloadGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
-     * @param parameters Workload group operations for a data warehouse.
+     * @param parameters The requested workload group state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse.
+     * @return the {@link SyncPoller} for polling of workload group operations for a data warehouse.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -162,14 +163,14 @@ public interface WorkloadGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
-     * @param parameters Workload group operations for a data warehouse.
+     * @param parameters The requested workload group state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse.
+     * @return the {@link SyncPoller} for polling of workload group operations for a data warehouse.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -186,11 +187,11 @@ public interface WorkloadGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
-     * @param parameters Workload group operations for a data warehouse.
+     * @param parameters The requested workload group state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse.
+     * @return workload group operations for a data warehouse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WorkloadGroupInner> createOrUpdateAsync(
@@ -208,7 +209,7 @@ public interface WorkloadGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
-     * @param parameters Workload group operations for a data warehouse.
+     * @param parameters The requested workload group state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -230,7 +231,7 @@ public interface WorkloadGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
-     * @param parameters Workload group operations for a data warehouse.
+     * @param parameters The requested workload group state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -257,7 +258,7 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -274,9 +275,9 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
 
@@ -291,9 +292,9 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
 
@@ -309,9 +310,9 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context);
 
@@ -326,7 +327,7 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
@@ -373,7 +374,7 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups.
+     * @return the list of workload groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<WorkloadGroupInner> listByDatabaseAsync(String resourceGroupName, String serverName, String databaseName);
@@ -388,7 +389,7 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups.
+     * @return the list of workload groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkloadGroupInner> listByDatabase(String resourceGroupName, String serverName, String databaseName);
@@ -404,7 +405,7 @@ public interface WorkloadGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups.
+     * @return the list of workload groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkloadGroupInner> listByDatabase(

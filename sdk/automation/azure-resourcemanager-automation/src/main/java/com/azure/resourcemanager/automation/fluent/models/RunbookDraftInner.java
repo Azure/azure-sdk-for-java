@@ -5,10 +5,9 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.RunbookParameter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** The RunbookDraft model. */
 @Fluent
 public final class RunbookDraftInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunbookDraftInner.class);
-
     /*
      * Gets or sets whether runbook is in edit mode.
      */
@@ -47,6 +44,7 @@ public final class RunbookDraftInner {
      * Gets or sets the runbook draft parameters.
      */
     @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RunbookParameter> parameters;
 
     /*

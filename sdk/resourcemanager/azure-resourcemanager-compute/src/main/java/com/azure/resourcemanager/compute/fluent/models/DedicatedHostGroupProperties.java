@@ -27,28 +27,30 @@ public final class DedicatedHostGroupProperties {
     private List<SubResourceReadOnly> hosts;
 
     /*
-     * The dedicated host group instance view, which has the list of instance
-     * view of the dedicated hosts under the dedicated host group.
+     * The dedicated host group instance view, which has the list of instance view of the dedicated hosts under the
+     * dedicated host group.
      */
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private DedicatedHostGroupInstanceView instanceView;
 
     /*
-     * Specifies whether virtual machines or virtual machine scale sets can be
-     * placed automatically on the dedicated host group. Automatic placement
-     * means resources are allocated on dedicated hosts, that are chosen by
-     * Azure, under the dedicated host group. The value is defaulted to 'false'
-     * when not provided. <br><br>Minimum api-version: 2020-06-01.
+     * Specifies whether virtual machines or virtual machine scale sets can be placed automatically on the dedicated
+     * host group. Automatic placement means resources are allocated on dedicated hosts, that are chosen by Azure,
+     * under the dedicated host group. The value is defaulted to 'false' when not provided. <br><br>Minimum
+     * api-version: 2020-06-01.
      */
     @JsonProperty(value = "supportAutomaticPlacement")
     private Boolean supportAutomaticPlacement;
 
     /*
-     * Enables or disables a capability on the dedicated host
-     * group.<br><br>Minimum api-version: 2022-03-01.
+     * Enables or disables a capability on the dedicated host group.<br><br>Minimum api-version: 2022-03-01.
      */
     @JsonProperty(value = "additionalCapabilities")
     private DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities;
+
+    /** Creates an instance of DedicatedHostGroupProperties class. */
+    public DedicatedHostGroupProperties() {
+    }
 
     /**
      * Get the platformFaultDomainCount property: Number of fault domains that the host group can span.
