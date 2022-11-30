@@ -3480,4 +3480,17 @@ class BlobAPITest extends APISpec {
         bcAsync.getAppendBlobAsyncClient() == bcAsync.getAppendBlobAsyncClient()
         bcAsync.getPageBlobAsyncClient() == bcAsync.getPageBlobAsyncClient()
     }
+
+
+    def "Request server encrypted null"() {
+        // we want to test if we gracefully handle x-ms-request-server-encrypted returned as null and properly convert
+        // the response into BlockBlobItem without hitting NPE
+        bc = getBlobClient(environment.primaryAccount.credential, bc.getBlobUrl(), removeRequestServerEncryptedHeaderPolicy())
+
+        when:
+        def response = bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        response.getValue().isServerEncrypted() == null
+    }
 }
