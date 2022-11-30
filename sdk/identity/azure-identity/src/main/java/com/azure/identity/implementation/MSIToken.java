@@ -95,7 +95,7 @@ public final class MSIToken extends AccessToken {
 
     private static OffsetDateTime parseExpiresInTime(String expiresIn) {
         try {
-            return OffsetDateTime.now().plusSeconds(Long.parseLong(expiresIn));
+            return EPOCH.plusSeconds(OffsetDateTime.now().plusSeconds(Long.parseLong(expiresIn)).toEpochSecond());
         } catch (NumberFormatException e) {
             LOGGER.verbose(e.getMessage());
         }
