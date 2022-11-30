@@ -46,6 +46,10 @@ public final class CommitmentPlanProperties {
     @JsonProperty(value = "last", access = JsonProperty.Access.WRITE_ONLY)
     private CommitmentPeriod last;
 
+    /** Creates an instance of CommitmentPlanProperties class. */
+    public CommitmentPlanProperties() {
+    }
+
     /**
      * Get the hostingModel property: Account hosting model.
      *

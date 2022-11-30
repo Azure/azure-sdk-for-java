@@ -18,6 +18,10 @@ public final class CustomAssessmentAutomationRequest extends ProxyResource {
     @JsonProperty(value = "properties")
     private CustomAssessmentAutomationRequestProperties innerProperties;
 
+    /** Creates an instance of CustomAssessmentAutomationRequest class. */
+    public CustomAssessmentAutomationRequest() {
+    }
+
     /**
      * Get the innerProperties property: describes Custom Assessment Automation request properties.
      *

@@ -18,8 +18,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTrackedEntity {
     /*
-     * Availability of the user to be scheduled for work and its recurrence
-     * pattern.
+     * Availability of the user to be scheduled for work and its recurrence pattern.
      */
     @JsonProperty(value = "availability")
     private List<MicrosoftGraphShiftAvailability> availability;
@@ -28,6 +27,10 @@ public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTr
      * shiftPreferences
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphShiftPreferences class. */
+    public MicrosoftGraphShiftPreferences() {
+    }
 
     /**
      * Get the availability property: Availability of the user to be scheduled for work and its recurrence pattern.

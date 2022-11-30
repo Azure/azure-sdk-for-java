@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphLocationUniqueIdType. */
+/** locationUniqueIdType. */
 public final class MicrosoftGraphLocationUniqueIdType extends ExpandableStringEnum<MicrosoftGraphLocationUniqueIdType> {
     /** Static value unknown for MicrosoftGraphLocationUniqueIdType. */
     public static final MicrosoftGraphLocationUniqueIdType UNKNOWN = fromString("unknown");
@@ -36,7 +36,11 @@ public final class MicrosoftGraphLocationUniqueIdType extends ExpandableStringEn
         return fromString(name, MicrosoftGraphLocationUniqueIdType.class);
     }
 
-    /** @return known MicrosoftGraphLocationUniqueIdType values. */
+    /**
+     * Gets known MicrosoftGraphLocationUniqueIdType values.
+     *
+     * @return known MicrosoftGraphLocationUniqueIdType values.
+     */
     public static Collection<MicrosoftGraphLocationUniqueIdType> values() {
         return values(MicrosoftGraphLocationUniqueIdType.class);
     }

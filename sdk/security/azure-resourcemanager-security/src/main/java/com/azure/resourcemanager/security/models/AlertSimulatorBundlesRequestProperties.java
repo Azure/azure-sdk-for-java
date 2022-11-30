@@ -21,6 +21,10 @@ public final class AlertSimulatorBundlesRequestProperties extends AlertSimulator
     @JsonProperty(value = "bundles")
     private List<BundleType> bundles;
 
+    /** Creates an instance of AlertSimulatorBundlesRequestProperties class. */
+    public AlertSimulatorBundlesRequestProperties() {
+    }
+
     /**
      * Get the bundles property: Bundles list.
      *

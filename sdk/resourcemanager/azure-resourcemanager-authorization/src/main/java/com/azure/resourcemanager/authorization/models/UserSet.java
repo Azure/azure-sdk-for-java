@@ -34,6 +34,10 @@ public final class UserSet {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of UserSet class. */
+    public UserSet() {
+    }
+
     /**
      * Get the userType property: The type of user.
      *

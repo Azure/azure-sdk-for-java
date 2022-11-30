@@ -22,8 +22,8 @@ public final class MicrosoftGraphHashes {
     private String crc32Hash;
 
     /*
-     * A proprietary hash of the file that can be used to determine if the
-     * contents of the file have changed (if available). Read-only.
+     * A proprietary hash of the file that can be used to determine if the contents of the file have changed (if
+     * available). Read-only.
      */
     @JsonProperty(value = "quickXorHash")
     private String quickXorHash;
@@ -44,6 +44,10 @@ public final class MicrosoftGraphHashes {
      * hashes
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphHashes class. */
+    public MicrosoftGraphHashes() {
+    }
 
     /**
      * Get the crc32Hash property: The CRC32 value of the file in little endian (if available). Read-only.

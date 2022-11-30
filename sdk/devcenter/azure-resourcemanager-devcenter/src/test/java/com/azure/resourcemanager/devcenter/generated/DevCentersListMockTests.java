@@ -34,8 +34,8 @@ public final class DevCentersListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"fqntcyp\"},\"identity\":{\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"wkslir\",\"tags\":{\"dfcea\":\"jxv\",\"gdyftumrtwna\":\"vlhv\",\"wkojgcyztsfmzn\":\"jslb\"},\"id\":\"aeqphchqnr\",\"name\":\"rpxeh\",\"type\":\"wrykqgai\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"devCenterUri\":\"itqscywuggwoluhc\"},\"identity\":{\"principalId\":\"dae60f8d-942d-4891-a014-8e17b8d0913f\",\"tenantId\":\"89e07989-e019-4e2b-be67-ed9dba459180\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"rsbrgzdwm\",\"tags\":{\"xqhuexm\":\"ypqwdxggiccc\",\"ncsdtclusiyp\":\"ttlstvlzywemhz\",\"ygqukyhejh\":\"sfgytguslfead\",\"lolp\":\"isxgfp\"},\"id\":\"vk\",\"name\":\"r\",\"type\":\"qvujzraehtwdwrf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class DevCentersListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DevCenter> response = manager.devCenters().list(1169581420, Context.NONE);
+        PagedIterable<DevCenter> response = manager.devCenters().list(1791253895, Context.NONE);
 
-        Assertions.assertEquals("wkslir", response.iterator().next().location());
-        Assertions.assertEquals("jxv", response.iterator().next().tags().get("dfcea"));
+        Assertions.assertEquals("rsbrgzdwm", response.iterator().next().location());
+        Assertions.assertEquals("ypqwdxggiccc", response.iterator().next().tags().get("xqhuexm"));
         Assertions
             .assertEquals(
                 ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());

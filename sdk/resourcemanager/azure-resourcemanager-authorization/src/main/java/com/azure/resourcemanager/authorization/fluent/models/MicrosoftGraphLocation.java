@@ -68,6 +68,10 @@ public final class MicrosoftGraphLocation {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphLocation class. */
+    public MicrosoftGraphLocation() {
+    }
+
     /**
      * Get the address property: physicalAddress.
      *

@@ -43,6 +43,10 @@ public final class RoleManagementPolicyAssignmentProperties {
     @JsonProperty(value = "policyAssignmentProperties", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyAssignmentProperties policyAssignmentProperties;
 
+    /** Creates an instance of RoleManagementPolicyAssignmentProperties class. */
+    public RoleManagementPolicyAssignmentProperties() {
+    }
+
     /**
      * Get the scope property: The role management policy scope.
      *

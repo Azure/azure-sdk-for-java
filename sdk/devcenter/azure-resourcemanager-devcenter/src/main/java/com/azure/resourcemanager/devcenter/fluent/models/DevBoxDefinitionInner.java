@@ -7,9 +7,11 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.ImageValidationErrorDetails;
 import com.azure.resourcemanager.devcenter.models.ImageValidationStatus;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -70,7 +72,7 @@ public final class DevBoxDefinitionInner extends Resource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
@@ -171,6 +173,33 @@ public final class DevBoxDefinitionInner extends Resource {
             this.innerProperties = new DevBoxDefinitionProperties();
         }
         this.innerProperties().withOsStorageType(osStorageType);
+        return this;
+    }
+
+    /**
+     * Get the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
+     * hibernation. Not all images are capable of supporting hibernation. To find out more see
+     * https://aka.ms/devbox/hibernate.
+     *
+     * @return the hibernateSupport value.
+     */
+    public HibernateSupport hibernateSupport() {
+        return this.innerProperties() == null ? null : this.innerProperties().hibernateSupport();
+    }
+
+    /**
+     * Set the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
+     * hibernation. Not all images are capable of supporting hibernation. To find out more see
+     * https://aka.ms/devbox/hibernate.
+     *
+     * @param hibernateSupport the hibernateSupport value to set.
+     * @return the DevBoxDefinitionInner object itself.
+     */
+    public DevBoxDefinitionInner withHibernateSupport(HibernateSupport hibernateSupport) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DevBoxDefinitionProperties();
+        }
+        this.innerProperties().withHibernateSupport(hibernateSupport);
         return this;
     }
 

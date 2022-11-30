@@ -14,16 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * tokenIssuancePolicy Represents an Azure Active Directory object. The directoryObject type is the base type for many
- * other directory entity types.
+ * tokenIssuancePolicy
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphTokenIssuancePolicy extends MicrosoftGraphStsPolicy {
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTokenIssuancePolicy class. */
+    public MicrosoftGraphTokenIssuancePolicy() {
+    }
 
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is

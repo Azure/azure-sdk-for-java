@@ -23,12 +23,11 @@ public final class ProjectEnvironmentTypeUpdateTests {
         ProjectEnvironmentTypeUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"deploymentTargetId\":\"duhavhqlkt\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{\"ycduier\":{\"roles\":{}},\"ccymvaolpsslql\":{\"roles\":{}},\"mdnbbglzpswiy\":{\"roles\":{}},\"cwyhzdxssa\":{\"roles\":{}}}},\"tags\":{\"daodvxzbncblyl\":\"mnvdfzn\",\"erscdntne\":\"stdbhhxsrzdzu\",\"tmweriofzpyq\":\"fiwjmygtdssls\",\"hhszh\":\"emwabnet\"},\"identity\":{\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"bmwmbesldnkw\":{},\"pjflcxogao\":{},\"z\":{},\"ikvmkqzeqqk\":{}}}}")
+                    "{\"properties\":{\"deploymentTargetId\":\"vljua\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{\"duala\":{\"roles\":{}},\"qpv\":{\"roles\":{}}}},\"tags\":{\"zlfmisgwbnbbeld\":\"mwsrcrgvxpvgo\",\"ali\":\"wkz\",\"hashsfwxosow\":\"urqhaka\",\"cjooxdjebwpucwwf\":\"xcug\"},\"identity\":{\"principalId\":\"6742d2e9-e100-46cf-a94b-c0f3df8495a8\",\"tenantId\":\"03252bf8-6bd4-4afc-815f-bcf2a7b948f2\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"civyhzceuo\":{\"principalId\":\"6daccd11-405d-4191-91c1-8afc0daefdf7\",\"clientId\":\"8c083203-ae8b-4d69-ad81-0c90465fc213\"},\"rw\":{\"principalId\":\"9909f97f-0739-47de-9c2d-421123b4dbba\",\"clientId\":\"21dba054-952a-4a4a-bc9d-db9471c8987f\"},\"iotwmcdytdxwit\":{\"principalId\":\"0cdb1901-ace9-4f71-97c4-5175c549cb7d\",\"clientId\":\"6cd3aac3-1b3c-4ed2-8c8b-4249a4b54c80\"},\"jawgqwg\":{\"principalId\":\"91e2baca-39cf-4691-9a85-a3ff81761540\",\"clientId\":\"457385ab-df81-439e-b88a-b897eef886b5\"}}}}")
                 .toObject(ProjectEnvironmentTypeUpdate.class);
-        Assertions.assertEquals("mnvdfzn", model.tags().get("daodvxzbncblyl"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("duhavhqlkt", model.deploymentTargetId());
+        Assertions.assertEquals("mwsrcrgvxpvgo", model.tags().get("zlfmisgwbnbbeld"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("vljua", model.deploymentTargetId());
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
     }
 
@@ -38,45 +37,41 @@ public final class ProjectEnvironmentTypeUpdateTests {
             new ProjectEnvironmentTypeUpdate()
                 .withTags(
                     mapOf(
-                        "daodvxzbncblyl",
-                        "mnvdfzn",
-                        "erscdntne",
-                        "stdbhhxsrzdzu",
-                        "tmweriofzpyq",
-                        "fiwjmygtdssls",
-                        "hhszh",
-                        "emwabnet"))
+                        "zlfmisgwbnbbeld",
+                        "mwsrcrgvxpvgo",
+                        "ali",
+                        "wkz",
+                        "hashsfwxosow",
+                        "urqhaka",
+                        "cjooxdjebwpucwwf",
+                        "xcug"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                         .withUserAssignedIdentities(
                             mapOf(
-                                "bmwmbesldnkw",
+                                "civyhzceuo",
                                 new UserAssignedIdentity(),
-                                "pjflcxogao",
+                                "rw",
                                 new UserAssignedIdentity(),
-                                "z",
+                                "iotwmcdytdxwit",
                                 new UserAssignedIdentity(),
-                                "ikvmkqzeqqk",
+                                "jawgqwg",
                                 new UserAssignedIdentity())))
-                .withDeploymentTargetId("duhavhqlkt")
+                .withDeploymentTargetId("vljua")
                 .withStatus(EnableStatus.DISABLED)
                 .withCreatorRoleAssignment(
                     new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf()))
                 .withUserRoleAssignments(
                     mapOf(
-                        "ycduier",
+                        "duala",
                         new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "ccymvaolpsslql",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "mdnbbglzpswiy",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "cwyhzdxssa",
+                        "qpv",
                         new UserRoleAssignmentValue().withRoles(mapOf())));
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdate.class);
-        Assertions.assertEquals("mnvdfzn", model.tags().get("daodvxzbncblyl"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("duhavhqlkt", model.deploymentTargetId());
+        Assertions.assertEquals("mwsrcrgvxpvgo", model.tags().get("zlfmisgwbnbbeld"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("vljua", model.deploymentTargetId());
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
     }
 

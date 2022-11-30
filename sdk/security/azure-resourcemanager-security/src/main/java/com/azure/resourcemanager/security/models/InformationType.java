@@ -54,6 +54,10 @@ public final class InformationType {
     @JsonProperty(value = "keywords")
     private List<InformationProtectionKeyword> keywords;
 
+    /** Creates an instance of InformationType class. */
+    public InformationType() {
+    }
+
     /**
      * Get the displayName property: The name of the information type.
      *

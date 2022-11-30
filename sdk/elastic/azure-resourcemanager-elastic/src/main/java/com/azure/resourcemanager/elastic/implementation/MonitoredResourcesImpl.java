@@ -11,10 +11,9 @@ import com.azure.resourcemanager.elastic.fluent.MonitoredResourcesClient;
 import com.azure.resourcemanager.elastic.fluent.models.MonitoredResourceInner;
 import com.azure.resourcemanager.elastic.models.MonitoredResource;
 import com.azure.resourcemanager.elastic.models.MonitoredResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MonitoredResourcesImpl implements MonitoredResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoredResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MonitoredResourcesImpl.class);
 
     private final MonitoredResourcesClient innerClient;
 

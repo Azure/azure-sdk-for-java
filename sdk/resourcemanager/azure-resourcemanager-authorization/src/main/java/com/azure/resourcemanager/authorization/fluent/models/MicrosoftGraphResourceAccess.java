@@ -17,15 +17,15 @@ import java.util.UUID;
 @Fluent
 public final class MicrosoftGraphResourceAccess {
     /*
-     * The unique identifier for one of the oauth2PermissionScopes or appRole
-     * instances that the resource application exposes.
+     * The unique identifier for one of the oauth2PermissionScopes or appRole instances that the resource application
+     * exposes.
      */
     @JsonProperty(value = "id")
     private UUID id;
 
     /*
-     * Specifies whether the id property references an oauth2PermissionScopes
-     * or an appRole. Possible values are Scope or Role.
+     * Specifies whether the id property references an oauth2PermissionScopes or an appRole. Possible values are Scope
+     * or Role.
      */
     @JsonProperty(value = "type")
     private String type;
@@ -34,6 +34,10 @@ public final class MicrosoftGraphResourceAccess {
      * resourceAccess
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphResourceAccess class. */
+    public MicrosoftGraphResourceAccess() {
+    }
 
     /**
      * Get the id property: The unique identifier for one of the oauth2PermissionScopes or appRole instances that the

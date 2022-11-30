@@ -28,6 +28,10 @@ public final class NameAvailabilityInner {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of NameAvailabilityInner class. */
+    public NameAvailabilityInner() {
+    }
+
     /**
      * Get the nameAvailable property: Indicates whether the name is available or not.
      *

@@ -65,8 +65,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
     private Boolean timeOffRequestsEnabled;
 
     /*
-     * Indicates the time zone of the schedule team using tz database format.
-     * Required.
+     * Indicates the time zone of the schedule team using tz database format. Required.
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
@@ -135,6 +134,10 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
      * schedule
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSchedule class. */
+    public MicrosoftGraphSchedule() {
+    }
 
     /**
      * Get the enabled property: Indicates whether the schedule is enabled for the team. Required.

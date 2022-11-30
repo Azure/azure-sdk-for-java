@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
 
 ### 4.39.0 (2022-11-16)
 

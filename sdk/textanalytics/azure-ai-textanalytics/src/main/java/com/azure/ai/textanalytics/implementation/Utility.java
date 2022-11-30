@@ -32,7 +32,7 @@ import com.azure.ai.textanalytics.implementation.models.DynamicClassificationRes
 import com.azure.ai.textanalytics.implementation.models.DynamicClassificationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.DynamicClassificationTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
-import com.azure.ai.textanalytics.implementation.models.EntitiesResultDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResultWithDetectedLanguage;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskResult;
@@ -83,8 +83,8 @@ import com.azure.ai.textanalytics.implementation.models.TemporalSpanResolution;
 import com.azure.ai.textanalytics.implementation.models.VolumeResolution;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.implementation.models.WeightResolution;
-import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -604,7 +604,7 @@ public final class Utility {
                 : toTextDocumentStatistics(documentItem.getStatistics()),
             null);
         ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult,
-            new IterableStream<>(toDocumentClassifications(documentItem.getClassProperty())));
+            new IterableStream<>(toDocumentClassifications(documentItem.getClassifications())));
         ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,
             new IterableStream<>(documentItem.getWarnings().stream().map(
                     warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())));
@@ -613,7 +613,7 @@ public final class Utility {
 
 
     // Named Entities Recognition
-    public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollectionResponse(
+    public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollection(
         final EntitiesResult entitiesResult) {
         // List of documents results
         List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
@@ -629,7 +629,7 @@ public final class Utility {
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
     }
 
-    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollection(
+    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponse(
         final Response<EntitiesResult> response) {
         EntitiesResult entitiesResult = response.getValue();
         return new SimpleResponse<>(response,
@@ -639,7 +639,7 @@ public final class Utility {
                 entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics())));
     }
 
-    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollection2(
+    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponseLanguageApi(
         final Response<AnalyzeTextTaskResult> response) {
         EntitiesTaskResult entitiesTaskResult = (EntitiesTaskResult) response.getValue();
         final EntitiesResult results = entitiesTaskResult.getResults();
@@ -762,7 +762,7 @@ public final class Utility {
             CurrencyResolution currencyResolutionImpl = (CurrencyResolution) resolution;
             com.azure.ai.textanalytics.models.CurrencyResolution currencyResolution
                     = new com.azure.ai.textanalytics.models.CurrencyResolution();
-            CurrencyResolutionPropertiesHelper.setISO4217(currencyResolution, currencyResolutionImpl.getISO4217());
+            CurrencyResolutionPropertiesHelper.setISO4217(currencyResolution, currencyResolutionImpl.getIso4217());
             CurrencyResolutionPropertiesHelper.setUnit(currencyResolution, currencyResolutionImpl.getUnit());
             CurrencyResolutionPropertiesHelper.setValue(currencyResolution, currencyResolutionImpl.getValue());
             return currencyResolution;
@@ -830,7 +830,8 @@ public final class Utility {
         }
     }
 
-    public static RecognizeEntitiesResult toRecognizeEntitiesResult(EntitiesResultDocumentsItem documentEntities) {
+    public static RecognizeEntitiesResult toRecognizeEntitiesResult(
+        EntitiesResultWithDetectedLanguage documentEntities) {
         final RecognizeEntitiesResult recognizeEntitiesResult = new RecognizeEntitiesResult(
             documentEntities.getId(),
             documentEntities.getStatistics() == null ? null
@@ -1160,7 +1161,11 @@ public final class Utility {
                     documentEntities.getFhirBundle());
                 if (documentEntities.getDetectedLanguage() != null) {
                     AnalyzeHealthcareEntitiesResultPropertiesHelper.setDetectedLanguage(analyzeHealthcareEntitiesResult,
-                        toDetectedLanguage(documentEntities.getDetectedLanguage()));
+                        toDetectedLanguage(
+                            // TODO: https://github.com/Azure/azure-sdk-for-java/issues/32252
+                            new com.azure.ai.textanalytics.implementation.models.DetectedLanguage()
+                                .setName(documentEntities.getDetectedLanguage())
+                        ));
                 }
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });

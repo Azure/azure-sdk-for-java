@@ -16,6 +16,10 @@ public final class DataExportSettingProperties {
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
+    /** Creates an instance of DataExportSettingProperties class. */
+    public DataExportSettingProperties() {
+    }
+
     /**
      * Get the enabled property: Is the data export setting enabled.
      *

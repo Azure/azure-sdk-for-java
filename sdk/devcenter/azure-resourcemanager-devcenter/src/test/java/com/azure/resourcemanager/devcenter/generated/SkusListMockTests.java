@@ -34,7 +34,7 @@ public final class SkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"imlnwiaaomylw\",\"locations\":[\"ulcsethwwnpj\"],\"capabilities\":[{\"name\":\"swpchwahfbousn\",\"value\":\"pgfewetwlyx\"}],\"name\":\"ncxykxhdjhlimm\",\"tier\":\"Free\",\"size\":\"h\",\"family\":\"po\",\"capacity\":2026678131}]}";
+            "{\"value\":[{\"resourceType\":\"fc\",\"locations\":[\"pimaqxzhemjyh\",\"hujswtwkozzwcul\",\"bawpfajnjwltlwt\",\"j\"],\"capabilities\":[{\"name\":\"alhsnvkc\",\"value\":\"xzrpo\"},{\"name\":\"mlnwiaaomylweazu\",\"value\":\"sethwwn\"},{\"name\":\"hlf\",\"value\":\"wpchwahf\"},{\"name\":\"usnfepgfewet\",\"value\":\"yxgncxykxhdjhli\"}],\"name\":\"mbcxfhbcp\",\"tier\":\"Basic\",\"size\":\"xcjzhqizxfpxt\",\"family\":\"scjavftju\",\"capacity\":562191246}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class SkusListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DevCenterSku> response = manager.skus().list(1745804403, Context.NONE);
+        PagedIterable<DevCenterSku> response = manager.skus().list(2138880865, Context.NONE);
 
-        Assertions.assertEquals("ncxykxhdjhlimm", response.iterator().next().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().tier());
-        Assertions.assertEquals("h", response.iterator().next().size());
-        Assertions.assertEquals("po", response.iterator().next().family());
-        Assertions.assertEquals(2026678131, response.iterator().next().capacity());
+        Assertions.assertEquals("mbcxfhbcp", response.iterator().next().name());
+        Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().tier());
+        Assertions.assertEquals("xcjzhqizxfpxt", response.iterator().next().size());
+        Assertions.assertEquals("scjavftju", response.iterator().next().family());
+        Assertions.assertEquals(562191246, response.iterator().next().capacity());
     }
 }
