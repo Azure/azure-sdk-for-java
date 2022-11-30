@@ -3481,7 +3481,7 @@ class BlobAPITest extends APISpec {
         bcAsync.getPageBlobAsyncClient() == bcAsync.getPageBlobAsyncClient()
     }
 
-
+    @LiveOnly
     def "Request server encrypted null"() {
         // we want to test if we gracefully handle x-ms-request-server-encrypted returned as null and properly convert
         // the response into BlockBlobItem without hitting NPE
