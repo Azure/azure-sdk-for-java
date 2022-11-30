@@ -734,20 +734,4 @@ class APISpec extends StorageSpec {
             }
         }
     }
-
-    def removeRequestServerEncryptedHeaderPolicy() {
-        return new HttpPipelinePolicy() {
-            @Override
-            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                return next.process().map(response -> {
-                    response.getHeaders().remove("x-ms-request-server-encrypted")
-                    return response
-                })
-            }
-            @Override
-            HttpPipelinePosition getPipelinePosition() {
-                return HttpPipelinePosition.PER_CALL
-            }
-        }
-    }
 }
