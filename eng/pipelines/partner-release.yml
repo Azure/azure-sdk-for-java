@@ -30,7 +30,7 @@ variables:
 jobs:
 - job: Signing
   pool:
-    name: azsdk-pool-mms-win-2019-general
+    name: azsdk-pool-mms-win-2022-general
     vmImage: windows-2019
   steps:
   - checkout: azure-sdk-build-tools
@@ -52,7 +52,7 @@ jobs:
 - job: Release
   dependsOn: Signing
   pool:
-    name: azsdk-pool-mms-win-2019-general
+    name: azsdk-pool-mms-win-2022-general
     vmImage: windows-2019
   steps:
   - checkout: self
