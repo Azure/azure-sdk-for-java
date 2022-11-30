@@ -14,16 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * claimsMappingPolicy Represents an Azure Active Directory object. The directoryObject type is the base type for many
- * other directory entity types.
+ * claimsMappingPolicy
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphClaimsMappingPolicy extends MicrosoftGraphStsPolicy {
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphClaimsMappingPolicy class. */
+    public MicrosoftGraphClaimsMappingPolicy() {
+    }
 
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is

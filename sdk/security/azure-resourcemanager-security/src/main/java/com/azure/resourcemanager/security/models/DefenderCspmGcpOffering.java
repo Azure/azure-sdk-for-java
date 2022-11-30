@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DefenderCspmGcp")
 @Immutable
 public final class DefenderCspmGcpOffering extends CloudOffering {
+    /** Creates an instance of DefenderCspmGcpOffering class. */
+    public DefenderCspmGcpOffering() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -40,6 +40,10 @@ public final class AdditionalUnattendContent {
     @JsonProperty(value = "content")
     private String content;
 
+    /** Creates an instance of AdditionalUnattendContent class. */
+    public AdditionalUnattendContent() {
+    }
+
     /**
      * Get the passName property: The pass name. Currently, the only allowable value is OobeSystem.
      *

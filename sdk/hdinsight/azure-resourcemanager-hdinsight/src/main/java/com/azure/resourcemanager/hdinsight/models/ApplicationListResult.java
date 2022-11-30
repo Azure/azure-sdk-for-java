@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.ApplicationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class ApplicationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationListResult.class);
-
     /*
      * The list of HDInsight applications installed on HDInsight cluster.
      */
@@ -30,6 +26,10 @@ public final class ApplicationListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ApplicationListResult class. */
+    public ApplicationListResult() {
+    }
 
     /**
      * Get the value property: The list of HDInsight applications installed on HDInsight cluster.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IngestionType. */
+/** The ingestion type. */
 public final class IngestionType extends ExpandableStringEnum<IngestionType> {
     /** Static value IPFIX for IngestionType. */
     public static final IngestionType IPFIX = fromString("IPFIX");

@@ -16,9 +16,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphSearchResult {
     /*
-     * A callback URL that can be used to record telemetry information. The
-     * application should issue a GET on this URL if the user interacts with
-     * this item to improve the quality of results.
+     * A callback URL that can be used to record telemetry information. The application should issue a GET on this URL
+     * if the user interacts with this item to improve the quality of results.
      */
     @JsonProperty(value = "onClickTelemetryUrl")
     private String onClickTelemetryUrl;
@@ -27,6 +26,10 @@ public final class MicrosoftGraphSearchResult {
      * searchResult
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSearchResult class. */
+    public MicrosoftGraphSearchResult() {
+    }
 
     /**
      * Get the onClickTelemetryUrl property: A callback URL that can be used to record telemetry information. The

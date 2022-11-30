@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FilterMode. */
+/** The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. */
 public final class FilterMode extends ExpandableStringEnum<FilterMode> {
     /** Static value Exclude for FilterMode. */
     public static final FilterMode EXCLUDE = fromString("Exclude");
@@ -33,7 +33,11 @@ public final class FilterMode extends ExpandableStringEnum<FilterMode> {
         return fromString(name, FilterMode.class);
     }
 
-    /** @return known FilterMode values. */
+    /**
+     * Gets known FilterMode values.
+     *
+     * @return known FilterMode values.
+     */
     public static Collection<FilterMode> values() {
         return values(FilterMode.class);
     }

@@ -26,6 +26,10 @@ public final class DiskAccessList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DiskAccessList class. */
+    public DiskAccessList() {
+    }
+
     /**
      * Get the value property: A list of disk access resources.
      *

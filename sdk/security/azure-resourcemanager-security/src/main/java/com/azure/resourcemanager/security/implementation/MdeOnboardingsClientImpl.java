@@ -51,7 +51,7 @@ public final class MdeOnboardingsClientImpl implements MdeOnboardingsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterMdeOnb")
-    private interface MdeOnboardingsService {
+    public interface MdeOnboardingsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings")
         @ExpectedResponses({200})
@@ -152,18 +152,6 @@ public final class MdeOnboardingsClientImpl implements MdeOnboardingsClient {
     /**
      * The configuration or data needed to onboard the machine to MDE.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all MDE onboarding data resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MdeOnboardingDataListInner list() {
-        return listAsync().block();
-    }
-
-    /**
-     * The configuration or data needed to onboard the machine to MDE.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -173,6 +161,18 @@ public final class MdeOnboardingsClientImpl implements MdeOnboardingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MdeOnboardingDataListInner> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * The configuration or data needed to onboard the machine to MDE.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of all MDE onboarding data resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MdeOnboardingDataListInner list() {
+        return listWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -253,18 +253,6 @@ public final class MdeOnboardingsClientImpl implements MdeOnboardingsClient {
     /**
      * The default configuration or data needed to onboard the machine to MDE.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource of the configuration or data needed to onboard the machine to MDE.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MdeOnboardingDataInner get() {
-        return getAsync().block();
-    }
-
-    /**
-     * The default configuration or data needed to onboard the machine to MDE.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -275,5 +263,17 @@ public final class MdeOnboardingsClientImpl implements MdeOnboardingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MdeOnboardingDataInner> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
+    }
+
+    /**
+     * The default configuration or data needed to onboard the machine to MDE.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource of the configuration or data needed to onboard the machine to MDE.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MdeOnboardingDataInner get() {
+        return getWithResponse(Context.NONE).getValue();
     }
 }

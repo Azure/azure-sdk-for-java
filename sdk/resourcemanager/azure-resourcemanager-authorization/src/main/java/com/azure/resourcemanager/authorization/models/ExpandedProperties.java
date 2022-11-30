@@ -28,6 +28,10 @@ public final class ExpandedProperties {
     @JsonProperty(value = "principal")
     private ExpandedPropertiesPrincipal principal;
 
+    /** Creates an instance of ExpandedProperties class. */
+    public ExpandedProperties() {
+    }
+
     /**
      * Get the scope property: Details of the resource scope.
      *

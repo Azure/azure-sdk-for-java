@@ -22,6 +22,10 @@ public final class DefenderForServersGcpOfferingDefenderForServers {
     @JsonProperty(value = "serviceAccountEmailAddress")
     private String serviceAccountEmailAddress;
 
+    /** Creates an instance of DefenderForServersGcpOfferingDefenderForServers class. */
+    public DefenderForServersGcpOfferingDefenderForServers() {
+    }
+
     /**
      * Get the workloadIdentityProviderId property: The workload identity provider id in GCP for this feature.
      *

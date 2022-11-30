@@ -64,7 +64,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface IntegrationRuntimeObjectMetadatasService {
+    public interface IntegrationRuntimeObjectMetadatasService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

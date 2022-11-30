@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg90378/providers/Microsoft.Storage/storageAccounts/st3171246b?api-version=2022-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg90378/providers/Microsoft.Storage/storageAccounts/st3171246b?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "7ea69dc6-f481-4fdf-9c5a-c3506cb2a18f",
@@ -51,12 +51,12 @@
       "Body" : "",
       "x-ms-client-request-id" : "7ea69dc6-f481-4fdf-9c5a-c3506cb2a18f",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/228b55e6-c655-4819-8e6d-e324f9112a19?monitor=true&api-version=2022-05-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/228b55e6-c655-4819-8e6d-e324f9112a19?monitor=true&api-version=2022-09-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/228b55e6-c655-4819-8e6d-e324f9112a19?monitor=true&api-version=2022-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/228b55e6-c655-4819-8e6d-e324f9112a19?monitor=true&api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "c525883d-a080-422e-a2c9-10b4376cea14"
@@ -83,7 +83,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg90378/providers/Microsoft.Storage/storageAccounts/st3171246b?api-version=2022-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg90378/providers/Microsoft.Storage/storageAccounts/st3171246b?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "a508d686-85e4-49fd-ba8a-a44150eebd0c",

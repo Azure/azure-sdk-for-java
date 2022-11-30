@@ -116,6 +116,10 @@ public final class MicrosoftGraphAudio {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphAudio class. */
+    public MicrosoftGraphAudio() {
+    }
+
     /**
      * Get the album property: The title of the album for this audio file.
      *

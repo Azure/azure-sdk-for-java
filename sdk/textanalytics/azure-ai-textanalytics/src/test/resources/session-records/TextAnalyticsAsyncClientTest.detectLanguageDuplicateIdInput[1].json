@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cc6cfcce-040b-44f4-bf9a-de698a262a4a",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1204e087-1245-4a07-9df7-2c195cb5b31c",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,11 +12,11 @@
       "x-envoy-upstream-service-time" : "7",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a56728a5-972a-4e90-b446-d90259381177",
+      "apim-request-id" : "e861a24f-1991-457c-a952-21a31c94a398",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Request contains duplicated Ids. Make sure each document has a unique Id.\"}}}",
-      "Date" : "Fri, 05 Aug 2022 20:45:10 GMT",
+      "Date" : "Tue, 11 Oct 2022 19:07:53 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -35,6 +35,10 @@ public class PirCommunityGalleryResource {
     @JsonProperty(value = "identifier")
     private CommunityGalleryIdentifier innerIdentifier;
 
+    /** Creates an instance of PirCommunityGalleryResource class. */
+    public PirCommunityGalleryResource() {
+    }
+
     /**
      * Get the name property: Resource name.
      *

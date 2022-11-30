@@ -6,7 +6,6 @@ package com.azure.communication.email.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Message payload for sending an email. */
 @Fluent
@@ -15,7 +14,7 @@ public final class EmailMessage {
      * Custom email headers to be passed.
      */
     @JsonProperty(value = "headers")
-    private List<EmailCustomHeader> customHeaders;
+    private Iterable<EmailCustomHeader> customHeaders;
 
     /*
      * Sender email address from a verified domain.
@@ -65,10 +64,12 @@ public final class EmailMessage {
      * Constructor for EmailMessage
      * @param sender the sender email address from a verified domain
      * @param content the email content to be sent
+     * @param recipients the recipients for the email
      */
-    public EmailMessage(String sender, EmailContent content) {
+    public EmailMessage(String sender, EmailContent content, EmailRecipients recipients) {
         this.sender = sender;
         this.content = content;
+        this.recipients = recipients;
     }
 
     /**
@@ -76,7 +77,7 @@ public final class EmailMessage {
      *
      * @return the customHeaders value.
      */
-    public List<EmailCustomHeader> getCustomHeaders() {
+    public Iterable<EmailCustomHeader> getCustomHeaders() {
         return this.customHeaders;
     }
 
@@ -86,7 +87,7 @@ public final class EmailMessage {
      * @param customHeaders the customHeaders value to set.
      * @return the EmailMessage object itself.
      */
-    public EmailMessage setCustomHeaders(List<EmailCustomHeader> customHeaders) {
+    public EmailMessage setCustomHeaders(Iterable<EmailCustomHeader> customHeaders) {
         this.customHeaders = customHeaders;
         return this;
     }
@@ -139,17 +140,6 @@ public final class EmailMessage {
     }
 
     /**
-     * Set the recipients property: Recipients for the email.
-     *
-     * @param recipients the recipients value to set.
-     * @return the EmailMessage object itself.
-     */
-    public EmailMessage setRecipients(EmailRecipients recipients) {
-        this.recipients = recipients;
-        return this;
-    }
-
-    /**
      * Get the attachments property: list of attachments.
      *
      * @return the attachments value.
@@ -164,7 +154,7 @@ public final class EmailMessage {
      * @param attachments the attachments value to set.
      * @return the EmailMessage object itself.
      */
-    public EmailMessage setAttachments(List<EmailAttachment> attachments) {
+    public EmailMessage setAttachments(Iterable<EmailAttachment> attachments) {
         this.attachments = attachments;
         return this;
     }

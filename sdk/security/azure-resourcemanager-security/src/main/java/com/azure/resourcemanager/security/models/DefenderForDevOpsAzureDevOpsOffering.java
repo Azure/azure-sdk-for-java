@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DefenderForDevOpsAzureDevOps")
 @Immutable
 public final class DefenderForDevOpsAzureDevOpsOffering extends CloudOffering {
+    /** Creates an instance of DefenderForDevOpsAzureDevOpsOffering class. */
+    public DefenderForDevOpsAzureDevOpsOffering() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -24,6 +24,10 @@ public final class RoleManagementPolicyListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RoleManagementPolicyListResult class. */
+    public RoleManagementPolicyListResult() {
+    }
+
     /**
      * Get the value property: Role management policy list.
      *

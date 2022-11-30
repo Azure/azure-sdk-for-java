@@ -94,6 +94,10 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     @JsonProperty(value = "placementGroupId")
     private String placementGroupId;
 
+    /** Creates an instance of VirtualMachineScaleSetVMInstanceViewInner class. */
+    public VirtualMachineScaleSetVMInstanceViewInner() {
+    }
+
     /**
      * Get the platformUpdateDomain property: The Update Domain count.
      *

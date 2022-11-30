@@ -67,6 +67,20 @@ public interface WebPubSubManagementClient {
     UsagesClient getUsages();
 
     /**
+     * Gets the WebPubSubCustomCertificatesClient object to access its operations.
+     *
+     * @return the WebPubSubCustomCertificatesClient object.
+     */
+    WebPubSubCustomCertificatesClient getWebPubSubCustomCertificates();
+
+    /**
+     * Gets the WebPubSubCustomDomainsClient object to access its operations.
+     *
+     * @return the WebPubSubCustomDomainsClient object.
+     */
+    WebPubSubCustomDomainsClient getWebPubSubCustomDomains();
+
+    /**
      * Gets the WebPubSubHubsClient object to access its operations.
      *
      * @return the WebPubSubHubsClient object.

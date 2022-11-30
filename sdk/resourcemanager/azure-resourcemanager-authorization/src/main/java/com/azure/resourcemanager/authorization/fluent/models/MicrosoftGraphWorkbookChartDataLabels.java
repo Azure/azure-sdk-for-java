@@ -16,9 +16,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphEntity {
     /*
-     * DataLabelPosition value that represents the position of the data label.
-     * The possible values are: None, Center, InsideEnd, InsideBase,
-     * OutsideEnd, Left, Right, Top, Bottom, BestFit, Callout.
+     * DataLabelPosition value that represents the position of the data label. The possible values are: None, Center,
+     * InsideEnd, InsideBase, OutsideEnd, Left, Right, Top, Bottom, BestFit, Callout.
      */
     @JsonProperty(value = "position")
     private String position;
@@ -30,36 +29,31 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
     private String separator;
 
     /*
-     * Boolean value representing if the data label bubble size is visible or
-     * not.
+     * Boolean value representing if the data label bubble size is visible or not.
      */
     @JsonProperty(value = "showBubbleSize")
     private Boolean showBubbleSize;
 
     /*
-     * Boolean value representing if the data label category name is visible or
-     * not.
+     * Boolean value representing if the data label category name is visible or not.
      */
     @JsonProperty(value = "showCategoryName")
     private Boolean showCategoryName;
 
     /*
-     * Boolean value representing if the data label legend key is visible or
-     * not.
+     * Boolean value representing if the data label legend key is visible or not.
      */
     @JsonProperty(value = "showLegendKey")
     private Boolean showLegendKey;
 
     /*
-     * Boolean value representing if the data label percentage is visible or
-     * not.
+     * Boolean value representing if the data label percentage is visible or not.
      */
     @JsonProperty(value = "showPercentage")
     private Boolean showPercentage;
 
     /*
-     * Boolean value representing if the data label series name is visible or
-     * not.
+     * Boolean value representing if the data label series name is visible or not.
      */
     @JsonProperty(value = "showSeriesName")
     private Boolean showSeriesName;
@@ -80,6 +74,10 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
      * workbookChartDataLabels
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartDataLabels class. */
+    public MicrosoftGraphWorkbookChartDataLabels() {
+    }
 
     /**
      * Get the position property: DataLabelPosition value that represents the position of the data label. The possible

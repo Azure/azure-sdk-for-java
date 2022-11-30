@@ -15,17 +15,17 @@ public final class ProjectPropertiesTests {
         ProjectProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"qduujitcjczdz\",\"devCenterId\":\"ndhkrw\",\"description\":\"appd\"}")
+                    "{\"provisioningState\":\"Deleting\",\"devCenterUri\":\"bquxigjy\",\"devCenterId\":\"zjaoyfhrtxil\",\"description\":\"rkujy\"}")
                 .toObject(ProjectProperties.class);
-        Assertions.assertEquals("ndhkrw", model.devCenterId());
-        Assertions.assertEquals("appd", model.description());
+        Assertions.assertEquals("zjaoyfhrtxil", model.devCenterId());
+        Assertions.assertEquals("rkujy", model.description());
     }
 
     @Test
     public void testSerialize() {
-        ProjectProperties model = new ProjectProperties().withDevCenterId("ndhkrw").withDescription("appd");
+        ProjectProperties model = new ProjectProperties().withDevCenterId("zjaoyfhrtxil").withDescription("rkujy");
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("ndhkrw", model.devCenterId());
-        Assertions.assertEquals("appd", model.description());
+        Assertions.assertEquals("zjaoyfhrtxil", model.devCenterId());
+        Assertions.assertEquals("rkujy", model.description());
     }
 }

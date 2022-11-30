@@ -71,6 +71,10 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         return this.innerModel().format();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CertificateInner innerModel() {
         return this.innerObject;
     }
@@ -200,24 +204,14 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         return this;
     }
 
-    public Certificate cancelDeletion() {
-        return serviceManager.certificates().cancelDeletion(resourceGroupName, accountName, certificateName);
-    }
-
     public Response<Certificate> cancelDeletionWithResponse(Context context) {
         return serviceManager
             .certificates()
             .cancelDeletionWithResponse(resourceGroupName, accountName, certificateName, context);
     }
 
-    public CertificateImpl withData(String data) {
-        if (isInCreateMode()) {
-            this.createParameters.withData(data);
-            return this;
-        } else {
-            this.updateParameters.withData(data);
-            return this;
-        }
+    public Certificate cancelDeletion() {
+        return serviceManager.certificates().cancelDeletion(resourceGroupName, accountName, certificateName);
     }
 
     public CertificateImpl withPassword(String password) {
@@ -272,6 +266,11 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
 
     public CertificateImpl withIfNoneMatch(String ifNoneMatch) {
         this.createIfNoneMatch = ifNoneMatch;
+        return this;
+    }
+
+    public CertificateImpl withData(String data) {
+        this.updateParameters.withData(data);
         return this;
     }
 

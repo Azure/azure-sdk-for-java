@@ -59,7 +59,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
-    private interface SecurityConnectorsService {
+    public interface SecurityConnectorsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityConnectors")
         @ExpectedResponses({200})
@@ -611,22 +611,6 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityConnectorInner getByResourceGroup(String resourceGroupName, String securityConnectorName) {
-        return getByResourceGroupAsync(resourceGroupName, securityConnectorName).block();
-    }
-
-    /**
-     * Retrieves details of a specific security connector.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -637,6 +621,22 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
     public Response<SecurityConnectorInner> getByResourceGroupWithResponse(
         String resourceGroupName, String securityConnectorName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, securityConnectorName, context).block();
+    }
+
+    /**
+     * Retrieves details of a specific security connector.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security connector resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityConnectorInner getByResourceGroup(String resourceGroupName, String securityConnectorName) {
+        return getByResourceGroupWithResponse(resourceGroupName, securityConnectorName, Context.NONE).getValue();
     }
 
     /**
@@ -788,25 +788,6 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param securityConnector The security connector resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityConnectorInner createOrUpdate(
-        String resourceGroupName, String securityConnectorName, SecurityConnectorInner securityConnector) {
-        return createOrUpdateAsync(resourceGroupName, securityConnectorName, securityConnector).block();
-    }
-
-    /**
-     * Creates or updates a security connector. If a security connector is already created and a subsequent request is
-     * issued for the same security connector id, then it will be updated.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param securityConnector The security connector resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -821,6 +802,26 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, securityConnectorName, securityConnector, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a security connector. If a security connector is already created and a subsequent request is
+     * issued for the same security connector id, then it will be updated.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param securityConnector The security connector resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security connector resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityConnectorInner createOrUpdate(
+        String resourceGroupName, String securityConnectorName, SecurityConnectorInner securityConnector) {
+        return createOrUpdateWithResponse(resourceGroupName, securityConnectorName, securityConnector, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -968,24 +969,6 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param securityConnector The security connector resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityConnectorInner update(
-        String resourceGroupName, String securityConnectorName, SecurityConnectorInner securityConnector) {
-        return updateAsync(resourceGroupName, securityConnectorName, securityConnector).block();
-    }
-
-    /**
-     * Updates a security connector.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param securityConnector The security connector resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -999,6 +982,24 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
         SecurityConnectorInner securityConnector,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, securityConnectorName, securityConnector, context).block();
+    }
+
+    /**
+     * Updates a security connector.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param securityConnector The security connector resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security connector resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityConnectorInner update(
+        String resourceGroupName, String securityConnectorName, SecurityConnectorInner securityConnector) {
+        return updateWithResponse(resourceGroupName, securityConnectorName, securityConnector, Context.NONE).getValue();
     }
 
     /**
@@ -1122,21 +1123,6 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String securityConnectorName) {
-        deleteAsync(resourceGroupName, securityConnectorName).block();
-    }
-
-    /**
-     * Deletes a security connector.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1146,6 +1132,21 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String securityConnectorName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, securityConnectorName, context).block();
+    }
+
+    /**
+     * Deletes a security connector.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String securityConnectorName) {
+        deleteWithResponse(resourceGroupName, securityConnectorName, Context.NONE);
     }
 
     /**

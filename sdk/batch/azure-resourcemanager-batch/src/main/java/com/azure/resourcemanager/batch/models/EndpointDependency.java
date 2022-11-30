@@ -12,15 +12,13 @@ import java.util.List;
 @Immutable
 public final class EndpointDependency {
     /*
-     * The domain name of the dependency. Domain names may be fully qualified
-     * or may contain a * wildcard.
+     * The domain name of the dependency. Domain names may be fully qualified or may contain a * wildcard.
      */
     @JsonProperty(value = "domainName", access = JsonProperty.Access.WRITE_ONLY)
     private String domainName;
 
     /*
-     * Human-readable supplemental information about the dependency and when it
-     * is applicable.
+     * Human-readable supplemental information about the dependency and when it is applicable.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
@@ -30,6 +28,10 @@ public final class EndpointDependency {
      */
     @JsonProperty(value = "endpointDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<EndpointDetail> endpointDetails;
+
+    /** Creates an instance of EndpointDependency class. */
+    public EndpointDependency() {
+    }
 
     /**
      * Get the domainName property: The domain name of the dependency. Domain names may be fully qualified or may

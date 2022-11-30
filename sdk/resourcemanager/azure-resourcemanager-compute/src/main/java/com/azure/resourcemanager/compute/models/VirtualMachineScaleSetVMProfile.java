@@ -112,6 +112,10 @@ public final class VirtualMachineScaleSetVMProfile {
     @JsonProperty(value = "hardwareProfile")
     private VirtualMachineScaleSetHardwareProfile hardwareProfile;
 
+    /** Creates an instance of VirtualMachineScaleSetVMProfile class. */
+    public VirtualMachineScaleSetVMProfile() {
+    }
+
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machines in the scale set.
      *

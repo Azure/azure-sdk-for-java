@@ -54,6 +54,10 @@ public final class SecuritySolutionsReferenceDataProperties {
     @JsonProperty(value = "template", required = true)
     private String template;
 
+    /** Creates an instance of SecuritySolutionsReferenceDataProperties class. */
+    public SecuritySolutionsReferenceDataProperties() {
+    }
+
     /**
      * Get the securityFamily property: The security family of the security solution.
      *

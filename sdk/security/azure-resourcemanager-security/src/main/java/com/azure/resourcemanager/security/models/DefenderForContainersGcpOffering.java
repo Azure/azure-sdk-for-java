@@ -44,6 +44,10 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     @JsonProperty(value = "policyAgentAutoProvisioningFlag")
     private Boolean policyAgentAutoProvisioningFlag;
 
+    /** Creates an instance of DefenderForContainersGcpOffering class. */
+    public DefenderForContainersGcpOffering() {
+    }
+
     /**
      * Get the nativeCloudConnection property: The native cloud connection configuration.
      *
