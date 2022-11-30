@@ -332,15 +332,6 @@ public interface Account {
     /**
      * Lists the account keys for the specified Cognitive Services account.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the cognitive services account.
-     */
-    ApiKeys listKeys();
-
-    /**
-     * Lists the account keys for the specified Cognitive Services account.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -350,15 +341,13 @@ public interface Account {
     Response<ApiKeys> listKeysWithResponse(Context context);
 
     /**
-     * Regenerates the specified account key for the specified Cognitive Services account.
+     * Lists the account keys for the specified Cognitive Services account.
      *
-     * @param parameters regenerate key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys for the cognitive services account.
      */
-    ApiKeys regenerateKey(RegenerateKeyParameters parameters);
+    ApiKeys listKeys();
 
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
@@ -371,4 +360,15 @@ public interface Account {
      * @return the access keys for the cognitive services account along with {@link Response}.
      */
     Response<ApiKeys> regenerateKeyWithResponse(RegenerateKeyParameters parameters, Context context);
+
+    /**
+     * Regenerates the specified account key for the specified Cognitive Services account.
+     *
+     * @param parameters regenerate key parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys for the cognitive services account.
+     */
+    ApiKeys regenerateKey(RegenerateKeyParameters parameters);
 }

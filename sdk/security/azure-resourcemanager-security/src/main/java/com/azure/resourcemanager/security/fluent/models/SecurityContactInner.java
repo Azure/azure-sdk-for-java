@@ -19,6 +19,10 @@ public final class SecurityContactInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecurityContactProperties innerProperties;
 
+    /** Creates an instance of SecurityContactInner class. */
+    public SecurityContactInner() {
+    }
+
     /**
      * Get the innerProperties property: Security contact data.
      *

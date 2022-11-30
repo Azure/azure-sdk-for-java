@@ -38,6 +38,10 @@ public final class ServicePrincipalsAddKeyRequestBodyInner {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ServicePrincipalsAddKeyRequestBodyInner class. */
+    public ServicePrincipalsAddKeyRequestBodyInner() {
+    }
+
     /**
      * Get the keyCredential property: keyCredential.
      *

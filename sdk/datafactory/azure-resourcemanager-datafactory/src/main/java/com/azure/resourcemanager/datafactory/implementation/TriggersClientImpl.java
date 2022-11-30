@@ -66,7 +66,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface TriggersService {
+    public interface TriggersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

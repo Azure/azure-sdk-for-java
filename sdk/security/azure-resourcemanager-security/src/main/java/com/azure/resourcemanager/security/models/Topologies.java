@@ -67,12 +67,14 @@ public interface Topologies {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param topologyResourceName Name of a topology resources collection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific topology component.
+     * @return a specific topology component along with {@link Response}.
      */
-    TopologyResource get(String resourceGroupName, String ascLocation, String topologyResourceName);
+    Response<TopologyResource> getWithResponse(
+        String resourceGroupName, String ascLocation, String topologyResourceName, Context context);
 
     /**
      * Gets a specific topology component.
@@ -82,12 +84,10 @@ public interface Topologies {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param topologyResourceName Name of a topology resources collection.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific topology component along with {@link Response}.
+     * @return a specific topology component.
      */
-    Response<TopologyResource> getWithResponse(
-        String resourceGroupName, String ascLocation, String topologyResourceName, Context context);
+    TopologyResource get(String resourceGroupName, String ascLocation, String topologyResourceName);
 }

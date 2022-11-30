@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecipientType. */
+/** The recipient type. */
 public final class RecipientType extends ExpandableStringEnum<RecipientType> {
     /** Static value Requestor for RecipientType. */
     public static final RecipientType REQUESTOR = fromString("Requestor");
@@ -30,7 +30,11 @@ public final class RecipientType extends ExpandableStringEnum<RecipientType> {
         return fromString(name, RecipientType.class);
     }
 
-    /** @return known RecipientType values. */
+    /**
+     * Gets known RecipientType values.
+     *
+     * @return known RecipientType values.
+     */
     public static Collection<RecipientType> values() {
         return values(RecipientType.class);
     }

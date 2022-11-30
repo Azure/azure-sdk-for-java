@@ -32,7 +32,7 @@ public final class ImagesListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"vwzjbhyz\",\"publisher\":\"jrkambtrnegvmnv\",\"offer\":\"eqvldspast\",\"sku\":\"kkdmfl\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"jlxr\"},\"id\":\"lozapeewchpxlk\",\"name\":\"wk\",\"type\":\"ziycslevufuztck\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"utpwoqhihejqgw\",\"publisher\":\"nfqn\",\"offer\":\"ypsxjvfoim\",\"sku\":\"slirciz\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"Canceled\"},\"id\":\"eacvl\",\"name\":\"vygdyft\",\"type\":\"mrtwna\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,7 @@ public final class ImagesListByDevCenterMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Image> response = manager.images().listByDevCenter("uxrkjp", "dwxf", 1171857310, Context.NONE);
+        PagedIterable<Image> response =
+            manager.images().listByDevCenter("ytxifqjzgxmrh", "blwpcesutrgj", 1785094261, Context.NONE);
     }
 }

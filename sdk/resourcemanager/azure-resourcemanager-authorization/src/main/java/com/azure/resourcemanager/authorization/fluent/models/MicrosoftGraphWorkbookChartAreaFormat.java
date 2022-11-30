@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookChartAreaFormat extends MicrosoftGraphE
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartAreaFormat class. */
+    public MicrosoftGraphWorkbookChartAreaFormat() {
+    }
+
     /**
      * Get the fill property: workbookChartFill.
      *

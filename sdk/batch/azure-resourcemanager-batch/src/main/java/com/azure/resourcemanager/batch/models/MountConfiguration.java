@@ -11,36 +11,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MountConfiguration {
     /*
-     * Information used to connect to an Azure Storage Container using
-     * Blobfuse. This property is mutually exclusive with all other properties.
+     * Information used to connect to an Azure Storage Container using Blobfuse.
+     *
+     * This property is mutually exclusive with all other properties.
      */
     @JsonProperty(value = "azureBlobFileSystemConfiguration")
     private AzureBlobFileSystemConfiguration azureBlobFileSystemConfiguration;
 
     /*
-     * Information used to connect to an NFS file system. This property is
-     * mutually exclusive with all other properties.
+     * Information used to connect to an NFS file system.
+     *
+     * This property is mutually exclusive with all other properties.
      */
     @JsonProperty(value = "nfsMountConfiguration")
     private NfsMountConfiguration nfsMountConfiguration;
 
     /*
-     * Information used to connect to a CIFS file system. This property is
-     * mutually exclusive with all other properties.
+     * Information used to connect to a CIFS file system.
+     *
+     * This property is mutually exclusive with all other properties.
      */
     @JsonProperty(value = "cifsMountConfiguration")
     private CifsMountConfiguration cifsMountConfiguration;
 
     /*
-     * Information used to connect to an Azure Fileshare. This property is
-     * mutually exclusive with all other properties.
+     * Information used to connect to an Azure Fileshare.
+     *
+     * This property is mutually exclusive with all other properties.
      */
     @JsonProperty(value = "azureFileShareConfiguration")
     private AzureFileShareConfiguration azureFileShareConfiguration;
 
+    /** Creates an instance of MountConfiguration class. */
+    public MountConfiguration() {
+    }
+
     /**
      * Get the azureBlobFileSystemConfiguration property: Information used to connect to an Azure Storage Container
-     * using Blobfuse. This property is mutually exclusive with all other properties.
+     * using Blobfuse.
+     *
+     * <p>This property is mutually exclusive with all other properties.
      *
      * @return the azureBlobFileSystemConfiguration value.
      */
@@ -50,7 +60,9 @@ public final class MountConfiguration {
 
     /**
      * Set the azureBlobFileSystemConfiguration property: Information used to connect to an Azure Storage Container
-     * using Blobfuse. This property is mutually exclusive with all other properties.
+     * using Blobfuse.
+     *
+     * <p>This property is mutually exclusive with all other properties.
      *
      * @param azureBlobFileSystemConfiguration the azureBlobFileSystemConfiguration value to set.
      * @return the MountConfiguration object itself.
@@ -62,8 +74,9 @@ public final class MountConfiguration {
     }
 
     /**
-     * Get the nfsMountConfiguration property: Information used to connect to an NFS file system. This property is
-     * mutually exclusive with all other properties.
+     * Get the nfsMountConfiguration property: Information used to connect to an NFS file system.
+     *
+     * <p>This property is mutually exclusive with all other properties.
      *
      * @return the nfsMountConfiguration value.
      */
@@ -72,8 +85,9 @@ public final class MountConfiguration {
     }
 
     /**
-     * Set the nfsMountConfiguration property: Information used to connect to an NFS file system. This property is
-     * mutually exclusive with all other properties.
+     * Set the nfsMountConfiguration property: Information used to connect to an NFS file system.
+     *
+     * <p>This property is mutually exclusive with all other properties.
      *
      * @param nfsMountConfiguration the nfsMountConfiguration value to set.
      * @return the MountConfiguration object itself.
@@ -84,8 +98,9 @@ public final class MountConfiguration {
     }
 
     /**
-     * Get the cifsMountConfiguration property: Information used to connect to a CIFS file system. This property is
-     * mutually exclusive with all other properties.
+     * Get the cifsMountConfiguration property: Information used to connect to a CIFS file system.
+     *
+     * <p>This property is mutually exclusive with all other properties.
      *
      * @return the cifsMountConfiguration value.
      */
@@ -94,8 +109,9 @@ public final class MountConfiguration {
     }
 
     /**
-     * Set the cifsMountConfiguration property: Information used to connect to a CIFS file system. This property is
-     * mutually exclusive with all other properties.
+     * Set the cifsMountConfiguration property: Information used to connect to a CIFS file system.
+     *
+     * <p>This property is mutually exclusive with all other properties.
      *
      * @param cifsMountConfiguration the cifsMountConfiguration value to set.
      * @return the MountConfiguration object itself.
@@ -106,8 +122,9 @@ public final class MountConfiguration {
     }
 
     /**
-     * Get the azureFileShareConfiguration property: Information used to connect to an Azure Fileshare. This property is
-     * mutually exclusive with all other properties.
+     * Get the azureFileShareConfiguration property: Information used to connect to an Azure Fileshare.
+     *
+     * <p>This property is mutually exclusive with all other properties.
      *
      * @return the azureFileShareConfiguration value.
      */
@@ -116,8 +133,9 @@ public final class MountConfiguration {
     }
 
     /**
-     * Set the azureFileShareConfiguration property: Information used to connect to an Azure Fileshare. This property is
-     * mutually exclusive with all other properties.
+     * Set the azureFileShareConfiguration property: Information used to connect to an Azure Fileshare.
+     *
+     * <p>This property is mutually exclusive with all other properties.
      *
      * @param azureFileShareConfiguration the azureFileShareConfiguration value to set.
      * @return the MountConfiguration object itself.

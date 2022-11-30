@@ -17,8 +17,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphDeviceHealthAttestationState {
     /*
-     * TWhen an Attestation Identity Key (AIK) is present on a device, it
-     * indicates that the device has an endorsement key (EK) certificate.
+     * TWhen an Attestation Identity Key (AIK) is present on a device, it indicates that the device has an endorsement
+     * key (EK) certificate.
      */
     @JsonProperty(value = "attestationIdentityKey")
     private String attestationIdentityKey;
@@ -36,8 +36,7 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String bootAppSecurityVersion;
 
     /*
-     * When bootDebugging is enabled, the device is used in development and
-     * testing
+     * When bootDebugging is enabled, the device is used in development and testing
      */
     @JsonProperty(value = "bootDebugging")
     private String bootDebugging;
@@ -55,15 +54,13 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String bootManagerVersion;
 
     /*
-     * The Boot Revision List that was loaded during initial boot on the
-     * attested device
+     * The Boot Revision List that was loaded during initial boot on the attested device
      */
     @JsonProperty(value = "bootRevisionListInfo")
     private String bootRevisionListInfo;
 
     /*
-     * When code integrity is enabled, code execution is restricted to
-     * integrity verified code
+     * When code integrity is enabled, code execution is restricted to integrity verified code
      */
     @JsonProperty(value = "codeIntegrity")
     private String codeIntegrity;
@@ -75,8 +72,7 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String codeIntegrityCheckVersion;
 
     /*
-     * The Code Integrity policy that is controlling the security of the boot
-     * environment
+     * The Code Integrity policy that is controlling the security of the boot environment
      */
     @JsonProperty(value = "codeIntegrityPolicy")
     private String codeIntegrityPolicy;
@@ -94,8 +90,7 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String contentVersion;
 
     /*
-     * DEP Policy defines a set of hardware and software technologies that
-     * perform additional checks on memory
+     * DEP Policy defines a set of hardware and software technologies that perform additional checks on memory
      */
     @JsonProperty(value = "dataExcutionPolicy")
     private String dataExcutionPolicy;
@@ -107,8 +102,7 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String deviceHealthAttestationStatus;
 
     /*
-     * ELAM provides protection for the computers in your network when they
-     * start up
+     * ELAM provides protection for the computers in your network when they start up
      */
     @JsonProperty(value = "earlyLaunchAntiMalwareDriverProtection")
     private String earlyLaunchAntiMalwareDriverProtection;
@@ -138,15 +132,13 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String lastUpdateDateTime;
 
     /*
-     * When operatingSystemKernelDebugging is enabled, the device is used in
-     * development and testing
+     * When operatingSystemKernelDebugging is enabled, the device is used in development and testing
      */
     @JsonProperty(value = "operatingSystemKernelDebugging")
     private String operatingSystemKernelDebugging;
 
     /*
-     * The Operating System Revision List that was loaded during initial boot
-     * on the attested device
+     * The Operating System Revision List that was loaded during initial boot on the attested device
      */
     @JsonProperty(value = "operatingSystemRevListInfo")
     private String operatingSystemRevListInfo;
@@ -158,8 +150,7 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String pcr0;
 
     /*
-     * Informational attribute that identifies the HASH algorithm that was used
-     * by TPM
+     * Informational attribute that identifies the HASH algorithm that was used by TPM
      */
     @JsonProperty(value = "pcrHashAlgorithm")
     private String pcrHashAlgorithm;
@@ -177,15 +168,13 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private Long restartCount;
 
     /*
-     * Safe mode is a troubleshooting option for Windows that starts your
-     * computer in a limited state
+     * Safe mode is a troubleshooting option for Windows that starts your computer in a limited state
      */
     @JsonProperty(value = "safeMode")
     private String safeMode;
 
     /*
-     * When Secure Boot is enabled, the core components must have the correct
-     * cryptographic signatures
+     * When Secure Boot is enabled, the core components must have the correct cryptographic signatures
      */
     @JsonProperty(value = "secureBoot")
     private String secureBoot;
@@ -197,8 +186,7 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String secureBootConfigurationPolicyFingerPrint;
 
     /*
-     * When test signing is allowed, the device does not enforce signature
-     * validation during boot
+     * When test signing is allowed, the device does not enforce signature validation during boot
      */
     @JsonProperty(value = "testSigning")
     private String testSigning;
@@ -210,15 +198,13 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
     private String tpmVersion;
 
     /*
-     * VSM is a container that protects high value assets from a compromised
-     * kernel
+     * VSM is a container that protects high value assets from a compromised kernel
      */
     @JsonProperty(value = "virtualSecureMode")
     private String virtualSecureMode;
 
     /*
-     * Operating system running with limited services that is used to prepare a
-     * computer for Windows
+     * Operating system running with limited services that is used to prepare a computer for Windows
      */
     @JsonProperty(value = "windowsPE")
     private String windowsPE;
@@ -227,6 +213,10 @@ public final class MicrosoftGraphDeviceHealthAttestationState {
      * deviceHealthAttestationState
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeviceHealthAttestationState class. */
+    public MicrosoftGraphDeviceHealthAttestationState() {
+    }
 
     /**
      * Get the attestationIdentityKey property: TWhen an Attestation Identity Key (AIK) is present on a device, it

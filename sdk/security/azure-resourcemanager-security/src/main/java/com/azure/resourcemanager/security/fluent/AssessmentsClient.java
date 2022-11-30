@@ -49,19 +49,6 @@ public interface AssessmentsClient {
      *
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security assessment on your scanned resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityAssessmentResponseInner get(String resourceId, String assessmentName);
-
-    /**
-     * Get a security assessment on your scanned resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param expand OData expand. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,20 +61,17 @@ public interface AssessmentsClient {
         String resourceId, String assessmentName, ExpandEnum expand, Context context);
 
     /**
-     * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
-     * predefined with the same name before inserting the assessment result.
+     * Get a security assessment on your scanned resource.
      *
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assessment Calculated assessment on a pre-defined assessment metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessment on a resource - response format.
+     * @return a security assessment on your scanned resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityAssessmentResponseInner createOrUpdate(
-        String resourceId, String assessmentName, SecurityAssessment assessment);
+    SecurityAssessmentResponseInner get(String resourceId, String assessmentName);
 
     /**
      * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
@@ -107,17 +91,20 @@ public interface AssessmentsClient {
         String resourceId, String assessmentName, SecurityAssessment assessment, Context context);
 
     /**
-     * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
+     * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
      *
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param assessment Calculated assessment on a pre-defined assessment metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security assessment on a resource - response format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceId, String assessmentName);
+    SecurityAssessmentResponseInner createOrUpdate(
+        String resourceId, String assessmentName, SecurityAssessment assessment);
 
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
@@ -133,4 +120,17 @@ public interface AssessmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceId, String assessmentName, Context context);
+
+    /**
+     * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
+     * predefined with the same name before inserting the assessment result.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceId, String assessmentName);
 }

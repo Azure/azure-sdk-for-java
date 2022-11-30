@@ -208,6 +208,7 @@
     "sdk/spring/spring-cloud-azure-starter-stream-servicebus/**",
     "sdk/spring/spring-cloud-azure-autoconfigure/**",
     "sdk/spring/spring-cloud-azure-stream-binder-eventhubs/**",
+    "sdk/spring/spring-cloud-azure-trace-sleuth/**",
     "sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/**",
     "sdk/spring/spring-cloud-azure-stream-binder-servicebus/**",
     "sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/**",
@@ -708,7 +709,8 @@
       "filename": "sdk/spring/CHANGELOG.md",
       "words": [
         "AADB",
-        "JPMS"
+        "JPMS",
+        "nimbusds"
       ]
     },
     {

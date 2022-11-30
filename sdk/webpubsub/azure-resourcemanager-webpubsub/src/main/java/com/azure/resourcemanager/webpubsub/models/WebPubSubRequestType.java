@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebPubSubRequestType. */
+/** The incoming request type to the service. */
 public final class WebPubSubRequestType extends ExpandableStringEnum<WebPubSubRequestType> {
     /** Static value ClientConnection for WebPubSubRequestType. */
     public static final WebPubSubRequestType CLIENT_CONNECTION = fromString("ClientConnection");
@@ -33,7 +33,11 @@ public final class WebPubSubRequestType extends ExpandableStringEnum<WebPubSubRe
         return fromString(name, WebPubSubRequestType.class);
     }
 
-    /** @return known WebPubSubRequestType values. */
+    /**
+     * Gets known WebPubSubRequestType values.
+     *
+     * @return known WebPubSubRequestType values.
+     */
     public static Collection<WebPubSubRequestType> values() {
         return values(WebPubSubRequestType.class);
     }

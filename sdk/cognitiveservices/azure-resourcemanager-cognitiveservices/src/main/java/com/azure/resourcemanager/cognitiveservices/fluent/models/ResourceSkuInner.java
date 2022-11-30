@@ -43,11 +43,14 @@ public final class ResourceSkuInner {
     private List<String> locations;
 
     /*
-     * The restrictions because of which SKU cannot be used. This is empty if
-     * there are no restrictions.
+     * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
     @JsonProperty(value = "restrictions")
     private List<ResourceSkuRestrictions> restrictions;
+
+    /** Creates an instance of ResourceSkuInner class. */
+    public ResourceSkuInner() {
+    }
 
     /**
      * Get the resourceType property: The type of resource the SKU applies to.

@@ -20,19 +20,6 @@ public interface AzureTrafficCollectorsClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Traffic Collector in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureTrafficCollectorInner getByResourceGroup(String resourceGroupName, String azureTrafficCollectorName);
-
-    /**
-     * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,6 +29,19 @@ public interface AzureTrafficCollectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AzureTrafficCollectorInner> getByResourceGroupWithResponse(
         String resourceGroupName, String azureTrafficCollectorName, Context context);
+
+    /**
+     * Gets the specified Azure Traffic Collector in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Traffic Collector in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureTrafficCollectorInner getByResourceGroup(String resourceGroupName, String azureTrafficCollectorName);
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
@@ -170,21 +170,6 @@ public interface AzureTrafficCollectorsClient {
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters Parameters supplied to update Azure Traffic Collector tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Traffic Collector resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureTrafficCollectorInner updateTags(
-        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters);
-
-    /**
-     * Updates the specified Azure Traffic Collector tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param parameters Parameters supplied to update Azure Traffic Collector tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,4 +179,19 @@ public interface AzureTrafficCollectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AzureTrafficCollectorInner> updateTagsWithResponse(
         String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters, Context context);
+
+    /**
+     * Updates the specified Azure Traffic Collector tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param parameters Parameters supplied to update Azure Traffic Collector tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Traffic Collector resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureTrafficCollectorInner updateTags(
+        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters);
 }

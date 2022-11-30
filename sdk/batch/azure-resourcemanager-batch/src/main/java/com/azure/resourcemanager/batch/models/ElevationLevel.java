@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ElevationLevel. */
+/** The elevation level of the user. */
 public enum ElevationLevel {
     /** Enum value NonAdmin. */
     NON_ADMIN("NonAdmin"),
@@ -30,6 +30,9 @@ public enum ElevationLevel {
      */
     @JsonCreator
     public static ElevationLevel fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ElevationLevel[] items = ElevationLevel.values();
         for (ElevationLevel item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ElevationLevel {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

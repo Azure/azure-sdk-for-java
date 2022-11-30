@@ -166,7 +166,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toExtractSummary
 import static com.azure.ai.textanalytics.implementation.Utility.toLabelClassificationResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeCustomEntitiesResultCollection;
-import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
@@ -953,7 +952,7 @@ class AnalyzeActionsAsyncClient {
                 final EntitiesResult results = taskItem.getResults();
                 if (results != null) {
                     RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
-                        toRecognizeEntitiesResultCollectionResponse(results));
+                        Utility.toRecognizeEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
@@ -1093,7 +1092,7 @@ class AnalyzeActionsAsyncClient {
                     final EntitiesResult results = entityTaskResult.getResults();
                     if (results != null) {
                         RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
-                            toRecognizeEntitiesResultCollectionResponse(results));
+                            Utility.toRecognizeEntitiesResultCollection(results));
                     }
                     TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
                         entityTaskResult.getTaskName());

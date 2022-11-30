@@ -33,6 +33,7 @@ import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.activationOperation;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -419,9 +420,5 @@ public final class DocumentAnalysisAsyncClient {
                 break;
         }
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
-    }
-
-    private static AnalyzeDocumentOptions getAnalyzeDocumentOptions(AnalyzeDocumentOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new AnalyzeDocumentOptions() : userProvidedOptions;
     }
 }

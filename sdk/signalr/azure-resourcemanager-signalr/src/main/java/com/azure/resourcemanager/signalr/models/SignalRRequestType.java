@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SignalRRequestType. */
+/** The incoming request type to the service. */
 public final class SignalRRequestType extends ExpandableStringEnum<SignalRRequestType> {
     /** Static value ClientConnection for SignalRRequestType. */
     public static final SignalRRequestType CLIENT_CONNECTION = fromString("ClientConnection");
@@ -33,7 +33,11 @@ public final class SignalRRequestType extends ExpandableStringEnum<SignalRReques
         return fromString(name, SignalRRequestType.class);
     }
 
-    /** @return known SignalRRequestType values. */
+    /**
+     * Gets known SignalRRequestType values.
+     *
+     * @return known SignalRRequestType values.
+     */
     public static Collection<SignalRRequestType> values() {
         return values(SignalRRequestType.class);
     }
