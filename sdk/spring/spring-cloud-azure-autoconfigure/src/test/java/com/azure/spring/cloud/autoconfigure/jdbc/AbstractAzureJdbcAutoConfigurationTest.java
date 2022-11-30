@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
-import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
+import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;

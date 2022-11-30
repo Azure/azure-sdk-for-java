@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;

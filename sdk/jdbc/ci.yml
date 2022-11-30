@@ -27,8 +27,8 @@ pr:
 # boolean for each library. Note: AdditionalModules are never to have
 # parameter entries as those are not releasing libraries.
 parameters:
-    - name: release_azureidentityproviders
-      displayName: 'azure-identity-providers'
+    - name: release_azureidentityextensions
+      displayName: 'azure-identity-extensions'
       type: boolean
       default: true
 
@@ -40,7 +40,7 @@ extends:
         EnableBatchRelease: true
         UseEsrpRelease: false
         Artifacts:
-            - name: azure-identity-providers
+            - name: azure-identity-extensions
               groupId: com.azure
-              safeName: azureidentityproviders
-              releaseInBatch: ${{ parameters.release_azureidentityproviders }}
+              safeName: azureidentityextensions
+              releaseInBatch: ${{ parameters.release_azureidentityextensions }}
