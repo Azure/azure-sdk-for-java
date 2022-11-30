@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
-import com.azure.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin;
-import com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin;
+import com.azure.identity.extensions.mysql.AzureIdentityMysqlAuthenticationPlugin;
+import com.azure.identity.extensions.postgresql.AzureIdentityPostgresqlAuthenticationPlugin;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
