@@ -18,7 +18,7 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     /*
      * Identifies the concrete type of the cognitive service resource attached to a skillset.
      */
-    private final String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.DefaultCognitiveServices";
 
     /** Creates an instance of DefaultCognitiveServicesAccount class. */
     public DefaultCognitiveServicesAccount() {}
@@ -33,7 +33,7 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("description", getDescription());
         return jsonWriter.writeEndObject();
     }
@@ -57,9 +57,11 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.DefaultCognitiveServices".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.DefaultCognitiveServices'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

@@ -21,7 +21,7 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private final String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer";
 
     /*
      * The maximum token length. Tokens longer than the maximum length are split. Maximum token length that can be used
@@ -119,7 +119,7 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         jsonWriter.writeBooleanField("isSearchTokenizer", this.isSearchTokenizer);
@@ -151,9 +151,11 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.MicrosoftLanguageTokenizer".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.MicrosoftLanguageTokenizer'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

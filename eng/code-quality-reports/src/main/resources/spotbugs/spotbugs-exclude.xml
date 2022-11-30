@@ -2680,4 +2680,10 @@
     <Field name="bytes"/>
   </Match>
 
+  <Match>
+    <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
+    <Class name="com.azure.search.documents.indexes.models.EntityRecognitionSkill"/>
+    <Method name="areTypelessEntitiesIncluded"/>
+  </Match>
+
 </FindBugsFilter>

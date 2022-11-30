@@ -346,7 +346,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 Mono<HttpResponse> response = Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                     createMockResponseData(0, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200)));
                 if (callCount.getAndIncrement() == 0) {
-                    return response.delayElement(Duration.ofSeconds(5));
+                    return response.delayElement(Duration.ofSeconds(1));
                 } else {
                     return response;
                 }
@@ -363,10 +363,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         // First request is setup to timeout.
-        assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofSeconds(3), Context.NONE));
+        assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofMillis(100), Context.NONE));
 
         // Second request shouldn't timeout.
-        assertDoesNotThrow(() -> batchingClient.flush(Duration.ofSeconds(3), Context.NONE));
+        assertDoesNotThrow(() -> batchingClient.flush(Duration.ofMillis(100), Context.NONE));
 
         // Then validate that we have the expected number of requests sent and responded.
         assertEquals(10, addedCount.get());

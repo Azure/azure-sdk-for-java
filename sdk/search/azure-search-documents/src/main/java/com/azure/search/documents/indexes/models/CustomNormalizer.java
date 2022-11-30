@@ -25,7 +25,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
     /*
      * Identifies the concrete type of the normalizer.
      */
-    private final String odataType = "#Microsoft.Azure.Search.CustomNormalizer";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.CustomNormalizer";
 
     /*
      * A list of token filters used to filter out or modify the input token. For example, you can specify a lowercase
@@ -99,7 +99,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField(
                 "tokenFilters",
@@ -135,9 +135,11 @@ public final class CustomNormalizer extends LexicalNormalizer {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.CustomNormalizer".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CustomNormalizer'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

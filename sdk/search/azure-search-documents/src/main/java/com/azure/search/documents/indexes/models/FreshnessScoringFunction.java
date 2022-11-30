@@ -22,7 +22,7 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The
      * function type must be lower case.
      */
-    private final String type = "freshness";
+    private static final String TYPE = "freshness";
 
     /*
      * Parameter values for the freshness scoring function.
@@ -60,7 +60,7 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("fieldName", getFieldName());
         jsonWriter.writeDoubleField("boost", getBoost());
         jsonWriter.writeStringField("interpolation", Objects.toString(getInterpolation(), null));
@@ -94,9 +94,11 @@ public final class FreshnessScoringFunction extends ScoringFunction {
 
                         if ("type".equals(jsonFieldName)) {
                             String type = reader.getString();
-                            if (!"freshness".equals(type)) {
+                            if (!TYPE.equals(type)) {
                                 throw new IllegalStateException(
-                                        "'type' was expected to be non-null and equal to 'freshness'. The found 'type' was '"
+                                        "'type' was expected to be non-null and equal to '"
+                                                + TYPE
+                                                + "'. The found 'type' was '"
                                                 + type
                                                 + "'.");
                             }

@@ -26,7 +26,7 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private final String odataType = "#Microsoft.Azure.Search.EdgeNGramTokenFilterV2";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.EdgeNGramTokenFilterV2";
 
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of maxGram.
@@ -117,7 +117,7 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeNumberField("minGram", this.minGram);
         jsonWriter.writeNumberField("maxGram", this.maxGram);
@@ -149,9 +149,11 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.EdgeNGramTokenFilterV2".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.EdgeNGramTokenFilterV2'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

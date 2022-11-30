@@ -21,7 +21,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private final String odataType = "#Microsoft.Azure.Search.StopwordsTokenFilter";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.StopwordsTokenFilter";
 
     /*
      * The list of stopwords. This property and the stopwords list property cannot both be set.
@@ -145,7 +145,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("stopwordsList", Objects.toString(this.stopwordsList, null));
@@ -179,9 +179,11 @@ public final class StopwordsTokenFilter extends TokenFilter {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.StopwordsTokenFilter".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StopwordsTokenFilter'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

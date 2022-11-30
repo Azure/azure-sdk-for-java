@@ -25,7 +25,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     /*
      * Identifies the concrete type of the analyzer.
      */
-    private final String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.PatternAnalyzer";
 
     /*
      * A value indicating whether terms should be lower-cased. Default is true.
@@ -153,7 +153,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeBooleanField("lowercase", this.lowerCaseTerms);
         jsonWriter.writeStringField("pattern", this.pattern);
@@ -187,9 +187,11 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.PatternAnalyzer".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternAnalyzer'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

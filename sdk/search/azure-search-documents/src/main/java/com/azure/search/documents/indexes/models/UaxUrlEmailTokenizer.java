@@ -20,7 +20,7 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private final String odataType = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token
@@ -62,7 +62,7 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         return jsonWriter.writeEndObject();
@@ -90,9 +90,11 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.UaxUrlEmailTokenizer".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.UaxUrlEmailTokenizer'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

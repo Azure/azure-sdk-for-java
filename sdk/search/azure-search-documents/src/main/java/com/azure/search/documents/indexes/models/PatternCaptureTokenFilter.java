@@ -23,7 +23,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private final String odataType = "#Microsoft.Azure.Search.PatternCaptureTokenFilter";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.PatternCaptureTokenFilter";
 
     /*
      * A list of patterns to match against each token.
@@ -80,7 +80,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField("patterns", this.patterns, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("preserveOriginal", this.preserveOriginal);
@@ -111,9 +111,11 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.PatternCaptureTokenFilter".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternCaptureTokenFilter'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

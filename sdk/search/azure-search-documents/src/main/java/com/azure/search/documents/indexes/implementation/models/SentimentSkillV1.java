@@ -25,7 +25,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private final String odataType = "#Microsoft.Skills.Text.SentimentSkill";
+    private static final String ODATA_TYPE = "#Microsoft.Skills.Text.SentimentSkill";
 
     /*
      * A value indicating which language code to use. Default is en.
@@ -86,7 +86,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
@@ -123,9 +123,11 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Skills.Text.SentimentSkill".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.SentimentSkill'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

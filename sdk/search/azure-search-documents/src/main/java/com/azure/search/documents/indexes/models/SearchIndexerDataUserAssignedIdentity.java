@@ -20,7 +20,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
     /*
      * Identifies the concrete type of the identity.
      */
-    private final String odataType = "#Microsoft.Azure.Search.DataUserAssignedIdentity";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.DataUserAssignedIdentity";
 
     /*
      * The fully qualified Azure resource Id of a user assigned managed identity typically in the form
@@ -53,7 +53,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
         return jsonWriter.writeEndObject();
     }
@@ -79,9 +79,11 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.DataUserAssignedIdentity".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.DataUserAssignedIdentity'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

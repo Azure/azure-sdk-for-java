@@ -21,7 +21,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     /*
      * Identifies the concrete type of the data deletion detection policy.
      */
-    private final String odataType = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy";
+    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy";
 
     /*
      * The name of the column to use for soft-deletion detection.
@@ -79,7 +79,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
         jsonWriter.writeStringField("softDeleteColumnName", this.softDeleteColumnName);
         jsonWriter.writeStringField("softDeleteMarkerValue", this.softDeleteMarkerValue);
         return jsonWriter.writeEndObject();
@@ -105,9 +105,11 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy".equals(odataType)) {
+                            if (!ODATA_TYPE.equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }
