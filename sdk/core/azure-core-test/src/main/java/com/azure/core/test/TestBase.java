@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClientProvider;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestIterationContext;
 import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.test.utils.TestProxyManager;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -17,11 +18,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.testcontainers.containers.FixedHostPortGenericContainer;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.images.ImagePullPolicy;
-import org.testcontainers.images.PullPolicy;
-
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -99,7 +95,7 @@ public abstract class TestBase implements BeforeEachCallback {
     @RegisterExtension
     final TestIterationContext testIterationContext = new TestIterationContext();
 
-    private static FixedHostPortGenericContainer<?> testContainer;
+    private static TestProxyManager testProxyManager;
 
     /**
      * Before tests are executed, determines the test mode by reading the {@code AZURE_TEST_MODE} environment variable.
@@ -110,13 +106,9 @@ public abstract class TestBase implements BeforeEachCallback {
     public static void setupClass() {
         testMode = initializeTestMode();
         // todo: remove false &&
-        if (false && useTestProxy() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
-            testContainer = new FixedHostPortGenericContainer<>("azsdkengsys.azurecr.io/engsys/testproxy-lin:latest")
-                .withImagePullPolicy(PullPolicy.alwaysPull())
-                .withFixedExposedPort(8080, 8080)
-                .withFixedExposedPort(8081, 8081)
-                .withFileSystemBind(InterceptorManager.getRecordFolder().getPath(), "/srv/testproxy");
-            testContainer.start();
+        if (enableTestProxy() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
+            testProxyManager = new TestProxyManager(InterceptorManager.getRecordFolder());
+            testProxyManager.startProxy();
         }
     }
 
@@ -133,7 +125,7 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode, enableTestProxy());
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
         logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
 
@@ -163,9 +155,7 @@ public abstract class TestBase implements BeforeEachCallback {
 
     @AfterAll
     public static void teardownClass() {
-        if (testContainer != null && testContainer.isRunning()) {
-            testContainer.stop();
-        }
+        testProxyManager.stopProxy();
     }
 
     /**
@@ -273,15 +263,8 @@ public abstract class TestBase implements BeforeEachCallback {
         return TestingHelpers.getTestMode();
     }
 
-    static boolean useTestProxy() {
+    static boolean enableTestProxy() {
         return TestingHelpers.useTestProxy();
-    }
-
-    public static boolean isTestContainerRunning() {
-        if(testContainer != null) {
-            return testContainer.isRunning();
-        }
-        return false;
     }
 
     /**
