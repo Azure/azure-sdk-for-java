@@ -25,8 +25,8 @@ import java.util.List;
  * <pre>
  * UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
  *     .clientId&#40;clientId&#41;
- *     .username&#40;username&#41;
- *     .password&#40;password&#41;
+ *     .username&#40;fakeUsernamePlaceholder&#41;
+ *     .password&#40;fakePasswordPlaceholder&#41;
  *     .build&#40;&#41;;
  * InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
  *     .clientId&#40;clientId&#41;

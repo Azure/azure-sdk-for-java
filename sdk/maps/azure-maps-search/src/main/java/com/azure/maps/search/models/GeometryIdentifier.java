@@ -4,11 +4,11 @@
 
 package com.azure.maps.search.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the geometric shape of the result. Only present if type == Geography. */
-@Immutable
+@Fluent
 public final class GeometryIdentifier {
     /*
      * Pass this as geometryId to the [Get Search
