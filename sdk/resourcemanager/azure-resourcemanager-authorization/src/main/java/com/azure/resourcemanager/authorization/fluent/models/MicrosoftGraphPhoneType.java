@@ -51,7 +51,11 @@ public final class MicrosoftGraphPhoneType extends ExpandableStringEnum<Microsof
         return fromString(name, MicrosoftGraphPhoneType.class);
     }
 
-    /** @return known MicrosoftGraphPhoneType values. */
+    /**
+     * Gets known MicrosoftGraphPhoneType values.
+     *
+     * @return known MicrosoftGraphPhoneType values.
+     */
     public static Collection<MicrosoftGraphPhoneType> values() {
         return values(MicrosoftGraphPhoneType.class);
     }

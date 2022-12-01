@@ -742,6 +742,41 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
+     * Get the keysMetadata property: This property is ignored during the update/create operation, as the metadata is
+     * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
+     *
+     * @return the keysMetadata value.
+     */
+    public DatabaseAccountKeysMetadata keysMetadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().keysMetadata();
+    }
+
+    /**
+     * Get the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @return the enablePartitionMerge value.
+     */
+    public Boolean enablePartitionMerge() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePartitionMerge();
+    }
+
+    /**
+     * Set the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @param enablePartitionMerge the enablePartitionMerge value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withEnablePartitionMerge(Boolean enablePartitionMerge) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnablePartitionMerge(enablePartitionMerge);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

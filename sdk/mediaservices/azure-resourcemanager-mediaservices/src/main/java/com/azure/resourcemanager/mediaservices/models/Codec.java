@@ -26,8 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class Codec {
     /*
-     * An optional label for the codec. The label can be used to control muxing
-     * behavior.
+     * An optional label for the codec. The label can be used to control muxing behavior.
      */
     @JsonProperty(value = "label")
     private String label;

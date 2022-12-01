@@ -1,64 +1,76 @@
-{"Registrations":[
-  {
-    "Component": {
-      "Type": "Maven",
-      "Maven": {
-        "ArtifactId": "guava",
-        "GroupId": "com.google.guava",
-        "Version": "27.0.1-jre"
+{
+  "$schema": "https://json.schemastore.org/component-detection-manifest.json",
+  "Registrations": [
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "guava",
+          "GroupId": "com.google.guava",
+          "Version": "27.0.1-jre"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "guava",
+          "GroupId": "com.google.guava",
+          "Version": "25.0-jre"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "commons-collections4",
+          "GroupId": "org.apache.commons",
+          "Version": "4.2"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "commons-text",
+          "GroupId": "org.apache.commons",
+          "Version": "1.10.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "commons-lang3",
+          "GroupId": "org.apache.commons",
+          "Version": "3.8.1"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "java-uuid-generator",
+          "GroupId": "com.fasterxml.uuid",
+          "Version": "4.0.1"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "commons-codec",
+          "GroupId": "commons-codec",
+          "Version": "1.14"
+        }
       }
     }
-  },
-  {
-    "Component": {
-      "Type": "Maven",
-      "Maven": {
-        "ArtifactId": "guava",
-        "GroupId": "com.google.guava",
-        "Version": "25.0-jre"
-      }
-    }
-  },
-  {
-    "Component": {
-      "Type": "Maven",
-      "Maven": {
-        "ArtifactId": "commons-collections4",
-        "GroupId": "org.apache.commons",
-        "Version": "4.2"
-      }
-    }
-  },
-  {
-    "Component": {
-      "Type": "Maven",
-      "Maven": {
-        "ArtifactId": "commons-text",
-        "GroupId": "org.apache.commons",
-        "Version": "1.6"
-      }
-    }
-  },
-  {
-    "Component": {
-      "Type": "Maven",
-      "Maven": {
-        "ArtifactId": "commons-lang3",
-        "GroupId": "org.apache.commons",
-        "Version": "3.8.1"
-      }
-    }
-  },
-  {
-    "Component": {
-      "Type": "Maven",
-      "Maven": {
-        "ArtifactId": "java-uuid-generator",
-        "GroupId": "com.fasterxml.uuid",
-        "Version": "4.0.1"
-      }
-    }
-  }
-],
+  ],
   "Version": 1
 }

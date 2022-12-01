@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -48,6 +49,10 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ProjectEnvironmentTypeInner class. */
+    public ProjectEnvironmentTypeInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of an environment type.
@@ -132,7 +137,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

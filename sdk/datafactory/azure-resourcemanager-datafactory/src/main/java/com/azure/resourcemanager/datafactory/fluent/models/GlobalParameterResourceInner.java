@@ -40,6 +40,10 @@ public final class GlobalParameterResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of GlobalParameterResourceInner class. */
+    public GlobalParameterResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of the global parameter.
      *

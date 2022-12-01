@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found License document fields from a local file input stream.
- * See fields found on an identity document here: https://aka.ms/formrecognizer/iddocumentfields
+ * See fields found on an identity document <a href=https://aka.ms/formrecognizer/iddocumentfields>here</a>
  */
 public class AnalyzeIdentityDocuments {
 
@@ -45,8 +45,8 @@ public class AnalyzeIdentityDocuments {
         Path filePath = licenseDocumentFile.toPath();
         BinaryData fileData = BinaryData.fromFile(filePath);
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeIdentityDocumentPoller =
-            client.beginAnalyzeDocument("prebuilt-idDocument", fileData, licenseDocumentFile.length());
+        SyncPoller<OperationResult, AnalyzeResult> analyzeIdentityDocumentPoller =
+            client.beginAnalyzeDocument("prebuilt-idDocument", fileData);
 
         AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
 

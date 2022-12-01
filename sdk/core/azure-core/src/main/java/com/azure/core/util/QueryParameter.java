@@ -3,8 +3,8 @@
 
 package com.azure.core.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -16,11 +16,13 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * appended at the end of the same {@link QueryParameter} with commas separating them.
  */
 class QueryParameter {
+    private static final String[] EMPTY_QUERY_PARAMETER_ARRAY = new String[0];
+
     private final String name;
 
     // this is the internal representation of a single value
     // for this parameter. this is the common case (vs. having name=a&name=b etc.)
-    private final String value;
+    private String value;
 
     // this is the actual internal representation of all values
     // in case we have name=a&name=b&name=c
@@ -55,8 +57,13 @@ class QueryParameter {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(values, "'values' cannot be null");
         this.name = name;
-        this.value = null;
-        this.values = new LinkedList<>(values);
+        int size = values.size();
+        if (size == 1) {
+            this.value = values.get(0);
+        } else if (size != 0) {
+            this.values = new ArrayList<>(Math.max(size + 2, 4));
+            this.values.addAll(values);
+        }
     }
 
     /**
@@ -74,6 +81,12 @@ class QueryParameter {
      * @return the value of this QueryParameter
      */
     public String getValue() {
+        if (value != null) {
+            return value;
+        } else if (CoreUtils.isNullOrEmpty(values)) {
+            return "";
+        }
+
         checkCachedStringValue();
         return cachedStringValue;
     }
@@ -84,11 +97,12 @@ class QueryParameter {
      * @return the values of this {@link QueryParameter} that are separated by a comma
      */
     public String[] getValues() {
-        if (values == null) {
-            // most common case
+        if (value != null) {
             return new String[] {value};
+        } else if (!CoreUtils.isNullOrEmpty(values)) {
+            return values.toArray(new String[0]);
         } else {
-            return values.toArray(new String[] { });
+            return EMPTY_QUERY_PARAMETER_ARRAY;
         }
     }
 
@@ -98,31 +112,31 @@ class QueryParameter {
      * @return An unmodifiable list containing all values associated with this parameter.
      */
     public List<String> getValuesList() {
-        if (values == null) {
-            // most common case is that we don't have a list of values, but a single one
-            // a convenience return value is implemented here to avoid NPEs.
-            // List.of() would be a better option but it is Java 9+ only.
+        if (value != null) {
             return Collections.singletonList(value);
-        } else {
+        } else if (!CoreUtils.isNullOrEmpty(values)) {
             return Collections.unmodifiableList(values);
+        } else {
+            return Collections.emptyList();
         }
     }
 
     /**
      * Add a new value to the end of the QueryParameter.
      *
-     * @param newValue the value to add
+     * @param value the value to add
      */
-    public void addValue(String newValue) {
-        if (values == null) {
-            values = new LinkedList<>();
-            // add current standalone value to the list
-            // as the list is empty
+    public void addValue(String value) {
+        if (this.value == null && values == null) {
+            this.value = value;
+            return;
+        } else if (values == null) {
+            values = new ArrayList<>(4); // 4 was selected to add a buffer of 2 as seen in the constructor.
             values.add(this.value);
+            this.value = null;
         }
 
-        // add additional value to the parameter value list
-        values.add(newValue);
+        this.values.add(value);
         CACHED_STRING_VALUE_UPDATER.set(this, null);
     }
 
@@ -133,12 +147,17 @@ class QueryParameter {
      */
     @Override
     public String toString() {
+        if (value != null) {
+            return name + "=" + value;
+        } else if (CoreUtils.isNullOrEmpty(values)) {
+            return "";
+        }
+
         checkCachedStringValue();
         return name + "=" + CACHED_STRING_VALUE_UPDATER.get(this);
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null,
-            (values == null) ? value : CoreUtils.stringJoin(",", values));
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
     }
 }

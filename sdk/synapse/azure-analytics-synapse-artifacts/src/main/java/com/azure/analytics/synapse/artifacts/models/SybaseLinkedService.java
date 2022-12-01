@@ -19,22 +19,19 @@ import java.util.Map;
 @Fluent
 public class SybaseLinkedService extends LinkedService {
     /*
-     * Server name for connection. Type: string (or Expression with resultType
-     * string).
+     * Server name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
 
     /*
-     * Database name for connection. Type: string (or Expression with
-     * resultType string).
+     * Database name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
     /*
-     * Schema name for connection. Type: string (or Expression with resultType
-     * string).
+     * Schema name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schema;
@@ -46,8 +43,7 @@ public class SybaseLinkedService extends LinkedService {
     private SybaseAuthenticationType authenticationType;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -59,9 +55,8 @@ public class SybaseLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

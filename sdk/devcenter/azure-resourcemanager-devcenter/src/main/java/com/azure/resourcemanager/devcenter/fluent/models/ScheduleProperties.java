@@ -6,6 +6,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,14 +18,18 @@ public final class ScheduleProperties extends ScheduleUpdateProperties {
      * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /** Creates an instance of ScheduleProperties class. */
+    public ScheduleProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

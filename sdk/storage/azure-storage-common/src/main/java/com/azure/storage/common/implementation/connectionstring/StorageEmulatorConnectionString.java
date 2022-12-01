@@ -51,37 +51,13 @@ final class StorageEmulatorConnectionString {
 
             StorageConnectionString storageConnectionString;
             try {
-                URI blobPrimaryEndpoint =
-                        new URI(String.format(Constants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
-                                scheme,
-                                host,
-                                "10000"));
-                URI queuePrimaryEndpoint =
-                        new URI(String.format(Constants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
-                                scheme,
-                                host,
-                                "10001"));
-                URI tablePrimaryEndpoint =
-                        new URI(String.format(Constants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
-                                scheme,
-                                host,
-                                "10002"));
+                URI blobPrimaryEndpoint = new URI(scheme + "://" + host + ":10000/devstoreaccount1");
+                URI queuePrimaryEndpoint = new URI(scheme + "://" + host + ":10001/devstoreaccount1");
+                URI tablePrimaryEndpoint = new URI(scheme + "://" + host + ":10002/devstoreaccount1");
 
-                URI blobSecondaryEndpoint =
-                        new URI(String.format(Constants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT,
-                                scheme,
-                                host,
-                                "10000"));
-                URI queueSecondaryEndpoint =
-                        new URI(String.format(Constants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT,
-                                scheme,
-                                host,
-                                "10001"));
-                URI tableSecondaryEndpoint =
-                        new URI(String.format(Constants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT,
-                                scheme,
-                                host,
-                                "10002"));
+                URI blobSecondaryEndpoint = new URI(scheme + "://" + host + ":10000/devstoreaccount1-secondary");
+                URI queueSecondaryEndpoint = new URI(scheme + "://" + host + ":10001/devstoreaccount1-secondary");
+                URI tableSecondaryEndpoint = new URI(scheme + "://" + host + ":10002/devstoreaccount1-secondary");
 
                 storageConnectionString = new StorageConnectionString(StorageAuthenticationSettings.forEmulator(),
                         new StorageEndpoint(blobPrimaryEndpoint, blobSecondaryEndpoint),

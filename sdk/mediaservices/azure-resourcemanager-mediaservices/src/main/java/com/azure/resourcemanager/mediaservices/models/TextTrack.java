@@ -18,15 +18,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class TextTrack extends TrackBase {
     /*
-     * The file name to the source file. This file is located in the storage
-     * container of the asset.
+     * The file name to the source file. This file is located in the storage container of the asset.
      */
     @JsonProperty(value = "fileName")
     private String fileName;
 
     /*
-     * The display name of the text track on a video player. In HLS, this maps
-     * to the NAME attribute of EXT-X-MEDIA.
+     * The display name of the text track on a video player. In HLS, this maps to the NAME attribute of EXT-X-MEDIA.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
@@ -38,10 +36,9 @@ public final class TextTrack extends TrackBase {
     private String languageCode;
 
     /*
-     * When PlayerVisibility is set to "Visible", the text track will be
-     * present in the DASH manifest or HLS playlist when requested by a client.
-     * When the PlayerVisibility is set to "Hidden", the text will not be
-     * available to the client. The default value is "Visible".
+     * When PlayerVisibility is set to "Visible", the text track will be present in the DASH manifest or HLS playlist
+     * when requested by a client. When the PlayerVisibility is set to "Hidden", the text will not be available to the
+     * client. The default value is "Visible".
      */
     @JsonProperty(value = "playerVisibility")
     private Visibility playerVisibility;

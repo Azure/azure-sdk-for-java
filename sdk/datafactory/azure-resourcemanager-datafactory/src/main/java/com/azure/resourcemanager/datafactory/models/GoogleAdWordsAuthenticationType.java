@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GoogleAdWordsAuthenticationType. */
+/**
+ * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on self-hosted
+ * IR.
+ */
 public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<GoogleAdWordsAuthenticationType> {
     /** Static value ServiceAuthentication for GoogleAdWordsAuthenticationType. */
     public static final GoogleAdWordsAuthenticationType SERVICE_AUTHENTICATION = fromString("ServiceAuthentication");

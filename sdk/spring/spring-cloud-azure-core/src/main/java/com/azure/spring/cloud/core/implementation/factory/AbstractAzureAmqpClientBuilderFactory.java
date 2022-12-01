@@ -82,7 +82,9 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         final ClientOptionsProvider.AmqpClientOptions amqpClient;
         if (client instanceof ClientOptionsProvider.AmqpClientOptions) {
             amqpClient = (ClientOptionsProvider.AmqpClientOptions) client;
-            consumeAmqpTransportType().accept(builder, amqpClient.getTransportType());
+            if (amqpClient.getTransportType() != null) {
+                consumeAmqpTransportType().accept(builder, amqpClient.getTransportType());
+            }
         }
     }
 

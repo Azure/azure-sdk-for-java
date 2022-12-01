@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeAutoUpdate. */
+/** The state of integration runtime auto update. */
 public final class IntegrationRuntimeAutoUpdate extends ExpandableStringEnum<IntegrationRuntimeAutoUpdate> {
     /** Static value On for IntegrationRuntimeAutoUpdate. */
     public static final IntegrationRuntimeAutoUpdate ON = fromString("On");

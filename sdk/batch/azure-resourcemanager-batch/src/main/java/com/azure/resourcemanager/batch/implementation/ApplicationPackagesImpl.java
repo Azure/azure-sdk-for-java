@@ -28,21 +28,6 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
         this.serviceManager = serviceManager;
     }
 
-    public ApplicationPackage activate(
-        String resourceGroupName,
-        String accountName,
-        String applicationName,
-        String versionName,
-        ActivateApplicationPackageParameters parameters) {
-        ApplicationPackageInner inner =
-            this.serviceClient().activate(resourceGroupName, accountName, applicationName, versionName, parameters);
-        if (inner != null) {
-            return new ApplicationPackageImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationPackage> activateWithResponse(
         String resourceGroupName,
         String accountName,
@@ -66,8 +51,19 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String applicationName, String versionName) {
-        this.serviceClient().delete(resourceGroupName, accountName, applicationName, versionName);
+    public ApplicationPackage activate(
+        String resourceGroupName,
+        String accountName,
+        String applicationName,
+        String versionName,
+        ActivateApplicationPackageParameters parameters) {
+        ApplicationPackageInner inner =
+            this.serviceClient().activate(resourceGroupName, accountName, applicationName, versionName, parameters);
+        if (inner != null) {
+            return new ApplicationPackageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -77,15 +73,8 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
             .deleteWithResponse(resourceGroupName, accountName, applicationName, versionName, context);
     }
 
-    public ApplicationPackage get(
-        String resourceGroupName, String accountName, String applicationName, String versionName) {
-        ApplicationPackageInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, applicationName, versionName);
-        if (inner != null) {
-            return new ApplicationPackageImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String accountName, String applicationName, String versionName) {
+        this.serviceClient().delete(resourceGroupName, accountName, applicationName, versionName);
     }
 
     public Response<ApplicationPackage> getWithResponse(
@@ -98,6 +87,17 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationPackageImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationPackage get(
+        String resourceGroupName, String accountName, String applicationName, String versionName) {
+        ApplicationPackageInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, applicationName, versionName);
+        if (inner != null) {
+            return new ApplicationPackageImpl(inner, this.manager());
         } else {
             return null;
         }

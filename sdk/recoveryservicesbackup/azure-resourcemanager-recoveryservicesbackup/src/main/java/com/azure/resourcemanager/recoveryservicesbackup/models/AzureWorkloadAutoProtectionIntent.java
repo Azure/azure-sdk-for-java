@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class AzureWorkloadAutoProtectionIntent extends AzureRecoveryServiceVaultProtectionIntent {
+    /** Creates an instance of AzureWorkloadAutoProtectionIntent class. */
+    public AzureWorkloadAutoProtectionIntent() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadAutoProtectionIntent withBackupManagementType(BackupManagementType backupManagementType) {

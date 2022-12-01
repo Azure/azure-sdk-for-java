@@ -3,8 +3,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -26,6 +30,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -40,20 +45,27 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Utility method class.
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+
+    private static final String DEFAULT_SCOPE = "/.default";
+
     static {
         Map<String, String> properties = CoreUtils.getProperties(Constants.FORM_RECOGNIZER_PROPERTIES);
         CLIENT_NAME = properties.getOrDefault(Constants.NAME, "UnknownName");
         CLIENT_VERSION = properties.getOrDefault(Constants.VERSION, "UnknownVersion");
     }
-    static final String DEFAULT_SCOPE = "/.default";
 
     private Utility() {
     }
@@ -90,7 +102,7 @@ public final class Utility {
         // Authentications
         if (tokenCredential != null) {
             if (audience == null) {
-                audience = DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
             }
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 audience + DEFAULT_SCOPE));
@@ -144,9 +156,9 @@ public final class Utility {
     /*
      * Poller's ACTIVATION operation that takes URL as input.
      */
-    public static Function<PollingContext<DocumentOperationResult>, Mono<DocumentOperationResult>>
+    public static Function<PollingContext<OperationResult>, Mono<OperationResult>>
         activationOperation(
-        Supplier<Mono<DocumentOperationResult>> activationOperation,
+        Supplier<Mono<OperationResult>> activationOperation,
         ClientLogger logger) {
         return pollingContext -> {
             try {
@@ -163,5 +175,37 @@ public final class Utility {
      */
     public static String generateRandomModelID() {
         return UUID.randomUUID().toString();
+    }
+    public static Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    }
+
+    public static Context getTracingContext(Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+        return context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+    }
+
+    public static BuildDocumentModelOptions getBuildDocumentModelOptions(
+        BuildDocumentModelOptions buildDocumentModelOptions) {
+        buildDocumentModelOptions =  buildDocumentModelOptions == null
+            ? new BuildDocumentModelOptions() : buildDocumentModelOptions;
+        return buildDocumentModelOptions;
+    }
+
+    public static CopyAuthorizationOptions getCopyAuthorizationOptions(
+        CopyAuthorizationOptions copyAuthorizationOptions) {
+        copyAuthorizationOptions = copyAuthorizationOptions == null
+            ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
+        return copyAuthorizationOptions;
+    }
+
+    public static ComposeDocumentModelOptions getComposeModelOptions(ComposeDocumentModelOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new ComposeDocumentModelOptions() : userProvidedOptions;
+    }
+
+    public static AnalyzeDocumentOptions getAnalyzeDocumentOptions(AnalyzeDocumentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new AnalyzeDocumentOptions() : userProvidedOptions;
     }
 }

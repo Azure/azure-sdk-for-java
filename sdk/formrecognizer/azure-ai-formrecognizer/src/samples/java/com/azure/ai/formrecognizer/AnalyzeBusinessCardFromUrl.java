@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -36,7 +36,7 @@ public class AnalyzeBusinessCardFromUrl {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
                 + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeBusinessCardPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeBusinessCardPoller =
             client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", businessCardUrl);
 
         AnalyzeResult businessCardPageResults = analyzeBusinessCardPoller.getFinalResult();

@@ -73,7 +73,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineScaleSetVMsService {
+    public interface VirtualMachineScaleSetVMsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -393,7 +393,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         if (vmScaleSetVMReimageInput != null) {
             vmScaleSetVMReimageInput.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -457,7 +457,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         if (vmScaleSetVMReimageInput != null) {
             vmScaleSetVMReimageInput.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -505,6 +505,29 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginReimageAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,7 +556,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -541,10 +563,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
+        String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = null;
         return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput)
             .getSyncPoller();
     }
@@ -646,26 +666,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
-        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput).block();
-    }
-
-    /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -735,7 +735,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -791,7 +791,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1000,7 +1000,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1056,7 +1056,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1271,7 +1271,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1338,7 +1338,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1579,7 +1579,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1637,7 +1637,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1683,6 +1683,29 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final Boolean forceDeletion = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, forceDeletion);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a virtual machine from a VM scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
      *     Preview).
      * @param context The context to associate with this operation.
@@ -1708,8 +1731,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
-     *     Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1717,7 +1738,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion) {
+        String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final Boolean forceDeletion = null;
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, forceDeletion).getSyncPoller();
     }
 
@@ -1809,23 +1831,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
-     *     Preview).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion) {
-        deleteAsync(resourceGroupName, vmScaleSetName, instanceId, forceDeletion).block();
-    }
-
-    /**
-     * Deletes a virtual machine from a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1894,7 +1899,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1953,7 +1958,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1967,26 +1972,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                 this.client.getSubscriptionId(),
                 accept,
                 context);
-    }
-
-    /**
-     * Gets a virtual machine from a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
-     *     the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetVMInner> getAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, InstanceViewTypes expand) {
-        return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2014,23 +1999,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMInner get(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        final InstanceViewTypes expand = null;
-        return getAsync(resourceGroupName, vmScaleSetName, instanceId, expand).block();
-    }
-
-    /**
-     * Gets a virtual machine from a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
      *     the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2043,6 +2011,23 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     public Response<VirtualMachineScaleSetVMInner> getWithResponse(
         String resourceGroupName, String vmScaleSetName, String instanceId, InstanceViewTypes expand, Context context) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, expand, context).block();
+    }
+
+    /**
+     * Gets a virtual machine from a VM scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine from a VM scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineScaleSetVMInner get(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final InstanceViewTypes expand = null;
+        return getWithResponse(resourceGroupName, vmScaleSetName, instanceId, expand, Context.NONE).getValue();
     }
 
     /**
@@ -2082,7 +2067,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2138,7 +2123,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2177,23 +2162,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a virtual machine from a VM scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMInstanceViewInner getInstanceView(
-        String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return getInstanceViewAsync(resourceGroupName, vmScaleSetName, instanceId).block();
-    }
-
-    /**
-     * Gets the status of a virtual machine from a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2204,6 +2172,23 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     public Response<VirtualMachineScaleSetVMInstanceViewInner> getInstanceViewWithResponse(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return getInstanceViewWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, context).block();
+    }
+
+    /**
+     * Gets the status of a virtual machine from a VM scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of a virtual machine from a VM scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineScaleSetVMInstanceViewInner getInstanceView(
+        String resourceGroupName, String vmScaleSetName, String instanceId) {
+        return getInstanceViewWithResponse(resourceGroupName, vmScaleSetName, instanceId, Context.NONE).getValue();
     }
 
     /**
@@ -2246,7 +2231,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2321,7 +2306,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2504,7 +2489,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2564,7 +2549,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2613,6 +2598,30 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final Boolean skipShutdown = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            powerOffWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
      *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
      *     specified.
@@ -2640,9 +2649,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
-     *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2650,7 +2656,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown) {
+        String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final Boolean skipShutdown = null;
         return beginPowerOffAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown).getSyncPoller();
     }
 
@@ -2750,25 +2757,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
-     *     specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void powerOff(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown) {
-        powerOffAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown).block();
-    }
-
-    /**
-     * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2836,7 +2824,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2891,7 +2879,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3090,7 +3078,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3145,7 +3133,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3343,7 +3331,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3398,7 +3386,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3602,7 +3590,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3666,7 +3654,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3688,28 +3676,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
-     *     1440 minutes. &lt;br&gt;&lt;br&gt;NOTE: If not specified, SAS URIs will be generated with a default
-     *     expiration duration of 120 minutes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Integer sasUriExpirationTimeInMinutes) {
-        return retrieveBootDiagnosticsDataWithResponseAsync(
-                resourceGroupName, vmScaleSetName, instanceId, sasUriExpirationTimeInMinutes)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3722,26 +3688,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         return retrieveBootDiagnosticsDataWithResponseAsync(
                 resourceGroupName, vmScaleSetName, instanceId, sasUriExpirationTimeInMinutes)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RetrieveBootDiagnosticsDataResultInner retrieveBootDiagnosticsData(
-        String resourceGroupName, String vmScaleSetName, String instanceId) {
-        final Integer sasUriExpirationTimeInMinutes = null;
-        return retrieveBootDiagnosticsDataAsync(
-                resourceGroupName, vmScaleSetName, instanceId, sasUriExpirationTimeInMinutes)
-            .block();
     }
 
     /**
@@ -3769,6 +3715,26 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         return retrieveBootDiagnosticsDataWithResponseAsync(
                 resourceGroupName, vmScaleSetName, instanceId, sasUriExpirationTimeInMinutes, context)
             .block();
+    }
+
+    /**
+     * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAS URIs of the console screenshot and serial log blobs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RetrieveBootDiagnosticsDataResultInner retrieveBootDiagnosticsData(
+        String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final Integer sasUriExpirationTimeInMinutes = null;
+        return retrieveBootDiagnosticsDataWithResponse(
+                resourceGroupName, vmScaleSetName, instanceId, sasUriExpirationTimeInMinutes, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3807,7 +3773,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3862,7 +3828,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4063,7 +4029,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4118,7 +4084,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4156,21 +4122,6 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void simulateEviction(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        simulateEvictionAsync(resourceGroupName, vmScaleSetName, instanceId).block();
-    }
-
-    /**
-     * The operation to simulate the eviction of spot virtual machine in a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -4181,6 +4132,21 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     public Response<Void> simulateEvictionWithResponse(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return simulateEvictionWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, context).block();
+    }
+
+    /**
+     * The operation to simulate the eviction of spot virtual machine in a VM scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void simulateEviction(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        simulateEvictionWithResponse(resourceGroupName, vmScaleSetName, instanceId, Context.NONE);
     }
 
     /**
@@ -4225,7 +4191,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -4291,7 +4257,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service

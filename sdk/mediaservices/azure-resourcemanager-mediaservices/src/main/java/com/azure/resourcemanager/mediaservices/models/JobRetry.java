@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobRetry. */
+/**
+ * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via Azure
+ * Portal.
+ */
 public final class JobRetry extends ExpandableStringEnum<JobRetry> {
     /** Static value DoNotRetry for JobRetry. */
     public static final JobRetry DO_NOT_RETRY = fromString("DoNotRetry");

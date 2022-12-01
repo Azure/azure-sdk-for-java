@@ -219,14 +219,12 @@ public final class ConfigurationClientBuilder implements
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
             : ConfigurationServiceVersion.getLatest();
-
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-
-        ConfigurationClientImpl client =
-            new ConfigurationClientImpl(pipeline, SERIALIZER_ADAPTER, endpoint, serviceVersion.getVersion());
-        return client;
+        // Don't share the default auto-created pipeline between App Configuration client instances.
+        return new ConfigurationClientImpl(
+            pipeline == null ? createHttpPipeline() : pipeline,
+            SERIALIZER_ADAPTER,
+            endpoint,
+            serviceVersion.getVersion());
     }
 
     private HttpPipeline createHttpPipeline() {

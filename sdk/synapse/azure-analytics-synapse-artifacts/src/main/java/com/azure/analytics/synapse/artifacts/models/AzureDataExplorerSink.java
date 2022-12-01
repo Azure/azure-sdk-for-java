@@ -15,22 +15,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureDataExplorerSink extends CopySink {
     /*
-     * A name of a pre-created csv mapping that was defined on the target Kusto
-     * table. Type: string.
+     * A name of a pre-created csv mapping that was defined on the target Kusto table. Type: string.
      */
     @JsonProperty(value = "ingestionMappingName")
     private Object ingestionMappingName;
 
     /*
-     * An explicit column mapping description provided in a json format. Type:
-     * string.
+     * An explicit column mapping description provided in a json format. Type: string.
      */
     @JsonProperty(value = "ingestionMappingAsJson")
     private Object ingestionMappingAsJson;
 
     /*
-     * If set to true, any aggregation will be skipped. Default is false. Type:
-     * boolean.
+     * If set to true, any aggregation will be skipped. Default is false. Type: boolean.
      */
     @JsonProperty(value = "flushImmediately")
     private Object flushImmediately;

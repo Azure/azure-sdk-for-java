@@ -16,6 +16,12 @@ public final class LinkConnectionTargetDatabase {
     @JsonProperty(value = "linkedService")
     private LinkedServiceReference linkedService;
 
+    /*
+     * Target database type properties
+     */
+    @JsonProperty(value = "typeProperties")
+    private LinkConnectionTargetDatabaseTypeProperties typeProperties;
+
     /**
      * Get the linkedService property: Linked service reference.
      *
@@ -33,6 +39,26 @@ public final class LinkConnectionTargetDatabase {
      */
     public LinkConnectionTargetDatabase setLinkedService(LinkedServiceReference linkedService) {
         this.linkedService = linkedService;
+        return this;
+    }
+
+    /**
+     * Get the typeProperties property: Target database type properties.
+     *
+     * @return the typeProperties value.
+     */
+    public LinkConnectionTargetDatabaseTypeProperties getTypeProperties() {
+        return this.typeProperties;
+    }
+
+    /**
+     * Set the typeProperties property: Target database type properties.
+     *
+     * @param typeProperties the typeProperties value to set.
+     * @return the LinkConnectionTargetDatabase object itself.
+     */
+    public LinkConnectionTargetDatabase setTypeProperties(LinkConnectionTargetDatabaseTypeProperties typeProperties) {
+        this.typeProperties = typeProperties;
         return this;
     }
 }

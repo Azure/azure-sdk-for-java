@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -43,8 +43,8 @@ public class AnalyzeBusinessCard {
         Path filePath = sourceFile.toPath();
         BinaryData businessCardData = BinaryData.fromFile(filePath);
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeBusinessCardPoller =
-            client.beginAnalyzeDocument("prebuilt-businessCard", businessCardData, sourceFile.length());
+        SyncPoller<OperationResult, AnalyzeResult> analyzeBusinessCardPoller =
+            client.beginAnalyzeDocument("prebuilt-businessCard", businessCardData);
 
         AnalyzeResult businessCardPageResults = analyzeBusinessCardPoller.getFinalResult();
 

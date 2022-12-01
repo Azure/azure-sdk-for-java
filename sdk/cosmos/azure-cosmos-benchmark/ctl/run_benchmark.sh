@@ -70,7 +70,7 @@ else
 fi
 
 if [ -z "$ctl_client_telemetry_endpoint" ]; then
-    client_telemetry_endpoint=https://tools.cosmos.azure.com/api/clienttelemetry/trace
+    client_telemetry_endpoint=https://juno-test.documents-dev.windows-int.net/api/clienttelemetry/trace
 else
     client_telemetry_enabled=$ctl_client_telemetry_endpoint
 fi

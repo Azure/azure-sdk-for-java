@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ChownMode. */
+/**
+ * This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can change
+ * the ownership of the file. unrestricted - Non-root users can change ownership of files that they own.
+ */
 public final class ChownMode extends ExpandableStringEnum<ChownMode> {
     /** Static value Restricted for ChownMode. */
     public static final ChownMode RESTRICTED = fromString("Restricted");

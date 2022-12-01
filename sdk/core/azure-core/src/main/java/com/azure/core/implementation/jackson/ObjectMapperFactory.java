@@ -13,14 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 
 /**
  * Constructs and configures {@link ObjectMapper} instances.
@@ -29,47 +22,7 @@ final class ObjectMapperFactory {
     // ObjectMapperFactory is a commonly used factory, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperFactory.class);
 
-    private static final String MUTABLE_COERCION_CONFIG = "com.fasterxml.jackson.databind.cfg.MutableCoercionConfig";
-    private static final String COERCION_INPUT_SHAPE = "com.fasterxml.jackson.databind.cfg.CoercionInputShape";
-    private static final String COERCION_ACTION = "com.fasterxml.jackson.databind.cfg.CoercionAction";
-
-    private MethodHandle coercionConfigDefaults;
-    private MethodHandle setCoercion;
-    private Object coercionInputShapeEmptyString;
-    private Object coercionActionAsNull;
-    private boolean useReflectionToSetCoercion;
-
     public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
-
-    private ObjectMapperFactory() {
-        MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-
-        try {
-            Class<?> mutableCoercionConfig = Class.forName(MUTABLE_COERCION_CONFIG);
-            Class<?> coercionInputShapeClass = Class.forName(COERCION_INPUT_SHAPE);
-            Class<?> coercionActionClass = Class.forName(COERCION_ACTION);
-
-            coercionConfigDefaults = publicLookup.findVirtual(ObjectMapper.class, "coercionConfigDefaults",
-                MethodType.methodType(mutableCoercionConfig));
-            setCoercion = publicLookup.findVirtual(mutableCoercionConfig, "setCoercion",
-                MethodType.methodType(mutableCoercionConfig, coercionInputShapeClass, coercionActionClass));
-            coercionInputShapeEmptyString = publicLookup.findStaticGetter(coercionInputShapeClass, "EmptyString",
-                coercionInputShapeClass).invoke();
-            coercionActionAsNull = publicLookup.findStaticGetter(coercionActionClass, "AsNull", coercionActionClass)
-                .invoke();
-            useReflectionToSetCoercion = true;
-        } catch (Throwable ex) {
-            // Throw the Error only if it isn't a LinkageError.
-            // This initialization is attempting to use classes that may not exist.
-            if (ex instanceof Error && !(ex instanceof LinkageError)) {
-                throw (Error) ex;
-            }
-
-            LOGGER.verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
-                + "Setting coercion configurations will be skipped. "
-                + "Please update your Jackson dependencies to at least version 2.12", ex);
-        }
-    }
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
         ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
@@ -87,32 +40,7 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createXmlMapper() {
-        ObjectMapper xmlMapper = initializeMapperBuilder(XmlMapper.builder())
-            .defaultUseWrapper(false)
-            .enable(ToXmlGenerator.Feature.WRITE_XML_DECLARATION)
-            /*
-             * In Jackson 2.12 the default value of this feature changed from true to false.
-             * https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12#xml-module
-             */
-            .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
-            .build();
-
-        if (useReflectionToSetCoercion) {
-            try {
-                Object object = coercionConfigDefaults.invoke(xmlMapper);
-                setCoercion.invoke(object, coercionInputShapeEmptyString, coercionActionAsNull);
-            } catch (Throwable e) {
-                if (e instanceof Error) {
-                    throw (Error) e;
-                }
-
-                LOGGER.verbose("Failed to set coercion actions.", e);
-            }
-        } else {
-            LOGGER.verbose("Didn't set coercion defaults as it wasn't found on the classpath.");
-        }
-
-        return xmlMapper;
+        return XmlMapperFactory.INSTANCE.createXmlMapper();
     }
 
     public ObjectMapper createSimpleMapper() {
@@ -134,7 +62,7 @@ final class ObjectMapperFactory {
     }
 
     @SuppressWarnings("deprecation")
-    private <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
+    static <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
         mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -143,6 +71,8 @@ final class ObjectMapperFactory {
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
             .addModule(new JavaTimeModule())
+            .addModule(BinaryDataSerializer.getModule())
+            .addModule(BinaryDataDeserializer.getModule())
             .addModule(ByteArraySerializer.getModule())
             .addModule(Base64UrlSerializer.getModule())
             .addModule(DateTimeSerializer.getModule())

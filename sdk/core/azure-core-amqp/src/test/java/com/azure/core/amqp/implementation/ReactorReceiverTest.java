@@ -14,6 +14,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.test.utils.metrics.TestGauge;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.Context;
@@ -45,7 +46,6 @@ import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -766,13 +766,13 @@ class ReactorReceiverTest {
         // Arrange
         // This message was copied from one that was received.
         final byte[] messageBytes = new byte[] { 0, 83, 114, -63, 73, 6, -93, 21, 120, 45, 111, 112, 116, 45, 115, 101,
-            113, 117, 101, 110, 99, 101, 45, 110, 117, 109, 98, 101, 114, 85, 0, -93, 12, 120, 45, 111, 112, 116, 45,
+            113, 117, 101, 110, 99, 101, 45, 110, 117, 109, 98, 101, 114, 84, 42, -93, 12, 120, 45, 111, 112, 116, 45,
             111, 102, 102, 115, 101, 116, -95, 1, 48, -93, 19, 120, 45, 111, 112, 116, 45, 101, 110, 113, 117, 101, 117,
             101, 100, 45, 116, 105, 109, 101, -125, 0, 0, 1, 112, -54, 124, -41, 90, 0, 83, 117, -96, 12, 80, 111, 115,
             105, 116, 105, 111, 110, 53, 58, 32, 48};
 
         // change if changing message above
-        long messageEnqueuedTime = 1583945144154L;
+        long sequenceNumber = 42;
 
         final Link link = mock(Link.class);
         final Delivery delivery = mock(Delivery.class);
@@ -807,6 +807,9 @@ class ReactorReceiverTest {
         ReactorReceiver reactorReceiverWithMetrics = new ReactorReceiver(amqpConnection, "name/and/partition", receiver, receiverHandler, tokenManager,
             reactorDispatcher, retryOptions, metricsProvider);
 
+        TestGauge sequenceNumberMetric = meter.getGauges().get("messaging.az.amqp.prefetch.sequence_number");
+        TestGauge.Subscription subscription = sequenceNumberMetric.getSubscriptions().get(0);
+
         reactorReceiverWithMetrics.setEmptyCreditListener(creditSupplier);
 
         doAnswer(invocationOnMock -> {
@@ -822,10 +825,11 @@ class ReactorReceiverTest {
             .verify(VERIFY_TIMEOUT);
 
         // Assert
-        List<TestMeasurement<Double>> receivedLag = meter.getHistograms().get("messaging.az.amqp.consumer.lag").getMeasurements();
-        assertEquals(1, receivedLag.size());
-        TestMeasurement<Double> measurement = receivedLag.get(0);
-        assertEquals((Instant.now().toEpochMilli() - messageEnqueuedTime) / 1000d, measurement.getValue(), 100);
+        subscription.measure();
+        List<TestMeasurement<Long>> seqNumbers = subscription.getMeasurements();
+        assertEquals(1, seqNumbers.size());
+        TestMeasurement<Long> measurement = seqNumbers.get(0);
+        assertEquals(sequenceNumber, measurement.getValue());
         assertEquals(Context.NONE, measurement.getContext());
         assertEquals("namespace", measurement.getAttributes().get(ClientConstants.HOSTNAME_KEY));
         assertEquals("name", measurement.getAttributes().get(ClientConstants.ENTITY_NAME_KEY));

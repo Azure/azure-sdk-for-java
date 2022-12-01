@@ -1,6 +1,6 @@
 # Release History
 
-## 12.20.0-beta.2 (Unreleased)
+## 12.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,42 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.20.1 (2022-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+- Upgraded `azure-storage-common` from `12.19.0` to version `12.19.1`.
+- Upgraded `azure-storage-internal-avro` from `12.5.0` to version `12.5.1`.
+
+## 12.20.0 (2022-10-11)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+- Added ability to rename existing containers with `BlobContainerClient.rename()`.
+- Added new overload for `BlobClient.upload()` that takes in `InputStream` without specifying length.
+
+### Breaking Changes
+- `BlobItem.isPrefix()` now returns false if it is not a virtual directory instead of null.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-storage-common` from `12.18.1` to version `12.19.0`.
+- Upgraded `azure-storage-internal-avro` from `12.4.2` to version `12.5.0`.
+
+## 12.19.1 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-storage-common` from `12.18.0` to version `12.18.1`.
+- Upgraded `azure-storage-internal-avro` from `12.4.1` to version `12.4.2`.
 
 ## 12.20.0-beta.1 (2022-09-06)
 
@@ -488,7 +524,7 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Authentication using `azure-identity` credentials.
 
 ## 11.1.1 (2019.04.30)
-- Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unkown host errors.
+- Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unknown host errors.
 
 ## 11.0.0 (2019.03.22)
 - Upgraded to version 2.1.0 of the autorest-clientruntime which includes several important fixes to mitigate a commonly-seen "Connection reset by peer" error and other similar bugs.

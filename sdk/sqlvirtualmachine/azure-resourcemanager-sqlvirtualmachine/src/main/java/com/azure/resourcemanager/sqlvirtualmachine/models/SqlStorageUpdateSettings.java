@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set disk storage settings for SQL Server. */
 @Fluent
 public final class SqlStorageUpdateSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlStorageUpdateSettings.class);
-
     /*
      * Virtual machine disk count.
      */

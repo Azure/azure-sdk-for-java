@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class AzureTableDataset extends Dataset {
     /*
-     * The table name of the Azure Table storage. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Azure Table storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName", required = true)
     private Object tableName;

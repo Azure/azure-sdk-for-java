@@ -11,10 +11,10 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServerFactory;
-import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServer;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.RequestResponseType;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.SslContextUtils;
+import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServer;
+import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServerFactory;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.ssl.SslContext;
 import org.mockito.Mockito;
@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConnectionStateListenerTest {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
@@ -42,13 +43,13 @@ public class ConnectionStateListenerTest {
     @DataProvider(name = "connectionStateListenerConfigProvider")
     public Object[][] connectionStateListenerConfigProvider() {
         return new Object[][]{
-            // isTcpConnectionEndpointRediscoveryEnabled, serverResponseType, updateAddresses() called times on request, updateAddresses() called times when server shutdown
-            {true, RequestResponseType.CHANNEL_FIN, 1, 0},
-            {false, RequestResponseType.CHANNEL_FIN, 0, 0},
-            {true, RequestResponseType.CHANNEL_RST, 0, 0},
-            {false, RequestResponseType.CHANNEL_RST, 0, 0},
-            {true, RequestResponseType.NONE, 0, 1}, // the request will be timed out, but the connection will be active. When tcp server shutdown, the connection will be closed gracefully
-            {false, RequestResponseType.NONE, 0, 0},
+            // isTcpConnectionEndpointRediscoveryEnabled, serverResponseType, replicaStatusUpdated, replicaStatusUpdated when server shutdown
+            {true, RequestResponseType.CHANNEL_FIN, true, false},
+            {false, RequestResponseType.CHANNEL_FIN, false, false},
+            {true, RequestResponseType.CHANNEL_RST, false, false},
+            {false, RequestResponseType.CHANNEL_RST, false, false},
+            {true, RequestResponseType.NONE, false, true}, // the request will be timed out, but the connection will be active. When tcp server shutdown, the connection will be closed gracefully
+            {false, RequestResponseType.NONE, false, false},
         };
     }
 
@@ -56,8 +57,8 @@ public class ConnectionStateListenerTest {
     public void connectionStateListener_OnConnectionEvent(
         boolean isTcpConnectionEndpointRediscoveryEnabled,
         RequestResponseType responseType,
-        int timesOnRequest,
-        int timesOnServerShutdown) throws ExecutionException, InterruptedException {
+        boolean markUnhealthy,
+        boolean markUnhealthyWhenServerShutdown) throws ExecutionException, InterruptedException {
 
         // using a random generated server port
         int serverPort = port + randomPort.getAndIncrement();
@@ -96,12 +97,21 @@ public class ConnectionStateListenerTest {
             logger.info("expected failed request with reason {}", e);
         }
 
-        Mockito.verify(addressResolver, Mockito.times(timesOnRequest)).updateAddresses(Mockito.any());
+        if (markUnhealthy) {
+            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+            TcpServerFactory.shutdownRntbdServer(server);
+            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
 
-        Mockito.clearInvocations(addressResolver);
+        } else {
+            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
 
-        TcpServerFactory.shutdownRntbdServer(server);
-        Mockito.verify(addressResolver, Mockito.times(timesOnServerShutdown)).updateAddresses(Mockito.any());
+            TcpServerFactory.shutdownRntbdServer(server);
+            if (markUnhealthyWhenServerShutdown) {
+                assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+            } else {
+                assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+            }
+        }
     }
 
     private Document getDocumentDefinition() {

@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for AccountFilters CreateOrUpdate. */
 public final class AccountFiltersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accountFilters-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-create.json
      */
     /**
      * Sample code: Create an Account Filter.

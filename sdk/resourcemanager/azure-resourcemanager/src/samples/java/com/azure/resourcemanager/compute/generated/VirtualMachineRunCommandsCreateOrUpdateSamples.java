@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineRunCommands CreateOrUpdate. */
 public final class VirtualMachineRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a run command.
@@ -40,7 +40,7 @@ public final class VirtualMachineRunCommandsCreateOrUpdateSamples {
                                 new RunCommandInputParameter().withName("param2").withValue("value2")))
                     .withAsyncExecution(false)
                     .withRunAsUser("user1")
-                    .withRunAsPassword("<runAsPassword>")
+                    .withRunAsPassword("fakeTokenPlaceholder")
                     .withTimeoutInSeconds(3600),
                 Context.NONE);
     }

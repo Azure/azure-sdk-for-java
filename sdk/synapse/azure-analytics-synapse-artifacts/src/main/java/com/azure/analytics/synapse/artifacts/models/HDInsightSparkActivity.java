@@ -19,15 +19,15 @@ import java.util.Map;
 @Fluent
 public class HDInsightSparkActivity extends ExecutionActivity {
     /*
-     * The root path in 'sparkJobLinkedService' for all the job’s files. Type:
-     * string (or Expression with resultType string).
+     * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.rootPath", required = true)
     private Object rootPath;
 
     /*
-     * The relative path to the root folder of the code/package to be executed.
-     * Type: string (or Expression with resultType string).
+     * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.entryFilePath", required = true)
     private Object entryFilePath;
@@ -45,8 +45,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
-     * The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
+     * The storage linked service for uploading the entry file and dependencies, and for receiving logs.
      */
     @JsonProperty(value = "typeProperties.sparkJobLinkedService")
     private LinkedServiceReference sparkJobLinkedService;
@@ -58,8 +57,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     private String className;
 
     /*
-     * The user to impersonate that will execute the job. Type: string (or
-     * Expression with resultType string).
+     * The user to impersonate that will execute the job. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.proxyUser")
     private Object proxyUser;

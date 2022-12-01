@@ -14,6 +14,10 @@ public final class PollingConstants {
      */
     public static final String LOCATION = "Location";
     /**
+     * The header used for location based polling or sending the final result URL.
+     */
+    public static final String LOCATION_LOWER_CASE = "location";
+    /**
      * The key for storing the request URL in the polling context.
      */
     public static final String REQUEST_URL = "requestURL";

@@ -5,15 +5,16 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * Sample to get/list all document model operations associated with the Form Recognizer resource.
  * Kinds of operations returned are "documentModelBuild", "documentModelCompose", and "documentModelCopyTo".
  * Note that operation information only persists for 24 hours.
- * If the operation was successful, the document model can be accessed using getModel() or listModels() APIs
+ * If the operation was successful, the document model can be accessed using getDocumentModel() or listDocumentModels() APIs
  */
 public class GetOperationSummary {
 
@@ -37,12 +38,13 @@ public class GetOperationSummary {
             System.out.printf("Operation percent completion status: %d%n", modelOperationSummary.getPercentCompleted());
 
             // get the specific operation info
-            DocumentModelOperationDetails modelOperationDetails =
+            OperationDetails modelOperationDetails =
                 client.getOperation(modelOperationSummary.getOperationId());
-            if (DocumentOperationStatus.FAILED.equals(modelOperationSummary.getStatus())) {
+            if (OperationStatus.FAILED.equals(modelOperationSummary.getStatus())) {
                 System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());
             } else {
-                System.out.printf("Model ID created with this operation: %s%n", modelOperationDetails.getResult().getModelId());
+                System.out.printf("Model ID created with this operation: %s%n",
+                    ((DocumentModelBuildOperationDetails) modelOperationDetails).getResult().getModelId());
             }
         });
 

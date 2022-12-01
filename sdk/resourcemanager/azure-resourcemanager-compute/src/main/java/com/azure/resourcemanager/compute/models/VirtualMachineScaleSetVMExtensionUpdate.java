@@ -29,6 +29,10 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionUpdateProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetVMExtensionUpdate class. */
+    public VirtualMachineScaleSetVMExtensionUpdate() {
+    }
+
     /**
      * Get the name property: The name of the extension.
      *
@@ -283,7 +287,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
     }
 
@@ -295,7 +299,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withProtectedSettingsFromKeyVault(
-        Object protectedSettingsFromKeyVault) {
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }

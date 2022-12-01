@@ -8,6 +8,7 @@ import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 
+import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,17 +39,19 @@ public class BlobFlatListSegment implements XmlSerializable<BlobFlatListSegment>
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("Blobs");
 
         if (blobItems != null) {
-            blobItems.forEach(xmlWriter::writeXml);
+            for (BlobItemInternal blobItem : blobItems) {
+                xmlWriter.writeXml(blobItem);
+            }
         }
 
         return xmlWriter.writeEndElement();
     }
 
-    public static BlobFlatListSegment fromXml(XmlReader xmlReader) {
+    public static BlobFlatListSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
         return xmlReader.readObject("Blobs", reader -> {
             BlobFlatListSegment deserialized = new BlobFlatListSegment();
 

@@ -36,7 +36,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
-    private final DocumentClientRetryPolicy feedRangeContinuationSplitRetryPolicy;
+    private final DocumentClientRetryPolicy feedRangeContinuationFeedRangeGoneRetryPolicy;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -58,7 +58,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
         if (isSplitHandlingDisabled) {
             // True for ChangeFeedProcessor - where all retry-logic is handled
-            this.feedRangeContinuationSplitRetryPolicy = null;
+            this.feedRangeContinuationFeedRangeGoneRetryPolicy = null;
             this.createRequestFunc = createRequestFunc;
         } else {
             DocumentClientRetryPolicy retryPolicyInstance = client.getResetSessionTokenRetryPolicy().getRequestPolicy();
@@ -77,7 +77,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 retryPolicyInstance,
                 requestOptionProperties);
 
-            this.feedRangeContinuationSplitRetryPolicy = new FeedRangeContinuationSplitRetryPolicy(
+            this.feedRangeContinuationFeedRangeGoneRetryPolicy = new FeedRangeContinuationFeedRangeGoneRetryPolicy(
                 client,
                 this.changeFeedState,
                 retryPolicyInstance,
@@ -86,7 +86,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 () -> this.getOperationContextText());
             this.createRequestFunc = () -> {
                 RxDocumentServiceRequest request = createRequestFunc.get();
-                this.feedRangeContinuationSplitRetryPolicy.onBeforeSendRequest(request);
+                this.feedRangeContinuationFeedRangeGoneRetryPolicy.onBeforeSendRequest(request);
                 return request;
             };
         }
@@ -95,7 +95,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     @Override
     public Mono<FeedResponse<T>> nextPage() {
 
-        if (this.feedRangeContinuationSplitRetryPolicy == null) {
+        if (this.feedRangeContinuationFeedRangeGoneRetryPolicy == null) {
             return this.nextPageInternal();
         }
 
@@ -116,7 +116,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         //               if not all continuations have been drained yet.
         return ObservableHelper.inlineIfPossible(
             this::nextPageInternal,
-            this.feedRangeContinuationSplitRetryPolicy);
+            this.feedRangeContinuationFeedRangeGoneRetryPolicy);
     }
 
     private Mono<FeedResponse<T>> nextPageInternal() {
@@ -131,7 +131,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
                            // not all continuations have been drained yet
                            // repeat with the next continuation
-                           this.reenableShouldFetchMoreForRetry();
+                           this.reEnableShouldFetchMoreForRetry();
                            return Mono.empty();
                        }
 
@@ -171,8 +171,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         return request;
     }
 
-    private static final class FeedRangeContinuationSplitRetryPolicy extends DocumentClientRetryPolicy {
-        private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeContinuationSplitRetryPolicy.class);
+    private static final class FeedRangeContinuationFeedRangeGoneRetryPolicy extends DocumentClientRetryPolicy {
+        private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeContinuationFeedRangeGoneRetryPolicy.class);
 
         private final ChangeFeedState state;
         private final RxDocumentClientImpl client;
@@ -182,7 +182,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         private final RetryContext retryContext;
         private final Supplier<String> operationContextTextProvider;
 
-        public FeedRangeContinuationSplitRetryPolicy(
+        public FeedRangeContinuationFeedRangeGoneRetryPolicy(
             RxDocumentClientImpl client,
             ChangeFeedState state,
             DocumentClientRetryPolicy nextRetryPolicy,
@@ -238,27 +238,27 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                                     this.state.getContainerRid(),
                                     this.state.getFeedRange(),
                                     effectiveRange)))
-                            .flatMap(state -> state.getContinuation().handleSplit(client, (GoneException)e));
+                            .flatMap(state -> state.getContinuation().handleFeedRangeGone(client, (GoneException)e));
                     }
 
                     return this
                         .state
                         .getContinuation()
-                        .handleSplit(client, (GoneException)e)
-                        .flatMap(splitShouldRetryResult -> {
-                            if (!splitShouldRetryResult.shouldRetry) {
+                        .handleFeedRangeGone(client, (GoneException)e)
+                        .flatMap(feedRangeGoneShouldRetryResult -> {
+                            if (!feedRangeGoneShouldRetryResult.shouldRetry) {
                                 LOGGER.warn(
-                                    "No partition split error - will fail the request. Context: {}",
+                                    "No partition split or merge error - will fail the request. Context: {}",
                                     this.operationContextTextProvider.get(),
                                     e);
                             } else {
                                 LOGGER.debug(
-                                    "HandleSplit will retry. Context: {}",
+                                    "HandleFeedRangeGone will retry. Context: {}",
                                     this.operationContextTextProvider.get(),
                                     e);
                             }
 
-                            return Mono.just(splitShouldRetryResult);
+                            return Mono.just(feedRangeGoneShouldRetryResult);
                         });
                 }
 

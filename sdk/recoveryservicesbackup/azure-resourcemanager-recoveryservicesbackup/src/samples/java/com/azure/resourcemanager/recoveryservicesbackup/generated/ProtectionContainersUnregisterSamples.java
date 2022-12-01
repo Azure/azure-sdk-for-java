@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProtectionContainers Unregister. */
 public final class ProtectionContainersUnregisterSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionContainers_Unregister.json
      */
     /**
      * Sample code: Unregister Protection Container.

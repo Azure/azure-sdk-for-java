@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataConnectorAuthorizationState. */
+/** Describes the state of user's authorization for a connector kind. */
 public final class DataConnectorAuthorizationState extends ExpandableStringEnum<DataConnectorAuthorizationState> {
     /** Static value Valid for DataConnectorAuthorizationState. */
     public static final DataConnectorAuthorizationState VALID = fromString("Valid");

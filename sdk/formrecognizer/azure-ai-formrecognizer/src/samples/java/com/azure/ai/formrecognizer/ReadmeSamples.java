@@ -6,22 +6,26 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -94,8 +98,8 @@ public class ReadmeSamples {
         Path filePath = layoutDocument.toPath();
         BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-            documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
+        SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
+            documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -143,7 +147,7 @@ public class ReadmeSamples {
         String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
             + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
             documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", receiptUrl);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
@@ -196,8 +200,8 @@ public class ReadmeSamples {
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                    Float quantity = documentField.getValueAsFloat();
+                                if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                    Double quantity = documentField.getValueAsDouble();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, documentField.getConfidence());
                                 }
@@ -215,14 +219,14 @@ public class ReadmeSamples {
     public void buildModel() {
         // BEGIN: readme-sample-buildModel
         // Build custom document analysis model
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         String prefix = "{blob_name_prefix}}";
-        SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
-            documentModelAdminClient.beginBuildModel(trainingFilesUrl,
+        SyncPoller<OperationResult, DocumentModelDetails> buildOperationPoller =
+            documentModelAdminClient.beginBuildDocumentModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 prefix,
-                new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"),
+                new BuildDocumentModelOptions().setModelId("my-build-model").setDescription("model desc"),
                 Context.NONE);
 
         DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
@@ -249,7 +253,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-analyzeCustomDocument
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
             documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -310,7 +314,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-analyzePrebuiltDocument
         String documentUrl = "{document-url}";
         String modelId = "prebuilt-document";
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
             documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -380,14 +384,14 @@ public class ReadmeSamples {
             resourceDetails.getCustomDocumentModelCount(), resourceDetails.getCustomDocumentModelLimit());
 
         // Next, we get a paged list of all of our models
-        PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();
+        PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listDocumentModels();
         System.out.println("We have following models in the account:");
         customDocumentModels.forEach(documentModelSummary -> {
             System.out.printf("Model ID: %s%n", documentModelSummary.getModelId());
             modelId.set(documentModelSummary.getModelId());
 
             // get custom document analysis model info
-            DocumentModelDetails documentModel = documentModelAdminClient.getModel(documentModelSummary.getModelId());
+            DocumentModelDetails documentModel = documentModelAdminClient.getDocumentModel(documentModelSummary.getModelId());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
@@ -401,7 +405,7 @@ public class ReadmeSamples {
         });
 
         // Delete Model
-        documentModelAdminClient.deleteModel(modelId.get());
+        documentModelAdminClient.deleteDocumentModel(modelId.get());
         // END: readme-sample-manageModels
     }
 
@@ -414,8 +418,28 @@ public class ReadmeSamples {
             documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", "invalidSourceUrl");
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
+            // Do something with the exception
         }
         // END: readme-sample-handlingException
+    }
+
+    /**
+     * Code snippet for handling exception
+     */
+    public void handlingExceptionAsync() {
+        DocumentModelAdministrationAsyncClient administrationAsyncClient = new DocumentModelAdministrationClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+
+        // BEGIN: readme-sample-async-handlingException
+        administrationAsyncClient.deleteDocumentModel("{modelId}")
+            .doOnSuccess(
+                ignored -> System.out.println("Success!"))
+            .doOnError(
+                error -> error instanceof ResourceNotFoundException,
+                error -> System.out.println("Exception: Delete could not be performed."));
+        // END: readme-sample-async-handlingException
     }
 
     /**
@@ -428,5 +452,19 @@ public class ReadmeSamples {
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: readme-sample-asyncClient
+    }
+
+    /**
+     * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
+     */
+    public void enableLoggingDocumentAnalysisClient() {
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+        // BEGIN: readme-sample-enablehttplogging
+        DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(defaultCredential)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+        // END: readme-sample-enablehttplogging
     }
 }

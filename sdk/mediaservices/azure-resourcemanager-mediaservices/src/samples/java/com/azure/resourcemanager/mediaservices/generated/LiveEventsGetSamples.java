@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LiveEvents Get. */
 public final class LiveEventsGetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveevent-list-by-name.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveevent-list-by-name.json
      */
     /**
      * Sample code: Get a LiveEvent by name.

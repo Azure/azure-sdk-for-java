@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CredentialReferenceType. */
+/** Credential reference type. */
 public final class CredentialReferenceType extends ExpandableStringEnum<CredentialReferenceType> {
     /** Static value CredentialReference for CredentialReferenceType. */
     public static final CredentialReferenceType CREDENTIAL_REFERENCE = fromString("CredentialReference");

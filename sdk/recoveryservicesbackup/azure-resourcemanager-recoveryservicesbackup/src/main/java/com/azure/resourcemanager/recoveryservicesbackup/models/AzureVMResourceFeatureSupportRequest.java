@@ -26,6 +26,10 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
     @JsonProperty(value = "vmSku")
     private String vmSku;
 
+    /** Creates an instance of AzureVMResourceFeatureSupportRequest class. */
+    public AzureVMResourceFeatureSupportRequest() {
+    }
+
     /**
      * Get the vmSize property: Size of the resource: VM size(A/D series etc) in case of IaasVM.
      *

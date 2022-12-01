@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureSearchIndexSink extends CopySink {
     /*
-     * Specify the write behavior when upserting documents into Azure Search
-     * Index.
+     * Specify the write behavior when upserting documents into Azure Search Index.
      */
     @JsonProperty(value = "writeBehavior")
     private AzureSearchIndexWriteBehaviorType writeBehavior;

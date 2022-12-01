@@ -23,13 +23,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -44,14 +47,19 @@ class RecognizeEntityAsyncClient {
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    RecognizeEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    RecognizeEntityAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    RecognizeEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service) {
+    RecognizeEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -97,7 +105,6 @@ class RecognizeEntityAsyncClient {
     Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
-            inputDocumentsValidation(documents);
             return withContext(context -> getRecognizedEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -116,7 +123,6 @@ class RecognizeEntityAsyncClient {
     Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
-            inputDocumentsValidation(documents);
             return getRecognizedEntitiesResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -135,6 +141,8 @@ class RecognizeEntityAsyncClient {
      */
     private Mono<Response<RecognizeEntitiesResultCollection>> getRecognizedEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
         final Context finalContext = getNotNullContext(context)
                                          .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
@@ -161,7 +169,7 @@ class RecognizeEntityAsyncClient {
                        .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                            response.getValue()))
                        .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
-                       .map(Utility::toRecognizeEntitiesResultCollection2)
+                       .map(Utility::toRecognizeEntitiesResultCollectionResponseLanguageApi)
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
@@ -177,7 +185,15 @@ class RecognizeEntityAsyncClient {
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
-            .map(Utility::toRecognizeEntitiesResultCollection)
+            .map(Utility::toRecognizeEntitiesResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+    }
+
+    private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
+        if (options != null && options.isServiceLogsDisabled()) {
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+        }
     }
 }

@@ -25,8 +25,7 @@ public class DelimitedTextDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The column delimiter. Type: string (or Expression with resultType
-     * string).
+     * The column delimiter. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.columnDelimiter")
     private Object columnDelimiter;
@@ -38,18 +37,16 @@ public class DelimitedTextDataset extends Dataset {
     private Object rowDelimiter;
 
     /*
-     * The code page name of the preferred encoding. If miss, the default value
-     * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name
-     * column of the table in the following link to set supported values:
-     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type:
-     * string (or Expression with resultType string).
+     * The code page name of the preferred encoding. If miss, the default value is UTF-8, unless BOM denotes another
+     * Unicode encoding. Refer to the name column of the table in the following link to set supported values:
+     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.encodingName")
     private Object encodingName;
 
     /*
-     * The data compressionCodec. Type: string (or Expression with resultType
-     * string).
+     * The data compressionCodec. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.compressionCodec")
     private Object compressionCodec;
@@ -61,31 +58,27 @@ public class DelimitedTextDataset extends Dataset {
     private Object compressionLevel;
 
     /*
-     * The quote character. Type: string (or Expression with resultType
-     * string).
+     * The quote character. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.quoteChar")
     private Object quoteChar;
 
     /*
-     * The escape character. Type: string (or Expression with resultType
-     * string).
+     * The escape character. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.escapeChar")
     private Object escapeChar;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as
-     * output,write the headers into the output as the first row of data. The
-     * default value is false. Type: boolean (or Expression with resultType
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
+     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
      * boolean).
      */
     @JsonProperty(value = "typeProperties.firstRowAsHeader")
     private Object firstRowAsHeader;
 
     /*
-     * The null value string. Type: string (or Expression with resultType
-     * string).
+     * The null value string. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.nullValue")
     private Object nullValue;

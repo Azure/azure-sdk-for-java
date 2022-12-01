@@ -136,7 +136,7 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-Options -->
      * <pre>
      * String formUrl = &quot;&#123;formUrl&#125;&quot;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
@@ -156,7 +156,7 @@ public final class FormRecognizerAsyncClient {
      *             System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, formField.getConfidence&#40;&#41;&#41;;
      *         &#125;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-Options -->
      *
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formUrl The source URL to the input form.
@@ -271,7 +271,7 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-RecognizeCustomFormsOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-Options -->
      * <pre>
      * File form = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
@@ -295,7 +295,7 @@ public final class FormRecognizerAsyncClient {
      *             System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, formField.getConfidence&#40;&#41;&#41;;
      *         &#125;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-RecognizeCustomFormsOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-Options -->
      *
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
@@ -406,7 +406,7 @@ public final class FormRecognizerAsyncClient {
      * that specific language in the {@link RecognizeContentOptions options}.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-Options -->
      * <pre>
      * String formUrl = &quot;&#123;formUrl&#125;&quot;;
      * &#47;&#47; if training polling operation completed, retrieve the final result.
@@ -424,7 +424,7 @@ public final class FormRecognizerAsyncClient {
      *                 System.out.printf&#40;&quot;%s &quot;, recognizedTableCell.getText&#40;&#41;&#41;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-Options -->
      *
      * @param formUrl The source URL to the input form.
      * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
@@ -535,7 +535,7 @@ public final class FormRecognizerAsyncClient {
      * that specific language in the {@link RecognizeContentOptions options}.</p>
 
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-RecognizeContentOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-Options -->
      * <pre>
      * File form = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * &#47;&#47; Utility method to convert input stream to Byte buffer
@@ -556,7 +556,7 @@ public final class FormRecognizerAsyncClient {
      *             System.out.printf&#40;&quot;%s &quot;, recognizedTableCell.getText&#40;&#41;&#41;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-RecognizeContentOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-Options -->
      *
      * @param form The data of the form to recognize content information from.
      * @param length The exact length of the data.
@@ -907,7 +907,7 @@ public final class FormRecognizerAsyncClient {
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string-Options -->
      * <pre>
      * String businessCardUrl = &quot;&#123;business_card_url&#125;&quot;;
      * boolean includeFieldElements = true;
@@ -966,7 +966,7 @@ public final class FormRecognizerAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string-Options -->
      *
      * @param businessCardUrl The source URL to the input business card.
      * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
@@ -1113,7 +1113,7 @@ public final class FormRecognizerAsyncClient {
      * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-RecognizeBusinessCardsOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-Options -->
      * <pre>
      * File businessCard = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * boolean includeFieldElements = true;
@@ -1175,7 +1175,7 @@ public final class FormRecognizerAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-RecognizeBusinessCardsOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-Options -->
      *
      * @param businessCard The data of the document to recognize business card information from.
      * @param length The exact length of the data.
@@ -1323,7 +1323,7 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string-Options -->
      * <pre>
      * String licenseDocumentUrl = &quot;licenseDocumentUrl&quot;;
      * boolean includeFieldElements = true;
@@ -1386,7 +1386,7 @@ public final class FormRecognizerAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string-Options -->
      *
      * @param identityDocumentUrl The source URL to the input identity document.
      * @param recognizeIdentityDocumentOptions The additional configurable
@@ -1538,7 +1538,7 @@ public final class FormRecognizerAsyncClient {
      * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long-RecognizeIdentityDocumentOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long-Options -->
      * <pre>
      * File licenseDocument = new File&#40;&quot;local&#47;file_path&#47;license.jpg&quot;&#41;;
      * boolean includeFieldElements = true;
@@ -1606,7 +1606,7 @@ public final class FormRecognizerAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long-RecognizeIdentityDocumentOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long-Options -->
      *
      * @param identityDocument The data of the document to recognize identity document information from.
      * @param length The exact length of the data.
@@ -1808,7 +1808,7 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-Options -->
      * <pre>
      * String invoiceUrl = &quot;invoice_url&quot;;
      * boolean includeFieldElements = true;
@@ -1839,7 +1839,7 @@ public final class FormRecognizerAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-Options -->
      *
      * @param invoiceUrl The source URL to the input invoice.
      * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
@@ -1960,7 +1960,7 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long-RecognizeInvoicesOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long-Options -->
      * <pre>
      * File invoice = new File&#40;&quot;local&#47;file_path&#47;invoice.jpg&quot;&#41;;
      * boolean includeFieldElements = true;
@@ -1996,7 +1996,7 @@ public final class FormRecognizerAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long-RecognizeInvoicesOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long-Options -->
      *
      * @param invoice The data of the document to recognize invoice information from.
      * @param length The exact length of the data.

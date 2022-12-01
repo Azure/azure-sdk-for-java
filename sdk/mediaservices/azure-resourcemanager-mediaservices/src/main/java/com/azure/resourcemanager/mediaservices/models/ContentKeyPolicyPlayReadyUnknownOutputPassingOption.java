@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+/** Configures Unknown output handling settings of the license. */
 public final class ContentKeyPolicyPlayReadyUnknownOutputPassingOption
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyUnknownOutputPassingOption> {
     /** Static value Unknown for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */

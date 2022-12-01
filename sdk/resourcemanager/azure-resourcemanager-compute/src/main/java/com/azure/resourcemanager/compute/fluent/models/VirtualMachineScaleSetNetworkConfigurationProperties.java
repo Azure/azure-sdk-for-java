@@ -29,6 +29,12 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
     private Boolean enableAcceleratedNetworking;
 
     /*
+     * Specifies whether the network interface is disabled for tcp state tracking.
+     */
+    @JsonProperty(value = "disableTcpStateTracking")
+    private Boolean disableTcpStateTracking;
+
+    /*
      * Specifies whether the network interface is FPGA networking-enabled.
      */
     @JsonProperty(value = "enableFpga")
@@ -63,6 +69,10 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
      */
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
+
+    /** Creates an instance of VirtualMachineScaleSetNetworkConfigurationProperties class. */
+    public VirtualMachineScaleSetNetworkConfigurationProperties() {
+    }
 
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
@@ -106,6 +116,29 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
     public VirtualMachineScaleSetNetworkConfigurationProperties withEnableAcceleratedNetworking(
         Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.disableTcpStateTracking;
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfigurationProperties withDisableTcpStateTracking(
+        Boolean disableTcpStateTracking) {
+        this.disableTcpStateTracking = disableTcpStateTracking;
         return this;
     }
 

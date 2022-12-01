@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for DiskEncryptionSets Update. */
 public final class DiskEncryptionSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
      */
     /**
      * Sample code: Update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Succeeded.
@@ -37,15 +37,13 @@ public final class DiskEncryptionSetsUpdateSamples {
                 new DiskEncryptionSetUpdate()
                     .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
                     .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                    .withActiveKey(
-                        new KeyForDiskEncryptionSet()
-                            .withKeyUrl("https://myvaultdifferentsub.vault-int.azure-int.net/keys/keyName/keyVersion1"))
+                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
                     .withRotationToLatestKeyVersionEnabled(true),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabledInProgress.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabledInProgress.json
      */
     /**
      * Sample code: Update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Updating.
@@ -65,15 +63,13 @@ public final class DiskEncryptionSetsUpdateSamples {
                 new DiskEncryptionSetUpdate()
                     .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
                     .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                    .withActiveKey(
-                        new KeyForDiskEncryptionSet()
-                            .withKeyUrl("https://myvaultdifferentsub.vault-int.azure-int.net/keys/keyName/keyVersion1"))
+                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
                     .withRotationToLatestKeyVersionEnabled(true),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update.json
      */
     /**
      * Sample code: Update a disk encryption set.
@@ -98,7 +94,7 @@ public final class DiskEncryptionSetsUpdateSamples {
                                 new SourceVault()
                                     .withId(
                                         "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault"))
-                            .withKeyUrl("https://myvmvault.vault-int.azure-int.net/keys/keyName/keyVersion")),
+                            .withKeyUrl("fakeTokenPlaceholder")),
                 Context.NONE);
     }
 

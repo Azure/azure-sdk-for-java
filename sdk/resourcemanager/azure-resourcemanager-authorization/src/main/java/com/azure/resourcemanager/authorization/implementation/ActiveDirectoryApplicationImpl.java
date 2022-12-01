@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsAddPasswordRequestBodyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
@@ -14,15 +13,12 @@ import com.azure.resourcemanager.authorization.models.ApplicationAccountType;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.PasswordCredential;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
-import reactor.util.retry.RetryBackoffSpec;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,7 +61,7 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> createResourceAsync() {
-        Retry retry = backoffRetryFor404();
+        Retry retry = RetryUtils.backoffRetryFor404ResourceNotFound();
 
         return manager
             .serviceClient()
@@ -82,15 +78,6 @@ class ActiveDirectoryApplicationImpl
             .then(submitCredentialAsync(null).doOnComplete(this::postRequest).then(refreshAsync()));
     }
 
-    static RetryBackoffSpec backoffRetryFor404() {
-        return Retry
-            // 10 + 20 + 40 = 70 seconds
-            .backoff(3, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
-            .filter(e -> (e instanceof HttpResponseException)
-                && (((HttpResponseException) e).getResponse().getStatusCode() == 404))
-            // do not convert to RetryExhaustedException
-            .onRetryExhaustedThrow((spec, signal) -> signal.failure());
-    }
 
     private void refreshCredentials(MicrosoftGraphApplicationInner inner) {
         cachedCertificateCredentials.clear();
@@ -118,7 +105,6 @@ class ActiveDirectoryApplicationImpl
                     manager().serviceClient().getApplications()
                         .addPasswordAsync(id(), new ApplicationsAddPasswordRequestBodyInner()
                             .withPasswordCredential(passwordCredential.innerModel()));
-
                 if (retry != null) {
                     monoAddPassword = monoAddPassword.retryWhen(retry);
                 }

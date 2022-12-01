@@ -50,20 +50,6 @@ public interface CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified commitmentPlans associated with the Cognitive Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommitmentPlanInner get(String resourceGroupName, String accountName, String commitmentPlanName);
-
-    /**
-     * Gets the specified commitmentPlans associated with the Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,20 +61,18 @@ public interface CommitmentPlansClient {
         String resourceGroupName, String accountName, String commitmentPlanName, Context context);
 
     /**
-     * Update the state of specified commitmentPlans associated with the Cognitive Services account.
+     * Gets the specified commitmentPlans associated with the Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlan The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan.
+     * @return the specified commitmentPlans associated with the Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommitmentPlanInner createOrUpdate(
-        String resourceGroupName, String accountName, String commitmentPlanName, CommitmentPlanInner commitmentPlan);
+    CommitmentPlanInner get(String resourceGroupName, String accountName, String commitmentPlanName);
 
     /**
      * Update the state of specified commitmentPlans associated with the Cognitive Services account.
@@ -110,6 +94,22 @@ public interface CommitmentPlansClient {
         String commitmentPlanName,
         CommitmentPlanInner commitmentPlan,
         Context context);
+
+    /**
+     * Update the state of specified commitmentPlans associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The commitmentPlan properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanInner createOrUpdate(
+        String resourceGroupName, String accountName, String commitmentPlanName, CommitmentPlanInner commitmentPlan);
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.

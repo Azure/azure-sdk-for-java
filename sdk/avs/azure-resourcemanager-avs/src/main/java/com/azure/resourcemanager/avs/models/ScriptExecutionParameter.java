@@ -6,7 +6,6 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,13 +25,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class ScriptExecutionParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptExecutionParameter.class);
-
     /*
      * The parameter name
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of ScriptExecutionParameter class. */
+    public ScriptExecutionParameter() {
+    }
 
     /**
      * Get the name property: The parameter name.
@@ -61,9 +62,11 @@ public class ScriptExecutionParameter {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ScriptExecutionParameter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionParameter.class);
 }

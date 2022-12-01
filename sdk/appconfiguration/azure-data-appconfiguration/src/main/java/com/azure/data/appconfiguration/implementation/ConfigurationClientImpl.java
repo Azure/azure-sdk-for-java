@@ -23,6 +23,7 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -357,7 +358,7 @@ public final class ConfigurationClientImpl {
 
     public Mono<Response<ConfigurationSetting>> addConfigurationSettingWithResponseAsync(ConfigurationSetting setting,
         Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
 
@@ -379,7 +380,7 @@ public final class ConfigurationClientImpl {
 
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
 
@@ -400,7 +401,7 @@ public final class ConfigurationClientImpl {
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponseAsync(ConfigurationSetting setting,
                                                                                          boolean ifUnchanged,
                                                                                          Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
 
@@ -409,7 +410,7 @@ public final class ConfigurationClientImpl {
         // configuration setting.
         // If the user provides an ETag value, it is passed in as If-Match = "{ETag value}". If the current value in the
         // service has a matching ETag then it matches, then its value is updated with what the user passed in.
-        // Otherwise, the service throws an exception because the current configuration value was updated and we have an
+        // Otherwise, the service throws an exception because the current configuration value was updated, and we have an
         // old value locally.
         // If no ETag value was passed in, then the value is always added or updated.
         return this.service.setKeyAsync(this.getEndpoint(),
@@ -428,7 +429,7 @@ public final class ConfigurationClientImpl {
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               boolean ifUnchanged,
                                                                               Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
 
@@ -437,7 +438,7 @@ public final class ConfigurationClientImpl {
         // configuration setting.
         // If the user provides an ETag value, it is passed in as If-Match = "{ETag value}". If the current value in the
         // service has a matching ETag then it matches, then its value is updated with what the user passed in.
-        // Otherwise, the service throws an exception because the current configuration value was updated and we have an
+        // Otherwise, the service throws an exception because the current configuration value was updated, and we have an
         // old value locally.
         // If no ETag value was passed in, then the value is always added or updated.
         return this.service.setKey(this.getEndpoint(),
@@ -455,7 +456,7 @@ public final class ConfigurationClientImpl {
                                                                                          OffsetDateTime acceptDateTime,
                                                                                          boolean onlyIfChanged,
                                                                                          Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
 
@@ -487,7 +488,7 @@ public final class ConfigurationClientImpl {
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               OffsetDateTime acceptDateTime,
                                                                               boolean onlyIfChanged, Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
 
@@ -517,7 +518,7 @@ public final class ConfigurationClientImpl {
     public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponseAsync(
         ConfigurationSetting setting, boolean ifUnchanged,
         Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
 
@@ -536,7 +537,7 @@ public final class ConfigurationClientImpl {
 
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                                  boolean ifUnchanged, Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
 
@@ -555,7 +556,7 @@ public final class ConfigurationClientImpl {
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponseAsync(ConfigurationSetting setting,
                                                                              boolean isReadOnly,
                                                                              Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
         if (isReadOnly) {
@@ -588,7 +589,7 @@ public final class ConfigurationClientImpl {
 
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
                                                                   Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
         if (isReadOnly) {
@@ -620,9 +621,10 @@ public final class ConfigurationClientImpl {
         }
     }
 
-    public PagedFlux<ConfigurationSetting> listConfigurationSettingsAsync(SettingSelector selector, Context context) {
-        return new PagedFlux<>(() -> listConfigurationSettingsSinglePageAsync(selector, context),
-            continuationToken -> listConfigurationSettingsNextPageAsync(continuationToken, context));
+    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
+        return new PagedIterable<ConfigurationSetting>(() ->
+            listConfigurationSettingsSinglePage(selector, context),
+            continuationToken -> listConfigurationSettingsNextPage(continuationToken, context));
     }
 
     public PagedFlux<ConfigurationSetting> listRevisionsAsync(SettingSelector selector) {
@@ -635,10 +637,10 @@ public final class ConfigurationClientImpl {
         }
     }
 
-    public PagedFlux<ConfigurationSetting> listRevisionsAsync(SettingSelector selector, Context context) {
-        return new PagedFlux<>(() ->
-            listRevisionsFirstPageAsync(selector, context),
-            continuationToken -> listRevisionsNextPageAsync(continuationToken, context));
+    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
+        return new PagedIterable<ConfigurationSetting>(() ->
+            listRevisionsFirstPage(selector, context),
+            continuationToken -> listRevisionsNextPage(continuationToken, context));
     }
 
     /*
@@ -662,7 +664,7 @@ public final class ConfigurationClientImpl {
         return (etag == null || "*".equals(etag)) ? etag : "\"" + etag + "\"";
     }
 
-    private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {
+    private Flux<ConfigurationSetting> listConfigurationSettingsAsync(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result
             = this.service.listKeyValuesAsync(this.getEndpoint(),
                 nextPageLink,
@@ -677,7 +679,7 @@ public final class ConfigurationClientImpl {
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(
         PagedResponse<ConfigurationSetting> page, Context context) {
-        return CoreUtils.extractAndFetch(page, context, this::listConfigurationSettings);
+        return CoreUtils.extractAndFetch(page, context, this::listConfigurationSettingsAsync);
     }
 
     private Mono<PagedResponse<ConfigurationSetting>> listConfigurationSettingsSinglePageAsync(SettingSelector selector,
@@ -736,6 +738,43 @@ public final class ConfigurationClientImpl {
         }
     }
 
+    private PagedResponse<ConfigurationSetting> listConfigurationSettingsSinglePage(SettingSelector selector,
+                                                                                    Context context) {
+        if (selector == null) {
+            return this.service.listKeyValues(this.getEndpoint(),
+                    null,
+                    null,
+                    this.getApiVersion(),
+                    null,
+                    null,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        }
+
+        final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+        final String keyFilter = selector.getKeyFilter();
+        final String labelFilter = selector.getLabelFilter();
+
+        return this.service.listKeyValues(this.getEndpoint(),
+                keyFilter,
+                labelFilter,
+                this.getApiVersion(),
+                fields,
+                selector.getAcceptDateTime(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+    }
+
+    private PagedResponse<ConfigurationSetting> listConfigurationSettingsNextPage(String continuationToken,
+            Context context) {
+
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return null;
+        }
+
+        return this.service.listKeyValues(this.getEndpoint(), continuationToken,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+
+    }
+
     private Mono<PagedResponse<ConfigurationSetting>> listRevisionsFirstPageAsync(SettingSelector selector,
                                                                                   Context context) {
         try {
@@ -778,7 +817,6 @@ public final class ConfigurationClientImpl {
             return monoError(logger, ex);
         }
     }
-
     private Mono<PagedResponse<ConfigurationSetting>> listRevisionsNextPageAsync(String nextPageLink, Context context) {
         try {
             return this.service
@@ -792,5 +830,43 @@ public final class ConfigurationClientImpl {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private PagedResponse<ConfigurationSetting> listRevisionsFirstPage(SettingSelector selector,
+                                                                       Context context) {
+        PagedResponse<ConfigurationSetting> result;
+
+        if (selector != null) {
+            final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            final String keyFilter = selector.getKeyFilter();
+            final String labelFilter = selector.getLabelFilter();
+
+            result = this.service.listKeyValueRevisions(this.getEndpoint(),
+                    keyFilter,
+                    labelFilter,
+                    this.getApiVersion(),
+                    fields,
+                    selector.getAcceptDateTime(),
+                    null,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        } else {
+            result = this.service.listKeyValueRevisions(this.getEndpoint(),
+                    null,
+                    null,
+                    this.getApiVersion(),
+                    null,
+                    null,
+                    null,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        }
+        return result;
+    }
+
+    private PagedResponse<ConfigurationSetting> listRevisionsNextPage(String nextPageLink, Context context) {
+        return this.service
+            .listKeyValues(this.getEndpoint(),
+                nextPageLink,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+
     }
 }

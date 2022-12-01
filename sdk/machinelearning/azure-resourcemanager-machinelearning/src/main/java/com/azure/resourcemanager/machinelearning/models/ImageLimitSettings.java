@@ -29,6 +29,10 @@ public final class ImageLimitSettings {
     @JsonProperty(value = "timeout")
     private Duration timeout;
 
+    /** Creates an instance of ImageLimitSettings class. */
+    public ImageLimitSettings() {
+    }
+
     /**
      * Get the maxConcurrentTrials property: Maximum number of concurrent AutoML iterations.
      *

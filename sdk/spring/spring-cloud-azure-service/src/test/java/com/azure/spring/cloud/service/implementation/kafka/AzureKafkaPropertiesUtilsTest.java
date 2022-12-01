@@ -3,89 +3,46 @@
 package com.azure.spring.cloud.service.implementation.kafka;
 
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.cloudType;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.managedIdentityEnabled;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertAzurePropertiesToConfigMap;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.copyJaasPropertyToAzureProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureKafkaPropertiesUtilsTest {
 
-    private Map<String, String> buildKafkaSourceConfigsFromAzureProperties() {
-        Map<String, String> configs = new HashMap<>();
-        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping ->
-            configs.put(mapping.propertyKey(), mapping.propertyKey() + ".test"));
-        configs.put(managedIdentityEnabled.propertyKey(), "true");
-        configs.put(cloudType.propertyKey(), "AZURE_CHINA");
-        return configs;
-    }
     @Test
-    void testConvertConfigMapToAzureProperties() {
-        AzureKafkaProperties properties = new AzureKafkaProperties();
-        convertConfigMapToAzureProperties(buildKafkaSourceConfigsFromAzureProperties(), properties);
+    void testCopyJaasPropertyToAzureProperties() {
+        String jaasConfig = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\";";
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
 
-        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping -> {
-            if (mapping == managedIdentityEnabled) {
-                assertTrue(Boolean.valueOf(mapping.getter().apply(properties)));
-            } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
-                assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA,
-                    AzureProfileOptionsProvider.CloudType.fromString(mapping.getter().apply(properties)));
-            } else {
-                assertEquals(mapping.propertyKey() + ".test", mapping.getter().apply(properties));
-            }
-        });
+        copyJaasPropertyToAzureProperties(jaasConfig, properties);
+        assertFalse(properties.getCredential().isManagedIdentityEnabled());
+        assertNull(properties.getCredential().getClientId());
+        assertNull(properties.getProfile().getCloudType());
     }
 
     @Test
-    void testConvertAzurePropertiesToConfigMapWithCustomValues() {
-        AzureKafkaProperties properties = new AzureKafkaProperties();
-        Map<String, String> sourceConfigs = buildKafkaSourceConfigsFromAzureProperties();
-        Map<String, String> customKafkaConfigs = new HashMap<>();
-        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping ->
-            customKafkaConfigs.put(mapping.propertyKey(), mapping.propertyKey() + ".override"));
-        customKafkaConfigs.put(managedIdentityEnabled.propertyKey(), "false");
-        customKafkaConfigs.put(cloudType.propertyKey(), "AZURE");
-        convertConfigMapToAzureProperties(sourceConfigs, properties);
-        convertAzurePropertiesToConfigMap(properties, customKafkaConfigs);
+    void testCopyJaasPropertyWithCustomizedValuesToAzureProperties() {
+        String jaasConfig = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\" "
+            + "azure.credential.managed-identity-enabled=\"true\" azure.credential.client-id=\"test\" azure.profile.cloud-type=\"azure\";";
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
 
-        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping -> {
-            if (mapping == managedIdentityEnabled) {
-                assertFalse(Boolean.valueOf(customKafkaConfigs.get(mapping.propertyKey())));
-            } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
-                assertEquals(AzureProfileOptionsProvider.CloudType.AZURE,
-                    AzureProfileOptionsProvider.CloudType.fromString(customKafkaConfigs.get(mapping.propertyKey())));
-            } else {
-                assertEquals(mapping.propertyKey() + ".override", customKafkaConfigs.get(mapping.propertyKey()));
-            }
-        });
+        copyJaasPropertyToAzureProperties(jaasConfig, properties);
+        assertTrue(properties.getCredential().isManagedIdentityEnabled());
+        assertEquals("test", properties.getCredential().getClientId());
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE, properties.getProfile().getCloudType());
+
     }
 
     @Test
-    void testConvertAzurePropertiesToConfigMapWithoutCustomValues() {
-        AzureKafkaProperties properties = new AzureKafkaProperties();
-        Map<String, String> sourceConfigs = buildKafkaSourceConfigsFromAzureProperties();
-        Map<String, String> customKafkaConfigs = new HashMap<>();
-        convertConfigMapToAzureProperties(sourceConfigs, properties);
-        convertAzurePropertiesToConfigMap(properties, customKafkaConfigs);
-
-        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping -> {
-            if (mapping == managedIdentityEnabled) {
-                assertTrue(Boolean.valueOf(customKafkaConfigs.get(mapping.propertyKey())));
-            } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
-                assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA,
-                    AzureProfileOptionsProvider.CloudType.fromString(customKafkaConfigs.get(mapping.propertyKey())));
-            } else {
-                assertEquals(mapping.propertyKey() + ".test", customKafkaConfigs.get(mapping.propertyKey()));
-            }
-        });
+    void testClearAzureProperties() {
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
+        properties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE);
+        properties.getProfile().setTenantId("fake-tenant-id");
     }
 
 }

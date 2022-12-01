@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 
 public class NamespacePropertiesEntry implements XmlSerializable<NamespacePropertiesEntry> {
@@ -135,7 +136,7 @@ public class NamespacePropertiesEntry implements XmlSerializable<NamespaceProper
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("entry");
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringElement("id", id);
@@ -148,7 +149,7 @@ public class NamespacePropertiesEntry implements XmlSerializable<NamespaceProper
         return xmlWriter.writeEndElement().flush();
     }
 
-    public static NamespacePropertiesEntry fromXml(XmlReader xmlReader) {
+    public static NamespacePropertiesEntry fromXml(XmlReader xmlReader) throws XMLStreamException {
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             // Since NamespacePropertiesEntry only cares about XML elements use nextElement()
             xmlReader.nextElement();

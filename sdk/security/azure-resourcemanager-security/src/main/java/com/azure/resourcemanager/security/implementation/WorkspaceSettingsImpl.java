@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.WorkspaceSettingsClient;
 import com.azure.resourcemanager.security.fluent.models.WorkspaceSettingInner;
 import com.azure.resourcemanager.security.models.WorkspaceSetting;
 import com.azure.resourcemanager.security.models.WorkspaceSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceSettingsImpl implements WorkspaceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceSettingsImpl.class);
 
     private final WorkspaceSettingsClient innerClient;
 
@@ -38,15 +37,6 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
         return Utils.mapPage(inner, inner1 -> new WorkspaceSettingImpl(inner1, this.manager()));
     }
 
-    public WorkspaceSetting get(String workspaceSettingName) {
-        WorkspaceSettingInner inner = this.serviceClient().get(workspaceSettingName);
-        if (inner != null) {
-            return new WorkspaceSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkspaceSetting> getWithResponse(String workspaceSettingName, Context context) {
         Response<WorkspaceSettingInner> inner = this.serviceClient().getWithResponse(workspaceSettingName, context);
         if (inner != null) {
@@ -60,18 +50,27 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
         }
     }
 
-    public void delete(String workspaceSettingName) {
-        this.serviceClient().delete(workspaceSettingName);
+    public WorkspaceSetting get(String workspaceSettingName) {
+        WorkspaceSettingInner inner = this.serviceClient().get(workspaceSettingName);
+        if (inner != null) {
+            return new WorkspaceSettingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String workspaceSettingName, Context context) {
         return this.serviceClient().deleteWithResponse(workspaceSettingName, context);
     }
 
+    public void delete(String workspaceSettingName) {
+        this.serviceClient().delete(workspaceSettingName);
+    }
+
     public WorkspaceSetting getById(String id) {
         String workspaceSettingName = Utils.getValueFromIdByName(id, "workspaceSettings");
         if (workspaceSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,7 +83,7 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
     public Response<WorkspaceSetting> getByIdWithResponse(String id, Context context) {
         String workspaceSettingName = Utils.getValueFromIdByName(id, "workspaceSettings");
         if (workspaceSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -97,20 +96,20 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
     public void deleteById(String id) {
         String workspaceSettingName = Utils.getValueFromIdByName(id, "workspaceSettings");
         if (workspaceSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'workspaceSettings'.", id)));
         }
-        this.deleteWithResponse(workspaceSettingName, Context.NONE).getValue();
+        this.deleteWithResponse(workspaceSettingName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String workspaceSettingName = Utils.getValueFromIdByName(id, "workspaceSettings");
         if (workspaceSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

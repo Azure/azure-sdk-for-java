@@ -26,6 +26,10 @@ public final class ApplicationGatewaySslPredefinedPolicyInner extends SubResourc
     @JsonProperty(value = "properties")
     private ApplicationGatewaySslPredefinedPolicyPropertiesFormat innerProperties;
 
+    /** Creates an instance of ApplicationGatewaySslPredefinedPolicyInner class. */
+    public ApplicationGatewaySslPredefinedPolicyInner() {
+    }
+
     /**
      * Get the name property: Name of the Ssl predefined policy.
      *

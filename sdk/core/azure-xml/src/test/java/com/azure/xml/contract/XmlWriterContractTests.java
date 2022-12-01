@@ -8,12 +8,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import javax.xml.stream.XMLStreamException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -42,8 +42,8 @@ public abstract class XmlWriterContractTests {
 
     @ParameterizedTest
     @MethodSource("basicElementOperationsSupplier")
-    public void basicElementOperations(Consumer<XmlWriter> operation, String expectedXml) {
-        operation.accept(getXmlWriter());
+    public void basicElementOperations(XMLStreamExceptionConsumer<XmlWriter> operation, String expectedXml) {
+        assertDoesNotThrow(() -> operation.accept(getXmlWriter()));
 
         assertEquals(expectedXml, getXmlWriterContents());
     }
@@ -108,68 +108,68 @@ public abstract class XmlWriterContractTests {
 
             // Field name and value.
             // Binary
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBinary(null)), "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBinary(new byte[0])),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBinary(null)), "<test></test>"),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBinary(new byte[0])),
                 "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test",
+            Arguments.of(createXmlElementConsumer(
                     xmlWriter -> xmlWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
                 "<test>" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "</test>"),
 
             // Boolean
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBoolean(null)), "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBoolean(false)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBoolean(null)), "<test></test>"),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBoolean(false)),
                 "<test>false</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBoolean(true)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBoolean(true)),
                 "<test>true</test>"),
 
             // Double
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDouble(-42D)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeDouble(-42D)),
                 "<test>-42.0</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDouble(-42.0D)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeDouble(-42.0D)),
                 "<test>-42.0</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDouble(42D)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeDouble(42D)),
                 "<test>42.0</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDouble(42.0D)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeDouble(42.0D)),
                 "<test>42.0</test>"),
 
             // Float
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloat(-42F)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeFloat(-42F)),
                 "<test>-42.0</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloat(-42.0F)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeFloat(-42.0F)),
                 "<test>-42.0</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloat(42F)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeFloat(42F)),
                 "<test>42.0</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloat(42.0F)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeFloat(42.0F)),
                 "<test>42.0</test>"),
 
             // Integer
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeInt(-42)), "<test>-42</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeInt(42)), "<test>42</test>"),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeInt(-42)), "<test>-42</test>"),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeInt(42)), "<test>42</test>"),
 
             // Long
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeLong(-42)), "<test>-42</test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeLong(42)), "<test>42</test>"),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeLong(-42)), "<test>-42</test>"),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeLong(42)), "<test>42</test>"),
 
             // String
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeString(null)), "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeString("")), "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeString("hello")),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeString(null)), "<test></test>"),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeString("")), "<test></test>"),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeString("hello")),
                 "<test>hello</test>"),
 
             // CData
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeCDataString(null)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeCDataString(null)),
                 "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeCDataString("")),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeCDataString("")),
                 "<test><![CDATA[]]></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeCDataString("hello")),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeCDataString("hello")),
                 "<test><![CDATA[hello]]></test>")
         );
     }
 
     @ParameterizedTest
     @MethodSource("basicAttributeOperationsSupplier")
-    public void basicAttributeOperations(Consumer<XmlWriter> operation, String expectedXml) {
-        operation.accept(getXmlWriter());
+    public void basicAttributeOperations(XMLStreamExceptionConsumer<XmlWriter> operation, String expectedXml) {
+        assertDoesNotThrow(() -> operation.accept(getXmlWriter()));
 
         assertEquals(expectedXml, getXmlWriterContents());
     }
@@ -177,72 +177,81 @@ public abstract class XmlWriterContractTests {
     private static Stream<Arguments> basicAttributeOperationsSupplier() {
         return Stream.of(
             // Binary
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBinaryAttribute("test", null)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBinaryAttribute("test", null)),
                 "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test",
+            Arguments.of(createXmlElementConsumer(
                 xmlWriter -> xmlWriter.writeBinaryAttribute("test", new byte[0])), "<test test=\"\"></test>"),
-            Arguments.of(createXmlElementConsumer("test",
+            Arguments.of(createXmlElementConsumer(
                     xmlWriter -> xmlWriter.writeBinaryAttribute("test", "Hello".getBytes(StandardCharsets.UTF_8))),
                 "<test test=\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"></test>"),
 
             // Boolean
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBooleanAttribute("test", null)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBooleanAttribute("test", null)),
                 "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBooleanAttribute("test", false)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBooleanAttribute("test", false)),
                 "<test test=\"false\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBooleanAttribute("test", true)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeBooleanAttribute("test", true)),
                 "<test test=\"true\"></test>"),
 
             // Double
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDoubleAttribute("test", -42D)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeDoubleAttribute("test", -42D)),
                 "<test test=\"-42.0\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDoubleAttribute("test", -42.0D)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeDoubleAttribute("test", -42.0D)),
                 "<test test=\"-42.0\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDoubleAttribute("test", 42D)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeDoubleAttribute("test", 42D)),
                 "<test test=\"42.0\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDoubleAttribute("test", 42.0D)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeDoubleAttribute("test", 42.0D)),
                 "<test test=\"42.0\"></test>"),
 
             // Float
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloatAttribute("test", -42F)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeFloatAttribute("test", -42F)),
                 "<test test=\"-42.0\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloatAttribute("test", -42.0F)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeFloatAttribute("test", -42.0F)),
                 "<test test=\"-42.0\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloatAttribute("test", 42F)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeFloatAttribute("test", 42F)),
                 "<test test=\"42.0\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloatAttribute("test", 42.0F)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeFloatAttribute("test", 42.0F)),
                 "<test test=\"42.0\"></test>"),
 
             // Integer
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeIntAttribute("test", -42)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeIntAttribute("test", -42)),
                 "<test test=\"-42\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeIntAttribute("test", 42)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeIntAttribute("test", 42)),
                 "<test test=\"42\"></test>"),
 
             // Long
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeLongAttribute("test", -42)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeLongAttribute("test", -42)),
                 "<test test=\"-42\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeLongAttribute("test", 42)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeLongAttribute("test", 42)),
                 "<test test=\"42\"></test>"),
 
             // String
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeStringAttribute("test", null)),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeStringAttribute("test", null)),
                 "<test></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeStringAttribute("test", "")),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeStringAttribute("test", "")),
                 "<test test=\"\"></test>"),
-            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeStringAttribute("test", "hello")),
+            Arguments.of(createXmlElementConsumer(xmlWriter -> xmlWriter.writeStringAttribute("test", "hello")),
                 "<test test=\"hello\"></test>")
         );
     }
 
-    private static Consumer<XmlWriter> createXmlConsumer(Function<XmlWriter, XmlWriter> consumptionFunction) {
+    private static XMLStreamExceptionConsumer<XmlWriter> createXmlConsumer(
+        XMLStreamExceptionFunction<XmlWriter, XmlWriter> consumptionFunction) {
         return xmlWriter -> consumptionFunction.apply(xmlWriter).flush();
     }
 
-    private static Consumer<XmlWriter> createXmlElementConsumer(String elementName,
-        Function<XmlWriter, XmlWriter> consumptionFunction) {
-        return xmlWriter -> consumptionFunction.apply(xmlWriter.writeStartElement(elementName))
+    private static XMLStreamExceptionConsumer<XmlWriter> createXmlElementConsumer(
+        XMLStreamExceptionFunction<XmlWriter, XmlWriter> consumptionFunction) {
+        return xmlWriter -> consumptionFunction.apply(xmlWriter.writeStartElement("test"))
             .writeEndElement()
             .flush();
+    }
+
+    private interface XMLStreamExceptionConsumer<T> {
+        void accept(T t) throws XMLStreamException;
+    }
+
+    private interface XMLStreamExceptionFunction<T, R> {
+        R apply(T t) throws XMLStreamException;
     }
 }

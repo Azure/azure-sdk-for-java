@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +23,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class CustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomAlertRule.class);
-
     /*
      * The display name of the custom alert.
      */
@@ -44,6 +40,10 @@ public class CustomAlertRule {
      */
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
+
+    /** Creates an instance of CustomAlertRule class. */
+    public CustomAlertRule() {
+    }
 
     /**
      * Get the displayName property: The display name of the custom alert.

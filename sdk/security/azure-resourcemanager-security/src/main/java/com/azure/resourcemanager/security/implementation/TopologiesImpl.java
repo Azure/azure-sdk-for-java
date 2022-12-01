@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.TopologiesClient;
 import com.azure.resourcemanager.security.fluent.models.TopologyResourceInner;
 import com.azure.resourcemanager.security.models.Topologies;
 import com.azure.resourcemanager.security.models.TopologyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TopologiesImpl implements Topologies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TopologiesImpl.class);
 
     private final TopologiesClient innerClient;
 
@@ -48,15 +47,6 @@ public final class TopologiesImpl implements Topologies {
         return Utils.mapPage(inner, inner1 -> new TopologyResourceImpl(inner1, this.manager()));
     }
 
-    public TopologyResource get(String resourceGroupName, String ascLocation, String topologyResourceName) {
-        TopologyResourceInner inner = this.serviceClient().get(resourceGroupName, ascLocation, topologyResourceName);
-        if (inner != null) {
-            return new TopologyResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TopologyResource> getWithResponse(
         String resourceGroupName, String ascLocation, String topologyResourceName, Context context) {
         Response<TopologyResourceInner> inner =
@@ -67,6 +57,15 @@ public final class TopologiesImpl implements Topologies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TopologyResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TopologyResource get(String resourceGroupName, String ascLocation, String topologyResourceName) {
+        TopologyResourceInner inner = this.serviceClient().get(resourceGroupName, ascLocation, topologyResourceName);
+        if (inner != null) {
+            return new TopologyResourceImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -41,14 +41,14 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     private final ProjectEnvironmentTypesService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of ProjectEnvironmentTypesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ProjectEnvironmentTypesClientImpl(DevCenterClientImpl client) {
+    ProjectEnvironmentTypesClientImpl(DevCenterManagementClientImpl client) {
         this.service =
             RestProxy
                 .create(ProjectEnvironmentTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -56,12 +56,12 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     }
 
     /**
-     * The interface defining all the services for DevCenterClientProjectEnvironmentTypes to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for DevCenterManagementClientProjectEnvironmentTypes to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientProje")
-    private interface ProjectEnvironmentTypesService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface ProjectEnvironmentTypesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
@@ -158,7 +158,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +218,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -276,7 +276,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,7 +295,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,7 +313,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -333,7 +333,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -349,7 +349,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -367,7 +367,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Gets a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,7 +421,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Gets a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -473,7 +473,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Gets a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -491,23 +491,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Gets a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param environmentTypeName The name of the environment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project environment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProjectEnvironmentTypeInner get(String resourceGroupName, String projectName, String environmentTypeName) {
-        return getAsync(resourceGroupName, projectName, environmentTypeName).block();
-    }
-
-    /**
-     * Gets a project environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -523,9 +507,25 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     }
 
     /**
+     * Gets a project environment type.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param environmentTypeName The name of the environment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a project environment type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProjectEnvironmentTypeInner get(String resourceGroupName, String projectName, String environmentTypeName) {
+        return getWithResponse(resourceGroupName, projectName, environmentTypeName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents a Project Environment Type.
@@ -586,7 +586,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Creates or updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents a Project Environment Type.
@@ -649,7 +649,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Creates or updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents a Project Environment Type.
@@ -668,25 +668,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Creates or updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param environmentTypeName The name of the environment type.
-     * @param body Represents a Project Environment Type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an environment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProjectEnvironmentTypeInner createOrUpdate(
-        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeInner body) {
-        return createOrUpdateAsync(resourceGroupName, projectName, environmentTypeName, body).block();
-    }
-
-    /**
-     * Creates or updates a project environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents a Project Environment Type.
@@ -708,9 +690,28 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     }
 
     /**
+     * Creates or updates a project environment type.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param environmentTypeName The name of the environment type.
+     * @param body Represents a Project Environment Type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an environment type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProjectEnvironmentTypeInner createOrUpdate(
+        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeInner body) {
+        return createOrUpdateWithResponse(resourceGroupName, projectName, environmentTypeName, body, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Partially updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable project environment type properties.
@@ -771,7 +772,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Partially updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable project environment type properties.
@@ -834,7 +835,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Partially updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable project environment type properties.
@@ -853,25 +854,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Partially updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param environmentTypeName The name of the environment type.
-     * @param body Updatable project environment type properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an environment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProjectEnvironmentTypeInner update(
-        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeUpdate body) {
-        return updateAsync(resourceGroupName, projectName, environmentTypeName, body).block();
-    }
-
-    /**
-     * Partially updates a project environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable project environment type properties.
@@ -892,9 +875,27 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     }
 
     /**
+     * Partially updates a project environment type.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param environmentTypeName The name of the environment type.
+     * @param body Updatable project environment type properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an environment type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProjectEnvironmentTypeInner update(
+        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeUpdate body) {
+        return updateWithResponse(resourceGroupName, projectName, environmentTypeName, body, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -948,7 +949,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Deletes a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -1000,7 +1001,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Deletes a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1017,22 +1018,7 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Deletes a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param environmentTypeName The name of the environment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String projectName, String environmentTypeName) {
-        deleteAsync(resourceGroupName, projectName, environmentTypeName).block();
-    }
-
-    /**
-     * Deletes a project environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -1048,9 +1034,25 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     }
 
     /**
+     * Deletes a project environment type.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param environmentTypeName The name of the environment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String projectName, String environmentTypeName) {
+        deleteWithResponse(resourceGroupName, projectName, environmentTypeName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1086,7 +1088,8 @@ public final class ProjectEnvironmentTypesClientImpl implements ProjectEnvironme
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

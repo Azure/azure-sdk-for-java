@@ -39,7 +39,6 @@ import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Objects;
 
 /**
  * HttpClient implementation for OkHttp.
@@ -47,7 +46,12 @@ import java.util.Objects;
 class OkHttpAsyncHttpClient implements HttpClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpAsyncHttpClient.class);
-    private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(new byte[0]);
+    private static final byte[] EMPTY_BODY = new byte[0];
+    private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
+
+    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
+    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
+    private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     final OkHttpClient httpClient;
 
@@ -62,7 +66,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyConvertHeaders = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         return Mono.create(sink -> sink.onRequest(value -> {
@@ -82,7 +89,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 .subscribe(okHttpRequest -> {
                     try {
                         Call call = httpClient.newCall(okHttpRequest);
-                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
+                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
+                            eagerlyConvertHeaders));
                         sink.onCancel(call::cancel);
                     } catch (Exception ex) {
                         sink.error(ex);
@@ -93,13 +101,17 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyConvertHeaders = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         Request okHttpRequest = toOkHttpRequest(request, progressReporter);
         try {
             Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
-            return toHttpResponse(request, okHttpResponse, eagerlyReadResponse);
+            return toHttpResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody,
+                eagerlyConvertHeaders);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -190,24 +202,33 @@ class OkHttpAsyncHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private static HttpResponse toHttpResponse(
-        HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse) throws IOException {
+    private static HttpResponse toHttpResponse(HttpRequest request, okhttp3.Response response,
+        boolean eagerlyReadResponse, boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
+        // For now, eagerlyReadResponse and ignoreResponseBody works the same.
+//        if (ignoreResponseBody) {
+//            ResponseBody body = response.body();
+//            if (body != null) {
+//                if (body.contentLength() > 0) {
+//                    LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+//                        + "Response body will be ignored as directed.");
+//                }
+//                body.close();
+//            }
+//
+//            return new OkHttpAsyncBufferedResponse(response, request, EMPTY_BODY, eagerlyConvertHeaders);
+//        }
+
         /*
          * Use a buffered response when we are eagerly reading the response from the network and the body isn't
          * empty.
          */
-        if (eagerlyReadResponse) {
+        if (eagerlyReadResponse || ignoreResponseBody) {
             try (ResponseBody body = response.body()) {
-                if (Objects.nonNull(body)) {
-                    byte[] bytes = body.bytes();
-                    return new OkHttpAsyncBufferedResponse(response, request, bytes);
-                } else {
-                    // Body is null, use the non-buffering response.
-                    return new OkHttpAsyncResponse(response, request);
-                }
+                byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
+                return new OkHttpAsyncBufferedResponse(response, request, bytes, eagerlyConvertHeaders);
             }
         } else {
-            return new OkHttpAsyncResponse(response, request);
+            return new OkHttpAsyncResponse(response, request, eagerlyConvertHeaders);
         }
     }
 
@@ -215,11 +236,16 @@ class OkHttpAsyncHttpClient implements HttpClient {
         private final MonoSink<HttpResponse> sink;
         private final HttpRequest request;
         private final boolean eagerlyReadResponse;
+        private final boolean ignoreResponseBody;
+        private final boolean eagerlyConvertHeaders;
 
-        OkHttpCallback(MonoSink<HttpResponse> sink, HttpRequest request, boolean eagerlyReadResponse) {
+        OkHttpCallback(MonoSink<HttpResponse> sink, HttpRequest request, boolean eagerlyReadResponse,
+            boolean ignoreResponseBody, boolean eagerlyConvertHeaders) {
             this.sink = sink;
             this.request = request;
             this.eagerlyReadResponse = eagerlyReadResponse;
+            this.ignoreResponseBody = ignoreResponseBody;
+            this.eagerlyConvertHeaders = eagerlyConvertHeaders;
         }
 
         @SuppressWarnings("NullableProblems")
@@ -238,8 +264,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
             try {
-                HttpResponse httpResponse = toHttpResponse(request, response, eagerlyReadResponse);
-                sink.success(httpResponse);
+                sink.success(toHttpResponse(request, response, eagerlyReadResponse, ignoreResponseBody,
+                    eagerlyConvertHeaders));
             } catch (IOException ex) {
                 // Reading the body bytes may cause an IOException, if it happens propagate it.
                 sink.error(ex);

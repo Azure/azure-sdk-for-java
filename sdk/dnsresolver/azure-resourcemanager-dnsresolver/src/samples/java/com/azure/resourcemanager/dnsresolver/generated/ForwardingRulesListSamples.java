@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ForwardingRules List. */
 public final class ForwardingRulesListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_List.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_List.json
      */
     /**
      * Sample code: List forwarding rules in a DNS forwarding ruleset.

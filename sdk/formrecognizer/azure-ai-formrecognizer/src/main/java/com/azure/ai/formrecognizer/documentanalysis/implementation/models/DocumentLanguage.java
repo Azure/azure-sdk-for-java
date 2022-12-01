@@ -12,15 +12,14 @@ import java.util.List;
 @Fluent
 public final class DocumentLanguage {
     /*
-     * Detected language.  Value may an ISO 639-1 language code (ex. "en",
-     * "fr") or BCP 47 language tag (ex. "zh-Hans").
+     * Detected language.  Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47 language tag (ex.
+     * "zh-Hans").
      */
     @JsonProperty(value = "locale", required = true)
     private String locale;
 
     /*
-     * Location of the text elements in the concatenated content the language
-     * applies to.
+     * Location of the text elements in the concatenated content the language applies to.
      */
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;
@@ -30,6 +29,9 @@ public final class DocumentLanguage {
      */
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
+
+    /** Creates an instance of DocumentLanguage class. */
+    public DocumentLanguage() {}
 
     /**
      * Get the locale property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47

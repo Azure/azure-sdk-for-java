@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateEndpointConnectionProvisioningState. */
+/** The provisioning state, which only appears in the response. */
 public final class PrivateEndpointConnectionProvisioningState
     extends ExpandableStringEnum<PrivateEndpointConnectionProvisioningState> {
     /** Static value InProgress for PrivateEndpointConnectionProvisioningState. */
@@ -40,7 +40,11 @@ public final class PrivateEndpointConnectionProvisioningState
         return fromString(name, PrivateEndpointConnectionProvisioningState.class);
     }
 
-    /** @return known PrivateEndpointConnectionProvisioningState values. */
+    /**
+     * Gets known PrivateEndpointConnectionProvisioningState values.
+     *
+     * @return known PrivateEndpointConnectionProvisioningState values.
+     */
     public static Collection<PrivateEndpointConnectionProvisioningState> values() {
         return values(PrivateEndpointConnectionProvisioningState.class);
     }

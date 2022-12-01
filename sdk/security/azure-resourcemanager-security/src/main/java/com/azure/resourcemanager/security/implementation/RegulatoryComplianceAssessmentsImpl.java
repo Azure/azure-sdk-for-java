@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.RegulatoryComplianceAssessments
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceAssessmentInner;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceAssessment;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceAssessments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegulatoryComplianceAssessmentsImpl implements RegulatoryComplianceAssessments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegulatoryComplianceAssessmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegulatoryComplianceAssessmentsImpl.class);
 
     private final RegulatoryComplianceAssessmentsClient innerClient;
 
@@ -48,24 +47,6 @@ public final class RegulatoryComplianceAssessmentsImpl implements RegulatoryComp
         return Utils.mapPage(inner, inner1 -> new RegulatoryComplianceAssessmentImpl(inner1, this.manager()));
     }
 
-    public RegulatoryComplianceAssessment get(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName) {
-        RegulatoryComplianceAssessmentInner inner =
-            this
-                .serviceClient()
-                .get(
-                    regulatoryComplianceStandardName,
-                    regulatoryComplianceControlName,
-                    regulatoryComplianceAssessmentName);
-        if (inner != null) {
-            return new RegulatoryComplianceAssessmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RegulatoryComplianceAssessment> getWithResponse(
         String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName,
@@ -85,6 +66,24 @@ public final class RegulatoryComplianceAssessmentsImpl implements RegulatoryComp
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RegulatoryComplianceAssessmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegulatoryComplianceAssessment get(
+        String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName,
+        String regulatoryComplianceAssessmentName) {
+        RegulatoryComplianceAssessmentInner inner =
+            this
+                .serviceClient()
+                .get(
+                    regulatoryComplianceStandardName,
+                    regulatoryComplianceControlName,
+                    regulatoryComplianceAssessmentName);
+        if (inner != null) {
+            return new RegulatoryComplianceAssessmentImpl(inner, this.manager());
         } else {
             return null;
         }

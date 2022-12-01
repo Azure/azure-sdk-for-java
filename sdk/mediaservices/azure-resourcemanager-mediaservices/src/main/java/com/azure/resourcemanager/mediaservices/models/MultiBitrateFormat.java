@@ -29,8 +29,8 @@ import java.util.List;
 @Fluent
 public class MultiBitrateFormat extends Format {
     /*
-     * The list of output files to produce.  Each entry in the list is a set of
-     * audio and video layer labels to be muxed together .
+     * The list of output files to produce.  Each entry in the list is a set of audio and video layer labels to be
+     * muxed together .
      */
     @JsonProperty(value = "outputFiles")
     private List<OutputFile> outputFiles;

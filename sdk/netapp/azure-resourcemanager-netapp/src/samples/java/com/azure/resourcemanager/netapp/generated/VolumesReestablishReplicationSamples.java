@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 /** Samples for Volumes ReestablishReplication. */
 public final class VolumesReestablishReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Volumes_ReestablishReplication.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Volumes_ReestablishReplication.json
      */
     /**
      * Sample code: Volumes_ReestablishReplication.

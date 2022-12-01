@@ -11,28 +11,86 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AccountEncryption {
     /*
-     * Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.NetApp, Microsoft.KeyVault
      */
     @JsonProperty(value = "keySource")
-    private String keySource;
+    private KeySource keySource;
+
+    /*
+     * Properties provided by KeVault. Applicable if keySource is 'Microsoft.KeyVault'.
+     */
+    @JsonProperty(value = "keyVaultProperties")
+    private KeyVaultProperties keyVaultProperties;
+
+    /*
+     * Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
+     */
+    @JsonProperty(value = "identity")
+    private EncryptionIdentity identity;
 
     /**
-     * Get the keySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
+     * Microsoft.NetApp, Microsoft.KeyVault.
      *
      * @return the keySource value.
      */
-    public String keySource() {
+    public KeySource keySource() {
         return this.keySource;
     }
 
     /**
-     * Set the keySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Set the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
+     * Microsoft.NetApp, Microsoft.KeyVault.
      *
      * @param keySource the keySource value to set.
      * @return the AccountEncryption object itself.
      */
-    public AccountEncryption withKeySource(String keySource) {
+    public AccountEncryption withKeySource(KeySource keySource) {
         this.keySource = keySource;
+        return this;
+    }
+
+    /**
+     * Get the keyVaultProperties property: Properties provided by KeVault. Applicable if keySource is
+     * 'Microsoft.KeyVault'.
+     *
+     * @return the keyVaultProperties value.
+     */
+    public KeyVaultProperties keyVaultProperties() {
+        return this.keyVaultProperties;
+    }
+
+    /**
+     * Set the keyVaultProperties property: Properties provided by KeVault. Applicable if keySource is
+     * 'Microsoft.KeyVault'.
+     *
+     * @param keyVaultProperties the keyVaultProperties value to set.
+     * @return the AccountEncryption object itself.
+     */
+    public AccountEncryption withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
+        this.keyVaultProperties = keyVaultProperties;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Identity used to authenticate to KeyVault. Applicable if keySource is
+     * 'Microsoft.KeyVault'.
+     *
+     * @return the identity value.
+     */
+    public EncryptionIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity used to authenticate to KeyVault. Applicable if keySource is
+     * 'Microsoft.KeyVault'.
+     *
+     * @param identity the identity value to set.
+     * @return the AccountEncryption object itself.
+     */
+    public AccountEncryption withIdentity(EncryptionIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -42,5 +100,11 @@ public final class AccountEncryption {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (keyVaultProperties() != null) {
+            keyVaultProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 }

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.models.OperationDisplay;
 import com.azure.resourcemanager.sqlvirtualmachine.models.OperationOrigin;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** SQL REST API operation definition. */
 @Immutable
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * The name of the operation being performed on this particular object.
      */
@@ -25,8 +21,7 @@ public final class OperationInner {
     private String name;
 
     /*
-     * The localized display information for this particular operation /
-     * action.
+     * The localized display information for this particular operation / action.
      */
     @JsonProperty(value = "display", access = JsonProperty.Access.WRITE_ONLY)
     private OperationDisplay display;

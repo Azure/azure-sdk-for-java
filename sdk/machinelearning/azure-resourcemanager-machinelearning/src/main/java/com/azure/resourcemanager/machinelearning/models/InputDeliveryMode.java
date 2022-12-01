@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InputDeliveryMode. */
+/** Enum to determine the input data delivery mode. */
 public final class InputDeliveryMode extends ExpandableStringEnum<InputDeliveryMode> {
     /** Static value ReadOnlyMount for InputDeliveryMode. */
     public static final InputDeliveryMode READ_ONLY_MOUNT = fromString("ReadOnlyMount");

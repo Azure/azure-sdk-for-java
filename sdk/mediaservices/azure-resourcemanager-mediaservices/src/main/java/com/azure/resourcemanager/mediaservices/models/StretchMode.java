@@ -8,7 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StretchMode. */
+/**
+ * The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize.
+ */
 public final class StretchMode extends ExpandableStringEnum<StretchMode> {
     /** Static value None for StretchMode. */
     public static final StretchMode NONE = fromString("None");

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlVirtualMachines List. */
 public final class SqlVirtualMachinesListSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/ListSubscriptionSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListSubscriptionSqlVirtualMachine.json
      */
     /**
      * Sample code: Gets all SQL virtual machines in a subscription.

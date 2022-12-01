@@ -25,7 +25,29 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Fluent builder for creating instances of {@link LogsIngestionClient} and {@link LogsIngestionAsyncClient}.
+ * Fluent builder for creating instances of {@link LogsIngestionClient} and {@link LogsIngestionAsyncClient}. To
+ * create a client, {@link #endpoint data collection endpoint} and {@link #credential(TokenCredential)
+ * AAD token} are required.
+ *
+ * <p><strong>Instantiating an asynchronous Logs ingestion client</strong></p>
+ * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ * <pre>
+ * LogsIngestionAsyncClient logsIngestionAsyncClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ *
+ * <p><strong>Instantiating a synchronous Logs ingestion client</strong></p>
+ * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
+ * <pre>
+ * LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {LogsIngestionClient.class, LogsIngestionAsyncClient.class})
 public final class LogsIngestionClientBuilder implements ConfigurationTrait<LogsIngestionClientBuilder>,

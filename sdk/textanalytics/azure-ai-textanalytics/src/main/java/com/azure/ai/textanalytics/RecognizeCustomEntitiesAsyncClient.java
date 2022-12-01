@@ -55,9 +55,11 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeCustomEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
@@ -71,14 +73,22 @@ class RecognizeCustomEntitiesAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizeCustomEntitiesAsyncClient.class);
     private final AnalyzeTextsImpl service;
 
-    RecognizeCustomEntitiesAsyncClient(AnalyzeTextsImpl service) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    RecognizeCustomEntitiesAsyncClient(AnalyzeTextsImpl service,
+                                       TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     PollerFlux<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux> recognizeCustomEntities(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         RecognizeCustomEntitiesOptions options, Context context) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullRecognizeCustomEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -86,12 +96,14 @@ class RecognizeCustomEntitiesAsyncClient {
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -127,6 +139,10 @@ class RecognizeCustomEntitiesAsyncClient {
         recognizeCustomEntitiesPagedIterable(Iterable<TextDocumentInput> documents,
             String projectName, String deploymentName, RecognizeCustomEntitiesOptions options, Context context) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullRecognizeCustomEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -134,12 +150,14 @@ class RecognizeCustomEntitiesAsyncClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -338,7 +356,8 @@ class RecognizeCustomEntitiesAsyncClient {
             status = LongRunningOperationStatus.fromString(
                 analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
-
+        RecognizeCustomEntitiesOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getDisplayName());
         RecognizeCustomEntitiesOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
         RecognizeCustomEntitiesOperationDetailPropertiesHelper.setLastModifiedAt(

@@ -21,6 +21,7 @@ import com.azure.resourcemanager.securityinsights.models.MailClusterEntity;
 import com.azure.resourcemanager.securityinsights.models.MailMessageEntity;
 import com.azure.resourcemanager.securityinsights.models.MailboxEntity;
 import com.azure.resourcemanager.securityinsights.models.MalwareEntity;
+import com.azure.resourcemanager.securityinsights.models.NicEntity;
 import com.azure.resourcemanager.securityinsights.models.ProcessEntity;
 import com.azure.resourcemanager.securityinsights.models.RegistryKeyEntity;
 import com.azure.resourcemanager.securityinsights.models.RegistryValueEntity;
@@ -61,13 +62,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "RegistryValue", value = RegistryValueEntity.class),
     @JsonSubTypes.Type(name = "SecurityGroup", value = SecurityGroupEntity.class),
     @JsonSubTypes.Type(name = "SubmissionMail", value = SubmissionMailEntity.class),
-    @JsonSubTypes.Type(name = "Url", value = UrlEntity.class)
+    @JsonSubTypes.Type(name = "Url", value = UrlEntity.class),
+    @JsonSubTypes.Type(name = "Nic", value = NicEntity.class)
 })
 @Immutable
 public class EntityInner extends ProxyResource {
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;

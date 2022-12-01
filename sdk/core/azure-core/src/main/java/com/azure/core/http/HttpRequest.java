@@ -182,6 +182,19 @@ public class HttpRequest {
     }
 
     /**
+     * Set a request header, replacing any existing value. A null for {@code value} will remove the header if one with
+     * matching name exists.
+     *
+     * @param headerName the header name
+     * @param value the header value
+     * @return this HttpRequest
+     */
+    public HttpRequest setHeader(HttpHeaderName headerName, String value) {
+        headers.set(headerName, value);
+        return this;
+    }
+
+    /**
      * Get the request content.
      *
      * @return the content to be sent
@@ -262,12 +275,12 @@ public class HttpRequest {
     }
 
     private void setContentLength(long contentLength) {
-        headers.set("Content-Length", String.valueOf(contentLength));
+        headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
     }
 
     /**
      * Creates a copy of the request.
-     *
+     * <p>
      * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
      * backup. This means that the cloned HttpHeaders and body must not be able to change from side effects of this
      * HttpRequest.

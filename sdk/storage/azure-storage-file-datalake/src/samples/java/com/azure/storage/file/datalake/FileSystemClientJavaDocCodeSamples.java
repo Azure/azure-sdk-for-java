@@ -749,7 +749,7 @@ public class FileSystemClientJavaDocCodeSamples {
 //        DataLakeFileSystemClient fileSystemClient = client.rename("newFileSystemName");
 //        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String
 //    }
-//
+
 //    /**
 //     * Code snippet for {@link DataLakeFileSystemClient#renameWithResponse(FileSystemRenameOptions, Duration, Context)}
 //     */

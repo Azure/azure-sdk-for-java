@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class TeradataTableDataset extends Dataset {
     /*
-     * The database name of Teradata. Type: string (or Expression with
-     * resultType string).
+     * The database name of Teradata. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database")
     private Object database;
 
     /*
-     * The table name of Teradata. Type: string (or Expression with resultType
-     * string).
+     * The table name of Teradata. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;

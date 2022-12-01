@@ -9,7 +9,11 @@ import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** StreamingEndpointListResult The streaming endpoint list result. */
+/**
+ * StreamingEndpointListResult
+ *
+ * <p>The streaming endpoint list result.
+ */
 @Fluent
 public final class StreamingEndpointListResult {
     /*
@@ -25,8 +29,7 @@ public final class StreamingEndpointListResult {
     private Integer odataCount;
 
     /*
-     * The link to the next set of results. Not empty if value contains
-     * incomplete list of streaming endpoints.
+     * The link to the next set of results. Not empty if value contains incomplete list of streaming endpoints.
      */
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;

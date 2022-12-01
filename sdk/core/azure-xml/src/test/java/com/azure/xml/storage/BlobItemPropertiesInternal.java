@@ -8,6 +8,7 @@ import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 
+import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -1072,11 +1073,12 @@ public class BlobItemPropertiesInternal implements XmlSerializable<BlobItemPrope
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
-        return null;
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("Properties");
+        return xmlWriter.writeEndElement();
     }
 
-    public static BlobItemPropertiesInternal fromXml(XmlReader xmlReader) {
+    public static BlobItemPropertiesInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
         return xmlReader.readObject("Properties", reader -> {
             BlobItemPropertiesInternal deserialized = new BlobItemPropertiesInternal();
 

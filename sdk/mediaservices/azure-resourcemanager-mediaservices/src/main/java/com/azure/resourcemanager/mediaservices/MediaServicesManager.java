@@ -283,7 +283,7 @@ public final class MediaServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mediaservices")
                 .append("/")
-                .append("2.1.0");
+                .append("2.2.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

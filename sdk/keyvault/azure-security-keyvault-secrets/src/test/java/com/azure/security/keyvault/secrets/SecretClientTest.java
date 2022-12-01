@@ -63,6 +63,7 @@ public class SecretClientTest extends SecretClientTestBase {
             String callerMethod = (String) context.getData("caller-method").orElse("");
             return (callerMethod.contains("list") || callerMethod.contains("getSecrets")
                 || callerMethod.contains("getSecretVersions") || callerMethod.contains("delete")
+                || callerMethod.contains("getDeletedSecrets")
                 || callerMethod.contains("recover"));
         };
         return new AssertingHttpClientBuilder(httpClient)

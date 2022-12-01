@@ -8,6 +8,7 @@ import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 
+import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +21,21 @@ public class BlobTags implements XmlSerializable<BlobTags> {
         }
 
         @Override
-        public XmlWriter toXml(XmlWriter xmlWriter) {
+        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+            if (items == null || items.isEmpty()) {
+                return xmlWriter.writeStartSelfClosingElement("TagSet");
+            }
 
-            return null;
+            xmlWriter.writeStartElement("TagSet");
+
+            for (BlobTag tag : items) {
+                xmlWriter.writeXml(tag);
+            }
+
+            return xmlWriter.writeEndElement();
         }
 
-        public static TagSetWrapper fromXml(XmlReader xmlReader) {
+        public static TagSetWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
             return xmlReader.readObject("TagSet", reader -> {
                 List<BlobTag> items = null;
 
@@ -75,7 +85,7 @@ public class BlobTags implements XmlSerializable<BlobTags> {
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("Tags");
 
         xmlWriter.writeXml(blobTagSet);
@@ -83,7 +93,7 @@ public class BlobTags implements XmlSerializable<BlobTags> {
         return xmlWriter.writeEndElement();
     }
 
-    public static BlobTags fromXml(XmlReader xmlReader) {
+    public static BlobTags fromXml(XmlReader xmlReader) throws XMLStreamException {
         return xmlReader.readObject("Tags", reader -> {
             BlobTags result = new BlobTags();
 

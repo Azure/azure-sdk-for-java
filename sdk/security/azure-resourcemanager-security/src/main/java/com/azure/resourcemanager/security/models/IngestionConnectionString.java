@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Connection string for ingesting security data and logs. */
 @Immutable
 public final class IngestionConnectionString {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IngestionConnectionString.class);
-
     /*
      * The region where ingested logs and data resides
      */
@@ -25,6 +21,10 @@ public final class IngestionConnectionString {
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
+
+    /** Creates an instance of IngestionConnectionString class. */
+    public IngestionConnectionString() {
+    }
 
     /**
      * Get the location property: The region where ingested logs and data resides.

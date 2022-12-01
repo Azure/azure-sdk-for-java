@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class RecognizeCustomEntitiesOperationDetail {
     private String operationId;
+    private String displayName;
     private OffsetDateTime createdAt;
     private OffsetDateTime expiresAt;
     private OffsetDateTime lastModifiedAt;
@@ -26,6 +27,11 @@ public final class RecognizeCustomEntitiesOperationDetail {
                 public void setOperationId(RecognizeCustomEntitiesOperationDetail operationResult,
                     String operationId) {
                     operationResult.setOperationId(operationId);
+                }
+
+                @Override
+                public void setDisplayName(RecognizeCustomEntitiesOperationDetail operationDetail, String name) {
+                    operationDetail.setDisplayName(name);
                 }
 
                 @Override
@@ -59,6 +65,15 @@ public final class RecognizeCustomEntitiesOperationDetail {
     }
 
     /**
+     * Gets the displayName property of the {@link RecognizeCustomEntitiesOperationDetail}.
+     *
+     * @return The displayName property of the {@link RecognizeCustomEntitiesOperationDetail}.
+     */
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    /**
      * Gets the created time of an action.
      *
      * @return The created time of an action.
@@ -87,6 +102,10 @@ public final class RecognizeCustomEntitiesOperationDetail {
 
     private void setOperationId(String operationId) {
         this.operationId = operationId;
+    }
+
+    private void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     private void setCreatedAt(OffsetDateTime createdAt) {

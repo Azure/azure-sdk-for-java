@@ -40,6 +40,16 @@ public final class LinuxConfiguration {
     @JsonProperty(value = "patchSettings")
     private LinuxPatchSettings patchSettings;
 
+    /*
+     * Indicates whether VMAgent Platform Updates is enabled for the Linux virtual machine. Default value is false.
+     */
+    @JsonProperty(value = "enableVMAgentPlatformUpdates")
+    private Boolean enableVMAgentPlatformUpdates;
+
+    /** Creates an instance of LinuxConfiguration class. */
+    public LinuxConfiguration() {
+    }
+
     /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
      *
@@ -123,6 +133,28 @@ public final class LinuxConfiguration {
      */
     public LinuxConfiguration withPatchSettings(LinuxPatchSettings patchSettings) {
         this.patchSettings = patchSettings;
+        return this;
+    }
+
+    /**
+     * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
+     * Linux virtual machine. Default value is false.
+     *
+     * @return the enableVMAgentPlatformUpdates value.
+     */
+    public Boolean enableVMAgentPlatformUpdates() {
+        return this.enableVMAgentPlatformUpdates;
+    }
+
+    /**
+     * Set the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
+     * Linux virtual machine. Default value is false.
+     *
+     * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
+     * @return the LinuxConfiguration object itself.
+     */
+    public LinuxConfiguration withEnableVMAgentPlatformUpdates(Boolean enableVMAgentPlatformUpdates) {
+        this.enableVMAgentPlatformUpdates = enableVMAgentPlatformUpdates;
         return this;
     }
 

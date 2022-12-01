@@ -8,18 +8,17 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import reactor.util.context.Context;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
 /**
- * Sample to demonstrate configuration using environment variables or system properties with  {@link AutoConfiguredOpenTelemetrySdk}
+ * Sample to demonstrate configuration using global OpenTelemetry or using {@code AutoConfiguredOpenTelemetrySdk}
  * https://github.com/open-telemetry/opentelemetry-java/tree/main/sdk-extensions/autoconfigure
  * and listing secrets from a Key Vault using the {@link SecretAsyncClient}.
  */
@@ -84,8 +83,11 @@ public class ListKeyVaultSecretsAutoConfigurationSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureTracing() {
-        OpenTelemetrySdk sdk = AutoConfiguredOpenTelemetrySdk.initialize()
-            .getOpenTelemetrySdk();
-        return sdk.getTracer("Async-List-KV-Secrets-Sample");
+        // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:
+
+        // OpenTelemetrySdk sdk = AutoConfiguredOpenTelemetrySdk.initialize()
+        //    .getOpenTelemetrySdk();
+
+        return GlobalOpenTelemetry.getTracer("Async-List-KV-Secrets-Sample");
     }
 }

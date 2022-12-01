@@ -25,41 +25,38 @@ import java.util.List;
 @Fluent
 public class JobInputClip extends JobInput {
     /*
-     * List of files. Required for JobInputHttp. Maximum of 4000 characters
-     * each. Query strings will not be returned in service responses to prevent
-     * sensitive data exposure.
+     * List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings will not be returned in
+     * service responses to prevent sensitive data exposure.
      */
     @JsonProperty(value = "files")
     private List<String> files;
 
     /*
-     * Defines a point on the timeline of the input media at which processing
-     * will start. Defaults to the beginning of the input media.
+     * Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of
+     * the input media.
      */
     @JsonProperty(value = "start")
     private ClipTime start;
 
     /*
-     * Defines a point on the timeline of the input media at which processing
-     * will end. Defaults to the end of the input media.
+     * Defines a point on the timeline of the input media at which processing will end. Defaults to the end of the
+     * input media.
      */
     @JsonProperty(value = "end")
     private ClipTime end;
 
     /*
-     * A label that is assigned to a JobInputClip, that is used to satisfy a
-     * reference used in the Transform. For example, a Transform can be
-     * authored so as to take an image file with the label 'xyz' and apply it
-     * as an overlay onto the input video before it is encoded. When submitting
-     * a Job, exactly one of the JobInputs should be the image file, and it
-     * should have the label 'xyz'.
+     * A label that is assigned to a JobInputClip, that is used to satisfy a reference used in the Transform. For
+     * example, a Transform can be authored so as to take an image file with the label 'xyz' and apply it as an overlay
+     * onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should be the
+     * image file, and it should have the label 'xyz'.
      */
     @JsonProperty(value = "label")
     private String label;
 
     /*
-     * Defines a list of InputDefinitions. For each InputDefinition, it defines
-     * a list of track selections and related metadata.
+     * Defines a list of InputDefinitions. For each InputDefinition, it defines a list of track selections and related
+     * metadata.
      */
     @JsonProperty(value = "inputDefinitions")
     private List<InputDefinition> inputDefinitions;

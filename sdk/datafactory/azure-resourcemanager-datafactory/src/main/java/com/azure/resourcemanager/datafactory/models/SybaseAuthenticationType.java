@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SybaseAuthenticationType. */
+/** AuthenticationType to be used for connection. */
 public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseAuthenticationType> {
     /** Static value Basic for SybaseAuthenticationType. */
     public static final SybaseAuthenticationType BASIC = fromString("Basic");

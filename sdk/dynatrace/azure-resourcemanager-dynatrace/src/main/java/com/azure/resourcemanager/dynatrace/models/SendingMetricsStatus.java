@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SendingMetricsStatus. */
+/** Indicates whether metrics are being sent. */
 public final class SendingMetricsStatus extends ExpandableStringEnum<SendingMetricsStatus> {
     /** Static value Enabled for SendingMetricsStatus. */
     public static final SendingMetricsStatus ENABLED = fromString("Enabled");

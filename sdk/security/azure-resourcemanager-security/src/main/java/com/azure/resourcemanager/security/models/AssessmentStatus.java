@@ -6,14 +6,11 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of the assessment. */
 @Fluent
-public final class AssessmentStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssessmentStatus.class);
-
+public class AssessmentStatus {
     /*
      * Programmatic code for the status of the assessment
      */
@@ -31,6 +28,10 @@ public final class AssessmentStatus {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of AssessmentStatus class. */
+    public AssessmentStatus() {
+    }
 
     /**
      * Get the code property: Programmatic code for the status of the assessment.
@@ -99,9 +100,11 @@ public final class AssessmentStatus {
      */
     public void validate() {
         if (code() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property code in model AssessmentStatus"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssessmentStatus.class);
 }

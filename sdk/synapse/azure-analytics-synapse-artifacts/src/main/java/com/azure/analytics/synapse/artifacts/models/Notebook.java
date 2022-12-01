@@ -29,6 +29,12 @@ public final class Notebook {
     private BigDataPoolReference bigDataPool;
 
     /*
+     * The spark configuration of the spark job.
+     */
+    @JsonProperty(value = "targetSparkConfiguration")
+    private SparkConfigurationReference targetSparkConfiguration;
+
+    /*
      * Session properties.
      */
     @JsonProperty(value = "sessionProperties")
@@ -41,15 +47,13 @@ public final class Notebook {
     private NotebookMetadata metadata;
 
     /*
-     * Notebook format (major number). Incremented between backwards
-     * incompatible changes to the notebook format.
+     * Notebook format (major number). Incremented between backwards incompatible changes to the notebook format.
      */
     @JsonProperty(value = "nbformat", required = true)
     private int nbformat;
 
     /*
-     * Notebook format (minor number). Incremented for backward compatible
-     * changes to the notebook format.
+     * Notebook format (minor number). Incremented for backward compatible changes to the notebook format.
      */
     @JsonProperty(value = "nbformat_minor", required = true)
     private int nbformatMinor;
@@ -61,8 +65,7 @@ public final class Notebook {
     private List<NotebookCell> cells;
 
     /*
-     * The folder that this notebook is in. If not specified, this notebook
-     * will appear at the root level.
+     * The folder that this notebook is in. If not specified, this notebook will appear at the root level.
      */
     @JsonProperty(value = "folder")
     private NotebookFolder folder;
@@ -109,6 +112,26 @@ public final class Notebook {
      */
     public Notebook setBigDataPool(BigDataPoolReference bigDataPool) {
         this.bigDataPool = bigDataPool;
+        return this;
+    }
+
+    /**
+     * Get the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @return the targetSparkConfiguration value.
+     */
+    public SparkConfigurationReference getTargetSparkConfiguration() {
+        return this.targetSparkConfiguration;
+    }
+
+    /**
+     * Set the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @param targetSparkConfiguration the targetSparkConfiguration value to set.
+     * @return the Notebook object itself.
+     */
+    public Notebook setTargetSparkConfiguration(SparkConfigurationReference targetSparkConfiguration) {
+        this.targetSparkConfiguration = targetSparkConfiguration;
         return this;
     }
 

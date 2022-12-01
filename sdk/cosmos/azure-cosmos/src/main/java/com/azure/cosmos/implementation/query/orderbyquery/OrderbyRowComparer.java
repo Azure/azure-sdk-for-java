@@ -4,8 +4,6 @@
 package com.azure.cosmos.implementation.query.orderbyquery;
 
 import com.azure.cosmos.implementation.query.ItemComparator;
-import com.azure.cosmos.implementation.query.ItemType;
-import com.azure.cosmos.implementation.query.ItemTypeHelper;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.query.SortOrder;
 import org.slf4j.Logger;
@@ -24,7 +22,6 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
     private static final long serialVersionUID = 7296627879628897315L;
 
     private final List<SortOrder> sortOrders;
-    private volatile List<ItemType> itemTypes;
 
     public OrderbyRowComparer(Collection<SortOrder> sortOrders) {
         this.sortOrders = new ArrayList<>(sortOrders);
@@ -43,17 +40,6 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
 
             if (result1.size() != this.sortOrders.size()) {
                 throw new IllegalStateException("OrderByItems cannot have a different size than sort orders.");
-            }
-
-            if (this.itemTypes == null) {
-                synchronized (this) {
-                    if (this.itemTypes == null) {
-                        this.itemTypes = new ArrayList<ItemType>(result1.size());
-                        for (QueryItem item : result1) {
-                            this.itemTypes.add(ItemTypeHelper.getOrderByItemType(item.getItem()));
-                        }
-                    }
-                }
             }
 
             for (int i = 0; i < result1.size(); ++i) {

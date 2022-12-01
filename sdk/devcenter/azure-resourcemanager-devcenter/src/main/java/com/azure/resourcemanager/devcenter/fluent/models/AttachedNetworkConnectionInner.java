@@ -9,6 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an attached NetworkConnection. */
@@ -25,6 +26,10 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of AttachedNetworkConnectionInner class. */
+    public AttachedNetworkConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: Attached NetworkConnection properties.
@@ -49,7 +54,7 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

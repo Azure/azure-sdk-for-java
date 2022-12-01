@@ -1,0 +1,53 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/model?signed=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0d778c4d-8c87-4de1-84c0-638842763d79"
+    },
+    "Response" : {
+      "content-length" : "1865",
+      "x-envoy-upstream-service-time" : "107",
+      "apim-request-id" : "19658551-a634-41b4-9e26-83fc2e90b903",
+      "Last-Modified" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "content-disposition" : "attachment; filename=model.vw.zip; filename*=UTF-8''model.vw.zip",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "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",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/model",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "14252802-0107-4f5e-9564-93debbfebf4e",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "194",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "cdb3d2e8-1c31-466b-bef8-067a960a062b",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

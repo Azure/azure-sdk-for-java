@@ -32,6 +32,13 @@ public interface AccountModel {
     String version();
 
     /**
+     * Gets the callRateLimit property: The call rate limit Cognitive Services account.
+     *
+     * @return the callRateLimit value.
+     */
+    CallRateLimit callRateLimit();
+
+    /**
      * Gets the baseModel property: Base Model Identifier.
      *
      * @return the baseModel value.

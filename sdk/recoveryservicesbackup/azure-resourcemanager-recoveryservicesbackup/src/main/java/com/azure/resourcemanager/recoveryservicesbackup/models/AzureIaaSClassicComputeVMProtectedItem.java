@@ -16,18 +16,8 @@ import java.util.Map;
 @JsonTypeName("Microsoft.ClassicCompute/virtualMachines")
 @Fluent
 public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmProtectedItem {
-    /** {@inheritDoc} */
-    @Override
-    public AzureIaaSClassicComputeVMProtectedItem withFriendlyName(String friendlyName) {
-        super.withFriendlyName(friendlyName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureIaaSClassicComputeVMProtectedItem withVirtualMachineId(String virtualMachineId) {
-        super.withVirtualMachineId(virtualMachineId);
-        return this;
+    /** Creates an instance of AzureIaaSClassicComputeVMProtectedItem class. */
+    public AzureIaaSClassicComputeVMProtectedItem() {
     }
 
     /** {@inheritDoc} */
@@ -41,13 +31,6 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
     @Override
     public AzureIaaSClassicComputeVMProtectedItem withProtectionState(ProtectionState protectionState) {
         super.withProtectionState(protectionState);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureIaaSClassicComputeVMProtectedItem withHealthStatus(HealthStatus healthStatus) {
-        super.withHealthStatus(healthStatus);
         return this;
     }
 
@@ -74,20 +57,6 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
 
     /** {@inheritDoc} */
     @Override
-    public AzureIaaSClassicComputeVMProtectedItem withLastBackupTime(OffsetDateTime lastBackupTime) {
-        super.withLastBackupTime(lastBackupTime);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureIaaSClassicComputeVMProtectedItem withProtectedItemDataId(String protectedItemDataId) {
-        super.withProtectedItemDataId(protectedItemDataId);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public AzureIaaSClassicComputeVMProtectedItem withExtendedInfo(AzureIaaSvmProtectedItemExtendedInfo extendedInfo) {
         super.withExtendedInfo(extendedInfo);
         return this;
@@ -97,20 +66,6 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
     @Override
     public AzureIaaSClassicComputeVMProtectedItem withExtendedProperties(ExtendedProperties extendedProperties) {
         super.withExtendedProperties(extendedProperties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureIaaSClassicComputeVMProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureIaaSClassicComputeVMProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
         return this;
     }
 
@@ -212,6 +167,13 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
     @Override
     public AzureIaaSClassicComputeVMProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSClassicComputeVMProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

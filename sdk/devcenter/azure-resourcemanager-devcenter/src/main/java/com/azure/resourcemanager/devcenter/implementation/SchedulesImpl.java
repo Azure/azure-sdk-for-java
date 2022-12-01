@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devcenter.fluent.SchedulesClient;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devcenter.models.Schedule;
-import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 import com.azure.resourcemanager.devcenter.models.Schedules;
 
 public final class SchedulesImpl implements Schedules {
@@ -40,15 +39,6 @@ public final class SchedulesImpl implements Schedules {
         return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public Schedule get(String resourceGroupName, String projectName, String poolName, String scheduleName) {
-        ScheduleInner inner = this.serviceClient().get(resourceGroupName, projectName, poolName, scheduleName);
-        if (inner != null) {
-            return new ScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Schedule> getWithResponse(
         String resourceGroupName,
         String projectName,
@@ -69,35 +59,13 @@ public final class SchedulesImpl implements Schedules {
         }
     }
 
-    public void update(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top) {
-        this.serviceClient().update(resourceGroupName, projectName, poolName, scheduleName, body, top);
-    }
-
-    public void update(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
-        this.serviceClient().update(resourceGroupName, projectName, poolName, scheduleName, body);
-    }
-
-    public void update(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context) {
-        this.serviceClient().update(resourceGroupName, projectName, poolName, scheduleName, body, top, context);
-    }
-
-    public void delete(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top) {
-        this.serviceClient().delete(resourceGroupName, projectName, poolName, scheduleName, top);
+    public Schedule get(String resourceGroupName, String projectName, String poolName, String scheduleName) {
+        ScheduleInner inner = this.serviceClient().get(resourceGroupName, projectName, poolName, scheduleName);
+        if (inner != null) {
+            return new ScheduleImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String projectName, String poolName, String scheduleName) {

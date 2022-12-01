@@ -11,7 +11,7 @@ import com.azure.resourcemanager.securityinsights.models.MetadataModel;
 /** Samples for Metadata Update. */
 public final class MetadataUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/PatchMetadata.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/PatchMetadata.json
      */
     /**
      * Sample code: Update metadata.

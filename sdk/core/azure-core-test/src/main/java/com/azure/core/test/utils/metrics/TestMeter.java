@@ -6,6 +6,7 @@ package com.azure.core.test.utils.metrics;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
+import com.azure.core.util.metrics.LongGauge;
 import com.azure.core.util.metrics.Meter;
 
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TestMeter implements Meter {
     private final Map<String, TestHistogram> histograms = new ConcurrentHashMap<>();
     private final Map<String, TestCounter> counters = new ConcurrentHashMap<>();
+    private final Map<String, TestGauge> gauges = new ConcurrentHashMap<>();
     private final Map<String, TestCounter> upDownCounters = new ConcurrentHashMap<>();
 
     private final boolean isEnabled;
@@ -50,6 +52,11 @@ public class TestMeter implements Meter {
     @Override
     public LongCounter createLongUpDownCounter(String name, String description, String unit) {
         return upDownCounters.computeIfAbsent(name, n -> new TestCounter(isEnabled));
+    }
+
+    @Override
+    public LongGauge createLongGauge(String name, String description, String unit) {
+        return gauges.computeIfAbsent(name, n -> new TestGauge(isEnabled));
     }
 
     @Override
@@ -92,5 +99,15 @@ public class TestMeter implements Meter {
     public Map<String, TestCounter> getUpDownCounters() {
         return upDownCounters;
     }
+
+    /**
+     * Gets gauges created with this meter.
+     *
+     * @return map of counters (by gauge name)
+     */
+    public Map<String, TestGauge> getGauges() {
+        return gauges;
+    }
+
 }
 

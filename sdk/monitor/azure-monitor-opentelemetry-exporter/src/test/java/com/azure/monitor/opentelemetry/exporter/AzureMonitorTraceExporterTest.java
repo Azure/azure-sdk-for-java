@@ -19,6 +19,7 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.data.StatusData;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * Unit tests for {@AzureMonitorExporter}.
+ * Unit tests for {@link AzureMonitorTraceExporter}.
  */
 public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase {
 
@@ -41,18 +42,19 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
 
     @Test
     public void testExportRequestData() {
-        String connectionStringTemplate = "InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com";
-        String connectionString = Configuration.getGlobalConfiguration()
-            .get("APPLICATIONINSIGHTS_CONNECTION_STRING", connectionStringTemplate);
-        AzureMonitorTraceExporter azureMonitorTraceExporter = getClientBuilder()
-            .connectionString(connectionString)
-            .buildTraceExporter();
-        CompletableResultCode export = azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
+        String connectionStringTemplate =
+            "InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com";
+        String connectionString =
+            Configuration.getGlobalConfiguration()
+                .get("APPLICATIONINSIGHTS_CONNECTION_STRING", connectionStringTemplate);
+        SpanExporter azureMonitorTraceExporter =
+            getClientBuilder().connectionString(connectionString).buildTraceExporter();
+        CompletableResultCode export =
+            azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
         export.join(30, TimeUnit.SECONDS);
         Assertions.assertTrue(export.isDone());
         Assertions.assertTrue(export.isSuccess());
     }
-
 
     static class RequestSpanData implements SpanData {
 
@@ -83,7 +85,7 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
 
         @Override
         public Resource getResource() {
-            return null;
+            return Resource.create(Attributes.empty());
         }
 
         @Override
@@ -93,7 +95,7 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
 
         @Override
         public InstrumentationScopeInfo getInstrumentationScopeInfo() {
-            return InstrumentationScopeInfo.create("TestLib", "1", "2");
+            return InstrumentationScopeInfo.create("TestLib", "1", null);
         }
 
         @Override

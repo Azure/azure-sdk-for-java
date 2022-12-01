@@ -5,15 +5,15 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
@@ -42,7 +42,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
 
     private DocumentModelAdministrationClient getDocumentModelAdministrationClient(HttpClient httpClient,
                                                                                    DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, true).buildClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildClient();
     }
 
     /**
@@ -55,9 +55,10 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
         DocumentAnalysisClient documentAnalysisClient = getDocumentModelAdministrationClient(httpClient, serviceVersion)
             .getDocumentAnalysisClient();
         blankPdfDataRunner((data, dataLength) -> {
-            SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller =
-                documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
-                    .setPollInterval(durationTestMode);
+            SyncPoller<OperationResult, AnalyzeResult> syncPoller =
+                documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout",
+                    BinaryData.fromStream(data, dataLength))
+                        .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             assertNotNull(syncPoller.getFinalResult());
         });
@@ -70,7 +71,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void getModelNullModelID(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        assertThrows(IllegalArgumentException.class, () -> client.getModel(null));
+        assertThrows(IllegalArgumentException.class, () -> client.getDocumentModel(null));
     }
 
     /**
@@ -81,7 +82,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void getModelNonExistingModelID(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-            client.getModel(NON_EXIST_MODEL_ID));
+            client.getDocumentModel(NON_EXIST_MODEL_ID));
         final ResponseError responseError = (ResponseError) exception.getValue();
         assertEquals("NotFound", responseError.getCode());
     }
@@ -95,12 +96,12 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingDataSasUrl) -> {
             DocumentModelDetails documentModelDetails =
-                client.beginBuildModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
+                client.beginBuildDocumentModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode).getFinalResult();
             Response<DocumentModelDetails> documentModelResponse =
-                client.getModelWithResponse(documentModelDetails.getModelId(),
+                client.getDocumentModelWithResponse(documentModelDetails.getModelId(),
                     Context.NONE);
-            client.deleteModel(documentModelDetails.getModelId());
+            client.deleteDocumentModel(documentModelDetails.getModelId());
 
             assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
             validateDocumentModelData(documentModelResponse.getValue());
@@ -138,7 +139,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void deleteModelNonExistingModelID(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-            client.deleteModel(NON_EXIST_MODEL_ID));
+            client.deleteDocumentModel(NON_EXIST_MODEL_ID));
         final ResponseError responseError = (ResponseError) exception.getValue();
         assertEquals("NotFound", responseError.getCode());
     }
@@ -149,18 +150,18 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingDataSasUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller =
-                client.beginBuildModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller =
+                client.beginBuildDocumentModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             DocumentModelDetails createdModel = syncPoller.getFinalResult();
 
             final Response<Void> deleteModelWithResponse
-                = client.deleteModelWithResponse(createdModel.getModelId(), Context.NONE);
+                = client.deleteDocumentModelWithResponse(createdModel.getModelId(), Context.NONE);
 
             assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
             final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.getModelWithResponse(createdModel.getModelId(), Context.NONE));
+                client.getDocumentModelWithResponse(createdModel.getModelId(), Context.NONE));
             final ResponseError responseError = (ResponseError) exception.getValue();
             assertEquals("NotFound", responseError.getCode());
         });
@@ -174,7 +175,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void listModels(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         int pageCount = 0;
-        for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse : client.listModels().iterableByPage()) {
+        for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse : client.listDocumentModels().iterableByPage()) {
             List<DocumentModelSummary> modelInfoList = documentModelSummaryPagedResponse.getValue();
             modelInfoList.forEach(documentModelSummary -> {
                 assertNotNull(documentModelSummary.getModelId());
@@ -197,7 +198,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         int pageCount = 0;
         for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse
-            : client.listModels(Context.NONE).iterableByPage()) {
+            : client.listDocumentModels(Context.NONE).iterableByPage()) {
             List<DocumentModelSummary> modelInfoList = documentModelSummaryPagedResponse.getValue();
             modelInfoList.forEach(documentModelSummary -> {
                 assertNotNull(documentModelSummary.getModelId());
@@ -219,7 +220,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void beginBuildModelNullInput(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         Exception exception = assertThrows(NullPointerException.class, () ->
-            client.beginBuildModel(null, DocumentModelBuildMode.TEMPLATE));
+            client.beginBuildDocumentModel(null, DocumentModelBuildMode.TEMPLATE));
         assertEquals("'blobContainerUrl' cannot be null.", exception.getMessage());
     }
 
@@ -231,22 +232,22 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void beginCopy(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller.getFinalResult();
 
-            CopyAuthorization target =
+            DocumentModelCopyAuthorization target =
                 client.getCopyAuthorization();
-            SyncPoller<DocumentOperationResult, DocumentModelDetails>
-                copyPoller = client.beginCopyModelTo(actualModel.getModelId(), target)
+            SyncPoller<OperationResult, DocumentModelDetails>
+                copyPoller = client.beginCopyDocumentModelTo(actualModel.getModelId(), target)
                 .setPollInterval(durationTestMode);
             DocumentModelDetails copiedModel = copyPoller.getFinalResult();
 
             Assertions.assertEquals(target.getTargetModelId(), copiedModel.getModelId());
-            client.deleteModel(actualModel.getModelId());
-            client.deleteModel(copiedModel.getModelId());
+            client.deleteDocumentModel(actualModel.getModelId());
+            client.deleteDocumentModel(copiedModel.getModelId());
         });
     }
 
@@ -269,8 +270,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
 
@@ -287,8 +288,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                                                            DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
 
@@ -308,7 +309,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildModel(trainingFilesUrl,
+                client.beginBuildDocumentModel(trainingFilesUrl,
                         DocumentModelBuildMode.TEMPLATE,
                         "invalidPrefix",
                         null,
@@ -331,7 +332,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "subfolders", null, Context.NONE)
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "subfolders", null, Context.NONE)
                     .setPollInterval(durationTestMode));
 
             final ResponseError responseError = (ResponseError) exception.getValue();
@@ -347,16 +348,16 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void beginCreateComposedModel(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
-                        new BuildModelOptions().setModelId("sync_component_model_1" + UUID.randomUUID()), Context.NONE)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildDocumentModelOptions().setModelId("sync_component_model_1" + UUID.randomUUID()), Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
 
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller2 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
-                        new BuildModelOptions().setModelId("sync_component_model_2" + UUID.randomUUID()), Context.NONE)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller2 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildDocumentModelOptions().setModelId("sync_component_model_2" + UUID.randomUUID()), Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller2.waitForCompletion();
             DocumentModelDetails createdModel2 = syncPoller2.getFinalResult();
@@ -364,8 +365,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
             final List<String> modelIDList = Arrays.asList(createdModel1.getModelId(), createdModel2.getModelId());
 
             DocumentModelDetails composedModel =
-                client.beginComposeModel(modelIDList,
-                        new ComposeModelOptions().setModelId("sync_java_composed_model" + UUID.randomUUID())
+                client.beginComposeDocumentModel(modelIDList,
+                        new ComposeDocumentModelOptions().setModelId("sync_java_composed_model" + UUID.randomUUID())
                             .setDescription("test desc"),
                         Context.NONE)
                     .setPollInterval(durationTestMode)
@@ -383,9 +384,9 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
             });
             validateDocumentModelData(composedModel);
 
-            client.deleteModel(createdModel1.getModelId());
-            client.deleteModel(createdModel2.getModelId());
-            client.deleteModel(composedModel.getModelId());
+            client.deleteDocumentModel(createdModel1.getModelId());
+            client.deleteDocumentModel(createdModel2.getModelId());
+            client.deleteDocumentModel(composedModel.getModelId());
         });
     }
 }

@@ -2,18 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRange;
 import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
 import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * Query metrics in the Azure Cosmos database service.
@@ -172,13 +173,8 @@ public final class QueryMetrics {
         return this.clientSideMetrics.getRetries();
     }
 
-    public QueryMetrics add(QueryMetrics... queryMetricsArgs) {
-        ArrayList<QueryMetrics> queryMetricsList = new ArrayList<QueryMetrics>();
-        for (QueryMetrics queryMetrics : queryMetricsArgs) {
-            queryMetricsList.add(queryMetrics);
-        }
-
-        queryMetricsList.add(this);
+    public static QueryMetrics addQueryMetrics(QueryMetrics... additionalQueryMetrics) {
+        List<QueryMetrics> queryMetricsList = new ArrayList<>(Arrays.asList(additionalQueryMetrics));
 
         return QueryMetrics.createFromCollection(queryMetricsList);
     }
@@ -188,13 +184,15 @@ public final class QueryMetrics {
      * @param base metrics map which will be updated with new values.
      * @param addOn metrics map whose values will be merge in base map.
      */
-    public static void mergeQueryMetricsMap(ConcurrentMap<String, QueryMetrics> base, ConcurrentMap<String, QueryMetrics> addOn) {
-        for (ConcurrentMap.Entry<String, QueryMetrics> entry : addOn.entrySet()) {
-            if (base.containsKey(entry.getKey())) {
-                base.get(entry.getKey()).add(entry.getValue());
-            } else {
-                base.put(entry.getKey(), entry.getValue());
-            }
+    public static void mergeQueryMetricsMap(Map<String, QueryMetrics> base, Map<String, QueryMetrics> addOn) {
+        for (Map.Entry<String, QueryMetrics> entry : addOn.entrySet()) {
+            base.compute(entry.getKey(), (key, value) -> {
+                if (value == null) {
+                    return entry.getValue();
+                } else {
+                    return QueryMetrics.addQueryMetrics(value, entry.getValue());
+                }
+            });
         }
     }
 

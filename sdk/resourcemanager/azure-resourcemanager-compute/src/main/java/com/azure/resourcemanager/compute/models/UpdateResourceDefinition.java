@@ -20,6 +20,10 @@ public class UpdateResourceDefinition extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of UpdateResourceDefinition class. */
+    public UpdateResourceDefinition() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

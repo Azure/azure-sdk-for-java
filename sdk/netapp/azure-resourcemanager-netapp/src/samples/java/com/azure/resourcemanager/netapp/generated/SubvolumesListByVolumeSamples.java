@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Subvolumes ListByVolume. */
 public final class SubvolumesListByVolumeSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Subvolumes_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Subvolumes_List.json
      */
     /**
      * Sample code: Subvolumes_List.

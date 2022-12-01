@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,119 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2022-09-19)
+
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2022-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ClustersUpdateResponse` was removed
+
+* `models.DatabasesUpdateResponse` was removed
+
+* `models.ManagedPrivateEndpointsUpdateResponse` was removed
+
+* `models.ManagedPrivateEndpointsUpdateHeaders` was removed
+
+* `models.DataConnectionsUpdateResponse` was removed
+
+* `models.DatabasesUpdateHeaders` was removed
+
+* `models.ScriptsUpdateResponse` was removed
+
+* `models.ScriptsUpdateHeaders` was removed
+
+* `models.ClustersUpdateHeaders` was removed
+
+* `models.DataConnectionsUpdateHeaders` was removed
+
+#### `models.Databases` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseInner,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseInner,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.CallerRole` was added
+
+* `models.DatabaseShareOrigin` was added
+
+#### `models.IotHubDataConnection` was modified
+
+* `withRetrievalStartDate(java.time.OffsetDateTime)` was added
+* `retrievalStartDate()` was added
+
+#### `KustoManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.FollowerDatabaseDefinition` was modified
+
+* `databaseShareOrigin()` was added
+* `tableLevelSharingProperties()` was added
+
+#### `models.EventHubDataConnection` was modified
+
+* `retrievalStartDate()` was added
+* `withRetrievalStartDate(java.time.OffsetDateTime)` was added
+
+#### `models.AttachedDatabaseConfiguration$Update` was modified
+
+* `withDatabaseNameOverride(java.lang.String)` was added
+* `withDatabaseNamePrefix(java.lang.String)` was added
+
+#### `models.DatabasePrincipalAssignment` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Cluster` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ReadOnlyFollowingDatabase` was modified
+
+* `originalDatabaseName()` was added
+* `tableLevelSharingProperties()` was added
+* `databaseShareOrigin()` was added
+
+#### `models.AttachedDatabaseConfiguration` was modified
+
+* `databaseNameOverride()` was added
+* `resourceGroupName()` was added
+* `databaseNamePrefix()` was added
+
+#### `models.ClusterPrincipalAssignment` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Script` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Databases` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseInner,models.CallerRole,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseInner,models.CallerRole)` was added
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseInner,models.CallerRole)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseInner,models.CallerRole,com.azure.core.util.Context)` was added
+
+#### `models.AttachedDatabaseConfiguration$Definition` was modified
+
+* `withDatabaseNamePrefix(java.lang.String)` was added
+* `withDatabaseNameOverride(java.lang.String)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ManagedPrivateEndpoint` was modified
+
+* `resourceGroupName()` was added
+
+#### `KustoManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
 
 ## 1.0.0-beta.4 (2022-02-22)
 

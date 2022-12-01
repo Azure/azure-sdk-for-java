@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/** Provisioning state of the monitoring resource. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Accepted for ProvisioningState. */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");

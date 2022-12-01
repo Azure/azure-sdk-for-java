@@ -15,23 +15,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class CassandraSource extends TabularSource {
     /*
-     * Database query. Should be a SQL-92 query expression or Cassandra Query
-     * Language (CQL) command. Type: string (or Expression with resultType
-     * string).
+     * Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL) command. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The consistency level specifies how many Cassandra servers must respond
-     * to a read request before returning data to the client application.
-     * Cassandra checks the specified number of Cassandra servers for data to
-     * satisfy the read request. Must be one of
-     * cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is
+     * The consistency level specifies how many Cassandra servers must respond to a read request before returning data
+     * to the client application. Cassandra checks the specified number of Cassandra servers for data to satisfy the
+     * read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is
      * case-insensitive.
      */
     @JsonProperty(value = "consistencyLevel")
     private CassandraSourceReadConsistencyLevels consistencyLevel;
+
+    /** Creates an instance of CassandraSource class. */
+    public CassandraSource() {
+    }
 
     /**
      * Get the query property: Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL)

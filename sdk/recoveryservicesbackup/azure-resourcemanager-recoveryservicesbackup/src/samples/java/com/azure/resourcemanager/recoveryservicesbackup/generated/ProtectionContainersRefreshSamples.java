@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProtectionContainers Refresh. */
 public final class ProtectionContainersRefreshSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/RefreshContainers.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/RefreshContainers.json
      */
     /**
      * Sample code: Trigger Azure Vm Discovery.

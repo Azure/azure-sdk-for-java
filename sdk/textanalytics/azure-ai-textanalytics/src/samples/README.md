@@ -37,12 +37,6 @@ The following sections provide several code snippets covering some of the most c
 - [Analyze sentiment in a document with asynchronous client][async_sample_sentiment]
 - [Analyze sentiment with opinion mining in a document][sample_sentiment_opinion_mining]
 - [Analyze sentiment with opinion mining in a document with asynchronous client][async_sample_sentiment_opinion_mining]
-- [Execute a custom entities][sample_execute_custom_entities]
-- [Execute a custom entities with asynchronous client][async_sample_execute_custom_entities]
-- [Execute a custom single-label classification][sample_execute_single_classification]
-- [Execute a custom single-label classification with asynchronous client][async_sample_execute_single_classification]
-- [Execute a custom multi-label classification][sample_execute_multi_classification]
-- [Execute a custom multi-label classification with asynchronous client][async_sample_execute_multi_classification]
 - [Rotate key credential][sample_rotate_key]
 - [Rotate key credential with asynchronous client][async_sample_rotate_key]
 - [Model Version][sample_model_version]
@@ -77,6 +71,18 @@ Batch Samples:
 - [Analyze healthcare entities in a batch of documents with asynchronous client][async_sample_healthcare_batch]
 - [Cancel analyze healthcare entities][sample_cancel_healthcare_task]
 - [Cancel analyze healthcare entities with asynchronous client][async_sample_cancel_healthcare_task]
+- [Abstractive text summarization][sample_abstractive_text_summarization]
+- [Abstractive text summarization with asynchronous client][async_sample_abstractive_text_summarization]
+- [Extractive text summarization][sample_extractive_text_summarization]
+- [Extractive text summarization with asynchronous client][async_sample_extractive_text_summarization]
+- [Execute custom entities recognition][sample_execute_custom_entities]
+- [Execute custom entities recognition with asynchronous client][async_sample_execute_custom_entities]
+- [Execute single-label classification][sample_execute_single_classification]
+- [Execute single-label classification with asynchronous client][async_sample_execute_single_classification]
+- [Execute multi-label classification][sample_execute_multi_classification]
+- [Execute multi-label classification with asynchronous client][async_sample_execute_multi_classification]
+- [Execute dynamic classification][sample_execute_dynamic_classification]
+- [Execute dynamic classification with asynchronous client][async_sample_execute_dynamic_classification]
 - [Execute multiple actions][sample_execute_multiple_actions]
 - [Execute multiple actions with asynchronous client][async_sample_execute_multiple_actions]
 
@@ -124,7 +130,10 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_execute_custom_entities]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntitiesAsync.java
 [async_sample_execute_single_classification]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/SingleLabelClassifyDocumentAsync.java
 [async_sample_execute_multi_classification]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/MultiLabelClassifyDocumentAsync.java
+[async_sample_execute_dynamic_classification]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DynamicClassificationBatchDocumentsAsync.java
 [async_sample_model_version]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/ModelVersionAsync.java
+[async_sample_extractive_text_summarization]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ExtractiveSummarizationAsync.java
+[async_sample_abstractive_text_summarization]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AbstractiveSummarizationAsync.java
 
 [sample_detect_language]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/DetectLanguage.java
 [sample_detect_language_batch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
@@ -152,6 +161,9 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_execute_custom_entities]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java
 [sample_execute_single_classification]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/SingleLabelClassifyDocument.java
 [sample_execute_multi_classification]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/MultiLabelClassifyDocument.java
+[sample_execute_dynamic_classification]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DynamicClassificationBatchDocuments.java
 [sample_model_version]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/ModelVersion.java
+[sample_abstractive_text_summarization]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AbstractiveSummarization.java
+[sample_extractive_text_summarization]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ExtractiveSummarization.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

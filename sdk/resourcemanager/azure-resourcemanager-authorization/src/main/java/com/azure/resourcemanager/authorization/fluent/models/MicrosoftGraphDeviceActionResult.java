@@ -13,7 +13,11 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** deviceActionResult Device action result. */
+/**
+ * deviceActionResult
+ *
+ * <p>Device action result.
+ */
 @Fluent
 public final class MicrosoftGraphDeviceActionResult {
     /*
@@ -44,6 +48,10 @@ public final class MicrosoftGraphDeviceActionResult {
      * Device action result
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeviceActionResult class. */
+    public MicrosoftGraphDeviceActionResult() {
+    }
 
     /**
      * Get the actionName property: Action name.

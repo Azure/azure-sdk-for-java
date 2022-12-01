@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a Traffic Manager Name Availability response. */
 @Fluent
 public final class TrafficManagerNameAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficManagerNameAvailabilityInner.class);
-
     /*
      * The relative name.
      */
@@ -39,11 +35,14 @@ public final class TrafficManagerNameAvailabilityInner {
     private String reason;
 
     /*
-     * Descriptive message that explains why the name is not available, when
-     * applicable.
+     * Descriptive message that explains why the name is not available, when applicable.
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of TrafficManagerNameAvailabilityInner class. */
+    public TrafficManagerNameAvailabilityInner() {
+    }
 
     /**
      * Get the name property: The relative name.

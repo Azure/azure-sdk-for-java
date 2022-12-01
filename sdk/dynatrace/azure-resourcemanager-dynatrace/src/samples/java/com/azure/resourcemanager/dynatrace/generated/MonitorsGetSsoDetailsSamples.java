@@ -10,7 +10,7 @@ import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 /** Samples for Monitors GetSsoDetails. */
 public final class MonitorsGetSsoDetailsSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/Monitors_GetSSODetails_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetSSODetails_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetSSODetails_MaximumSet_Gen.
@@ -29,7 +29,7 @@ public final class MonitorsGetSsoDetailsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/Monitors_GetSSODetails_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetSSODetails_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetSSODetails_MinimumSet_Gen.

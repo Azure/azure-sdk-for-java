@@ -19,8 +19,8 @@ import java.util.Map;
 @Fluent
 public class AzureMLLinkedService extends LinkedService {
     /*
-     * The Batch Execution REST URL for an Azure ML Studio Web Service
-     * endpoint. Type: string (or Expression with resultType string).
+     * The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.mlEndpoint", required = true)
     private Object mlEndpoint;
@@ -32,38 +32,36 @@ public class AzureMLLinkedService extends LinkedService {
     private SecretBase apiKey;
 
     /*
-     * The Update Resource REST URL for an Azure ML Studio Web Service
-     * endpoint. Type: string (or Expression with resultType string).
+     * The Update Resource REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.updateResourceEndpoint")
     private Object updateResourceEndpoint;
 
     /*
-     * The ID of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
-     * Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML
+     * Studio web service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
+     * The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure
+     * ML Studio web service.
      */
     @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

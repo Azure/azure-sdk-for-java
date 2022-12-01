@@ -25,9 +25,8 @@ public class AmazonMWSLinkedService extends LinkedService {
     private Object endpoint;
 
     /*
-     * The Amazon Marketplace ID you want to retrieve data from. To retrieve
-     * data from multiple Marketplace IDs, separate them with a comma (,).
-     * (i.e. A2EUQ1WTGCTBG2)
+     * The Amazon Marketplace ID you want to retrieve data from. To retrieve data from multiple Marketplace IDs,
+     * separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2)
      */
     @JsonProperty(value = "typeProperties.marketplaceID", required = true)
     private Object marketplaceID;
@@ -57,31 +56,27 @@ public class AmazonMWSLinkedService extends LinkedService {
     private SecretBase secretKey;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "typeProperties.useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "typeProperties.usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

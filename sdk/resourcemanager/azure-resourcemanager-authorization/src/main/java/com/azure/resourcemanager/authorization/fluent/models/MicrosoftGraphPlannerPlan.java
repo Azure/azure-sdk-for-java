@@ -24,17 +24,16 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
     private MicrosoftGraphIdentitySet createdBy;
 
     /*
-     * Read-only. Date and time at which the plan is created. The Timestamp
-     * type represents date and time information using ISO 8601 format and is
-     * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
-     * like this: '2014-01-01T00:00:00Z'
+     * Read-only. Date and time at which the plan is created. The Timestamp type represents date and time information
+     * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
-     * ID of the Group that owns the plan. A valid group must exist before this
-     * field can be set. After it is set, this property can’t be updated.
+     * ID of the Group that owns the plan. A valid group must exist before this field can be set. After it is set, this
+     * property can’t be updated.
      */
     @JsonProperty(value = "owner")
     private String owner;
@@ -67,6 +66,10 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
      * plannerPlan
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerPlan class. */
+    public MicrosoftGraphPlannerPlan() {
+    }
 
     /**
      * Get the createdBy property: identitySet.

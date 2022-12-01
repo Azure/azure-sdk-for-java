@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -207,7 +208,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return;
             }
 
-            String contentType = request.getHeaders().getValue("Content-Type");
+            String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             long contentLength = getContentLength(logger, request.getHeaders());
 
             logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
@@ -399,7 +400,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
 
-        String contentLengthString = headers.getValue("Content-Length");
+        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (CoreUtils.isNullOrEmpty(contentLengthString)) {
             return contentLength;
         }
@@ -407,8 +408,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException | NullPointerException e) {
-            logger.warning("Could not parse the HTTP header content-length: '{}'.",
-                headers.getValue("content-length"), e);
+            logger.warning("Could not parse the HTTP header content-length: '{}'.", contentLengthString, e);
         }
 
         return contentLength;

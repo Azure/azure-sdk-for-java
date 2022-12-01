@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.CheckAvailabilityResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.RegionInfoInner;
 import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
@@ -16,7 +17,9 @@ import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
 /** An instance of this class provides access to all the operations defined in NetAppResourcesClient. */
 public interface NetAppResourcesClient {
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
@@ -29,7 +32,9 @@ public interface NetAppResourcesClient {
     CheckAvailabilityResponseInner checkNameAvailability(String location, ResourceNameAvailabilityRequest body);
 
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
@@ -44,7 +49,9 @@ public interface NetAppResourcesClient {
         String location, ResourceNameAvailabilityRequest body, Context context);
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
@@ -57,7 +64,9 @@ public interface NetAppResourcesClient {
     CheckAvailabilityResponseInner checkFilePathAvailability(String location, FilePathAvailabilityRequest body);
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
@@ -72,7 +81,9 @@ public interface NetAppResourcesClient {
         String location, FilePathAvailabilityRequest body, Context context);
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
@@ -85,7 +96,9 @@ public interface NetAppResourcesClient {
     CheckAvailabilityResponseInner checkQuotaAvailability(String location, QuotaAvailabilityRequest body);
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
@@ -98,4 +111,33 @@ public interface NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CheckAvailabilityResponseInner> checkQuotaAvailabilityWithResponse(
         String location, QuotaAvailabilityRequest body, Context context);
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RegionInfoInner queryRegionInfo(String location);
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RegionInfoInner> queryRegionInfoWithResponse(String location, Context context);
 }

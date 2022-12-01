@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DeliveryAction. */
+/** The delivery action of this mail message like Delivered, Blocked, Replaced etc. */
 public enum DeliveryAction {
     /** Enum value Unknown. */
     UNKNOWN("Unknown"),
@@ -39,6 +39,9 @@ public enum DeliveryAction {
      */
     @JsonCreator
     public static DeliveryAction fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DeliveryAction[] items = DeliveryAction.values();
         for (DeliveryAction item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum DeliveryAction {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CreateMode. */
+/** Create mode to indicate recovery of existing soft deleted data source or creation of new data source. */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /** Static value Invalid for CreateMode. */
     public static final CreateMode INVALID = fromString("Invalid");

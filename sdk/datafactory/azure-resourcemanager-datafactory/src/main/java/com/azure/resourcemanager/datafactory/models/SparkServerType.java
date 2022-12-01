@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkServerType. */
+/** The type of Spark server. */
 public final class SparkServerType extends ExpandableStringEnum<SparkServerType> {
     /** Static value SharkServer for SparkServerType. */
     public static final SparkServerType SHARK_SERVER = fromString("SharkServer");

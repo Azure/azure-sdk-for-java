@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network properties. */
@@ -17,7 +18,7 @@ public final class NetworkProperties extends NetworkConnectionUpdateProperties {
      * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Overall health status of the network connection. Health checks are run on creation, update, and periodically to
@@ -38,12 +39,16 @@ public final class NetworkProperties extends NetworkConnectionUpdateProperties {
     @JsonProperty(value = "domainJoinType", required = true)
     private DomainJoinType domainJoinType;
 
+    /** Creates an instance of NetworkProperties class. */
+    public NetworkProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

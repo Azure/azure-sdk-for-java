@@ -21,8 +21,7 @@ public final class SapHanaSource extends TabularSource {
     private Object query;
 
     /*
-     * The packet size of data read from SAP HANA. Type: integer(or Expression
-     * with resultType integer).
+     * The packet size of data read from SAP HANA. Type: integer(or Expression with resultType integer).
      */
     @JsonProperty(value = "packetSize")
     private Object packetSize;

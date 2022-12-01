@@ -30,6 +30,7 @@ public final class ErrorContractException extends HttpResponseException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public ErrorContract getValue() {
         return (ErrorContract) super.getValue();

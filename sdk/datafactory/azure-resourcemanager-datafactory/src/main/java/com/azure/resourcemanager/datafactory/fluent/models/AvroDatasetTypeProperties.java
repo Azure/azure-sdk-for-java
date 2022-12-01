@@ -19,8 +19,7 @@ public final class AvroDatasetTypeProperties {
     private DatasetLocation location;
 
     /*
-     * The data avroCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * The data avroCompressionCodec. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "avroCompressionCodec")
     private Object avroCompressionCodec;
@@ -30,6 +29,10 @@ public final class AvroDatasetTypeProperties {
      */
     @JsonProperty(value = "avroCompressionLevel")
     private Integer avroCompressionLevel;
+
+    /** Creates an instance of AvroDatasetTypeProperties class. */
+    public AvroDatasetTypeProperties() {
+    }
 
     /**
      * Get the location property: The location of the avro storage.

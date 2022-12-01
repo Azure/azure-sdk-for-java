@@ -16,6 +16,9 @@ public final class ResourceDetails {
     @JsonProperty(value = "customDocumentModels", required = true)
     private CustomDocumentModelsDetails customDocumentModels;
 
+    /** Creates an instance of ResourceDetails class. */
+    public ResourceDetails() {}
+
     /**
      * Get the customDocumentModels property: Details regarding custom document models.
      *

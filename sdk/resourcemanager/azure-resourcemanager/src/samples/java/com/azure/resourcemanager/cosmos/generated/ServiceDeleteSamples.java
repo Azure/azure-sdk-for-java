@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Service Delete. */
 public final class ServiceDeleteSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDedicatedGatewayServiceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlDedicatedGatewayServiceDelete.json
      */
     /**
      * Sample code: SqlDedicatedGatewayServiceDelete.
@@ -26,7 +26,7 @@ public final class ServiceDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMaterializedViewsBuilderServiceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMaterializedViewsBuilderServiceDelete.json
      */
     /**
      * Sample code: MaterializedViewsBuilderServiceDelete.
@@ -43,7 +43,7 @@ public final class ServiceDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDataTransferServiceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDataTransferServiceDelete.json
      */
     /**
      * Sample code: DataTransferServiceDelete.
@@ -60,7 +60,7 @@ public final class ServiceDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBGraphAPIComputeServiceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGraphAPIComputeServiceDelete.json
      */
     /**
      * Sample code: GraphAPIComputeServiceDelete.

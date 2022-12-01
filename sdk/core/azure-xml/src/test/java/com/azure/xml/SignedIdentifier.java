@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 public class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
     private String id;
@@ -28,14 +29,14 @@ public class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return xmlWriter.writeStartElement("SignedIdentifier")
             .writeStringElement("Id", id)
             .writeXml(accessPolicy)
             .writeEndElement();
     }
 
-    public static SignedIdentifier fromXml(XmlReader xmlReader) {
+    public static SignedIdentifier fromXml(XmlReader xmlReader) throws XMLStreamException {
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             // Since SignedIdentifier only cares about XML elements use nextElement()
             xmlReader.nextElement();

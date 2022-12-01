@@ -354,8 +354,8 @@ You can create a SQL server instance by using a `define() … create()` method c
 SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
     .withRegion(Region.US_EAST)
     .withNewResourceGroup(rgName)
-    .withAdministratorLogin("adminlogin123")
-    .withAdministratorPassword("myS3cureP@ssword")
+    .withAdministratorLogin("fakeAdminLoginPlaceholder")
+    .withAdministratorPassword("fakePasswordPlaceholder")
     .withNewFirewallRule("10.0.0.1")
     .withNewFirewallRule("10.2.0.1", "10.2.0.10")
     .create();

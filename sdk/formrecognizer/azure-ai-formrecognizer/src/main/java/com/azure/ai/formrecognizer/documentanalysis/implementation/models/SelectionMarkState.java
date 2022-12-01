@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SelectionMarkState. */
+/** State of the selection mark. */
 public final class SelectionMarkState extends ExpandableStringEnum<SelectionMarkState> {
     /** Static value selected for SelectionMarkState. */
     public static final SelectionMarkState SELECTED = fromString("selected");

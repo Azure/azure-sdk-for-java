@@ -13,9 +13,11 @@ import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.metrics.TestCounter;
+import com.azure.core.test.utils.metrics.TestMeasurement;
+import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
@@ -54,10 +56,9 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -66,12 +67,13 @@ import java.util.stream.IntStream;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -96,8 +98,9 @@ class ServiceBusSenderAsyncClientTest {
     private static final String ENTITY_NAME = "my-servicebus-entity";
     private static final String LINK_NAME = "my-link-name";
     private static final BinaryData TEST_CONTENTS = BinaryData.fromString("My message for service bus queue!");
-    private static final  String TXN_ID_STRING = "1";
-
+    private static final String TXN_ID_STRING = "1";
+    private static final String CLIENT_IDENTIFIER = "my-client-identifier";
+    private static final ServiceBusSenderInstrumentation DEFAULT_INSTRUMENTATION = new ServiceBusSenderInstrumentation(null, null, NAMESPACE, ENTITY_NAME);
     @Mock
     private AmqpSendLink sendLink;
     @Mock
@@ -131,7 +134,6 @@ class ServiceBusSenderAsyncClientTest {
     private ArgumentCaptor<Iterable<Long>> sequenceNumberCaptor;
 
     private final MessageSerializer serializer = new ServiceBusMessageSerializer();
-    private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))
         .setMode(AmqpRetryMode.FIXED)
@@ -169,7 +171,7 @@ class ServiceBusSenderAsyncClientTest {
                 connectionOptions.getRetry()));
 
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
-            retryOptions, tracerProvider, serializer, onClientClose, null);
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
             .thenReturn(just(managementNode));
@@ -196,6 +198,7 @@ class ServiceBusSenderAsyncClientTest {
     void verifyProperties() {
         Assertions.assertEquals(ENTITY_NAME, sender.getEntityPath());
         Assertions.assertEquals(NAMESPACE, sender.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CLIENT_IDENTIFIER, sender.getIdentifier());
     }
 
     /**
@@ -213,7 +216,7 @@ class ServiceBusSenderAsyncClientTest {
     @Test
     void createBatchDefault() {
         // Arrange
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
 
@@ -238,7 +241,7 @@ class ServiceBusSenderAsyncClientTest {
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -267,7 +270,7 @@ class ServiceBusSenderAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         // This is 1024 bytes when serialized.
@@ -304,7 +307,7 @@ class ServiceBusSenderAsyncClientTest {
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
@@ -325,14 +328,14 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider, serializer, null, null);
+            errorContextProvider, DEFAULT_INSTRUMENTATION.getTracer(), serializer);
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
             Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(any(Message.class), any(DeliveryState.class))).thenReturn(Mono.empty());
         when(sendLink.send(anyList(), any(DeliveryState.class))).thenReturn(Mono.empty());
@@ -364,14 +367,14 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider, serializer, null, null);
+            errorContextProvider, DEFAULT_INSTRUMENTATION.getTracer(), serializer);
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
             Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         // Act
@@ -387,47 +390,43 @@ class ServiceBusSenderAsyncClientTest {
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
     }
 
-    /**
-     * Verifies that sending multiple message will result in calling sender.send(MessageBatch).
-     */
     @Test
-    void sendMultipleMessagesTracerSpans() {
+    void sendMultipleMessagesTracesSpans() {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final Tracer tracer1 = mock(Tracer.class);
-        TracerProvider tracerProvider1 = new TracerProvider(Arrays.asList(tracer1));
+        String traceparent = "traceparent";
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(tracer1, null, NAMESPACE, ENTITY_NAME);
 
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider1, serializer, null, null);
+            errorContextProvider, instrumentation.getTracer(), serializer);
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
-            retryOptions, tracerProvider1, serializer, onClientClose, null);
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
-        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND)))
+        when(tracer1.start(eq("ServiceBus.send"), any(Context.class), eq(ProcessKind.SEND)))
             .thenAnswer(invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value");
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "value");
             });
 
-        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE)))
+        when(tracer1.extractContext(eq(traceparent), any(Context.class))).thenAnswer(invocation -> {
+            Context passed = invocation.getArgument(1, Context.class);
+            return passed.addData(SPAN_CONTEXT_KEY, "span-context");
+        });
+
+        when(tracer1.start(eq("ServiceBus.message"), any(Context.class), eq(ProcessKind.MESSAGE)))
             .thenAnswer(invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "value").addData(DIAGNOSTIC_ID_KEY, traceparent);
             });
 
-        when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_BUILDER_KEY, "value");
-            }
-        );
-
-        when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
+        when(tracer1.getSharedSpanBuilder(eq("ServiceBus.send"), any(Context.class))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_BUILDER_KEY, "value");
@@ -445,10 +444,142 @@ class ServiceBusSenderAsyncClientTest {
 
         // Assert
         verify(tracer1, times(4))
-            .start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE));
+            .start(eq("ServiceBus.message"), any(Context.class), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(1))
-            .start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND));
+            .start(eq("ServiceBus.send"), any(Context.class), eq(ProcessKind.SEND));
         verify(tracer1, times(5)).end(eq("success"), isNull(), any(Context.class));
+    }
+
+    @Test
+    void sendMessageReportsMetrics() {
+        // Arrange
+        TestMeter meter = new TestMeter();
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS))
+                .then(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS))))
+            .verifyComplete();
+
+        // Assert
+        TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
+        assertNotNull(sentMessagesCounter);
+        assertEquals(2, sentMessagesCounter.getMeasurements().size());
+
+        TestMeasurement<Long> measurement1 = sentMessagesCounter.getMeasurements().get(0);
+        TestMeasurement<Long> measurement2 = sentMessagesCounter.getMeasurements().get(1);
+        assertEquals(1, measurement1.getValue());
+        assertEquals(1, measurement2.getValue());
+
+        Map<String, Object> attributes1 = measurement1.getAttributes();
+        Map<String, Object> attributes2 = measurement2.getAttributes();
+        assertEquals(3, attributes1.size());
+        assertCommonMetricAttributes(attributes1, true);
+        assertEquals(3, attributes2.size());
+        assertCommonMetricAttributes(attributes2, true);
+    }
+
+    @Test
+    void sendMessageReportsMetricsAndTraces() {
+        // Arrange
+        TestMeter meter = new TestMeter();
+        Tracer tracer = mock(Tracer.class);
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(tracer, meter, NAMESPACE, ENTITY_NAME);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        Context span = new Context("marker", true);
+        when(tracer.start(eq("ServiceBus.send"), any(Context.class), eq(ProcessKind.SEND)))
+            .thenReturn(span);
+
+        when(tracer.extractContext(any(), any(Context.class))).thenReturn(Context.NONE);
+        when(tracer.start(eq("ServiceBus.message"), any(Context.class), any())).thenReturn(Context.NONE);
+        when(tracer.getSharedSpanBuilder(eq("ServiceBus.send"), any(Context.class))).thenReturn(Context.NONE);
+
+        // Act
+        StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS)))
+            .verifyComplete();
+
+        // Assert
+        TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
+        TestMeasurement<Long> measurement = sentMessagesCounter.getMeasurements().get(0);
+        assertEquals(1, measurement.getValue());
+
+        Map<String, Object> attributes = measurement.getAttributes();
+        assertEquals(3, attributes.size());
+        assertCommonMetricAttributes(attributes, true);
+        assertEquals(span, measurement.getContext());
+    }
+
+    @Test
+    void sendMessageBatchReportsMetrics() {
+        // Arrange
+        TestMeter meter = new TestMeter();
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
+
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+            errorContextProvider, instrumentation.getTracer(), serializer);
+        batch.tryAddMessage(new ServiceBusMessage(TEST_CONTENTS));
+        batch.tryAddMessage(new ServiceBusMessage(TEST_CONTENTS));
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(sender.sendMessages(batch))
+            .verifyComplete();
+
+        // Assert
+        TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
+        TestMeasurement<Long> measurement = sentMessagesCounter.getMeasurements().get(0);
+        assertEquals(2, measurement.getValue());
+
+        assertEquals(3,  measurement.getAttributes().size());
+        assertCommonMetricAttributes(measurement.getAttributes(), true);
+    }
+
+    @Test
+    void failedSendMessageReportsMetrics() {
+        // Arrange
+        TestMeter meter = new TestMeter();
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(any(Message.class))).thenThrow(new RuntimeException("foo"));
+
+        // Act
+        StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS)))
+            .expectError()
+            .verify();
+
+        // Assert
+        TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
+        TestMeasurement<Long> measurement = sentMessagesCounter.getMeasurements().get(0);
+        assertEquals(1, measurement.getValue());
+
+        Map<String, Object> attributes = measurement.getAttributes();
+        assertEquals(3, attributes.size());
+        assertCommonMetricAttributes(attributes, false);
     }
 
     /**
@@ -460,7 +591,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(any(Message.class), any(DeliveryState.class))).thenReturn(Mono.empty());
         when(sendLink.send(anyList(), any(DeliveryState.class))).thenReturn(Mono.empty());
@@ -492,7 +623,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
@@ -519,7 +650,7 @@ class ServiceBusSenderAsyncClientTest {
         final Mono<Integer> linkMaxSize = Mono.just(1);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(linkMaxSize);
 
@@ -536,7 +667,7 @@ class ServiceBusSenderAsyncClientTest {
         // arrange
         ServiceBusMessage message = TestUtils.getServiceBusMessages(1, UUID.randomUUID().toString()).get(0);
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
                 .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(1));
 
@@ -556,7 +687,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS);
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
@@ -590,7 +721,7 @@ class ServiceBusSenderAsyncClientTest {
             new ServiceBusMessage(TEST_CONTENTS);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
@@ -614,7 +745,7 @@ class ServiceBusSenderAsyncClientTest {
         long sequenceNumberReturned = 10;
         OffsetDateTime instant = mock(OffsetDateTime.class);
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
         when(managementNode.schedule(anyList(), eq(instant), any(Integer.class), any(), isNull()))
@@ -637,7 +768,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         final long sequenceNumberReturned = 10;
         final OffsetDateTime instant = mock(OffsetDateTime.class);
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
         when(managementNode.schedule(anyList(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId()))))
@@ -721,7 +852,7 @@ class ServiceBusSenderAsyncClientTest {
         messages.add(fourthMessage);
         messages.add(fifthMessage);
 
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
@@ -768,5 +899,11 @@ class ServiceBusSenderAsyncClientTest {
 
         // Assert
         verify(onClientClose).run();
+    }
+
+    private void assertCommonMetricAttributes(Map<String, Object> attributes, boolean success) {
+        assertEquals(NAMESPACE, attributes.get("hostName"));
+        assertEquals(ENTITY_NAME, attributes.get("entityName"));
+        assertEquals(success ? "ok" : "error", attributes.get("status"));
     }
 }

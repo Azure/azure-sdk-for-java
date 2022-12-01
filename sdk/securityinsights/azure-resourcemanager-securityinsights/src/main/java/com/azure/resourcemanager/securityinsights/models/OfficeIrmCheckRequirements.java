@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class OfficeIrmCheckRequirements extends DataConnectorsCheckRequirements {
     /*
-     * OfficeIRM (Microsoft Insider Risk Management) requirements check
-     * properties.
+     * OfficeIRM (Microsoft Insider Risk Management) requirements check properties.
      */
     @JsonProperty(value = "properties")
     private OfficeIrmCheckRequirementsProperties innerProperties;

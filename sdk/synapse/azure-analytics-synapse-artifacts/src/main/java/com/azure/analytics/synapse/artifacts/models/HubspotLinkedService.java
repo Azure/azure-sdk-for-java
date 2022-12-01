@@ -31,45 +31,39 @@ public class HubspotLinkedService extends LinkedService {
     private SecretBase clientSecret;
 
     /*
-     * The access token obtained when initially authenticating your OAuth
-     * integration.
+     * The access token obtained when initially authenticating your OAuth integration.
      */
     @JsonProperty(value = "typeProperties.accessToken")
     private SecretBase accessToken;
 
     /*
-     * The refresh token obtained when initially authenticating your OAuth
-     * integration.
+     * The refresh token obtained when initially authenticating your OAuth integration.
      */
     @JsonProperty(value = "typeProperties.refreshToken")
     private SecretBase refreshToken;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "typeProperties.useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "typeProperties.usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

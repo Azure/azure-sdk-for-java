@@ -86,7 +86,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final List<RangeReplaceSubstitution> pathSubstitutions = new ArrayList<>();
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
-    private final List<Substitution> headerSubstitutions = new ArrayList<>();
+    private final List<HeaderSubstitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
@@ -101,6 +101,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final boolean isStreamResponse;
     private final boolean returnTypeDecodeable;
     private final boolean responseEagerlyRead;
+    private final boolean ignoreResponseBody;
+    private final boolean headersEagerlyConverted;
     private final String spanName;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
@@ -224,7 +226,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         !queryParamAnnotation.encoded(), queryParamAnnotation.multipleQueryParams()));
                 } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
-                    headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex,
+                    headerSubstitutions.add(new HeaderSubstitution(headerParamAnnotation.value(), parameterIndex,
                         false));
                 } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
@@ -263,9 +265,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         this.isReactive = isReactiveMethod;
         if (isReactiveMethod) {
-            this.isStreamResponse = isStreamResponseType(TypeUtil.getTypeArgument(returnType));
+            Type reactiveTypeArgument = TypeUtil.getTypeArgument(returnType);
+            this.isStreamResponse = isStreamResponseType(reactiveTypeArgument);
+            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument);
         } else {
             this.isStreamResponse = isStreamResponseType(returnType);
+            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, returnType);
         }
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
@@ -273,6 +278,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
+        this.ignoreResponseBody = isResponseBodyIgnored(unwrappedReturnType);
         this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
@@ -385,7 +391,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return;
         }
 
-        for (Substitution headerSubstitution : headerSubstitutions) {
+        for (HeaderSubstitution headerSubstitution : headerSubstitutions) {
             final int parameterIndex = headerSubstitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[headerSubstitution.getMethodParameterIndex()];
@@ -401,10 +407,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         }
                     }
                 } else {
-                    final String headerName = headerSubstitution.getUrlParameterName();
                     final String headerValue = serialize(serializer, methodArgument);
                     if (headerValue != null) {
-                        httpHeaders.set(headerName, headerValue);
+                        httpHeaders.set(headerSubstitution.getHeaderName(), headerValue);
                     }
                 }
             }
@@ -703,6 +708,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return responseEagerlyRead;
     }
 
+    @Override
+    public boolean isResponseBodyIgnored() {
+        return ignoreResponseBody;
+    }
+
+    @Override
+    public boolean isHeadersEagerlyConverted() {
+        return headersEagerlyConverted;
+    }
+
     /**
      * Gets the name of the span that will be used when this {@link SwaggerMethodParser} is called.
      *
@@ -712,7 +727,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return spanName;
     }
 
-    static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {
+    public static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {
         if (unwrappedReturnType == null) {
             return false;
         }
@@ -725,17 +740,24 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
     }
 
-    static boolean isResponseEagerlyRead(Type unwrappedReturnType) {
+    public static boolean isResponseBodyIgnored(Type unwrappedReturnType) {
         if (unwrappedReturnType == null) {
             return false;
         }
 
-        return isReturnTypeDecodeable(unwrappedReturnType)
-            || TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.TYPE)
+        return TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.TYPE)
             || TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
     }
 
-    static Type unwrapReturnType(Type returnType) {
+    public static boolean isResponseEagerlyRead(Type unwrappedReturnType) {
+        if (unwrappedReturnType == null) {
+            return false;
+        }
+
+        return isReturnTypeDecodeable(unwrappedReturnType);
+    }
+
+    public static Type unwrapReturnType(Type returnType) {
         if (returnType == null) {
             return null;
         }

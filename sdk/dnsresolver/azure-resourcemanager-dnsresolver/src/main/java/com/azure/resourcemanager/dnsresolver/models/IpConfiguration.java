@@ -7,18 +7,15 @@ package com.azure.resourcemanager.dnsresolver.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration. */
 @Fluent
 public final class IpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfiguration.class);
-
     /*
      * The reference to the subnet bound to the IP configuration.
      */
-    @JsonProperty(value = "subnet")
+    @JsonProperty(value = "subnet", required = true)
     private SubResource subnet;
 
     /*
@@ -99,5 +96,12 @@ public final class IpConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (subnet() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property subnet in model IpConfiguration"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IpConfiguration.class);
 }

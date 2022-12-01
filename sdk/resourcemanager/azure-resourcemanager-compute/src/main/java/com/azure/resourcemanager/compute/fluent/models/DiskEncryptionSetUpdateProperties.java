@@ -37,6 +37,10 @@ public final class DiskEncryptionSetUpdateProperties {
     @JsonProperty(value = "federatedClientId")
     private String federatedClientId;
 
+    /** Creates an instance of DiskEncryptionSetUpdateProperties class. */
+    public DiskEncryptionSetUpdateProperties() {
+    }
+
     /**
      * Get the encryptionType property: The type of key used to encrypt the data of the disk.
      *

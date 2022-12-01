@@ -46,25 +46,25 @@ public final class PoolsClientImpl implements PoolsClient {
     private final PoolsService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of PoolsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PoolsClientImpl(DevCenterClientImpl client) {
+    PoolsClientImpl(DevCenterManagementClientImpl client) {
         this.service = RestProxy.create(PoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevCenterClientPools to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for DevCenterManagementClientPools to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientPools")
-    private interface PoolsService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface PoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
@@ -161,7 +161,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +221,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -279,7 +279,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,7 +297,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -315,7 +315,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -335,7 +335,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -351,7 +351,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -369,7 +369,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Gets a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,7 +422,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Gets a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
@@ -473,7 +473,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Gets a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,23 +490,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Gets a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner get(String resourceGroupName, String projectName, String poolName) {
-        return getAsync(resourceGroupName, projectName, poolName).block();
-    }
-
-    /**
-     * Gets a machine pool.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
@@ -522,9 +506,25 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * Gets a machine pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a machine pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PoolInner get(String resourceGroupName, String projectName, String poolName) {
+        return getWithResponse(resourceGroupName, projectName, poolName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -584,7 +584,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -642,7 +642,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -665,7 +665,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -690,7 +690,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -708,7 +708,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -727,7 +727,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -747,7 +747,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -768,7 +768,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -785,7 +785,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Creates or updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -804,7 +804,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -864,7 +864,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -922,7 +922,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -944,7 +944,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -969,7 +969,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -987,7 +987,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -1006,7 +1006,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -1026,7 +1026,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -1047,7 +1047,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -1064,7 +1064,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Partially updates a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param body Represents a machine pool.
@@ -1083,7 +1083,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1136,7 +1136,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
@@ -1187,7 +1187,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1208,7 +1208,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
@@ -1231,7 +1231,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1248,7 +1248,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
@@ -1266,7 +1266,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1284,7 +1284,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
@@ -1303,7 +1303,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1318,7 +1318,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
@@ -1334,7 +1334,8 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1370,7 +1371,8 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

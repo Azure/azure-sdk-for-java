@@ -19,6 +19,7 @@ import org.springframework.data.repository.query.ResultProcessor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -52,24 +53,36 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         final CosmosParameterAccessor accessor = new CosmosParameterParameterAccessor(getQueryMethod(), parameters);
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
+        /*
+         * The below for loop is used to handle two unique use cases with annotated queries.
+         * Annotated queries are defined as strings so there is no way to know the clauses
+         * being used in advance. Some clauses expect an array and others expect just a list of values.
+         * (1) IN clauses expect the syntax 'IN (a, b, c) which is generated from the if statement.
+         * (2) ARRAY_CONTAINS expects the syntax 'ARRAY_CONTAINS(["a", "b", "c"], table.param) which
+         *     is generated from the else statement.
+         */
         String expandedQuery = query;
         List<SqlParameter> sqlParameters = new ArrayList<>();
+        String modifiedExpandedQuery = expandedQuery.toLowerCase(Locale.US).replaceAll("\\s+", "");
         for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
             Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
-            if (parameters[paramIndex] instanceof Collection) {
-                List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
-                    .map(Object::toString).collect(Collectors.toList());
-                List<String> expandedParamKeys = new ArrayList<>();
-                for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
-                    String paramName = "@" + queryParam.getName().orElse("") + arrayIndex;
-                    expandedParamKeys.add(paramName);
-                    sqlParameters.add(new SqlParameter(paramName, toCosmosDbValue(expandParam.get(arrayIndex))));
-                }
-                expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
-            } else {
-                if (!Pageable.class.isAssignableFrom(queryParam.getType())
-                    && !Sort.class.isAssignableFrom(queryParam.getType())) {
-                    sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+            String paramName = queryParam.getName().orElse("");
+            if (!("").equals(paramName)) {
+                String inParamCheck = "array_contains(@" + paramName.toLowerCase(Locale.US);
+                if (parameters[paramIndex] instanceof Collection && !modifiedExpandedQuery.contains(inParamCheck)) {
+                    List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
+                        .map(Object::toString).collect(Collectors.toList());
+                    List<String> expandedParamKeys = new ArrayList<>();
+                    for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
+                        expandedParamKeys.add("@" + paramName + arrayIndex);
+                        sqlParameters.add(new SqlParameter("@" + paramName + arrayIndex, toCosmosDbValue(expandParam.get(arrayIndex))));
+                    }
+                    expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
+                } else {
+                    if (!Pageable.class.isAssignableFrom(queryParam.getType())
+                        && !Sort.class.isAssignableFrom(queryParam.getType())) {
+                        sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                    }
                 }
             }
         }

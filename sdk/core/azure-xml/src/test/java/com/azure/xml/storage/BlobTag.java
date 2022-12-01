@@ -8,6 +8,8 @@ import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 
+import javax.xml.stream.XMLStreamException;
+
 public class BlobTag implements XmlSerializable<BlobTag> {
     /*
      * The Key property.
@@ -60,7 +62,7 @@ public class BlobTag implements XmlSerializable<BlobTag> {
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("Tag");
 
         xmlWriter.writeStringElement("Key", key);
@@ -69,7 +71,7 @@ public class BlobTag implements XmlSerializable<BlobTag> {
         return xmlWriter.writeEndElement();
     }
 
-    public static BlobTag fromXml(XmlReader xmlReader) {
+    public static BlobTag fromXml(XmlReader xmlReader) throws XMLStreamException {
         return xmlReader.readObject("Tag", reader -> {
             BlobTag deserialized = new BlobTag();
 

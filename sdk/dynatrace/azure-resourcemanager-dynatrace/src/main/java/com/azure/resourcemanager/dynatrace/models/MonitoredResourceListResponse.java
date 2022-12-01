@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitoredResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,13 +15,13 @@ public final class MonitoredResourceListResponse {
     /*
      * The items on this page
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value")
     private List<MonitoredResourceInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", required = true)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -71,21 +70,8 @@ public final class MonitoredResourceListResponse {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model MonitoredResourceListResponse"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
-        if (nextLink() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nextLink in model MonitoredResourceListResponse"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MonitoredResourceListResponse.class);
 }

@@ -72,22 +72,6 @@ import java.util.Map;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient -->
  *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
- * {@link String vaultUrl} can be specified. It provides finer control over the construction of {@link KeyAsyncClient}
- * and {@link KeyClient}</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
- *     .build&#40;&#41;;
- * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline -->
- *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
  * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
@@ -128,6 +112,7 @@ public final class KeyClientBuilder implements
     private Configuration configuration;
     private KeyServiceVersion version;
     private ClientOptions clientOptions;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * The constructor with defaults.
@@ -229,7 +214,7 @@ public final class KeyClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
 
@@ -245,7 +230,9 @@ public final class KeyClientBuilder implements
     }
 
     /**
-     * Sets the vault endpoint URL to send HTTP requests to.
+     * Sets the vault endpoint URL to send HTTP requests to. You should validate that this URL references a valid Key
+     * Vault or Managed HSM resource. Refer to the following
+     * <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault url is used as destination on Azure to send requests to. If you have a key identifier,
      * create a new {@link KeyVaultKeyIdentifier} to parse it and obtain the {@code vaultUrl} and other
@@ -481,6 +468,18 @@ public final class KeyClientBuilder implements
     @Override
     public KeyClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
+     */
+    public KeyClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }

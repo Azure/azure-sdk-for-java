@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobErrorCode. */
+/** Error code describing the error. */
 public final class JobErrorCode extends ExpandableStringEnum<JobErrorCode> {
     /** Static value ServiceError for JobErrorCode. */
     public static final JobErrorCode SERVICE_ERROR = fromString("ServiceError");

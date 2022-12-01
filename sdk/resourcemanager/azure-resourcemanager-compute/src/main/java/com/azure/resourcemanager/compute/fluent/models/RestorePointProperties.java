@@ -60,6 +60,10 @@ public final class RestorePointProperties {
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private RestorePointInstanceView instanceView;
 
+    /** Creates an instance of RestorePointProperties class. */
+    public RestorePointProperties() {
+    }
+
     /**
      * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
      * point. If no disks are specified, all disks will be included.

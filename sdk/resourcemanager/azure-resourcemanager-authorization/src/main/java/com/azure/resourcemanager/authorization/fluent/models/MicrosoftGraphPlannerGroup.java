@@ -27,6 +27,10 @@ public final class MicrosoftGraphPlannerGroup extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPlannerGroup class. */
+    public MicrosoftGraphPlannerGroup() {
+    }
+
     /**
      * Get the plans property: Read-only. Nullable. Returns the plannerPlans owned by the group.
      *

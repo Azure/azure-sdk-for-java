@@ -116,8 +116,6 @@ public class CosmosTemplateIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
-    @Autowired
-    private AuditableRepository auditableRepository;
 
     @Before
     public void setUp() throws ClassNotFoundException {
@@ -440,7 +438,7 @@ public class CosmosTemplateIT {
         final List<Person> expected2 = Lists.newArrayList(TEST_PERSON_3);
         assertThat(resultPage2.size()).isEqualTo(expected2.size());
         assertThat(resultPage2).containsAll(expected2);
-        PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
+        PageTestUtils.validateLastPage(page2, PAGE_SIZE_2);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
@@ -462,7 +460,7 @@ public class CosmosTemplateIT {
 
         final Page<Person> page = cosmosTemplate.paginationQuery(query, Person.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(page, page.getContent().size());
+        PageTestUtils.validateLastPage(page, PAGE_SIZE_2);
 
         // add ignore case testing
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
@@ -472,7 +470,7 @@ public class CosmosTemplateIT {
         final Page<Person> pageIgnoreCase = cosmosTemplate.paginationQuery(queryIgnoreCase, Person.class,
             containerName);
         assertThat(pageIgnoreCase.getContent().size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(pageIgnoreCase, pageIgnoreCase.getContent().size());
+        PageTestUtils.validateLastPage(pageIgnoreCase, PAGE_SIZE_2);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
@@ -601,7 +599,7 @@ public class CosmosTemplateIT {
             containerName);
 
         assertThat(secondPage.getContent().size()).isEqualTo(2);
-        PageTestUtils.validateLastPage(secondPage, secondPage.getContent().size());
+        PageTestUtils.validateLastPage(secondPage, PAGE_SIZE_3);
 
         final List<Person> secondPageResults = secondPage.getContent();
         assertThat(secondPageResults.get(0).getFirstName()).isEqualTo(NEW_FIRST_NAME);
@@ -817,23 +815,6 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void testRunQueryWithReturnTypeContainingLocalDateTime() {
-        final AuditableEntity entity = new AuditableEntity();
-        entity.setId(UUID.randomUUID().toString());
-
-        auditableRepository.save(entity);
-
-        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
-        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
-        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
-        assertEquals(results.size(), 1);
-        AuditableEntity foundEntity = results.get(0);
-        assertEquals(entity.getId(), foundEntity.getId());
-        assertNotNull(foundEntity.getCreatedDate());
-        assertNotNull(foundEntity.getLastModifiedByDate());
-    }
-
-    @Test
     public void testSliceQuery() {
         cosmosTemplate.insert(TEST_PERSON_2,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
@@ -922,6 +903,40 @@ public class CosmosTemplateIT {
         final long count = maxDegreeOfParallelismCosmosTemplate.count(query, containerName);
 
         assertEquals((int) ReflectionTestUtils.getField(maxDegreeOfParallelismCosmosTemplate, "maxDegreeOfParallelism"), 20);
+    }
+
+    @Test
+    public void queryWithMaxBufferedItemCount() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .maxBufferedItemCount(500)
+            .build();
+        final CosmosTemplate maxBufferedItemCountCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = maxBufferedItemCountCosmosTemplate.count(query, containerName);
+
+        assertEquals((int) ReflectionTestUtils.getField(maxBufferedItemCountCosmosTemplate, "maxBufferedItemCount"), 500);
+    }
+
+    @Test
+    public void queryWithResponseContinuationTokenLimitInKb() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .responseContinuationTokenLimitInKb(2000)
+            .build();
+        final CosmosTemplate responseContinuationTokenLimitInKbCosmosTemplate =
+            createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = responseContinuationTokenLimitInKbCosmosTemplate.count(query, containerName);
+
+        assertEquals((int) ReflectionTestUtils.getField(responseContinuationTokenLimitInKbCosmosTemplate,
+            "responseContinuationTokenLimitInKb"), 2000);
     }
 
     @Test

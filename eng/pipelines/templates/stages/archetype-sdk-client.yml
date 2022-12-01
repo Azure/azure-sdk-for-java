@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20220329.1
+      ref: refs/tags/azure-sdk-build-tools_20220920.1
 
 parameters:
 - name: Artifacts
@@ -97,7 +97,7 @@ stages:
 
           - AZURE_TEST.*=.*/
           - ${{ if eq(parameters.SDKType, 'data') }}:
-            - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
+            - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         ${{ if eq(parameters.SDKType, 'data') }}:

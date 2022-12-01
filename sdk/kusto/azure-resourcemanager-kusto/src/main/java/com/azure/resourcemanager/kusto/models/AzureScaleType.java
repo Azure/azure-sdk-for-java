@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureScaleType. */
+/** Scale type. */
 public final class AzureScaleType extends ExpandableStringEnum<AzureScaleType> {
     /** Static value automatic for AzureScaleType. */
     public static final AzureScaleType AUTOMATIC = fromString("automatic");
@@ -30,7 +30,11 @@ public final class AzureScaleType extends ExpandableStringEnum<AzureScaleType> {
         return fromString(name, AzureScaleType.class);
     }
 
-    /** @return known AzureScaleType values. */
+    /**
+     * Gets known AzureScaleType values.
+     *
+     * @return known AzureScaleType values.
+     */
     public static Collection<AzureScaleType> values() {
         return values(AzureScaleType.class);
     }

@@ -1,5 +1,68 @@
 ## Release History
 
+### 4.40.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+* Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
+* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+
+### 4.39.0 (2022-11-16)
+
+#### Bugs Fixed
+* Fixed a rare race condition for `query plan` cache exceeding the allowed size limit - See [PR 31859](https://github.com/Azure/azure-sdk-for-java/pull/31859)
+* Added improvement in `RntbdClientChannelHealthChecker` for detecting continuous transit timeout. - See [PR 31544](https://github.com/Azure/azure-sdk-for-java/pull/31544)
+* Fixed an issue in replica validation where addresses may have not sorted properly when replica validation is enabled. - See [PR 32022](https://github.com/Azure/azure-sdk-for-java/pull/32022)
+* Fixed unicode char handling in Uris in Cosmos Http Client. - See [PR 32058](https://github.com/Azure/azure-sdk-for-java/pull/32058)
+* Fixed an eager prefetch issue to lazily prefetch pages on a query - See [PR 32122](https://github.com/Azure/azure-sdk-for-java/pull/32122)
+
+#### Other Changes
+* Shaded `MurmurHash3` of apache `commons-codec` to enable removing of the `guava` dependency - CVE-2020-8908 - See [PR 31761](https://github.com/Azure/azure-sdk-for-java/pull/31761)
+* Updated test dependency of `testng` to version 7.5 - See [PR 31761](https://github.com/Azure/azure-sdk-for-java/pull/31761)
+* Reduced the logging noise level on CancellationExceptions from `RntbdReporter.reportIssue`. - See [PR 32175](https://github.com/Azure/azure-sdk-for-java/pull/32175)
+
+### 4.38.1 (2022-10-21)
+#### Other Changes
+* Updated test dependency of apache `commons-text` to version 1.10.0 - CVE-2022-42889 - See [PR 31674](https://github.com/Azure/azure-sdk-for-java/pull/31674)
+* Updated `jackson-databind` dependency to 2.13.4.2 - CVE-2022-42003 - See [PR 31559](https://github.com/Azure/azure-sdk-for-java/pull/31559)
+
+### 4.38.0 (2022-10-12)
+#### Features Added
+* Added option to set throughput control group name on per-request level for batch and bulk operations. - See [PR 31362](https://github.com/Azure/azure-sdk-for-java/pull/31362)
+
+### 4.37.1 (2022-10-07)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.37.1 and above.
+#### Bugs Fixed
+* Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
+* Enabled failover to preferred locations in the case of single-write/multi-read region enabled account for read in Gateway mode and for metadata requests in Direct mode. - More details about the [Bug: Cosmos DB Client gets stuck in timeout retry loop](https://github.com/Azure/azure-sdk-for-java/issues/31260#issue-1396454421). - See [PR 31314](https://github.com/Azure/azure-sdk-for-java/pull/31314)
+
+#### Other Changes
+* Added SslHandshakeTimeout minimum duration config - See [PR 31298](https://github.com/Azure/azure-sdk-for-java/pull/31298)
+
+### 4.37.0 (2022-09-30)
+#### Features Added
+* Added new preview APIs to `ChangeFeedProcessor` for handling all versions and deletes changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
+* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
+
+#### Bugs Fixed
+* Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
+
+#### Other Changes
+* Enable replica validation by default - See [PR 31159](https://github.com/Azure/azure-sdk-for-java/pull/31159)
+
+### 4.36.0 (2022-09-15)
+#### Other Changes
+* Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Added improvement to avoid retry on same replica that previously failed with 410, 408 and  >= 500 status codes - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Improvement when `connectionEndpointRediscoveryEnabled` is enabled - See [PR 30281](https://github.com/Azure/azure-sdk-for-java/pull/30281)
+* Added replica validation for Unknown status if `openConnectionsAndInitCaches` is used and replica validation is enabled - See [PR 30277](https://github.com/Azure/azure-sdk-for-java/pull/30277)
+
 ### 4.35.1 (2022-08-29)
 #### Other Changes
 * Added non-blocking async lazy cache to improve upgrade and scaling scenarios - See [PR 29322](https://github.com/Azure/azure-sdk-for-java/pull/29322)
@@ -45,19 +108,17 @@
 * Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 
 ### 4.31.0 (2022-06-08)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.31.0 and above.
 #### Bugs Fixed
 * Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
 
 #### Other Changes
-* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. 
+* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. - See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
 
 ### 4.30.1 (2022-06-01)
 #### Other Changes
 * Made CosmosPatchOperations thread-safe. Usually there is no reason to modify a CosmosPatchOperations instance concurrently form multiple threads - but making it thread-safe acts as protection in case this is done anyway - See [PR 29143](https://github.com/Azure/azure-sdk-for-java/pull/29143)
 * Added system property to allow overriding proxy setting for client telemetry endpoint. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
-* Added additional information about the reason on Rntbd channel health check failures. - See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
+* Added additional information about the reason on Rntbd channel health check failures. - See [PR 29174](https://github.com/Azure/azure-sdk-for-java/pull/29174)
 
 ### 4.30.0 (2022-05-20)
 #### Bugs Fixed

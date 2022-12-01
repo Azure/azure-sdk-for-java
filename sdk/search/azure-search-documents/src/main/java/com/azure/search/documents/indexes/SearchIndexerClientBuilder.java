@@ -23,7 +23,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.SearchAudience;
+import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;

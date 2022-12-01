@@ -191,6 +191,14 @@ parameters:
   displayName: 'spring-cloud-azure-starter-stream-servicebus'
   type: boolean
   default: true
+- name: release_springcloudazurestarterjdbcmysql
+  displayName: 'spring-cloud-azure-starter-jdbc-mysql'
+  type: boolean
+  default: true
+- name: release_springcloudazurestarterjdbcpostgresql
+  displayName: 'spring-cloud-azure-starter-jdbc-postgresql'
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -489,3 +497,19 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterstreamservicebus }}
+      - name: spring-cloud-azure-starter-jdbc-mysql
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterjdbcmysql
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcmysql }}
+      - name: spring-cloud-azure-starter-jdbc-postgresql
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterjdbcpostgresql
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}

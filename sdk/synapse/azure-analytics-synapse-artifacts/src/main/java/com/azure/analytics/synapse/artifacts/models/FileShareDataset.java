@@ -19,29 +19,25 @@ import java.util.Map;
 @Fluent
 public class FileShareDataset extends Dataset {
     /*
-     * The path of the on-premises file system. Type: string (or Expression
-     * with resultType string).
+     * The path of the on-premises file system. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /*
-     * The name of the on-premises file system. Type: string (or Expression
-     * with resultType string).
+     * The name of the on-premises file system. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileName")
     private Object fileName;
 
     /*
-     * The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
@@ -53,9 +49,8 @@ public class FileShareDataset extends Dataset {
     private DatasetStorageFormat format;
 
     /*
-     * Specify a filter to be used to select a subset of files in the
-     * folderPath rather than all files. Type: string (or Expression with
-     * resultType string).
+     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileFilter")
     private Object fileFilter;

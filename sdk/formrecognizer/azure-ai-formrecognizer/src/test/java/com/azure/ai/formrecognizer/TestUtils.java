@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.InterceptorManager;
@@ -12,6 +13,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.test.StepVerifier;
 
@@ -63,6 +65,43 @@ final class TestUtils {
     private TestUtils() {
     }
 
+    static FormRecognizerAudience getAudience(String endpoint) {
+        String authority = getAuthority(endpoint);
+        switch (authority) {
+            case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
+                return FormRecognizerAudience.AZURE_PUBLIC_CLOUD;
+
+            case AzureAuthorityHosts.AZURE_CHINA:
+                return FormRecognizerAudience.AZURE_CHINA;
+
+            case AzureAuthorityHosts.AZURE_GOVERNMENT:
+                return FormRecognizerAudience.AZURE_GOVERNMENT;
+
+            default:
+                return null;
+        }
+    }
+
+    static String getAuthority(String endpoint) {
+        if (endpoint == null) {
+            return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
+
+        if (endpoint.contains(".io")) {
+            return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
+
+        if (endpoint.contains(".cn")) {
+            return AzureAuthorityHosts.AZURE_CHINA;
+        }
+
+        if (endpoint.contains(".us")) {
+            return AzureAuthorityHosts.AZURE_GOVERNMENT;
+        }
+
+        // By default, we will assume that the authority is public
+        return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+    }
     static InputStream getContentDetectionFileData(String localFileUrl) {
         try {
             return new FileInputStream(localFileUrl);

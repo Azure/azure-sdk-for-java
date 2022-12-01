@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMTier. */
+/**
+ * VM tier
+ *
+ * <p>The type of the VM.
+ */
 public final class VMTier extends ExpandableStringEnum<VMTier> {
     /** Static value Standard for VMTier. */
     public static final VMTier STANDARD = fromString("Standard");

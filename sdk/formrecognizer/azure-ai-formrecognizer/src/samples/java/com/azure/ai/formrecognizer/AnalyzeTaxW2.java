@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -22,8 +22,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found W-2 fields from a local file input stream of a tax W-2 document.
- * See fields found on a US Tax W2 document here:
- * https://aka.ms/formrecognizer/taxusw2fieldschema
+ * See fields found on a US Tax W2 document <a href=https://aka.ms/formrecognizer/taxusw2fieldschema>here</a>
  */
 public class AnalyzeTaxW2 {
     /**
@@ -43,8 +42,8 @@ public class AnalyzeTaxW2 {
         Path filePath = invoice.toPath();
         BinaryData invoiceData = BinaryData.fromFile(filePath);
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeW2Poller =
-            client.beginAnalyzeDocument("prebuilt-tax.us.w2", invoiceData, invoice.length());
+        SyncPoller<OperationResult, AnalyzeResult> analyzeW2Poller =
+            client.beginAnalyzeDocument("prebuilt-tax.us.w2", invoiceData);
 
         AnalyzeResult analyzeTaxResult = analyzeW2Poller.getFinalResult();
 
@@ -116,9 +115,9 @@ public class AnalyzeTaxW2 {
                 if (DocumentFieldType.LIST == localTaxInfosField.getType()) {
                     Map<String, DocumentField> localTaxInfoDataFields = localTaxInfosField.getValueAsMap();
                     DocumentField localWagesTips = localTaxInfoDataFields.get("LocalWagesTipsEtc");
-                    if (DocumentFieldType.FLOAT == localTaxInfosField.getType()) {
+                    if (DocumentFieldType.DOUBLE == localTaxInfosField.getType()) {
                         System.out.printf("Local Wages Tips Value: %.2f, confidence: %.2f%n",
-                            localWagesTips.getValueAsFloat(), localTaxInfosField.getConfidence());
+                            localWagesTips.getValueAsDouble(), localTaxInfosField.getConfidence());
                     }
                 }
             }
@@ -143,8 +142,8 @@ public class AnalyzeTaxW2 {
 
             DocumentField socialSecurityTaxField = taxFields.get("SocialSecurityTaxWithheld");
             if (localTaxInfosField != null) {
-                if (DocumentFieldType.FLOAT == socialSecurityTaxField.getType()) {
-                    Float socialSecurityTax = socialSecurityTaxField.getValueAsFloat();
+                if (DocumentFieldType.DOUBLE == socialSecurityTaxField.getType()) {
+                    Double socialSecurityTax = socialSecurityTaxField.getValueAsDouble();
                     System.out.printf("Social Security Tax withheld: %.2f, confidence: %.2f%n",
                         socialSecurityTax, socialSecurityTaxField.getConfidence());
                 }

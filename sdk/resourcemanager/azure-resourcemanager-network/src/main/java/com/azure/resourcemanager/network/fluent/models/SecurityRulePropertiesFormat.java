@@ -118,6 +118,10 @@ public final class SecurityRulePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of SecurityRulePropertiesFormat class. */
+    public SecurityRulePropertiesFormat() {
+    }
+
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
      *

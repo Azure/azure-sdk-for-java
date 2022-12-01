@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -14,14 +15,19 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -161,7 +167,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return The {@link DetectedLanguage detected language} of the document.
      *
@@ -189,7 +195,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
      * {@code countryHint} = "" or "none".
@@ -236,7 +242,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
      * {@code countryHint} = "" or "none".
@@ -247,6 +253,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResultCollection detectLanguageBatch(
@@ -279,8 +288,8 @@ public final class TextAnalyticsClient {
      * &#47;&#47; Batch statistics
      * TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics&#40;&#41;;
      * System.out.printf&#40;
-     *     &quot;Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s,&quot;
-     *         + &quot; valid document count = %s.%n&quot;,
+     *     &quot;Documents statistics: document count = %d, erroneous document count = %d, transaction count = %d,&quot;
+     *         + &quot; valid document count = %d.%n&quot;,
      *     batchStatistics.getDocumentCount&#40;&#41;, batchStatistics.getInvalidDocumentCount&#40;&#41;,
      *     batchStatistics.getTransactionCount&#40;&#41;, batchStatistics.getValidDocumentCount&#40;&#41;&#41;;
      *
@@ -297,7 +306,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents The list of {@link DetectLanguageInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -306,6 +315,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectLanguageResultCollection> detectLanguageBatchWithResponse(
@@ -339,7 +351,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link CategorizedEntityCollection} contains a list of
      * {@link CategorizedEntity recognized categorized entities} and warnings.
@@ -374,7 +386,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
      * @return The {@link CategorizedEntityCollection} contains a list of
@@ -418,7 +430,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
@@ -427,6 +439,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in
+     *   service API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizeEntitiesResultCollection recognizeEntitiesBatch(
@@ -472,7 +487,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -481,6 +496,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizeEntitiesResultCollection> recognizeEntitiesBatchWithResponse(
@@ -493,7 +511,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>. This method will use the
      * default language that is set using {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is
      * specified, service will use 'en' as the language.
@@ -516,12 +534,15 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link PiiEntityCollection recognized PII entities collection}.
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws UnsupportedOperationException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document) {
@@ -532,7 +553,7 @@ public final class TextAnalyticsClient {
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document
      * with provided language code.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>
      *
      * <p><strong>Code Sample</strong></p>
@@ -552,13 +573,16 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
      * @return The {@link PiiEntityCollection recognized PII entities collection}.
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws UnsupportedOperationException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language) {
@@ -569,7 +593,7 @@ public final class TextAnalyticsClient {
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document
      * with provided language code.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>
      *
      * <p><strong>Code Sample</strong></p>
@@ -591,7 +615,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
@@ -600,6 +624,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws UnsupportedOperationException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language,
@@ -643,7 +670,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
@@ -652,6 +679,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code recognizePiiEntitiesBatch} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntitiesBatch} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(
@@ -698,7 +728,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -707,6 +737,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code recognizePiiEntitiesBatchWithResponse} is called with service API
+     *   version {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntitiesBatchWithResponse} is only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(
@@ -743,7 +776,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
@@ -779,7 +812,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
@@ -833,7 +866,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -843,6 +876,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in
+     *   service API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizeLinkedEntitiesResultCollection recognizeLinkedEntitiesBatch(
@@ -896,7 +932,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -905,6 +941,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in
+     *   service API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
@@ -935,7 +974,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link KeyPhrasesCollection} contains a list of extracted key phrases.
      *
@@ -963,7 +1002,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
@@ -1015,7 +1054,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -1025,6 +1064,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in
+     *   service API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtractKeyPhrasesResultCollection extractKeyPhrasesBatch(
@@ -1077,7 +1119,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1086,6 +1128,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in
+     *   service API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatchWithResponse(
@@ -1132,7 +1177,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      *
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
@@ -1176,7 +1221,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
@@ -1223,7 +1268,7 @@ public final class TextAnalyticsClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
@@ -1233,6 +1278,10 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws UnsupportedOperationException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language, AnalyzeSentimentOptions options) {
@@ -1286,7 +1335,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -1350,7 +1399,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
@@ -1360,6 +1409,10 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents,
@@ -1424,7 +1477,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1506,7 +1559,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
      * analyzing sentiments.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1515,6 +1568,10 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
@@ -1523,14 +1580,289 @@ public final class TextAnalyticsClient {
     }
 
     /**
+     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
+     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
+     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Dynamic classification of each document in a list of {@link String document} with provided
+     * {@link DynamicClassificationOptions} options.
+     *
+     * <!-- src_embed Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
+     * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
+     * DynamicClassificationOptions options = new DynamicClassificationOptions&#40;&#41;
+     *     .setCategories&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;;
+     *
+     * &#47;&#47; Analyzing dynamic classification
+     * DynamicClassifyDocumentResultCollection resultCollection =
+     *     textAnalyticsClient.dynamicClassificationBatch&#40;documents, &quot;en&quot;, options&#41;;
+     *
+     * &#47;&#47; Result of dynamic classification
+     * resultCollection.forEach&#40;documentResult -&gt; &#123;
+     *     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
+     * analyzing dynamic classification.
+     *
+     * @return A {@link DynamicClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code dynamicClassificationBatch} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * 2022-10-01-preview and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DynamicClassifyDocumentResultCollection dynamicClassificationBatch(Iterable<String> documents,
+        String language, DynamicClassificationOptions options) {
+        return client.dynamicClassificationBatch(documents, language, options).block();
+    }
+
+    /**
+     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
+     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
+     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Dynamic classification of each document in a list of {@link TextDocumentInput document} with provided
+     * {@link DynamicClassificationOptions} options.
+     *
+     * <!-- Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; textDocumentInputs = Arrays.asList&#40;
+     *     new TextDocumentInput&#40;&quot;1&quot;, &quot;The hotel was dark and unclean. The restaurant had amazing gnocchi.&quot;&#41;
+     *         .setLanguage&#40;&quot;en&quot;&#41;,
+     *     new TextDocumentInput&#40;&quot;2&quot;, &quot;The restaurant had amazing gnocchi. The hotel was dark and unclean.&quot;&#41;
+     *         .setLanguage&#40;&quot;en&quot;&#41;
+     * &#41;;
+     *
+     * AnalyzeSentimentOptions options = new AnalyzeSentimentOptions&#40;&#41;.setIncludeOpinionMining&#40;true&#41;
+     *     .setIncludeStatistics&#40;true&#41;;
+     *
+     * &#47;&#47; Analyzing batch sentiments
+     * Response&lt;AnalyzeSentimentResultCollection&gt; response =
+     *     textAnalyticsClient.analyzeSentimentBatchWithResponse&#40;textDocumentInputs, options, Context.NONE&#41;;
+     *
+     * &#47;&#47; Response's status code
+     * System.out.printf&#40;&quot;Status code of request response: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * AnalyzeSentimentResultCollection resultCollection = response.getValue&#40;&#41;;
+     *
+     * &#47;&#47; Batch statistics
+     * TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics&#40;&#41;;
+     * System.out.printf&#40;&quot;A batch of documents statistics, transaction count: %s, valid document count: %s.%n&quot;,
+     *     batchStatistics.getTransactionCount&#40;&#41;, batchStatistics.getValidDocumentCount&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Analyzed sentiment for each of documents from a batch of documents
+     * resultCollection.forEach&#40;analyzeSentimentResult -&gt; &#123;
+     *     System.out.printf&#40;&quot;Document ID: %s%n&quot;, analyzeSentimentResult.getId&#40;&#41;&#41;;
+     *     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment&#40;&#41;;
+     *     documentSentiment.getSentences&#40;&#41;.forEach&#40;sentenceSentiment -&gt; &#123;
+     *         System.out.printf&#40;&quot;&#92;tSentence sentiment: %s%n&quot;, sentenceSentiment.getSentiment&#40;&#41;&#41;;
+     *         sentenceSentiment.getOpinions&#40;&#41;.forEach&#40;opinion -&gt; &#123;
+     *             TargetSentiment targetSentiment = opinion.getTarget&#40;&#41;;
+     *             System.out.printf&#40;&quot;&#92;tTarget sentiment: %s, target text: %s%n&quot;, targetSentiment.getSentiment&#40;&#41;,
+     *                 targetSentiment.getText&#40;&#41;&#41;;
+     *             for &#40;AssessmentSentiment assessmentSentiment : opinion.getAssessments&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t'%s' sentiment because of &#92;&quot;%s&#92;&quot;. Is the assessment negated: %s.%n&quot;,
+     *                     assessmentSentiment.getSentiment&#40;&#41;, assessmentSentiment.getText&#40;&#41;,
+     *                     assessmentSentiment.isNegated&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
+     * analyzing dynamic classification.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} that contains a {@link DynamicClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code dynamicClassificationBatchWithResponse} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * 2022-10-01-preview and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(
+        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
+        return client.dynamicClassificationAsyncClient.getDynamicClassifyDocumentResultCollectionResponse(
+            documents, options, context).block();
+    }
+
+    /**
+     * Analyze healthcare entities, entity data sources, and entity relations in a list of {@link String documents}.
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;&quot;The patient is a 54-year-old gentleman with a history of progressive angina over &quot;
+     *         + &quot;the past several months.&quot;&#41;;
+     * &#125;
+     *
+     * SyncPoller&lt;AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable&gt;
+     *     syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities&#40;documents&#41;;
+     *
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * AnalyzeHealthcareEntitiesPagedIterable result = syncPoller.getFinalResult&#40;&#41;;
+     *
+     * result.forEach&#40;analyzeHealthcareEntitiesResultCollection -&gt; &#123;
+     *     analyzeHealthcareEntitiesResultCollection.forEach&#40;healthcareEntitiesResult -&gt; &#123;
+     *         System.out.println&#40;&quot;document id = &quot; + healthcareEntitiesResult.getId&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Document entities: &quot;&#41;;
+     *         AtomicInteger ct = new AtomicInteger&#40;&#41;;
+     *         healthcareEntitiesResult.getEntities&#40;&#41;.forEach&#40;healthcareEntity -&gt; &#123;
+     *             System.out.printf&#40;&quot;&#92;ti = %d, Text: %s, category: %s, confidence score: %f.%n&quot;,
+     *                 ct.getAndIncrement&#40;&#41;, healthcareEntity.getText&#40;&#41;, healthcareEntity.getCategory&#40;&#41;,
+     *                 healthcareEntity.getConfidenceScore&#40;&#41;&#41;;
+     *
+     *             IterableStream&lt;EntityDataSource&gt; healthcareEntityDataSources =
+     *                 healthcareEntity.getDataSources&#40;&#41;;
+     *             if &#40;healthcareEntityDataSources != null&#41; &#123;
+     *                 healthcareEntityDataSources.forEach&#40;healthcareEntityLink -&gt; System.out.printf&#40;
+     *                     &quot;&#92;t&#92;tEntity ID in data source: %s, data source: %s.%n&quot;,
+     *                     healthcareEntityLink.getEntityId&#40;&#41;, healthcareEntityLink.getName&#40;&#41;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     *         &#47;&#47; Healthcare entity relation groups
+     *         healthcareEntitiesResult.getEntityRelations&#40;&#41;.forEach&#40;entityRelation -&gt; &#123;
+     *             System.out.printf&#40;&quot;&#92;tRelation type: %s.%n&quot;, entityRelation.getRelationType&#40;&#41;&#41;;
+     *             entityRelation.getRoles&#40;&#41;.forEach&#40;role -&gt; &#123;
+     *                 final HealthcareEntity entity = role.getEntity&#40;&#41;;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
+     *                     entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
+     *             &#125;&#41;;
+     *             System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;,
+     *                 entityRelation.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @return A {@link SyncPoller} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AnalyzeHealthcareEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAnalyzeHealthcareEntities} is called with service API
+     *   version {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeHealthcareEntities} is only available for
+     *   API version v3.1 and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
+        beginAnalyzeHealthcareEntities(Iterable<String> documents) {
+        return beginAnalyzeHealthcareEntities(documents, client.getDefaultLanguage(), null);
+    }
+
+    /**
      * Analyze healthcare entities, entity data sources, and entity relations in a list of
      * {@link String documents} with provided request options.
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable-String-AnalyzeHealthcareEntitiesOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;&quot;The patient is a 54-year-old gentleman with a history of progressive angina over &quot;
+     *         + &quot;the past several months.&quot;&#41;;
+     * &#125;
+     *
+     * &#47;&#47; Request options: show statistics and model version
+     * AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions&#40;&#41;
+     *     .setIncludeStatistics&#40;true&#41;;
+     *
+     * SyncPoller&lt;AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable&gt;
+     *     syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities&#40;documents, &quot;en&quot;, options&#41;;
+     *
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * AnalyzeHealthcareEntitiesPagedIterable result = syncPoller.getFinalResult&#40;&#41;;
+     *
+     * result.forEach&#40;analyzeHealthcareEntitiesResultCollection -&gt; &#123;
+     *     &#47;&#47; Model version
+     *     System.out.printf&#40;&quot;Results of Azure Text Analytics &#92;&quot;Analyze Healthcare&#92;&quot; Model, version: %s%n&quot;,
+     *         analyzeHealthcareEntitiesResultCollection.getModelVersion&#40;&#41;&#41;;
+     *
+     *     TextDocumentBatchStatistics healthcareTaskStatistics =
+     *         analyzeHealthcareEntitiesResultCollection.getStatistics&#40;&#41;;
+     *     &#47;&#47; Batch statistics
+     *     System.out.printf&#40;&quot;Documents statistics: document count = %d, erroneous document count = %d,&quot;
+     *             + &quot; transaction count = %d, valid document count = %d.%n&quot;,
+     *         healthcareTaskStatistics.getDocumentCount&#40;&#41;, healthcareTaskStatistics.getInvalidDocumentCount&#40;&#41;,
+     *         healthcareTaskStatistics.getTransactionCount&#40;&#41;, healthcareTaskStatistics.getValidDocumentCount&#40;&#41;&#41;;
+     *
+     *     analyzeHealthcareEntitiesResultCollection.forEach&#40;healthcareEntitiesResult -&gt; &#123;
+     *         System.out.println&#40;&quot;document id = &quot; + healthcareEntitiesResult.getId&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Document entities: &quot;&#41;;
+     *         AtomicInteger ct = new AtomicInteger&#40;&#41;;
+     *         healthcareEntitiesResult.getEntities&#40;&#41;.forEach&#40;healthcareEntity -&gt; &#123;
+     *             System.out.printf&#40;&quot;&#92;ti = %d, Text: %s, category: %s, confidence score: %f.%n&quot;,
+     *                 ct.getAndIncrement&#40;&#41;, healthcareEntity.getText&#40;&#41;, healthcareEntity.getCategory&#40;&#41;,
+     *                 healthcareEntity.getConfidenceScore&#40;&#41;&#41;;
+     *
+     *             IterableStream&lt;EntityDataSource&gt; healthcareEntityDataSources =
+     *                 healthcareEntity.getDataSources&#40;&#41;;
+     *             if &#40;healthcareEntityDataSources != null&#41; &#123;
+     *                 healthcareEntityDataSources.forEach&#40;healthcareEntityLink -&gt; System.out.printf&#40;
+     *                     &quot;&#92;t&#92;tEntity ID in data source: %s, data source: %s.%n&quot;,
+     *                     healthcareEntityLink.getEntityId&#40;&#41;, healthcareEntityLink.getName&#40;&#41;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     *         &#47;&#47; Healthcare entity relation groups
+     *         healthcareEntitiesResult.getEntityRelations&#40;&#41;.forEach&#40;entityRelation -&gt; &#123;
+     *             System.out.printf&#40;&quot;&#92;tRelation type: %s.%n&quot;, entityRelation.getRelationType&#40;&#41;&#41;;
+     *             entityRelation.getRoles&#40;&#41;.forEach&#40;role -&gt; &#123;
+     *                 final HealthcareEntity entity = role.getEntity&#40;&#41;;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
+     *                     entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
+     *             &#125;&#41;;
+     *             System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;, entityRelation.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable-String-AnalyzeHealthcareEntitiesOptions -->
+     *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
@@ -1541,6 +1873,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAnalyzeHealthcareEntities} is called with service API
+     *   version {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeHealthcareEntities} is only available for
+     *   API version v3.1 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1595,8 +1930,8 @@ public final class TextAnalyticsClient {
      *     TextDocumentBatchStatistics healthcareTaskStatistics =
      *         analyzeHealthcareEntitiesResultCollection.getStatistics&#40;&#41;;
      *     &#47;&#47; Batch statistics
-     *     System.out.printf&#40;&quot;Documents statistics: document count = %s, erroneous document count = %s,&quot;
-     *             + &quot; transaction count = %s, valid document count = %s.%n&quot;,
+     *     System.out.printf&#40;&quot;Documents statistics: document count = %d, erroneous document count = %d,&quot;
+     *             + &quot; transaction count = %d, valid document count = %d.%n&quot;,
      *         healthcareTaskStatistics.getDocumentCount&#40;&#41;, healthcareTaskStatistics.getInvalidDocumentCount&#40;&#41;,
      *         healthcareTaskStatistics.getTransactionCount&#40;&#41;, healthcareTaskStatistics.getValidDocumentCount&#40;&#41;&#41;;
      *
@@ -1625,6 +1960,7 @@ public final class TextAnalyticsClient {
      *                 System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
      *                     entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
      *             &#125;&#41;;
+     *             System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;, entityRelation.getConfidenceScore&#40;&#41;&#41;;
      *         &#125;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;
@@ -1642,6 +1978,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAnalyzeHealthcareEntities} is called with service API
+     *   version {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeHealthcareEntities} is only available for
+     *   API version v3.1 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1650,6 +1989,66 @@ public final class TextAnalyticsClient {
             Context context) {
         return client.analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options,
             context).getSyncPoller();
+    }
+
+    /**
+     * Returns a list of custom entities for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginRecognizeCustomEntities#Iterable-String-String -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;A recent report by the Government Accountability Office &#40;GAO&#41; found that the dramatic increase &quot;
+     *             + &quot;in oil and natural gas development on federal lands over the past six years has stretched the&quot;
+     *             + &quot; staff of the BLM to a point that it has been unable to meet its environmental protection &quot;
+     *             + &quot;responsibilities.&quot;&#41;; &#125;
+     * SyncPoller&lt;RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginRecognizeCustomEntities&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;RecognizeEntitiesResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;CategorizedEntity entity : documentResult.getEntities&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;tText: %s, category: %s, confidence score: %f.%n&quot;,
+     *                 entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, entity.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginRecognizeCustomEntities#Iterable-String-String -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     *
+     * @return A {@link SyncPoller} that polls the recognize custom entities operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link RecognizeCustomEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginRecognizeCustomEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginRecognizeCustomEntities} is only available for API version 2022-05-01 and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable>
+        beginRecognizeCustomEntities(Iterable<String> documents, String projectName, String deploymentName) {
+        return beginRecognizeCustomEntities(documents, projectName, deploymentName, client.getDefaultLanguage(), null);
     }
 
     /**
@@ -1692,7 +2091,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
@@ -1706,6 +2105,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginRecognizeCustomEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginRecognizeCustomEntities} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1760,7 +2162,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * English as default.
@@ -1774,6 +2176,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginRecognizeCustomEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginRecognizeCustomEntities} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1782,6 +2187,69 @@ public final class TextAnalyticsClient {
             String deploymentName, RecognizeCustomEntitiesOptions options, Context context) {
         return client.recognizeCustomEntitiesAsyncClient.recognizeCustomEntitiesPagedIterable(
             documents, projectName, deploymentName, options, context).getSyncPoller();
+    }
+
+    /**
+     * Returns a list of single-label classification for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginSingleLabelClassify#Iterable-String-String -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;A recent report by the Government Accountability Office &#40;GAO&#41; found that the dramatic increase &quot;
+     *             + &quot;in oil and natural gas development on federal lands over the past six years has stretched the&quot;
+     *             + &quot; staff of the BLM to a point that it has been unable to meet its environmental protection &quot;
+     *             + &quot;responsibilities.&quot;
+     *     &#41;;
+     * &#125;
+     * &#47;&#47; See the service documentation for regional support and how to train a model to classify your documents,
+     * &#47;&#47; see https:&#47;&#47;aka.ms&#47;azsdk&#47;textanalytics&#47;customfunctionalities
+     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginSingleLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginSingleLabelClassify#Iterable-String-String -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     *
+     * @return A {@link SyncPoller} that polls the single-label classification operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginSingleLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginSingleLabelClassify} is only available for API version 2022-05-01 and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
+        beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName) {
+        return beginSingleLabelClassify(documents, projectName, deploymentName, client.getDefaultLanguage(), null);
     }
 
     /**
@@ -1827,7 +2295,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
@@ -1841,6 +2309,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginSingleLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginSingleLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1894,7 +2365,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param options The additional configurable {@link SingleLabelClassifyOptions options} that may be passed
@@ -1907,6 +2378,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginSingleLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginSingleLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1915,6 +2389,64 @@ public final class TextAnalyticsClient {
             String deploymentName, SingleLabelClassifyOptions options, Context context) {
         return client.labelClassifyAsyncClient.singleLabelClassifyPagedIterable(
             documents, projectName, deploymentName, options, context).getSyncPoller();
+    }
+
+    /**
+     * Returns a list of multi-label classification for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     *
+     * @return A {@link SyncPoller} that polls the multi-label classification operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginMultiLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginMultiLabelClassify} is only available for API version 2022-05-01 and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
+        beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName) {
+        return beginMultiLabelClassify(documents, projectName, deploymentName, client.getDefaultLanguage(), null);
     }
 
     /**
@@ -1954,7 +2486,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
@@ -1968,6 +2500,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginMultiLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginMultiLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2017,7 +2552,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      * @param options The additional configurable {@link SingleLabelClassifyOptions options} that may be passed
@@ -2030,6 +2565,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginMultiLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginMultiLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2038,6 +2576,86 @@ public final class TextAnalyticsClient {
             String deploymentName, MultiLabelClassifyOptions options, Context context) {
         return client.labelClassifyAsyncClient.multiLabelClassifyPagedIterable(
             documents, projectName, deploymentName, options, context).getSyncPoller();
+    }
+
+    /**
+     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
+     * {@link String documents}.
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions -->
+     * <pre>
+     * List&lt;String&gt; documents = Arrays.asList&#40;
+     *     &quot;Elon Musk is the CEO of SpaceX and Tesla.&quot;,
+     *     &quot;My SSN is 859-98-0987&quot;
+     * &#41;;
+     *
+     * SyncPoller&lt;AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAnalyzeActions&#40;
+     *         documents,
+     *         new TextAnalyticsActions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;
+     *             .setRecognizeEntitiesActions&#40;new RecognizeEntitiesAction&#40;&#41;&#41;
+     *             .setExtractKeyPhrasesActions&#40;new ExtractKeyPhrasesAction&#40;&#41;&#41;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult&#40;&#41;;
+     * result.forEach&#40;analyzeActionsResult -&gt; &#123;
+     *     System.out.println&#40;&quot;Entities recognition action results:&quot;&#41;;
+     *     analyzeActionsResult.getRecognizeEntitiesResults&#40;&#41;.forEach&#40;
+     *         actionResult -&gt; &#123;
+     *             if &#40;!actionResult.isError&#40;&#41;&#41; &#123;
+     *                 actionResult.getDocumentsResults&#40;&#41;.forEach&#40;
+     *                     entitiesResult -&gt; entitiesResult.getEntities&#40;&#41;.forEach&#40;
+     *                         entity -&gt; System.out.printf&#40;
+     *                             &quot;Recognized entity: %s, entity category: %s, entity subcategory: %s,&quot;
+     *                                 + &quot; confidence score: %f.%n&quot;,
+     *                             entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, entity.getSubcategory&#40;&#41;,
+     *                             entity.getConfidenceScore&#40;&#41;&#41;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     *     System.out.println&#40;&quot;Key phrases extraction action results:&quot;&#41;;
+     *     analyzeActionsResult.getExtractKeyPhrasesResults&#40;&#41;.forEach&#40;
+     *         actionResult -&gt; &#123;
+     *             if &#40;!actionResult.isError&#40;&#41;&#41; &#123;
+     *                 actionResult.getDocumentsResults&#40;&#41;.forEach&#40;extractKeyPhraseResult -&gt; &#123;
+     *                     System.out.println&#40;&quot;Extracted phrases:&quot;&#41;;
+     *                     extractKeyPhraseResult.getKeyPhrases&#40;&#41;
+     *                         .forEach&#40;keyPhrases -&gt; System.out.printf&#40;&quot;&#92;t%s.%n&quot;, keyPhrases&#41;&#41;;
+     *                 &#125;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
+     * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
+     * inputs.
+     *
+     * @return A {@link SyncPoller} that polls the analyze a collection of actions operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link AnalyzeActionsResultPagedIterable}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAnalyzeActions} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeActions} is only available for API version
+     *   v3.1 and newer.
+     * @throws UnsupportedOperationException if request {@link AnalyzeHealthcareEntitiesAction},
+     *   {@link RecognizeCustomEntitiesAction}, {@link SingleLabelClassifyAction}, or {@link MultiLabelClassifyAction}
+     *   in service API version {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   Those actions are only available for API version 2022-05-01 and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActions(
+        Iterable<String> documents, TextAnalyticsActions actions) {
+        return beginAnalyzeActions(documents, actions, client.getDefaultLanguage(), null);
     }
 
     /**
@@ -2095,7 +2713,7 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
      * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
      * inputs.
@@ -2109,6 +2727,13 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAnalyzeActions} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeActions} is only available for API version
+     *   v3.1 and newer.
+     * @throws UnsupportedOperationException if request {@link AnalyzeHealthcareEntitiesAction},
+     *   {@link RecognizeCustomEntitiesAction}, {@link SingleLabelClassifyAction}, or {@link MultiLabelClassifyAction}
+     *   in service API version {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   Those actions are only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2188,6 +2813,13 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} or {@code actions} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAnalyzeActions} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeActions} is only available for API version
+     *   v3.1 and newer.
+     * @throws UnsupportedOperationException if request {@link AnalyzeHealthcareEntitiesAction},
+     *   {@link RecognizeCustomEntitiesAction}, {@link SingleLabelClassifyAction}, or {@link MultiLabelClassifyAction}
+     *   in service API version {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   Those actions are only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

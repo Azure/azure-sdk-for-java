@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Jobs. */
 public interface Jobs {
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -24,7 +26,9 @@ public interface Jobs {
     PagedIterable<Job> list(String resourceGroupName, String accountName, String transformName);
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -46,7 +50,9 @@ public interface Jobs {
         Context context);
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -60,7 +66,9 @@ public interface Jobs {
     Job get(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -76,7 +84,9 @@ public interface Jobs {
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -89,7 +99,9 @@ public interface Jobs {
     void delete(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -105,7 +117,9 @@ public interface Jobs {
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -118,7 +132,9 @@ public interface Jobs {
     void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -134,7 +150,9 @@ public interface Jobs {
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +163,9 @@ public interface Jobs {
     Job getById(String id);
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -157,7 +177,9 @@ public interface Jobs {
     Response<Job> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +189,9 @@ public interface Jobs {
     void deleteById(String id);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

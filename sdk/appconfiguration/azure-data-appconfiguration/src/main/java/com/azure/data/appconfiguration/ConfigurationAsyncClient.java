@@ -63,9 +63,17 @@ public final class ConfigurationAsyncClient {
      * service requests receive up-to-date values.
      */
     ConfigurationAsyncClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
-
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
+    }
+
+    /**
+     * Gets the service endpoint for the Azure App Configuration instance.
+     *
+     * @return the service endpoint for the Azure App Configuration instance.
+     */
+    public String getEndpoint() {
+        return serviceClient.getEndpoint();
     }
 
     /**
@@ -743,14 +751,14 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listsettings -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettings -->
      * <pre>
      * client.listConfigurationSettings&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
      *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;setting -&gt;
      *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listsettings -->
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettings -->
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux

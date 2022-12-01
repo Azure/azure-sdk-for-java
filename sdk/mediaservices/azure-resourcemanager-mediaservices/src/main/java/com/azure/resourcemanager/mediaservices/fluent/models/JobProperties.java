@@ -20,8 +20,7 @@ import java.util.Map;
 @Fluent
 public final class JobProperties {
     /*
-     * The UTC date and time when the customer has created the Job, in
-     * 'YYYY-MM-DDThh:mm:ssZ' format.
+     * The UTC date and time when the customer has created the Job, in 'YYYY-MM-DDThh:mm:ssZ' format.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
@@ -45,8 +44,7 @@ public final class JobProperties {
     private JobInput input;
 
     /*
-     * The UTC date and time when the customer has last updated the Job, in
-     * 'YYYY-MM-DDThh:mm:ssZ' format.
+     * The UTC date and time when the customer has last updated the Job, in 'YYYY-MM-DDThh:mm:ssZ' format.
      */
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
@@ -58,16 +56,14 @@ public final class JobProperties {
     private List<JobOutput> outputs;
 
     /*
-     * Priority with which the job should be processed. Higher priority jobs
-     * are processed before lower priority jobs. If not set, the default is
-     * normal.
+     * Priority with which the job should be processed. Higher priority jobs are processed before lower priority jobs.
+     * If not set, the default is normal.
      */
     @JsonProperty(value = "priority")
     private Priority priority;
 
     /*
-     * Customer provided key, value pairs that will be returned in Job and
-     * JobOutput state events.
+     * Customer provided key, value pairs that will be returned in Job and JobOutput state events.
      */
     @JsonProperty(value = "correlationData")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

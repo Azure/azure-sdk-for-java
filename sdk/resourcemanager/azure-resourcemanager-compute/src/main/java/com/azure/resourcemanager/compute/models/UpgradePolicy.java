@@ -31,6 +31,10 @@ public final class UpgradePolicy {
     @JsonProperty(value = "automaticOSUpgradePolicy")
     private AutomaticOSUpgradePolicy automaticOSUpgradePolicy;
 
+    /** Creates an instance of UpgradePolicy class. */
+    public UpgradePolicy() {
+    }
+
     /**
      * Get the mode property: Specifies the mode of an upgrade to virtual machines in the scale set.&lt;br /&gt;&lt;br
      * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to virtual

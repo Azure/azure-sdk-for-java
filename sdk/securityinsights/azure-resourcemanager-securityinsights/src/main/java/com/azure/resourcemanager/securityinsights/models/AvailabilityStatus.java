@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AvailabilityStatus. */
+/** The connector Availability Status. */
 public enum AvailabilityStatus {
     /** Enum value 1. */
     ONE(1);

@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 
 public class AccessPolicy implements XmlSerializable<AccessPolicy> {
@@ -39,7 +40,7 @@ public class AccessPolicy implements XmlSerializable<AccessPolicy> {
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return xmlWriter.writeStartElement("AccessPolicy")
             .writeStringElement("Start", startsOn == null ? null : startsOn.toString())
             .writeStringElement("Expiry", expiresOn == null ? null : expiresOn.toString())
@@ -47,7 +48,7 @@ public class AccessPolicy implements XmlSerializable<AccessPolicy> {
             .writeEndElement();
     }
 
-    public static AccessPolicy fromXml(XmlReader xmlReader) {
+    public static AccessPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             // Since AccessPolicy only cares about XML elements use nextElement()
             xmlReader.nextElement();

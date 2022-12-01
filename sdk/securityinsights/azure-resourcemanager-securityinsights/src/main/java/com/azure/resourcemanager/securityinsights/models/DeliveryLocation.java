@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DeliveryLocation. */
+/** The delivery location of this mail message like Inbox, JunkFolder etc. */
 public enum DeliveryLocation {
     /** Enum value Unknown. */
     UNKNOWN("Unknown"),
@@ -51,6 +51,9 @@ public enum DeliveryLocation {
      */
     @JsonCreator
     public static DeliveryLocation fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DeliveryLocation[] items = DeliveryLocation.values();
         for (DeliveryLocation item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,6 +63,7 @@ public enum DeliveryLocation {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

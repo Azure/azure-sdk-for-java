@@ -15,22 +15,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class BlobSink extends CopySink {
     /*
-     * Blob writer overwrite files. Type: boolean (or Expression with
-     * resultType boolean).
+     * Blob writer overwrite files. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "blobWriterOverwriteFiles")
     private Object blobWriterOverwriteFiles;
 
     /*
-     * Blob writer date time format. Type: string (or Expression with
-     * resultType string).
+     * Blob writer date time format. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "blobWriterDateTimeFormat")
     private Object blobWriterDateTimeFormat;
 
     /*
-     * Blob writer add header. Type: boolean (or Expression with resultType
-     * boolean).
+     * Blob writer add header. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "blobWriterAddHeader")
     private Object blobWriterAddHeader;

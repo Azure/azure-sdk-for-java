@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMySqlLinkedServiceTypeProperties {
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
@@ -26,12 +25,15 @@ public final class AzureMySqlLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AzureMySqlLinkedServiceTypeProperties class. */
+    public AzureMySqlLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or

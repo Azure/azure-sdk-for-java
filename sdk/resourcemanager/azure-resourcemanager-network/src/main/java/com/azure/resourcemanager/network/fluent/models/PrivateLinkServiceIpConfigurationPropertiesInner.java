@@ -49,6 +49,10 @@ public final class PrivateLinkServiceIpConfigurationPropertiesInner {
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
 
+    /** Creates an instance of PrivateLinkServiceIpConfigurationPropertiesInner class. */
+    public PrivateLinkServiceIpConfigurationPropertiesInner() {
+    }
+
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
      *

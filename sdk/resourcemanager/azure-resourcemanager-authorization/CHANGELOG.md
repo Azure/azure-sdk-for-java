@@ -1,6 +1,6 @@
 # Release History
 
-## 2.19.0-beta.1 (Unreleased)
+## 2.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,31 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.21.0 (2022-11-24)
+
+### Breaking Changes
+
+- `filter` parameters in list API from `RoleAssignmentsClient` is required to be encoded by user.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of authorization to `2022-04-01`.
+
+## 2.20.0 (2022-10-26)
+
+### Features Added
+
+- Supported description in role assignment.
+
+## 2.19.0 (2022-09-23)
+
+### Bugs Fixed
+
+- Supported delayed retry on 404 for eventual consistency, after creating AAD service principal.
+- Improved the delayed retry on 400 for service principal, when creating role assignment. Now the retry will continue for only about a minute.
 
 ## 2.18.0 (2022-08-26)
 

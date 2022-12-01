@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public final class ManualTriggerRequestBody {
     /*
      * The logicAppsResourceId property.
      */
-    @JsonProperty(value = "logicAppsResourceId")
+    @JsonProperty(value = "logicAppsResourceId", required = true)
     private String logicAppsResourceId;
 
     /**
@@ -69,5 +70,13 @@ public final class ManualTriggerRequestBody {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (logicAppsResourceId() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property logicAppsResourceId in model ManualTriggerRequestBody"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManualTriggerRequestBody.class);
 }

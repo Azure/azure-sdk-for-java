@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -53,13 +52,15 @@ import java.time.Duration;
 })
 @Fluent
 public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeWindowCustomAlertRule.class);
-
     /*
      * The time window size in iso8601 format.
      */
     @JsonProperty(value = "timeWindowSize", required = true)
     private Duration timeWindowSize;
+
+    /** Creates an instance of TimeWindowCustomAlertRule class. */
+    public TimeWindowCustomAlertRule() {
+    }
 
     /**
      * Get the timeWindowSize property: The time window size in iso8601 format.
@@ -111,10 +112,12 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
     public void validate() {
         super.validate();
         if (timeWindowSize() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property timeWindowSize in model TimeWindowCustomAlertRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TimeWindowCustomAlertRule.class);
 }

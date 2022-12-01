@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSetVMRunCommands CreateOrUpdate. */
 public final class VirtualMachineScaleSetVMRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
      */
     /**
      * Sample code: Create VirtualMachineScaleSet VM run command.
@@ -41,7 +41,7 @@ public final class VirtualMachineScaleSetVMRunCommandsCreateOrUpdateSamples {
                                 new RunCommandInputParameter().withName("param2").withValue("value2")))
                     .withAsyncExecution(false)
                     .withRunAsUser("user1")
-                    .withRunAsPassword("<runAsPassword>")
+                    .withRunAsPassword("fakeTokenPlaceholder")
                     .withTimeoutInSeconds(3600),
                 Context.NONE);
     }

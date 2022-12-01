@@ -135,7 +135,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rerunTriggerInstanceAsync(String triggerName, String runId) {
-        return rerunTriggerInstanceWithResponseAsync(triggerName, runId).flatMap((Response<Void> res) -> Mono.empty());
+        return rerunTriggerInstanceWithResponseAsync(triggerName, runId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -151,8 +151,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rerunTriggerInstanceAsync(String triggerName, String runId, Context context) {
-        return rerunTriggerInstanceWithResponseAsync(triggerName, runId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return rerunTriggerInstanceWithResponseAsync(triggerName, runId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -237,7 +236,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelTriggerInstanceAsync(String triggerName, String runId) {
-        return cancelTriggerInstanceWithResponseAsync(triggerName, runId).flatMap((Response<Void> res) -> Mono.empty());
+        return cancelTriggerInstanceWithResponseAsync(triggerName, runId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -253,8 +252,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelTriggerInstanceAsync(String triggerName, String runId, Context context) {
-        return cancelTriggerInstanceWithResponseAsync(triggerName, runId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return cancelTriggerInstanceWithResponseAsync(triggerName, runId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -338,14 +336,7 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceAsync(RunFilterParameters filterParameters) {
         return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters)
-                .flatMap(
-                        (Response<TriggerRunsQueryResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -362,14 +353,7 @@ public final class TriggerRunsImpl {
     public Mono<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceAsync(
             RunFilterParameters filterParameters, Context context) {
         return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters, context)
-                .flatMap(
-                        (Response<TriggerRunsQueryResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

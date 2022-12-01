@@ -24,18 +24,21 @@ public final class EncryptionConfiguration {
     private String vaultBaseUrl;
 
     /*
-     * The version of the key used for CMK. If not provided, latest version
-     * will be used.
+     * The version of the key used for CMK. If not provided, latest version will be used.
      */
     @JsonProperty(value = "keyVersion")
     private String keyVersion;
 
     /*
-     * User assigned identity to use to authenticate to customer's key vault.
-     * If not provided Managed Service Identity will be used.
+     * User assigned identity to use to authenticate to customer's key vault. If not provided Managed Service Identity
+     * will be used.
      */
     @JsonProperty(value = "identity")
     private CmkIdentityDefinition identity;
+
+    /** Creates an instance of EncryptionConfiguration class. */
+    public EncryptionConfiguration() {
+    }
 
     /**
      * Get the keyName property: The name of the key in Azure Key Vault to use as Customer Managed Key.

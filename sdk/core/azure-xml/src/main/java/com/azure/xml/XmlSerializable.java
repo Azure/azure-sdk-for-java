@@ -3,6 +3,8 @@
 
 package com.azure.xml;
 
+import javax.xml.stream.XMLStreamException;
+
 /**
  * Indicates that the implementing class can be serialized to and deserialized from XML.
  * <p>
@@ -21,12 +23,11 @@ public interface XmlSerializable<T extends XmlSerializable<T>> {
      * serialization, they'll pass the {@link XmlWriter} to the other {@link XmlSerializable} object. This way objects
      * writing XML will be self-encapsulated for writing properly formatted XML.
      *
-     * param xmlWriter Where the object's XML will be written.
-     *
      * @param xmlWriter The {@link XmlWriter} being written to.
      * @return The {@link XmlWriter} where the JSON was written for chaining.
+     * @throws XMLStreamException If the object fails to be written to the {@code xmlWriter}.
      */
-    XmlWriter toXml(XmlWriter xmlWriter);
+    XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException;
 
     /**
      * Reads an XML stream into an object.
@@ -37,8 +38,9 @@ public interface XmlSerializable<T extends XmlSerializable<T>> {
      * @param xmlReader The {@link XmlReader} being read.
      * @param <T> The type of the object.
      * @return The object that the XML stream represented, may return null.
+     * @throws XMLStreamException If an object fails to be read from the {@code xmlReader}.
      */
-    static <T extends XmlSerializable<T>> T fromXml(XmlReader xmlReader) {
+    static <T extends XmlSerializable<T>> T fromXml(XmlReader xmlReader) throws XMLStreamException {
         throw new UnsupportedOperationException("Implementation of XmlSerializable must define this factory method.");
     }
 }

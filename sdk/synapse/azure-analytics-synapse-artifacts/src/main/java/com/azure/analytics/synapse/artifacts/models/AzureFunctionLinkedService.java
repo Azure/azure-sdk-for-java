@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class AzureFunctionLinkedService extends LinkedService {
     /*
-     * The endpoint of the Azure Function App. URL will be in the format
-     * https://<accountName>.azurewebsites.net.
+     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net.
      */
     @JsonProperty(value = "typeProperties.functionAppUrl", required = true)
     private Object functionAppUrl;
@@ -32,9 +31,8 @@ public class AzureFunctionLinkedService extends LinkedService {
     private SecretBase functionKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

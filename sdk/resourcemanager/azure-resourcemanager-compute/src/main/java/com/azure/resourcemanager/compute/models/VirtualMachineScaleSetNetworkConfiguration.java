@@ -26,6 +26,10 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetNetworkConfigurationProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetNetworkConfiguration class. */
+    public VirtualMachineScaleSetNetworkConfiguration() {
+    }
+
     /**
      * Get the name property: The network configuration name.
      *
@@ -110,6 +114,31 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
             this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
         }
         this.innerProperties().withEnableAcceleratedNetworking(enableAcceleratedNetworking);
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableTcpStateTracking();
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
+        }
+        this.innerProperties().withDisableTcpStateTracking(disableTcpStateTracking);
         return this;
     }
 

@@ -20,6 +20,10 @@ public final class OperationStatusJobExtendedInfo extends OperationStatusExtende
     @JsonProperty(value = "jobId")
     private String jobId;
 
+    /** Creates an instance of OperationStatusJobExtendedInfo class. */
+    public OperationStatusJobExtendedInfo() {
+    }
+
     /**
      * Get the jobId property: ID of the job created for this protected item.
      *

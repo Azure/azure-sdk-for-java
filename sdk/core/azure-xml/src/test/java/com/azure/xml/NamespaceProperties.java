@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 
 public class NamespaceProperties implements XmlSerializable<NamespaceProperties> {
@@ -156,7 +157,7 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("NamespaceInfo");
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
         xmlWriter.writeStringElement("Alias", alias);
@@ -170,7 +171,7 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
         return xmlWriter.writeEndElement().flush();
     }
 
-    public static NamespaceProperties fromXml(XmlReader xmlReader) {
+    public static NamespaceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             xmlReader.nextElement();
         }

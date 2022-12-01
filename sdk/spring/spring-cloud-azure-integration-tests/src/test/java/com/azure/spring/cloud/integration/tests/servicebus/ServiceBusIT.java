@@ -76,9 +76,9 @@ public class ServiceBusIT {
             Assertions.assertEquals(DATA1, message.getBody().toString());
             receiverClient.complete(message);
         }
-        processorClient.start();
         senderClient.sendMessage(new ServiceBusMessage(DATA2));
         senderClient.close();
+        processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
         LATCH.await(15, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA2, MESSAGE);

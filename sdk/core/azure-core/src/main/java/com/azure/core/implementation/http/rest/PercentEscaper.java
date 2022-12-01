@@ -61,7 +61,7 @@ public final class PercentEscaper {
             return original;
         }
 
-        StringBuilder escapedBuilder = new StringBuilder((int) Math.ceil(original.length() * 1.5));
+        StringBuilder escapedBuilder = null;
         int last = 0;
         int index = 0;
         int end = original.length();
@@ -76,13 +76,20 @@ public final class PercentEscaper {
             int codePoint = getCodePoint(original, index, end);
             int toIndex = index;
 
-            // Supplementary code points are comprised of two characters in the string.
-            index += (Character.isSupplementaryCodePoint(codePoint)) ? 2 : 1;
-
             if (codePoint < 256 && safeCharacterPoints[codePoint]) {
                 // This is a safe character, use it as is.
                 // All safe characters should be ASCII.
+                index++;
                 continue;
+            }
+
+            // Supplementary code points are comprised of two characters in the string.
+            // Check for supplementary code points after checking for safe characters as safe characters are always
+            // 1 index.
+            index += (Character.isSupplementaryCodePoint(codePoint)) ? 2 : 1;
+
+            if (escapedBuilder == null) {
+                escapedBuilder = new StringBuilder((int) Math.ceil(original.length() * 1.5));
             }
 
             escapedBuilder.append(original, last, toIndex);
@@ -211,6 +218,10 @@ public final class PercentEscaper {
 
                 escapedBuilder.append(buffer);
             }
+        }
+
+        if (escapedBuilder == null) {
+            return original;
         }
 
         if (last < end) {

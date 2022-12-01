@@ -99,6 +99,10 @@ public final class ActivityRun {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ActivityRun class. */
+    public ActivityRun() {
+    }
+
     /**
      * Get the pipelineName property: The name of the pipeline.
      *

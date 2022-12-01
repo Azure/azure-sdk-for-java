@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vendor reference. */
 @Immutable
 public final class VendorReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorReference.class);
-
     /*
      * Link title
      */
@@ -25,6 +21,10 @@ public final class VendorReference {
      */
     @JsonProperty(value = "link", access = JsonProperty.Access.WRITE_ONLY)
     private String link;
+
+    /** Creates an instance of VendorReference class. */
+    public VendorReference() {
+    }
 
     /**
      * Get the title property: Link title.

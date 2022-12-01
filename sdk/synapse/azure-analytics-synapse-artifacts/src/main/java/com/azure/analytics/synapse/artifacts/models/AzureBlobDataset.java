@@ -19,36 +19,31 @@ import java.util.Map;
 @Fluent
 public class AzureBlobDataset extends Dataset {
     /*
-     * The path of the Azure Blob storage. Type: string (or Expression with
-     * resultType string).
+     * The path of the Azure Blob storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /*
-     * The root of blob path. Type: string (or Expression with resultType
-     * string).
+     * The root of blob path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableRootLocation")
     private Object tableRootLocation;
 
     /*
-     * The name of the Azure Blob. Type: string (or Expression with resultType
-     * string).
+     * The name of the Azure Blob. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileName")
     private Object fileName;
 
     /*
-     * The start of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;

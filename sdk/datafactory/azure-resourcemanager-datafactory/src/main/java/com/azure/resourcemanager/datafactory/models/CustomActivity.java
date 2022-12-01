@@ -24,6 +24,10 @@ public final class CustomActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private CustomActivityTypeProperties innerTypeProperties = new CustomActivityTypeProperties();
 
+    /** Creates an instance of CustomActivity class. */
+    public CustomActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Custom activity properties.
      *

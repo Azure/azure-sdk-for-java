@@ -49,21 +49,21 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Document Model Administration Client</strong></p>
  *
- * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.initialization -->
+ * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  * <pre>
  * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
  *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.initialization -->
+ * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  *
  * <p><strong>Instantiating a synchronous Document Model Administration Client</strong></p>
  *
- * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.initialization -->
+ * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
  * DocumentModelAdministrationClient documentModelAdministrationClient =
  *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.initialization -->
+ * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -73,7 +73,7 @@ import java.util.Objects;
  * {@link DocumentModelAdministrationAsyncClient} is built.
  * </p>
  *
- * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.pipeline.instantiation -->
+ * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.pipeline.instantiation -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;&#47;* add policies *&#47;&#41;
@@ -86,7 +86,7 @@ import java.util.Objects;
  *         .pipeline&#40;pipeline&#41;
  *         .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.pipeline.instantiation -->
+ * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.pipeline.instantiation -->
  *
  * @see DocumentModelAdministrationAsyncClient
  * @see DocumentModelAdministrationClient
@@ -134,7 +134,47 @@ public final class DocumentModelAdministrationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DocumentModelAdministrationClient buildClient() {
-        return new DocumentModelAdministrationClient(buildAsyncClient());
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+        if (audience == null) {
+            audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
+        }
+
+        // Global Env configuration store
+        final Configuration buildConfiguration =
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        // Service Version
+        final DocumentAnalysisServiceVersion serviceVersion =
+            version != null ? version : DocumentAnalysisServiceVersion.getLatest();
+
+        HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
+
+        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(pipeline)
+            .buildClient();
+
+        return new DocumentModelAdministrationClient(formRecognizerAPI, audience);
+    }
+
+    private HttpPipeline getHttpPipeline(Configuration buildConfiguration) {
+        HttpPipeline pipeline = httpPipeline;
+        // Create a default Pipeline if it is not given
+        if (pipeline == null) {
+            pipeline = Utility.buildHttpPipeline(clientOptions,
+                httpLogOptions,
+                buildConfiguration,
+                retryPolicy,
+                retryOptions,
+                azureKeyCredential,
+                tokenCredential,
+                audience,
+                perCallPolicies,
+                perRetryPolicies,
+                httpClient);
+        }
+        return pipeline;
     }
 
     /**
@@ -158,7 +198,7 @@ public final class DocumentModelAdministrationClientBuilder implements
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
         if (audience == null) {
-            audience = DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
         }
 
         // Global Env configuration store
@@ -169,21 +209,7 @@ public final class DocumentModelAdministrationClientBuilder implements
         final DocumentAnalysisServiceVersion serviceVersion =
             version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
-        HttpPipeline pipeline = httpPipeline;
-        // Create a default Pipeline if it is not given
-        if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(clientOptions,
-                httpLogOptions,
-                buildConfiguration,
-                retryPolicy,
-                retryOptions,
-                azureKeyCredential,
-                tokenCredential,
-                audience,
-                perCallPolicies,
-                perRetryPolicies,
-                httpClient);
-        }
+        HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
@@ -460,7 +486,7 @@ public final class DocumentModelAdministrationClientBuilder implements
 
     /**
      * Sets the audience for the Azure Form Recognizer service.
-     * The default audience is {@link DocumentAnalysisAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
+     * The default audience is {@link DocumentAnalysisAudience#AZURE_PUBLIC_CLOUD} when unset.
      *
      * @param audience ARM management audience associated with the given form recognizer resource.
      * @throws NullPointerException If {@code audience} is null.

@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.test.utils.metrics.TestCounter;
+import com.azure.core.test.utils.metrics.TestGauge;
 import com.azure.core.test.utils.metrics.TestHistogram;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
@@ -22,12 +23,13 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AmqpMetricsProviderTest {
@@ -56,7 +58,7 @@ public class AmqpMetricsProviderTest {
         assertDoesNotThrow(() -> provider.recordRequestResponseDuration(0, "foo", null));
         assertDoesNotThrow(() -> provider.recordSend(0, DeliveryState.DeliveryStateType.Accepted));
         assertDoesNotThrow(() -> provider.recordSend(0, null));
-        assertDoesNotThrow(() -> provider.recordReceivedMessage(Proton.message()));
+        assertDoesNotThrow(() -> provider.trackPrefetchSequenceNumber(() -> Long.valueOf(1)));
         assertDoesNotThrow(() -> provider.recordHandlerError(AmqpMetricsProvider.ErrorSource.TRANSPORT, new ErrorCondition(TIMEOUT_SYMBOL, "")));
         assertDoesNotThrow(() -> provider.recordHandlerError(null, new ErrorCondition(TIMEOUT_SYMBOL, "")));
 
@@ -77,7 +79,7 @@ public class AmqpMetricsProviderTest {
         assertDoesNotThrow(() -> provider.recordRequestResponseDuration(0, "foo", null));
         assertDoesNotThrow(() -> provider.recordSend(0, DeliveryState.DeliveryStateType.Accepted));
         assertDoesNotThrow(() -> provider.recordSend(0, null));
-        assertDoesNotThrow(() -> provider.recordReceivedMessage(Proton.message()));
+        assertDoesNotThrow(() -> provider.trackPrefetchSequenceNumber(() -> Long.valueOf(1)));
         assertDoesNotThrow(() -> provider.recordHandlerError(AmqpMetricsProvider.ErrorSource.LINK, new ErrorCondition(TIMEOUT_SYMBOL, "")));
         assertDoesNotThrow(() -> provider.recordHandlerError(null, new ErrorCondition(TIMEOUT_SYMBOL, "")));
     }
@@ -196,36 +198,46 @@ public class AmqpMetricsProviderTest {
     }
 
     @Test
-    public void receivedMessage() {
+    @SuppressWarnings("try")
+    public void receivedMessage() throws Exception {
         TestMeter meter = new TestMeter();
         AmqpMetricsProvider provider = new AmqpMetricsProvider(meter, NAMESPACE, ENTITY_PATH);
 
-        Instant now = Instant.now();
-        MessageAnnotations futureEnqueuedDate = new MessageAnnotations(Collections.singletonMap(Symbol.valueOf("x-opt-enqueued-time"), Date.from(now.plusSeconds(100))));
+        AtomicLong seqNo = new AtomicLong(0);
 
-        provider.recordReceivedMessage(createMessage(Date.from(now.plusSeconds(100))));
-        provider.recordReceivedMessage(createMessage(Date.from(now.minusSeconds(100))));
+        TestGauge gauge;
+        try (AutoCloseable subscription = provider.trackPrefetchSequenceNumber(seqNo::get)) {
+            assertTrue(meter.getGauges().containsKey("messaging.az.amqp.prefetch.sequence_number"));
+            gauge = meter.getGauges().get("messaging.az.amqp.prefetch.sequence_number");
+            assertEquals(1, gauge.getSubscriptions().size());
+            assertSame(subscription, gauge.getSubscriptions().get(0));
+            TestGauge.Subscription testSubscription = (TestGauge.Subscription) subscription;
 
-        provider.recordReceivedMessage(Proton.message());
-        provider.recordReceivedMessage(createMessage("not a date"));
+            testSubscription.measure();
+            seqNo.set(1);
+            seqNo.set(2);
+            testSubscription.measure();
+            seqNo.set(42);
+            testSubscription.measure();
 
-        assertTrue(meter.getHistograms().containsKey("messaging.az.amqp.consumer.lag"));
-        TestHistogram histogram = meter.getHistograms().get("messaging.az.amqp.consumer.lag");
+            assertEquals(3, testSubscription.getMeasurements().size());
+            TestMeasurement<Long> measurement1 = testSubscription.getMeasurements().get(0);
 
-        assertEquals(2, histogram.getMeasurements().size());
-        TestMeasurement<Double> measurement1 = histogram.getMeasurements().get(0);
+            assertEquals(0, measurement1.getValue());
+            assertEquals(Context.NONE, measurement1.getContext());
+            assertCommonAttributes(measurement1.getAttributes(), NAMESPACE, ENTITY_NAME, ENTITY_PATH);
 
-        // negative delta becomes 0
-        assertEquals(0, measurement1.getValue());
-        assertEquals(Context.NONE, measurement1.getContext());
-        assertCommonAttributes(measurement1.getAttributes(), NAMESPACE, ENTITY_NAME, ENTITY_PATH);
+            assertEquals(2, testSubscription.getMeasurements().get(1).getValue());
+            assertEquals(42, testSubscription.getMeasurements().get(2).getValue());
+        }
 
-        assertEquals(100, histogram.getMeasurements().get(1).getValue(), 10);
+        seqNo.set(-1);
+        assertEquals(0, gauge.getSubscriptions().size());
     }
 
-    private Message createMessage(Object enqueuedTime) {
+    private Message createMessage(Object seqNo) {
         Message msg = Proton.message();
-        MessageAnnotations annotations = new MessageAnnotations(Collections.singletonMap(Symbol.valueOf("x-opt-enqueued-time"), enqueuedTime));
+        MessageAnnotations annotations = new MessageAnnotations(Collections.singletonMap(Symbol.valueOf("x-opt-sequence-number"), seqNo));
         msg.setMessageAnnotations(annotations);
         msg.setBody(new AmqpValue("body"));
 

@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ChannelMapping. */
+/**
+ * Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel
+ * audio tracks.
+ */
 public final class ChannelMapping extends ExpandableStringEnum<ChannelMapping> {
     /** Static value FrontLeft for ChannelMapping. */
     public static final ChannelMapping FRONT_LEFT = fromString("FrontLeft");

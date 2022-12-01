@@ -84,6 +84,13 @@ public interface ForwardingRule {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.dnsresolver.fluent.models.ForwardingRuleInner object.
      *
      * @return the inner object.
@@ -92,7 +99,11 @@ public interface ForwardingRule {
 
     /** The entirety of the ForwardingRule definition. */
     interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithParentResource,
+            DefinitionStages.WithDomainName,
+            DefinitionStages.WithTargetDnsServers,
+            DefinitionStages.WithCreate {
     }
     /** The ForwardingRule definition stages. */
     interface DefinitionStages {
@@ -108,16 +119,34 @@ public interface ForwardingRule {
              * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
              * @return the next definition stage.
              */
-            WithCreate withExistingDnsForwardingRuleset(String resourceGroupName, String dnsForwardingRulesetName);
+            WithDomainName withExistingDnsForwardingRuleset(String resourceGroupName, String dnsForwardingRulesetName);
+        }
+        /** The stage of the ForwardingRule definition allowing to specify domainName. */
+        interface WithDomainName {
+            /**
+             * Specifies the domainName property: The domain name for the forwarding rule..
+             *
+             * @param domainName The domain name for the forwarding rule.
+             * @return the next definition stage.
+             */
+            WithTargetDnsServers withDomainName(String domainName);
+        }
+        /** The stage of the ForwardingRule definition allowing to specify targetDnsServers. */
+        interface WithTargetDnsServers {
+            /**
+             * Specifies the targetDnsServers property: DNS servers to forward the DNS query to..
+             *
+             * @param targetDnsServers DNS servers to forward the DNS query to.
+             * @return the next definition stage.
+             */
+            WithCreate withTargetDnsServers(List<TargetDnsServer> targetDnsServers);
         }
         /**
          * The stage of the ForwardingRule definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDomainName,
-                DefinitionStages.WithTargetDnsServers,
-                DefinitionStages.WithMetadata,
+            extends DefinitionStages.WithMetadata,
                 DefinitionStages.WithForwardingRuleState,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
@@ -135,26 +164,6 @@ public interface ForwardingRule {
              * @return the created resource.
              */
             ForwardingRule create(Context context);
-        }
-        /** The stage of the ForwardingRule definition allowing to specify domainName. */
-        interface WithDomainName {
-            /**
-             * Specifies the domainName property: The domain name for the forwarding rule..
-             *
-             * @param domainName The domain name for the forwarding rule.
-             * @return the next definition stage.
-             */
-            WithCreate withDomainName(String domainName);
-        }
-        /** The stage of the ForwardingRule definition allowing to specify targetDnsServers. */
-        interface WithTargetDnsServers {
-            /**
-             * Specifies the targetDnsServers property: DNS servers to forward the DNS query to..
-             *
-             * @param targetDnsServers DNS servers to forward the DNS query to.
-             * @return the next definition stage.
-             */
-            WithCreate withTargetDnsServers(List<TargetDnsServer> targetDnsServers);
         }
         /** The stage of the ForwardingRule definition allowing to specify metadata. */
         interface WithMetadata {

@@ -68,11 +68,9 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphRecipient from;
 
     /*
-     * Indicates whether the message has attachments. This property doesn't
-     * include inline attachments, so if a message contains only inline
-     * attachments, this property is false. To verify the existence of inline
-     * attachments, parse the body property to look for a src attribute, such
-     * as <IMG src='cid:image001.jpg@01D26CD8.6C05F070'>.
+     * Indicates whether the message has attachments. This property doesn't include inline attachments, so if a message
+     * contains only inline attachments, this property is false. To verify the existence of inline attachments, parse
+     * the body property to look for a src attribute, such as <IMG src='cid:image001.jpg@01D26CD8.6C05F070'>.
      */
     @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
@@ -90,11 +88,9 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphInferenceClassificationType inferenceClassification;
 
     /*
-     * A collection of message headers defined by RFC5322. The set includes
-     * message headers indicating the network path taken by a message from the
-     * sender to the recipient. It can also contain custom message headers that
-     * hold app data for the message.  Returned only on applying a $select
-     * query option. Read-only.
+     * A collection of message headers defined by RFC5322. The set includes message headers indicating the network path
+     * taken by a message from the sender to the recipient. It can also contain custom message headers that hold app
+     * data for the message.  Returned only on applying a $select query option. Read-only.
      */
     @JsonProperty(value = "internetMessageHeaders")
     private List<MicrosoftGraphInternetMessageHeader> internetMessageHeaders;
@@ -112,8 +108,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private Boolean isDeliveryReceiptRequested;
 
     /*
-     * Indicates whether the message is a draft. A message is a draft if it
-     * hasn't been sent yet.
+     * Indicates whether the message is a draft. A message is a draft if it hasn't been sent yet.
      */
     @JsonProperty(value = "isDraft")
     private Boolean isDraft;
@@ -137,10 +132,8 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private String parentFolderId;
 
     /*
-     * The date and time the message was received.  The date and time
-     * information uses ISO 8601 format and is always in UTC time. For example,
-     * midnight UTC on Jan 1, 2014 would look like this:
-     * '2014-01-01T00:00:00Z'.
+     * The date and time the message was received.  The date and time information uses ISO 8601 format and is always in
+     * UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
      */
     @JsonProperty(value = "receivedDateTime")
     private OffsetDateTime receivedDateTime;
@@ -158,9 +151,8 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphRecipient sender;
 
     /*
-     * The date and time the message was sent.  The date and time information
-     * uses ISO 8601 format and is always in UTC time. For example, midnight
-     * UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
+     * The date and time the message was sent.  The date and time information uses ISO 8601 format and is always in UTC
+     * time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
      */
     @JsonProperty(value = "sentDateTime")
     private OffsetDateTime sentDateTime;
@@ -184,14 +176,11 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphItemBody uniqueBody;
 
     /*
-     * The URL to open the message in Outlook on the web.You can append an
-     * ispopout argument to the end of the URL to change how the message is
-     * displayed. If ispopout is not present or if it is set to 1, then the
-     * message is shown in a popout window. If ispopout is set to 0, then the
-     * browser will show the message in the Outlook on the web review pane.The
-     * message will open in the browser if you are logged in to your mailbox
-     * via Outlook on the web. You will be prompted to login if you are not
-     * already logged in with the browser.This URL cannot be accessed from
+     * The URL to open the message in Outlook on the web.You can append an ispopout argument to the end of the URL to
+     * change how the message is displayed. If ispopout is not present or if it is set to 1, then the message is shown
+     * in a popout window. If ispopout is set to 0, then the browser will show the message in the Outlook on the web
+     * review pane.The message will open in the browser if you are logged in to your mailbox via Outlook on the web.
+     * You will be prompted to login if you are not already logged in with the browser.This URL cannot be accessed from
      * within an iFrame.
      */
     @JsonProperty(value = "webLink")
@@ -210,15 +199,13 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private List<MicrosoftGraphExtension> extensions;
 
     /*
-     * The collection of multi-value extended properties defined for the
-     * message. Nullable.
+     * The collection of multi-value extended properties defined for the message. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
-     * The collection of single-value extended properties defined for the
-     * message. Nullable.
+     * The collection of single-value extended properties defined for the message. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
@@ -227,6 +214,10 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * message
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphMessage class. */
+    public MicrosoftGraphMessage() {
+    }
 
     /**
      * Get the bccRecipients property: The Bcc: recipients for the message.

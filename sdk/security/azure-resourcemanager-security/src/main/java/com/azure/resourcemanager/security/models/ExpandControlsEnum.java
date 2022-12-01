@@ -24,7 +24,11 @@ public final class ExpandControlsEnum extends ExpandableStringEnum<ExpandControl
         return fromString(name, ExpandControlsEnum.class);
     }
 
-    /** @return known ExpandControlsEnum values. */
+    /**
+     * Gets known ExpandControlsEnum values.
+     *
+     * @return known ExpandControlsEnum values.
+     */
     public static Collection<ExpandControlsEnum> values() {
         return values(ExpandControlsEnum.class);
     }

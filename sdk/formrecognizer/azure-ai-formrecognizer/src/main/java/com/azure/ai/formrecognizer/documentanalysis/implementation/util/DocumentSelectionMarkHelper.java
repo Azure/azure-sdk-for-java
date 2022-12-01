@@ -4,9 +4,9 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.ai.formrecognizer.documentanalysis.models.SelectionMarkState;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class DocumentSelectionMarkHelper {
      * Type defining the methods to set the non-public properties of an {@link DocumentSelectionMark} instance.
      */
     public interface DocumentSelectionMarkAccessor {
-        void setState(DocumentSelectionMark documentSelectionMark, SelectionMarkState state);
+        void setState(DocumentSelectionMark documentSelectionMark, DocumentSelectionMarkState state);
         void setBoundingPolygon(DocumentSelectionMark documentSelectionMark, List<Point> boundingPolygon);
         void setSpan(DocumentSelectionMark documentSelectionMark, DocumentSpan span);
         void setConfidence(DocumentSelectionMark documentSelectionMark, float confidence);
@@ -39,7 +39,7 @@ public final class DocumentSelectionMarkHelper {
         accessor = documentPageAccessor;
     }
 
-    static void setState(DocumentSelectionMark documentSelectionMark, SelectionMarkState state) {
+    static void setState(DocumentSelectionMark documentSelectionMark, DocumentSelectionMarkState state) {
         accessor.setState(documentSelectionMark, state);
     }
 

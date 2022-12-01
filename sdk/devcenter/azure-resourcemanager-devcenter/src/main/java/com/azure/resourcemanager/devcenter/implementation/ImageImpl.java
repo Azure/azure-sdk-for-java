@@ -4,8 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageInner;
 import com.azure.resourcemanager.devcenter.models.Image;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
 
 public final class ImageImpl implements Image {
@@ -30,6 +32,10 @@ public final class ImageImpl implements Image {
         return this.innerModel().type();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String description() {
         return this.innerModel().description();
     }
@@ -50,7 +56,7 @@ public final class ImageImpl implements Image {
         return this.innerModel().recommendedMachineConfiguration();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

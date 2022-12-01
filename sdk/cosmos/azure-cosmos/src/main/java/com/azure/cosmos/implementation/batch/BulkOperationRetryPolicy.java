@@ -87,7 +87,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             }
 
             if ((subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
-                     subStatusCode == SubStatusCodes.COMPLETING_SPLIT ||
+                     subStatusCode == SubStatusCodes.COMPLETING_SPLIT_OR_MERGE ||
                      subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) {
                 return collectionCache
                        .resolveByNameAsync(null, collectionLink, null)

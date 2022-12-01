@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.StringUtil;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
@@ -61,8 +60,8 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final ServiceBusReceiveLink receiveLink;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final Duration operationTimeout;
-    private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final String identifier;
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean isStarted = new AtomicBoolean();
@@ -80,16 +79,16 @@ class ServiceBusSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink) {
+        ServiceBusConnectionProcessor connectionProcessor,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
         this.connectionProcessor = connectionProcessor;
         this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
-        this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
+        this.identifier = identifier;
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.
@@ -111,10 +110,10 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
-        this(entityPath, entityType, connectionProcessor, tracerProvider,
-            messageSerializer, receiverOptions, null);
+        ServiceBusConnectionProcessor connectionProcessor,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
+        this(entityPath, entityType, connectionProcessor,
+            messageSerializer, receiverOptions, null, identifier);
     }
 
     /**
@@ -127,6 +126,15 @@ class ServiceBusSessionManager implements AutoCloseable {
     String getLinkName(String sessionId) {
         final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
         return receiver != null ? receiver.getLinkName() : null;
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusSessionManager}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusSessionManager}.
+     */
+    public String getIdentifier() {
+        return this.identifier;
     }
 
     /**
@@ -253,7 +261,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                null, entityType, sessionId);
+                null, entityType, identifier, sessionId);
             });
     }
 

@@ -17,6 +17,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
+import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
 import com.azure.resourcemanager.netapp.models.ReplicationStatus;
 import com.azure.resourcemanager.netapp.models.Volume;
@@ -256,13 +257,23 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().poolChange(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
+    public void relocate(
+        String resourceGroupName, String accountName, String poolName, String volumeName, RelocateVolumeRequest body) {
+        this.serviceClient().relocate(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
     public void relocate(String resourceGroupName, String accountName, String poolName, String volumeName) {
         this.serviceClient().relocate(resourceGroupName, accountName, poolName, volumeName);
     }
 
     public void relocate(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        this.serviceClient().relocate(resourceGroupName, accountName, poolName, volumeName, context);
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        RelocateVolumeRequest body,
+        Context context) {
+        this.serviceClient().relocate(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public void finalizeRelocation(String resourceGroupName, String accountName, String poolName, String volumeName) {

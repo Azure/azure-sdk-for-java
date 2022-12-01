@@ -17,7 +17,9 @@ import com.azure.resourcemanager.netapp.models.CapacityPoolPatch;
 /** An instance of this class provides access to all the operations defined in PoolsClient. */
 public interface PoolsClient {
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
+     *
+     * <p>List all capacity pools in the NetApp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -30,7 +32,9 @@ public interface PoolsClient {
     PagedIterable<CapacityPoolInner> list(String resourceGroupName, String accountName);
 
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
+     *
+     * <p>List all capacity pools in the NetApp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -44,7 +48,9 @@ public interface PoolsClient {
     PagedIterable<CapacityPoolInner> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -58,7 +64,9 @@ public interface PoolsClient {
     CapacityPoolInner get(String resourceGroupName, String accountName, String poolName);
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -74,7 +82,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -90,7 +100,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body);
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -107,7 +119,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context);
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -123,7 +137,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body);
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -140,7 +156,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context);
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -156,7 +174,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body);
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -173,7 +193,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context);
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -188,7 +210,9 @@ public interface PoolsClient {
     CapacityPoolInner update(String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body);
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -205,7 +229,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context);
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -219,7 +245,9 @@ public interface PoolsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName);
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -235,7 +263,9 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -248,7 +278,9 @@ public interface PoolsClient {
     void delete(String resourceGroupName, String accountName, String poolName);
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

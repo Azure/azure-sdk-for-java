@@ -182,7 +182,7 @@ Analyze receipt data using 4.x.x `beginAnalyzeDocumentFromUrl`:
 String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
     + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller =
+SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
     documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", receiptUrl);
 
 AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
@@ -235,8 +235,8 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
                         }
                     }
                     if ("Quantity".equals(key)) {
-                        if (DocumentFieldType.FLOAT == documentField.getType()) {
-                            Float quantity = documentField.getValueAsFloat();
+                        if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                            Double quantity = documentField.getValueAsDouble();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                 quantity, documentField.getConfidence());
                         }
@@ -287,8 +287,8 @@ File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
+SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
+    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -354,7 +354,7 @@ Analyze custom document using 4.x.x `beginAnalyzeDocumentFromUrl`
 ```java readme-sample-analyzeCustomDocument
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
     documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -412,7 +412,7 @@ Analyzing general prebuilt document types with 4.x.x:
 ```java readme-sample-analyzePrebuiltDocument
 String documentUrl = "{document-url}";
 String modelId = "prebuilt-document";
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
     documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -521,14 +521,14 @@ customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
 Build a custom document model using 4.x.x `beginBuildModel`:
 ```java readme-sample-buildModel
 // Build custom document analysis model
-String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 String prefix = "{blob_name_prefix}}";
-SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
-    documentModelAdminClient.beginBuildModel(trainingFilesUrl,
+SyncPoller<OperationResult, DocumentModelDetails> buildOperationPoller =
+    documentModelAdminClient.beginBuildDocumentModel(blobContainerUrl,
         DocumentModelBuildMode.TEMPLATE,
         prefix,
-        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"),
+        new BuildDocumentModelOptions().setModelId("my-build-model").setDescription("model desc"),
         Context.NONE);
 
 DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();

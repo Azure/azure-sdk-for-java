@@ -7,7 +7,7 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 /**
  * Async sample to analyze a custom document with a custom-built model. To learn how to build your own models,
- * look at BuildModelAsync.java and BuildModel.java.
+ * look at BuildDocumentModelAsync.java and BuildDocumentModel.java.
  */
 public class AnalyzeCustomDocumentAsync {
 
@@ -48,11 +48,11 @@ public class AnalyzeCustomDocumentAsync {
             + "sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
-        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller;
+        PollerFlux<OperationResult, AnalyzeResult> analyzeDocumentPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
-                BinaryData.fromStream(targetStream),
-                sourceFile.length());
+                BinaryData.fromStream(targetStream)
+            );
         }
 
         Mono<AnalyzeResult> analyzeDocumentResult = analyzeDocumentPoller

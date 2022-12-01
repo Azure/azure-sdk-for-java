@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClassificationMultilabelPrimaryMetrics. */
+/** Primary metrics for classification multilabel tasks. */
 public final class ClassificationMultilabelPrimaryMetrics
     extends ExpandableStringEnum<ClassificationMultilabelPrimaryMetrics> {
     /** Static value AUCWeighted for ClassificationMultilabelPrimaryMetrics. */

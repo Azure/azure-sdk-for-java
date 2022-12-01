@@ -4,6 +4,7 @@
 module com.azure.core.test {
     requires transitive com.azure.core;
 
+    requires com.fasterxml.jackson.dataformat.xml;
     requires org.junit.jupiter.api;
     requires org.junit.jupiter.params;
     requires reactor.test;

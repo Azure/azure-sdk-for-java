@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class HdfsSource extends CopySource {
     /*
-     * If true, files under the folder path will be read recursively. Default
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;

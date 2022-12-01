@@ -5,17 +5,13 @@
     "testApplicationOid": {
       "type": "String"
     },
-    "subscriptionId": {
-      "defaultValue": "[subscription().subscriptionId]",
-      "type": "string"
-    },
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
     }
   },
   "variables": {
-    "azureDatabaseAccountsName": "[concat(parameters('baseName'),'-test-cosmos')]",
+    "azureDatabaseAccountsName": "[concat(parameters('baseName'),'-cosmos')]",
     "azureCosmosSpringDataDatabaseName": "TestSpringData",
     "azureCosmosRoleId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', variables('azureDatabaseAccountsName'), '00000000-0000-0000-0000-000000000002')]",
     "location": "[resourceGroup().location]"

@@ -11,33 +11,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Rectangle {
     /*
-     * The number of pixels from the left-margin. This can be absolute pixel
-     * value (e.g 100), or relative to the size of the video (For example,
-     * 50%).
+     * The number of pixels from the left-margin. This can be absolute pixel value (e.g 100), or relative to the size
+     * of the video (For example, 50%).
      */
     @JsonProperty(value = "left")
     private String left;
 
     /*
-     * The number of pixels from the top-margin. This can be absolute pixel
-     * value (e.g 100), or relative to the size of the video (For example,
-     * 50%).
+     * The number of pixels from the top-margin. This can be absolute pixel value (e.g 100), or relative to the size of
+     * the video (For example, 50%).
      */
     @JsonProperty(value = "top")
     private String top;
 
     /*
-     * The width of the rectangular region in pixels. This can be absolute
-     * pixel value (e.g 100), or relative to the size of the video (For
-     * example, 50%).
+     * The width of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the
+     * size of the video (For example, 50%).
      */
     @JsonProperty(value = "width")
     private String width;
 
     /*
-     * The height of the rectangular region in pixels. This can be absolute
-     * pixel value (e.g 100), or relative to the size of the video (For
-     * example, 50%).
+     * The height of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the
+     * size of the video (For example, 50%).
      */
     @JsonProperty(value = "height")
     private String height;

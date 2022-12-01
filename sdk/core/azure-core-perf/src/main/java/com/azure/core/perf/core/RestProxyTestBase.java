@@ -162,7 +162,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     public static HttpResponse createMockResponse(HttpRequest httpRequest, String contentType, byte[] bodyBytes) {
-        HttpHeaders headers = new HttpHeaders().put("Content-Type", contentType);
+        HttpHeaders headers = new HttpHeaders().set("Content-Type", contentType);
         HttpResponse res = new MockHttpResponse(httpRequest, 200, headers, bodyBytes);
         return res;
     }

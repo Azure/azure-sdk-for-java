@@ -19,7 +19,7 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated alert data.
+     * @return list of IoT Security solution aggregated alert data as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IoTSecurityAggregatedAlert> list(String resourceGroupName, String solutionName);
 
@@ -34,10 +34,27 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated alert data.
+     * @return list of IoT Security solution aggregated alert data as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IoTSecurityAggregatedAlert> list(
         String resourceGroupName, String solutionName, Integer top, Context context);
+
+    /**
+     * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
+     * performed by alert name.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param aggregatedAlertName Identifier of the aggregated alert.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security Solution Aggregated Alert information along with {@link Response}.
+     */
+    Response<IoTSecurityAggregatedAlert> getWithResponse(
+        String resourceGroupName, String solutionName, String aggregatedAlertName, Context context);
 
     /**
      * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
@@ -55,8 +72,7 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
     IoTSecurityAggregatedAlert get(String resourceGroupName, String solutionName, String aggregatedAlertName);
 
     /**
-     * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
-     * performed by alert name.
+     * Use this method to dismiss an aggregated IoT Security Solution Alert.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -66,9 +82,9 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Solution Aggregated Alert information.
+     * @return the {@link Response}.
      */
-    Response<IoTSecurityAggregatedAlert> getWithResponse(
+    Response<Void> dismissWithResponse(
         String resourceGroupName, String solutionName, String aggregatedAlertName, Context context);
 
     /**
@@ -83,20 +99,4 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void dismiss(String resourceGroupName, String solutionName, String aggregatedAlertName);
-
-    /**
-     * Use this method to dismiss an aggregated IoT Security Solution Alert.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedAlertName Identifier of the aggregated alert.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> dismissWithResponse(
-        String resourceGroupName, String solutionName, String aggregatedAlertName, Context context);
 }

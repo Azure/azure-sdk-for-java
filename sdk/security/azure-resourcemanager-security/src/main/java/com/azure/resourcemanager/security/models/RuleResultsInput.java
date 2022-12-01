@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Rule results input. */
 @Fluent
 public final class RuleResultsInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleResultsInput.class);
-
     /*
      * Take results from latest scan.
      */
@@ -27,6 +23,10 @@ public final class RuleResultsInput {
      */
     @JsonProperty(value = "results")
     private List<List<String>> results;
+
+    /** Creates an instance of RuleResultsInput class. */
+    public RuleResultsInput() {
+    }
 
     /**
      * Get the latestScan property: Take results from latest scan.

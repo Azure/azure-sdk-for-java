@@ -209,7 +209,7 @@ public class NettyAsyncHttpClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_PATH))
-            .setHeader("Content-Length", "123")
+            .setHeader("Content-Length", "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))

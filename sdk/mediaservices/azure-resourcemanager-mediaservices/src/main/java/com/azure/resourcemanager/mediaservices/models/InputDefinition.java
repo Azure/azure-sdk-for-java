@@ -28,8 +28,7 @@ import java.util.List;
 @Fluent
 public class InputDefinition {
     /*
-     * The list of TrackDescriptors which define the metadata and selection of
-     * tracks in the input.
+     * The list of TrackDescriptors which define the metadata and selection of tracks in the input.
      */
     @JsonProperty(value = "includedTracks")
     private List<TrackDescriptor> includedTracks;

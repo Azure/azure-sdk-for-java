@@ -4,8 +4,10 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.MockedConstruction;
@@ -68,5 +70,61 @@ public class AuthorizationCodeCredentialTest {
                 .verifyComplete();
             Assert.assertNotNull(identityclientMock);
         }
+    }
+
+    @Test
+    public void testInvalidAdditionalTenant() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+        String authCode1 = "authCode1";
+        URI redirectUri = new URI("http://foo.com/bar");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        AuthorizationCodeCredential credential =
+            new AuthorizationCodeCredentialBuilder().tenantId("tenant").clientId("clientId").clientSecret(badSecret)
+                .redirectUrl(redirectUri.toString()).authorizationCode(authCode1)
+                .additionallyAllowedTenants("RANDOM").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+        String authCode1 = "authCode1";
+        URI redirectUri = new URI("http://foo.com/bar");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        AuthorizationCodeCredential credential =
+            new AuthorizationCodeCredentialBuilder().tenantId("tenant").clientId("clientId").clientSecret(badSecret)
+                .authorizationCode(authCode1).redirectUrl(redirectUri.toString()).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+        String authCode1 = "authCode1";
+        URI redirectUri = new URI("http://foo.com/bar");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        AuthorizationCodeCredential credential =
+            new AuthorizationCodeCredentialBuilder().tenantId("tenant").clientId("clientId").clientSecret(badSecret)
+                .additionallyAllowedTenants("*").authorizationCode(authCode1)
+                .redirectUrl(redirectUri.toString()).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
+            .verify();
     }
 }

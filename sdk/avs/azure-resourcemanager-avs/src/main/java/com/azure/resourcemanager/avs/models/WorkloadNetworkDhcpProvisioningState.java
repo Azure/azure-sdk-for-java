@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadNetworkDhcpProvisioningState. */
+/** The provisioning state. */
 public final class WorkloadNetworkDhcpProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkDhcpProvisioningState> {
     /** Static value Succeeded for WorkloadNetworkDhcpProvisioningState. */
@@ -26,6 +26,9 @@ public final class WorkloadNetworkDhcpProvisioningState
     /** Static value Updating for WorkloadNetworkDhcpProvisioningState. */
     public static final WorkloadNetworkDhcpProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for WorkloadNetworkDhcpProvisioningState. */
+    public static final WorkloadNetworkDhcpProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates or finds a WorkloadNetworkDhcpProvisioningState from its string representation.
      *
@@ -37,7 +40,11 @@ public final class WorkloadNetworkDhcpProvisioningState
         return fromString(name, WorkloadNetworkDhcpProvisioningState.class);
     }
 
-    /** @return known WorkloadNetworkDhcpProvisioningState values. */
+    /**
+     * Gets known WorkloadNetworkDhcpProvisioningState values.
+     *
+     * @return known WorkloadNetworkDhcpProvisioningState values.
+     */
     public static Collection<WorkloadNetworkDhcpProvisioningState> values() {
         return values(WorkloadNetworkDhcpProvisioningState.class);
     }

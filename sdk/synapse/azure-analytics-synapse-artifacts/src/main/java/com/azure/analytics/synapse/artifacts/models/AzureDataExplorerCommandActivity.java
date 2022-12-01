@@ -18,15 +18,14 @@ import java.util.List;
 @Fluent
 public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /*
-     * A control command, according to the Azure Data Explorer command syntax.
-     * Type: string (or Expression with resultType string).
+     * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.command", required = true)
     private Object command;
 
     /*
-     * Control command timeout. Type: string (or Expression with resultType
-     * string), pattern:
+     * Control command timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
      */
     @JsonProperty(value = "typeProperties.commandTimeout")

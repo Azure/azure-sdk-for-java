@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RandomSamplingAlgorithmRule. */
+/** The specific type of random algorithm. */
 public final class RandomSamplingAlgorithmRule extends ExpandableStringEnum<RandomSamplingAlgorithmRule> {
     /** Static value Random for RandomSamplingAlgorithmRule. */
     public static final RandomSamplingAlgorithmRule RANDOM = fromString("Random");

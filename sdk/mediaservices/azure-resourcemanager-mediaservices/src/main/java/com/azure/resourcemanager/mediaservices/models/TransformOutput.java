@@ -14,27 +14,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TransformOutput {
     /*
-     * A Transform can define more than one outputs. This property defines what
-     * the service should do when one output fails - either continue to produce
-     * other outputs, or, stop the other outputs. The overall Job state will
-     * not reflect failures of outputs that are specified with 'ContinueJob'.
-     * The default is 'StopProcessingJob'.
+     * A Transform can define more than one outputs. This property defines what the service should do when one output
+     * fails - either continue to produce other outputs, or, stop the other outputs. The overall Job state will not
+     * reflect failures of outputs that are specified with 'ContinueJob'. The default is 'StopProcessingJob'.
      */
     @JsonProperty(value = "onError")
     private OnErrorType onError;
 
     /*
-     * Sets the relative priority of the TransformOutputs within a Transform.
-     * This sets the priority that the service uses for processing
-     * TransformOutputs. The default priority is Normal.
+     * Sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service
+     * uses for processing TransformOutputs. The default priority is Normal.
      */
     @JsonProperty(value = "relativePriority")
     private Priority relativePriority;
 
     /*
-     * Preset that describes the operations that will be used to modify,
-     * transcode, or extract insights from the source file to generate the
-     * output.
+     * Preset that describes the operations that will be used to modify, transcode, or extract insights from the source
+     * file to generate the output.
      */
     @JsonProperty(value = "preset", required = true)
     private Preset preset;

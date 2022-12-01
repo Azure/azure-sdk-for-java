@@ -24,8 +24,7 @@ public class ForEachActivity extends ControlActivity {
     private Boolean isSequential;
 
     /*
-     * Batch count to be used for controlling the number of parallel execution
-     * (when isSequential is set to false).
+     * Batch count to be used for controlling the number of parallel execution (when isSequential is set to false).
      */
     @JsonProperty(value = "typeProperties.batchCount")
     private Integer batchCount;

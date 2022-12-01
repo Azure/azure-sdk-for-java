@@ -12,7 +12,7 @@ import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
 /** Samples for AccountFilters Update. */
 public final class AccountFiltersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accountFilters-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-update.json
      */
     /**
      * Sample code: Update an Account Filter.

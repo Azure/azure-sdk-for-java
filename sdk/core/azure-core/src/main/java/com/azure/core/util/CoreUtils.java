@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
@@ -18,10 +17,10 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -308,11 +307,18 @@ public final class CoreUtils {
             return null;
         }
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        clientOptions.getHeaders().forEach(
-            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        Iterator<Header> headerIterator = clientOptions.getHeaders().iterator();
+        if (!headerIterator.hasNext()) {
+            return null;
+        }
 
-        return httpHeaderList.isEmpty() ? null : new HttpHeaders(httpHeaderList);
+        HttpHeaders headers = new HttpHeaders();
+        do {
+            Header header = headerIterator.next();
+            headers.set(header.getName(), header.getValue());
+        } while (headerIterator.hasNext());
+
+        return headers;
     }
 
     /**

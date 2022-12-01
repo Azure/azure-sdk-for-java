@@ -8,6 +8,7 @@ import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 
+import javax.xml.stream.XMLStreamException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -288,7 +289,7 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("Blob");
 
         xmlWriter.writeXml(name);
@@ -311,7 +312,9 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
 
         if (metadata != null) {
             xmlWriter.writeStartElement("Metadata");
-            metadata.forEach(xmlWriter::writeStringElement);
+            for (Map.Entry<String, String> meta : metadata.entrySet()) {
+                xmlWriter.writeStringElement(meta.getKey(), meta.getValue());
+            }
             xmlWriter.writeEndElement();
         }
 
@@ -319,7 +322,9 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
 
         if (objectReplicationMetadata != null) {
             xmlWriter.writeStartElement("OrMetadata");
-            objectReplicationMetadata.forEach(xmlWriter::writeStringElement);
+            for (Map.Entry<String, String> meta : objectReplicationMetadata.entrySet()) {
+                xmlWriter.writeStringElement(meta.getKey(), meta.getValue());
+            }
             xmlWriter.writeEndElement();
         }
 
@@ -329,7 +334,7 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
         return xmlWriter.writeEndElement();
     }
 
-    public static BlobItemInternal fromXml(XmlReader xmlReader) {
+    public static BlobItemInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
         return xmlReader.readObject("Blob", reader -> {
             BlobItemInternal deserialized = new BlobItemInternal();
 

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PhoenixAuthenticationType. */
+/** The authentication mechanism used to connect to the Phoenix server. */
 public final class PhoenixAuthenticationType extends ExpandableStringEnum<PhoenixAuthenticationType> {
     /** Static value Anonymous for PhoenixAuthenticationType. */
     public static final PhoenixAuthenticationType ANONYMOUS = fromString("Anonymous");

@@ -259,6 +259,10 @@ public final class ApplicationGatewayPropertiesFormat {
     @JsonProperty(value = "globalConfiguration")
     private ApplicationGatewayGlobalConfiguration globalConfiguration;
 
+    /** Creates an instance of ApplicationGatewayPropertiesFormat class. */
+    public ApplicationGatewayPropertiesFormat() {
+    }
+
     /**
      * Get the sku property: SKU of the application gateway resource.
      *

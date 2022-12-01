@@ -32,6 +32,10 @@ public final class PrivateEndpointConnectionProperties {
     @JsonProperty(value = "privateLinkServiceConnectionState", required = true)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
+    /** Creates an instance of PrivateEndpointConnectionProperties class. */
+    public PrivateEndpointConnectionProperties() {
+    }
+
     /**
      * Get the provisioningState property: The current provisioning state.
      *

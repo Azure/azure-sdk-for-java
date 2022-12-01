@@ -71,7 +71,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineRunCommandsService {
+    public interface VirtualMachineRunCommandsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands")
         @ExpectedResponses({200})
@@ -228,7 +228,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -281,7 +281,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -387,7 +387,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -437,7 +437,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -471,21 +471,6 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      *
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specific run command for a subscription in a location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunCommandDocumentInner get(String location, String commandId) {
-        return getAsync(location, commandId).block();
-    }
-
-    /**
-     * Gets specific run command for a subscription in a location.
-     *
-     * @param location The location upon which run commands is queried.
-     * @param commandId The command id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -495,6 +480,21 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunCommandDocumentInner> getWithResponse(String location, String commandId, Context context) {
         return getWithResponseAsync(location, commandId, context).block();
+    }
+
+    /**
+     * Gets specific run command for a subscription in a location.
+     *
+     * @param location The location upon which run commands is queried.
+     * @param commandId The command id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specific run command for a subscription in a location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunCommandDocumentInner get(String location, String commandId) {
+        return getWithResponse(location, commandId, Context.NONE).getValue();
     }
 
     /**
@@ -540,7 +540,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -607,7 +607,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -855,7 +855,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -922,7 +922,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1161,7 +1161,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1216,7 +1216,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1416,7 +1416,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1474,7 +1474,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1496,25 +1496,6 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(
-        String resourceGroupName, String vmName, String runCommandName, String expand) {
-        return getByVirtualMachineWithResponseAsync(resourceGroupName, vmName, runCommandName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to get the run command.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @param runCommandName The name of the virtual machine run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1526,24 +1507,6 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         final String expand = null;
         return getByVirtualMachineWithResponseAsync(resourceGroupName, vmName, runCommandName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to get the run command.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the run command.
-     * @param runCommandName The name of the virtual machine run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner getByVirtualMachine(
-        String resourceGroupName, String vmName, String runCommandName) {
-        final String expand = null;
-        return getByVirtualMachineAsync(resourceGroupName, vmName, runCommandName, expand).block();
     }
 
     /**
@@ -1563,6 +1526,25 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     public Response<VirtualMachineRunCommandInner> getByVirtualMachineWithResponse(
         String resourceGroupName, String vmName, String runCommandName, String expand, Context context) {
         return getByVirtualMachineWithResponseAsync(resourceGroupName, vmName, runCommandName, expand, context).block();
+    }
+
+    /**
+     * The operation to get the run command.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine containing the run command.
+     * @param runCommandName The name of the virtual machine run command.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineRunCommandInner getByVirtualMachine(
+        String resourceGroupName, String vmName, String runCommandName) {
+        final String expand = null;
+        return getByVirtualMachineWithResponse(resourceGroupName, vmName, runCommandName, expand, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1599,7 +1581,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1661,7 +1643,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service

@@ -34,11 +34,14 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
     private RetentionPolicy retentionPolicy;
 
     /*
-     * TimeZone optional input as string. For example: TimeZone = "Pacific
-     * Standard Time".
+     * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
+
+    /** Creates an instance of AzureFileShareProtectionPolicy class. */
+    public AzureFileShareProtectionPolicy() {
+    }
 
     /**
      * Get the workLoadType property: Type of workload for the backup management.

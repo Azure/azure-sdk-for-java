@@ -3,16 +3,12 @@
 package com.azure.spring.cloud.config.properties;
 
 import static com.azure.spring.cloud.config.AppConfigurationConstants.EMPTY_LABEL;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_STORE_WATCH_KEY;
 
 /**
  * Properties for what needs to be requested from Azure App Configuration for Feature Flags.
  */
 public final class FeatureFlagStore {
-
-    /**
-     * App Configuration Feature Filter prefix.
-     */
-    private static final String KEY_FILTER = ".appconfig*";
 
     /**
      * Boolean for if feature flag loading is enabled.
@@ -42,7 +38,7 @@ public final class FeatureFlagStore {
      * @return the keyFilter
      */
     public String getKeyFilter() {
-        return KEY_FILTER;
+        return FEATURE_STORE_WATCH_KEY;
     }
 
     /**

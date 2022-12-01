@@ -213,10 +213,14 @@ public final class VirtualMachinePropertiesInner {
     private ApplicationProfile applicationProfile;
 
     /*
-     * Specifies the time at which the Virtual Machine resource was created.<br><br>Minimum api-version: 2022-03-01.
+     * Specifies the time at which the Virtual Machine resource was created.<br><br>Minimum api-version: 2021-11-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
+
+    /** Creates an instance of VirtualMachinePropertiesInner class. */
+    public VirtualMachinePropertiesInner() {
+    }
 
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the virtual machine.
@@ -778,7 +782,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

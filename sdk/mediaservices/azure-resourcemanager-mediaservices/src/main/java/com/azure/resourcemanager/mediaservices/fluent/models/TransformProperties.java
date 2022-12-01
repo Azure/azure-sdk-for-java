@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class TransformProperties {
     /*
-     * The UTC date and time when the Transform was created, in
-     * 'YYYY-MM-DDThh:mm:ssZ' format.
+     * The UTC date and time when the Transform was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
@@ -28,15 +27,13 @@ public final class TransformProperties {
     private String description;
 
     /*
-     * The UTC date and time when the Transform was last updated, in
-     * 'YYYY-MM-DDThh:mm:ssZ' format.
+     * The UTC date and time when the Transform was last updated, in 'YYYY-MM-DDThh:mm:ssZ' format.
      */
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
-     * An array of one or more TransformOutputs that the Transform should
-     * generate.
+     * An array of one or more TransformOutputs that the Transform should generate.
      */
     @JsonProperty(value = "outputs", required = true)
     private List<TransformOutput> outputs;

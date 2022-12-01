@@ -8,6 +8,8 @@ import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 
+import javax.xml.stream.XMLStreamException;
+
 public class ListBlobsFlatSegmentResponse implements XmlSerializable<ListBlobsFlatSegmentResponse> {
     /*
      * The ServiceEndpoint property.
@@ -185,7 +187,7 @@ public class ListBlobsFlatSegmentResponse implements XmlSerializable<ListBlobsFl
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("EnumerationResults");
         xmlWriter.writeStringAttribute("ServiceEndpoint", serviceEndpoint);
         xmlWriter.writeStringAttribute("ContainerName", containerName);
@@ -214,7 +216,7 @@ public class ListBlobsFlatSegmentResponse implements XmlSerializable<ListBlobsFl
         return xmlWriter.writeEndElement();
     }
 
-    public static ListBlobsFlatSegmentResponse fromXml(XmlReader xmlReader) {
+    public static ListBlobsFlatSegmentResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
         return xmlReader.readObject("EnumerationResults", reader -> {
             ListBlobsFlatSegmentResponse deserialized = new ListBlobsFlatSegmentResponse();
 

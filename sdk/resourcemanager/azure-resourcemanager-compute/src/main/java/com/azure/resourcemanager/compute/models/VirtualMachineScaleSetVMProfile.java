@@ -107,10 +107,14 @@ public final class VirtualMachineScaleSetVMProfile {
     private ApplicationProfile applicationProfile;
 
     /*
-     * Specifies the hardware profile related details of a scale set. <br><br>Minimum api-version: 2022-03-01.
+     * Specifies the hardware profile related details of a scale set. <br><br>Minimum api-version: 2021-11-01.
      */
     @JsonProperty(value = "hardwareProfile")
     private VirtualMachineScaleSetHardwareProfile hardwareProfile;
+
+    /** Creates an instance of VirtualMachineScaleSetVMProfile class. */
+    public VirtualMachineScaleSetVMProfile() {
+    }
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machines in the scale set.
@@ -435,7 +439,7 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the hardwareProfile value.
      */
@@ -445,7 +449,7 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.

@@ -177,12 +177,12 @@ public final class DeviceManagementClientBuilder
     }
 
     /*
-     * Account instance identifier.
+     * The Device Update for IoT Hub account instance identifier.
      */
     @Generated private String instanceId;
 
     /**
-     * Sets Account instance identifier.
+     * Sets The Device Update for IoT Hub account instance identifier.
      *
      * @param instanceId the instanceId value.
      * @return the DeviceManagementClientBuilder.

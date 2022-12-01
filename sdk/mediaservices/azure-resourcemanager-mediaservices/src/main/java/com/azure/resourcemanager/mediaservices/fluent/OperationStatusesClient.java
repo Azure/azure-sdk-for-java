@@ -13,7 +13,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackOperation
 /** An instance of this class provides access to all the operations defined in OperationStatusesClient. */
 public interface OperationStatusesClient {
     /**
-     * Get asset track operation status.
+     * Get operation status.
+     *
+     * <p>Get asset track operation status.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -30,7 +32,9 @@ public interface OperationStatusesClient {
         String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
 
     /**
-     * Get asset track operation status.
+     * Get operation status.
+     *
+     * <p>Get asset track operation status.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

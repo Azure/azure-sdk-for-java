@@ -18,6 +18,9 @@ public final class StorageError {
     @JsonProperty(value = "error")
     private StorageErrorError error;
 
+    /** Creates an instance of StorageError class. */
+    public StorageError() {}
+
     /**
      * Get the error property: The service error response object.
      *

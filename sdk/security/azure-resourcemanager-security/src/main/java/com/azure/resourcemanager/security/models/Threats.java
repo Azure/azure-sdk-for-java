@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Threats. */
+/** Threats impact of the assessment. */
 public final class Threats extends ExpandableStringEnum<Threats> {
     /** Static value accountBreach for Threats. */
     public static final Threats ACCOUNT_BREACH = fromString("accountBreach");
@@ -45,7 +45,11 @@ public final class Threats extends ExpandableStringEnum<Threats> {
         return fromString(name, Threats.class);
     }
 
-    /** @return known Threats values. */
+    /**
+     * Gets known Threats values.
+     *
+     * @return known Threats values.
+     */
     public static Collection<Threats> values() {
         return values(Threats.class);
     }

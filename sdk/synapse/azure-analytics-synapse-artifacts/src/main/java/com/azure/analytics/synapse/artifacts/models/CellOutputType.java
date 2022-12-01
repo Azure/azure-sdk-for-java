@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CellOutputType. */
+/** Execution, display, or stream outputs. */
 public final class CellOutputType extends ExpandableStringEnum<CellOutputType> {
     /** Static value execute_result for CellOutputType. */
     public static final CellOutputType EXECUTE_RESULT = fromString("execute_result");
@@ -33,7 +33,11 @@ public final class CellOutputType extends ExpandableStringEnum<CellOutputType> {
         return fromString(name, CellOutputType.class);
     }
 
-    /** @return known CellOutputType values. */
+    /**
+     * Gets known CellOutputType values.
+     *
+     * @return known CellOutputType values.
+     */
     public static Collection<CellOutputType> values() {
         return values(CellOutputType.class);
     }

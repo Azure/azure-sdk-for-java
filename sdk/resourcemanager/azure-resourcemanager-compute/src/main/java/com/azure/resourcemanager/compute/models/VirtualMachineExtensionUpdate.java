@@ -18,6 +18,10 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionUpdateProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineExtensionUpdate class. */
+    public VirtualMachineExtensionUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Extension.
      *
@@ -261,7 +265,7 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
     }
 
@@ -272,7 +276,8 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
-    public VirtualMachineExtensionUpdate withProtectedSettingsFromKeyVault(Object protectedSettingsFromKeyVault) {
+    public VirtualMachineExtensionUpdate withProtectedSettingsFromKeyVault(
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }

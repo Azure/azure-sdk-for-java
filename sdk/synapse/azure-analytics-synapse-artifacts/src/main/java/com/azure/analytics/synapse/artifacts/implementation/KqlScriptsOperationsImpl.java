@@ -150,14 +150,7 @@ public final class KqlScriptsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KqlScriptResource> createOrUpdateAsync(String kqlScriptName, KqlScriptResource kqlScript) {
         return createOrUpdateWithResponseAsync(kqlScriptName, kqlScript)
-                .flatMap(
-                        (Response<KqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -175,14 +168,7 @@ public final class KqlScriptsOperationsImpl {
     public Mono<KqlScriptResource> createOrUpdateAsync(
             String kqlScriptName, KqlScriptResource kqlScript, Context context) {
         return createOrUpdateWithResponseAsync(kqlScriptName, kqlScript, context)
-                .flatMap(
-                        (Response<KqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -262,15 +248,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KqlScriptResource> getByNameAsync(String kqlScriptName) {
-        return getByNameWithResponseAsync(kqlScriptName)
-                .flatMap(
-                        (Response<KqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getByNameWithResponseAsync(kqlScriptName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -285,15 +263,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KqlScriptResource> getByNameAsync(String kqlScriptName, Context context) {
-        return getByNameWithResponseAsync(kqlScriptName, context)
-                .flatMap(
-                        (Response<KqlScriptResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getByNameWithResponseAsync(kqlScriptName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -370,7 +340,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByNameAsync(String kqlScriptName) {
-        return deleteByNameWithResponseAsync(kqlScriptName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteByNameWithResponseAsync(kqlScriptName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -385,7 +355,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByNameAsync(String kqlScriptName, Context context) {
-        return deleteByNameWithResponseAsync(kqlScriptName, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteByNameWithResponseAsync(kqlScriptName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -467,7 +437,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameAsync(String kqlScriptName, ArtifactRenameRequest renameRequest) {
-        return renameWithResponseAsync(kqlScriptName, renameRequest).flatMap((Response<Void> res) -> Mono.empty());
+        return renameWithResponseAsync(kqlScriptName, renameRequest).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -483,8 +453,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameAsync(String kqlScriptName, ArtifactRenameRequest renameRequest, Context context) {
-        return renameWithResponseAsync(kqlScriptName, renameRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return renameWithResponseAsync(kqlScriptName, renameRequest, context).flatMap(ignored -> Mono.empty());
     }
 
     /**

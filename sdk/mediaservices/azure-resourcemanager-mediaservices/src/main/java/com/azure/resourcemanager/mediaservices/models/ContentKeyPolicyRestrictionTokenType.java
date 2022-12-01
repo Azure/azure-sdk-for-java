@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyRestrictionTokenType. */
+/** The type of token. */
 public final class ContentKeyPolicyRestrictionTokenType
     extends ExpandableStringEnum<ContentKeyPolicyRestrictionTokenType> {
     /** Static value Unknown for ContentKeyPolicyRestrictionTokenType. */

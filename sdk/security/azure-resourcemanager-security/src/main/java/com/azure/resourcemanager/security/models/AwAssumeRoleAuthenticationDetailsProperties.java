@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("awsAssumeRole")
 @Fluent
 public final class AwAssumeRoleAuthenticationDetailsProperties extends AuthenticationDetailsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AwAssumeRoleAuthenticationDetailsProperties.class);
-
     /*
      * The ID of the cloud account
      */
@@ -30,18 +27,20 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     private String accountId;
 
     /*
-     * Assumed role ID is an identifier that you can use to create temporary
-     * security credentials.
+     * Assumed role ID is an identifier that you can use to create temporary security credentials.
      */
     @JsonProperty(value = "awsAssumeRoleArn", required = true)
     private String awsAssumeRoleArn;
 
     /*
-     * A unique identifier that is required when you assume a role in another
-     * account.
+     * A unique identifier that is required when you assume a role in another account.
      */
     @JsonProperty(value = "awsExternalId", required = true)
     private String awsExternalId;
+
+    /** Creates an instance of AwAssumeRoleAuthenticationDetailsProperties class. */
+    public AwAssumeRoleAuthenticationDetailsProperties() {
+    }
 
     /**
      * Get the accountId property: The ID of the cloud account.
@@ -103,18 +102,20 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     public void validate() {
         super.validate();
         if (awsAssumeRoleArn() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property awsAssumeRoleArn in model"
                             + " AwAssumeRoleAuthenticationDetailsProperties"));
         }
         if (awsExternalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property awsExternalId in model"
                             + " AwAssumeRoleAuthenticationDetailsProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AwAssumeRoleAuthenticationDetailsProperties.class);
 }

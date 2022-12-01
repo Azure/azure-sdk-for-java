@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobErrorCategory. */
+/** Helps with categorization of errors. */
 public final class JobErrorCategory extends ExpandableStringEnum<JobErrorCategory> {
     /** Static value Service for JobErrorCategory. */
     public static final JobErrorCategory SERVICE = fromString("Service");

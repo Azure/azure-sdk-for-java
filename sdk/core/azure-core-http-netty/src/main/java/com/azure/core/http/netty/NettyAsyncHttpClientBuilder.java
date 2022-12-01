@@ -16,6 +16,7 @@ import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.ProxyProvider;
 
@@ -137,11 +138,17 @@ public class NettyAsyncHttpClientBuilder {
             addressResolverWasSetByBuilder = true;
         }
 
+        // Get the initial HttpResponseDecoderSpec and update it.
+        // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
+        // instead of overwritten.
+        HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
         nettyHttpClient = nettyHttpClient
             .port(port)
             .wiretap(enableWiretap)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout,
-                DEFAULT_CONNECT_TIMEOUT));
+                DEFAULT_CONNECT_TIMEOUT))
+            // TODO (alzimmer): What does validating HTTP response headers get us?
+            .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()

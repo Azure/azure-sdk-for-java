@@ -38,8 +38,8 @@ import java.util.Map;
 @Fluent
 public class StoreReadSettings {
     /*
-     * The maximum concurrent connection count for the source data store. Type:
-     * integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
+     * integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;

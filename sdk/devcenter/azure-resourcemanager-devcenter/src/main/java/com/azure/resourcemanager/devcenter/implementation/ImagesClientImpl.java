@@ -36,25 +36,25 @@ public final class ImagesClientImpl implements ImagesClient {
     private final ImagesService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of ImagesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ImagesClientImpl(DevCenterClientImpl client) {
+    ImagesClientImpl(DevCenterManagementClientImpl client) {
         this.service = RestProxy.create(ImagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevCenterClientImages to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for DevCenterManagementClientImages to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientImage")
-    private interface ImagesService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface ImagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
@@ -129,7 +129,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +189,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -247,7 +247,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,7 +265,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -283,7 +283,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -303,7 +303,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,7 +319,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -337,7 +337,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a gallery.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -402,7 +402,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a gallery.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -465,7 +465,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a gallery.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -485,7 +485,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a gallery.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,7 +505,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a gallery.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -526,7 +526,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a gallery.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -543,7 +543,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Lists images for a gallery.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -562,7 +562,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Gets a gallery image.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
@@ -620,7 +620,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Gets a gallery image.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
@@ -676,7 +676,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Gets a gallery image.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
@@ -695,24 +695,7 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Gets a gallery image.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param galleryName The name of the gallery.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gallery image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageInner get(String resourceGroupName, String devCenterName, String galleryName, String imageName) {
-        return getAsync(resourceGroupName, devCenterName, galleryName, imageName).block();
-    }
-
-    /**
-     * Gets a gallery image.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
@@ -729,9 +712,27 @@ public final class ImagesClientImpl implements ImagesClient {
     }
 
     /**
+     * Gets a gallery image.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param galleryName The name of the gallery.
+     * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a gallery image.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImageInner get(String resourceGroupName, String devCenterName, String galleryName, String imageName) {
+        return getWithResponse(resourceGroupName, devCenterName, galleryName, imageName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -767,7 +768,8 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -804,7 +806,8 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -840,7 +843,8 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

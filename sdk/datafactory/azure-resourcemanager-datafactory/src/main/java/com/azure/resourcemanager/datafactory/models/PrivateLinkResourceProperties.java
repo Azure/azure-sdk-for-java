@@ -29,6 +29,10 @@ public final class PrivateLinkResourceProperties {
     @JsonProperty(value = "requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredZoneNames;
 
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
+
     /**
      * Get the groupId property: GroupId of a private link resource.
      *

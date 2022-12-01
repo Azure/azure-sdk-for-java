@@ -3,8 +3,8 @@
 
 package com.azure.core.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -16,10 +16,15 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * appended at the end of the same {@link Header} with commas separating them.
  */
 public class Header {
+    private static final String[] EMPTY_HEADER_ARRAY = new String[0];
+
     private final String name;
 
-    // this is the actual internal representation of all values
-    private final List<String> values;
+    // This is the internal representation of a single value.
+    private String value;
+
+    // This is the internal representation of multiple values.
+    private List<String> values;
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
@@ -36,8 +41,7 @@ public class Header {
     public Header(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = new LinkedList<>();
-        this.values.add(value);
+        this.value = value;
     }
 
     /**
@@ -50,8 +54,13 @@ public class Header {
     public Header(String name, String... values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = new LinkedList<>();
-        Collections.addAll(this.values, values);
+        int length = values.length;
+        if (length == 1) {
+            this.value = values[0];
+        } else if (length != 0) {
+            this.values = new ArrayList<>(Math.max(length + 2, 4));
+            Collections.addAll(this.values, values);
+        }
     }
 
     /**
@@ -64,7 +73,13 @@ public class Header {
     public Header(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = new LinkedList<>(values);
+        int size = values.size();
+        if (size == 1) {
+            this.value = values.get(0);
+        } else if (size != 0) {
+            this.values = new ArrayList<>(Math.max(size + 2, 4));
+            this.values.addAll(values);
+        }
     }
 
     /**
@@ -82,6 +97,12 @@ public class Header {
      * @return the value of this Header
      */
     public String getValue() {
+        if (value != null) {
+            return value;
+        } else if (CoreUtils.isNullOrEmpty(values)) {
+            return "";
+        }
+
         checkCachedStringValue();
         return CACHED_STRING_VALUE_UPDATER.get(this);
     }
@@ -92,7 +113,13 @@ public class Header {
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        return values.toArray(new String[0]);
+        if (value != null) {
+            return new String[] {value};
+        } else if (!CoreUtils.isNullOrEmpty(values)) {
+            return values.toArray(new String[0]);
+        } else {
+            return EMPTY_HEADER_ARRAY;
+        }
     }
 
     /**
@@ -101,7 +128,13 @@ public class Header {
      * @return An unmodifiable list containing all values associated with this header.
      */
     public List<String> getValuesList() {
-        return Collections.unmodifiableList(values);
+        if (value != null) {
+            return Collections.singletonList(value);
+        } else if (!CoreUtils.isNullOrEmpty(values)) {
+            return Collections.unmodifiableList(values);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     /**
@@ -110,6 +143,15 @@ public class Header {
      * @param value the value to add
      */
     public void addValue(String value) {
+        if (this.value == null && values == null) {
+            this.value = value;
+            return;
+        } else if (values == null) {
+            values = new ArrayList<>(4); // 4 was selected to add a buffer of 2 as seen in the constructor.
+            values.add(this.value);
+            this.value = null;
+        }
+
         this.values.add(value);
         CACHED_STRING_VALUE_UPDATER.set(this, null);
     }
@@ -121,6 +163,12 @@ public class Header {
      */
     @Override
     public String toString() {
+        if (value != null) {
+            return name + ":" + value;
+        } else if (CoreUtils.isNullOrEmpty(values)) {
+            return "";
+        }
+
         checkCachedStringValue();
         return name + ":" + CACHED_STRING_VALUE_UPDATER.get(this);
     }

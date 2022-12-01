@@ -26,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AudioTrackDescriptor extends TrackDescriptor {
     /*
-     * Optional designation for single channel audio tracks.  Can be used to
-     * combine the tracks into stereo or multi-channel audio tracks.
+     * Optional designation for single channel audio tracks.  Can be used to combine the tracks into stereo or
+     * multi-channel audio tracks.
      */
     @JsonProperty(value = "channelMapping")
     private ChannelMapping channelMapping;

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Tables that will be included and excluded in the follower database. */
 @Fluent
 public final class TableLevelSharingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableLevelSharingProperties.class);
-
     /*
      * List of tables to include in the follower database
      */

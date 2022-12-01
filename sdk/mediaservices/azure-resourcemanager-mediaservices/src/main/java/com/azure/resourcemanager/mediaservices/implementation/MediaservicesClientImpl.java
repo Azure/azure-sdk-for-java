@@ -211,7 +211,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the resource group.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,6 +240,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -247,7 +250,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<MediaServiceInner>>map(
@@ -263,7 +266,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the resource group.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param context The context to associate with this operation.
@@ -292,6 +297,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -299,7 +305,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -314,7 +320,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the resource group.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,7 +337,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the resource group.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param context The context to associate with this operation.
@@ -346,7 +356,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the resource group.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,7 +372,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the resource group.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param context The context to associate with this operation.
@@ -375,7 +389,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Get the details of a Media Services account.
+     * Get a Media Services account
+     *
+     * <p>Get the details of a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -407,6 +423,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -417,14 +434,16 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the details of a Media Services account.
+     * Get a Media Services account
+     *
+     * <p>Get the details of a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -457,6 +476,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -465,13 +485,15 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Get the details of a Media Services account.
+     * Get a Media Services account
+     *
+     * <p>Get the details of a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -487,7 +509,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Get the details of a Media Services account.
+     * Get a Media Services account
+     *
+     * <p>Get the details of a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -502,7 +526,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Get the details of a Media Services account.
+     * Get a Media Services account
+     *
+     * <p>Get the details of a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -519,7 +545,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -556,6 +584,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -566,7 +595,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -574,7 +603,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -612,6 +643,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -620,14 +652,16 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -653,7 +687,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -677,7 +713,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -694,7 +732,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -712,7 +752,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -731,7 +773,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -751,7 +795,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -768,7 +814,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Creates or updates a Media Services account.
+     * Create or update a Media Services account
+     *
+     * <p>Creates or updates a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -786,7 +834,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Deletes a Media Services account.
+     * Delete a Media Services account.
+     *
+     * <p>Deletes a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -816,6 +866,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -826,14 +877,16 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a Media Services account.
+     * Delete a Media Services account.
+     *
+     * <p>Deletes a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -865,6 +918,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -873,13 +927,15 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a Media Services account.
+     * Delete a Media Services account.
+     *
+     * <p>Deletes a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -894,7 +950,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Deletes a Media Services account.
+     * Delete a Media Services account.
+     *
+     * <p>Deletes a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -908,7 +966,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Deletes a Media Services account.
+     * Delete a Media Services account.
+     *
+     * <p>Deletes a Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -924,7 +984,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -961,6 +1023,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -971,7 +1034,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -979,7 +1042,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1017,6 +1082,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1025,14 +1091,16 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1057,7 +1125,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1081,7 +1151,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1098,7 +1170,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1116,7 +1190,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1135,7 +1211,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1155,7 +1233,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1171,7 +1251,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Updates an existing Media Services account.
+     * Update a Media Services account
+     *
+     * <p>Updates an existing Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1189,7 +1271,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1226,6 +1310,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1236,7 +1321,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1244,7 +1329,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1282,6 +1369,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1290,14 +1378,16 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1315,7 +1405,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1330,7 +1422,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1348,7 +1442,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List all the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1385,6 +1481,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1395,7 +1492,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1403,7 +1500,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List all the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1441,6 +1540,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1449,14 +1549,16 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * List all the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1474,7 +1576,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List all the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1491,7 +1595,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List all the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1509,7 +1615,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the subscription.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1530,17 +1638,13 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<MediaServiceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1554,7 +1658,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the subscription.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1577,15 +1683,11 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1598,7 +1700,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the subscription.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1611,7 +1715,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the subscription.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1626,7 +1732,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the subscription.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1638,7 +1746,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List Media Services accounts in the subscription.
+     * List Media Services accounts
+     *
+     * <p>List Media Services accounts in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1654,7 +1764,8 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1690,7 +1801,8 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1727,7 +1839,8 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1764,7 +1877,8 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

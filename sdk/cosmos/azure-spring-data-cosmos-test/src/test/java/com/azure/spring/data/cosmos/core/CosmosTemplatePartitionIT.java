@@ -340,7 +340,7 @@ public class CosmosTemplatePartitionIT {
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(page, page.getContent().size());
+        PageTestUtils.validateLastPage(page, PAGE_SIZE_2);
     }
 
     @Test
@@ -356,7 +356,7 @@ public class CosmosTemplatePartitionIT {
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(PAGE_SIZE_1);
         assertThat(page.getContent().get(0).getId()).isEqualTo(ID_3);
-        PageTestUtils.validateLastPage(page, page.getContent().size());
+        PageTestUtils.validateLastPage(page, PAGE_SIZE_2);
     }
 
     @Test
@@ -423,6 +423,6 @@ public class CosmosTemplatePartitionIT {
         final Page<PartitionPerson> pageIgnoreCase = cosmosTemplate
             .paginationQuery(queryIgnoreCase, PartitionPerson.class, containerName);
         assertThat(pageIgnoreCase.getContent().size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(pageIgnoreCase, pageIgnoreCase.getContent().size());
+        PageTestUtils.validateLastPage(pageIgnoreCase, PAGE_SIZE_2);
     }
 }

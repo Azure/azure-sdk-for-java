@@ -23,6 +23,10 @@ public final class NetworkGroupProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of NetworkGroupProperties class. */
+    public NetworkGroupProperties() {
+    }
+
     /**
      * Get the description property: A description of the network group.
      *

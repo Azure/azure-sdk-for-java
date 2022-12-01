@@ -16,7 +16,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
@@ -40,6 +39,7 @@ import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
@@ -148,8 +148,6 @@ public class ShareFileAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ShareFileAsyncClient.class);
     static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
     static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
-    private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
-    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -993,7 +991,6 @@ public class ShareFileAsyncClient {
                 .flatMap(fbb -> FluxUtil
                     .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                     .subscribeOn(Schedulers.boundedElastic())
-                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                         || throwable instanceof TimeoutException))))
             .then(Mono.just(response));
@@ -1154,7 +1151,8 @@ public class ShareFileAsyncClient {
         return downloadRange(range, getRangeContentMd5, requestConditions, context)
             .map(response -> {
                 String eTag = ModelHelper.getETag(response.getHeaders());
-                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(response.getHeaders());
+                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
+                    response.getDeserializedHeaders(), response.getHeaders());
 
                 long finalEnd;
                 if (range.getEnd() == null) {
@@ -1164,8 +1162,7 @@ public class ShareFileAsyncClient {
                     finalEnd = range.getEnd();
                 }
 
-                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
-                    () -> response.getValue().timeout(TIMEOUT_VALUE),
+                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(response::getValue,
                     (throwable, offset) -> {
                         if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                             return Flux.error(throwable);
@@ -1174,15 +1171,15 @@ public class ShareFileAsyncClient {
                         long newCount = finalEnd - (offset - range.getStart());
 
                         /*
-                         It is possible that the network stream will throw an error after emitting all data but before
-                         completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
-                         and offset values. Because we have read the intended amount of data, we can ignore the error at the end
-                         of the stream.
+                         * It's possible that the network stream will throw an error after emitting all data but before
+                         * completing. Issuing a retry at this stage would leave the download in a bad state with
+                         * incorrect count and offset values. Because we have read the intended amount of data, we can
+                         * ignore the error at the end of the stream.
                          */
                         if (newCount == 0) {
-                            LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
-                                + "but before stream signaled completion. Returning success as all data was downloaded. "
-                                + "Exception message: " + throwable.getMessage());
+                            LOGGER.warning("Exception encountered in ReliableDownload after all data read from the "
+                                + "network but but before stream signaled completion. Returning success as all data "
+                                + "was downloaded. Exception message: " + throwable.getMessage());
                             return Flux.empty();
                         }
 
@@ -1192,7 +1189,7 @@ public class ShareFileAsyncClient {
                                 requestConditions, context).flatMapMany(r -> {
                                     String receivedETag = ModelHelper.getETag(r.getHeaders());
                                     if (eTag != null && eTag.equals(receivedETag)) {
-                                        return r.getValue().timeout(TIMEOUT_VALUE);
+                                        return r.getValue();
                                     } else {
                                         return Flux.<ByteBuffer>error(
                                             new ConcurrentModificationException(String.format("File has been modified "
@@ -1213,8 +1210,8 @@ public class ShareFileAsyncClient {
             });
     }
 
-    private Mono<StreamResponse> downloadRange(ShareFileRange range, Boolean rangeGetContentMD5,
-        ShareRequestConditions requestConditions, Context context) {
+    private Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> downloadRange(ShareFileRange range,
+        Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
         String rangeString = range == null ? null : range.toHeaderValue();
         return azureFileStorageClient.getFiles().downloadWithResponseAsync(shareName, filePath, null,
             rangeString, rangeGetContentMD5, requestConditions.getLeaseId(),  context);
@@ -2579,7 +2576,6 @@ public class ShareFileAsyncClient {
                     .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
                         chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1,
                         chunk.getStart(), requestConditions)
-                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                         .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                             || throwable instanceof TimeoutException)))
                     .then(), this::channelCleanUp);

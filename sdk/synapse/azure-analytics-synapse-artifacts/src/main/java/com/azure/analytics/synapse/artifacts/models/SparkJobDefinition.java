@@ -28,6 +28,12 @@ public final class SparkJobDefinition {
     private BigDataPoolReference targetBigDataPool;
 
     /*
+     * The spark configuration of the spark job.
+     */
+    @JsonProperty(value = "targetSparkConfiguration")
+    private SparkConfigurationReference targetSparkConfiguration;
+
+    /*
      * The required Spark version of the application.
      */
     @JsonProperty(value = "requiredSparkVersion")
@@ -46,8 +52,8 @@ public final class SparkJobDefinition {
     private SparkJobProperties jobProperties;
 
     /*
-     * The folder that this Spark job definition is in. If not specified, this
-     * Spark job definition will appear at the root level.
+     * The folder that this Spark job definition is in. If not specified, this Spark job definition will appear at the
+     * root level.
      */
     @JsonProperty(value = "folder")
     private SparkJobDefinitionFolder folder;
@@ -94,6 +100,26 @@ public final class SparkJobDefinition {
      */
     public SparkJobDefinition setTargetBigDataPool(BigDataPoolReference targetBigDataPool) {
         this.targetBigDataPool = targetBigDataPool;
+        return this;
+    }
+
+    /**
+     * Get the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @return the targetSparkConfiguration value.
+     */
+    public SparkConfigurationReference getTargetSparkConfiguration() {
+        return this.targetSparkConfiguration;
+    }
+
+    /**
+     * Set the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @param targetSparkConfiguration the targetSparkConfiguration value to set.
+     * @return the SparkJobDefinition object itself.
+     */
+    public SparkJobDefinition setTargetSparkConfiguration(SparkConfigurationReference targetSparkConfiguration) {
+        this.targetSparkConfiguration = targetSparkConfiguration;
         return this;
     }
 

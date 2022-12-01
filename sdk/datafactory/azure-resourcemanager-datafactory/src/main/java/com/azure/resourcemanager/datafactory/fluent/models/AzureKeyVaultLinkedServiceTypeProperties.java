@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureKeyVaultLinkedServiceTypeProperties {
     /*
-     * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net
-     * Type: string (or Expression with resultType string).
+     * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "baseUrl", required = true)
     private Object baseUrl;
@@ -24,6 +24,10 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "credential")
     private CredentialReference credential;
+
+    /** Creates an instance of AzureKeyVaultLinkedServiceTypeProperties class. */
+    public AzureKeyVaultLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the baseUrl property: The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string

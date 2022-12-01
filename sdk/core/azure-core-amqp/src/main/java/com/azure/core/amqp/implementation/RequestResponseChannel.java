@@ -364,7 +364,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                         sendLink.advance();
                     });
                 } catch (IOException | RejectedExecutionException e) {
-                    recordDelivery(sink.contextView(), null);
+                    recordDelivery(getSinkContext(sink), null);
                     sink.error(e);
                 }
             })));
@@ -407,7 +407,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             return;
         }
 
-        recordDelivery(sink.contextView(), message);
+        recordDelivery(getSinkContext(sink), message);
         sink.success(message);
     }
 
@@ -490,7 +490,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         while ((next = unconfirmedSends.pollFirstEntry()) != null) {
             // pollFirstEntry: atomic retrieve and remove of each entry.
             MonoSink<Message> sink = next.getValue();
-            recordDelivery(sink.contextView(), null);
+            recordDelivery(getSinkContext(sink), null);
             sink.error(error);
             count++;
         }
@@ -504,7 +504,7 @@ public class RequestResponseChannel implements AsyncCloseable {
      * Captures current time in mono context - used to report send metric
      */
     private Mono<Message> captureStartTime(Message toSend, Mono<Message> publisher) {
-        if (metricsProvider.isSendDeliveryEnabled()) {
+        if (metricsProvider.isRequestResponseDurationEnabled()) {
             String operationName = "unknown";
             if (toSend != null && toSend.getApplicationProperties() != null && toSend.getApplicationProperties().getValue() != null) {
                 Map<String, Object> properties = toSend.getApplicationProperties().getValue();
@@ -521,11 +521,18 @@ public class RequestResponseChannel implements AsyncCloseable {
         return publisher;
     }
 
+    @SuppressWarnings("deprecation")
+    private static ContextView getSinkContext(MonoSink<?> sink) {
+        // Use currentContext instead of contextView as it's supported back to Reactor 3.4.0 and gives the widest
+        // range of support possible.
+        return sink.currentContext();
+    }
+
     /**
      * Records send call duration metric.
      **/
     private void recordDelivery(ContextView context, Message response) {
-        if (metricsProvider.isSendDeliveryEnabled()) {
+        if (metricsProvider.isRequestResponseDurationEnabled()) {
             Object startTimestamp = context.getOrDefault(START_SEND_TIME_CONTEXT_KEY, null);
             Object operationName = context.getOrDefault(OPERATION_CONTEXT_KEY, null);
             AmqpResponseCode responseCode = response == null ? null : RequestResponseUtils.getStatusCode(response);

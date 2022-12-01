@@ -18,7 +18,8 @@ public interface ConnectorsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings.
+     * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectorSettingInner> list();
@@ -30,10 +31,24 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings.
+     * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectorSettingInner> list(Context context);
+
+    /**
+     * Details of a specific cloud account connector.
+     *
+     * @param connectorName Name of the cloud account connector.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connector setting along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectorSettingInner> getWithResponse(String connectorName, Context context);
 
     /**
      * Details of a specific cloud account connector.
@@ -48,17 +63,20 @@ public interface ConnectorsClient {
     ConnectorSettingInner get(String connectorName);
 
     /**
-     * Details of a specific cloud account connector.
+     * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
+     * account credentials or role-based authentication. For GCP, use account organization credentials.
      *
      * @param connectorName Name of the cloud account connector.
+     * @param connectorSetting Settings for the cloud account connector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
+     * @return the connector setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectorSettingInner> getWithResponse(String connectorName, Context context);
+    Response<ConnectorSettingInner> createOrUpdateWithResponse(
+        String connectorName, ConnectorSettingInner connectorSetting, Context context);
 
     /**
      * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
@@ -75,20 +93,17 @@ public interface ConnectorsClient {
     ConnectorSettingInner createOrUpdate(String connectorName, ConnectorSettingInner connectorSetting);
 
     /**
-     * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
-     * account credentials or role-based authentication. For GCP, use account organization credentials.
+     * Delete a cloud account connector from a subscription.
      *
      * @param connectorName Name of the cloud account connector.
-     * @param connectorSetting Settings for the cloud account connector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectorSettingInner> createOrUpdateWithResponse(
-        String connectorName, ConnectorSettingInner connectorSetting, Context context);
+    Response<Void> deleteWithResponse(String connectorName, Context context);
 
     /**
      * Delete a cloud account connector from a subscription.
@@ -100,17 +115,4 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String connectorName);
-
-    /**
-     * Delete a cloud account connector from a subscription.
-     *
-     * @param connectorName Name of the cloud account connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String connectorName, Context context);
 }

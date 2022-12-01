@@ -49,8 +49,7 @@ public final class MediaServiceProperties {
     private KeyDelivery keyDelivery;
 
     /*
-     * Whether or not public network access is allowed for resources under the
-     * Media Services account.
+     * Whether or not public network access is allowed for resources under the Media Services account.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
