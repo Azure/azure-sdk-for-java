@@ -3,19 +3,19 @@
 
 package com.azure.core.http.netty.implementation;
 
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 /**
  * Contains metadata about a request call.
  */
 public final class CallMetadata {
-    private volatile Boolean firstCall = true;
-    private static final AtomicReferenceFieldUpdater<CallMetadata, Boolean> FIRST_CALL_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(CallMetadata.class, Boolean.class, "firstCall");
+    private volatile int firstCall = 1;
+    private static final AtomicIntegerFieldUpdater<CallMetadata> FIRST_CALL_UPDATER
+        = AtomicIntegerFieldUpdater.newUpdater(CallMetadata.class, "firstCall");
 
-    private volatile Boolean firstCallWithProxy = false;
-    private static final AtomicReferenceFieldUpdater<CallMetadata, Boolean> FIRST_CALL_WITH_PROXY_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(CallMetadata.class, Boolean.class, "firstCallWithProxy");
+    private volatile int firstCallWithProxy = 0;
+    private static final AtomicIntegerFieldUpdater<CallMetadata> FIRST_CALL_WITH_PROXY_UPDATER
+        = AtomicIntegerFieldUpdater.newUpdater(CallMetadata.class, "firstCallWithProxy");
 
     /**
      * Compares and sets the first call property atomically.
@@ -25,7 +25,7 @@ public final class CallMetadata {
      * @return Whether the value was updated.
      */
     public boolean compareAndSetFirstCall(boolean expected, boolean updated) {
-        return FIRST_CALL_UPDATER.compareAndSet(this, expected, updated);
+        return FIRST_CALL_UPDATER.compareAndSet(this, expected ? 1 : 0, updated ? 1 : 0);
     }
 
     /**
@@ -36,7 +36,7 @@ public final class CallMetadata {
      * @return Whether the value was updated.
      */
     public boolean compareAndSetFirstCallWithProxy(boolean expected, boolean updated) {
-        return FIRST_CALL_WITH_PROXY_UPDATER.compareAndSet(this, expected, updated);
+        return FIRST_CALL_WITH_PROXY_UPDATER.compareAndSet(this, expected ? 1 : 0, updated ? 1 : 0);
     }
 
     /**
@@ -45,7 +45,7 @@ public final class CallMetadata {
      * @param value The value.
      */
     public void setFirstCallWithProxy(boolean value) {
-        FIRST_CALL_WITH_PROXY_UPDATER.set(this, value);
+        FIRST_CALL_WITH_PROXY_UPDATER.set(this, value ? 1 : 0);
     }
 
     /**
@@ -54,6 +54,6 @@ public final class CallMetadata {
      * @return First call with proxy value.
      */
     public boolean getFirstCallWithProxy() {
-        return FIRST_CALL_WITH_PROXY_UPDATER.get(this);
+        return FIRST_CALL_WITH_PROXY_UPDATER.get(this) == 1;
     }
 }

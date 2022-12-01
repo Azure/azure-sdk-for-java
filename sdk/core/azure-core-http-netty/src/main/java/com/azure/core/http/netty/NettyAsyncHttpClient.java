@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.URI;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
@@ -142,8 +143,9 @@ class NettyAsyncHttpClient implements HttpClient {
 
         CallMetadata callMetadata = new CallMetadata();
 
-        return nettyClient
-            .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
+        reactor.netty.http.client.HttpClient configuredClient = nettyClient;
+        if (addProxyHandler) {
+            configuredClient = configuredClient.doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
                 /*
                  * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
                  * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
@@ -151,7 +153,7 @@ class NettyAsyncHttpClient implements HttpClient {
                  *
                  * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
                  */
-                if (addProxyHandler && shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
+                if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
                     if (callMetadata.compareAndSetFirstCall(true, false)) {
                         callMetadata.setFirstCallWithProxy(true);
                     }
@@ -160,13 +162,15 @@ class NettyAsyncHttpClient implements HttpClient {
                         AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder,
                         callMetadata));
                 }
-            })
-            .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
+            });
+        }
+
+        return configuredClient.doOnRequest((r, connection) -> addRequestHandlers(connection, context))
             .doAfterRequest((r, connection) -> doAfterRequest(connection, responseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
-            .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
-            .uri(request.getUrl().toString())
+            .request(toReactorNettyHttpMethod(request.getHttpMethod()))
+            .uri(URI.create(request.getUrl().toString()))
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
                 headersEagerlyConverted))
@@ -390,5 +394,21 @@ class NettyAsyncHttpClient implements HttpClient {
         InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
 
         return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
+    }
+
+    private static HttpMethod toReactorNettyHttpMethod(com.azure.core.http.HttpMethod azureHttpMethod) {
+        switch (azureHttpMethod) {
+            case GET: return HttpMethod.GET;
+            case PUT: return HttpMethod.PUT;
+            case HEAD: return HttpMethod.HEAD;
+            case POST: return HttpMethod.POST;
+            case DELETE: return  HttpMethod.DELETE;
+            case PATCH: return HttpMethod.PATCH;
+            case TRACE: return HttpMethod.TRACE;
+            case CONNECT: return HttpMethod.CONNECT;
+            case OPTIONS: return HttpMethod.OPTIONS;
+            default: throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HttpMethod '"
+                + azureHttpMethod + "'.")); // Should never happen
+        }
     }
 }

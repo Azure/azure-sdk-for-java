@@ -106,7 +106,7 @@ public class HttpProxyHandlerTests {
         throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
-            new AtomicReference<>(challengeHolder), createCallMetadata(true));
+            new AtomicReference<>(challengeHolder), createCallMetadata());
 
         Attribute<String> attribute = mock(Attribute.class);
 
@@ -145,7 +145,7 @@ public class HttpProxyHandlerTests {
     @Test
     public void connectMessageDoesNotHaveAuthorizationWhenUsingAnonymousProxy() throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
-            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata(true));
+            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata());
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.connect(any(), any(), any())).thenReturn(null);
@@ -163,7 +163,7 @@ public class HttpProxyHandlerTests {
     public void connectMessageDoesNotHaveAuthorizationBeforeHandlingChallenge() throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
-            new AtomicReference<>(), createCallMetadata(true));
+            new AtomicReference<>(), createCallMetadata());
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.connect(any(), any(), any())).thenReturn(null);
@@ -182,7 +182,7 @@ public class HttpProxyHandlerTests {
         callMetadata.setFirstCallWithProxy(true);
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
-            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata(true));
+            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata());
 
         assertFalse(proxyAuthenticationHandler.handleResponse(mock(ChannelHandlerContext.class), "random"));
     }
@@ -195,7 +195,7 @@ public class HttpProxyHandlerTests {
     @SuppressWarnings("unchecked")
     public void multipleHttpResponsesThrowsException() throws ProxyConnectException {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
-            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata(true));
+            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata());
 
         Attribute<String> attribute = mock(Attribute.class);
         when(attribute.get()).thenReturn(null);
@@ -221,7 +221,7 @@ public class HttpProxyHandlerTests {
     @Test
     public void lastHttpContentWithoutResponseThrows() {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
-            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata(true));
+            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata());
 
         assertThrows(ProxyConnectException.class, () -> proxyAuthenticationHandler
             .handleResponse(mock(ChannelHandlerContext.class), LastHttpContent.EMPTY_LAST_CONTENT));
@@ -234,7 +234,7 @@ public class HttpProxyHandlerTests {
     @Test
     public void lastHttpContentWithoutValidStatusDoesNotThrowOnFirstAttempt() throws ProxyConnectException {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
-            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata(true));
+            new InetSocketAddress("localhost", 8888), null, null, createCallMetadata());
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
 
@@ -256,7 +256,7 @@ public class HttpProxyHandlerTests {
         AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
-            proxyChallengeHolder, createCallMetadata(true));
+            proxyChallengeHolder, createCallMetadata());
 
         HttpHeaders headers = mock(HttpHeaders.class);
         when(headers.getAll(PROXY_AUTHENTICATE)).thenReturn(proxyAuthenticateChallenges);
@@ -322,7 +322,7 @@ public class HttpProxyHandlerTests {
         throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
-            new AtomicReference<>(challengeHolder), createCallMetadata(true));
+            new AtomicReference<>(challengeHolder), createCallMetadata());
 
         Attribute<String> attribute = mock(Attribute.class);
         ArgumentCaptor<String> setCapture = ArgumentCaptor.forClass(String.class);
@@ -369,7 +369,7 @@ public class HttpProxyHandlerTests {
         Predicate<String> expectedPredicate) throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>(),
-            createCallMetadata(true));
+            createCallMetadata());
 
         Attribute<String> attribute = mock(Attribute.class);
         ArgumentCaptor<String> setCapture = ArgumentCaptor.forClass(String.class);
@@ -420,7 +420,7 @@ public class HttpProxyHandlerTests {
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>(),
-            createCallMetadata(true));
+            createCallMetadata());
 
         HttpResponse response = mock(HttpResponse.class);
         when(response.status()).thenReturn(HttpResponseStatus.OK);
@@ -459,7 +459,7 @@ public class HttpProxyHandlerTests {
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>(),
-            createCallMetadata(true));
+            createCallMetadata());
 
         HttpHeaders headers = mock(HttpHeaders.class);
         when(headers.get(PROXY_AUTHENTICATION_INFO)).thenReturn("nc=00000001, cnonce=\"" + cnonce + "\"");
@@ -499,7 +499,7 @@ public class HttpProxyHandlerTests {
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>(),
-            createCallMetadata(true));
+            createCallMetadata());
 
         HttpHeaders headers = mock(HttpHeaders.class);
         when(headers.get(PROXY_AUTHENTICATION_INFO)).thenReturn("nc=00000001, cnonce=\"incorrectCnonce\"");
@@ -534,7 +534,7 @@ public class HttpProxyHandlerTests {
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>(),
-            createCallMetadata(true));
+            createCallMetadata());
 
         HttpHeaders headers = mock(HttpHeaders.class);
         when(headers.get(PROXY_AUTHENTICATION_INFO)).thenReturn("nextnonce=\"" + UPDATED_NONCE + "\"");
@@ -579,9 +579,9 @@ public class HttpProxyHandlerTests {
         return parsedChallenge;
     }
 
-    private static CallMetadata createCallMetadata(boolean firstCallWithProxy) {
+    private static CallMetadata createCallMetadata() {
         CallMetadata callMetadata = new CallMetadata();
-        callMetadata.setFirstCallWithProxy(firstCallWithProxy);
+        callMetadata.setFirstCallWithProxy(true);
 
         return callMetadata;
     }

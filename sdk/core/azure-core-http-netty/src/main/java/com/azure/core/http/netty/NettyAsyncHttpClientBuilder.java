@@ -195,6 +195,7 @@ public class NettyAsyncHttpClientBuilder {
 
             AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
             if (resolver == null || addressResolverWasSetByBuilder) {
+                // This mimics behaviors seen when Reactor Netty proxying is used.
                 nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
             }
         }
