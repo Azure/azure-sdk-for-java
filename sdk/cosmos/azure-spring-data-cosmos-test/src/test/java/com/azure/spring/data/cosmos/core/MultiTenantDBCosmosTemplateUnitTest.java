@@ -1,0 +1,77 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.data.cosmos.core;
+
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
+import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
+import com.azure.spring.data.cosmos.domain.Person;
+import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import org.junit.ClassRule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScanner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.annotation.Persistent;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
+import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
+import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
+import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestRepositoryConfig.class)
+public class MultiTenantDBCosmosTemplateUnitTest {
+
+    private final String testDB1 = "Database1";
+
+    private final String testDB2 = "Database2";
+
+    @Autowired
+    private ApplicationContext applicationContext;
+    @Autowired
+    private CosmosConfig cosmosConfig;
+    @Autowired
+    private CosmosClientBuilder cosmosClientBuilder;
+
+    @Test
+    public void testGetDatabaseFunctionality() {
+        try {
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
+            CosmosFactory cosmosFactory = new CosmosFactory(client, testDB1);
+            final CosmosMappingContext mappingContext = new CosmosMappingContext();
+            mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
+            final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
+            MultiTenantDBCosmosTemplate cosmosTemplate = new MultiTenantDBCosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter, null);
+
+            CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
+
+            cosmosTemplate.setDatabaseName(testDB1, personInfo);
+            Person TEST_PERSON = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+            assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB1);
+            cosmosTemplate.insert(TEST_PERSON, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+
+            cosmosTemplate.setDatabaseName(testDB2, personInfo);
+            Person TEST_PERSON2 = new Person(ID_2, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+            assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB2);
+            cosmosTemplate.insert(TEST_PERSON2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON2)));
+        } catch (ClassNotFoundException e) {
+            assertThat("a").isEqualTo("b");
+        }
+    }
+}

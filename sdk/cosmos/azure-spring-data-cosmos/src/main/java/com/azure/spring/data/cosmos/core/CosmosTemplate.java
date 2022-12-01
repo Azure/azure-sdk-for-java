@@ -74,8 +74,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final MappingCosmosConverter mappingCosmosConverter;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
 
-    private final String databaseName;
-    private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
+    protected String databaseName;
+    protected final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean queryMetricsEnabled;
     private final int maxDegreeOfParallelism;
     private final int maxBufferedItemCount;
@@ -150,6 +150,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                           CosmosConfig cosmosConfig,
                           MappingCosmosConverter mappingCosmosConverter) {
         this(cosmosFactory, cosmosConfig, mappingCosmosConverter, null);
+    }
+
+    public String getDatabaseName() {
+        return this.databaseName;
     }
 
     /**
@@ -528,7 +532,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return response.getProperties();
     }
 
-    private Mono<CosmosDatabaseResponse> createDatabaseIfNotExists() {
+    protected Mono<CosmosDatabaseResponse> createDatabaseIfNotExists() {
         if (databaseThroughputConfig == null) {
             return cosmosAsyncClient
                 .createDatabaseIfNotExists(this.databaseName);
