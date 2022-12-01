@@ -2276,9 +2276,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             // aggregating the result to construct a FeedResponse and aggregate RUs.
                             .map(feedList -> {
                                 List<T> finalList = new ArrayList<>();
-                                List<ClientSideRequestStatistics> aggregatedClientSideRequestStatistics = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
                                 ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                                List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
                                 double requestCharge = 0;
                                 for (FeedResponse<Document> page : feedList) {
                                     ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
@@ -2287,18 +2287,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                         pageQueryMetrics.forEach(
                                             aggregatedQueryMetrics::putIfAbsent);
                                     }
-                                    aggregatedClientSideRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+
                                     requestCharge += page.getRequestCharge();
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
                                 }
+                                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
-                                CosmosDiagnostics aggregatedCosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
-                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedCosmosDiagnostics, aggregatedClientSideRequestStatistics);
                                 FeedResponse<T> frp = BridgeInternal
-                                    .createFeedResponseWithQueryMetrics(finalList, headers, aggregatedQueryMetrics, null, false, false, aggregatedCosmosDiagnostics);
+                                    .createFeedResponseWithQueryMetrics(
+                                        finalList,
+                                        headers,
+                                        aggregatedQueryMetrics,
+                                        null,
+                                        false,
+                                        false,
+                                        aggregatedDiagnostics);
                                 return frp;
                             });
                     });
@@ -2421,10 +2429,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentCollection collection,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap) {
 
-        if (rangeQueryMap.keySet().size() == 0) {
-            return Flux.empty();
-        }
-
         UUID activityId = Utils.randomUUID();
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
@@ -2438,29 +2442,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                           klass,
                                                                           resourceTypeEnum);
         return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
-    }
-
-    private <T> Flux<FeedResponse<Document>> createPointReadOperations(
-        Map<PartitionKeyRange, List<CosmosItemIdentity>> singleItemPartitionRequestMap,
-        String resourceLink,
-        CosmosQueryRequestOptions queryRequestOptions,
-        Class<T> klass
-    ) {
-        return Flux.fromIterable(singleItemPartitionRequestMap.values())
-            .flatMap(item -> {
-                if (item.size() == 1) {
-                    CosmosQueryRequestOptions clonedQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(queryRequestOptions);
-                    clonedQueryRequestOptions.setPartitionKey(item.get(0).getPartitionKey());
-                    return this.readDocument((resourceLink + item.get(0).getId()), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().toRequestOptions(clonedQueryRequestOptions));
-                }
-                return Mono.empty();
-            })
-            .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
-            .flatMap(cosmosItemResponse -> {
-                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())), cosmosItemResponse.getResponseHeaders());
-                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), Arrays.asList(BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
-                return Mono.just(feedResponse);
-            });
     }
 
     @Override
