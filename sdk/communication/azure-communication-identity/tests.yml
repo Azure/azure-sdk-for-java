@@ -10,6 +10,8 @@ stages:
           Clouds: 'Public,Int'
           TestMode: 'LIVE'
           ServiceDirectory: communication
+          EnvVars:
+              SKIP_LIVE_TEST: TRUE
           MatrixReplace:
               - TestSamples=.*/true
           CloudConfig:
@@ -23,9 +25,9 @@ stages:
                       - $(sub-config-communication-ppe-test-resources-common)
                       - $(sub-config-communication-ppe-test-resources-java)
           Artifacts:
-              -   name: ${{ parameters.PackageName }}
+              -   name: azure-communication-identity
                   groupId: com.azure
-                  safeName: ${{ parameters.SafeName }}
+                  safeName: azurecommunicationidentity
           PreSteps:
               -   bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
                   condition: not(startsWith(variables['System.StageName'], 'Public'))
@@ -37,10 +39,6 @@ stages:
                       summaryFileLocation: sdk/communication/${{ parameters.PackageName }}/target/site/jacoco/jacoco.xml
                       reportDirectory: sdk/communication/${{ parameters.PackageName }}/target/site/jacoco/
                       failIfCoverageEmpty: true
-          EnvVars:
-              SKIP_LIVE_TEST: TRUE
-              ${{ each var in parameters.EnVars }}:
-                  ${{ var.key }}: ${{ var.value }}
           MatrixConfigs:
               -   Name: Java_live_test_base
                   Path: eng/pipelines/templates/stages/platform-matrix.json
