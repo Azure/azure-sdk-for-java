@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobErrorCode. */
+/** Error codes returned by the service. */
 public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value AccountAlreadyExists for BlobErrorCode. */
     public static final BlobErrorCode ACCOUNT_ALREADY_EXISTS = fromString("AccountAlreadyExists");
@@ -203,15 +203,6 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value IncrementalCopyOfEarlierVersionSnapshotNotAllowed for BlobErrorCode. */
     public static final BlobErrorCode INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED =
             fromString("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
-
-    /**
-     * Static value IncrementalCopyOfEralierVersionSnapshotNotAllowed for BlobErrorCode.
-     *
-     * @deprecated Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}
-     */
-    @Deprecated
-    public static final BlobErrorCode INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED =
-        fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
 
     /** Static value IncrementalCopySourceMustBeSnapshot for BlobErrorCode. */
     public static final BlobErrorCode INCREMENTAL_COPY_SOURCE_MUST_BE_SNAPSHOT =

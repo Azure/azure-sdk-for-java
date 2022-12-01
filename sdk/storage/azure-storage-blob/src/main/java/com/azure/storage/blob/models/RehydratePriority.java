@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RehydratePriority. */
+/**
+ * If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are
+ * High and Standard.
+ */
 public final class RehydratePriority extends ExpandableStringEnum<RehydratePriority> {
     /** Static value High for RehydratePriority. */
     public static final RehydratePriority HIGH = fromString("High");

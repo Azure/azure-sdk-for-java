@@ -42,6 +42,9 @@ public final class FilterBlobItem {
     @JsonProperty(value = "IsCurrentVersion")
     private Boolean isCurrentVersion;
 
+    /** Creates an instance of FilterBlobItem class. */
+    public FilterBlobItem() {}
+
     /**
      * Get the name property: The Name property.
      *
