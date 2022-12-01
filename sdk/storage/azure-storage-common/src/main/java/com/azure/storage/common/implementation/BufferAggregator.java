@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -67,6 +68,10 @@ public final class BufferAggregator {
      */
     public Flux<ByteBuffer> asFlux() {
         return Flux.fromIterable(this.buffers);
+    }
+
+    public BinaryData asBinaryData() {
+        return BinaryData.fromList(this.buffers);
     }
 
     /**

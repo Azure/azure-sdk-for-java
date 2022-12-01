@@ -10,6 +10,7 @@ import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.ListByteBufferContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,6 +30,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
@@ -468,6 +470,43 @@ public final class BinaryData {
             return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
                 (length != null) ? length : trueLength[0], true));
         });
+    }
+
+    // TODO (jaschrep): do not merge to main, temporary implementation
+    /**
+     * Wraps a flux in a binary data without any asynchronous consumption. Flux is considered not replayable.
+     *
+     * @param data Flux to wrap.
+     * @param length Length of flux, if known.
+     * @return BinaryData wrapping the flux.
+     */
+    public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length) {
+        return wrapFlux(data, length, false);
+    }
+
+    /**
+     * Wraps a flux in a binary data without any asynchronous consumption.
+     *
+     * @param data Flux to wrap.
+     * @param length Length of flux, if known.
+     * @param isReplayable Flag for flux replayability.
+     * @return BinaryData wrapping the flux.
+     */
+    public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length, boolean isReplayable) {
+        if (length != null && length < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
+        }
+        return new BinaryData(new FluxByteBufferContent(data, length, isReplayable));
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link List} of {@link ByteBuffer}.
+     *
+     * @param data Content the {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
+     */
+    public static BinaryData fromList(List<ByteBuffer> data) {
+        return new BinaryData(new ListByteBufferContent(data));
     }
 
     /**

@@ -25,9 +25,7 @@ import java.util.Map;
  */
 @Fluent
 public class BlobParallelUploadOptions {
-    private final Flux<ByteBuffer> dataFlux;
-    private final InputStream dataStream;
-    private final Long length;
+    private final BinaryData data;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
@@ -48,9 +46,7 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions(Flux<ByteBuffer> dataFlux) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
-        this.dataFlux = dataFlux;
-        this.dataStream = null;
-        this.length = null;
+        this.data = BinaryData.wrapFlux(dataFlux, null);
     }
 
     /**
@@ -91,9 +87,7 @@ public class BlobParallelUploadOptions {
         if (length != null) {
             StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         }
-        this.dataStream = dataStream;
-        this.dataFlux = null;
-        this.length = length;
+        this.data = BinaryData.fromStream(dataStream, length);
     }
 
     /**
@@ -103,9 +97,15 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions(BinaryData data) {
         StorageImplUtils.assertNotNull("data", data);
-        this.dataFlux = Flux.just(data.toByteBuffer());
-        this.dataStream = null;
-        this.length = data.getLength();
+        this.data = data;
+    }
+
+    /**
+     * Gets Mono of binary data.
+     * @return mono of data
+     */
+    public BinaryData getData() {
+        return this.data;
     }
 
     /**
@@ -114,7 +114,7 @@ public class BlobParallelUploadOptions {
      * @return The data to write to the blob.
      */
     public Flux<ByteBuffer> getDataFlux() {
-        return this.dataFlux;
+        return data.toFluxByteBuffer();
     }
 
     /**
@@ -123,7 +123,7 @@ public class BlobParallelUploadOptions {
      * @return The data to write to the blob.
      */
     public InputStream getDataStream() {
-        return this.dataStream;
+        return data.toStream();
     }
 
     /**
@@ -135,7 +135,7 @@ public class BlobParallelUploadOptions {
      */
     @Deprecated
     public long getLength() {
-        return length;
+        return getOptionalLength();
     }
 
     /**
@@ -145,7 +145,7 @@ public class BlobParallelUploadOptions {
      * data provided in the {@link InputStream}.
      */
     public Long getOptionalLength() {
-        return length;
+        return data.getLength();
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.models;
 
+import com.azure.core.util.BinaryData;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
@@ -13,9 +14,7 @@ import java.nio.ByteBuffer;
  * Extended options that may be passed when uploading a file range.
  */
 public final class ShareFileUploadRangeOptions {
-    private final Flux<ByteBuffer> dataFlux;
-    private final InputStream dataStream;
-    private final long length;
+    private final BinaryData data;
     private Long offset;
     private ShareRequestConditions requestConditions;
     private FileLastWrittenMode lastWrittenMode;
@@ -32,9 +31,7 @@ public final class ShareFileUploadRangeOptions {
     public ShareFileUploadRangeOptions(Flux<ByteBuffer> dataFlux, long length) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
-        this.dataFlux = dataFlux;
-        this.dataStream = null;
-        this.length = length;
+        this.data = BinaryData.wrapFlux(dataFlux, length);
     }
 
     /**
@@ -49,10 +46,31 @@ public final class ShareFileUploadRangeOptions {
     public ShareFileUploadRangeOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
         StorageImplUtils.assertInBounds("length", length, 1, Long.MAX_VALUE);
-        this.dataStream = dataStream;
-        this.length = length;
-        this.dataFlux = null;
+        this.data = BinaryData.fromStream(dataStream, length);
     }
+
+    /**
+     * Constructs a new {@code FileParallelUploadOptions}.
+     *
+     * @param data BinaryData.
+     * @throws IllegalArgumentException if the BinaryData has no length.
+     */
+    public ShareFileUploadRangeOptions(BinaryData data) {
+        StorageImplUtils.assertNotNull("data", data);
+        if (data.getLength() == null) {
+            throw new IllegalArgumentException("ShareFileUploadRangeOptions requires a length, but the given BinaryData had none.");
+        }
+        this.data = data;
+    }
+
+    /**
+     * Gets Mono of binary data.
+     * @return mono of data
+     */
+    public BinaryData getData() {
+        return this.data;
+    }
+
 
     /**
      * Gets the data source.
@@ -60,7 +78,7 @@ public final class ShareFileUploadRangeOptions {
      * @return The data to write to the file.
      */
     public Flux<ByteBuffer> getDataFlux() {
-        return this.dataFlux;
+        return this.data.toFluxByteBuffer();
     }
 
     /**
@@ -69,7 +87,7 @@ public final class ShareFileUploadRangeOptions {
      * @return The data to write to the file.
      */
     public InputStream getDataStream() {
-        return this.dataStream;
+        return data.toStream();
     }
 
     /**
@@ -79,7 +97,7 @@ public final class ShareFileUploadRangeOptions {
      * data provided in the {@link InputStream} or {@link Flux}&lt;{@link ByteBuffer}&gt;.
      */
     public long getLength() {
-        return length;
+        return data.getLength();
     }
 
     /**
