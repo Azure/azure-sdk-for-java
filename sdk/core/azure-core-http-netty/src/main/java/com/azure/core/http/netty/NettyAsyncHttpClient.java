@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.CallMetadata;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
@@ -47,6 +46,8 @@ import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.transport.AddressUtils;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 import reactor.util.retry.Retry;
 
 import javax.net.ssl.SSLException;
@@ -59,10 +60,12 @@ import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
+import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY_KEY;
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
@@ -141,10 +144,9 @@ class NettyAsyncHttpClient implements HttpClient {
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
 
-        CallMetadata callMetadata = new CallMetadata();
-
         reactor.netty.http.client.HttpClient configuredClient = nettyClient;
         if (addProxyHandler) {
+            AtomicBoolean firstCallWithProxy = new AtomicBoolean(true);
             configuredClient = configuredClient.doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
                 /*
                  * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
@@ -154,13 +156,9 @@ class NettyAsyncHttpClient implements HttpClient {
                  * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
                  */
                 if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
-                    if (callMetadata.compareAndSetFirstCall(true, false)) {
-                        callMetadata.setFirstCallWithProxy(true);
-                    }
-
+                    channel.attr(FIRST_CALL_WITH_PROXY_KEY).set(firstCallWithProxy.compareAndSet(true, false));
                     channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
-                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder,
-                        callMetadata));
+                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder));
                 }
             });
         }
@@ -175,10 +173,21 @@ class NettyAsyncHttpClient implements HttpClient {
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
                 headersEagerlyConverted))
             .single()
-            .flatMap(response -> callMetadata.compareAndSetFirstCallWithProxy(true, false)
-                && response.getStatusCode() == 407
-                ? Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."))
-                : Mono.just(response))
+            .flatMap(responseTuple -> {
+                HttpResponse response = responseTuple.getT1();
+
+                if (addProxyHandler) {
+                    Boolean firstCallWithProxy = responseTuple.getT2();
+
+                    if (response.getStatusCode() == 407 && Boolean.TRUE.equals(firstCallWithProxy)) {
+                        return Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
+                    } else {
+                        return Mono.just(response);
+                    }
+                } else {
+                    return Mono.just(response);
+                }
+            })
             .onErrorMap(throwable -> {
                 // The exception was an SSLException that was caused by a failure to connect to a proxy.
                 // Extract the inner ProxyConnectException and propagate that instead.
@@ -301,7 +310,7 @@ class NettyAsyncHttpClient implements HttpClient {
      * HttpHeaders.
      * @return a delegate upon invocation setup Rest response object
      */
-    private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
+    private static BiFunction<HttpClientResponse, Connection, Mono<Tuple2<HttpResponse, Boolean>>> responseDelegate(
         HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse, boolean ignoreResponseBody,
         boolean headersEagerlyConverted) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
@@ -321,6 +330,8 @@ class NettyAsyncHttpClient implements HttpClient {
 //                        EMPTY_BYTES, headersEagerlyConverted)));
 //            }
 
+            Boolean firstCallWithProxy = reactorNettyConnection.channel().attr(FIRST_CALL_WITH_PROXY_KEY)
+                .compareAndSet(true, false);
             /*
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
              * response MUST be deeply copied to ensure it can safely be used downstream.
@@ -330,11 +341,11 @@ class NettyAsyncHttpClient implements HttpClient {
                 return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .switchIfEmpty(Mono.just(EMPTY_BYTES))
-                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
-                        headersEagerlyConverted));
+                    .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
+                        headersEagerlyConverted), firstCallWithProxy));
             } else {
-                return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
-                    disableBufferCopy, headersEagerlyConverted));
+                return Mono.just(Tuples.of(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection,
+                    restRequest, disableBufferCopy, headersEagerlyConverted), firstCallWithProxy));
             }
         };
     }

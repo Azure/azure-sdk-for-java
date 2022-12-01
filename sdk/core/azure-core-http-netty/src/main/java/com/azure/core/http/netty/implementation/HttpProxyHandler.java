@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY_KEY;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATE;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
@@ -91,20 +92,18 @@ public final class HttpProxyHandler extends ProxyHandler {
     private final AuthorizationChallengeHandler challengeHandler;
     private final AtomicReference<ChallengeHolder> proxyChallengeHolderReference;
     private final HttpClientCodec codec;
-    private final CallMetadata callMetadata;
 
     private String authScheme = null;
     private HttpResponseStatus status;
     private HttpHeaders innerHeaders;
 
     public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolderReference, CallMetadata callMetadata) {
+        AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
         super(proxyAddress);
 
         this.challengeHandler = challengeHandler;
         this.proxyChallengeHolderReference = proxyChallengeHolderReference;
         this.codec = new HttpClientCodec();
-        this.callMetadata = callMetadata;
     }
 
     @Override
@@ -242,7 +241,7 @@ public final class HttpProxyHandler extends ProxyHandler {
             } else if (status.code() != 200) {
                 // Return the error response on the first attempt as the proxy handler doesn't apply credentials on the
                 // first attempt.
-                if (!callMetadata.getFirstCallWithProxy()) {
+                if (Boolean.FALSE.equals(ctx.channel().attr(FIRST_CALL_WITH_PROXY_KEY).get())) {
                     // Later attempts throw an exception.
                     throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
                         "Failed to connect to proxy. Status: " + status, innerHeaders);
@@ -325,7 +324,7 @@ public final class HttpProxyHandler extends ProxyHandler {
      * 'Proxy-Authorization' header. If the values don't match an 'IllegalStateException' will be thrown with a message
      * outlining that the values didn't match.
      */
-    private void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
+    private static void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
         Map<String, String> authorizationPieces) {
         if (authenticationInfoPieces.containsKey(name)) {
             String sentValue = authorizationPieces.get(name);

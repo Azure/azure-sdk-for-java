@@ -4,6 +4,7 @@
 package com.azure.core.http.netty.implementation;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.util.AttributeKey;
 import reactor.netty.Connection;
 import reactor.netty.channel.ChannelOperations;
 
@@ -13,6 +14,12 @@ import java.nio.ByteBuffer;
  * Helper class containing utility methods.
  */
 public final class Utility {
+
+    /**
+     * Netty attribute key containing data about the first call with proxy.
+     */
+    public static final AttributeKey<Boolean> FIRST_CALL_WITH_PROXY_KEY
+        = AttributeKey.newInstance("FirstCallWithProxy");
 
     /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.
