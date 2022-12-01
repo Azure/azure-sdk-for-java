@@ -55,7 +55,7 @@ public class GetTrafficIncidentViewport {
 
         // Authenticates using subscription key
         AzureKeyCredential asyncClientKeyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
-        builder.credential(asyncClientKeyCredential);
+        asyncClientbuilder.credential(asyncClientKeyCredential);
 
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
