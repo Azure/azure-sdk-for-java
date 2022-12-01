@@ -70,6 +70,11 @@ public abstract class AadResourceServerWebSecurityConfigurerAdapter extends WebS
         if (StringUtils.hasText(properties.getPrincipalClaimName())) {
             converter.setPrincipalClaimName(properties.getPrincipalClaimName());
         }
+
+        if (this.jwtGrantedAuthorityConverter == null) {
+            this.jwtGrantedAuthorityConverter = jwtGrantedAuthorityConverter();
+        }
+
         if (this.jwtGrantedAuthorityConverter != null) {
             converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthorityConverter);
         } else {
@@ -80,11 +85,10 @@ public abstract class AadResourceServerWebSecurityConfigurerAdapter extends WebS
     }
 
     /**
-     * Custom a JWT granted authority converter.
-     * @param jwtGrantedAuthorityConverter the custom converter
+     * Use the default  {@link AadJwtGrantedAuthoritiesConverter} if a customized converter is not provided.
+     * @return the customized JWT granted authority converter.
      */
-    public void setJwtGrantedAuthorityConverter(
-        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter) {
-        this.jwtGrantedAuthorityConverter = jwtGrantedAuthorityConverter;
+    protected Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter() {
+        return null;
     }
 }

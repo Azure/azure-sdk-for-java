@@ -7,6 +7,8 @@ import com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerC
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -88,15 +90,15 @@ class AadResourceServerConfigurationTests {
                 assertThat(webSecurityConfigurerAdapter).isNotNull();
             });
     }
-    @Test
-    void useCustomJwtGrantedAuthoritiesConverter() {
+    @ParameterizedTest
+    @ValueSource(classes = { TestResourceServerConfigurationUsingConstructor.class, TestResourceServerConfigurationUsingMethod.class })
+    @SuppressWarnings("unchecked")
+    void useCustomJwtGrantedAuthoritiesConverterUsingConstructor(Class<? extends WebSecurityConfigurerAdapter> configurationClass) {
         resourceServerContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
-            .withUserConfiguration(TestDefaultAadResourceServerConfiguration.class)
+            .withUserConfiguration(configurationClass)
             .run(context -> {
-                WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
-                    .getBean(TestDefaultAadResourceServerConfiguration.class);
-                @SuppressWarnings("unchecked")
+                WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = (WebSecurityConfigurerAdapter) context.getBean(configurationClass);
                 Converter<Jwt, Collection<GrantedAuthority>> converter =
                     (Converter) ReflectionTestUtils.getField(webSecurityConfigurerAdapter, "jwtGrantedAuthorityConverter");
                 assertThat(converter).isNotNull();
@@ -104,18 +106,35 @@ class AadResourceServerConfigurationTests {
                 assertThat(webSecurityConfigurerAdapter).isNotNull();
             });
     }
+
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    static class TestDefaultAadResourceServerConfiguration extends
+    static class TestResourceServerConfigurationUsingConstructor extends
         AadResourceServerWebSecurityConfigurerAdapter {
 
-        TestDefaultAadResourceServerConfiguration() {
+        TestResourceServerConfigurationUsingConstructor() {
             super(null, mock(TestJwtGrantedAuthoritiesConverter.class));
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
+        }
+    }
+
+    @EnableWebSecurity
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    static class TestResourceServerConfigurationUsingMethod extends
+        AadResourceServerWebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            super.configure(http);
+        }
+
+        @Override
+        protected Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter() {
+            return mock(TestJwtGrantedAuthoritiesConverter.class);
         }
     }
 
