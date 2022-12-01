@@ -14,7 +14,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.0'
+use: '@autorest/java@4.1.9'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.QueueStorage/preview/2018-03-28/queue.json
 java: true
 output-folder: ../
@@ -33,6 +33,7 @@ custom-types-subpackage: models
 customization-class: src/main/java/QueueStorageCustomization.java
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
+use-input-stream-for-binary: true
 ```
 
 ### Rename MessageItems
