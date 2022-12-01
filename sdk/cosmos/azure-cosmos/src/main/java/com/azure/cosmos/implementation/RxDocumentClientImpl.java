@@ -104,7 +104,6 @@ import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.models.ModelBridgeInternal.getQueryPlanDiagnosticsContext;
 import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
 
 /**
@@ -2271,7 +2270,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 HashMap<String, String> headers = new HashMap<>();
                                 ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
                                 List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
-                                QueryInfo.QueryPlanDiagnosticsContext firstQueryPlanDiagnosticContext = null;
                                 double requestCharge = 0;
                                 for (FeedResponse<Document> page : feedList) {
                                     ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
@@ -2286,8 +2284,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
                                     aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
-                                    if (firstQueryPlanDiagnosticContext == null)
-                                        firstQueryPlanDiagnosticContext = ModelBridgeInternal.getQueryPlanDiagnosticsContext(page);
                                 }
                                 CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
                                 BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
@@ -2298,7 +2294,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                         finalList,
                                         headers,
                                         aggregatedQueryMetrics,
-                                        firstQueryPlanDiagnosticContext,
+                                        null,
                                         false,
                                         false,
                                         aggregatedDiagnostics);
