@@ -3,10 +3,6 @@ trigger: none
 stages:
     - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
       parameters:
-          PackageName: azure-communication-identity
-          SafeName: azurecommunicationidentity
-          BuildTargetingString: 'azure-communication-identity'
-          JobName: identity
           Clouds: 'Public,Int'
           TestMode: 'LIVE'
           ServiceDirectory: communication
