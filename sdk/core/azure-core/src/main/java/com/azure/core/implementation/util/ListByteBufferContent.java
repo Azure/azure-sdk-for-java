@@ -77,18 +77,12 @@ public class ListByteBufferContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        ByteBuffer result = ByteBuffer.allocate(getLength().intValue());
-        for (ByteBuffer bb : content) {
-            bb.mark();
-            result.put(bb);
-            bb.reset();
-        }
-        return result;
+        return ByteBuffer.wrap(toBytes());
     }
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.fromIterable(content);
+        return Flux.fromIterable(content).map(ByteBuffer::asReadOnlyBuffer);
     }
 
     @Override
