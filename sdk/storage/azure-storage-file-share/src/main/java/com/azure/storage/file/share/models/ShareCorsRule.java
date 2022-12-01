@@ -18,43 +18,41 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class ShareCorsRule {
     /*
-     * The origin domains that are permitted to make a request against the
-     * storage service via CORS. The origin domain is the domain from which the
-     * request originates. Note that the origin must be an exact case-sensitive
-     * match with the origin that the user age sends to the service. You can
-     * also use the wildcard character '*' to allow all origin domains to make
-     * requests via CORS.
+     * The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
+     * is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with
+     * the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all
+     * origin domains to make requests via CORS.
      */
     @JsonProperty(value = "AllowedOrigins", required = true)
     private String allowedOrigins;
 
     /*
-     * The methods (HTTP request verbs) that the origin domain may use for a
-     * CORS request. (comma separated)
+     * The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
      */
     @JsonProperty(value = "AllowedMethods", required = true)
     private String allowedMethods;
 
     /*
-     * The request headers that the origin domain may specify on the CORS
-     * request.
+     * The request headers that the origin domain may specify on the CORS request.
      */
     @JsonProperty(value = "AllowedHeaders", required = true)
     private String allowedHeaders;
 
     /*
-     * The response headers that may be sent in the response to the CORS
-     * request and exposed by the browser to the request issuer.
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
+     * request issuer.
      */
     @JsonProperty(value = "ExposedHeaders", required = true)
     private String exposedHeaders;
 
     /*
-     * The maximum amount time that a browser should cache the preflight
-     * OPTIONS request.
+     * The maximum amount time that a browser should cache the preflight OPTIONS request.
      */
     @JsonProperty(value = "MaxAgeInSeconds", required = true)
     private int maxAgeInSeconds;
+
+    /** Creates an instance of ShareCorsRule class. */
+    public ShareCorsRule() {}
 
     /**
      * Get the allowedOrigins property: The origin domains that are permitted to make a request against the storage
