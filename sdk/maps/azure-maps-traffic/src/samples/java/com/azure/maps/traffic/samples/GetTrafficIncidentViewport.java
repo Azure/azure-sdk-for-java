@@ -34,7 +34,7 @@ public class GetTrafficIncidentViewport {
         // Get Traffic Incident Viewport -
         // https://docs.microsoft.com/en-us/rest/api/maps/traffic/get-traffic-incident-viewport
         // BEGIN: com.azure.maps.traffic.sync.get_traffic_incident_viewport
-        System.out.println("Get Traffic Incident Tile:");
+        System.out.println("Get Traffic Incident Viewport:");
 
         // options
         client.getTrafficIncidentViewport(
@@ -69,9 +69,9 @@ public class GetTrafficIncidentViewport {
         // Get Traffic Incident Viewport -
         // https://docs.microsoft.com/en-us/rest/api/maps/traffic/get-traffic-incident-viewport
         // BEGIN: com.azure.maps.traffic.async.get_traffic_incident_viewport
-        System.out.println("Get Traffic Incident Tile:");
+        System.out.println("Get Traffic Incident Viewport:");
 
-        // options
+        // options  
         asyncClient.getTrafficIncidentViewport(
             new TrafficIncidentViewportOptions()
                 .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
