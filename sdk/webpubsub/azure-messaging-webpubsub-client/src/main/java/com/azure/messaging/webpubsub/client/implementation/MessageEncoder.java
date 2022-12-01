@@ -6,6 +6,7 @@ package com.azure.messaging.webpubsub.client.implementation;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.messaging.webpubsub.client.WebPubSubMessage;
 import jakarta.websocket.EncodeException;
 import jakarta.websocket.Encoder;
 import org.glassfish.tyrus.core.coder.CoderAdapter;

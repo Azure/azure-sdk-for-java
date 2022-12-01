@@ -32,6 +32,10 @@ public class ClientTests {
                 .map(WebPubSubClientAccessToken::getUrl)))
             .buildAsyncClient();
 
+        asyncClient.receiveGroupMessages().doOnNext(m -> {
+            System.out.println(m.getData());
+        }).subscribe();
+
         asyncClient.start().block();
 
         long ackId = 0;
@@ -39,13 +43,13 @@ public class ClientTests {
         asyncClient.joinGroup("group1", ++ackId).block();
 
         asyncClient.sendMessageToGroup("group1",
-            BinaryData.fromString("abc"), WebPubSubDataType.Text,
+            BinaryData.fromString("abc"), WebPubSubDataType.TEXT,
             ++ackId, false, false).block();
 
         asyncClient.leaveGroup("group1", ++ackId).block();
 
         asyncClient.sendMessageToGroup("group1",
-            BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.Json,
+            BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON,
             ++ackId, false, false).block();
 
         Thread.sleep(10 * 1000);

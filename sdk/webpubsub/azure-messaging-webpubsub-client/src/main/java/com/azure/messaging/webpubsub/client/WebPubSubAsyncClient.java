@@ -10,7 +10,6 @@ import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
 import com.azure.messaging.webpubsub.client.implementation.JoinGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.LeaveGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.SendToGroupMessage;
-import com.azure.messaging.webpubsub.client.implementation.WebPubSubMessage;
 import jakarta.websocket.ClientEndpointConfig;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.Endpoint;
@@ -122,8 +121,8 @@ public class WebPubSubAsyncClient {
         }).subscribeOn(Schedulers.boundedElastic());
     }
 
-    Flux<WebPubSubMessage> getMessages() {
-        return messageSink.asFlux();
+    public Flux<GroupDataMessage> receiveGroupMessages() {
+        return messageSink.asFlux().filter(m -> m instanceof GroupDataMessage).cast(GroupDataMessage.class);
     }
 
     private class ClientEndpoint extends Endpoint {

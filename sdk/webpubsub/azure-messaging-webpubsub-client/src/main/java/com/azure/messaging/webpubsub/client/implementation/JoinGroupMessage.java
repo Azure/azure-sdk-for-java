@@ -3,6 +3,8 @@
 
 package com.azure.messaging.webpubsub.client.implementation;
 
+import com.azure.messaging.webpubsub.client.WebPubSubMessage;
+
 public class JoinGroupMessage extends WebPubSubMessage {
 
     private String type = "joinGroup";

@@ -4,8 +4,8 @@
 package com.azure.messaging.webpubsub.client;
 
 public enum WebPubSubDataType {
-    Binary,
-    Json,
-    Text,
-    Protobuf
+    BINARY,
+    JSON,
+    TEXT,
+//    PROTOBUF,
 }
