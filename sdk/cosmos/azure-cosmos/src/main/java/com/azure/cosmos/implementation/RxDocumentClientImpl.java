@@ -2429,6 +2429,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentCollection collection,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap) {
 
+        if (rangeQueryMap.keySet().size() == 0) {
+            return Flux.empty();
+        }
+
         UUID activityId = Utils.randomUUID();
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
@@ -2442,6 +2446,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                           klass,
                                                                           resourceTypeEnum);
         return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
+    }
+
+    private <T> Flux<FeedResponse<Document>> createPointReadOperations(
+        Map<PartitionKeyRange, List<CosmosItemIdentity>> singleItemPartitionRequestMap,
+        String resourceLink,
+        CosmosQueryRequestOptions queryRequestOptions,
+        Class<T> klass
+    ) {
+        return Flux.fromIterable(singleItemPartitionRequestMap.values())
+            .flatMap(item -> {
+                if (item.size() == 1) {
+                    CosmosQueryRequestOptions clonedQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(queryRequestOptions);
+                    clonedQueryRequestOptions.setPartitionKey(item.get(0).getPartitionKey());
+                    return this.readDocument((resourceLink + item.get(0).getId()), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().toRequestOptions(clonedQueryRequestOptions));
+                }
+                return Mono.empty();
+            })
+            .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
+            .flatMap(cosmosItemResponse -> {
+                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())), cosmosItemResponse.getResponseHeaders());
+                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), Arrays.asList(BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
+                return Mono.just(feedResponse);
+            });
     }
 
     @Override
