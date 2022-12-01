@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
+import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -34,7 +35,7 @@ private class ChangeFeedBatch
 
     log.logInfo(s"--> planInputPartitions $batchId")
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-    val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+    val clientConfiguration = CosmosDataPlaneClientConfiguration.apply(config, readConfig.forceEventualConsistency)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
     val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)

@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.cosmosclient.dataplane.{CosmosDataPlaneClient, CosmosDataPlaneClientConfiguration}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -74,7 +75,7 @@ private class ChangeFeedTable(val session: SparkSession,
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   private val tableName = s"com.azure.cosmos.spark.changeFeed.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
-  private val cosmosClientConfig = CosmosClientConfiguration(
+  private val cosmosClientConfig = CosmosDataPlaneClientConfiguration(
     effectiveUserConfig,
     useEventualConsistency = readConfig.forceEventualConsistency)
   // This can only be used for data operation against a certain container.
@@ -166,12 +167,12 @@ private class ChangeFeedTable(val session: SparkSession,
         }
 
         val state = new CosmosClientMetadataCachesSnapshot()
-        state.serialize(clientCacheItems(0).get.client)
+        state.serialize(clientCacheItems(0).get.client.asInstanceOf[CosmosDataPlaneClient].cosmosAsyncClient)
 
         var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
         if (clientCacheItems(1).isDefined) {
           throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
-          throughputControlState.get.serialize(clientCacheItems(1).get.client)
+          throughputControlState.get.serialize(clientCacheItems(1).get.client.asInstanceOf[CosmosDataPlaneClient].cosmosAsyncClient)
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)

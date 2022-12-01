@@ -2,13 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper
+import com.azure.core.management.profile.AzureProfile
 import com.azure.cosmos.implementation.clienttelemetry.TagName
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
+import com.azure.cosmos.spark.cosmosclient.controlplane.{CosmosControlPlaneClient, CosmosControlPlaneClientConfiguration}
+import com.azure.cosmos.spark.cosmosclient.dataplane.{CosmosDataPlaneClient, CosmosDataPlaneClientConfiguration}
+import com.azure.cosmos.spark.cosmosclient.{ICosmosClient, ICosmosClientConfiguration}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
+import com.azure.identity.ClientSecretCredentialBuilder
+import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
@@ -34,9 +39,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // but it helps to allow the GC to clean-up the resources if no running task is using the client anymore
   private[this] val unusedClientTtlInMs = 15 * 60 * 1000
   private[this] val cleanupIntervalInSeconds = 1 * 60
-  private[this] val cache = new TrieMap[ClientConfigurationWrapper, CosmosClientCacheMetadata]
+  private[this] val cache = new TrieMap[ICosmosClientConfigurationWrapper, CosmosClientCacheMetadata]
   private[this] val monitoredSparkApplications = new TrieMap[SparkContext, Int]
-  private[this] val toBeClosedWhenNotActiveAnymore =  new TrieMap[ClientConfigurationWrapper, CosmosClientCacheMetadata]
+  private[this] val toBeClosedWhenNotActiveAnymore =  new TrieMap[ICosmosClientConfigurationWrapper, CosmosClientCacheMetadata]
   private[this] val executorService:ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
     new CosmosDaemonThreadFactory("CosmosClientCache"))
 
@@ -46,7 +51,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     this.cleanupIntervalInSeconds,
     TimeUnit.SECONDS)
 
-  def apply(cosmosClientConfiguration: CosmosClientConfiguration,
+  def apply(cosmosClientConfiguration: ICosmosClientConfiguration,
             cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
             calledFrom: String): CosmosClientCacheItem = {
 
@@ -66,24 +71,35 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
 
     val ownerInfo = OwnerInfo(calledFrom)
+    val configWrapper = getClientConfigurationWrapper(cosmosClientConfiguration)
 
-    cache.get(ClientConfigurationWrapper(cosmosClientConfiguration)) match {
+    cache.get(configWrapper) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None => syncCreate(cosmosClientConfiguration, cosmosClientStateHandle, ownerInfo)
     }
   }
 
-  def isStillReferenced(cosmosClientConfiguration: CosmosClientConfiguration): Boolean = {
-    cache.get(ClientConfigurationWrapper(cosmosClientConfiguration)) match {
+  def getClientConfigurationWrapper(configuration: ICosmosClientConfiguration): ICosmosClientConfigurationWrapper = {
+      if (configuration.isInstanceOf[CosmosDataPlaneClientConfiguration]) {
+          DataPlaneClientConfigurationWrapper(configuration.asInstanceOf[CosmosDataPlaneClientConfiguration])
+      } else {
+          ControlPlaneClientConfigurationWrapper(configuration.asInstanceOf[CosmosControlPlaneClientConfiguration])
+      }
+  }
+
+  def isStillReferenced(cosmosClientConfiguration: ICosmosClientConfiguration): Boolean = {
+    val clientWrapper = getClientConfigurationWrapper(cosmosClientConfiguration)
+    cache.get(clientWrapper) match {
       case Some(_) => true
       case None => toBeClosedWhenNotActiveAnymore
         .readOnlySnapshot()
-        .contains(ClientConfigurationWrapper(cosmosClientConfiguration))
+        .contains(clientWrapper)
     }
   }
 
-  def ownerInformation(cosmosClientConfiguration: CosmosClientConfiguration): String = {
-    cache.get(ClientConfigurationWrapper(cosmosClientConfiguration)) match {
+  def ownerInformation(cosmosClientConfiguration: ICosmosClientConfiguration): String = {
+      val clientWrapper = getClientConfigurationWrapper(cosmosClientConfiguration)
+      cache.get(clientWrapper) match {
       case None => ""
       case Some(existingClientCacheMetadata) => existingClientCacheMetadata
         .owners
@@ -92,11 +108,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-  def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
-    purgeImpl(ClientConfigurationWrapper(cosmosClientConfiguration), forceClosure = false)
+  def purge(cosmosClientConfiguration: ICosmosClientConfiguration): Unit = {
+      val clientWrapper = getClientConfigurationWrapper(cosmosClientConfiguration)
+      purgeImpl(clientWrapper, forceClosure = false)
   }
 
-  private[this]def purgeImpl(clientConfigWrapper: ClientConfigurationWrapper, forceClosure: Boolean): Unit = {
+  private[this]def purgeImpl(clientConfigWrapper: ICosmosClientConfigurationWrapper, forceClosure: Boolean): Unit = {
     cache.get(clientConfigWrapper) match {
       case None =>
       case Some(existingClientCacheMetadata) =>
@@ -118,25 +135,54 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  private[this] def syncCreate(
+                                  clientConfiguration: ICosmosClientConfiguration,
+                                  maybeSnapshot: Option[CosmosClientMetadataCachesSnapshot],
+                                  info: OwnerInfo)
+  : CosmosClientCacheItem = synchronized {
+      clientConfiguration match {
+          case dataPlaneClientConfig: CosmosDataPlaneClientConfiguration => syncCreateDataPlaneClient(dataPlaneClientConfig, maybeSnapshot, info)
+          case controlPlaneClientConfig: CosmosControlPlaneClientConfiguration=> syncCreateControlPlaneClient(controlPlaneClientConfig, info)
+          case _ => throw new IllegalArgumentException(s"ClientConfiguration type ${clientConfiguration.getClass} is not supported")
+      }
+  }
+
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
-  private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
+  private[this] def syncCreateDataPlaneClient(cosmosClientConfiguration: CosmosDataPlaneClientConfiguration,
                                cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
                                ownerInfo: OwnerInfo)
-  : CosmosClientCacheItem = synchronized {
+  : CosmosClientCacheItem = {
 
-    val clientConfigWrapper = ClientConfigurationWrapper(cosmosClientConfiguration)
+    val clientConfigWrapper = DataPlaneClientConfigurationWrapper(cosmosClientConfiguration)
     cache.get(clientConfigWrapper) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None =>
         var builder = new CosmosClientBuilder()
-          .key(cosmosClientConfiguration.key)
           .endpoint(cosmosClientConfiguration.endpoint)
           .userAgentSuffix(cosmosClientConfiguration.applicationName)
           .throttlingRetryOptions(
             new ThrottlingRetryOptions()
               .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
               .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
+
+        val authConfig = cosmosClientConfiguration.authConfig
+        authConfig match {
+            case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
+            case aadAuthConfig: CosmosAadAuthConfig =>
+                val tokenCredential = new ClientSecretCredentialBuilder()
+                    .authorityHost(aadAuthConfig.authorityHost)
+                    .tenantId(aadAuthConfig.tenantId)
+                    .clientId(aadAuthConfig.clientId)
+                    .clientSecret(aadAuthConfig.clientSecret)
+                    .build()
+                builder.credential(tokenCredential)
+            case _ => throw new IllegalArgumentException(s"Authorization type ${authConfig.getClass} is not supported")
+        }
+
+        if (authConfig.isInstanceOf[CosmosMasterKeyAuthConfig]) {
+            builder.key(cosmosClientConfiguration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey)
+        }
 
         if (CosmosClientMetrics.meterRegistry.isDefined) {
           val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
@@ -250,7 +296,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case None =>
         }
 
-        val client = builder.buildAsyncClient()
+        val client = CosmosDataPlaneClient(builder.buildAsyncClient())
         val epochNowInMs = Instant.now.toEpochMilli
         val owners = new TrieMap[OwnerInfo, Option[Boolean]]
         owners.put(ownerInfo, None)
@@ -275,6 +321,45 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
 
+    private[this] def syncCreateControlPlaneClient(clientConfiguration: CosmosControlPlaneClientConfiguration, ownerInfo: OwnerInfo)
+    : CosmosClientCacheItem = {
+        val clientConfigWrapper = ControlPlaneClientConfigurationWrapper(clientConfiguration)
+        cache.get(clientConfigWrapper) match {
+            case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
+            case None =>
+                val authConfig = clientConfiguration.authConfig
+                val azureEnvironment = new AzureProfile(authConfig.tenantId, authConfig.subscriptionId, authConfig.azureEnvironment)
+                val tokenCredential = new ClientSecretCredentialBuilder()
+                    .authorityHost(authConfig.authorityHost)
+                    .tenantId(authConfig.tenantId)
+                    .clientId(authConfig.clientId)
+                    .clientSecret(authConfig.clientSecret)
+                    .build()
+                val cosmosManager = CosmosManager.authenticate(tokenCredential, azureEnvironment)
+                val client = CosmosControlPlaneClient(authConfig.resourceGroupName, authConfig.databaseAccountName, cosmosManager)
+
+                val epochNowInMs = Instant.now.toEpochMilli
+                val owners = new TrieMap[OwnerInfo, Option[Boolean]]
+                owners.put(ownerInfo, None)
+
+                val newClientCacheEntry = CosmosClientCacheMetadata(
+                    client,
+                    clientConfiguration,
+                    new AtomicLong(epochNowInMs),
+                    new AtomicLong(epochNowInMs),
+                    new AtomicLong(epochNowInMs),
+                    new AtomicLong(1),
+                    owners
+                )
+
+                cache.putIfAbsent(clientConfigWrapper, newClientCacheEntry) match {
+                    case None => new CacheItemImpl(client, newClientCacheEntry, ownerInfo)
+                    case Some(_) =>
+                        throw new ConcurrentModificationException("Should not reach here because its synchronized")
+                }
+        }
+    }
+
   private[this] def onCleanup(): Unit = {
     try {
       logDebug(s"-->onCleanup (${cache.size} clients)")
@@ -286,9 +371,17 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
           if (clientMetadata.refCount.get() == 0) {
             if (clientMetadata.lastModified.get() < Instant.now.toEpochMilli - (cleanupIntervalInSeconds * 1000)) {
-              logDebug(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
-                s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
-                s"${clientConfig.useEventualConsistency}")
+              clientConfig match {
+                  case dataPlaneClientConfig: CosmosDataPlaneClientConfiguration =>
+                      logDebug(s"Removing data plane client due to inactivity from the cache - ${dataPlaneClientConfig.endpoint}, " +
+                          s"${dataPlaneClientConfig.applicationName}, ${dataPlaneClientConfig.preferredRegionsList}, ${dataPlaneClientConfig.useGatewayMode}, " +
+                          s"${dataPlaneClientConfig.useEventualConsistency}")
+                  case controlPlaneClientConfig: CosmosControlPlaneClientConfiguration =>
+                      logDebug(s"Removing control plane client due to inactivity from the cache - ${controlPlaneClientConfig.endpoint}, " +
+                          s"${controlPlaneClientConfig.applicationName}")
+                  case _ => throw new IllegalArgumentException(s"ClientConfiguration type ${clientConfig.getClass} is not supported")
+              }
+
               purgeImpl(clientConfig, forceClosure = false)
             } else {
               logDebug("Client has not been retrieved from the cache recently and no spark task has been using " +
@@ -327,8 +420,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] case class CosmosClientCacheMetadata
   (
-    client: CosmosAsyncClient,
-    clientConfig: CosmosClientConfiguration,
+    client: ICosmosClient,
+    clientConfig: ICosmosClientConfiguration,
     lastRetrieved: AtomicLong,
     lastModified: AtomicLong,
     created: AtomicLong,
@@ -364,19 +457,21 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-  private[spark] case class ClientConfigurationWrapper (
-                                                        endpoint: String,
-                                                        key: String,
-                                                        applicationName: String,
-                                                        useGatewayMode: Boolean,
-                                                        useEventualConsistency: Boolean,
-                                                        preferredRegionsList: String)
 
-  private[this] object ClientConfigurationWrapper {
-    def apply(clientConfig: CosmosClientConfiguration): ClientConfigurationWrapper = {
-      ClientConfigurationWrapper(
+  trait ICosmosClientConfigurationWrapper {}
+  private[spark] case class DataPlaneClientConfigurationWrapper(
+                                                    endpoint: String,
+                                                    auth: String,
+                                                    applicationName: String,
+                                                    useGatewayMode: Boolean,
+                                                    useEventualConsistency: Boolean,
+                                                    preferredRegionsList: String) extends ICosmosClientConfigurationWrapper
+
+  private[this] object DataPlaneClientConfigurationWrapper {
+    def apply(clientConfig: CosmosDataPlaneClientConfiguration): DataPlaneClientConfigurationWrapper = {
+      DataPlaneClientConfigurationWrapper(
         clientConfig.endpoint,
-        clientConfig.key,
+        clientConfig.authConfig.toString, // TODO: add toString implementation
         clientConfig.applicationName,
         clientConfig.useGatewayMode,
         clientConfig.useEventualConsistency,
@@ -388,6 +483,21 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  private[spark] case class ControlPlaneClientConfigurationWrapper(
+                                                                 endpoint: String,
+                                                                 auth: String,
+                                                                 applicationName: String) extends ICosmosClientConfigurationWrapper
+
+  private[this] object ControlPlaneClientConfigurationWrapper {
+    def apply(clientConfig: CosmosControlPlaneClientConfiguration): ControlPlaneClientConfigurationWrapper = {
+        ControlPlaneClientConfigurationWrapper(
+            clientConfig.endpoint,
+            clientConfig.authConfig.toString, // TODO: add toString implementation
+            clientConfig.applicationName
+        )
+    }
+}
+
   def clearCache(): Unit = {
     cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
     cache.clear()
@@ -396,12 +506,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] class CacheItemImpl
   (
-    val cosmosClient: CosmosAsyncClient,
+    val cosmosClient: ICosmosClient,
     val ref: CosmosClientCacheMetadata,
     val ownerInfo: OwnerInfo
   ) extends CosmosClientCacheItem with BasicLoggingTrait {
 
-    override def client: CosmosAsyncClient = this.cosmosClient
+    override def client: ICosmosClient = this.cosmosClient
 
     override def context: String = this.ownerInfo.toString
 

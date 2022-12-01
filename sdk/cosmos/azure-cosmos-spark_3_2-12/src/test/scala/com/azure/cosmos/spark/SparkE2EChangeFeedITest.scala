@@ -6,6 +6,7 @@ import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.cosmosclient.dataplane.{CosmosDataPlaneClient, CosmosDataPlaneClientConfiguration}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, CreateSpark2ContinuationsFromChangeFeedOffset, GetFeedRangeForPartitionKeyValue}
 import org.apache.hadoop.fs.{FileSystem, Path}
@@ -670,7 +671,7 @@ class SparkE2EChangeFeedITest
   ): (String, Map[Int, Long]) = {
 
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, cfg)
-    val cosmosClientConfig = CosmosClientConfiguration(
+    val cosmosClientConfig = CosmosDataPlaneClientConfiguration(
       effectiveUserConfig,
       useEventualConsistency = false)
 
@@ -687,7 +688,8 @@ class SparkE2EChangeFeedITest
       .to(cosmosClientCacheItems => {
 
         databaseResourceId = cosmosClientCacheItems.head.get
-          .client
+          .client.asInstanceOf[CosmosDataPlaneClient]
+          .cosmosAsyncClient
           .getDatabase(cosmosDatabase)
           .read()
           .block()
@@ -695,7 +697,8 @@ class SparkE2EChangeFeedITest
           .getResourceId
 
         val container = cosmosClientCacheItems.head.get
-          .client
+          .client.asInstanceOf[CosmosDataPlaneClient]
+          .cosmosAsyncClient
           .getDatabase(cosmosDatabase)
           .getContainer(cosmosContainer)
 

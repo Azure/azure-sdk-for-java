@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
+import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -69,7 +70,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   // to happen on the driver and not the executors.
   // This also helps reducing the RU consumption of the Cosmos DB call to get the metadata
   def apply(userConfig: Map[String, String],
-            cosmosClientConfig: CosmosClientConfiguration,
+            cosmosClientConfig: CosmosDataPlaneClientConfiguration,
             cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
             cosmosContainerConfig: CosmosContainerConfig,
             feedRange: NormalizedRange,
@@ -110,7 +111,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   (
     key: String,
     userConfig: Map[String, String],
-    cosmosClientConfig: CosmosClientConfiguration,
+    cosmosClientConfig: CosmosDataPlaneClientConfiguration,
     cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange,
@@ -181,7 +182,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   private[this] def create
   (
     userConfig: Map[String, String],
-    cosmosClientConfiguration: CosmosClientConfiguration,
+    cosmosClientConfiguration: CosmosDataPlaneClientConfiguration,
     cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange,
@@ -209,7 +210,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   private def readPartitionMetadata
   (
     userConfig: Map[String, String],
-    cosmosClientConfiguration: CosmosClientConfiguration,
+    cosmosClientConfiguration: CosmosDataPlaneClientConfiguration,
     cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange,
@@ -232,7 +233,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   private def readPartitionMetadataImpl
   (
     userConfig: Map[String, String],
-    cosmosClientConfiguration: CosmosClientConfiguration,
+    cosmosClientConfiguration: CosmosDataPlaneClientConfiguration,
     cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange,

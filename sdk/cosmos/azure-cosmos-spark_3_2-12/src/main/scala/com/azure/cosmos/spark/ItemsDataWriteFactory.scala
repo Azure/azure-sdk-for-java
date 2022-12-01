@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 
+import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -76,7 +77,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
 
     private val cacheItemReleasedCount = new AtomicInteger(0)
     private val clientCacheItem = CosmosClientCache(
-      CosmosClientConfiguration(userConfig, useEventualConsistency = true),
+      CosmosDataPlaneClientConfiguration(userConfig, useEventualConsistency = true),
       Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
       s"CosmosWriter($partitionId, $taskId, $epochId)"
     )

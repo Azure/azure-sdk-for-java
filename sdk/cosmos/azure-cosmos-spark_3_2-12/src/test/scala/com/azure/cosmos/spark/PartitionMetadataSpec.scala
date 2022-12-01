@@ -2,18 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+
 import java.nio.charset.StandardCharsets
 import java.time.Instant
-import java.util.{Base64, UUID}
 import java.util.concurrent.atomic.AtomicLong
+import java.util.{Base64, UUID}
 
 class PartitionMetadataSpec extends UnitSpec {
   private[this] val rnd = scala.util.Random
 
   //scalastyle:off multiple.string.literals
-  private[this] val clientCfg = CosmosClientConfiguration(
+  private[this] val clientCfg = CosmosDataPlaneClientConfiguration(
     UUID.randomUUID().toString,
-    UUID.randomUUID().toString,
+    CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
     None,
     UUID.randomUUID().toString,
     useGatewayMode = false,
@@ -44,9 +46,9 @@ class PartitionMetadataSpec extends UnitSpec {
 
   it should "create instance with valid parameters via apply in incremental mode" in {
 
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -116,9 +118,9 @@ class PartitionMetadataSpec extends UnitSpec {
 
   it should "create instance with valid parameters via apply in full fidelity mode" in {
 
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -188,9 +190,9 @@ class PartitionMetadataSpec extends UnitSpec {
 
   it should "withEndLsn honors the new end LSN" in {
 
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -242,9 +244,9 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "clone the meta data for a new sub range" in {
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -291,9 +293,9 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate weighted gap when document count per LSN is > 1" in {
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -334,9 +336,9 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "weighted gap should be at least 1" in {
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -377,9 +379,9 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate weighted gap when document count per LSN is < 1" in {
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -420,9 +422,9 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate weighted gap when latestLsn==startLsn" in {
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -463,9 +465,9 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate avg. document count per LSN correctly when there are no documents" in {
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -506,9 +508,9 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate avg. document count per LSN correctly" in {
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -566,9 +568,9 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate avg. document count per LSN correctly when firstLsn was empty" in {
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = CosmosDataPlaneClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,

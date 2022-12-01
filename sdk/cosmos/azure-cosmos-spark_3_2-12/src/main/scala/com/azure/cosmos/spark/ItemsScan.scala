@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.models.{CosmosParameterizedQuery, SqlParameter, SqlQuerySpec}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
+import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -28,7 +29,7 @@ private case class ItemsScan(session: SparkSession,
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
   log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  private val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+  private val clientConfiguration = CosmosDataPlaneClientConfiguration.apply(config, readConfig.forceEventualConsistency)
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)

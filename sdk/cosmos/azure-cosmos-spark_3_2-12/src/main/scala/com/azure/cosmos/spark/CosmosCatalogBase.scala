@@ -3,25 +3,23 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.ResourceType
+import com.azure.cosmos.spark.clientmanager.{CosmosClientManager, CosmosClientManagerFactory}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
-import java.time.format.DateTimeFormatter
-import java.time.{ZoneOffset, ZonedDateTime}
 import java.util
 import scala.collection.mutable.ArrayBuffer
 // scalastyle:off underscore.import
-import com.azure.cosmos.models._
 // scalastyle:on underscore.import
 import com.azure.cosmos.CosmosException
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
-import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, Table, TableCatalog, TableChange}
+import org.apache.spark.sql.connector.catalog._
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
-import java.util.Collections
 import scala.annotation.tailrec
 
 // scalastyle:off underscore.import
@@ -56,6 +54,7 @@ class CosmosCatalogBase
     private var readConfig: CosmosReadConfig = _
     private var tableOptions: Map[String, String] = _
     private var viewRepository: Option[HDFSMetadataLog[String]] = None
+    private var clientManager: CosmosClientManager = _
 
     /**
      * Called to initialize configuration.
@@ -82,6 +81,8 @@ class CosmosCatalogBase
                 this.sparkSession,
                 viewRepositoryConfig.metaDataPath.get))
         }
+
+        this.clientManager = CosmosClientManagerFactory.getCosmosClientManager(config)
     }
 
     /**
@@ -116,21 +117,18 @@ class CosmosCatalogBase
 
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-                    None,
-                    s"CosmosCatalog(name $catalogName).listNamespaces"
-                ))
+                Some(
+                    clientManager.getReadClient(
+                        ResourceType.Database,
+                        config,
+                        readConfig,
+                        s"CosmosCatalog(name $catalogName).listNamespaces"))
             ))
             .to(cosmosClientCacheItems => {
                 cosmosClientCacheItems(0)
                     .get
                     .client
-                    .readAllDatabases()
-                    .toIterable
-                    .asScala
-                    .map(database => Array(database.getId))
-                    .toArray
+                    .readAllDataBases()
             })
     }
 
@@ -167,32 +165,23 @@ class CosmosCatalogBase
 
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-                    None,
-                    s"CosmosCatalog(name $catalogName).loadNamespaceMetadata([${namespace.mkString(", ")}])"
-                ))
+                Some(
+                    clientManager.getReadClient(
+                        ResourceType.Offer,
+                        config,
+                        readConfig,
+                        s"CosmosCatalog(name $catalogName).loadNamespaceMetadata([${namespace.mkString(", ")}])"))
             ))
             .to(clientCacheItems => {
-                val databaseName = toCosmosDatabaseName(namespace.head)
                 try {
-                    clientCacheItems(0).get.client.getDatabase(databaseName).read().block()
+                    clientCacheItems(0)
+                        .get
+                        .client
+                        .readDatabaseThroughput(toCosmosDatabaseName(namespace.head))
+                        .asJava
                 } catch {
                     case e: CosmosException if isNotFound(e) =>
                         throw new NoSuchNamespaceException(namespace)
-                }
-
-                try {
-                    val throughput = clientCacheItems(0).get
-                        .client
-                        .getDatabase(toCosmosDatabaseName(namespace.head))
-                        .readThroughput()
-                        .block()
-                    CosmosThroughputProperties.toMap(throughput.getProperties).asJava
-                } catch {
-                    case e: CosmosException if e.getStatusCode == 400 =>
-                        Map[String, String]().asJava
-                    // not a shared throughput database account
                 }
             })
     }
@@ -207,32 +196,22 @@ class CosmosCatalogBase
     private[this] def createNamespaceImpl(namespace: Array[String],
                                           metadata: util.Map[String, String]): Unit = {
         checkNamespace(namespace)
-        val throughputPropertiesOpt =
-            CosmosThroughputProperties.tryGetThroughputProperties(
-                metadata.asScala.toMap)
         val databaseName = toCosmosDatabaseName(namespace.head)
 
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-                    None,
-                    s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"
-                ))
+                Some(clientManager.getCreateOrUpdateClient(
+                    ResourceType.Database,
+                    config,
+                    readConfig,
+                    s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"))
             ))
             .to(cosmosClientCacheItems => {
                 try {
-                    if (throughputPropertiesOpt.isDefined) {
-                        logDebug(
-                            s"creating database $databaseName with shared throughput ${throughputPropertiesOpt.get}")
-                        cosmosClientCacheItems(0).get.client
-                            .createDatabase(databaseName, throughputPropertiesOpt.get)
-                            .block()
-                    } else {
-                        logDebug(s"creating database $databaseName")
-                        cosmosClientCacheItems(0).get.client.createDatabase(databaseName).block()
-                    }
-
+                    cosmosClientCacheItems(0)
+                        .get
+                        .client
+                        .createDatabase(databaseName, metadata.asScala.toMap)
                 } catch {
                     case e: CosmosException if alreadyExists(e) =>
                         throw new NamespaceAlreadyExistsException(namespace)
@@ -265,18 +244,18 @@ class CosmosCatalogBase
         try {
             Loan(
                 List[Option[CosmosClientCacheItem]](
-                    Some(CosmosClientCache(
-                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-                        None,
+                    Some(clientManager.getCreateOrUpdateClient(
+                        ResourceType.Database,
+                        config,
+                        readConfig,
                         s"CosmosCatalog(name $catalogName).dropNamespace([${namespace.mkString(", ")}])"
                     ))
                 ))
                 .to(cosmosClientCacheItems => {
-                    cosmosClientCacheItems(0).get
+                    cosmosClientCacheItems(0)
+                        .get
                         .client
-                        .getDatabase(toCosmosDatabaseName(namespace.head))
-                        .delete()
-                        .block()
+                        .deleteDatabase(toCosmosDatabaseName(namespace.head))
                 })
             true
         } catch {
@@ -297,20 +276,18 @@ class CosmosCatalogBase
             val cosmosTables =
                 Loan(
                     List[Option[CosmosClientCacheItem]](
-                        Some(CosmosClientCache(
-                            CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-                            None,
+                        Some(clientManager.getReadClient(
+                            ResourceType.DocumentCollection,
+                            config,
+                            readConfig,
                             s"CosmosCatalog(name $catalogName).listTables([${namespace.mkString(", ")}])"
                         ))
                     ))
                     .to(cosmosClientCacheItems => {
                         cosmosClientCacheItems(0).get
                             .client
-                            .getDatabase(databaseName)
-                            .readAllContainers()
-                            .toIterable
-                            .asScala
-                            .map(prop => getContainerIdentifier(namespace.head, prop))
+                            .readAllContainers(databaseName)
+                            .map(containerId => getContainerIdentifier(namespace.head, containerId))
                     })
 
             val tableIdentifiers = this.tryGetViewDefinitions(databaseName) match {
@@ -337,9 +314,7 @@ class CosmosCatalogBase
         logInfo(s"loadTable DB:$databaseName, Container: $containerName")
 
         this.tryGetContainerMetadata(databaseName, containerName) match {
-            case Some(metadata) =>
-                val tableProperties: util.HashMap[String, String] = generateTblProperties(metadata)
-
+            case Some(tableProperties) =>
                 new ItemsTable(
                     sparkSession,
                     Array[Transform](),
@@ -427,58 +402,22 @@ class CosmosCatalogBase
                                     containerProperties: Map[String, String]): Table = {
         logInfo(s"createPhysicalTable DB:$databaseName, Container: $containerName")
 
-        val throughputPropertiesOpt = CosmosThroughputProperties
-            .tryGetThroughputProperties(containerProperties)
-
-        val partitionKeyPath =
-            CosmosContainerProperties.getPartitionKeyPath(containerProperties)
-
-        val partitionKeyDef = new PartitionKeyDefinition
-        val paths = new util.ArrayList[String]
-        paths.add(partitionKeyPath)
-        partitionKeyDef.setPaths(paths)
-
-        CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
-            case Some(pkVersion) => partitionKeyDef.setVersion(pkVersion)
-            case None =>
-        }
-
-        val indexingPolicy = CosmosContainerProperties.getIndexingPolicy(containerProperties)
-        val cosmosContainerProperties = new CosmosContainerProperties(containerName, partitionKeyDef)
-        cosmosContainerProperties.setIndexingPolicy(indexingPolicy)
-
-        CosmosContainerProperties.getDefaultTtlInSeconds(containerProperties) match {
-            case Some(ttl) => cosmosContainerProperties.setDefaultTimeToLiveInSeconds(ttl)
-            case None =>
-        }
-
-        CosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
-            case Some(ttl) => cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(ttl)
-            case None =>
-        }
-
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-                    None,
+                Some(clientManager.getCreateOrUpdateClient(
+                    ResourceType.DocumentCollection,
+                    config,
+                    readConfig,
                     s"CosmosCatalog(name $catalogName).createPhysicalTable($databaseName, $containerName)"
                 ))
             ))
             .to(cosmosClientCacheItems => {
-                if (throughputPropertiesOpt.isDefined) {
-                    cosmosClientCacheItems(0).get
-                        .client
-                        .getDatabase(databaseName)
-                        .createContainer(cosmosContainerProperties, throughputPropertiesOpt.get)
-                        .block()
-                } else {
-                    cosmosClientCacheItems(0).get
-                        .client
-                        .getDatabase(databaseName)
-                        .createContainer(cosmosContainerProperties)
-                        .block()
-                }
+                cosmosClientCacheItems(0).get
+                    .client
+                    .createContainer(
+                        databaseName,
+                        containerName,
+                        containerProperties)
             })
 
         val effectiveOptions = tableOptions ++ containerProperties
@@ -560,19 +499,17 @@ class CosmosCatalogBase
         try {
             Loan(
                 List[Option[CosmosClientCacheItem]](
-                    Some(CosmosClientCache(
-                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-                        None,
+                    Some(clientManager.getCreateOrUpdateClient(
+                        ResourceType.DocumentCollection,
+                        config,
+                        readConfig,
                         s"CosmosCatalog(name $catalogName).deletePhysicalTable($databaseName, $containerName)"
                     ))
                 ))
                 .to (cosmosClientCacheItems =>
                     cosmosClientCacheItems(0).get
                         .client
-                        .getDatabase(databaseName)
-                        .getContainer(containerName)
-                        .delete()
-                        .block())
+                        .deleteContainer(databaseName, containerName))
             true
         } catch {
             case e: CosmosException if isNotFound(e) => false
@@ -619,76 +556,19 @@ class CosmosCatalogBase
     (
         databaseName: String,
         containerName: String
-    ): Option[(CosmosContainerProperties, List[FeedRange], Option[(ThroughputProperties, Boolean)])] = {
-
-        try {
-            Some(
-                Loan(
-                    List[Option[CosmosClientCacheItem]](
-                        Some(CosmosClientCache(
-                            CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-                            None,
-                            s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"))
-                    ))
-                    .to(cosmosClientCacheItems => {
-
-                        val container = cosmosClientCacheItems(0).get
-                            .client
-                            .getDatabase(databaseName)
-                            .getContainer(containerName)
-
-                        (
-                            container
-                                .read()
-                                .block()
-                                .getProperties,
-
-                            ContainerFeedRangesCache
-                                .getFeedRanges(container)
-                                .block(),
-
-                            try {
-                                Some(
-                                    (
-                                        container
-                                            .readThroughput()
-                                            .block()
-                                            .getProperties,
-                                        false
-                                    ))
-                            } catch {
-                                case error: CosmosException => {
-                                    if (error.getStatusCode != 400) {
-                                        throw error
-                                    }
-
-                                    try {
-                                        Some(
-                                            (
-                                                container
-                                                    .getDatabase
-                                                    .readThroughput()
-                                                    .block()
-                                                    .getProperties,
-                                                true
-                                            )
-                                        )
-                                    } catch {
-                                        case error: CosmosException => {
-                                            if (error.getStatusCode != 400) {
-                                                throw error
-                                            }
-                                            None
-                                        }
-                                    }
-                                }
-                            }
-                        )
-                    }))
-        } catch {
-            case e: CosmosException if isNotFound(e) =>
-                None
-        }
+    ): Option[util.HashMap[String, String]] = {
+        Loan(
+            List[Option[CosmosClientCacheItem]](
+                Some(
+                    clientManager.getReadClient(
+                        ResourceType.MetaData,
+                        config,
+                        readConfig,
+                        s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"))
+            ))
+            .to(cosmosClientCacheItems => {
+                cosmosClientCacheItems(0).get.client.readContainerMetadata(databaseName, containerName)
+            })
     }
     //scalastyle:on method.length
 
@@ -730,8 +610,8 @@ class CosmosCatalogBase
 
     private def getContainerIdentifier(
                                           namespaceName: String,
-                                          cosmosContainerProperties: CosmosContainerProperties): Identifier = {
-        Identifier.of(Array(namespaceName), cosmosContainerProperties.getId)
+                                          containerId: String): Identifier = {
+        Identifier.of(Array(namespaceName), containerId)
     }
 
     private def getContainerIdentifier
@@ -763,101 +643,6 @@ class CosmosCatalogBase
         options.asCaseSensitiveMap().asScala.toMap
     }
 
-    // scalastyle:off cyclomatic.complexity
-    // scalastyle:off method.length
-    private def generateTblProperties
-    (
-        metadata: (CosmosContainerProperties, List[FeedRange], Option[(ThroughputProperties, Boolean)])
-    ): util.HashMap[String, String] = {
-
-        val containerProperties: CosmosContainerProperties = metadata._1
-        val feedRanges: List[FeedRange] = metadata._2
-        val throughputPropertiesOption: Option[(ThroughputProperties, Boolean)] = metadata._3
-
-        val indexingPolicySnapshotJson =  Option.apply(containerProperties.getIndexingPolicy) match {
-            case Some(p) => ModelBridgeInternal.getJsonSerializable(p).toJson
-            case None => "null"
-        }
-
-        val defaultTimeToLiveInSecondsSnapshot = Option.apply(containerProperties.getDefaultTimeToLiveInSeconds) match {
-            case Some(defaultTtl) => defaultTtl.toString
-            case None => "null"
-        }
-
-        val analyticalStoreTimeToLiveInSecondsSnapshot = Option.apply(containerProperties.getAnalyticalStoreTimeToLiveInSeconds) match {
-            case Some(analyticalStoreTtl) => analyticalStoreTtl.toString
-            case None => "null"
-        }
-
-        val lastModifiedSnapshot = ZonedDateTime
-            .ofInstant(containerProperties.getTimestamp, ZoneOffset.UTC)
-            .format(DateTimeFormatter.ISO_INSTANT)
-
-        val provisionedThroughputSnapshot = throughputPropertiesOption match {
-            case Some(throughputPropertiesTuple) =>
-                val throughputProperties = throughputPropertiesTuple._1
-                val isSharedThroughput = throughputPropertiesTuple._2
-                val prefix = if (isSharedThroughput) {
-                    "Shared."
-                } else {
-                    ""
-                }
-                val throughputLastModified = ZonedDateTime
-                    .ofInstant(throughputProperties.getTimestamp, ZoneOffset.UTC)
-                    .format(DateTimeFormatter.ISO_INSTANT)
-                if (throughputProperties.getAutoscaleMaxThroughput == 0) {
-                    s"${prefix}Manual|${throughputProperties.getManualThroughput}|$throughputLastModified"
-                } else {
-                    // AutoScale|CurrentRU|MaxRU
-                    s"${prefix}AutoScale|${throughputProperties.getManualThroughput}|" +
-                        s"${throughputProperties.getAutoscaleMaxThroughput}|" +
-                        s"$throughputLastModified"
-                }
-            case None => s"Unknown" // Right now should be serverless  - but because serverless isn't GA
-            // yet keeping the contract vague here
-        }
-
-        val pkDefinitionJson = ModelBridgeInternal
-            .getJsonSerializable(
-                containerProperties.getPartitionKeyDefinition)
-            .toJson
-
-        val tableProperties = new util.HashMap[String, String]()
-        tableProperties.put(
-            CosmosConstants.TableProperties.PartitionKeyDefinition,
-            s"'$pkDefinitionJson'"
-        )
-
-        tableProperties.put(
-            CosmosConstants.TableProperties.PartitionCount,
-            s"'${feedRanges.size.toString}'"
-        )
-
-        tableProperties.put(
-            CosmosConstants.TableProperties.ProvisionedThroughput,
-            s"'$provisionedThroughputSnapshot'"
-        )
-        tableProperties.put(
-            CosmosConstants.TableProperties.LastModified,
-            s"'$lastModifiedSnapshot'"
-        )
-        tableProperties.put(
-            CosmosConstants.TableProperties.DefaultTtlInSeconds,
-            s"'$defaultTimeToLiveInSecondsSnapshot'"
-        )
-        tableProperties.put(
-            CosmosConstants.TableProperties.AnalyticalStoreTtlInSeconds,
-            s"'$analyticalStoreTimeToLiveInSecondsSnapshot'"
-        )
-        tableProperties.put(
-            CosmosConstants.TableProperties.IndexingPolicy,
-            s"'$indexingPolicySnapshotJson'"
-        )
-
-        tableProperties
-    }
-    // scalastyle:on cyclomatic.complexity
-    // scalastyle:on method.length
 
     private def redactAuthInfo(cfg: Map[String, String]): Map[String, String] = {
         cfg.filter((kvp) => !CosmosConfigNames.AccountEndpoint.equalsIgnoreCase(kvp._1) &&
@@ -865,108 +650,6 @@ class CosmosCatalogBase
             !kvp._1.toLowerCase.contains(CosmosConfigNames.AccountEndpoint.toLowerCase()) &&
             !kvp._1.toLowerCase.contains(CosmosConfigNames.AccountKey.toLowerCase())
         )
-    }
-
-    private object CosmosContainerProperties {
-        val OnlySystemPropertiesIndexingPolicyName: String = "OnlySystemProperties"
-        val AllPropertiesIndexingPolicyName: String = "AllProperties"
-
-        private val partitionKeyPath = "partitionKeyPath"
-        private val partitionKeyVersion = "partitionKeyVersion"
-        private val indexingPolicy = "indexingPolicy"
-        private val defaultTtlPropertyName = "defaultTtlInSeconds"
-        private val analyticalStoreTtlPropertyName = "analyticalStoreTtlInSeconds"
-        private val defaultPartitionKeyPath = "/id"
-        private val defaultIndexingPolicy = AllPropertiesIndexingPolicyName
-
-        def getPartitionKeyPath(properties: Map[String, String]): String = {
-            properties.getOrElse(partitionKeyPath, defaultPartitionKeyPath)
-        }
-
-        def getPartitionKeyVersion(properties: Map[String, String]): Option[PartitionKeyDefinitionVersion] = {
-            if (properties.contains(partitionKeyVersion)) {
-                val pkVersion = properties(partitionKeyVersion).toUpperCase
-                Some(PartitionKeyDefinitionVersion.valueOf(pkVersion))
-            } else {
-                None
-            }
-        }
-
-        def getIndexingPolicy(properties: Map[String, String]): IndexingPolicy = {
-            val indexingPolicySpecification = properties.getOrElse(indexingPolicy, defaultIndexingPolicy)
-
-            //scalastyle:off multiple.string.literals
-            if (AllPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
-                new IndexingPolicy()
-                    .setAutomatic(true)
-                    .setIndexingMode(IndexingMode.CONSISTENT)
-                    .setIncludedPaths(util.Arrays.asList(new IncludedPath("/*")))
-                    .setExcludedPaths(util.Arrays.asList(new ExcludedPath(raw"""/"_etag"/?""")))
-            } else if (OnlySystemPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
-                new IndexingPolicy()
-                    .setAutomatic(true)
-                    .setIndexingMode(IndexingMode.CONSISTENT)
-                    .setIncludedPaths(Collections.emptyList())
-                    .setExcludedPaths(util.Arrays.asList(new ExcludedPath("/*")))
-            } else {
-                SparkModelBridgeInternal.createIndexingPolicyFromJson(indexingPolicySpecification)
-            }
-            //scalastyle:on multiple.string.literals
-        }
-
-        def getDefaultTtlInSeconds(properties: Map[String, String]): Option[Int] = {
-            if (properties.contains(defaultTtlPropertyName)) {
-                Some(properties(defaultTtlPropertyName).toInt)
-            } else {
-                None
-            }
-        }
-
-        def getAnalyticalStoreTtlInSeconds(properties: Map[String, String]): Option[Int] = {
-            if (properties.contains(analyticalStoreTtlPropertyName)) {
-                Some(properties(analyticalStoreTtlPropertyName).toInt)
-            } else {
-                None
-            }
-        }
-    }
-
-    private object CosmosThroughputProperties {
-        private val manualThroughputFieldName = "manualThroughput"
-        private val autoScaleMaxThroughputName = "autoScaleMaxThroughput"
-
-        def tryGetThroughputProperties(
-                                          properties: Map[String, String]): Option[ThroughputProperties] = {
-            properties
-                .get(manualThroughputFieldName)
-                .map(
-                    manualThroughput =>
-                        ThroughputProperties.createManualThroughput(manualThroughput.toInt)
-                )
-                .orElse(
-                    properties
-                        .get(autoScaleMaxThroughputName)
-                        .map(
-                            autoScaleMaxThroughput =>
-                                ThroughputProperties.createAutoscaledThroughput(
-                                    autoScaleMaxThroughput.toInt)
-                        )
-                )
-        }
-
-        def toMap(
-                     throughputProperties: ThroughputProperties): Map[String, String] = {
-            val props = new util.HashMap[String, String]()
-            val manualThroughput = throughputProperties.getManualThroughput
-            if (manualThroughput != null) {
-                props.put(manualThroughputFieldName, manualThroughput.toString)
-            } else {
-                val autoScaleMaxThroughput =
-                    throughputProperties.getAutoscaleMaxThroughput
-                props.put(autoScaleMaxThroughputName, autoScaleMaxThroughput.toString)
-            }
-            props.asScala.toMap
-        }
     }
 }
 // scalastyle:on multiple.string.literals

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+
 import java.lang.management.ManagementFactory
 
 class CosmosClientConfigurationSpec extends UnitSpec {
@@ -14,10 +16,10 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val forceEventual = false
-    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
+    val configuration = CosmosDataPlaneClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.useGatewayMode shouldBe false
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
@@ -32,10 +34,10 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val forceEventual = false
-    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
+    val configuration = CosmosDataPlaneClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.useGatewayMode shouldBe false
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
@@ -50,10 +52,10 @@ class CosmosClientConfigurationSpec extends UnitSpec {
       "spark.cosmos.clientTelemetry.endpoint" -> "SomeEndpoint01"
     )
 
-    val configuration2 = CosmosClientConfiguration(userConfig2, forceEventual)
+    val configuration2 = CosmosDataPlaneClientConfiguration(userConfig2, forceEventual)
 
     configuration2.endpoint shouldEqual userConfig2("spark.cosmos.accountEndpoint")
-    configuration2.key shouldEqual userConfig2("spark.cosmos.accountKey")
+    configuration2.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration2.useGatewayMode shouldBe false
     configuration2.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
@@ -68,10 +70,10 @@ class CosmosClientConfigurationSpec extends UnitSpec {
       "spark.cosmos.clientTelemetry.endpoint" -> "SomeEndpoint03"
     )
 
-    val configuration3 = CosmosClientConfiguration(userConfig3, forceEventual)
+    val configuration3 = CosmosDataPlaneClientConfiguration(userConfig3, forceEventual)
 
     configuration3.endpoint shouldEqual userConfig3("spark.cosmos.accountEndpoint")
-    configuration3.key shouldEqual userConfig3("spark.cosmos.accountKey")
+    configuration3.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration3.useGatewayMode shouldBe false
     configuration3.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
@@ -94,10 +96,10 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val forceEventual = true
-    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
+    val configuration = CosmosDataPlaneClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.useGatewayMode shouldBe true
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
@@ -113,10 +115,10 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val forceEventual = false
-    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
+    val configuration = CosmosDataPlaneClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.useGatewayMode shouldBe false
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual true

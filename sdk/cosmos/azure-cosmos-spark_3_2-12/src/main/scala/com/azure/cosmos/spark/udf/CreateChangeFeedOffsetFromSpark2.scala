@@ -3,7 +3,8 @@
 package com.azure.cosmos.spark.udf
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
-import com.azure.cosmos.spark.{CosmosClientCache, CosmosClientCacheItem, CosmosClientConfiguration, CosmosConfig, Loan}
+import com.azure.cosmos.spark.cosmosclient.dataplane.{CosmosDataPlaneClient, CosmosDataPlaneClientConfiguration}
+import com.azure.cosmos.spark.{CosmosClientCache, CosmosClientCacheItem, CosmosConfig, Loan}
 import org.apache.spark.sql.api.java.UDF4
 
 @SerialVersionUID(1L)
@@ -17,7 +18,7 @@ class CreateChangeFeedOffsetFromSpark2 extends UDF4[String, String, Map[String, 
   ): String = {
 
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
-    val cosmosClientConfig = CosmosClientConfiguration(
+    val cosmosClientConfig = CosmosDataPlaneClientConfiguration(
       effectiveUserConfig,
       useEventualConsistency = false)
 
@@ -32,7 +33,7 @@ class CreateChangeFeedOffsetFromSpark2 extends UDF4[String, String, Map[String, 
       .to(cosmosClientCacheItems => {
 
         SparkBridgeImplementationInternal.createChangeFeedOffsetFromSpark2(
-          cosmosClientCacheItems(0).get.client,
+          cosmosClientCacheItems(0).get.client.asInstanceOf[CosmosDataPlaneClient].cosmosAsyncClient,
           databaseResourceId,
           containerResourceId,
           tokens

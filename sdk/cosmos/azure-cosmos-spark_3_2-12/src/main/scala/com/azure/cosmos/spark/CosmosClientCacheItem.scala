@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosAsyncClient
-import org.apache.spark.TaskContext
+import com.azure.cosmos.spark.cosmosclient.ICosmosClient
 
 trait CosmosClientCacheItem extends AutoCloseable {
-  def client: CosmosAsyncClient
+  def client: ICosmosClient
   def context: String
 }

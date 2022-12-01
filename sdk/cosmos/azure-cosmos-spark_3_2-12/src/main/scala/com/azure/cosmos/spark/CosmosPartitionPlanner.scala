@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strin
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
+import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -257,7 +258,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     startOffset: ChangeFeedOffset,
     readLimit: ReadLimit,
     maxStaleness: Duration,
-    clientConfiguration: CosmosClientConfiguration,
+    clientConfiguration: CosmosDataPlaneClientConfiguration,
     cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
@@ -289,7 +290,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     startOffset: ChangeFeedOffset,
     readLimit: ReadLimit,
     maxStaleness: Duration,
-    clientConfiguration: CosmosClientConfiguration,
+    clientConfiguration: CosmosDataPlaneClientConfiguration,
     cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
@@ -622,7 +623,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   private[this] def getFeedRanges
   (
     userConfig: Map[String, String],
-    cosmosClientConfig: CosmosClientConfiguration,
+    cosmosClientConfig: CosmosDataPlaneClientConfiguration,
     cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig
   ) = {
@@ -667,7 +668,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
   def getFilteredPartitionMetadata(
                             userConfig: Map[String, String],
-                            cosmosClientConfig: CosmosClientConfiguration,
+                            cosmosClientConfig: CosmosDataPlaneClientConfiguration,
                             cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
                             cosmosContainerConfig: CosmosContainerConfig,
                             partitionConfig: CosmosPartitioningConfig,
@@ -688,7 +689,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
   private[this] def getPartitionMetadataImpl(
       userConfig: Map[String, String],
-      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientConfig: CosmosDataPlaneClientConfiguration,
       cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
       cosmosContainerConfig: CosmosContainerConfig,
       partitionConfig: CosmosPartitioningConfig,

@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
+import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.mockito.Mockito.mock
 
@@ -23,14 +24,14 @@ class CosmosClientCacheITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
+  private val clientConfig = CosmosDataPlaneClientConfiguration(userConfigTemplate, useEventualConsistency = true)
 
   "CosmosClientCache" should "get cached object with same config" in {
 
-    val userConfigs = Array[(String, CosmosClientConfiguration)](
+    val userConfigs = Array[(String, CosmosDataPlaneClientConfiguration)](
       (
         "SimpleCtor",
-        CosmosClientConfiguration(
+        CosmosDataPlaneClientConfiguration(
         Map(
           "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
           "spark.cosmos.accountKey" -> cosmosMasterKey
@@ -39,51 +40,51 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithoutPreferredRegions",
-        CosmosClientConfiguration(
-        cosmosEndpoint,
-        cosmosMasterKey,
-        Some("SampleApplicationName"),
-        "SampleApplicationName",
-        useGatewayMode = true,
-        useEventualConsistency = true,
-        enableClientTelemetry = false,
-        disableTcpConnectionEndpointRediscovery = false,
-        clientTelemetryEndpoint = None,
-        preferredRegionsList = None)
+        CosmosDataPlaneClientConfiguration(
+            cosmosEndpoint,
+            CosmosMasterKeyAuthConfig(cosmosMasterKey),
+            Some("SampleApplicationName"),
+            "SampleApplicationName",
+            useGatewayMode = true,
+            useEventualConsistency = true,
+            enableClientTelemetry = false,
+            disableTcpConnectionEndpointRediscovery = false,
+            clientTelemetryEndpoint = None,
+            preferredRegionsList = None)
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
-        CosmosClientConfiguration(
-          cosmosEndpoint,
-          cosmosMasterKey,
-          Some("SampleApplicationName"),
-          "SampleApplicationName",
-          useGatewayMode = true,
-          useEventualConsistency = true,
-          enableClientTelemetry = false,
-          disableTcpConnectionEndpointRediscovery = false,
-          clientTelemetryEndpoint = None,
-          preferredRegionsList = Some(Array[String]()))
+          CosmosDataPlaneClientConfiguration(
+              cosmosEndpoint,
+              CosmosMasterKeyAuthConfig(cosmosMasterKey),
+              Some("SampleApplicationName"),
+              "SampleApplicationName",
+              useGatewayMode = true,
+              useEventualConsistency = true,
+              enableClientTelemetry = false,
+              disableTcpConnectionEndpointRediscovery = false,
+              clientTelemetryEndpoint = None,
+              preferredRegionsList = Some(Array[String]()))
       ),
       (
         "StandardCtorWithOnePreferredRegion",
-        CosmosClientConfiguration(
-        cosmosEndpoint,
-        cosmosMasterKey,
-        None,
-        "SampleApplicationName",
-        useGatewayMode = true,
-        useEventualConsistency = true,
-        enableClientTelemetry = false,
-        disableTcpConnectionEndpointRediscovery = false,
-        clientTelemetryEndpoint = None,
-        preferredRegionsList = Some(Array[String]("North Europe")))
+        CosmosDataPlaneClientConfiguration(
+            cosmosEndpoint,
+            CosmosMasterKeyAuthConfig(cosmosMasterKey),
+            None,
+            "SampleApplicationName",
+            useGatewayMode = true,
+            useEventualConsistency = true,
+            enableClientTelemetry = false,
+            disableTcpConnectionEndpointRediscovery = false,
+            clientTelemetryEndpoint = None,
+            preferredRegionsList = Some(Array[String]("North Europe")))
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
-        CosmosClientConfiguration(
+        CosmosDataPlaneClientConfiguration(
           cosmosEndpoint,
-          cosmosMasterKey,
+            CosmosMasterKeyAuthConfig(cosmosMasterKey),
           None,
           "SampleApplicationName",
           useGatewayMode = true,
@@ -99,9 +100,9 @@ class CosmosClientCacheITest
 
       val testCaseName = userConfigPair._1
       val userConfig = userConfigPair._2
-      val userConfigShallowCopy = CosmosClientConfiguration(
+      val userConfigShallowCopy = CosmosDataPlaneClientConfiguration(
         userConfig.endpoint,
-        userConfig.key,
+        userConfig.authConfig,
         userConfig.customApplicationNameSuffix,
         userConfig.applicationName,
         userConfig.useGatewayMode,
@@ -141,7 +142,7 @@ class CosmosClientCacheITest
   }
 
   it should "return a new instance after purging" in {
-    val userConfig = CosmosClientConfiguration(Map(
+    val userConfig = CosmosDataPlaneClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
     ), useEventualConsistency = true)
@@ -165,7 +166,7 @@ class CosmosClientCacheITest
   }
 
   it should "use state during initialization" in {
-    val userConfig = CosmosClientConfiguration(Map(
+    val userConfig = CosmosDataPlaneClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
     ), useEventualConsistency = true)
