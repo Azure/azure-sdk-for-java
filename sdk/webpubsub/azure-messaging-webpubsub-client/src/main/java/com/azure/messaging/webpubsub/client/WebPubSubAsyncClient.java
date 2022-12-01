@@ -4,12 +4,13 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
-import com.azure.messaging.webpubsub.client.message.JoinGroupMessage;
-import com.azure.messaging.webpubsub.client.message.LeaveGroupMessage;
-import com.azure.messaging.webpubsub.client.message.SendToGroupMessage;
-import com.azure.messaging.webpubsub.client.message.WebPubSubMessage;
+import com.azure.messaging.webpubsub.client.implementation.JoinGroupMessage;
+import com.azure.messaging.webpubsub.client.implementation.LeaveGroupMessage;
+import com.azure.messaging.webpubsub.client.implementation.SendToGroupMessage;
+import com.azure.messaging.webpubsub.client.implementation.WebPubSubMessage;
 import jakarta.websocket.ClientEndpointConfig;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.Endpoint;
@@ -25,6 +26,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.Locale;
 
 @ServiceClient(builder = WebPubSubClientBuilder.class)
 public class WebPubSubAsyncClient {
@@ -69,25 +71,55 @@ public class WebPubSubAsyncClient {
         }).subscribeOn(Schedulers.boundedElastic());
     }
 
-    public Mono<Void> joinGroup(JoinGroupMessage message) {
+    public Mono<WebPubSubResult> joinGroup(String group) {
         return Mono.fromCallable(() -> {
-            session.getBasicRemote().sendObject(message);
-            return (Void) null;
-        }).subscribeOn(Schedulers.boundedElastic()).then();
+            session.getBasicRemote().sendObject(new JoinGroupMessage().setGroup(group));
+            return (WebPubSubResult) null;
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
-    public Mono<Void> leaveGroup(LeaveGroupMessage message) {
+    public Mono<WebPubSubResult> joinGroup(String group, long ackId) {
         return Mono.fromCallable(() -> {
-            session.getBasicRemote().sendObject(message);
-            return (Void) null;
-        }).subscribeOn(Schedulers.boundedElastic()).then();
+            session.getBasicRemote().sendObject(new JoinGroupMessage().setGroup(group).setAckId(ackId));
+            return (WebPubSubResult) null;
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
-    public Mono<Void> sendMessageToGroup(SendToGroupMessage message) {
+    public Mono<WebPubSubResult> leaveGroup(String group) {
         return Mono.fromCallable(() -> {
-            session.getBasicRemote().sendObject(message);
-            return (Void) null;
-        }).subscribeOn(Schedulers.boundedElastic()).then();
+            session.getBasicRemote().sendObject(new LeaveGroupMessage().setGroup(group));
+            return (WebPubSubResult) null;
+        }).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    public Mono<WebPubSubResult> leaveGroup(String group, long ackId) {
+        return Mono.fromCallable(() -> {
+            session.getBasicRemote().sendObject(new LeaveGroupMessage().setGroup(group).setAckId(ackId));
+            return (WebPubSubResult) null;
+        }).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
+        return Mono.fromCallable(() -> {
+            session.getBasicRemote().sendObject(new SendToGroupMessage()
+                .setGroup(group)
+                .setData(content)
+                .setDataType(dataType.name().toLowerCase(Locale.ROOT)));
+            return (WebPubSubResult) null;
+        }).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType,
+                                                    long ackId, boolean noEcho, boolean fireAndForget) {
+        return Mono.fromCallable(() -> {
+            session.getBasicRemote().sendObject(new SendToGroupMessage()
+                .setGroup(group)
+                .setData(content)
+                .setDataType(dataType.name().toLowerCase(Locale.ROOT))
+                .setAckId(ackId)
+                .setNoEcho(noEcho));
+            return (WebPubSubResult) null;
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     Flux<WebPubSubMessage> getMessages() {

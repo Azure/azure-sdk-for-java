@@ -5,12 +5,8 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
-import com.azure.messaging.webpubsub.client.message.JoinGroupMessage;
-import com.azure.messaging.webpubsub.client.message.LeaveGroupMessage;
-import com.azure.messaging.webpubsub.client.message.SendToGroupMessage;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import reactor.core.publisher.Mono;
@@ -40,29 +36,17 @@ public class ClientTests {
 
         long ackId = 0;
 
-        JoinGroupMessage joinGroupMessage = new JoinGroupMessage()
-            .setGroup("group1")
-            .setAckId(++ackId);
-        asyncClient.joinGroup(joinGroupMessage).block();
+        asyncClient.joinGroup("group1", ++ackId).block();
 
-        SendToGroupMessage sendToGroupMessage = new SendToGroupMessage()
-            .setGroup("group1")
-            .setAckId(++ackId)
-            .setDataType("text")
-            .setData(BinaryData.fromString("abc"));
-        asyncClient.sendMessageToGroup(sendToGroupMessage).block();
+        asyncClient.sendMessageToGroup("group1",
+            BinaryData.fromString("abc"), WebPubSubDataType.Text,
+            ++ackId, false, false).block();
 
-        LeaveGroupMessage leaveGroupMessage = new LeaveGroupMessage()
-            .setGroup("group1")
-            .setAckId(++ackId);
-        asyncClient.leaveGroup(leaveGroupMessage).block();
+        asyncClient.leaveGroup("group1", ++ackId).block();
 
-        sendToGroupMessage = new SendToGroupMessage()
-            .setGroup("group1")
-            .setAckId(++ackId)
-            .setDataType("json")
-            .setData(BinaryData.fromObject(Map.of("hello", "world")));
-        asyncClient.sendMessageToGroup(sendToGroupMessage).block();
+        asyncClient.sendMessageToGroup("group1",
+            BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.Json,
+            ++ackId, false, false).block();
 
         Thread.sleep(10 * 1000);
 
