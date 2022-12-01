@@ -124,6 +124,7 @@ private[spark] object CosmosConfigNames {
     TenantId,
     ResourceGroupName,
     ClientId,
+    ClientSecret,  
     AuthorityHost,
     AzureEnvironment,
     Database,
