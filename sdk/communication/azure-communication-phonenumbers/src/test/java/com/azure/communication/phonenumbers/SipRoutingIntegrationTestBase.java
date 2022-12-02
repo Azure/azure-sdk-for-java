@@ -23,6 +23,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,38 +34,43 @@ public class SipRoutingIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
+    protected static final String SET_TRUNK_ROUTE_NAME = "route99";
+    protected static final String SET_TRUNK_ROUTE_NUMBER_PATTERN = "99.*";
+    protected static final SipTrunkRoute SET_TRUNK_ROUTE =
+        new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN);
+
+    protected static final String FIRST_FQDN = getUniqueFqdn("first");
+    protected static final String SECOND_FQDN = getUniqueFqdn("second");
+    protected static final String THIRD_FQDN = getUniqueFqdn("third");
+    protected static final String FOURTH_FQDN = getUniqueFqdn("fourth");
+    protected static final String FIFTH_FQDN = getUniqueFqdn("fifth");
+    protected static final String SIXTH_FQDN = getUniqueFqdn("sixth");
+    protected static final String DELETE_FQDN = getUniqueFqdn("delete");
+    protected static final String SET_TRUNK_FQDN = getUniqueFqdn("set");
     protected static final String NOT_EXISTING_FQDN = "not.existing.fqdn";
 
-    protected static final String SET_TRUNK_FQDN = "4.fqdn.com";
     protected static final int SET_TRUNK_PORT = 4567;
     protected static final SipTrunk SET_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_PORT);
 
     protected static final int SET_TRUNK_UPDATED_PORT = 7651;
     protected static final SipTrunk SET_UPDATED_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_UPDATED_PORT);
 
-    protected static final String DELETE_FQDN = "delete.fqdn.com";
-    protected static final int DELETE_PORT = 5678;
-    protected static final SipTrunk DELETE_TRUNK = new SipTrunk(DELETE_FQDN, DELETE_PORT);
-
     protected static final String SET_TRUNK_INVALID_FQDN = "_";
     protected static final int SET_TRUNK_INVALID_PORT = -1;
 
-    protected static final String SET_TRUNK_ROUTE_NAME = "route99";
-    protected static final String SET_TRUNK_ROUTE_NUMBER_PATTERN = "99.*";
-    protected static final SipTrunkRoute SET_TRUNK_ROUTE =
-        new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN);
-
+    protected static final int DELETE_PORT = 5678;
+    protected static final SipTrunk DELETE_TRUNK = new SipTrunk(DELETE_FQDN, DELETE_PORT);
 
     protected static final List<SipTrunk> EXPECTED_TRUNKS = asList(
-        new SipTrunk("1.fqdn.com", 1234),
-        new SipTrunk("2.fqdn.com", 2345),
-        new SipTrunk("3.fqdn.com", 3456)
+        new SipTrunk(FIRST_FQDN, 1234),
+        new SipTrunk(SECOND_FQDN, 2345),
+        new SipTrunk(THIRD_FQDN, 3456)
     );
     protected static final List<SipTrunk> UPDATED_TRUNKS = asList(
-        new SipTrunk("1.fqdn.com", 9876),
-        new SipTrunk("20.fqdn.com", 2340),
-        new SipTrunk("30.fqdn.com", 3460),
-        new SipTrunk("40.fqdn.com", 4461)
+        new SipTrunk(FIRST_FQDN, 9876),
+        new SipTrunk(FOURTH_FQDN, 2340),
+        new SipTrunk(FIFTH_FQDN, 3460),
+        new SipTrunk(SIXTH_FQDN, 4461)
     );
     protected static final List<SipTrunkRoute> EXPECTED_ROUTES = asList(
         new SipTrunkRoute("route0", "0.*").setDescription("desc0"),
@@ -191,6 +197,11 @@ public class SipRoutingIntegrationTestBase extends TestBase {
         }
 
         return content;
+    }
+
+    private static String getUniqueFqdn(String order) {
+        String uniqueDomain = UUID.randomUUID().toString().replace("-", "");
+        return order + "." + uniqueDomain + ".com";
     }
 
 }
