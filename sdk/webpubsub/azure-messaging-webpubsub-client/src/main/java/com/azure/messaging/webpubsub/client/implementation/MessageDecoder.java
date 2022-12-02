@@ -23,31 +23,54 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
 
     @Override
     public WebPubSubMessage decode(String s) throws DecodeException {
-        WebPubSubMessage webPubSubMessage = new WebPubSubMessage();
+        System.out.println("decode webPubSubMessage: " + s);
+
+        WebPubSubMessage msg = new WebPubSubMessage();
         try (JsonParser parser = OBJECT_MAPPER.createParser(s)) {
             JsonNode jsonNode = OBJECT_MAPPER.readTree(parser);
             switch (jsonNode.get("type").asText()) {
                 case "message": {
                     switch (jsonNode.get("from").asText()) {
                         case "group": {
-                            GroupDataMessage groupDataMessage;
-                            groupDataMessage = new GroupDataMessage()
+                            WebPubSubDataType type = WebPubSubDataType.valueOf(jsonNode.get("dataType").asText().toUpperCase(Locale.ROOT));
+                            BinaryData data = null;
+                            switch (type) {
+                                case TEXT:
+                                    data = BinaryData.fromString(jsonNode.get("data").asText());
+                                    break;
+
+                                case BINARY:
+                                    data = BinaryData.fromBytes(jsonNode.get("data").binaryValue());
+                                    break;
+
+                                case JSON:
+                                default:
+                                    data = BinaryData.fromObject(jsonNode.get("data"));
+                                    break;
+                            }
+                            GroupDataMessageImpl groupDataMessage = new GroupDataMessageImpl()
                                 .setGroup(jsonNode.get("group").asText())
-                                .setData(BinaryData.fromString(jsonNode.get("data").asText()))
-                                .setDataType(WebPubSubDataType.valueOf(jsonNode.get("dataType").asText().toUpperCase(Locale.ROOT)))
+                                .setData(data)
+                                .setDataType(type)
                                 .setFromUserId(jsonNode.get("fromUserId").asText());
                             if (jsonNode.has("sequenceId")) {
                                 groupDataMessage.setSequenceId(jsonNode.get("sequenceId").asLong());
                             }
-                            webPubSubMessage = groupDataMessage;
+                            msg = groupDataMessage;
+                            break;
                         }
-                        break;
                     }
                     break;
                 }
+
+                case "ack": {
+                    msg = new AckMessage()
+                        .setAckId(jsonNode.get("ackId").asLong())
+                        .setSuccess(jsonNode.get("success").asBoolean());
+                    break;
+                }
             }
-            System.out.println("decode webPubSubMessage: " + s);
-            return webPubSubMessage;
+            return msg;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

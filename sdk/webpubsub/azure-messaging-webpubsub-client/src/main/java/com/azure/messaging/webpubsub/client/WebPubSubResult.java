@@ -7,7 +7,11 @@ public class WebPubSubResult {
 
     private final Long ackId;
 
-    WebPubSubResult(Long ackId) {
+    WebPubSubResult() {
+        this.ackId = null;
+    }
+
+    WebPubSubResult(long ackId) {
         this.ackId = ackId;
     }
 

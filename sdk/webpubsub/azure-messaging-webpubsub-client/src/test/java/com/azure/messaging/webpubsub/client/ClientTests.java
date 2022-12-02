@@ -33,7 +33,7 @@ public class ClientTests {
             .buildAsyncClient();
 
         asyncClient.receiveGroupMessages().doOnNext(m -> {
-            System.out.println(m.getData());
+            System.out.println("data: " + m.getData());
         }).subscribe();
 
         asyncClient.start().block();
@@ -42,15 +42,21 @@ public class ClientTests {
 
         asyncClient.joinGroup("group1", ++ackId).block();
 
-        asyncClient.sendMessageToGroup("group1",
+        WebPubSubResult result = asyncClient.sendMessageToGroup("group1",
             BinaryData.fromString("abc"), WebPubSubDataType.TEXT,
             ++ackId, false, false).block();
+        if (result != null) {
+            System.out.println("result: " + result.getAckId());
+        }
 
         asyncClient.leaveGroup("group1", ++ackId).block();
 
-        asyncClient.sendMessageToGroup("group1",
+        result = asyncClient.sendMessageToGroup("group1",
             BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON,
             ++ackId, false, false).block();
+        if (result != null) {
+            System.out.println("result: " + result.getAckId());
+        }
 
         Thread.sleep(10 * 1000);
 

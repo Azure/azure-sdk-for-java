@@ -5,6 +5,7 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.BinaryData;
+import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
 import com.azure.messaging.webpubsub.client.implementation.JoinGroupMessage;
@@ -26,6 +27,7 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicLong;
 
 @ServiceClient(builder = WebPubSubClientBuilder.class)
 public class WebPubSubAsyncClient {
@@ -71,46 +73,34 @@ public class WebPubSubAsyncClient {
     }
 
     public Mono<WebPubSubResult> joinGroup(String group) {
-        return Mono.fromCallable(() -> {
-            session.getBasicRemote().sendObject(new JoinGroupMessage().setGroup(group));
-            return (WebPubSubResult) null;
-        }).subscribeOn(Schedulers.boundedElastic());
+        return joinGroup(group, nextAckId());
     }
 
     public Mono<WebPubSubResult> joinGroup(String group, long ackId) {
         return Mono.fromCallable(() -> {
             session.getBasicRemote().sendObject(new JoinGroupMessage().setGroup(group).setAckId(ackId));
-            return (WebPubSubResult) null;
-        }).subscribeOn(Schedulers.boundedElastic());
+            return new WebPubSubResult();
+        }).subscribeOn(Schedulers.boundedElastic()).then(waitForAckMessage(ackId));
     }
 
     public Mono<WebPubSubResult> leaveGroup(String group) {
-        return Mono.fromCallable(() -> {
-            session.getBasicRemote().sendObject(new LeaveGroupMessage().setGroup(group));
-            return (WebPubSubResult) null;
-        }).subscribeOn(Schedulers.boundedElastic());
+        return leaveGroup(group, nextAckId());
     }
 
     public Mono<WebPubSubResult> leaveGroup(String group, long ackId) {
         return Mono.fromCallable(() -> {
             session.getBasicRemote().sendObject(new LeaveGroupMessage().setGroup(group).setAckId(ackId));
-            return (WebPubSubResult) null;
-        }).subscribeOn(Schedulers.boundedElastic());
+            return new WebPubSubResult();
+        }).subscribeOn(Schedulers.boundedElastic()).then(waitForAckMessage(ackId));
     }
 
     public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
-        return Mono.fromCallable(() -> {
-            session.getBasicRemote().sendObject(new SendToGroupMessage()
-                .setGroup(group)
-                .setData(content)
-                .setDataType(dataType.name().toLowerCase(Locale.ROOT)));
-            return (WebPubSubResult) null;
-        }).subscribeOn(Schedulers.boundedElastic());
+        return sendMessageToGroup(group, content, dataType, nextAckId(), false, false);
     }
 
     public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType,
                                                     long ackId, boolean noEcho, boolean fireAndForget) {
-        return Mono.fromCallable(() -> {
+        Mono<WebPubSubResult> sendMono = Mono.fromCallable(() -> {
             session.getBasicRemote().sendObject(new SendToGroupMessage()
                 .setGroup(group)
                 .setData(content)
@@ -119,10 +109,35 @@ public class WebPubSubAsyncClient {
                 .setNoEcho(noEcho));
             return (WebPubSubResult) null;
         }).subscribeOn(Schedulers.boundedElastic());
+
+        if (!fireAndForget) {
+            sendMono = sendMono.then(waitForAckMessage(ackId));
+        } else {
+            sendMono = sendMono.then(Mono.just(new WebPubSubResult()));
+        }
+        return sendMono;
     }
 
     public Flux<GroupDataMessage> receiveGroupMessages() {
         return messageSink.asFlux().filter(m -> m instanceof GroupDataMessage).cast(GroupDataMessage.class);
+    }
+
+    private static final AtomicLong ACK_ID = new AtomicLong(0);
+    private long nextAckId() {
+        return ACK_ID.getAndIncrement();
+    }
+
+    private Flux<AckMessage> receiveAckMessages() {
+        return messageSink.asFlux().filter(m -> m instanceof AckMessage).cast(AckMessage.class);
+    }
+
+    private Mono<WebPubSubResult> waitForAckMessage(long ackId) {
+        return receiveAckMessages()
+            .filter(m -> ackId == m.getAckId())
+            .map(m -> new WebPubSubResult(m.getAckId()))
+            .next()
+            // error handling
+            .switchIfEmpty(Mono.error(new RuntimeException()));
     }
 
     private class ClientEndpoint extends Endpoint {
