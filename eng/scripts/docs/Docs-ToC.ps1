@@ -335,15 +335,6 @@ function Get-java-UpdatedDocsMsToc($toc) {
             })
     }
     $sortableServices += [PSCustomObject]@{
-        name  = "Speech Service"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                children = @("com.microsoft.cognitiveservices.speech*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
         name  = "Text Analytics"
         landingPageType = "Service"
         items = @(
