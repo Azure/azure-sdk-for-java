@@ -986,7 +986,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String accountKey = storageAccount.getKeys().get(0).value();
         String blobEntrypoint = storageAccount.endPoints().primary().blob();
 
-        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.DEFAULT.toString())
+        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.DEFAULT)
             .withPolicyEnabled()
             .withStorageEndpoint(blobEntrypoint)
             .withStorageAccountAccessKey(accountKey)

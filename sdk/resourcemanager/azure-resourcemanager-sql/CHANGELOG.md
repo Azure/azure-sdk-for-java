@@ -2,6 +2,10 @@
 
 ## 2.22.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Added `defineThreatDetectionPolicy(SecurityAlertPolicyName policyName)` in `SqlDatabase` to replace deprecated `String` parameter overload.
+
 ### Breaking Changes
 
 - Removed `NEW` from `SecurityAlertPolicyState`. The constant is non-functional. 

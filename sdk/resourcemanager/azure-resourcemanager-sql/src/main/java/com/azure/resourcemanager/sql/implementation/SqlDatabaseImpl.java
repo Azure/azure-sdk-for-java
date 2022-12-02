@@ -364,6 +364,17 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     @Override
+    public SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(SecurityAlertPolicyName policyName) {
+        SqlDatabaseThreatDetectionPolicyImpl result = new SqlDatabaseThreatDetectionPolicyImpl(
+            policyName == null ? SecurityAlertPolicyName.DEFAULT.toString() : policyName.toString(),
+            this,
+            new DatabaseSecurityAlertPolicyInner(),
+            this.sqlServerManager);
+        result.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+        return result;
+    }
+
+    @Override
     public SqlDatabaseThreatDetectionPolicy getThreatDetectionPolicy() {
         DatabaseSecurityAlertPolicyInner policyInner =
             this

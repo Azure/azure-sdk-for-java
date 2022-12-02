@@ -178,8 +178,18 @@ public interface SqlDatabase
      *
      * @param policyName the name of the security alert policy
      * @return the first stage of the SqlDatabaseThreatDetectionPolicy definition
+     * @deprecated use {@link SqlDatabase#defineThreatDetectionPolicy(SecurityAlertPolicyName)}
      */
+    @Deprecated
     SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(String policyName);
+
+    /**
+     * Begins a definition for a security alert policy.
+     *
+     * @param policyName the name of the security alert policy
+     * @return the first stage of the SqlDatabaseThreatDetectionPolicy definition
+     */
+    SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(SecurityAlertPolicyName policyName);
 
     /**
      * Gets a SQL database threat detection policy.

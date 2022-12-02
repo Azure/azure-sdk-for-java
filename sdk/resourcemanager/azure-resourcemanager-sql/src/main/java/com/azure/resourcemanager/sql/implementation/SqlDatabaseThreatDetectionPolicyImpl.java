@@ -3,7 +3,9 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
@@ -12,6 +14,7 @@ import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -83,6 +86,13 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     }
 
     @Override
+    public List<String> disabledAlertList() {
+        return CoreUtils.isNullOrEmpty(this.innerModel().disabledAlerts())
+            ? Collections.emptyList()
+            : this.innerModel().disabledAlerts();
+    }
+
+    @Override
     public String emailAddresses() {
         List<String> emailAddresses = this.innerModel().emailAddresses();
         if (emailAddresses == null) {
@@ -92,9 +102,15 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     }
 
     @Override
+    public List<String> emailAddressList() {
+        return CoreUtils.isNullOrEmpty(this.innerModel().emailAddresses())
+            ? Collections.emptyList()
+            : this.innerModel().emailAddresses();
+    }
+
+    @Override
     public boolean emailAccountAdmins() {
-        // TODO (xiaofeicao) whether enabled by default?
-        return Boolean.TRUE.equals(this.innerModel().emailAccountAdmins());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().emailAccountAdmins());
     }
 
     @Override
@@ -201,9 +217,25 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     }
 
     @Override
+    public SqlDatabaseThreatDetectionPolicyImpl withAlertsFilter(List<String> alertsFilter) {
+        if (alertsFilter != null) {
+            this.innerModel().withDisabledAlerts(alertsFilter);
+        }
+        return this;
+    }
+
+    @Override
     public SqlDatabaseThreatDetectionPolicyImpl withEmailAddresses(String addresses) {
         if (addresses != null) {
             this.innerModel().withEmailAddresses(Stream.of(addresses.split(Pattern.quote(";"))).collect(Collectors.toList()));
+        }
+        return this;
+    }
+
+    @Override
+    public SqlDatabaseThreatDetectionPolicyImpl withEmailAddresses(List<String> addresses) {
+        if (addresses != null) {
+            this.innerModel().withEmailAddresses(addresses);
         }
         return this;
     }
