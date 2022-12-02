@@ -26,6 +26,7 @@ class AzureSdkRuntimeHints implements RuntimeHintsRegistrar {
         registerReflectionByPackage(hints, classLoader,
             List.of("com.azure.data.appconfiguration.models",
                 "com.azure.core.models",
+                "com.azure.core.http",
                 "com.azure.core.amqp.models",
                 "com.azure.cosmos.models",
                 "com.azure.cosmos.implementation.directconnectivity",
@@ -34,9 +35,11 @@ class AzureSdkRuntimeHints implements RuntimeHintsRegistrar {
                 "com.azure.security.keyvault.certificates.models",
                 "com.azure.security.keyvault.secrets.models",
                 "com.azure.storage.blob.implementation.models",
+                "com.azure.storage.blob.options",
                 "com.azure.storage.blob.models",
                 "com.azure.storage.file.share.implementation.models",
                 "com.azure.storage.file.share.models",
+                "com.azure.storage.file.share.options",
                 "com.azure.storage.queue.implementation.models",
                 "com.azure.storage.queue.models"),
             MemberCategory.DECLARED_CLASSES,
@@ -54,8 +57,9 @@ class AzureSdkRuntimeHints implements RuntimeHintsRegistrar {
             "com.azure.data.appconfiguration.implementation.ConfigurationSettingPage",
             "com.azure.security.keyvault.secrets.implementation.SecretPropertiesPage",
             "com.azure.security.keyvault.secrets.implementation.SecretRequestAttributes",
-            "com.azure.security.keyvault.secrets.implementation.SecretRequestParameters"
-        ).forEach(c -> hints.reflection().registerType(TypeReference.of(c),
+            "com.azure.security.keyvault.secrets.implementation.SecretRequestParameters",
+            "com.azure.core.util.ExpandableStringEnum"
+        ).forEach(c -> hints.reflection().registerTypeIfPresent(classLoader, c,
             MemberCategory.DECLARED_CLASSES,
             MemberCategory.DECLARED_FIELDS,
             MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
@@ -65,7 +69,6 @@ class AzureSdkRuntimeHints implements RuntimeHintsRegistrar {
             MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
         hints.reflection().registerTypeIfPresent(classLoader, "com.azure.cosmos.implementation.DocumentCollection",
             MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
-
 
         // Register resources
         hints.resources().registerPattern("azure-core.properties");
@@ -114,7 +117,7 @@ class AzureSdkRuntimeHints implements RuntimeHintsRegistrar {
             }
         }
 
-        classes.forEach(c -> hints.reflection().registerType(TypeReference.of(c), memberCategories));
+        classes.forEach(c -> hints.reflection().registerTypeIfPresent(classLoader, c.getName(), memberCategories));
     }
 
 }
