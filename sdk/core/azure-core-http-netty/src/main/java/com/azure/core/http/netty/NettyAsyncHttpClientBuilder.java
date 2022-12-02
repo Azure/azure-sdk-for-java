@@ -180,7 +180,6 @@ public class NettyAsyncHttpClientBuilder {
             // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
             if (handler != null) {
                 addProxyHandler = true;
-
                 nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
                     ? null
                     : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);

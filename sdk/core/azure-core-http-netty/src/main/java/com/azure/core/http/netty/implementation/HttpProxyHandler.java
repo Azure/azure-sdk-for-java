@@ -45,10 +45,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATE;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
@@ -91,6 +91,7 @@ public final class HttpProxyHandler extends ProxyHandler {
 
     private final AuthorizationChallengeHandler challengeHandler;
     private final AtomicReference<ChallengeHolder> proxyChallengeHolderReference;
+    private final AtomicBoolean firstRequestWithProxy;
     private final HttpClientCodec codec;
 
     private String authScheme = null;
@@ -98,11 +99,12 @@ public final class HttpProxyHandler extends ProxyHandler {
     private HttpHeaders innerHeaders;
 
     public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
+        AtomicReference<ChallengeHolder> proxyChallengeHolderReference, AtomicBoolean firstRequestWithProxy) {
         super(proxyAddress);
 
         this.challengeHandler = challengeHandler;
         this.proxyChallengeHolderReference = proxyChallengeHolderReference;
+        this.firstRequestWithProxy = firstRequestWithProxy;
         this.codec = new HttpClientCodec();
     }
 
@@ -241,7 +243,7 @@ public final class HttpProxyHandler extends ProxyHandler {
             } else if (status.code() != 200) {
                 // Return the error response on the first attempt as the proxy handler doesn't apply credentials on the
                 // first attempt.
-                if (!ctx.channel().attr(FIRST_CALL_WITH_PROXY).get()) {
+                if (!firstRequestWithProxy.compareAndSet(true, false)) {
                     // Later attempts throw an exception.
                     throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
                         "Failed to connect to proxy. Status: " + status, innerHeaders);

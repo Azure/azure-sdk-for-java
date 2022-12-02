@@ -46,8 +46,6 @@ import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.transport.AddressUtils;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 import reactor.util.retry.Retry;
 
 import javax.net.ssl.SSLException;
@@ -65,7 +63,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
-import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY;
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
@@ -146,7 +143,7 @@ class NettyAsyncHttpClient implements HttpClient {
 
         reactor.netty.http.client.HttpClient configuredClient = nettyClient;
         if (addProxyHandler) {
-            AtomicBoolean firstCallWithProxy = new AtomicBoolean(true);
+            AtomicBoolean firstRequestWithProxy = new AtomicBoolean(true);
             configuredClient = configuredClient.doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
                 /*
                  * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
@@ -156,9 +153,9 @@ class NettyAsyncHttpClient implements HttpClient {
                  * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
                  */
                 if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
-                    channel.attr(FIRST_CALL_WITH_PROXY).setIfAbsent(firstCallWithProxy.compareAndSet(true, false));
                     channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
-                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder));
+                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder,
+                        firstRequestWithProxy));
                 }
             });
         }
@@ -171,19 +168,11 @@ class NettyAsyncHttpClient implements HttpClient {
             .uri(URI.create(request.getUrl().toString()))
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
-                headersEagerlyConverted, addProxyHandler))
+                headersEagerlyConverted))
             .single()
-            .flatMap(responseTuple -> {
-                HttpResponse response = responseTuple.getT1();
-
-                if (addProxyHandler) {
-                    boolean firstCallWithProxy = responseTuple.getT2();
-
-                    if (response.getStatusCode() == 407 && firstCallWithProxy) {
-                        return Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
-                    } else {
-                        return Mono.just(response);
-                    }
+            .flatMap(response -> {
+                if (addProxyHandler && response.getStatusCode() == 407) {
+                    return Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
                 } else {
                     return Mono.just(response);
                 }
@@ -308,13 +297,11 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param ignoreResponseBody Flag indicating if the network response should be ignored.
      * @param headersEagerlyConverted Flag indicating if the Netty HttpHeaders should be eagerly converted to Azure Core
      * HttpHeaders.
-     * @param addProxyHandler Flag indicating whether an attempt to add the custom Azure proxy handler to the Netty
-     * pipeline was performed.
      * @return a delegate upon invocation setup Rest response object
      */
-    private static BiFunction<HttpClientResponse, Connection, Mono<Tuple2<HttpResponse, Boolean>>> responseDelegate(
+    private static BiFunction<HttpClientResponse, Connection, Mono<HttpResponse>> responseDelegate(
         HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse, boolean ignoreResponseBody,
-        boolean headersEagerlyConverted, boolean addProxyHandler) {
+        boolean headersEagerlyConverted) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             // For now, eagerlyReadResponse and ignoreResponseBody works the same.
 //            if (ignoreResponseBody) {
@@ -332,11 +319,6 @@ class NettyAsyncHttpClient implements HttpClient {
 //                        EMPTY_BYTES, headersEagerlyConverted)));
 //            }
 
-            // First call with proxy is only possible when an attempt to add the custom Azure proxy handler was made
-            // and this is the first request using that channel.
-            boolean firstCallWithProxy = addProxyHandler
-                && reactorNettyConnection.channel().attr(FIRST_CALL_WITH_PROXY).get();
-
             /*
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
              * response MUST be deeply copied to ensure it can safely be used downstream.
@@ -346,11 +328,11 @@ class NettyAsyncHttpClient implements HttpClient {
                 return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .switchIfEmpty(Mono.just(EMPTY_BYTES))
-                    .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
-                        headersEagerlyConverted), firstCallWithProxy));
+                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
+                        headersEagerlyConverted));
             } else {
-                return Mono.just(Tuples.of(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection,
-                    restRequest, disableBufferCopy, headersEagerlyConverted), firstCallWithProxy));
+                return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
+                    disableBufferCopy, headersEagerlyConverted));
             }
         };
     }
