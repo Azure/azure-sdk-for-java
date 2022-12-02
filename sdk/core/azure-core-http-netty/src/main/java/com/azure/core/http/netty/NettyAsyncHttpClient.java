@@ -14,7 +14,6 @@ import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
 import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
-import com.azure.core.http.netty.implementation.RequestProxyState;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
 import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.implementation.util.BinaryDataContent;
@@ -63,9 +62,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
-import static com.azure.core.http.netty.implementation.RequestProxyState.FIRST_ATTEMPT;
-import static com.azure.core.http.netty.implementation.RequestProxyState.NOT_SET;
-import static com.azure.core.http.netty.implementation.RequestProxyState.SUBSEQUENT_ATTEMPT;
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
@@ -143,7 +139,6 @@ class NettyAsyncHttpClient implements HttpClient {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
-        AtomicReference<RequestProxyState> firstRequestWithProxy = new AtomicReference<>(NOT_SET);
 
         reactor.netty.http.client.HttpClient configuredClient = nettyClient;
         if (addProxyHandler) {
@@ -156,10 +151,8 @@ class NettyAsyncHttpClient implements HttpClient {
                  * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
                  */
                 if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
-                    firstRequestWithProxy.compareAndSet(NOT_SET, FIRST_ATTEMPT);
                     channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
-                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder,
-                        firstRequestWithProxy));
+                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder));
                 }
             });
         }
@@ -175,9 +168,7 @@ class NettyAsyncHttpClient implements HttpClient {
                 headersEagerlyConverted))
             .single()
             .flatMap(response -> {
-                if (addProxyHandler
-                    && response.getStatusCode() == 407
-                    && firstRequestWithProxy.compareAndSet(FIRST_ATTEMPT, SUBSEQUENT_ATTEMPT)) {
+                if (addProxyHandler && response.getStatusCode() == 407) {
                     return Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
                 } else {
                     return Mono.just(response);
@@ -414,11 +405,5 @@ class NettyAsyncHttpClient implements HttpClient {
             default: throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HttpMethod '"
                 + azureHttpMethod + "'.")); // Should never happen
         }
-    }
-
-    private enum FirstProxyAttempt {
-        NOT_SET,
-        FALSE,
-        TRUE
     }
 }

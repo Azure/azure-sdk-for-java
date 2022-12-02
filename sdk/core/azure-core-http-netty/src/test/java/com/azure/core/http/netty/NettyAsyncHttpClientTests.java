@@ -401,12 +401,8 @@ public class NettyAsyncHttpClientTests {
                 .httpClient(new NettyAsyncHttpClientBuilder(warmedUpClient).proxy(proxyOptions).build())
                 .build();
 
-            // Run a reactive request verifier where it is expected to complete successfully and captures the time
-            // taken. The time taken will then be used to strongly validate that we are not bubbling any ProxyConnect
-            // exceptions to the retry policy as that has a much longer retry delay.
-            Duration timeToHandleProxyConnectException = StepVerifier.create(
-                    httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)),
-                        new Context("azure-eagerly-read-response", true)))
+            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)),
+                    new Context("azure-eagerly-read-response", true)))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
                 .expectComplete()
                 .verify();
