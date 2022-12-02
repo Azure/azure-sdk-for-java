@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.cosmosclient.ICosmosClient
+import com.azure.cosmos.spark.cosmosclient.{CosmosClientProvider, CosmosSparkCatalogClient}
 
 trait CosmosClientCacheItem extends AutoCloseable {
-  def client: ICosmosClient
+  def clientProvider: CosmosClientProvider
+  def sparkCatalogClient: CosmosSparkCatalogClient
   def context: String
 }

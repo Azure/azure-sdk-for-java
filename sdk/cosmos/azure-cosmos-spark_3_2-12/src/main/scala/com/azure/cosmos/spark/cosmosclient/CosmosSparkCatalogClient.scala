@@ -5,7 +5,7 @@ package com.azure.cosmos.spark.cosmosclient
 
 import java.util
 
-trait ICosmosClient {
+trait CosmosSparkCatalogClient {
     def close()
     def readAllDataBases(): Array[Array[String]]
     def readDatabase(databaseName: String): Unit

@@ -3,4 +3,6 @@
 
 package com.azure.cosmos.spark.cosmosclient
 
-trait ICosmosClientConfiguration
+import com.azure.cosmos.CosmosAsyncClient
+
+private[spark] case class CosmosClientProvider (cosmosAsyncClient: CosmosAsyncClient)

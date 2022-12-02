@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.{IdAttributeName, RawJsonBodyAttributeName, TimestampAttributeName}
-import com.azure.cosmos.spark.cosmosclient.dataplane.{CosmosDataPlaneClient, CosmosDataPlaneClientConfiguration}
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -107,7 +107,7 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
     Loan(
       List[Option[CosmosClientCacheItem]](
         Some(CosmosClientCache(
-          CosmosDataPlaneClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
+          CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
           None,
           calledFrom
         )),
@@ -137,7 +137,7 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
       List[Option[CosmosClientCacheItem]](
         Some(
           CosmosClientCache(
-            CosmosDataPlaneClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
+            CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
             None,
             calledFrom)),
         ThroughputControlHelper.getThroughputControlClientCacheItem(
@@ -163,12 +163,12 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
         }
 
         val state = new CosmosClientMetadataCachesSnapshot()
-        state.serialize(clientCacheItems(0).get.client.asInstanceOf[CosmosDataPlaneClient].cosmosAsyncClient)
+        state.serialize(clientCacheItems(0).get.clientProvider.cosmosAsyncClient)
 
         var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
         if (clientCacheItems(1).isDefined) {
           throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
-          throughputControlState.get.serialize(clientCacheItems(1).get.client.asInstanceOf[CosmosDataPlaneClient].cosmosAsyncClient)
+          throughputControlState.get.serialize(clientCacheItems(1).get.clientProvider.cosmosAsyncClient)
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)

@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getFilteredPartitionMetadata}
-import com.azure.cosmos.spark.cosmosclient.dataplane.{CosmosDataPlaneClient, CosmosDataPlaneClientConfiguration}
+import com.azure.cosmos.spark.cosmosclient.{CosmosClientConfiguration}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedFlux
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -39,7 +39,7 @@ class CosmosPartitionPlannerITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private[this] val clientConfig = CosmosDataPlaneClientConfiguration(userConfigTemplate, useEventualConsistency = true)
+  private[this] val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfigTemplate)
   private[this] val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfigTemplate)
   private[this] var feedRanges = List(NormalizedRange("", "FF"))
@@ -333,8 +333,7 @@ class CosmosPartitionPlannerITest
       ))
       .to(clientCacheItems => {
         val container = clientCacheItems(0).get
-          .client
-          .asInstanceOf[CosmosDataPlaneClient]
+          .clientProvider
           .cosmosAsyncClient
           .getDatabase(containerConfig.database)
           .getContainer(containerConfig.container)

@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.cosmosclient.dataplane.{CosmosDataPlaneClient, CosmosDataPlaneClientConfiguration}
 import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 
 private object ThroughputControlHelper {
     def getContainer(userConfig: Map[String, String],
@@ -15,13 +15,13 @@ private object ThroughputControlHelper {
 
         val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
 
-        val client = cacheItem.client.asInstanceOf[CosmosDataPlaneClient]
+        val client = cacheItem.clientProvider
         val container = client.cosmosAsyncClient.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
 
         if (throughputControlConfigOpt.isDefined) {
             assert(throughputControlCacheItemOpt.isDefined)
             val throughputControlCacheItem = throughputControlCacheItemOpt.get
-            val throughputControlClient = throughputControlCacheItem.client.asInstanceOf[CosmosDataPlaneClient]
+            val throughputControlClient = throughputControlCacheItem.clientProvider
             val throughputControlConfig = throughputControlConfigOpt.get
             val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
                 .groupName(throughputControlConfig.groupName)
@@ -59,7 +59,7 @@ private object ThroughputControlHelper {
 
         if (throughputControlConfigOpt.isDefined) {
             val throughputControlClientConfig =
-                CosmosDataPlaneClientConfiguration.apply(throughputControlConfigOpt.get.cosmosAccountConfig, diagnosticConfig, false)
+                CosmosClientConfiguration.apply(throughputControlConfigOpt.get.cosmosAccountConfig, diagnosticConfig, false)
 
             val throughputControlClientMetadata =
                 cosmosClientStateHandles match {

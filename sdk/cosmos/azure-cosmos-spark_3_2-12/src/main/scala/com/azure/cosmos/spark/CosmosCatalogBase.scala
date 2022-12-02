@@ -9,8 +9,6 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.util
 import scala.collection.mutable.ArrayBuffer
-// scalastyle:off underscore.import
-// scalastyle:on underscore.import
 import com.azure.cosmos.CosmosException
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
@@ -127,7 +125,7 @@ class CosmosCatalogBase
             .to(cosmosClientCacheItems => {
                 cosmosClientCacheItems(0)
                     .get
-                    .client
+                    .sparkCatalogClient
                     .readAllDataBases()
             })
     }
@@ -176,7 +174,7 @@ class CosmosCatalogBase
                 try {
                     clientCacheItems(0)
                         .get
-                        .client
+                        .sparkCatalogClient
                         .readDatabaseThroughput(toCosmosDatabaseName(namespace.head))
                         .asJava
                 } catch {
@@ -210,7 +208,7 @@ class CosmosCatalogBase
                 try {
                     cosmosClientCacheItems(0)
                         .get
-                        .client
+                        .sparkCatalogClient
                         .createDatabase(databaseName, metadata.asScala.toMap)
                 } catch {
                     case e: CosmosException if alreadyExists(e) =>
@@ -254,7 +252,7 @@ class CosmosCatalogBase
                 .to(cosmosClientCacheItems => {
                     cosmosClientCacheItems(0)
                         .get
-                        .client
+                        .sparkCatalogClient
                         .deleteDatabase(toCosmosDatabaseName(namespace.head))
                 })
             true
@@ -285,7 +283,7 @@ class CosmosCatalogBase
                     ))
                     .to(cosmosClientCacheItems => {
                         cosmosClientCacheItems(0).get
-                            .client
+                            .sparkCatalogClient
                             .readAllContainers(databaseName)
                             .map(containerId => getContainerIdentifier(namespace.head, containerId))
                     })
@@ -413,7 +411,7 @@ class CosmosCatalogBase
             ))
             .to(cosmosClientCacheItems => {
                 cosmosClientCacheItems(0).get
-                    .client
+                    .sparkCatalogClient
                     .createContainer(
                         databaseName,
                         containerName,
@@ -508,7 +506,7 @@ class CosmosCatalogBase
                 ))
                 .to (cosmosClientCacheItems =>
                     cosmosClientCacheItems(0).get
-                        .client
+                        .sparkCatalogClient
                         .deleteContainer(databaseName, containerName))
             true
         } catch {
@@ -567,7 +565,7 @@ class CosmosCatalogBase
                         s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"))
             ))
             .to(cosmosClientCacheItems => {
-                cosmosClientCacheItems(0).get.client.readContainerMetadata(databaseName, containerName)
+                cosmosClientCacheItems(0).get.sparkCatalogClient.readContainerMetadata(databaseName, containerName)
             })
     }
     //scalastyle:on method.length

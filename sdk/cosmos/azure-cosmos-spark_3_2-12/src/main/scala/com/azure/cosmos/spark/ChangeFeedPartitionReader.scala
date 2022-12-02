@@ -9,7 +9,7 @@ import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInter
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
-import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import com.fasterxml.jackson.databind.JsonNode
 import org.apache.spark.TaskContext
@@ -48,7 +48,7 @@ private case class ChangeFeedPartitionReader
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
-    CosmosDataPlaneClientConfiguration(config, readConfig.forceEventualConsistency),
+    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedPartitionReader(partition $partition)")
   private val throughputControlClientCacheItemOpt =

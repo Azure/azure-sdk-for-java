@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
-import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.mockito.Mockito.mock
 
@@ -24,14 +24,14 @@ class CosmosClientCacheITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private val clientConfig = CosmosDataPlaneClientConfiguration(userConfigTemplate, useEventualConsistency = true)
+  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
 
   "CosmosClientCache" should "get cached object with same config" in {
 
-    val userConfigs = Array[(String, CosmosDataPlaneClientConfiguration)](
+    val userConfigs = Array[(String, CosmosClientConfiguration)](
       (
         "SimpleCtor",
-        CosmosDataPlaneClientConfiguration(
+        CosmosClientConfiguration(
         Map(
           "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
           "spark.cosmos.accountKey" -> cosmosMasterKey
@@ -40,7 +40,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithoutPreferredRegions",
-        CosmosDataPlaneClientConfiguration(
+        CosmosClientConfiguration(
             cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
             Some("SampleApplicationName"),
@@ -54,7 +54,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
-          CosmosDataPlaneClientConfiguration(
+          CosmosClientConfiguration(
               cosmosEndpoint,
               CosmosMasterKeyAuthConfig(cosmosMasterKey),
               Some("SampleApplicationName"),
@@ -68,7 +68,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithOnePreferredRegion",
-        CosmosDataPlaneClientConfiguration(
+        CosmosClientConfiguration(
             cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
             None,
@@ -82,7 +82,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
-        CosmosDataPlaneClientConfiguration(
+        CosmosClientConfiguration(
           cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
           None,
@@ -100,7 +100,7 @@ class CosmosClientCacheITest
 
       val testCaseName = userConfigPair._1
       val userConfig = userConfigPair._2
-      val userConfigShallowCopy = CosmosDataPlaneClientConfiguration(
+      val userConfigShallowCopy = CosmosClientConfiguration(
         userConfig.endpoint,
         userConfig.authConfig,
         userConfig.customApplicationNameSuffix,
@@ -128,7 +128,8 @@ class CosmosClientCacheITest
             Some(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
            ))
            .to(clients2 => {
-            clients2(0).get.client should be theSameInstanceAs clients(0).get.client
+            clients2(0).get.clientProvider.cosmosAsyncClient should be theSameInstanceAs
+              clients(0).get.clientProvider.cosmosAsyncClient
 
              val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
              logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
@@ -142,7 +143,7 @@ class CosmosClientCacheITest
   }
 
   it should "return a new instance after purging" in {
-    val userConfig = CosmosDataPlaneClientConfiguration(Map(
+    val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
     ), useEventualConsistency = true)
@@ -166,7 +167,7 @@ class CosmosClientCacheITest
   }
 
   it should "use state during initialization" in {
-    val userConfig = CosmosDataPlaneClientConfiguration(Map(
+    val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
     ), useEventualConsistency = true)
@@ -178,7 +179,7 @@ class CosmosClientCacheITest
      ))
      .to(clients => {
        clients(0).get shouldBe a[CosmosClientCacheItem]
-       clients(0).get.client shouldBe a[CosmosAsyncClient]
+       clients(0).get.clientProvider.cosmosAsyncClient shouldBe a[CosmosAsyncClient]
        CosmosClientCache.purge(userConfig)
      })
   }

@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strin
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
-import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -258,7 +258,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     startOffset: ChangeFeedOffset,
     readLimit: ReadLimit,
     maxStaleness: Duration,
-    clientConfiguration: CosmosDataPlaneClientConfiguration,
+    clientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
@@ -290,7 +290,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     startOffset: ChangeFeedOffset,
     readLimit: ReadLimit,
     maxStaleness: Duration,
-    clientConfiguration: CosmosDataPlaneClientConfiguration,
+    clientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
@@ -623,7 +623,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   private[this] def getFeedRanges
   (
     userConfig: Map[String, String],
-    cosmosClientConfig: CosmosDataPlaneClientConfiguration,
+    cosmosClientConfig: CosmosClientConfiguration,
     cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig
   ) = {
@@ -667,13 +667,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   }
 
   def getFilteredPartitionMetadata(
-                            userConfig: Map[String, String],
-                            cosmosClientConfig: CosmosDataPlaneClientConfiguration,
-                            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
-                            cosmosContainerConfig: CosmosContainerConfig,
-                            partitionConfig: CosmosPartitioningConfig,
-                            isChangeFeed: Boolean,
-                            maxStaleness: Option[Duration] = None
+                                    userConfig: Map[String, String],
+                                    cosmosClientConfig: CosmosClientConfiguration,
+                                    cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
+                                    cosmosContainerConfig: CosmosContainerConfig,
+                                    partitionConfig: CosmosPartitioningConfig,
+                                    isChangeFeed: Boolean,
+                                    maxStaleness: Option[Duration] = None
                           ): Array[PartitionMetadata] = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
@@ -688,13 +688,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   }
 
   private[this] def getPartitionMetadataImpl(
-      userConfig: Map[String, String],
-      cosmosClientConfig: CosmosDataPlaneClientConfiguration,
-      cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
-      cosmosContainerConfig: CosmosContainerConfig,
-      partitionConfig: CosmosPartitioningConfig,
-      isChangeFeed: Boolean,
-      maxStaleness: Option[Duration] = None
+                                              userConfig: Map[String, String],
+                                              cosmosClientConfig: CosmosClientConfiguration,
+                                              cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
+                                              cosmosContainerConfig: CosmosContainerConfig,
+                                              partitionConfig: CosmosPartitioningConfig,
+                                              isChangeFeed: Boolean,
+                                              maxStaleness: Option[Duration] = None
   ): Array[PartitionMetadata] = {
 
     assertOnSparkDriver()

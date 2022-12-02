@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
-import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
 
@@ -20,7 +20,7 @@ private object PartitionMetadata {
 
   // scalastyle:off parameter.number
   def apply(userConfig: Map[String, String],
-            cosmosClientConfig: CosmosDataPlaneClientConfiguration,
+            cosmosClientConfig: CosmosClientConfiguration,
             cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
             cosmosContainerConfig: CosmosContainerConfig,
             feedRange: NormalizedRange,
@@ -58,7 +58,7 @@ private object PartitionMetadata {
 private[cosmos] case class PartitionMetadata
 (
   userConfig: Map[String, String],
-  cosmosClientConfig: CosmosDataPlaneClientConfiguration,
+  cosmosClientConfig: CosmosClientConfiguration,
   cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
   cosmosContainerConfig: CosmosContainerConfig,
   feedRange: NormalizedRange,
