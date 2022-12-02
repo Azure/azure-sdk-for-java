@@ -9,7 +9,6 @@ import reactor.netty.Connection;
 import reactor.netty.channel.ChannelOperations;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Helper class containing utility methods.
@@ -24,8 +23,7 @@ public final class Utility {
     /**
      * Netty attribute key containing data about the first call with proxy.
      */
-    public static final AttributeKey<AtomicBoolean> FIRST_CALL_WITH_PROXY_KEY
-        = AttributeKey.newInstance("FirstCallWithProxy");
+    public static final AttributeKey<Boolean> FIRST_CALL_WITH_PROXY = AttributeKey.newInstance("FirstCallWithProxy");
 
     /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.

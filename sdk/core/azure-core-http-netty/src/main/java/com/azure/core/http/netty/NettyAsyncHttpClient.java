@@ -65,8 +65,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
-import static com.azure.core.http.netty.implementation.Utility.CUSTOM_PROXY_APPLIED;
-import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY_KEY;
+import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY;
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
@@ -157,8 +156,7 @@ class NettyAsyncHttpClient implements HttpClient {
                  * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
                  */
                 if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
-                    channel.attr(CUSTOM_PROXY_APPLIED).set(true);
-                    channel.attr(FIRST_CALL_WITH_PROXY_KEY).set(firstCallWithProxy);
+                    channel.attr(FIRST_CALL_WITH_PROXY).setIfAbsent(firstCallWithProxy.compareAndSet(true, false));
                     channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
                         AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder));
                 }
@@ -334,11 +332,10 @@ class NettyAsyncHttpClient implements HttpClient {
 //                        EMPTY_BYTES, headersEagerlyConverted)));
 //            }
 
-            // First call with proxy is only possible when an attempt to add the custom Azure proxy handler was made,
-            // the custom proxy was applied, and this is the first request using that channel.
+            // First call with proxy is only possible when an attempt to add the custom Azure proxy handler was made
+            // and this is the first request using that channel.
             boolean firstCallWithProxy = addProxyHandler
-                && reactorNettyConnection.channel().hasAttr(CUSTOM_PROXY_APPLIED)
-                && reactorNettyConnection.channel().attr(FIRST_CALL_WITH_PROXY_KEY).get().compareAndSet(true, false);
+                && reactorNettyConnection.channel().attr(FIRST_CALL_WITH_PROXY).get();
 
             /*
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the

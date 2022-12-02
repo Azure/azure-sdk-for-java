@@ -6,12 +6,15 @@ package com.azure.core.http.netty.implementation;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.DefaultHttpHeaders;
+import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.EmptyHttpHeaders;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.util.Attribute;
@@ -29,13 +32,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY_KEY;
+import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATE;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
@@ -236,18 +238,16 @@ public class HttpProxyHandlerTests {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
-        AtomicBoolean firstCallWithProxy = new AtomicBoolean(true);
-        Attribute<AtomicBoolean> firstCallWithProxyAttribute = (Attribute<AtomicBoolean>) mock(Attribute.class);
-        when(firstCallWithProxyAttribute.get()).thenReturn(firstCallWithProxy);
+        Attribute<Boolean> firstCallWithProxyAttribute = (Attribute<Boolean>) mock(Attribute.class);
+        when(firstCallWithProxyAttribute.get()).thenReturn(true, false);
 
         Channel channel = mock(Channel.class);
-        when(channel.attr(FIRST_CALL_WITH_PROXY_KEY)).thenReturn(firstCallWithProxyAttribute);
+        when(channel.attr(FIRST_CALL_WITH_PROXY)).thenReturn(firstCallWithProxyAttribute);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.channel()).thenReturn(channel);
 
-        HttpResponse response = mock(HttpResponse.class);
-        when(response.status()).thenReturn(HttpResponseStatus.CONFLICT);
+        HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.CONFLICT);
 
         assertFalse(proxyAuthenticationHandler.handleResponse(ctx, response));
         assertDoesNotThrow(() -> proxyAuthenticationHandler.handleResponse(ctx, LastHttpContent.EMPTY_LAST_CONTENT));
@@ -266,14 +266,11 @@ public class HttpProxyHandlerTests {
             new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
             proxyChallengeHolder);
 
-        HttpHeaders headers = mock(HttpHeaders.class);
-        when(headers.getAll(PROXY_AUTHENTICATE)).thenReturn(proxyAuthenticateChallenges);
+        HttpHeaders headers = new DefaultHttpHeaders().add(PROXY_AUTHENTICATE, proxyAuthenticateChallenges);
+        HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1,
+            HttpResponseStatus.PROXY_AUTHENTICATION_REQUIRED, headers);
 
-        HttpResponse response = mock(HttpResponse.class);
-        when(response.status()).thenReturn(HttpResponseStatus.PROXY_AUTHENTICATION_REQUIRED);
-        when(response.headers()).thenReturn(headers);
-
-        assertFalse(proxyAuthenticationHandler.handleResponse(mock(ChannelHandlerContext.class), response));
+        assertFalse(proxyAuthenticationHandler.handleResponse(null, response));
 
         ChallengeHolder capturedChallenges = proxyChallengeHolder.get();
         assertNotNull(capturedChallenges);

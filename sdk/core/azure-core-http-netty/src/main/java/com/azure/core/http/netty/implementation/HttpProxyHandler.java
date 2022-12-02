@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY_KEY;
+import static com.azure.core.http.netty.implementation.Utility.FIRST_CALL_WITH_PROXY;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATE;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
@@ -241,7 +241,7 @@ public final class HttpProxyHandler extends ProxyHandler {
             } else if (status.code() != 200) {
                 // Return the error response on the first attempt as the proxy handler doesn't apply credentials on the
                 // first attempt.
-                if (Boolean.FALSE.equals(ctx.channel().attr(FIRST_CALL_WITH_PROXY_KEY).get().get())) {
+                if (!ctx.channel().attr(FIRST_CALL_WITH_PROXY).get()) {
                     // Later attempts throw an exception.
                     throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
                         "Failed to connect to proxy. Status: " + status, innerHeaders);
