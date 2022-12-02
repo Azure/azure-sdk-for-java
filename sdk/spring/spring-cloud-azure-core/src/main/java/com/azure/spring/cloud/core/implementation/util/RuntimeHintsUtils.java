@@ -26,13 +26,14 @@ public final class RuntimeHintsUtils {
 
     }
 
+    @SuppressWarnings("rawtypes")
     public static List<Class> findTypes(String basePackage, ClassLoader classLoader) throws IOException {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver(classLoader);
         MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
 
         List<Class> candidates = new ArrayList<>();
-        String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
-            resolveBasePackage(basePackage) + "/" + "**/*.class";
+        String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
+            + resolveBasePackage(basePackage) + "/" + "**/*.class";
         Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
         for (Resource resource : resources) {
             if (resource.isReadable()) {
