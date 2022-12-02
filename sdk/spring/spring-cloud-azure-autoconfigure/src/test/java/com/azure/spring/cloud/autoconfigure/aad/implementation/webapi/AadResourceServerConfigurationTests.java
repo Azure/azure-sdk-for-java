@@ -133,7 +133,7 @@ class AadResourceServerConfigurationTests {
         }
 
         @Override
-        protected Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter() {
+        protected Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter() {
             return mock(TestJwtGrantedAuthoritiesConverter.class);
         }
     }
