@@ -241,7 +241,7 @@ public final class HttpProxyHandler extends ProxyHandler {
             } else if (status.code() != 200) {
                 // Return the error response on the first attempt as the proxy handler doesn't apply credentials on the
                 // first attempt.
-                if (Boolean.FALSE.equals(ctx.channel().attr(FIRST_CALL_WITH_PROXY_KEY).get())) {
+                if (Boolean.FALSE.equals(ctx.channel().attr(FIRST_CALL_WITH_PROXY_KEY).get().get())) {
                     // Later attempts throw an exception.
                     throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
                         "Failed to connect to proxy. Status: " + status, innerHeaders);

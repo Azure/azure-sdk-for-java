@@ -9,6 +9,7 @@ import reactor.netty.Connection;
 import reactor.netty.channel.ChannelOperations;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Helper class containing utility methods.
@@ -16,9 +17,14 @@ import java.nio.ByteBuffer;
 public final class Utility {
 
     /**
+     * Netty attribute key indicating that the custom Azure proxy handler was added to the Netty pipeline.
+     */
+    public static final AttributeKey<Boolean> CUSTOM_PROXY_APPLIED = AttributeKey.newInstance("CustomProxyApplied");
+
+    /**
      * Netty attribute key containing data about the first call with proxy.
      */
-    public static final AttributeKey<Boolean> FIRST_CALL_WITH_PROXY_KEY
+    public static final AttributeKey<AtomicBoolean> FIRST_CALL_WITH_PROXY_KEY
         = AttributeKey.newInstance("FirstCallWithProxy");
 
     /**

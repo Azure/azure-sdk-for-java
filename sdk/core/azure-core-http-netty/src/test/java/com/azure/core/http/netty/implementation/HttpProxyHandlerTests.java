@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -235,8 +236,9 @@ public class HttpProxyHandlerTests {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
-        Attribute<Boolean> firstCallWithProxyAttribute = (Attribute<Boolean>) mock(Attribute.class);
-        when(firstCallWithProxyAttribute.compareAndSet(true, false)).thenReturn(true, false);
+        AtomicBoolean firstCallWithProxy = new AtomicBoolean(true);
+        Attribute<AtomicBoolean> firstCallWithProxyAttribute = (Attribute<AtomicBoolean>) mock(Attribute.class);
+        when(firstCallWithProxyAttribute.get()).thenReturn(firstCallWithProxy);
 
         Channel channel = mock(Channel.class);
         when(channel.attr(FIRST_CALL_WITH_PROXY_KEY)).thenReturn(firstCallWithProxyAttribute);
