@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations}
-import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 
 import java.time.{Duration, Instant}
 import java.util.concurrent.atomic.AtomicLong
@@ -23,7 +23,7 @@ class PartitionMetadataCacheITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private[this] val clientConfig = CosmosDataPlaneClientConfiguration(userConfig, useEventualConsistency = true)
+  private[this] val clientConfig = CosmosClientConfiguration(userConfig, useEventualConsistency = true)
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
   private[this] var feedRange: NormalizedRange = NormalizedRange("", "FF")
 

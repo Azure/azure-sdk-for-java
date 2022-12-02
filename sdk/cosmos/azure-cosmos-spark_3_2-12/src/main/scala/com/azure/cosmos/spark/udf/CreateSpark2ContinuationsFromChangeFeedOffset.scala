@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.rangeTo
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.spark._
-import com.azure.cosmos.spark.cosmosclient.dataplane.{CosmosDataPlaneClient, CosmosDataPlaneClientConfiguration}
+import com.azure.cosmos.spark.cosmosclient.{CosmosDataPlaneSparkCatalogClient, CosmosClientConfiguration}
 import com.azure.cosmos.{CosmosAsyncClient, SparkBridgeInternal}
 import org.apache.spark.sql.api.java.UDF2
 
@@ -22,7 +22,7 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
   ): Map[Int, Long] = {
 
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
-    val cosmosClientConfig = CosmosDataPlaneClientConfiguration(
+    val cosmosClientConfig = CosmosClientConfiguration(
       effectiveUserConfig,
       useEventualConsistency = false)
 
@@ -39,7 +39,7 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
       ))
       .to(cosmosClientCacheItems => {
         createSpark2ContinuationsFromChangeFeedOffset(
-          cosmosClientCacheItems.head.get.client.asInstanceOf[CosmosDataPlaneClient].cosmosAsyncClient,
+          cosmosClientCacheItems.head.get.clientProvider.cosmosAsyncClient,
           cosmosContainerConfig.database,
           cosmosContainerConfig.container,
           changeFeedOffset

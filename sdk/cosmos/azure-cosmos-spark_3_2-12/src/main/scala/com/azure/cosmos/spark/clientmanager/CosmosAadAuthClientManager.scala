@@ -4,8 +4,7 @@
 package com.azure.cosmos.spark.clientmanager
 
 import com.azure.cosmos.implementation.ResourceType
-import com.azure.cosmos.spark.cosmosclient.controlplane.CosmosControlPlaneClientConfiguration
-import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.{CosmosClientCache, CosmosClientCacheItem, CosmosReadConfig}
 
 private class CosmosAadAuthClientManager
@@ -15,13 +14,7 @@ private class CosmosAadAuthClientManager
                                   config: Map[String, String],
                                   readConfig: CosmosReadConfig,
                                   calledFrom: String): CosmosClientCacheItem = {
-        if (resourceType == ResourceType.StoredProcedure
-                || resourceType == ResourceType.Trigger
-                || resourceType == ResourceType.UserDefinedFunction) {
-            CosmosClientCache(CosmosControlPlaneClientConfiguration(config), None, calledFrom)
-        } else  {
-            CosmosClientCache(CosmosDataPlaneClientConfiguration(config, readConfig.forceEventualConsistency), None, calledFrom)
-        }
+      CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None, calledFrom)
     }
 
     override def getCreateOrUpdateClient(
@@ -29,16 +22,6 @@ private class CosmosAadAuthClientManager
                                             config: Map[String, String],
                                             readConfig: CosmosReadConfig,
                                             calledFrom: String): CosmosClientCacheItem = {
-        if (resourceType == ResourceType.Database
-            || resourceType == ResourceType.DocumentCollection
-            || resourceType == ResourceType.Offer
-            || resourceType == ResourceType.StoredProcedure
-            || resourceType == ResourceType.Trigger
-            || resourceType == ResourceType.UserDefinedFunction) {
-
-            CosmosClientCache(CosmosControlPlaneClientConfiguration(config), None, calledFrom)
-        } else {
-            CosmosClientCache(CosmosDataPlaneClientConfiguration(config, readConfig.forceEventualConsistency), None, calledFrom)
-        }
+      CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None, calledFrom)
     }
 }

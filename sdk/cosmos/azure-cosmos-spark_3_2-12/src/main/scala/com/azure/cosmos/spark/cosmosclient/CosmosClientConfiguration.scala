@@ -1,29 +1,30 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.spark.cosmosclient.dataplane
+package com.azure.cosmos.spark.cosmosclient
 
-import com.azure.cosmos.spark.cosmosclient.ICosmosClientConfiguration
 import com.azure.cosmos.spark.{CosmosAccountConfig, CosmosAuthConfig, CosmosConstants, DiagnosticsConfig}
 
 import java.lang.management.ManagementFactory
 
-private[spark] case class CosmosDataPlaneClientConfiguration (
-                                                                 endpoint: String,
-                                                                 authConfig: CosmosAuthConfig,
-                                                                 customApplicationNameSuffix: Option[String],
-                                                                 applicationName: String,
-                                                                 useGatewayMode: Boolean,
-                                                                 useEventualConsistency: Boolean,
-                                                                 enableClientTelemetry: Boolean,
-                                                                 disableTcpConnectionEndpointRediscovery: Boolean,
-                                                                 clientTelemetryEndpoint: Option[String],
-                                                                 preferredRegionsList: Option[Array[String]]) extends ICosmosClientConfiguration
+private[spark] case class CosmosClientConfiguration
+(
+   endpoint: String,
+   authConfig: CosmosAuthConfig,
+   customApplicationNameSuffix: Option[String],
+   applicationName: String,
+   useGatewayMode: Boolean,
+   useEventualConsistency: Boolean,
+   enableClientTelemetry: Boolean,
+   disableTcpConnectionEndpointRediscovery: Boolean,
+   clientTelemetryEndpoint: Option[String],
+   preferredRegionsList: Option[Array[String]]
+)
 
-private[spark] object CosmosDataPlaneClientConfiguration {
+private[spark] object CosmosClientConfiguration {
   def apply(
              config: Map[String, String],
-             useEventualConsistency: Boolean): CosmosDataPlaneClientConfiguration = {
+             useEventualConsistency: Boolean): CosmosClientConfiguration = {
 
     val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
     val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
@@ -34,7 +35,7 @@ private[spark] object CosmosDataPlaneClientConfiguration {
   def apply(
             cosmosAccountConfig: CosmosAccountConfig,
             diagnosticsConfig: DiagnosticsConfig,
-            useEventualConsistency: Boolean): CosmosDataPlaneClientConfiguration = {
+            useEventualConsistency: Boolean): CosmosClientConfiguration = {
 
     var applicationName = CosmosConstants.userAgentSuffix
     val customApplicationNameSuffix = cosmosAccountConfig.applicationName
@@ -47,7 +48,7 @@ private[spark] object CosmosDataPlaneClientConfiguration {
       applicationName = s"$applicationName ${customApplicationNameSuffix.get}"
     }
 
-      CosmosDataPlaneClientConfiguration(
+      CosmosClientConfiguration(
           cosmosAccountConfig.endpoint,
           cosmosAccountConfig.authConfig,
           customApplicationNameSuffix,

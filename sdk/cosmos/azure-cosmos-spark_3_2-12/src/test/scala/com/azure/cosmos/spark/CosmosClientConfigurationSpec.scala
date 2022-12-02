@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 
 import java.lang.management.ManagementFactory
 
@@ -16,7 +16,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val forceEventual = false
-    val configuration = CosmosDataPlaneClientConfiguration(userConfig, forceEventual)
+    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
@@ -34,7 +34,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val forceEventual = false
-    val configuration = CosmosDataPlaneClientConfiguration(userConfig, forceEventual)
+    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
@@ -52,7 +52,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
       "spark.cosmos.clientTelemetry.endpoint" -> "SomeEndpoint01"
     )
 
-    val configuration2 = CosmosDataPlaneClientConfiguration(userConfig2, forceEventual)
+    val configuration2 = CosmosClientConfiguration(userConfig2, forceEventual)
 
     configuration2.endpoint shouldEqual userConfig2("spark.cosmos.accountEndpoint")
     configuration2.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
@@ -70,7 +70,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
       "spark.cosmos.clientTelemetry.endpoint" -> "SomeEndpoint03"
     )
 
-    val configuration3 = CosmosDataPlaneClientConfiguration(userConfig3, forceEventual)
+    val configuration3 = CosmosClientConfiguration(userConfig3, forceEventual)
 
     configuration3.endpoint shouldEqual userConfig3("spark.cosmos.accountEndpoint")
     configuration3.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
@@ -96,7 +96,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val forceEventual = true
-    val configuration = CosmosDataPlaneClientConfiguration(userConfig, forceEventual)
+    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
@@ -115,7 +115,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val forceEventual = false
-    val configuration = CosmosDataPlaneClientConfiguration(userConfig, forceEventual)
+    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")

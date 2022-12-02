@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
-import com.azure.cosmos.spark.cosmosclient.dataplane.CosmosDataPlaneClientConfiguration
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -36,7 +36,7 @@ private class ChangeFeedMicroBatchStream
 
   private val defaultParallelism = session.sparkContext.defaultParallelism
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  private val clientConfiguration = CosmosDataPlaneClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+  private val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
