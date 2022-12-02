@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
@@ -28,7 +29,7 @@ public abstract class AadResourceServerWebSecurityConfigurerAdapter extends WebS
     @Autowired
     private AadResourceServerProperties properties;
 
-    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter;
+    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
 
     /**
      * Creates a new instance with the default configuration.
@@ -41,12 +42,13 @@ public abstract class AadResourceServerWebSecurityConfigurerAdapter extends WebS
      * the custom granted authority converter can be null.
      *
      * @param properties the Azure AD properties for Resource Server
-     * @param jwtGrantedAuthorityConverter the custom converter for JWT granted authority
+     * @param jwtGrantedAuthoritiesConverter the custom converter for JWT granted authority
      */
     public AadResourceServerWebSecurityConfigurerAdapter(AadResourceServerProperties properties,
-                                                         Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter) {
+                                                         Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
+        Assert.notNull(jwtGrantedAuthoritiesConverter, "jwtGrantedAuthoritiesConverter cannot be null");
         this.properties = properties;
-        this.jwtGrantedAuthorityConverter = jwtGrantedAuthorityConverter;
+        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
     }
 
     /**
@@ -71,9 +73,9 @@ public abstract class AadResourceServerWebSecurityConfigurerAdapter extends WebS
             converter.setPrincipalClaimName(properties.getPrincipalClaimName());
         }
 
-        this.jwtGrantedAuthorityConverter = jwtGrantedAuthorityConverter();
-        if (this.jwtGrantedAuthorityConverter != null) {
-            converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthorityConverter);
+        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthorityConverter();
+        if (this.jwtGrantedAuthoritiesConverter != null) {
+            converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         } else {
             converter.setJwtGrantedAuthoritiesConverter(
                 new AadJwtGrantedAuthoritiesConverter(properties.getClaimToAuthorityPrefixMap()));
@@ -82,10 +84,10 @@ public abstract class AadResourceServerWebSecurityConfigurerAdapter extends WebS
     }
 
     /**
-     * Customize the Jwt granted authority converter, and return the {@link AadResourceServerWebSecurityConfigurerAdapter#jwtGrantedAuthorityConverter} by default.
+     * Customize the Jwt granted authority converter, and return the {@link AadResourceServerWebSecurityConfigurerAdapter#jwtGrantedAuthoritiesConverter} by default.
      * @return the Jwt granted authority converter.
      */
     protected Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter() {
-        return this.jwtGrantedAuthorityConverter;
+        return this.jwtGrantedAuthoritiesConverter;
     }
 }

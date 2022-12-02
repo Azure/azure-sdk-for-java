@@ -100,7 +100,7 @@ class AadResourceServerConfigurationTests {
             .run(context -> {
                 WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = (WebSecurityConfigurerAdapter) context.getBean(configurationClass);
                 Converter<Jwt, Collection<GrantedAuthority>> converter =
-                    (Converter) ReflectionTestUtils.getField(webSecurityConfigurerAdapter, "jwtGrantedAuthorityConverter");
+                    (Converter) ReflectionTestUtils.getField(webSecurityConfigurerAdapter, "jwtGrantedAuthoritiesConverter");
                 assertThat(converter).isNotNull();
                 assertThat(converter).isInstanceOfAny(TestJwtGrantedAuthoritiesConverter.class);
                 assertThat(webSecurityConfigurerAdapter).isNotNull();
