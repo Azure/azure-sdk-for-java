@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/sdkreleaseplannertest/ci.yml
+      - sdk/sdkreleaseplannertest/azure-sdkreleaseplannertest/
+    exclude:
+      - sdk/sdkreleaseplannertest/pom.xml
+      - sdk/sdkreleaseplannertest/azure-sdkreleaseplannertest/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/sdkreleaseplannertest/ci.yml
+      - sdk/sdkreleaseplannertest/azure-sdkreleaseplannertest/
+    exclude:
+      - sdk/sdkreleaseplannertest/pom.xml
+      - sdk/sdkreleaseplannertest/azure-sdkreleaseplannertest/pom.xml
+
+parameters:
+  - name: release_azuresdkreleaseplannertest
+    displayName: azure-sdkreleaseplannertest
+    type: boolean
+    default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: sdkreleaseplannertest
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-sdkreleaseplannertest
+        groupId: com.azure
+        safeName: azuresdkreleaseplannertest
+        releaseInBatch: ${{ parameters.release_azuresdkreleaseplannertest }}
