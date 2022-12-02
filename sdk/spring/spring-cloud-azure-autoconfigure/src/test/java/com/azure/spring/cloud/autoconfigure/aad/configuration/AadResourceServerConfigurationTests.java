@@ -139,7 +139,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(resourceServerConfigurer).isNotNull();
 
                 Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter =
-                    (Converter<Jwt, Collection<GrantedAuthority>>) ReflectionTestUtils.getField(resourceServerConfigurer, "jwtGrantedAuthorityConverter");
+                    (Converter<Jwt, Collection<GrantedAuthority>>) ReflectionTestUtils.getField(resourceServerConfigurer, "jwtGrantedAuthoritiesConverter");
                 assertThat(jwtGrantedAuthorityConverter).isNotNull();
                 assertThat(jwtGrantedAuthorityConverter).isEqualTo(authoritiesConverter);
             });

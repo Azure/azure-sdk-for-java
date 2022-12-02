@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
 
     private AadResourceServerProperties properties;
 
-    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter;
+    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
 
     @Override
     public void init(HttpSecurity builder) throws Exception {
@@ -55,8 +56,8 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
         if (StringUtils.hasText(properties.getPrincipalClaimName())) {
             converter.setPrincipalClaimName(properties.getPrincipalClaimName());
         }
-        if (this.jwtGrantedAuthorityConverter != null) {
-            converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthorityConverter);
+        if (this.jwtGrantedAuthoritiesConverter != null) {
+            converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         } else {
             converter.setJwtGrantedAuthoritiesConverter(
                 new AadJwtGrantedAuthoritiesConverter(properties.getClaimToAuthorityPrefixMap()));
@@ -66,12 +67,13 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
 
     /**
      * Custom a JWT granted authority converter.
-     * @param jwtGrantedAuthorityConverter the custom converter
+     * @param jwtGrantedAuthoritiesConverter the custom converter
      * @return the AadResourceServerHttpSecurityConfigurer for further customizations
      */
     public AadResourceServerHttpSecurityConfigurer jwtGrantedAuthorityConverter(
-        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter) {
-        this.jwtGrantedAuthorityConverter = jwtGrantedAuthorityConverter;
+        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
+        Assert.notNull(jwtGrantedAuthoritiesConverter, "jwtGrantedAuthoritiesConverter cannot be null");
+        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
         return this;
     }
 }
