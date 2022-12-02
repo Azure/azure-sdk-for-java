@@ -120,9 +120,10 @@
         <configuration>
           <rules>
             <bannedDependencies>
-              <includes>
-                <include>com.azure:*</include>
-                <include>com.nimbusds:nimbus-jose-jwt:[9.22]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+              <includes combine.children="append">
+                <include>jakarta.websocket:jakarta.websocket-api</include>
+                <include>org.glassfish.tyrus:tyrus-client</include>
+                <include>org.glassfish.tyrus:tyrus-container-grizzly-client</include>
               </includes>
             </bannedDependencies>
           </rules>
