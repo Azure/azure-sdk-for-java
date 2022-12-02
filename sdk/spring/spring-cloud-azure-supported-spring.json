@@ -16,10 +16,10 @@
     "spring-cloud-version" : "2022.0.0-RC3"
   },
   {
-    "current" : true,
+    "current" : false,
     "releaseStatus" : "PRERELEASE",
     "snapshot" : false,
-    "supportStatus" : "SUPPORTED",
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.0.0-RC2",
     "spring-cloud-version" : "2022.0.0-RC2"
   },
