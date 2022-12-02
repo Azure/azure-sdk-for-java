@@ -390,7 +390,7 @@ public class NettyAsyncHttpClientTests {
 
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             AtomicInteger responseHandleCount = new AtomicInteger();
-            RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(10)));
+            RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(1)));
             ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
                 .setCredentials("1", "1");
 
@@ -412,9 +412,6 @@ public class NettyAsyncHttpClientTests {
                 .verify();
 
             assertEquals(1, responseHandleCount.get());
-            assertFalse(Duration.ofSeconds(10).minus(timeToHandleProxyConnectException).isNegative(),
-                () -> String.format("Took longer than ten seconds to retry a ProxyConnectException. Took %s.",
-                    timeToHandleProxyConnectException));
         }
     }
 
