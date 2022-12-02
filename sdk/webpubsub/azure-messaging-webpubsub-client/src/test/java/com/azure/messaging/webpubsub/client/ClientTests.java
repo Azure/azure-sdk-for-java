@@ -58,8 +58,15 @@ public class ClientTests {
             System.out.println("result: " + result.getAckId());
         }
 
-        Thread.sleep(10 * 1000);
+        result = asyncClient.sendMessageToGroup("group1",
+            BinaryData.fromString("binary"), WebPubSubDataType.BINARY,
+            ++ackId, false, false).block();
+        if (result != null) {
+            System.out.println("result: " + result.getAckId());
+        }
 
         asyncClient.close().block();
+
+        Thread.sleep(5 * 1000);
     }
 }

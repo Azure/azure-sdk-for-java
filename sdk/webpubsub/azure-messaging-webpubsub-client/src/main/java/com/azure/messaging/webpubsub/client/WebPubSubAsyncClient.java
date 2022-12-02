@@ -25,6 +25,8 @@ import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
@@ -40,7 +42,7 @@ public class WebPubSubAsyncClient {
 
     private Session session;
 
-    private Sinks.Many<WebPubSubMessage> messageSink = Sinks.many().multicast().onBackpressureBuffer();
+    private final Sinks.Many<WebPubSubMessage> messageSink = Sinks.many().multicast().onBackpressureBuffer();
 
     WebPubSubAsyncClient(Mono<String> clientAccessUriProvider) {
         this.clientAccessUriProvider = clientAccessUriProvider;
@@ -100,10 +102,16 @@ public class WebPubSubAsyncClient {
 
     public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType,
                                                     long ackId, boolean noEcho, boolean fireAndForget) {
+
         Mono<WebPubSubResult> sendMono = Mono.fromCallable(() -> {
+            BinaryData data = content;
+            if (dataType == WebPubSubDataType.BINARY) {
+                data = BinaryData.fromBytes(Base64.getEncoder().encode(content.toBytes()));
+            }
+
             session.getBasicRemote().sendObject(new SendToGroupMessage()
                 .setGroup(group)
-                .setData(content)
+                .setData(data)
                 .setDataType(dataType.name().toLowerCase(Locale.ROOT))
                 .setAckId(ackId)
                 .setNoEcho(noEcho));

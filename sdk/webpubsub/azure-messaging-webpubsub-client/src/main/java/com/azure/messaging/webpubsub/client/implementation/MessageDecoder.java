@@ -4,7 +4,6 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.client.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.WebPubSubMessage;
 import com.fasterxml.jackson.core.JsonParser;
@@ -15,6 +14,7 @@ import jakarta.websocket.Decoder;
 import org.glassfish.tyrus.core.coder.CoderAdapter;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Locale;
 
 public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubSubMessage> {
@@ -40,7 +40,7 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
                                     break;
 
                                 case BINARY:
-                                    data = BinaryData.fromBytes(jsonNode.get("data").binaryValue());
+                                    data = BinaryData.fromBytes(Base64.getDecoder().decode(jsonNode.get("data").binaryValue()));
                                     break;
 
                                 case JSON:
