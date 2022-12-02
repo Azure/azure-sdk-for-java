@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.extensions.mysql;
+package com.azure.identity.extensions.jdbc.mysql;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.mysql.cj.conf.PropertySet;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AzureIdentityMysqlAuthenticationPluginTest {
+class AzureMysqlAuthenticationPluginTest {
     private static final String CLEAR_PASSWORD = "mysql_clear_password";
 
     Protocol<NativePacketPayload> protocol;
@@ -45,20 +45,20 @@ class AzureIdentityMysqlAuthenticationPluginTest {
 
     @Test
     void testPluginName() {
-        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
+        AzureMysqlAuthenticationPlugin plugin = new AzureMysqlAuthenticationPlugin();
         String protocolPluginName = plugin.getProtocolPluginName();
         assertEquals(CLEAR_PASSWORD, protocolPluginName);
     }
 
     @Test
     void testRequiresConfidentiality() {
-        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
+        AzureMysqlAuthenticationPlugin plugin = new AzureMysqlAuthenticationPlugin();
         assertTrue(plugin.requiresConfidentiality());
     }
 
     @Test
     void testIsReusable() {
-        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
+        AzureMysqlAuthenticationPlugin plugin = new AzureMysqlAuthenticationPlugin();
         assertTrue(plugin.isReusable());
     }
 
@@ -72,7 +72,7 @@ class AzureIdentityMysqlAuthenticationPluginTest {
         when(protocol.getSocketConnection().isSSLEstablished()).thenReturn(true);
         when(protocol.getServerSession().getCharsetSettings().getPasswordCharacterEncoding()).thenReturn("utf-8");
 
-        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin(template, protocol);
+        AzureMysqlAuthenticationPlugin plugin = new AzureMysqlAuthenticationPlugin(template, protocol);
         NativePacketPayload fromServer = new NativePacketPayload(new byte[0]);
         List<NativePacketPayload> toServer = new ArrayList<>();
         plugin.nextAuthenticationStep(fromServer, toServer);

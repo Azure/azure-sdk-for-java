@@ -4,4 +4,4 @@
 /**
  * AuthenticationPlugin for Postgresql.
  */
-package com.azure.identity.extensions.postgresql;
+package com.azure.identity.extensions.jdbc.postgresql;

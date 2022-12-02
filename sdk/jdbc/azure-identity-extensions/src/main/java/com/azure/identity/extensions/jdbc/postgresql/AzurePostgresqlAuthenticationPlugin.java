@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.extensions.postgresql;
+package com.azure.identity.extensions.jdbc.postgresql;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import org.postgresql.plugin.AuthenticationPlugin;
@@ -15,7 +15,7 @@ import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
 /**
  * The authentication plugin that enables authentication with Azure AD.
  */
-public class AzureIdentityPostgresqlAuthenticationPlugin implements AuthenticationPlugin {
+public class AzurePostgresqlAuthenticationPlugin implements AuthenticationPlugin {
 
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;
 
@@ -24,11 +24,11 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      *
      * @param properties the properties.
      */
-    public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
+    public AzurePostgresqlAuthenticationPlugin(Properties properties) {
         this(new AzureAuthenticationTemplate(), properties);
     }
 
-    AzureIdentityPostgresqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate, Properties properties) {
+    AzurePostgresqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate, Properties properties) {
         this.azureAuthenticationTemplate = azureAuthenticationTemplate;
         this.azureAuthenticationTemplate.init(properties);
     }
@@ -38,7 +38,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      *
      * @param type The authentication method that the server is requesting.<br/>
      *             <br/>
-     *             <p>AzureIdentityPostgresqlAuthenticationPlugin is used as an extension to<br/>
+     *             <p>AzurePostgresqlAuthenticationPlugin is used as an extension to<br/>
      *             perform authentication with Azure AD,the value here is CLEARTEXT_PASSWORD.</p>
      *             <br/>
      *             When PostgreSQL client trying to connect with PostgreSQL server:<br/>
