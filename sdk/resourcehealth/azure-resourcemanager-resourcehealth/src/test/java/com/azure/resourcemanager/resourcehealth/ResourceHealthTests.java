@@ -14,7 +14,6 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -25,21 +24,9 @@ import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.Base64;
 import java.util.Random;
 
 public class ResourceHealthTests extends TestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceHealthTests.class);
-
     private static final Random RANDOM = new Random();
 
     private static final Region REGION = Region.US_WEST3;
