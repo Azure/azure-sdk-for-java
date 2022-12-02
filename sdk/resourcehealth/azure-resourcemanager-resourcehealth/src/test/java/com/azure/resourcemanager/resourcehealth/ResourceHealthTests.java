@@ -54,6 +54,10 @@ public class ResourceHealthTests extends TestBase {
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
         if (testEnv) {
             resourceGroup = testResourceGroup;
+        } else {
+            computeManager.resourceManager().resourceGroups().define(resourceGroup)
+                .withRegion(REGION)
+                .create();
         }
 
         try {
@@ -63,7 +67,7 @@ public class ResourceHealthTests extends TestBase {
                     .virtualMachines()
                     .define(VM_NAME)
                     .withRegion(REGION)
-                    .withNewResourceGroup(resourceGroup)
+                    .withExistingResourceGroup(resourceGroup)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
