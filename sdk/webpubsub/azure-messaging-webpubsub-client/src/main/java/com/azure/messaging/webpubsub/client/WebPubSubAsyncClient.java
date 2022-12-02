@@ -25,7 +25,6 @@ import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Locale;
@@ -42,7 +41,7 @@ public class WebPubSubAsyncClient {
 
     private Session session;
 
-    private final Sinks.Many<WebPubSubMessage> messageSink = Sinks.many().multicast().onBackpressureBuffer();
+    private Sinks.Many<WebPubSubMessage> messageSink = Sinks.many().multicast().onBackpressureBuffer();
 
     WebPubSubAsyncClient(Mono<String> clientAccessUriProvider) {
         this.clientAccessUriProvider = clientAccessUriProvider;
@@ -64,11 +63,12 @@ public class WebPubSubAsyncClient {
         }).subscribeOn(Schedulers.boundedElastic()));
     }
 
-    public Mono<Void> close() {
+    public Mono<Void> stop() {
         return Mono.fromCallable(() -> {
             if (session != null && session.isOpen()) {
                 session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
                 messageSink.tryEmitComplete();
+                messageSink = Sinks.many().multicast().onBackpressureBuffer();
             }
             return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic());
