@@ -268,7 +268,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         }
 
         val cosmosClientProvider = new CosmosClientProvider(builder.buildAsyncClient())
-        // TODO fabainm - create SparkCatalogClient based on auth type
+        // TODO fabianm - create SparkCatalogClient based on auth type
         val sparkCatalogClient = cosmosclient.CosmosDataPlaneSparkCatalogClient(cosmosClientProvider.cosmosAsyncClient)
         val epochNowInMs = Instant.now.toEpochMilli
         val owners = new TrieMap[OwnerInfo, Option[Boolean]]
