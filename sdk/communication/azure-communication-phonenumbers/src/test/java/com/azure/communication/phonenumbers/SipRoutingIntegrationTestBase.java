@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
-public abstract class SipRoutingIntegrationTestBase extends TestBase {
+public class SipRoutingIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
@@ -93,21 +93,17 @@ public abstract class SipRoutingIntegrationTestBase extends TestBase {
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     protected SipRoutingClientBuilder getClientBuilder(HttpClient httpClient) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
         String communicationAccessKey = communicationConnectionString.getAccessKey();
 
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
         builder
-            .httpClient(httpClient)
+            .httpClient(getHttpClient(httpClient))
             .endpoint(communicationEndpoint)
             .credential(new AzureKeyCredential(communicationAccessKey));
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (shouldRecord()) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
@@ -117,16 +113,12 @@ public abstract class SipRoutingIntegrationTestBase extends TestBase {
     }
 
     protected SipRoutingClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
         builder
-            .httpClient(httpClient)
+            .httpClient(getHttpClient(httpClient))
             .connectionString(CONNECTION_STRING);
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (shouldRecord()) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
@@ -138,8 +130,8 @@ public abstract class SipRoutingIntegrationTestBase extends TestBase {
     protected SipRoutingClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
         builder
-            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .httpClient(getHttpClient(httpClient))
+            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint());
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
@@ -147,13 +139,24 @@ public abstract class SipRoutingIntegrationTestBase extends TestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (shouldRecord()) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
         return builder;
+    }
+
+    private boolean shouldRecord() {
+        return getTestMode() == TestMode.RECORD;
+    }
+
+    private HttpClient getHttpClient(HttpClient httpClient) {
+        if (httpClient == null || getTestMode() == TestMode.PLAYBACK) {
+            return interceptorManager.getPlaybackClient();
+        }
+        return httpClient;
     }
 
     protected SipRoutingClientBuilder addLoggingPolicy(SipRoutingClientBuilder builder, String testName) {
