@@ -1,16 +1,14 @@
-# Azure OpenTelemetry Tracing plugin library samples for Java
+# Azure OpenTelemetry Tracing samples plugin library for Java
 
 This package contains samples for the `azure-core-tracing-opentelemetry` library.
 
 ## Getting started
 
-### Prerequisites
-
 ## Key concepts
 
-## Troubleshooting
+## Examples
 
-### General
+## Troubleshooting
 
 ## Next steps
 
