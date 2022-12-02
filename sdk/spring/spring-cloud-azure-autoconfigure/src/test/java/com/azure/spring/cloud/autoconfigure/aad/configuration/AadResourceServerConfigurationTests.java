@@ -155,7 +155,7 @@ class AadResourceServerConfigurationTests {
         SecurityFilterChain testAadResourceServerFilterChain(HttpSecurity http,
                                                              TestJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter) throws Exception {
             http.apply(aadResourceServer()
-                    .jwtGrantedAuthorityConverter(jwtGrantedAuthoritiesConverter));
+                    .jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter));
             savedResourceServerHttpSecurity = http;
             return http.build();
         }

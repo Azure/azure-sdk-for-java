@@ -70,7 +70,7 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
      * @param jwtGrantedAuthoritiesConverter the custom converter
      * @return the AadResourceServerHttpSecurityConfigurer for further customizations
      */
-    public AadResourceServerHttpSecurityConfigurer jwtGrantedAuthorityConverter(
+    public AadResourceServerHttpSecurityConfigurer jwtGrantedAuthoritiesConverter(
         Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
         Assert.notNull(jwtGrantedAuthoritiesConverter, "jwtGrantedAuthoritiesConverter cannot be null");
         this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
