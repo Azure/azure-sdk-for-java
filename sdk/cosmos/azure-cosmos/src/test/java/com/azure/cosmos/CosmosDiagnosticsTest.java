@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseForTest;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IndexUtilizationInfo;
@@ -33,6 +34,7 @@ import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -497,6 +499,27 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 feedResponseCounter++;
             }
         }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void readManyDiagnostics() {
+        String pkValue = UUID.randomUUID().toString();
+        PartitionKey partitionKey = new PartitionKey(pkValue);
+        CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+        List<CosmosItemIdentity> itemIdList = new ArrayList<>();
+        for(int i = 0; i< 100; i++) {
+            InternalObjectNode internalObjectNode = getInternalObjectNode(pkValue);
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            if(i%20 == 0) {
+                itemIdList.add(new CosmosItemIdentity(partitionKey, internalObjectNode.getId()));
+            }
+        }
+
+        FeedResponse<InternalObjectNode> response = cosmosContainer.readMany(itemIdList, InternalObjectNode.class);
+        FeedResponseDiagnostics diagnostics = response.getCosmosDiagnostics().getFeedResponseDiagnostics();
+
+        assertThat(diagnostics.getClientSideRequestStatisticsList().size()).isEqualTo(itemIdList.size());
+        assertThat(diagnostics.getQueryMetricsMap().values().iterator().next().getRetrievedDocumentCount()).isEqualTo(itemIdList.size());
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
