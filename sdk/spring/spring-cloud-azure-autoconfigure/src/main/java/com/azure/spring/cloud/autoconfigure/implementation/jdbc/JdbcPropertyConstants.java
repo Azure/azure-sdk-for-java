@@ -9,7 +9,7 @@ public final class JdbcPropertyConstants {
     }
 
     public static final String POSTGRES_DRIVER_CLASS_NAME = "org.postgresql.Driver";
-    public static final String POSTGRES_AUTH_PLUGIN_CLASS_NAME = "com.azure.identity.extensions.postgresql.AzureIdentityPostgresqlAuthenticationPlugin";
+    public static final String POSTGRES_AUTH_PLUGIN_CLASS_NAME = "com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin";
     public static final String POSTGRES_AUTH_PLUGIN_INTERFACE_CLASS_NAME = "org.postgresql.plugin.AuthenticationPlugin";
     public static final String POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME = "authenticationPluginClassName";
     public static final String POSTGRESQL_PROPERTY_NAME_SSL_MODE = "sslmode";
@@ -17,7 +17,7 @@ public final class JdbcPropertyConstants {
     public static final String POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME = "ApplicationName";
 
     public static final String MYSQL_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
-    public static final String MYSQL_AUTH_PLUGIN_CLASS_NAME = "com.azure.identity.extensions.mysql.AzureIdentityMysqlAuthenticationPlugin";
+    public static final String MYSQL_AUTH_PLUGIN_CLASS_NAME = "com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin";
     public static final String MYSQL_AUTH_PLUGIN_INTERFACE_CLASS_NAME = "com.mysql.cj.protocol.AuthenticationPlugin";
 
     public static final String MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES = "connectionAttributes";
