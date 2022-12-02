@@ -138,7 +138,7 @@ Instead of using a password directly, using a token as the password is recommend
 ```java
 Properties properties=new Properties();
 properties.put("sslmode","require");
-properties.put("authenticationPluginClassName","com.azure.identity.extensions.postgresql.AzureIdentityPostgresqlAuthenticationPlugin");
+properties.put("authenticationPluginClassName","com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin");
 properties.put("user","${YOUR_POSTGRESQL_USERNAME}@${AZ_DATABASE_NAME}");
 String url="${YOUR_JDBC_URL}";
 Connection connection=DriverManager.getConnection(url,properties);
@@ -149,7 +149,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 ```java
 Properties properties=new Properties();
 properties.put("sslmode","require");
-properties.put("authenticationPluginClassName","com.azure.identity.extensions.postgresql.AzureIdentityPostgresqlAuthenticationPlugin");
+properties.put("authenticationPluginClassName","com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin");
 properties.put("azure.managedIdentityEnabled","true");
 properties.put("user","${YOUR_POSTGRESQL_USERNAME}@${AZ_DATABASE_NAME}");
 String url="${YOUR_JDBC_URL}";
@@ -161,7 +161,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 ```java
 Properties properties=new Properties();
 properties.put("sslmode","require");
-properties.put("authenticationPluginClassName","com.azure.identity.extensions.postgresql.AzureIdentityPostgresqlAuthenticationPlugin");
+properties.put("authenticationPluginClassName","com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin");
 properties.put("azure.clientId","${YOUR_CLIENT_ID}");
 properties.put("azure.clientSecret","${YOUR_CLIENT_SECRET}");
 properties.put("azure.tenantId","${YOUR_TENANT_ID}");
@@ -181,7 +181,7 @@ defines authorities for well-known clouds:
 ```java
 Properties properties=new Properties();
 properties.put("sslmode","require");
-properties.put("authenticationPluginClassName","com.azure.identity.extensions.postgresql.AzureIdentityPostgresqlAuthenticationPlugin");
+properties.put("authenticationPluginClassName","com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin");
 properties.put("azure.managedIdentityEnabled","true");
 properties.put("user","${YOUR_POSTGRESQL_USERNAME}@${AZ_DATABASE_NAME}");
 properties.put("azure.authorityHost",AzureAuthorityHosts.AZURE_GOVERNMENT);
@@ -220,7 +220,7 @@ public class InteractiveBrowserCredentialProvider implements TokenCredentialProv
 ```java
 Properties properties=new Properties();
 properties.put("sslmode","require");
-properties.put("authenticationPluginClassName","com.azure.identity.extensions.postgresql.AzureIdentityPostgresqlAuthenticationPlugin");
+properties.put("authenticationPluginClassName","com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin");
 properties.put(AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey(), InteractiveBrowserCredentialProvider.class.getCanonicalName());
 properties.put("user","${YOUR_POSTGRESQL_USERNAME}@${AZ_DATABASE_NAME}");
 String url="${YOUR_JDBC_URL}";

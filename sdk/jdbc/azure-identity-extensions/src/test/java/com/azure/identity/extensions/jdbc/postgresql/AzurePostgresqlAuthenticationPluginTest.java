@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.extensions.postgresql;
+package com.azure.identity.extensions.jdbc.postgresql;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import org.junit.jupiter.api.Test;
@@ -17,12 +17,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-class AzureIdentityPostgresqlAuthenticationPluginTest {
+class AzurePostgresqlAuthenticationPluginTest {
 
     @Test
     void testTokenCredentialProvider() {
         Properties properties = new Properties();
-        AzureIdentityPostgresqlAuthenticationPlugin plugin = new AzureIdentityPostgresqlAuthenticationPlugin(properties);
+        AzurePostgresqlAuthenticationPlugin plugin = new AzurePostgresqlAuthenticationPlugin(properties);
         assertNotNull(plugin.getAzureAuthenticationTemplate());
     }
 
@@ -31,7 +31,7 @@ class AzureIdentityPostgresqlAuthenticationPluginTest {
         Properties properties = new Properties();
         AzureAuthenticationTemplate template = mock(AzureAuthenticationTemplate.class);
         when(template.getTokenAsPassword()).thenReturn(null);
-        AzureIdentityPostgresqlAuthenticationPlugin plugin = new AzureIdentityPostgresqlAuthenticationPlugin(template, properties);
+        AzurePostgresqlAuthenticationPlugin plugin = new AzurePostgresqlAuthenticationPlugin(template, properties);
         assertThrowsExactly(PSQLException.class, () -> plugin.getPassword(AuthenticationRequestType.MD5_PASSWORD));
     }
 
@@ -40,7 +40,7 @@ class AzureIdentityPostgresqlAuthenticationPluginTest {
         Properties properties = new Properties();
         AzureAuthenticationTemplate template = mock(AzureAuthenticationTemplate.class);
         when(template.getTokenAsPassword()).thenReturn("fake-password");
-        AzureIdentityPostgresqlAuthenticationPlugin plugin = new AzureIdentityPostgresqlAuthenticationPlugin(template, properties);
+        AzurePostgresqlAuthenticationPlugin plugin = new AzurePostgresqlAuthenticationPlugin(template, properties);
         assertEquals(new String(plugin.getPassword(AuthenticationRequestType.MD5_PASSWORD)), template.getTokenAsPassword());
     }
 

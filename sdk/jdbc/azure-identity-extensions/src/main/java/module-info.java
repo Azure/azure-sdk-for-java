@@ -5,8 +5,8 @@ module com.azure.identity.extensions {
     requires com.azure.identity;
     requires static mysql.connector.j;
     requires static org.postgresql.jdbc;
-    requires transitive java.sql;
+    requires static java.sql;
 
-    exports com.azure.identity.extensions.mysql;
-    exports com.azure.identity.extensions.postgresql;
+    exports com.azure.identity.extensions.jdbc.mysql;
+    exports com.azure.identity.extensions.jdbc.postgresql;
 }

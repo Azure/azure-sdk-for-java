@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.extensions.mysql;
+package com.azure.identity.extensions.jdbc.mysql;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
@@ -17,8 +17,8 @@ import java.util.Properties;
 /**
  * The authentication plugin that enables authentication with Azure AD.
  */
-public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
-    private static final ClientLogger LOGGER = new ClientLogger(AzureIdentityMysqlAuthenticationPlugin.class);
+public class AzureMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMysqlAuthenticationPlugin.class);
     private static final String PLUGIN_NAME = "mysql_clear_password";
 
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;
@@ -29,18 +29,18 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     private Protocol<NativePacketPayload> protocol;
 
     /**
-     * Default constructor of AzureIdentityMysqlAuthenticationPlugin.
+     * Default constructor of AzureMysqlAuthenticationPlugin.
      */
-    public AzureIdentityMysqlAuthenticationPlugin() {
+    public AzureMysqlAuthenticationPlugin() {
         this(new AzureAuthenticationTemplate());
     }
 
-    AzureIdentityMysqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate) {
+    AzureMysqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate) {
         this.azureAuthenticationTemplate = azureAuthenticationTemplate;
     }
 
-    AzureIdentityMysqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate,
-                                           Protocol<NativePacketPayload> protocol) {
+    AzureMysqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate,
+                                   Protocol<NativePacketPayload> protocol) {
         this.azureAuthenticationTemplate = azureAuthenticationTemplate;
         this.protocol = protocol;
     }
