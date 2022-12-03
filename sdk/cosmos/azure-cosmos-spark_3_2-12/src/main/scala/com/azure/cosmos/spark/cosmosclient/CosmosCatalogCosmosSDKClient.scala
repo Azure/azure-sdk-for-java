@@ -15,9 +15,10 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 // TODO: what is the difference of case class and class
-case class CosmosDataPlaneSparkCatalogClient(cosmosAsyncClient: CosmosAsyncClient)
+case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
   extends CosmosSparkCatalogClient
-    with BasicLoggingTrait {
+  with BasicLoggingTrait {
+
   override def close(): Unit = cosmosAsyncClient.close()
 
   override def readAllDataBases(): Array[Array[String]] =

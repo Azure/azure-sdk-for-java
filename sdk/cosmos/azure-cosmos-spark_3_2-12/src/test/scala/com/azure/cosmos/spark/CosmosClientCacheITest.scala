@@ -40,7 +40,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithoutPreferredRegions",
-        CosmosClientConfiguration(
+        cosmosclient.CosmosClientConfiguration(
             cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
             Some("SampleApplicationName"),
@@ -54,7 +54,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
-          CosmosClientConfiguration(
+          cosmosclient.CosmosClientConfiguration(
               cosmosEndpoint,
               CosmosMasterKeyAuthConfig(cosmosMasterKey),
               Some("SampleApplicationName"),
@@ -68,7 +68,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithOnePreferredRegion",
-        CosmosClientConfiguration(
+        cosmosclient.CosmosClientConfiguration(
             cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
             None,
@@ -82,7 +82,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
-        CosmosClientConfiguration(
+        cosmosclient.CosmosClientConfiguration(
           cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
           None,
@@ -100,7 +100,7 @@ class CosmosClientCacheITest
 
       val testCaseName = userConfigPair._1
       val userConfig = userConfigPair._2
-      val userConfigShallowCopy = CosmosClientConfiguration(
+      val userConfigShallowCopy = cosmosclient.CosmosClientConfiguration(
         userConfig.endpoint,
         userConfig.authConfig,
         userConfig.customApplicationNameSuffix,
@@ -129,7 +129,7 @@ class CosmosClientCacheITest
            ))
            .to(clients2 => {
             clients2(0).get.clientProvider.cosmosAsyncClient should be theSameInstanceAs
-              clients(0).get.clientProvider.cosmosAsyncClient
+            clients(0).get.clientProvider.cosmosAsyncClient
 
              val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
              logInfo(s"$testCaseName-OwnerInfo $ownerInfo")

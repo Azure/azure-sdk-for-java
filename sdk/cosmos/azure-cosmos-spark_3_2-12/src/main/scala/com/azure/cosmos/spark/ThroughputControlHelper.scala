@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 
 private object ThroughputControlHelper {
     def getContainer(userConfig: Map[String, String],

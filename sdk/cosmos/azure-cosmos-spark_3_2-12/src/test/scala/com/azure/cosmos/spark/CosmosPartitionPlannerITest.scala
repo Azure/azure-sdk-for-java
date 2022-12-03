@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getFilteredPartitionMetadata}
-import com.azure.cosmos.spark.cosmosclient.{CosmosClientConfiguration}
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedFlux
 import com.fasterxml.jackson.databind.node.ObjectNode

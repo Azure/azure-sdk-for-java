@@ -2,7 +2,7 @@ package com.azure.cosmos.spark.cosmosclient
 
 import com.azure.resourcemanager.cosmos.CosmosManager
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner
-import com.azure.resourcemanager.cosmos.models._
+import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource}
 
 import java.util
 import java.util.Collections
@@ -12,9 +12,9 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 // TODO: figure out the error handling
-case class CosmosControlPlaneSparkCatalogClient(resourceGroupName: String,
-                                                databaseAccountName: String,
-                                                cosmosManager: CosmosManager)
+private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
+                                            databaseAccountName: String,
+                                            cosmosManager: CosmosManager)
   extends CosmosSparkCatalogClient {
 
   override def close(): Unit = {}

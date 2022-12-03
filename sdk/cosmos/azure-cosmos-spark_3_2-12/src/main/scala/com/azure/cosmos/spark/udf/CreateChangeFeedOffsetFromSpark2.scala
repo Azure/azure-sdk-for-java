@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark.udf
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
-import com.azure.cosmos.spark.cosmosclient.{CosmosDataPlaneSparkCatalogClient, CosmosClientConfiguration}
+import com.azure.cosmos.spark.cosmosclient.{CosmosClientConfiguration, CosmosCatalogCosmosSDKClient}
 import com.azure.cosmos.spark.{CosmosClientCache, CosmosClientCacheItem, CosmosConfig, Loan}
 import org.apache.spark.sql.api.java.UDF4
 

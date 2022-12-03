@@ -2,14 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.profile.AzureProfile
 import com.azure.cosmos.implementation.clienttelemetry.TagName
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
-import com.azure.cosmos.spark.cosmosclient.{CosmosClientConfiguration, CosmosClientProvider, CosmosControlPlaneSparkCatalogClient, CosmosDataPlaneSparkCatalogClient, CosmosSparkCatalogClient}
+import com.azure.cosmos.spark.cosmosclient.{CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient, CosmosClientConfiguration, CosmosClientProvider, CosmosSparkCatalogClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
 import com.azure.identity.ClientSecretCredentialBuilder
+import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
@@ -129,153 +131,27 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     cache.get(cosmosClientConfiguration) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None =>
-        var builder = new CosmosClientBuilder()
-          .endpoint(cosmosClientConfiguration.endpoint)
-          .userAgentSuffix(cosmosClientConfiguration.applicationName)
-          .throttlingRetryOptions(
-            new ThrottlingRetryOptions()
-              .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
-              .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1)))
+        val cosmosAsyncClient = createCosmosAsyncClient(cosmosClientConfiguration, cosmosClientStateHandle)
+        var sparkCatalogClient: CosmosSparkCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
 
-        val authConfig = cosmosClientConfiguration.authConfig
-        authConfig match {
-          case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
-          case aadAuthConfig: CosmosAadAuthConfig =>
-            val tokenCredential = new ClientSecretCredentialBuilder()
-              .authorityHost(aadAuthConfig.authorityHost)
-              .tenantId(aadAuthConfig.tenantId)
-              .clientId(aadAuthConfig.clientId)
-              .clientSecret(aadAuthConfig.clientSecret)
-              .build()
-            builder.credential(tokenCredential)
-          case _ => throw new IllegalArgumentException(s"Authorization type ${authConfig.getClass} is not supported")
+        // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
+        if (cosmosClientConfiguration.authConfig.isInstanceOf[CosmosAadAuthConfig]) {
+            val aadAuthConfig = cosmosClientConfiguration.authConfig.asInstanceOf[CosmosAadAuthConfig]
+
+            sparkCatalogClient =
+                CosmosCatalogManagementSDKClient(
+                    aadAuthConfig.resourceGroupName,
+                    aadAuthConfig.databaseAccountName,
+                    createCosmosManagementClient(aadAuthConfig))
         }
 
-        if (authConfig.isInstanceOf[CosmosMasterKeyAuthConfig]) {
-          builder.key(cosmosClientConfiguration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey)
-        }
-
-        if (CosmosClientMetrics.meterRegistry.isDefined) {
-          val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
-            .getOrElse("")
-
-          val clientCorrelationId = SparkSession.getActiveSession match {
-            case Some(session) =>
-              val ctx = session.sparkContext
-
-              if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
-                s"${CosmosClientMetrics.executorId}-${ctx.appName}"
-              } else {
-                s"$customApplicationNameSuffix-${CosmosClientMetrics.executorId}-${ctx.appName}"
-              }
-            case None => customApplicationNameSuffix
-          }
-
-          val telemetryConfig = new CosmosClientTelemetryConfig()
-            .metricsOptions(
-              new CosmosMicrometerMetricsOptions().meterRegistry(CosmosClientMetrics.meterRegistry.get)
-            )
-            .clientCorrelationId(clientCorrelationId)
-            .metricTagNames(
-              TagName.Container.toString,
-              TagName.ClientCorrelationId.toString,
-              TagName.Operation.toString,
-              TagName.OperationStatusCode.toString,
-              TagName.PartitionKeyRangeId.toString,
-              TagName.ServiceEndpoint.toString,
-              TagName.ServiceAddress.toString
-            )
-
-          builder.clientTelemetryConfig(telemetryConfig)
-        }
-
-        if (cosmosClientConfiguration.disableTcpConnectionEndpointRediscovery) {
-          builder.endpointDiscoveryEnabled(false)
-        }
-
-        if (cosmosClientConfiguration.useEventualConsistency) {
-          builder = builder.consistencyLevel(ConsistencyLevel.EVENTUAL)
-        }
-
-        if (cosmosClientConfiguration.useGatewayMode) {
-          builder = builder.gatewayMode()
-        } else {
-          var directConfig = new DirectConnectionConfig()
-            .setConnectTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
-            .setNetworkRequestTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
-
-          directConfig =
-          // Duplicate the default number of I/O threads per core
-          // We know that Spark often works with large payloads and we have seen
-          // indicators that the default number of I/O threads can be too low
-          // for workloads with large payloads
-            SparkBridgeImplementationInternal
-              .setIoThreadCountPerCoreFactor(directConfig, CosmosConstants.defaultIoThreadCountFactorPerCore)
-
-          directConfig =
-          // Spark workloads often result in very high CPU load
-          // We have seen indicators that increasing Thread priority for I/O threads
-          // can reduce transient I/O errors/timeouts in this case
-            SparkBridgeImplementationInternal
-              .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY)
-
-          builder = builder.directMode(directConfig)
-        }
-
-        if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
-          builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.get.toList.asJava)
-        }
-
-        if (cosmosClientConfiguration.enableClientTelemetry) {
-          System.setProperty(
-            "COSMOS.CLIENT_TELEMETRY_ENDPOINT",
-            cosmosClientConfiguration.clientTelemetryEndpoint.getOrElse(
-              "https://tools.cosmos.azure.com/api/clienttelemetry/trace"
-            ))
-          System.setProperty(
-            "COSMOS.CLIENT_TELEMETRY_ENABLED",
-            "true")
-
-          builder.clientTelemetryEnabled(true)
-        }
-
-        // We saw incidents where even when Spark restarted Executors we haven't been able
-        // to recover - most likely due to stale cache state being broadcast
-        // Ideally the SDK would always be able to recover from stale cache state
-        // but the main purpose of broadcasting the cache state is to avoid peeks in metadata
-        // RU usage when multiple workers/executors are all started at the same time
-        // Skipping the broadcast cache state for retries should be safe - because not all executors
-        // will be restarted at the same time - and it adds an additional layer of safety.
-        val isTaskRetryAttempt: Boolean = TaskContext.get() != null && TaskContext.get().attemptNumber() > 0
-
-        val effectiveClientStateHandle = if (cosmosClientStateHandle.isDefined && !isTaskRetryAttempt) {
-          Some(cosmosClientStateHandle.get)
-        } else {
-
-          if (cosmosClientStateHandle.isDefined && isTaskRetryAttempt) {
-            logInfo(s"Ignoring broadcast client state handle because Task is getting retried. " +
-              s"Attempt Count: ${TaskContext.get().attemptNumber()}")
-          }
-
-          None
-        }
-
-        effectiveClientStateHandle match {
-          case Some(handle) =>
-            val metadataCache = handle
-            SparkBridgeImplementationInternal.setMetadataCacheSnapshot(builder, metadataCache)
-          case None =>
-        }
-
-        val cosmosClientProvider = new CosmosClientProvider(builder.buildAsyncClient())
-        // TODO fabianm - create SparkCatalogClient based on auth type
-        val sparkCatalogClient = cosmosclient.CosmosDataPlaneSparkCatalogClient(cosmosClientProvider.cosmosAsyncClient)
         val epochNowInMs = Instant.now.toEpochMilli
         val owners = new TrieMap[OwnerInfo, Option[Boolean]]
         owners.put(ownerInfo, None)
 
+        val clientProvider = CosmosClientProvider(cosmosAsyncClient)
         val newClientCacheEntry = CosmosClientCacheMetadata(
-          cosmosClientProvider,
+          clientProvider,
           sparkCatalogClient,
           cosmosClientConfiguration,
           new AtomicLong(epochNowInMs),
@@ -286,7 +162,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         )
 
         cache.putIfAbsent(cosmosClientConfiguration, newClientCacheEntry) match {
-          case None => new CacheItemImpl(cosmosClientProvider, sparkCatalogClient, newClientCacheEntry, ownerInfo)
+          case None => new CacheItemImpl(clientProvider, sparkCatalogClient, newClientCacheEntry, ownerInfo)
           case Some(_) =>
             throw new ConcurrentModificationException("Should not reach here because its synchronized")
         }
@@ -294,6 +170,161 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   }
   // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
+
+  private[this] def createCosmosAsyncClient(
+                                               cosmosClientConfiguration: CosmosClientConfiguration,
+                                               cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot]) : CosmosAsyncClient = {
+      var builder = new CosmosClientBuilder()
+          .endpoint(cosmosClientConfiguration.endpoint)
+          .userAgentSuffix(cosmosClientConfiguration.applicationName)
+          .throttlingRetryOptions(
+              new ThrottlingRetryOptions()
+                  .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
+                  .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1)))
+
+      val authConfig = cosmosClientConfiguration.authConfig
+      authConfig match {
+          case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
+          case aadAuthConfig: CosmosAadAuthConfig =>
+              val tokenCredential = new ClientSecretCredentialBuilder()
+                  .authorityHost(aadAuthConfig.authorityHost)
+                  .tenantId(aadAuthConfig.tenantId)
+                  .clientId(aadAuthConfig.clientId)
+                  .clientSecret(aadAuthConfig.clientSecret)
+                  .build()
+              builder.credential(tokenCredential)
+          case _ => throw new IllegalArgumentException(s"Authorization type ${authConfig.getClass} is not supported")
+      }
+
+      if (authConfig.isInstanceOf[CosmosMasterKeyAuthConfig]) {
+          builder.key(cosmosClientConfiguration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey)
+      }
+
+      if (CosmosClientMetrics.meterRegistry.isDefined) {
+          val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
+              .getOrElse("")
+
+          val clientCorrelationId = SparkSession.getActiveSession match {
+              case Some(session) =>
+                  val ctx = session.sparkContext
+
+                  if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
+                      s"${CosmosClientMetrics.executorId}-${ctx.appName}"
+                  } else {
+                      s"$customApplicationNameSuffix-${CosmosClientMetrics.executorId}-${ctx.appName}"
+                  }
+              case None => customApplicationNameSuffix
+          }
+
+          val telemetryConfig = new CosmosClientTelemetryConfig()
+              .metricsOptions(
+                  new CosmosMicrometerMetricsOptions().meterRegistry(CosmosClientMetrics.meterRegistry.get)
+              )
+              .clientCorrelationId(clientCorrelationId)
+              .metricTagNames(
+                  TagName.Container.toString,
+                  TagName.ClientCorrelationId.toString,
+                  TagName.Operation.toString,
+                  TagName.OperationStatusCode.toString,
+                  TagName.PartitionKeyRangeId.toString,
+                  TagName.ServiceEndpoint.toString,
+                  TagName.ServiceAddress.toString
+              )
+
+          builder.clientTelemetryConfig(telemetryConfig)
+      }
+
+      if (cosmosClientConfiguration.disableTcpConnectionEndpointRediscovery) {
+          builder.endpointDiscoveryEnabled(false)
+      }
+
+      if (cosmosClientConfiguration.useEventualConsistency) {
+          builder = builder.consistencyLevel(ConsistencyLevel.EVENTUAL)
+      }
+
+      if (cosmosClientConfiguration.useGatewayMode) {
+          builder = builder.gatewayMode()
+      } else {
+          var directConfig = new DirectConnectionConfig()
+              .setConnectTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
+              .setNetworkRequestTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
+
+          directConfig =
+          // Duplicate the default number of I/O threads per core
+          // We know that Spark often works with large payloads and we have seen
+          // indicators that the default number of I/O threads can be too low
+          // for workloads with large payloads
+              SparkBridgeImplementationInternal
+                  .setIoThreadCountPerCoreFactor(directConfig, CosmosConstants.defaultIoThreadCountFactorPerCore)
+
+          directConfig =
+          // Spark workloads often result in very high CPU load
+          // We have seen indicators that increasing Thread priority for I/O threads
+          // can reduce transient I/O errors/timeouts in this case
+              SparkBridgeImplementationInternal
+                  .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY)
+
+          builder = builder.directMode(directConfig)
+      }
+
+      if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
+          builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.get.toList.asJava)
+      }
+
+      if (cosmosClientConfiguration.enableClientTelemetry) {
+          System.setProperty(
+              "COSMOS.CLIENT_TELEMETRY_ENDPOINT",
+              cosmosClientConfiguration.clientTelemetryEndpoint.getOrElse(
+                  "https://tools.cosmos.azure.com/api/clienttelemetry/trace"
+              ))
+          System.setProperty(
+              "COSMOS.CLIENT_TELEMETRY_ENABLED",
+              "true")
+
+          builder.clientTelemetryEnabled(true)
+      }
+
+      // We saw incidents where even when Spark restarted Executors we haven't been able
+      // to recover - most likely due to stale cache state being broadcast
+      // Ideally the SDK would always be able to recover from stale cache state
+      // but the main purpose of broadcasting the cache state is to avoid peeks in metadata
+      // RU usage when multiple workers/executors are all started at the same time
+      // Skipping the broadcast cache state for retries should be safe - because not all executors
+      // will be restarted at the same time - and it adds an additional layer of safety.
+      val isTaskRetryAttempt: Boolean = TaskContext.get() != null && TaskContext.get().attemptNumber() > 0
+
+      val effectiveClientStateHandle = if (cosmosClientStateHandle.isDefined && !isTaskRetryAttempt) {
+          Some(cosmosClientStateHandle.get)
+      } else {
+
+          if (cosmosClientStateHandle.isDefined && isTaskRetryAttempt) {
+              logInfo(s"Ignoring broadcast client state handle because Task is getting retried. " +
+                  s"Attempt Count: ${TaskContext.get().attemptNumber()}")
+          }
+
+          None
+      }
+
+      effectiveClientStateHandle match {
+          case Some(handle) =>
+              val metadataCache = handle
+              SparkBridgeImplementationInternal.setMetadataCacheSnapshot(builder, metadataCache)
+          case None =>
+      }
+
+      builder.buildAsyncClient()
+  }
+
+  private[this] def createCosmosManagementClient(authConfig: CosmosAadAuthConfig): CosmosManager = {
+      val azureEnvironment = new AzureProfile(authConfig.tenantId, authConfig.subscriptionId, authConfig.azureEnvironment)
+      val tokenCredential = new ClientSecretCredentialBuilder()
+          .authorityHost(authConfig.authorityHost)
+          .tenantId(authConfig.tenantId)
+          .clientId(authConfig.clientId)
+          .clientSecret(authConfig.clientSecret)
+          .build()
+      CosmosManager.authenticate(tokenCredential, azureEnvironment)
+  }
 
   private[this] def onCleanup(): Unit = {
     try {
@@ -348,7 +379,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] case class CosmosClientCacheMetadata
   (
-    clientProvider: CosmosClientProvider,
+    cosmosClientProvider: CosmosClientProvider,
     sparkCatalogClient: CosmosSparkCatalogClient,
     clientConfig: CosmosClientConfiguration,
     lastRetrieved: AtomicLong,
@@ -364,11 +395,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       refCount.incrementAndGet()
       owners.putIfAbsent(ownerInfo, None)
 
-      new CacheItemImpl(clientProvider, sparkCatalogClient, this, ownerInfo)
+      new CacheItemImpl(cosmosClientProvider, sparkCatalogClient, this, ownerInfo)
     }
 
     def closeClients() = {
-      clientProvider.cosmosAsyncClient.close()
+      cosmosClientProvider.cosmosAsyncClient.close()
       sparkCatalogClient.close()
     }
   }
@@ -409,10 +440,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] class CacheItemImpl
   (
-    val cosmosClientProvider: CosmosClientProvider,
-    val catalogClient: CosmosSparkCatalogClient,
-    val ref: CosmosClientCacheMetadata,
-    val ownerInfo: OwnerInfo
+      val cosmosClientProvider: CosmosClientProvider,
+      val catalogClient: CosmosSparkCatalogClient,
+      val ref: CosmosClientCacheMetadata,
+      val ownerInfo: OwnerInfo
   ) extends CosmosClientCacheItem with BasicLoggingTrait {
 
     override def clientProvider: CosmosClientProvider = this.cosmosClientProvider

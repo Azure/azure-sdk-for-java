@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
-import com.azure.cosmos.spark.cosmosclient.{CosmosClientConfiguration, CosmosDataPlaneSparkCatalogClient}
+import com.azure.cosmos.spark.cosmosclient.{CosmosClientConfiguration, CosmosCatalogCosmosSDKClient}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast

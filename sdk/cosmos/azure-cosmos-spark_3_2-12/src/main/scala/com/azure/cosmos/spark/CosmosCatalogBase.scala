@@ -3,13 +3,9 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.ResourceType
-import com.azure.cosmos.spark.clientmanager.{CosmosClientManager, CosmosClientManagerFactory}
-import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-
-import java.util
-import scala.collection.mutable.ArrayBuffer
 import com.azure.cosmos.CosmosException
+import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
 import org.apache.spark.sql.connector.catalog._
@@ -18,7 +14,9 @@ import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
+import java.util
 import scala.annotation.tailrec
+import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -52,7 +50,6 @@ class CosmosCatalogBase
     private var readConfig: CosmosReadConfig = _
     private var tableOptions: Map[String, String] = _
     private var viewRepository: Option[HDFSMetadataLog[String]] = None
-    private var clientManager: CosmosClientManager = _
 
     /**
      * Called to initialize configuration.
@@ -79,8 +76,6 @@ class CosmosCatalogBase
                 this.sparkSession,
                 viewRepositoryConfig.metaDataPath.get))
         }
-
-        this.clientManager = CosmosClientManagerFactory.getCosmosClientManager(config)
     }
 
     /**
@@ -115,12 +110,10 @@ class CosmosCatalogBase
 
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(
-                    clientManager.getReadClient(
-                        ResourceType.Database,
-                        config,
-                        readConfig,
-                        s"CosmosCatalog(name $catalogName).listNamespaces"))
+                Some(CosmosClientCache(
+                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                    None,
+                    s"CosmosCatalog(name $catalogName).listNamespaces"))
             ))
             .to(cosmosClientCacheItems => {
                 cosmosClientCacheItems(0)
@@ -164,10 +157,9 @@ class CosmosCatalogBase
         Loan(
             List[Option[CosmosClientCacheItem]](
                 Some(
-                    clientManager.getReadClient(
-                        ResourceType.Offer,
-                        config,
-                        readConfig,
+                    CosmosClientCache(
+                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                        None,
                         s"CosmosCatalog(name $catalogName).loadNamespaceMetadata([${namespace.mkString(", ")}])"))
             ))
             .to(clientCacheItems => {
@@ -198,11 +190,11 @@ class CosmosCatalogBase
 
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(clientManager.getCreateOrUpdateClient(
-                    ResourceType.Database,
-                    config,
-                    readConfig,
-                    s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"))
+                Some(
+                    CosmosClientCache(
+                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                        None,
+                        s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"))
             ))
             .to(cosmosClientCacheItems => {
                 try {
@@ -242,12 +234,12 @@ class CosmosCatalogBase
         try {
             Loan(
                 List[Option[CosmosClientCacheItem]](
-                    Some(clientManager.getCreateOrUpdateClient(
-                        ResourceType.Database,
-                        config,
-                        readConfig,
-                        s"CosmosCatalog(name $catalogName).dropNamespace([${namespace.mkString(", ")}])"
-                    ))
+                    Some(
+                        CosmosClientCache(
+                            CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                            None,
+                            s"CosmosCatalog(name $catalogName).dropNamespace([${namespace.mkString(", ")}])"
+                        ))
                 ))
                 .to(cosmosClientCacheItems => {
                     cosmosClientCacheItems(0)
@@ -274,11 +266,11 @@ class CosmosCatalogBase
             val cosmosTables =
                 Loan(
                     List[Option[CosmosClientCacheItem]](
-                        Some(clientManager.getReadClient(
-                            ResourceType.DocumentCollection,
-                            config,
-                            readConfig,
-                            s"CosmosCatalog(name $catalogName).listTables([${namespace.mkString(", ")}])"
+                        Some(
+                            CosmosClientCache(
+                                CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                                None,
+                                s"CosmosCatalog(name $catalogName).listTables([${namespace.mkString(", ")}])"
                         ))
                     ))
                     .to(cosmosClientCacheItems => {
@@ -402,12 +394,12 @@ class CosmosCatalogBase
 
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(clientManager.getCreateOrUpdateClient(
-                    ResourceType.DocumentCollection,
-                    config,
-                    readConfig,
-                    s"CosmosCatalog(name $catalogName).createPhysicalTable($databaseName, $containerName)"
-                ))
+                Some(
+                    CosmosClientCache(
+                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                        None,
+                        s"CosmosCatalog(name $catalogName).createPhysicalTable($databaseName, $containerName)"
+                    ))
             ))
             .to(cosmosClientCacheItems => {
                 cosmosClientCacheItems(0).get
@@ -497,12 +489,12 @@ class CosmosCatalogBase
         try {
             Loan(
                 List[Option[CosmosClientCacheItem]](
-                    Some(clientManager.getCreateOrUpdateClient(
-                        ResourceType.DocumentCollection,
-                        config,
-                        readConfig,
-                        s"CosmosCatalog(name $catalogName).deletePhysicalTable($databaseName, $containerName)"
-                    ))
+                    Some(
+                        CosmosClientCache(
+                            CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                            None,
+                            s"CosmosCatalog(name $catalogName).deletePhysicalTable($databaseName, $containerName)"
+                        ))
                 ))
                 .to (cosmosClientCacheItems =>
                     cosmosClientCacheItems(0).get
@@ -558,10 +550,9 @@ class CosmosCatalogBase
         Loan(
             List[Option[CosmosClientCacheItem]](
                 Some(
-                    clientManager.getReadClient(
-                        ResourceType.MetaData,
-                        config,
-                        readConfig,
+                    CosmosClientCache(
+                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                        None,
                         s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"))
             ))
             .to(cosmosClientCacheItems => {
