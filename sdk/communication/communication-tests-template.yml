@@ -24,7 +24,7 @@ stages:
         Int:
           SubscriptionConfigurations:
               ${{ if parameters.CloudConfig.Int.SubscriptionConfigurations }}:
-                ${{ parameters.CloudConfig.Int.SubscriptionConfigurations[0] }}
+                ${{ parameters.CloudConfig.Int.SubscriptionConfigurations }}[0]
                 - $(sub-config-communication-int-test-resources-common)
                 - $(sub-config-communication-int-test-resources-java)
 
