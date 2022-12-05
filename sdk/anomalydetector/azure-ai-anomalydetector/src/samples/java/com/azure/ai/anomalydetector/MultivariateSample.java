@@ -87,7 +87,7 @@ public class MultivariateSample {
 
     private static UUID createModel(AnomalyDetectorClient client, BinaryData body) {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.createAndTrainMultivariateModelWithResponse(body, requestOptions);
+        Response<BinaryData> response = client.trainMultivariateModelWithResponse(body, requestOptions);
         String header = response.getHeaders().get("Location").getValue();
         String[] modelIds = header.split("/");
         UUID modelId = UUID.fromString(modelIds[modelIds.length - 1]);
